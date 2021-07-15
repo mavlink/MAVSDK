@@ -13,46 +13,44 @@ option java_outer_classname = "TelemetryServerProto";
  */
 service TelemetryServerService {
     // Publish to 'position' updates.
-    rpc PublishPosition(PublishPositionRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishPosition(PublishPositionRequest) returns(PublishPositionResponse) {}
     // Publish to 'home position' updates.
-    rpc PublishHome(PublishHomeRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishHome(PublishHomeRequest) returns(PublishHomeResponse) {}
     // Publish to armed updates.
-    rpc PublishArmed(PublishArmedRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishArmed(PublishArmedRequest) returns(PublishArmedResponse) {}
     // Publish to 'Raw GPS' updates.
-    rpc PublishRawGps(PublishRawGpsRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishRawGps(PublishRawGpsRequest) returns(PublishRawGpsResponse) {}
     // Publish to 'battery' updates.
-    rpc PublishBattery(PublishBatteryRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishBattery(PublishBatteryRequest) returns(PublishBatteryResponse) {}
     // Publish to 'flight mode' updates.
-    rpc PublishFlightMode(PublishFlightModeRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishFlightMode(PublishFlightModeRequest) returns(PublishFlightModeResponse) {}
     // Publish to 'health' updates.
-    rpc PublishHealth(PublishHealthRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishHealth(PublishHealthRequest) returns(PublishHealthResponse) {}
     // Publish to 'status text' updates.
-    rpc PublishStatusText(PublishStatusTextRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishStatusText(PublishStatusTextRequest) returns(PublishStatusTextResponse) {}
     // Publish to 'odometry' updates.
-    rpc PublishOdometry(PublishOdometryRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishOdometry(PublishOdometryRequest) returns(PublishOdometryResponse) {}
     // Publish to 'position velocity' updates.
-    rpc PublishPositionVelocityNed(PublishPositionVelocityNedRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishPositionVelocityNed(PublishPositionVelocityNedRequest) returns(PublishPositionVelocityNedResponse) {}
     // Publish to 'ground truth' updates.
-    rpc PublishGroundTruth(PublishGroundTruthRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishGroundTruth(PublishGroundTruthRequest) returns(PublishGroundTruthResponse) {}
     // Publish to 'IMU' updates (in SI units in NED body frame).
-    rpc PublishImu(PublishImuRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishImu(PublishImuRequest) returns(PublishImuResponse) {}
     // Publish to 'Scaled IMU' updates.
-    rpc PublishScaledImu(PublishScaledImuRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishScaledImu(PublishScaledImuRequest) returns(PublishScaledImuResponse) {}
     // Publish to 'Raw IMU' updates.
-    rpc PublishRawImu(PublishRawImuRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishRawImu(PublishRawImuRequest) returns(PublishRawImuResponse) {}
     // Publish to 'HealthAllOk' updates.
-    rpc PublishHealthAllOk(PublishHealthAllOkRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishHealthAllOk(PublishHealthAllOkRequest) returns(PublishHealthAllOkResponse) {}
     // Publish to 'unix epoch time' updates.
-    rpc PublishUnixEpochTime(PublishUnixEpochTimeRequest) returns(PublishTelemetryResponse) {}
+    rpc PublishUnixEpochTime(PublishUnixEpochTimeRequest) returns(PublishUnixEpochTimeResponse) {}
 
     // Get the GPS location of where the estimator has been initialized.
     rpc GetGpsGlobalOrigin(GetGpsGlobalOriginRequest) returns(GetGpsGlobalOriginResponse) {}
 }
 
-message PublishTelemetryResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
 
+// Request Messages
 message PublishPositionRequest {
     Position position = 1; // The next position
     VelocityNed velocity_ned = 2; // The next velocity (NED)
@@ -131,6 +129,73 @@ message PublishUnixEpochTimeRequest {
     uint64 time_us = 1; // The next 'unix epoch time' status
 }
 
+// Publish Responses
+message PublishPositionResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishHomeResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishArmedResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishRawGpsResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishBatteryResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishFlightModeResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishHealthResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishStatusTextResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishOdometryResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishPositionVelocityNedResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishGroundTruthResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishImuResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishScaledImuResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishRawImuResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishHealthAllOkResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishUnixEpochTimeResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+
+// GPS Origin
 message GetGpsGlobalOriginRequest {}
 message GetGpsGlobalOriginResponse {
     TelemetryServerResult telemetry_result = 1;
