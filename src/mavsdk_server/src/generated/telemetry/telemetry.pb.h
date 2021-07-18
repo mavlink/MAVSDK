@@ -17290,6 +17290,7 @@ class Battery PROTOBUF_FINAL :
   enum : int {
     kVoltageVFieldNumber = 1,
     kRemainingPercentFieldNumber = 2,
+    kIdFieldNumber = 3,
   };
   // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_voltage_v();
@@ -17309,6 +17310,15 @@ class Battery PROTOBUF_FINAL :
   void _internal_set_remaining_percent(float value);
   public:
 
+  // uint32 id = 3 [(.mavsdk.options.default_value) = "0"];
+  void clear_id();
+  ::PROTOBUF_NAMESPACE_ID::uint32 id() const;
+  void set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_id() const;
+  void _internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Battery)
  private:
   class _Internal;
@@ -17318,6 +17328,7 @@ class Battery PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   float voltage_v_;
   float remaining_percent_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 id_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -26995,6 +27006,26 @@ inline void RawGps::set_yaw_deg(float value) {
 // -------------------------------------------------------------------
 
 // Battery
+
+// uint32 id = 3 [(.mavsdk.options.default_value) = "0"];
+inline void Battery::clear_id() {
+  id_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Battery::_internal_id() const {
+  return id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Battery::id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.id)
+  return _internal_id();
+}
+inline void Battery::_internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  id_ = value;
+}
+inline void Battery::set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.id)
+}
 
 // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void Battery::clear_voltage_v() {

@@ -101,7 +101,8 @@ protected:
     FixType translateRPCGpsFixType(RPCFixType fixType) const;
 
     void checkSendsBatteryEvents(const std::vector<Battery>& battery_events) const;
-    Battery createBattery(const float voltage_v, const float remaining_percent) const;
+    Battery
+    createBattery(const uint32_t id, const float voltage_v, const float remaining_percent) const;
     std::future<void> subscribeBatteryAsync(std::vector<Battery>& battery_events) const;
 
     void checkSendsFlightModeEvents(const std::vector<FlightMode>& flight_mode_events) const;
@@ -797,6 +798,7 @@ TelemetryServiceImplTest::subscribeBatteryAsync(std::vector<Battery>& battery_ev
             auto battery_rpc = response.battery();
 
             Battery battery;
+            battery.id = battery_rpc.id();
             battery.voltage_v = battery_rpc.voltage_v();
             battery.remaining_percent = battery_rpc.remaining_percent();
 
@@ -821,15 +823,16 @@ TEST_F(TelemetryServiceImplTest, doesNotSendBatteryIfCallbackNotCalled)
 TEST_F(TelemetryServiceImplTest, sendsOneBatteryEvent)
 {
     std::vector<Battery> battery_events;
-    battery_events.push_back(createBattery(4.2f, 0.63f));
+    battery_events.push_back(createBattery(0, 4.2f, 0.63f));
 
     checkSendsBatteryEvents(battery_events);
 }
 
-Battery
-TelemetryServiceImplTest::createBattery(const float voltage_v, const float remaining_percent) const
+Battery TelemetryServiceImplTest::createBattery(
+    const uint32_t id, const float voltage_v, const float remaining_percent) const
 {
     Battery battery;
+    battery.id = id;
     battery.voltage_v = voltage_v;
     battery.remaining_percent = remaining_percent;
 
@@ -864,10 +867,10 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleBatteryEvents)
 {
     std::vector<Battery> battery_events;
 
-    battery_events.push_back(createBattery(4.1f, 0.34f));
-    battery_events.push_back(createBattery(5.1f, 0.12f));
-    battery_events.push_back(createBattery(2.4f, 0.99f));
-    battery_events.push_back(createBattery(5.7f, 1.0f));
+    battery_events.push_back(createBattery(0, 4.1f, 0.34f));
+    battery_events.push_back(createBattery(1, 5.1f, 0.12f));
+    battery_events.push_back(createBattery(2, 2.4f, 0.99f));
+    battery_events.push_back(createBattery(3, 5.7f, 1.0f));
 
     checkSendsBatteryEvents(battery_events);
 }

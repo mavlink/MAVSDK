@@ -331,6 +331,7 @@ public:
      * @brief Battery type.
      */
     struct Battery {
+        uint32_t id{0}; /**< @brief Battery ID, for systems with multiple batteries */
         float voltage_v{float(NAN)}; /**< @brief Voltage in volts */
         float remaining_percent{
             float(NAN)}; /**< @brief Estimated battery remaining (range: 0.0 to 1.0) */
