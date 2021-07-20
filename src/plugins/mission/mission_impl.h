@@ -111,12 +111,6 @@ private:
     static Mission::Result import_mission_items(
         std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& qgc_plan_json);
 
-    static Mission::Result build_mission_items(
-        MAV_CMD command,
-        std::vector<double> params,
-        Mission::MissionItem& new_mission_item,
-        std::vector<Mission::MissionItem>& all_mission_items);
-
     void add_gimbal_items_v1(
         std::vector<MAVLinkMissionTransfer::ItemInt>& int_items,
         unsigned item_i,
