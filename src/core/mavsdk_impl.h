@@ -116,7 +116,7 @@ private:
 
     Time _time{};
 
-    Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
+    Mavsdk::Configuration _configuration{5, 42, false};
 
     struct UserCallback {
         UserCallback() {}
