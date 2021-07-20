@@ -44,13 +44,8 @@ service TelemetryServerService {
     rpc PublishHealthAllOk(PublishHealthAllOkRequest) returns(PublishHealthAllOkResponse) {}
     // Publish to 'unix epoch time' updates.
     rpc PublishUnixEpochTime(PublishUnixEpochTimeRequest) returns(PublishUnixEpochTimeResponse) {}
-
-    // Get the GPS location of where the estimator has been initialized.
-    rpc GetGpsGlobalOrigin(GetGpsGlobalOriginRequest) returns(GetGpsGlobalOriginResponse) {}
 }
 
-
-// Request Messages
 message PublishPositionRequest {
     Position position = 1; // The next position
     VelocityNed velocity_ned = 2; // The next velocity (NED)
@@ -129,7 +124,6 @@ message PublishUnixEpochTimeRequest {
     uint64 time_us = 1; // The next 'unix epoch time' status
 }
 
-// Publish Responses
 message PublishPositionResponse {
     TelemetryServerResult telemetry_server_result = 1;
 }
@@ -192,14 +186,6 @@ message PublishHealthAllOkResponse {
 
 message PublishUnixEpochTimeResponse {
     TelemetryServerResult telemetry_server_result = 1;
-}
-
-
-// GPS Origin
-message GetGpsGlobalOriginRequest {}
-message GetGpsGlobalOriginResponse {
-    TelemetryServerResult telemetry_result = 1;
-    GpsGlobalOrigin gps_global_origin = 2;
 }
 
 // Position type in global coordinates.
@@ -501,13 +487,6 @@ message Imu {
     MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
     float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
     uint64 timestamp_us = 5; // Timestamp in microseconds
-}
-
-// Gps global origin type.
-message GpsGlobalOrigin {
-    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude of the origin
-    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude of the origin
-    float altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
 }
 
 // Result type.
