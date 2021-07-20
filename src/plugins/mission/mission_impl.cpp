@@ -968,9 +968,8 @@ Mission::Result MissionImpl::build_mission_items(
                 new_mission_item.is_fly_through = is_fly_through;
             }
             new_mission_item.loiter_time_s = params[0];
-            auto lat = params[4], lon = params[5];
-            new_mission_item.latitude_deg = lat;
-            new_mission_item.longitude_deg = lon;
+            new_mission_item.latitude_deg = params[4];
+            new_mission_item.longitude_deg = params[5];
 
             auto rel_alt = float(params[6]);
             new_mission_item.relative_altitude_m = rel_alt;
