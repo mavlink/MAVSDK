@@ -303,7 +303,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                 hold_time(item),
                 acceptance_radius(item),
                 0.0f,
-                NAN,
+                item.yaw_deg,
                 x,
                 y,
                 z,
@@ -538,6 +538,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 new_mission_item.latitude_deg = double(int_item.x) * 1e-7;
                 new_mission_item.longitude_deg = double(int_item.y) * 1e-7;
                 new_mission_item.relative_altitude_m = int_item.z;
+                new_mission_item.yaw_deg = int_item.param4;
 
                 new_mission_item.is_fly_through = !(int_item.param1 > 0);
                 new_mission_item.acceptance_radius_m = int_item.param2;

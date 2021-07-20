@@ -102,6 +102,7 @@ public:
             1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
         float acceptance_radius_m{
             float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
+        float yaw_deg{float(NAN)}; /**< @brief Absolute yaw angle (in degrees) */
     };
 
     /**
