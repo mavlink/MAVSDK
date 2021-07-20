@@ -173,6 +173,7 @@ message MissionItem {
     float loiter_time_s = 9 [(mavsdk.options.default_value)="NaN"]; // Loiter time (in seconds)
     double camera_photo_interval_s = 10 [(mavsdk.options.default_value)="1.0"]; // Camera photo interval to use after this mission item (in seconds)
     float acceptance_radius_m = 11 [(mavsdk.options.default_value)="NaN"]; // Radius for completing a mission item (in metres)
+    float yaw_deg = 12 [(mavsdk.options.default_value)="NaN"]; // Absolute yaw angle (in degrees)
 
     // Possible camera actions at a mission item.
     enum CameraAction {
