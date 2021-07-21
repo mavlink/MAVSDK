@@ -554,7 +554,7 @@ jobs:
     container: mavsdk/mavsdk-ubuntu-20.04-px4-sitl-${{ matrix.px4_version }}
     strategy:
       matrix:
-        px4_version: [v1.11]
+        px4_version: [v1.11, v1.12]
     steps:
       - uses: actions/checkout@v2
         with:
