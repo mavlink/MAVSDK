@@ -72,9 +72,14 @@ public:
      *
      * Supports connection: Serial, TCP or UDP.
      * Connection URL format should be:
-     * - UDP - udp://[Bind_host][:Bind_port]
-     * - TCP - tcp://[Remote_host][:Remote_port]
-     * - Serial - serial://Dev_Node[:Baudrate]
+     * - UDP:    udp://[host][:bind_port]
+     * - TCP:    tcp://[host][:remote_port]
+     * - Serial: serial://dev_node[:baudrate]
+     *
+     * For UDP, the host can be set to either:
+     *   - zero IP: 0.0.0.0 -> behave like a server and listen for heartbeats.
+     *   - some IP: 192.168.1.12 -> behave like a client, initiate connection
+     *     and start sending heartbeats.
      *
      * @param connection_url connection URL string.
      * @param forwarding_option message forwarding option (when multiple interfaces are used).
