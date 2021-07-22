@@ -53,6 +53,32 @@ MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallbac
     return std::weak_ptr<WorkItem>(ptr);
 }
 
+std::weak_ptr<MAVLinkMissionTransfer::WorkItem>
+MAVLinkMissionTransfer::receive_incoming_items_async(
+    uint8_t type, uint32_t mission_count, uint8_t target_component, ResultAndItemsCallback callback)
+{
+    if (!_int_messages_supported) {
+        if (callback) {
+            callback(Result::IntMessagesNotSupported, {});
+        }
+        return {};
+    }
+
+    auto ptr = std::make_shared<ReceiveIncomingMission>(
+        _sender,
+        _message_handler,
+        _timeout_handler,
+        type,
+        _timeout_s_callback(),
+        callback,
+        mission_count,
+        target_component);
+
+    _work_queue.push_back(ptr);
+
+    return std::weak_ptr<WorkItem>(ptr);
+}
+
 void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback callback)
 {
     auto ptr = std::make_shared<ClearWorkItem>(
@@ -668,6 +694,192 @@ void MAVLinkMissionTransfer::DownloadWorkItem::process_timeout()
 }
 
 void MAVLinkMissionTransfer::DownloadWorkItem::callback_and_reset(Result result)
+{
+    if (_callback) {
+        _callback(result, _items);
+    }
+    _callback = nullptr;
+    _done = true;
+}
+
+MAVLinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
+    Sender& sender,
+    MAVLinkMessageHandler& message_handler,
+    TimeoutHandler& timeout_handler,
+    uint8_t type,
+    double timeout_s,
+    ResultAndItemsCallback callback,
+    uint32_t mission_count,
+    uint8_t target_component) :
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
+    _callback(callback),
+    _mission_count(mission_count),
+    _target_component(target_component)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+}
+
+MAVLinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _message_handler.unregister_all(this);
+    _timeout_handler.remove(_cookie);
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::start()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_MISSION_ITEM_INT,
+        [this](const mavlink_message_t& message) { process_mission_item_int(message); },
+        this);
+
+    _items.clear();
+
+    _started = true;
+    _retries_done = 0;
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    process_mission_count();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::cancel()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _timeout_handler.remove(_cookie);
+    send_cancel_and_finish();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::request_item()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_request_int_pack(
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
+        &message,
+        _sender.get_system_id(),
+        _target_component,
+        _next_sequence,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        _timeout_handler.remove(_cookie);
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    ++_retries_done;
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
+        &message,
+        _sender.get_system_id(),
+        _target_component,
+        MAV_MISSION_ACCEPTED,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    // We do not wait on anything coming back after this.
+    callback_and_reset(Result::Success);
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
+        &message,
+        _sender.get_system_id(),
+        _target_component,
+        MAV_MISSION_OPERATION_CANCELLED,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    // We do not wait on anything coming back after this.
+    callback_and_reset(Result::Cancelled);
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_count()
+{
+    if (_mission_count == 0) {
+        send_ack_and_finish();
+        _timeout_handler.remove(_cookie);
+        return;
+    }
+
+    _timeout_handler.refresh(_cookie);
+    _next_sequence = 0;
+    _step = Step::RequestItem;
+    _retries_done = 0;
+    _expected_count = _mission_count;
+    request_item();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_item_int(
+    const mavlink_message_t& message)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _timeout_handler.refresh(_cookie);
+
+    mavlink_mission_item_int_t item_int;
+    mavlink_msg_mission_item_int_decode(&message, &item_int);
+
+    _items.push_back(ItemInt{
+        item_int.seq,
+        item_int.frame,
+        item_int.command,
+        item_int.current,
+        item_int.autocontinue,
+        item_int.param1,
+        item_int.param2,
+        item_int.param3,
+        item_int.param4,
+        item_int.x,
+        item_int.y,
+        item_int.z,
+        item_int.mission_type});
+
+    if (_next_sequence + 1 == _expected_count) {
+        _timeout_handler.remove(_cookie);
+        send_ack_and_finish();
+
+    } else {
+        _next_sequence = item_int.seq + 1;
+        _retries_done = 0;
+        request_item();
+    }
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::process_timeout()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    if (_retries_done >= retries) {
+        callback_and_reset(Result::Timeout);
+        return;
+    }
+
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    request_item();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::callback_and_reset(Result result)
 {
     if (_callback) {
         _callback(result, _items);

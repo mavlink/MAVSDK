@@ -153,6 +153,51 @@ public:
         unsigned _retries_done{0};
     };
 
+    class ReceiveIncomingMission : public WorkItem {
+    public:
+        explicit ReceiveIncomingMission(
+            Sender& sender,
+            MAVLinkMessageHandler& message_handler,
+            TimeoutHandler& timeout_handler,
+            uint8_t type,
+            double timeout_s,
+            ResultAndItemsCallback callback,
+            uint32_t mission_count,
+            uint8_t target_component);
+        virtual ~ReceiveIncomingMission();
+
+        void start() override;
+        void cancel() override;
+
+        ReceiveIncomingMission(const ReceiveIncomingMission&) = delete;
+        ReceiveIncomingMission(ReceiveIncomingMission&&) = delete;
+        ReceiveIncomingMission& operator=(const ReceiveIncomingMission&) = delete;
+        ReceiveIncomingMission& operator=(ReceiveIncomingMission&&) = delete;
+
+    private:
+        void request_item();
+        void send_ack_and_finish();
+        void send_cancel_and_finish();
+        void process_mission_count();
+        void process_mission_item_int(const mavlink_message_t& message);
+        void process_timeout();
+        void callback_and_reset(Result result);
+
+        enum class Step {
+            RequestList,
+            RequestItem,
+        } _step{Step::RequestList};
+
+        std::vector<ItemInt> _items{};
+        ResultAndItemsCallback _callback{nullptr};
+        void* _cookie{nullptr};
+        std::size_t _next_sequence{0};
+        std::size_t _expected_count{0};
+        unsigned _retries_done{0};
+        uint32_t _mission_count{0};
+        uint8_t _target_component{0};
+    };
+
     class DownloadWorkItem : public WorkItem {
     public:
         explicit DownloadWorkItem(
@@ -273,6 +318,13 @@ public:
     upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);
 
     std::weak_ptr<WorkItem> download_items_async(uint8_t type, ResultAndItemsCallback callback);
+
+    // Server-side
+    std::weak_ptr<WorkItem> receive_incoming_items_async(
+        uint8_t type,
+        uint32_t mission_count,
+        uint8_t target_component,
+        ResultAndItemsCallback callback);
 
     void clear_items_async(uint8_t type, ResultCallback callback);
 
