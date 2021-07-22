@@ -211,11 +211,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
 {
     mavlink_message_t message;
     mavlink_msg_mission_count_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _items.size(),
         _type);
 
@@ -232,11 +232,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         MAV_MISSION_OPERATION_CANCELLED,
         _type);
 
@@ -279,11 +279,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
 
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         MAV_MISSION_UNSUPPORTED,
         _type);
 
@@ -341,11 +341,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
 
     mavlink_message_t message;
     mavlink_msg_mission_item_int_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _next_sequence,
         _items[_next_sequence].frame,
         _items[_next_sequence].command,
@@ -512,11 +512,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_list()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_list_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _type);
 
     if (!_sender.send_message(message)) {
@@ -532,11 +532,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_int_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _next_sequence,
         _type);
 
@@ -553,11 +553,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         MAV_MISSION_ACCEPTED,
         _type);
 
@@ -574,11 +574,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         MAV_MISSION_OPERATION_CANCELLED,
         _type);
 
@@ -728,11 +728,11 @@ void MAVLinkMissionTransfer::ClearWorkItem::send_clear()
 {
     mavlink_message_t message;
     mavlink_msg_mission_clear_all_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _type);
 
     if (!_sender.send_message(message)) {
@@ -880,11 +880,11 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_set_current_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _current);
 
     if (!_sender.send_message(message)) {

@@ -18,7 +18,7 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
-    Sender(parent.own_address, _target_address),
+    Sender(),
     _parent(parent),
     _params(*this),
     _send_commands(*this),
