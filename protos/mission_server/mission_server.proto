@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package mavsdk.rpc.mission_server;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.mission_server";
+option java_outer_classname = "MissionServerProto";
+
+// Enable waypoint missions.
+service MissionService {
+    /*
+     * Subscribe to when a new mission is uploaded (asynchronous).
+     */
+    rpc SubscribeIncomingMission(SubscribeIncomingMissionRequest) returns(stream IncomingMissionResponse) {}
+}
+
+message SubscribeIncomingMissionRequest {}
+message IncomingMissionResponse {
+    MissionResult mission_result = 1;
+    MissionPlan mission_plan = 2; // The mission plan
+}
+
+/*
+ * Type representing a mission item.
+ *
+ * A MissionItem can contain a position and/or actions.
+ * Mission items are building blocks to assemble a mission,
+ * which can be sent to (or received from) a system.
+ * They cannot be used independently.
+ */
+message MissionItem {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0000001]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0000001]; // Longitude in degrees (range: -180 to +180)
+    float relative_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
+    float speed_m_s = 4 [(mavsdk.options.default_value)="NaN"]; // Speed to use after this mission item (in metres/second)
+    bool is_fly_through = 5 [(mavsdk.options.default_value)="false"]; // True will make the drone fly through without stopping, while false will make the drone stop on the waypoint
+    float gimbal_pitch_deg = 6 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0001]; // Gimbal pitch (in degrees)
+    float gimbal_yaw_deg = 7 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0001]; // Gimbal yaw (in degrees)
+    CameraAction camera_action = 8; // Camera action to trigger at this mission item
+    float loiter_time_s = 9 [(mavsdk.options.default_value)="NaN"]; // Loiter time (in seconds)
+    double camera_photo_interval_s = 10 [(mavsdk.options.default_value)="1.0"]; // Camera photo interval to use after this mission item (in seconds)
+    float acceptance_radius_m = 11 [(mavsdk.options.default_value)="NaN"]; // Radius for completing a mission item (in metres)
+
+    // Possible camera actions at a mission item.
+    enum CameraAction {
+        CAMERA_ACTION_NONE = 0; // No action
+        CAMERA_ACTION_TAKE_PHOTO = 1; // Take a single photo
+        CAMERA_ACTION_START_PHOTO_INTERVAL = 2; // Start capturing photos at regular intervals
+        CAMERA_ACTION_STOP_PHOTO_INTERVAL = 3; // Stop capturing photos at regular intervals
+        CAMERA_ACTION_START_VIDEO = 4; // Start capturing video
+        CAMERA_ACTION_STOP_VIDEO = 5; // Stop capturing video
+    }
+}
+
+// Mission plan type
+message MissionPlan {
+    repeated MissionItem mission_items = 1; // The mission items
+}
+
+// Mission progress type.
+message MissionProgress {
+    int32 current = 1; // Current mission item index (0-based), if equal to total, the mission is finished
+    int32 total = 2; // Total number of mission items
+}
+
+// Result type.
+message MissionResult {
+    // Possible results returned for action requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_ERROR = 2; // Error
+        RESULT_TOO_MANY_MISSION_ITEMS = 3; // Too many mission items in the mission
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_TIMEOUT = 5; // Request timed out
+        RESULT_INVALID_ARGUMENT = 6; // Invalid argument
+        RESULT_UNSUPPORTED = 7; // Mission downloaded from the system is not supported
+        RESULT_NO_MISSION_AVAILABLE = 8; // No mission available on the system
+        RESULT_UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
+        RESULT_TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
+        RESULT_NO_SYSTEM = 13; // No system connected
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
