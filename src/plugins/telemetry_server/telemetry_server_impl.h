@@ -106,10 +106,6 @@ public:
 
     TelemetryServer::Result publish_unix_epoch_time(uint64_t time_us);
 
-    void get_gps_global_origin_async(const TelemetryServer::GetGpsGlobalOriginCallback callback);
-
-    std::pair<TelemetryServer::Result, TelemetryServer::GpsGlobalOrigin> get_gps_global_origin();
-
 private:
     std::chrono::time_point<std::chrono::steady_clock> _start_time;
 

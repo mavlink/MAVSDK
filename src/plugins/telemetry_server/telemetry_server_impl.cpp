@@ -18,7 +18,27 @@ TelemetryServerImpl::~TelemetryServerImpl()
     _parent->unregister_plugin(this);
 }
 
-void TelemetryServerImpl::init() {}
+void TelemetryServerImpl::init()
+{
+    _parent->register_mavlink_command_handler(
+        MAV_CMD_SET_MESSAGE_INTERVAL,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            // TO-DO handle mssage #245 and #33
+            mavlink_message_t msg;
+            mavlink_msg_command_ack_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                &msg,
+                command.command,
+                MAV_RESULT::MAV_RESULT_ACCEPTED,
+                100,
+                0,
+                command.origin_system_id,
+                command.origin_component_id);
+            return msg;
+        },
+        this);
+}
 
 void TelemetryServerImpl::deinit() {}
 
@@ -355,21 +375,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_unix_epoch_time(uint64_t ti
 {
     UNUSED(time_us);
 
-    // TODO :)
-    return {};
-}
-
-void TelemetryServerImpl::get_gps_global_origin_async(
-    const TelemetryServer::GetGpsGlobalOriginCallback callback)
-{
-    UNUSED(callback);
-
-    // TODO :)
-}
-
-std::pair<TelemetryServer::Result, TelemetryServer::GpsGlobalOrigin>
-TelemetryServerImpl::get_gps_global_origin()
-{
     // TODO :)
     return {};
 }
