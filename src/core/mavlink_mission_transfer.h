@@ -16,14 +16,12 @@ namespace mavsdk {
 
 class Sender {
 public:
-    Sender(MAVLinkAddress& new_own_address, MAVLinkAddress& new_target_address) :
-        own_address(new_own_address),
-        target_address(new_target_address)
-    {}
+    Sender() = default;
     virtual ~Sender() = default;
     virtual bool send_message(mavlink_message_t& message) = 0;
-    MAVLinkAddress& own_address;
-    MAVLinkAddress& target_address;
+    virtual uint8_t get_own_system_id() const = 0;
+    virtual uint8_t get_own_component_id() const = 0;
+    virtual uint8_t get_system_id() const = 0;
 };
 
 class MAVLinkMissionTransfer {

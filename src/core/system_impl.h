@@ -121,12 +121,12 @@ public:
     bool has_camera(int camera_id = -1) const;
     bool has_gimbal() const;
 
-    uint8_t get_system_id() const;
+    uint8_t get_system_id() const override;
 
     void set_system_id(uint8_t system_id);
 
-    uint8_t get_own_system_id() const;
-    uint8_t get_own_component_id() const;
+    uint8_t get_own_system_id() const override;
+    uint8_t get_own_component_id() const override;
     uint8_t get_own_mav_type() const;
 
     bool is_armed() const { return _armed; }
