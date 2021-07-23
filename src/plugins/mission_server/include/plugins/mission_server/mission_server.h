@@ -58,51 +58,25 @@ public:
     ~MissionServer();
 
     /**
-     * @brief Type representing a mission item.
-     *
-     * A MissionItem can contain a position and/or actions.
-     * Mission items are building blocks to assemble a mission,
-     * which can be sent to (or received from) a system.
-     * They cannot be used independently.
+     * @brief Mission item exactly identical to MAVLink MISSION_ITEM_INT.
      */
     struct MissionItem {
-        /**
-         * @brief Possible camera actions at a mission item.
-         */
-        enum class CameraAction {
-            None, /**< @brief No action. */
-            TakePhoto, /**< @brief Take a single photo. */
-            StartPhotoInterval, /**< @brief Start capturing photos at regular intervals. */
-            StopPhotoInterval, /**< @brief Stop capturing photos at regular intervals. */
-            StartVideo, /**< @brief Start capturing video. */
-            StopVideo, /**< @brief Stop capturing video. */
-        };
-
-        /**
-         * @brief Stream operator to print information about a `MissionServer::CameraAction`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream& operator<<(
-            std::ostream& str, MissionServer::MissionItem::CameraAction const& camera_action);
-
-        double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
-        double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
-        float relative_altitude_m{
-            float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
-        float speed_m_s{
-            float(NAN)}; /**< @brief Speed to use after this mission item (in metres/second) */
-        bool is_fly_through{
-            false}; /**< @brief True will make the drone fly through without stopping, while false
-                       will make the drone stop on the waypoint */
-        float gimbal_pitch_deg{float(NAN)}; /**< @brief Gimbal pitch (in degrees) */
-        float gimbal_yaw_deg{float(NAN)}; /**< @brief Gimbal yaw (in degrees) */
-        CameraAction camera_action{}; /**< @brief Camera action to trigger at this mission item */
-        float loiter_time_s{float(NAN)}; /**< @brief Loiter time (in seconds) */
-        double camera_photo_interval_s{
-            1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
-        float acceptance_radius_m{
-            float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
+        uint32_t seq{}; /**< @brief Sequence (uint16_t) */
+        uint32_t frame{}; /**< @brief The coordinate system of the waypoint (actually uint8_t) */
+        uint32_t command{}; /**< @brief The scheduled action for the waypoint (actually uint16_t) */
+        uint32_t current{}; /**< @brief false:0, true:1 (actually uint8_t) */
+        uint32_t autocontinue{}; /**< @brief Autocontinue to next waypoint (actually uint8_t) */
+        float param1{}; /**< @brief PARAM1, see MAV_CMD enum */
+        float param2{}; /**< @brief PARAM2, see MAV_CMD enum */
+        float param3{}; /**< @brief PARAM3, see MAV_CMD enum */
+        float param4{}; /**< @brief PARAM4, see MAV_CMD enum */
+        int32_t x{}; /**< @brief PARAM5 / local: x position in meters * 1e4, global: latitude in
+                        degrees * 10^7 */
+        int32_t y{}; /**< @brief PARAM6 / y position: local: x position in meters * 1e4, global:
+                        longitude in degrees *10^7 */
+        float z{}; /**< @brief PARAM7 / local: Z coordinate, global: altitude (relative or absolute,
+                      depending on frame) */
+        uint32_t mission_type{}; /**< @brief Mission type (actually uint8_t) */
     };
 
     /**
@@ -216,6 +190,59 @@ public:
      * @return One MissionPlan update.
      */
     MissionPlan incoming_mission() const;
+
+    /**
+     * @brief Callback type for subscribe_current_item_changed.
+     */
+
+    using CurrentItemChangedCallback = std::function<void(MissionItem)>;
+
+    /**
+     * @brief Subscribe to when a new current item is set
+     */
+    void subscribe_current_item_changed(CurrentItemChangedCallback callback);
+
+    /**
+     * @brief Poll for 'MissionItem' (blocking).
+     *
+     * @return One MissionItem update.
+     */
+    MissionItem current_item_changed() const;
+
+    /**
+     * @brief Set Current item as completed
+     *
+     * This function is non-blocking. See 'set_current_item_complete' for the blocking counterpart.
+     */
+    void set_current_item_complete_async(const ResultCallback callback);
+
+    /**
+     * @brief Set Current item as completed
+     *
+     * This function is blocking. See 'set_current_item_complete_async' for the non-blocking
+     * counterpart.
+     *
+     * @return Result of request.
+     */
+    void set_current_item_complete() const;
+
+    /**
+     * @brief Callback type for subscribe_clear_all.
+     */
+
+    using ClearAllCallback = std::function<void(uint32_t)>;
+
+    /**
+     * @brief Subscribe when a MISSION_CLEAR_ALL is received
+     */
+    void subscribe_clear_all(ClearAllCallback callback);
+
+    /**
+     * @brief Poll for 'uint32_t' (blocking).
+     *
+     * @return One uint32_t update.
+     */
+    uint32_t clear_all() const;
 
     /**
      * @brief Copy constructor.

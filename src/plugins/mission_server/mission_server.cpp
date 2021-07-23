@@ -36,65 +36,66 @@ MissionServer::MissionPlan MissionServer::incoming_mission() const
     return _impl->incoming_mission();
 }
 
-std::ostream&
-operator<<(std::ostream& str, MissionServer::MissionItem::CameraAction const& camera_action)
+void MissionServer::subscribe_current_item_changed(CurrentItemChangedCallback callback)
 {
-    switch (camera_action) {
-        case MissionServer::MissionItem::CameraAction::None:
-            return str << "None";
-        case MissionServer::MissionItem::CameraAction::TakePhoto:
-            return str << "Take Photo";
-        case MissionServer::MissionItem::CameraAction::StartPhotoInterval:
-            return str << "Start Photo Interval";
-        case MissionServer::MissionItem::CameraAction::StopPhotoInterval:
-            return str << "Stop Photo Interval";
-        case MissionServer::MissionItem::CameraAction::StartVideo:
-            return str << "Start Video";
-        case MissionServer::MissionItem::CameraAction::StopVideo:
-            return str << "Stop Video";
-        default:
-            return str << "Unknown";
-    }
+    _impl->subscribe_current_item_changed(callback);
 }
+
+MissionServer::MissionItem MissionServer::current_item_changed() const
+{
+    return _impl->current_item_changed();
+}
+
+void MissionServer::set_current_item_complete_async(const ResultCallback callback)
+{
+    _impl->set_current_item_complete_async(callback);
+}
+
+void MissionServer::set_current_item_complete() const
+{
+    _impl->set_current_item_complete();
+}
+
+void MissionServer::subscribe_clear_all(ClearAllCallback callback)
+{
+    _impl->subscribe_clear_all(callback);
+}
+
+uint32_t MissionServer::clear_all() const
+{
+    return _impl->clear_all();
+}
+
 bool operator==(const MissionServer::MissionItem& lhs, const MissionServer::MissionItem& rhs)
 {
-    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            (std::fabs(rhs.latitude_deg - lhs.latitude_deg) < 1e-07)) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            (std::fabs(rhs.longitude_deg - lhs.longitude_deg) < 1e-07)) &&
-           ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
-            rhs.relative_altitude_m == lhs.relative_altitude_m) &&
-           ((std::isnan(rhs.speed_m_s) && std::isnan(lhs.speed_m_s)) ||
-            rhs.speed_m_s == lhs.speed_m_s) &&
-           (rhs.is_fly_through == lhs.is_fly_through) &&
-           ((std::isnan(rhs.gimbal_pitch_deg) && std::isnan(lhs.gimbal_pitch_deg)) ||
-            rhs.gimbal_pitch_deg == lhs.gimbal_pitch_deg) &&
-           ((std::isnan(rhs.gimbal_yaw_deg) && std::isnan(lhs.gimbal_yaw_deg)) ||
-            rhs.gimbal_yaw_deg == lhs.gimbal_yaw_deg) &&
-           (rhs.camera_action == lhs.camera_action) &&
-           ((std::isnan(rhs.loiter_time_s) && std::isnan(lhs.loiter_time_s)) ||
-            rhs.loiter_time_s == lhs.loiter_time_s) &&
-           ((std::isnan(rhs.camera_photo_interval_s) && std::isnan(lhs.camera_photo_interval_s)) ||
-            rhs.camera_photo_interval_s == lhs.camera_photo_interval_s) &&
-           ((std::isnan(rhs.acceptance_radius_m) && std::isnan(lhs.acceptance_radius_m)) ||
-            rhs.acceptance_radius_m == lhs.acceptance_radius_m);
+    return (rhs.seq == lhs.seq) && (rhs.frame == lhs.frame) && (rhs.command == lhs.command) &&
+           (rhs.current == lhs.current) && (rhs.autocontinue == lhs.autocontinue) &&
+           ((std::isnan(rhs.param1) && std::isnan(lhs.param1)) || rhs.param1 == lhs.param1) &&
+           ((std::isnan(rhs.param2) && std::isnan(lhs.param2)) || rhs.param2 == lhs.param2) &&
+           ((std::isnan(rhs.param3) && std::isnan(lhs.param3)) || rhs.param3 == lhs.param3) &&
+           ((std::isnan(rhs.param4) && std::isnan(lhs.param4)) || rhs.param4 == lhs.param4) &&
+           (rhs.x == lhs.x) && (rhs.y == lhs.y) &&
+           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
+           (rhs.mission_type == lhs.mission_type);
 }
 
 std::ostream& operator<<(std::ostream& str, MissionServer::MissionItem const& mission_item)
 {
     str << std::setprecision(15);
     str << "mission_item:" << '\n' << "{\n";
-    str << "    latitude_deg: " << mission_item.latitude_deg << '\n';
-    str << "    longitude_deg: " << mission_item.longitude_deg << '\n';
-    str << "    relative_altitude_m: " << mission_item.relative_altitude_m << '\n';
-    str << "    speed_m_s: " << mission_item.speed_m_s << '\n';
-    str << "    is_fly_through: " << mission_item.is_fly_through << '\n';
-    str << "    gimbal_pitch_deg: " << mission_item.gimbal_pitch_deg << '\n';
-    str << "    gimbal_yaw_deg: " << mission_item.gimbal_yaw_deg << '\n';
-    str << "    camera_action: " << mission_item.camera_action << '\n';
-    str << "    loiter_time_s: " << mission_item.loiter_time_s << '\n';
-    str << "    camera_photo_interval_s: " << mission_item.camera_photo_interval_s << '\n';
-    str << "    acceptance_radius_m: " << mission_item.acceptance_radius_m << '\n';
+    str << "    seq: " << mission_item.seq << '\n';
+    str << "    frame: " << mission_item.frame << '\n';
+    str << "    command: " << mission_item.command << '\n';
+    str << "    current: " << mission_item.current << '\n';
+    str << "    autocontinue: " << mission_item.autocontinue << '\n';
+    str << "    param1: " << mission_item.param1 << '\n';
+    str << "    param2: " << mission_item.param2 << '\n';
+    str << "    param3: " << mission_item.param3 << '\n';
+    str << "    param4: " << mission_item.param4 << '\n';
+    str << "    x: " << mission_item.x << '\n';
+    str << "    y: " << mission_item.y << '\n';
+    str << "    z: " << mission_item.z << '\n';
+    str << "    mission_type: " << mission_item.mission_type << '\n';
     str << '}';
     return str;
 }

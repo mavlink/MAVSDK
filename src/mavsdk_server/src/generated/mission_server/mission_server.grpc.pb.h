@@ -50,6 +50,37 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::IncomingMissionResponse>> PrepareAsyncSubscribeIncomingMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::IncomingMissionResponse>>(PrepareAsyncSubscribeIncomingMissionRaw(context, request, cq));
     }
+    //
+    // Subscribe to when a new current item is set
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>> SubscribeCurrentItemChanged(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>>(SubscribeCurrentItemChangedRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>> AsyncSubscribeCurrentItemChanged(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>>(AsyncSubscribeCurrentItemChangedRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>> PrepareAsyncSubscribeCurrentItemChanged(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>>(PrepareAsyncSubscribeCurrentItemChangedRaw(context, request, cq));
+    }
+    //
+    //  Set Current item as completed
+    virtual ::grpc::Status SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>> AsyncSetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>>(AsyncSetCurrentItemCompleteRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>> PrepareAsyncSetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>>(PrepareAsyncSetCurrentItemCompleteRaw(context, request, cq));
+    }
+    //
+    //  Subscribe when a MISSION_CLEAR_ALL is received
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>> SubscribeClearAll(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>>(SubscribeClearAllRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>> AsyncSubscribeClearAll(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>>(AsyncSubscribeClearAllRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>> PrepareAsyncSubscribeClearAll(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>>(PrepareAsyncSubscribeClearAllRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
@@ -59,6 +90,28 @@ class MissionService final {
       virtual void SubscribeIncomingMission(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* reactor) = 0;
       #else
       virtual void SubscribeIncomingMission(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* reactor) = 0;
+      #endif
+      //
+      // Subscribe to when a new current item is set
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeCurrentItemChanged(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* reactor) = 0;
+      #else
+      virtual void SubscribeCurrentItemChanged(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* reactor) = 0;
+      #endif
+      //
+      //  Set Current item as completed
+      virtual void SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      //
+      //  Subscribe when a MISSION_CLEAR_ALL is received
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void SubscribeClearAll(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_server::ClearAllResponse>* reactor) = 0;
+      #else
+      virtual void SubscribeClearAll(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_server::ClearAllResponse>* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -72,6 +125,14 @@ class MissionService final {
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* SubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* AsyncSubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* PrepareAsyncSubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* SubscribeCurrentItemChangedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* AsyncSubscribeCurrentItemChangedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* PrepareAsyncSubscribeCurrentItemChangedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* AsyncSetCurrentItemCompleteRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* PrepareAsyncSetCurrentItemCompleteRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>* SubscribeClearAllRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>* AsyncSubscribeClearAllRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_server::ClearAllResponse>* PrepareAsyncSubscribeClearAllRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -85,6 +146,31 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::IncomingMissionResponse>> PrepareAsyncSubscribeIncomingMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::IncomingMissionResponse>>(PrepareAsyncSubscribeIncomingMissionRaw(context, request, cq));
     }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>> SubscribeCurrentItemChanged(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>>(SubscribeCurrentItemChangedRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>> AsyncSubscribeCurrentItemChanged(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>>(AsyncSubscribeCurrentItemChangedRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>> PrepareAsyncSubscribeCurrentItemChanged(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>>(PrepareAsyncSubscribeCurrentItemChangedRaw(context, request, cq));
+    }
+    ::grpc::Status SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>> AsyncSetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>>(AsyncSetCurrentItemCompleteRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>> PrepareAsyncSetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>>(PrepareAsyncSetCurrentItemCompleteRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission_server::ClearAllResponse>> SubscribeClearAll(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission_server::ClearAllResponse>>(SubscribeClearAllRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::ClearAllResponse>> AsyncSubscribeClearAll(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::ClearAllResponse>>(AsyncSubscribeClearAllRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::ClearAllResponse>> PrepareAsyncSubscribeClearAll(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::ClearAllResponse>>(PrepareAsyncSubscribeClearAllRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
@@ -92,6 +178,22 @@ class MissionService final {
       void SubscribeIncomingMission(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* reactor) override;
       #else
       void SubscribeIncomingMission(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeCurrentItemChanged(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* reactor) override;
+      #else
+      void SubscribeCurrentItemChanged(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* reactor) override;
+      #endif
+      void SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void SetCurrentItemComplete(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void SubscribeClearAll(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_server::ClearAllResponse>* reactor) override;
+      #else
+      void SubscribeClearAll(::grpc::ClientContext* context, ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_server::ClearAllResponse>* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -107,7 +209,18 @@ class MissionService final {
     ::grpc::ClientReader< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* SubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* AsyncSubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* PrepareAsyncSubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* SubscribeCurrentItemChangedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* AsyncSubscribeCurrentItemChangedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* PrepareAsyncSubscribeCurrentItemChangedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* AsyncSetCurrentItemCompleteRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* PrepareAsyncSetCurrentItemCompleteRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::mission_server::ClearAllResponse>* SubscribeClearAllRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::ClearAllResponse>* AsyncSubscribeClearAllRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission_server::ClearAllResponse>* PrepareAsyncSubscribeClearAllRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeIncomingMission_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeCurrentItemChanged_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetCurrentItemComplete_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeClearAll_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -118,6 +231,15 @@ class MissionService final {
     //
     // Subscribe to when a new mission is uploaded (asynchronous).
     virtual ::grpc::Status SubscribeIncomingMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* writer);
+    //
+    // Subscribe to when a new current item is set
+    virtual ::grpc::Status SubscribeCurrentItemChanged(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* writer);
+    //
+    //  Set Current item as completed
+    virtual ::grpc::Status SetCurrentItemComplete(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response);
+    //
+    //  Subscribe when a MISSION_CLEAR_ALL is received
+    virtual ::grpc::Status SubscribeClearAll(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_SubscribeIncomingMission : public BaseClass {
@@ -139,7 +261,67 @@ class MissionService final {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SubscribeIncomingMission<Service > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeCurrentItemChanged : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeCurrentItemChanged() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_SubscribeCurrentItemChanged() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCurrentItemChanged(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeCurrentItemChanged(::grpc::ServerContext* context, ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SetCurrentItemComplete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetCurrentItemComplete() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_SetCurrentItemComplete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetCurrentItemComplete(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetCurrentItemComplete(::grpc::ServerContext* context, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeClearAll : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeClearAll() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_SubscribeClearAll() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeClearAll(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeClearAll(::grpc::ServerContext* context, ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(3, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SubscribeIncomingMission<WithAsyncMethod_SubscribeCurrentItemChanged<WithAsyncMethod_SetCurrentItemComplete<WithAsyncMethod_SubscribeClearAll<Service > > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeIncomingMission : public BaseClass {
    private:
@@ -178,11 +360,134 @@ class MissionService final {
     #endif
       { return nullptr; }
   };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_SubscribeCurrentItemChanged : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_SubscribeCurrentItemChanged() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(1,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest, ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* request) { return this->SubscribeCurrentItemChanged(context, request); }));
+    }
+    ~ExperimentalWithCallbackMethod_SubscribeCurrentItemChanged() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCurrentItemChanged(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* SubscribeCurrentItemChanged(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* SubscribeCurrentItemChanged(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_SetCurrentItemComplete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_SetCurrentItemComplete() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* request, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* response) { return this->SetCurrentItemComplete(context, request, response); }));}
+    void SetMessageAllocatorFor_SetCurrentItemComplete(
+        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
+    #endif
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_SetCurrentItemComplete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetCurrentItemComplete(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetCurrentItemComplete(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetCurrentItemComplete(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_SubscribeClearAll : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_SubscribeClearAll() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(3,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission_server::SubscribeClearAllRequest, ::mavsdk::rpc::mission_server::ClearAllResponse>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* request) { return this->SubscribeClearAll(context, request); }));
+    }
+    ~ExperimentalWithCallbackMethod_SubscribeClearAll() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeClearAll(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::mission_server::ClearAllResponse>* SubscribeClearAll(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::mission_server::ClearAllResponse>* SubscribeClearAll(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/)
+    #endif
+      { return nullptr; }
+  };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SubscribeIncomingMission<Service > CallbackService;
+  typedef ExperimentalWithCallbackMethod_SubscribeIncomingMission<ExperimentalWithCallbackMethod_SubscribeCurrentItemChanged<ExperimentalWithCallbackMethod_SetCurrentItemComplete<ExperimentalWithCallbackMethod_SubscribeClearAll<Service > > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_SubscribeIncomingMission<Service > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_SubscribeIncomingMission<ExperimentalWithCallbackMethod_SubscribeCurrentItemChanged<ExperimentalWithCallbackMethod_SetCurrentItemComplete<ExperimentalWithCallbackMethod_SubscribeClearAll<Service > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeIncomingMission : public BaseClass {
    private:
@@ -196,6 +501,57 @@ class MissionService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SubscribeIncomingMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::IncomingMissionResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeCurrentItemChanged : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeCurrentItemChanged() {
+      ::grpc::Service::MarkMethodGeneric(1);
+    }
+    ~WithGenericMethod_SubscribeCurrentItemChanged() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCurrentItemChanged(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetCurrentItemComplete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetCurrentItemComplete() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_SetCurrentItemComplete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetCurrentItemComplete(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeClearAll : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeClearAll() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_SubscribeClearAll() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeClearAll(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -218,6 +574,66 @@ class MissionService final {
     }
     void RequestSubscribeIncomingMission(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeCurrentItemChanged : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeCurrentItemChanged() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_SubscribeCurrentItemChanged() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCurrentItemChanged(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeCurrentItemChanged(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetCurrentItemComplete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetCurrentItemComplete() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_SetCurrentItemComplete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetCurrentItemComplete(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetCurrentItemComplete(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeClearAll : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeClearAll() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_SubscribeClearAll() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeClearAll(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeClearAll(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(3, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -258,7 +674,148 @@ class MissionService final {
     #endif
       { return nullptr; }
   };
-  typedef Service StreamedUnaryService;
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_SubscribeCurrentItemChanged : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_SubscribeCurrentItemChanged() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCurrentItemChanged(context, request); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_SubscribeCurrentItemChanged() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCurrentItemChanged(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCurrentItemChanged(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCurrentItemChanged(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_SetCurrentItemComplete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_SetCurrentItemComplete() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetCurrentItemComplete(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_SetCurrentItemComplete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetCurrentItemComplete(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* SetCurrentItemComplete(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* SetCurrentItemComplete(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_SubscribeClearAll : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_SubscribeClearAll() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const::grpc::ByteBuffer* request) { return this->SubscribeClearAll(context, request); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_SubscribeClearAll() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeClearAll(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeClearAll(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #else
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeClearAll(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetCurrentItemComplete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetCurrentItemComplete() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* streamer) {
+                       return this->StreamedSetCurrentItemComplete(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetCurrentItemComplete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetCurrentItemComplete(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest* /*request*/, ::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetCurrentItemComplete(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_server::SetCurrentItemCompleteRequest,::mavsdk::rpc::mission_server::SetCurrentItemCompleteResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetCurrentItemComplete<Service > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeIncomingMission : public BaseClass {
    private:
@@ -286,8 +843,62 @@ class MissionService final {
     // replace default version of method with split streamed
     virtual ::grpc::Status StreamedSubscribeIncomingMission(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission_server::SubscribeIncomingMissionRequest,::mavsdk::rpc::mission_server::IncomingMissionResponse>* server_split_streamer) = 0;
   };
-  typedef WithSplitStreamingMethod_SubscribeIncomingMission<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_SubscribeIncomingMission<Service > StreamedService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeCurrentItemChanged : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeCurrentItemChanged() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest, ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest, ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* streamer) {
+                       return this->StreamedSubscribeCurrentItemChanged(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeCurrentItemChanged() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeCurrentItemChanged(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeCurrentItemChanged(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest,::mavsdk::rpc::mission_server::CurrentItemChangedResponse>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeClearAll : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeClearAll() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::mission_server::SubscribeClearAllRequest, ::mavsdk::rpc::mission_server::ClearAllResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::mission_server::SubscribeClearAllRequest, ::mavsdk::rpc::mission_server::ClearAllResponse>* streamer) {
+                       return this->StreamedSubscribeClearAll(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeClearAll() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeClearAll(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_server::SubscribeClearAllRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission_server::ClearAllResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeClearAll(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission_server::SubscribeClearAllRequest,::mavsdk::rpc::mission_server::ClearAllResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_SubscribeIncomingMission<WithSplitStreamingMethod_SubscribeCurrentItemChanged<WithSplitStreamingMethod_SubscribeClearAll<Service > > > SplitStreamedService;
+  typedef WithSplitStreamingMethod_SubscribeIncomingMission<WithSplitStreamingMethod_SubscribeCurrentItemChanged<WithStreamedUnaryMethod_SetCurrentItemComplete<WithSplitStreamingMethod_SubscribeClearAll<Service > > > > StreamedService;
 };
 
 }  // namespace mission_server

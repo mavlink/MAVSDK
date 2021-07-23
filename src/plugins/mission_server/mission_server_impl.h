@@ -18,15 +18,27 @@ public:
     void disable() override;
 
     void subscribe_incoming_mission(MissionServer::IncomingMissionCallback callback);
+    void subscribe_current_item_changed(MissionServer::CurrentItemChangedCallback callback);
+    void subscribe_clear_all(MissionServer::ClearAllCallback callback);
+    void set_current_item_complete_async(const MissionServer::ResultCallback callback);
+    void set_current_item_complete() const;
 
     MissionServer::MissionPlan incoming_mission() const;
+    MissionServer::MissionItem current_item_changed() const;
+    uint32_t clear_all() const;
 
 private:
     MissionServer::IncomingMissionCallback _incoming_mission_callback;
+    MissionServer::CurrentItemChangedCallback _current_item_changed_callback;
+    MissionServer::ClearAllCallback _clear_all_callback;
     std::thread _thread_mission;
     std::atomic<int> _target_component;
     std::atomic<bool> _do_upload;
     std::atomic<int> _mission_count;
+    std::atomic<bool> _mission_completed;
+
+    std::vector<MAVLinkMissionTransfer::ItemInt> _current_mission;
+    uint32_t _current_seq;
 
     struct MissionData {
         mutable std::recursive_mutex mutex{};
@@ -50,6 +62,8 @@ private:
     convert_to_result_and_mission_items(
         MAVLinkMissionTransfer::Result result,
         const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
+
+    void set_current_seq(int32_t seq);
 
     bool _enable_return_to_launch_after_mission{false};
 

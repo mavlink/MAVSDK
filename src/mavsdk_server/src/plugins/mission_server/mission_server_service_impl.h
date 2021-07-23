@@ -39,78 +39,36 @@ public:
         response->set_allocated_mission_server_result(rpc_mission_server_result);
     }
 
-    static rpc::mission_server::MissionItem::CameraAction translateToRpcCameraAction(
-        const mavsdk::MissionServer::MissionItem::CameraAction& camera_action)
-    {
-        switch (camera_action) {
-            default:
-                LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
-            // FALLTHROUGH
-            case mavsdk::MissionServer::MissionItem::CameraAction::None:
-                return rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_NONE;
-            case mavsdk::MissionServer::MissionItem::CameraAction::TakePhoto:
-                return rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO;
-            case mavsdk::MissionServer::MissionItem::CameraAction::StartPhotoInterval:
-                return rpc::mission_server::
-                    MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL;
-            case mavsdk::MissionServer::MissionItem::CameraAction::StopPhotoInterval:
-                return rpc::mission_server::
-                    MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL;
-            case mavsdk::MissionServer::MissionItem::CameraAction::StartVideo:
-                return rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO;
-            case mavsdk::MissionServer::MissionItem::CameraAction::StopVideo:
-                return rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
-        }
-    }
-
-    static mavsdk::MissionServer::MissionItem::CameraAction
-    translateFromRpcCameraAction(const rpc::mission_server::MissionItem::CameraAction camera_action)
-    {
-        switch (camera_action) {
-            default:
-                LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
-            // FALLTHROUGH
-            case rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_NONE:
-                return mavsdk::MissionServer::MissionItem::CameraAction::None;
-            case rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO:
-                return mavsdk::MissionServer::MissionItem::CameraAction::TakePhoto;
-            case rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL:
-                return mavsdk::MissionServer::MissionItem::CameraAction::StartPhotoInterval;
-            case rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL:
-                return mavsdk::MissionServer::MissionItem::CameraAction::StopPhotoInterval;
-            case rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO:
-                return mavsdk::MissionServer::MissionItem::CameraAction::StartVideo;
-            case rpc::mission_server::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO:
-                return mavsdk::MissionServer::MissionItem::CameraAction::StopVideo;
-        }
-    }
-
     static std::unique_ptr<rpc::mission_server::MissionItem>
     translateToRpcMissionItem(const mavsdk::MissionServer::MissionItem& mission_item)
     {
         auto rpc_obj = std::make_unique<rpc::mission_server::MissionItem>();
 
-        rpc_obj->set_latitude_deg(mission_item.latitude_deg);
+        rpc_obj->set_seq(mission_item.seq);
 
-        rpc_obj->set_longitude_deg(mission_item.longitude_deg);
+        rpc_obj->set_frame(mission_item.frame);
 
-        rpc_obj->set_relative_altitude_m(mission_item.relative_altitude_m);
+        rpc_obj->set_command(mission_item.command);
 
-        rpc_obj->set_speed_m_s(mission_item.speed_m_s);
+        rpc_obj->set_current(mission_item.current);
 
-        rpc_obj->set_is_fly_through(mission_item.is_fly_through);
+        rpc_obj->set_autocontinue(mission_item.autocontinue);
 
-        rpc_obj->set_gimbal_pitch_deg(mission_item.gimbal_pitch_deg);
+        rpc_obj->set_param1(mission_item.param1);
 
-        rpc_obj->set_gimbal_yaw_deg(mission_item.gimbal_yaw_deg);
+        rpc_obj->set_param2(mission_item.param2);
 
-        rpc_obj->set_camera_action(translateToRpcCameraAction(mission_item.camera_action));
+        rpc_obj->set_param3(mission_item.param3);
 
-        rpc_obj->set_loiter_time_s(mission_item.loiter_time_s);
+        rpc_obj->set_param4(mission_item.param4);
 
-        rpc_obj->set_camera_photo_interval_s(mission_item.camera_photo_interval_s);
+        rpc_obj->set_x(mission_item.x);
 
-        rpc_obj->set_acceptance_radius_m(mission_item.acceptance_radius_m);
+        rpc_obj->set_y(mission_item.y);
+
+        rpc_obj->set_z(mission_item.z);
+
+        rpc_obj->set_mission_type(mission_item.mission_type);
 
         return rpc_obj;
     }
@@ -120,27 +78,31 @@ public:
     {
         mavsdk::MissionServer::MissionItem obj;
 
-        obj.latitude_deg = mission_item.latitude_deg();
+        obj.seq = mission_item.seq();
 
-        obj.longitude_deg = mission_item.longitude_deg();
+        obj.frame = mission_item.frame();
 
-        obj.relative_altitude_m = mission_item.relative_altitude_m();
+        obj.command = mission_item.command();
 
-        obj.speed_m_s = mission_item.speed_m_s();
+        obj.current = mission_item.current();
 
-        obj.is_fly_through = mission_item.is_fly_through();
+        obj.autocontinue = mission_item.autocontinue();
 
-        obj.gimbal_pitch_deg = mission_item.gimbal_pitch_deg();
+        obj.param1 = mission_item.param1();
 
-        obj.gimbal_yaw_deg = mission_item.gimbal_yaw_deg();
+        obj.param2 = mission_item.param2();
 
-        obj.camera_action = translateFromRpcCameraAction(mission_item.camera_action());
+        obj.param3 = mission_item.param3();
 
-        obj.loiter_time_s = mission_item.loiter_time_s();
+        obj.param4 = mission_item.param4();
 
-        obj.camera_photo_interval_s = mission_item.camera_photo_interval_s();
+        obj.x = mission_item.x();
 
-        obj.acceptance_radius_m = mission_item.acceptance_radius_m();
+        obj.y = mission_item.y();
+
+        obj.z = mission_item.z();
+
+        obj.mission_type = mission_item.mission_type();
 
         return obj;
     }
@@ -304,6 +266,101 @@ public:
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _lazy_plugin.maybe_plugin()->subscribe_incoming_mission(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeCurrentItemChanged(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::mission_server::SubscribeCurrentItemChangedRequest* /* request */,
+        grpc::ServerWriter<rpc::mission_server::CurrentItemChangedResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        _lazy_plugin.maybe_plugin()->subscribe_current_item_changed(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+                const mavsdk::MissionServer::MissionItem current_item_changed) {
+                rpc::mission_server::CurrentItemChangedResponse rpc_response;
+
+                rpc_response.set_allocated_mission_item(
+                    translateToRpcMissionItem(current_item_changed).release());
+
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _lazy_plugin.maybe_plugin()->subscribe_current_item_changed(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetCurrentItemComplete(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_server::SetCurrentItemCompleteRequest* /* request */,
+        rpc::mission_server::SetCurrentItemCompleteResponse* /* response */) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        _lazy_plugin.maybe_plugin()->set_current_item_complete();
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeClearAll(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::mission_server::SubscribeClearAllRequest* /* request */,
+        grpc::ServerWriter<rpc::mission_server::ClearAllResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        _lazy_plugin.maybe_plugin()->subscribe_clear_all(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+                const uint32_t clear_all) {
+                rpc::mission_server::ClearAllResponse rpc_response;
+
+                rpc_response.set_clear_type(clear_all);
+
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _lazy_plugin.maybe_plugin()->subscribe_clear_all(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
