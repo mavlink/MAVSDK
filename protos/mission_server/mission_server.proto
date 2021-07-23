@@ -13,6 +13,21 @@ service MissionService {
      * Subscribe to when a new mission is uploaded (asynchronous).
      */
     rpc SubscribeIncomingMission(SubscribeIncomingMissionRequest) returns(stream IncomingMissionResponse) {}
+
+    /*
+     * Subscribe to when a new current item is set
+     */
+    rpc SubscribeCurrentItemChanged(SubscribeCurrentItemChangedRequest) returns(stream CurrentItemChangedResponse) {}
+
+    /*
+     *  Set Current item as completed
+     */
+    rpc SetCurrentItemComplete(SetCurrentItemCompleteRequest) returns(SetCurrentItemCompleteResponse) {}
+
+    /*
+     *  Subscribe when a MISSION_CLEAR_ALL is received
+     */
+    rpc SubscribeClearAll(SubscribeClearAllRequest) returns(stream ClearAllResponse) {}
 }
 
 message SubscribeIncomingMissionRequest {}
@@ -21,36 +36,34 @@ message IncomingMissionResponse {
     MissionPlan mission_plan = 2; // The mission plan
 }
 
-/*
- * Type representing a mission item.
- *
- * A MissionItem can contain a position and/or actions.
- * Mission items are building blocks to assemble a mission,
- * which can be sent to (or received from) a system.
- * They cannot be used independently.
- */
-message MissionItem {
-    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0000001]; // Latitude in degrees (range: -90 to +90)
-    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0000001]; // Longitude in degrees (range: -180 to +180)
-    float relative_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
-    float speed_m_s = 4 [(mavsdk.options.default_value)="NaN"]; // Speed to use after this mission item (in metres/second)
-    bool is_fly_through = 5 [(mavsdk.options.default_value)="false"]; // True will make the drone fly through without stopping, while false will make the drone stop on the waypoint
-    float gimbal_pitch_deg = 6 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0001]; // Gimbal pitch (in degrees)
-    float gimbal_yaw_deg = 7 [(mavsdk.options.default_value)="NaN", (mavsdk.options.epsilon)=0.0001]; // Gimbal yaw (in degrees)
-    CameraAction camera_action = 8; // Camera action to trigger at this mission item
-    float loiter_time_s = 9 [(mavsdk.options.default_value)="NaN"]; // Loiter time (in seconds)
-    double camera_photo_interval_s = 10 [(mavsdk.options.default_value)="1.0"]; // Camera photo interval to use after this mission item (in seconds)
-    float acceptance_radius_m = 11 [(mavsdk.options.default_value)="NaN"]; // Radius for completing a mission item (in metres)
+message SubscribeCurrentItemChangedRequest {}
+message CurrentItemChangedResponse {
+    MissionItem mission_item = 1;
+}
 
-    // Possible camera actions at a mission item.
-    enum CameraAction {
-        CAMERA_ACTION_NONE = 0; // No action
-        CAMERA_ACTION_TAKE_PHOTO = 1; // Take a single photo
-        CAMERA_ACTION_START_PHOTO_INTERVAL = 2; // Start capturing photos at regular intervals
-        CAMERA_ACTION_STOP_PHOTO_INTERVAL = 3; // Stop capturing photos at regular intervals
-        CAMERA_ACTION_START_VIDEO = 4; // Start capturing video
-        CAMERA_ACTION_STOP_VIDEO = 5; // Stop capturing video
-    }
+message SubscribeClearAllRequest {}
+message ClearAllResponse {
+    uint32 clear_type = 1;
+}
+
+message SetCurrentItemCompleteRequest {}
+message SetCurrentItemCompleteResponse {}
+
+// Mission item exactly identical to MAVLink MISSION_ITEM_INT.
+message MissionItem {
+    uint32 seq = 1; // Sequence (uint16_t)
+    uint32 frame = 2; // The coordinate system of the waypoint (actually uint8_t)
+    uint32 command = 3; // The scheduled action for the waypoint (actually uint16_t)
+    uint32 current = 4; // false:0, true:1 (actually uint8_t)
+    uint32 autocontinue = 5; // Autocontinue to next waypoint (actually uint8_t)
+    float param1 = 6; // PARAM1, see MAV_CMD enum
+    float param2 = 7; // PARAM2, see MAV_CMD enum
+    float param3 = 8; // PARAM3, see MAV_CMD enum
+    float param4 = 9; // PARAM4, see MAV_CMD enum
+    int32 x = 10; // PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
+    int32 y = 11; // PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees *10^7
+    float z = 12; // PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame)
+    uint32 mission_type = 13; // Mission type (actually uint8_t)
 }
 
 // Mission plan type
