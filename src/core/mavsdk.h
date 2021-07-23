@@ -44,7 +44,7 @@ public:
     static constexpr int DEFAULT_SERIAL_BAUDRATE = 57600;
 
     /** @brief Default internal timeout in seconds. */
-    static constexpr double DEFAULT_TIMEOUT_S = 0.5;
+    static constexpr double DEFAULT_TIMEOUT_S = 1.0;
 
     /**
      * @brief Constructor.
