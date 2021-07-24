@@ -66,26 +66,23 @@ public:
         }
     };
 
-#ifdef ARDUPILOT
-#define COMMAND_LONG_PARAM_UNSET 0
-#else
-#define COMMAND_LONG_PARAM_UNSET NAN
-#endif
-
     struct CommandLong {
+        CommandLong() = delete;
+        explicit CommandLong(const SystemImpl& system_impl);
+
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
         uint16_t command{0};
         uint8_t confirmation = 0;
         struct Params {
-            float param1 = COMMAND_LONG_PARAM_UNSET;
-            float param2 = COMMAND_LONG_PARAM_UNSET;
-            float param3 = COMMAND_LONG_PARAM_UNSET;
-            float param4 = COMMAND_LONG_PARAM_UNSET;
-            float param5 = COMMAND_LONG_PARAM_UNSET;
-            float param6 = COMMAND_LONG_PARAM_UNSET;
-            float param7 = COMMAND_LONG_PARAM_UNSET;
-        } params{};
+            float param1;
+            float param2;
+            float param3;
+            float param4;
+            float param5;
+            float param6;
+            float param7;
+        } params;
 
         // TODO: rename to set_all
         static void set_as_reserved(Params& params, float reserved_value = NAN)

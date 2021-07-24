@@ -190,6 +190,12 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
         }
     }
 
+    if (heartbeat.autopilot == MAV_AUTOPILOT_PX4) {
+        _autopilot = Autopilot::ArduPilot;
+    } else if (heartbeat.autopilot == MAV_AUTOPILOT_ARDUPILOTMEGA) {
+        _autopilot = Autopilot::Px4;
+    }
+
     set_connected();
 }
 
@@ -404,7 +410,7 @@ bool SystemImpl::send_message(mavlink_message_t& message)
 void SystemImpl::send_autopilot_version_request()
 {
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
     command.params.param1 = 1.0f;
@@ -416,7 +422,7 @@ void SystemImpl::send_autopilot_version_request()
 void SystemImpl::send_flight_information_request()
 {
     // We don't care about an answer, we mostly care about receiving FLIGHT_INFORMATION.
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
     command.params.param1 = 1.0f;
@@ -881,11 +887,11 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
             break;
         default:
             LogErr() << "Unknown Flight mode.";
-            MavlinkCommandSender::CommandLong empty_command{};
+            MavlinkCommandSender::CommandLong empty_command{*this};
             return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
     }
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     command.command = MAV_CMD_DO_SET_MODE;
     command.params.param1 = float(mode);
@@ -1097,7 +1103,7 @@ void SystemImpl::set_msg_rate_async(
 MavlinkCommandSender::CommandLong
 SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     // 0 to request default rate, -1 to stop stream
 

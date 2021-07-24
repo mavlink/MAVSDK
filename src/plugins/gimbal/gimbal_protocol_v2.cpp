@@ -206,7 +206,7 @@ void GimbalProtocolV2::take_control_async(
     float own_sysid = _system_impl.get_own_system_id();
     float own_compid = _system_impl.get_own_component_id();
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{_system_impl};
 
     command.command = MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE;
     command.params.param1 =
@@ -241,7 +241,7 @@ Gimbal::Result GimbalProtocolV2::release_control()
 
 void GimbalProtocolV2::release_control_async(Gimbal::ResultCallback callback)
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{_system_impl};
 
     command.command = MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE;
     command.params.param1 = -3.0f; // sysid primary control

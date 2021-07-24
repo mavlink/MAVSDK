@@ -63,7 +63,7 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
     _state = State::GyroCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param1 = 1.0f; // Gyro
@@ -102,7 +102,7 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
     _state = State::AccelerometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
@@ -130,7 +130,7 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
     _state = State::MagnetometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param2 = 1.0f; // Mag
@@ -158,7 +158,7 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
     _state = State::AccelerometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 2.0f; // Board Level
@@ -186,7 +186,7 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
     _state = State::GimbalAccelerometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
@@ -218,7 +218,7 @@ Calibration::Result CalibrationImpl::cancel()
             break;
     }
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     // All params 0 signal cancellation of a calibration.
     MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);

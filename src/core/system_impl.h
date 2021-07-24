@@ -85,6 +85,8 @@ public:
 
     bool send_message(mavlink_message_t& message) override;
 
+    Autopilot autopilot() const override { return _autopilot; };
+
     static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
@@ -318,6 +320,8 @@ private:
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
     bool _always_connected{false};
+
+    std::atomic<Autopilot> _autopilot{Autopilot::Unknown};
 
     MavsdkImpl& _parent;
 
