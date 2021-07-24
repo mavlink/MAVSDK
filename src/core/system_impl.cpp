@@ -191,9 +191,9 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     }
 
     if (heartbeat.autopilot == MAV_AUTOPILOT_PX4) {
-        _autopilot = Autopilot::ArduPilot;
-    } else if (heartbeat.autopilot == MAV_AUTOPILOT_ARDUPILOTMEGA) {
         _autopilot = Autopilot::Px4;
+    } else if (heartbeat.autopilot == MAV_AUTOPILOT_ARDUPILOTMEGA) {
+        _autopilot = Autopilot::ArduPilot;
     }
 
     set_connected();
