@@ -257,18 +257,15 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
         mavlink_mission_request_t request;
         mavlink_msg_mission_request_decode(&request_message, &request);
 
-        mavlink_mission_request_int_t request_int{
-            .seq = request.seq,
-            .target_system = request.target_system,
-            .target_component = request.target_component,
-            .mission_type = request.mission_type};
-
         mavlink_message_t request_int_message;
-        mavlink_msg_mission_request_int_encode(
-            request_int.target_system,
-            request_int.target_component,
+        mavlink_msg_mission_request_int_pack(
+            request_message.sysid,
+            request_message.compid,
             &request_int_message,
-            &request_int);
+            request.target_system,
+            request.target_component,
+            request.seq,
+            request.mission_type);
 
         process_mission_request_int(request_int_message);
     } else {
