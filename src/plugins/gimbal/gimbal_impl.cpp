@@ -39,7 +39,7 @@ void GimbalImpl::enable()
     _parent->register_timeout_handler(
         [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.params.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
     command.target_component_id = 0; // any component

@@ -42,6 +42,7 @@ protected:
         ON_CALL(mock_sender, get_own_component_id())
             .WillByDefault(Return(own_address.component_id));
         ON_CALL(mock_sender, get_system_id()).WillByDefault(Return(target_address.system_id));
+        ON_CALL(mock_sender, autopilot()).WillByDefault(Return(Sender::Autopilot::Px4));
     }
 
     MockSender mock_sender;

@@ -11,7 +11,7 @@ GimbalProtocolV1::GimbalProtocolV1(SystemImpl& system_impl) : GimbalProtocolBase
 Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     const float roll_deg = 0.0f;
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{_system_impl};
 
     command.command = MAV_CMD_DO_MOUNT_CONTROL;
     command.params.param1 = pitch_deg;
@@ -27,7 +27,7 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     const float roll_deg = 0.0f;
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{_system_impl};
 
     command.command = MAV_CMD_DO_MOUNT_CONTROL;
     command.params.param1 = pitch_deg;

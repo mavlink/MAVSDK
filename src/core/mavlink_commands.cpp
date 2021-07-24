@@ -1,9 +1,29 @@
 #include "mavlink_commands.h"
 #include "system_impl.h"
+#include <cmath>
 #include <future>
 #include <memory>
 
 namespace mavsdk {
+
+MavlinkCommandSender::CommandLong::CommandLong(const SystemImpl& system_impl)
+{
+    const float param_unset = [&]() {
+        if (system_impl.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+            return 0.0f;
+        } else {
+            return NAN;
+        }
+    }();
+
+    params.param1 = param_unset;
+    params.param2 = param_unset;
+    params.param3 = param_unset;
+    params.param4 = param_unset;
+    params.param5 = param_unset;
+    params.param6 = param_unset;
+    params.param7 = param_unset;
+}
 
 MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _parent(system_impl)
 {

@@ -191,7 +191,7 @@ Camera::Result CameraImpl::select_camera(const size_t id)
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_flight_information()
 {
-    MavlinkCommandSender::CommandLong command_flight_information{};
+    MavlinkCommandSender::CommandLong command_flight_information{*_parent};
 
     command_flight_information.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
     command_flight_information.params.param1 = 1.0f; // Request it
@@ -202,7 +202,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_flight_inform
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_info()
 {
-    MavlinkCommandSender::CommandLong command_camera_info{};
+    MavlinkCommandSender::CommandLong command_camera_info{*_parent};
 
     command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
     command_camera_info.params.param1 = 1.0f; // Request it
@@ -214,7 +214,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_info()
 MavlinkCommandSender::CommandLong
 CameraImpl::make_command_take_photo(float interval_s, float no_of_photos)
 {
-    MavlinkCommandSender::CommandLong cmd_take_photo{};
+    MavlinkCommandSender::CommandLong cmd_take_photo{*_parent};
 
     cmd_take_photo.command = MAV_CMD_IMAGE_START_CAPTURE;
     cmd_take_photo.params.param1 = 0.0f; // Reserved, set to 0
@@ -228,7 +228,7 @@ CameraImpl::make_command_take_photo(float interval_s, float no_of_photos)
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_photo()
 {
-    MavlinkCommandSender::CommandLong cmd_stop_photo{};
+    MavlinkCommandSender::CommandLong cmd_stop_photo{*_parent};
 
     cmd_stop_photo.command = MAV_CMD_IMAGE_STOP_CAPTURE;
     cmd_stop_photo.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
@@ -238,7 +238,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_photo()
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video(float capture_status_rate_hz)
 {
-    MavlinkCommandSender::CommandLong cmd_start_video{};
+    MavlinkCommandSender::CommandLong cmd_start_video{*_parent};
 
     cmd_start_video.command = MAV_CMD_VIDEO_START_CAPTURE;
     cmd_start_video.params.param1 = 0.f; // Reserved, set to 0
@@ -250,7 +250,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video(float cap
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video()
 {
-    MavlinkCommandSender::CommandLong cmd_stop_video{};
+    MavlinkCommandSender::CommandLong cmd_stop_video{*_parent};
 
     cmd_stop_video.command = MAV_CMD_VIDEO_STOP_CAPTURE;
     cmd_stop_video.params.param1 = 0.f; // Reserved, set to 0
@@ -261,7 +261,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video()
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_set_camera_mode(float mavlink_mode)
 {
-    MavlinkCommandSender::CommandLong cmd_set_camera_mode{};
+    MavlinkCommandSender::CommandLong cmd_set_camera_mode{*_parent};
 
     cmd_set_camera_mode.command = MAV_CMD_SET_CAMERA_MODE;
     cmd_set_camera_mode.params.param1 = 0.0f; // Reserved, set to 0
@@ -273,7 +273,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_set_camera_mode(float
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_settings()
 {
-    MavlinkCommandSender::CommandLong cmd_req_camera_settings{};
+    MavlinkCommandSender::CommandLong cmd_req_camera_settings{*_parent};
 
     cmd_req_camera_settings.command = MAV_CMD_REQUEST_CAMERA_SETTINGS;
     cmd_req_camera_settings.params.param1 = 1.f; // Request it
@@ -284,7 +284,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_settin
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_capture_status()
 {
-    MavlinkCommandSender::CommandLong cmd_req_camera_cap_stat{};
+    MavlinkCommandSender::CommandLong cmd_req_camera_cap_stat{*_parent};
 
     cmd_req_camera_cap_stat.command = MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS;
     cmd_req_camera_cap_stat.params.param1 = 1.0f; // Request it
@@ -296,7 +296,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_captur
 MavlinkCommandSender::CommandLong
 CameraImpl::make_command_request_camera_image_captured(const size_t photo_id)
 {
-    MavlinkCommandSender::CommandLong cmd_req_camera_image_captured{};
+    MavlinkCommandSender::CommandLong cmd_req_camera_image_captured{*_parent};
 
     cmd_req_camera_image_captured.command = MAV_CMD_REQUEST_MESSAGE;
     cmd_req_camera_image_captured.params.param1 =
@@ -309,7 +309,7 @@ CameraImpl::make_command_request_camera_image_captured(const size_t photo_id)
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_storage_info()
 {
-    MavlinkCommandSender::CommandLong cmd_req_storage_info{};
+    MavlinkCommandSender::CommandLong cmd_req_storage_info{*_parent};
 
     cmd_req_storage_info.command = MAV_CMD_REQUEST_STORAGE_INFORMATION;
     cmd_req_storage_info.params.param1 = 0.f; // Reserved, set to 0
@@ -321,7 +321,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_storage_info(
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video_streaming()
 {
-    MavlinkCommandSender::CommandLong cmd_start_video_streaming{};
+    MavlinkCommandSender::CommandLong cmd_start_video_streaming{*_parent};
 
     cmd_start_video_streaming.command = MAV_CMD_VIDEO_START_STREAMING;
     cmd_start_video_streaming.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
@@ -331,7 +331,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video_streaming
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video_streaming()
 {
-    MavlinkCommandSender::CommandLong cmd_stop_video_streaming{};
+    MavlinkCommandSender::CommandLong cmd_stop_video_streaming{*_parent};
 
     cmd_stop_video_streaming.command = MAV_CMD_VIDEO_STOP_STREAMING;
     cmd_stop_video_streaming.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
@@ -341,7 +341,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video_streaming(
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_info()
 {
-    MavlinkCommandSender::CommandLong cmd_req_video_stream_info{};
+    MavlinkCommandSender::CommandLong cmd_req_video_stream_info{*_parent};
 
     cmd_req_video_stream_info.command = MAV_CMD_REQUEST_VIDEO_STREAM_INFORMATION;
     cmd_req_video_stream_info.params.param2 = 1.0f;
@@ -352,7 +352,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_status()
 {
-    MavlinkCommandSender::CommandLong cmd_req_video_stream_status{};
+    MavlinkCommandSender::CommandLong cmd_req_video_stream_status{*_parent};
 
     cmd_req_video_stream_status.command = MAV_CMD_REQUEST_VIDEO_STREAM_STATUS;
     cmd_req_video_stream_status.params.param2 = 1.0f;
@@ -1719,7 +1719,7 @@ Camera::Result CameraImpl::format_storage()
 
 void CameraImpl::format_storage_async(Camera::ResultCallback callback)
 {
-    MavlinkCommandSender::CommandLong cmd_format{};
+    MavlinkCommandSender::CommandLong cmd_format{*_parent};
 
     cmd_format.command = MAV_CMD_STORAGE_FORMAT;
     cmd_format.params.param1 = 1.0f; // storage ID

@@ -165,45 +165,45 @@ void TelemetryImpl::enable()
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
 
-#ifndef ARDUPILOT
-    if (_parent->has_autopilot()) {
-        _parent->get_param_int_async(
-            std::string("CAL_GYRO0_ID"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_gyro,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
+    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
+        if (_parent->has_autopilot()) {
+            _parent->get_param_int_async(
+                std::string("CAL_GYRO0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
 
-        _parent->get_param_int_async(
-            std::string("CAL_ACC0_ID"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_accel,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
+            _parent->get_param_int_async(
+                std::string("CAL_ACC0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
 
-        _parent->get_param_int_async(
-            std::string("CAL_MAG0_ID"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_mag,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
+            _parent->get_param_int_async(
+                std::string("CAL_MAG0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
 
-        _parent->get_param_int_async(
-            std::string("SYS_HITL"),
-            std::bind(
-                &TelemetryImpl::receive_param_hitl,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
+            _parent->get_param_int_async(
+                std::string("SYS_HITL"),
+                std::bind(
+                    &TelemetryImpl::receive_param_hitl,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        }
     }
-#endif // ifndef ARDUPILOT
 }
 
 void TelemetryImpl::disable() {}
@@ -2118,7 +2118,7 @@ void TelemetryImpl::get_gps_global_origin_async(
         },
         &message_cookie);
 
-    MavlinkCommandSender::CommandLong command_request_message;
+    MavlinkCommandSender::CommandLong command_request_message{*_parent};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.params.param1 = MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN;
 
