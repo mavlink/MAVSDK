@@ -1,14 +1,15 @@
 syntax = "proto3";
 
-package mavsdk.rpc.mission_server;
+package mavsdk.rpc.mission_raw_server;
 
 import "mavsdk_options.proto";
 
-option java_package = "io.mavsdk.mission_server";
-option java_outer_classname = "MissionServerProto";
+option java_package = "io.mavsdk.mission_raw_server";
+option java_outer_classname = "MissionRawServerProto";
 
-// Enable waypoint missions.
-service MissionService {
+// Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). 
+// Provides current mission item state, so the server can progress through missions.
+service MissionRawServerService {
     /*
      * Subscribe to when a new mission is uploaded (asynchronous).
      */
