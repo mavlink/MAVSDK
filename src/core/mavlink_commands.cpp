@@ -307,7 +307,7 @@ void MavlinkCommandSender::do_work()
         return;
     }
 
-    LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
+    // LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
     work->time_started = _parent.get_time().steady_time();
 
     {
@@ -318,9 +318,10 @@ void MavlinkCommandSender::do_work()
         // The command is inserted in the list only if another command with the same id does
         // not exist. If such an element exists, we refuse to send the new command.
         if (!was_inserted) {
-            LogWarn()
-                << "A command cannot be sent if another command with the same command_id is still processing! Ignoring command "
-                << static_cast<int>(work->mavlink_command);
+            // LogWarn()
+            //     << "A command cannot be sent if another command with the same command_id is still
+            //     processing! Ignoring command "
+            //     << static_cast<int>(work->mavlink_command);
             auto temp_callback = work->callback;
             auto temp_result = std::make_pair<Result, float>(Result::CommandDenied, NAN);
 
