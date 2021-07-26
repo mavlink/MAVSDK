@@ -1,15 +1,15 @@
 #pragma once
 
-#include "plugins/mission_server/mission_server.h"
+#include "plugins/mission_raw_server/mission_raw_server.h"
 #include "plugin_impl_base.h"
 
 namespace mavsdk {
 
-class MissionServerImpl : public PluginImplBase {
+class MissionRawServerImpl : public PluginImplBase {
 public:
-    explicit MissionServerImpl(System& system);
-    explicit MissionServerImpl(std::shared_ptr<System> system);
-    ~MissionServerImpl();
+    explicit MissionRawServerImpl(System& system);
+    explicit MissionRawServerImpl(std::shared_ptr<System> system);
+    ~MissionRawServerImpl();
 
     void init() override;
     void deinit() override;
@@ -17,20 +17,20 @@ public:
     void enable() override;
     void disable() override;
 
-    void subscribe_incoming_mission(MissionServer::IncomingMissionCallback callback);
-    void subscribe_current_item_changed(MissionServer::CurrentItemChangedCallback callback);
-    void subscribe_clear_all(MissionServer::ClearAllCallback callback);
-    void set_current_item_complete_async(const MissionServer::ResultCallback callback);
+    void subscribe_incoming_mission(MissionRawServer::IncomingMissionCallback callback);
+    void subscribe_current_item_changed(MissionRawServer::CurrentItemChangedCallback callback);
+    void subscribe_clear_all(MissionRawServer::ClearAllCallback callback);
+    void set_current_item_complete_async(const MissionRawServer::ResultCallback callback);
     void set_current_item_complete() const;
 
-    MissionServer::MissionPlan incoming_mission() const;
-    MissionServer::MissionItem current_item_changed() const;
+    MissionRawServer::MissionPlan incoming_mission() const;
+    MissionRawServer::MissionItem current_item_changed() const;
     uint32_t clear_all() const;
 
 private:
-    MissionServer::IncomingMissionCallback _incoming_mission_callback;
-    MissionServer::CurrentItemChangedCallback _current_item_changed_callback;
-    MissionServer::ClearAllCallback _clear_all_callback;
+    MissionRawServer::IncomingMissionCallback _incoming_mission_callback;
+    MissionRawServer::CurrentItemChangedCallback _current_item_changed_callback;
+    MissionRawServer::ClearAllCallback _clear_all_callback;
     std::thread _thread_mission;
     std::atomic<int> _target_component;
     std::atomic<bool> _do_upload;
@@ -48,8 +48,8 @@ private:
         int num_mission_items_to_download{-1};
         int next_mission_item_to_download{-1};
         int last_mission_item_to_upload{-1};
-        MissionServer::ResultCallback result_callback{nullptr};
-        MissionServer::IncomingMissionCallback download_mission_callback{nullptr};
+        MissionRawServer::ResultCallback result_callback{nullptr};
+        MissionRawServer::IncomingMissionCallback download_mission_callback{nullptr};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
         std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_upload{};
@@ -58,7 +58,7 @@ private:
     } _mission_data{};
 
     // FIXME: make static
-    std::pair<MissionServer::Result, MissionServer::MissionPlan>
+    std::pair<MissionRawServer::Result, MissionRawServer::MissionPlan>
     convert_to_result_and_mission_items(
         MAVLinkMissionTransfer::Result result,
         const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);

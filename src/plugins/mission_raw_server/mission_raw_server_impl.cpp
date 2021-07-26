@@ -1,26 +1,26 @@
-#include "mission_server_impl.h"
+#include "mission_raw_server_impl.h"
 
 namespace mavsdk {
 
-using MissionItem = MissionServer::MissionItem;
+using MissionItem = MissionRawServer::MissionItem;
 
-MissionServerImpl::MissionServerImpl(System& system) : PluginImplBase(system)
+MissionRawServerImpl::MissionRawServerImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
 
-MissionServerImpl::MissionServerImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+MissionRawServerImpl::MissionRawServerImpl(std::shared_ptr<System> system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
 
-MissionServerImpl::~MissionServerImpl()
+MissionRawServerImpl::~MissionRawServerImpl()
 {
     _parent->unregister_plugin(this);
 }
 
 MAVLinkMissionTransfer::ItemInt
-convert_mission_raw(const MissionServer::MissionItem transfer_mission_raw)
+convert_mission_raw(const MissionRawServer::MissionItem transfer_mission_raw)
 {
     MAVLinkMissionTransfer::ItemInt new_item_int;
 
@@ -42,7 +42,7 @@ convert_mission_raw(const MissionServer::MissionItem transfer_mission_raw)
 }
 
 std::vector<MAVLinkMissionTransfer::ItemInt>
-convert_to_int_items(const std::vector<MissionServer::MissionItem>& mission_raw)
+convert_to_int_items(const std::vector<MissionRawServer::MissionItem>& mission_raw)
 {
     std::vector<MAVLinkMissionTransfer::ItemInt> int_items;
 
@@ -53,9 +53,9 @@ convert_to_int_items(const std::vector<MissionServer::MissionItem>& mission_raw)
     return int_items;
 }
 
-MissionServer::MissionItem convert_item(const MAVLinkMissionTransfer::ItemInt& transfer_item)
+MissionRawServer::MissionItem convert_item(const MAVLinkMissionTransfer::ItemInt& transfer_item)
 {
-    MissionServer::MissionItem new_item;
+    MissionRawServer::MissionItem new_item;
 
     new_item.seq = transfer_item.seq;
     new_item.frame = transfer_item.frame;
@@ -74,10 +74,10 @@ MissionServer::MissionItem convert_item(const MAVLinkMissionTransfer::ItemInt& t
     return new_item;
 }
 
-std::vector<MissionServer::MissionItem>
+std::vector<MissionRawServer::MissionItem>
 convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items)
 {
-    std::vector<MissionServer::MissionItem> new_items;
+    std::vector<MissionRawServer::MissionItem> new_items;
     new_items.reserve(transfer_items.size());
 
     for (const auto& transfer_item : transfer_items) {
@@ -87,45 +87,45 @@ convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items
     return new_items;
 }
 
-MissionServer::Result convert_result(MAVLinkMissionTransfer::Result result)
+MissionRawServer::Result convert_result(MAVLinkMissionTransfer::Result result)
 {
     switch (result) {
         case MAVLinkMissionTransfer::Result::Success:
-            return MissionServer::Result::Success;
+            return MissionRawServer::Result::Success;
         case MAVLinkMissionTransfer::Result::ConnectionError:
-            return MissionServer::Result::Error; // FIXME
+            return MissionRawServer::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::Denied:
-            return MissionServer::Result::Error; // FIXME
+            return MissionRawServer::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::TooManyMissionItems:
-            return MissionServer::Result::TooManyMissionItems;
+            return MissionRawServer::Result::TooManyMissionItems;
         case MAVLinkMissionTransfer::Result::Timeout:
-            return MissionServer::Result::Timeout;
+            return MissionRawServer::Result::Timeout;
         case MAVLinkMissionTransfer::Result::Unsupported:
-            return MissionServer::Result::Unsupported;
+            return MissionRawServer::Result::Unsupported;
         case MAVLinkMissionTransfer::Result::UnsupportedFrame:
-            return MissionServer::Result::Unsupported;
+            return MissionRawServer::Result::Unsupported;
         case MAVLinkMissionTransfer::Result::NoMissionAvailable:
-            return MissionServer::Result::NoMissionAvailable;
+            return MissionRawServer::Result::NoMissionAvailable;
         case MAVLinkMissionTransfer::Result::Cancelled:
-            return MissionServer::Result::TransferCancelled;
+            return MissionRawServer::Result::TransferCancelled;
         case MAVLinkMissionTransfer::Result::MissionTypeNotConsistent:
-            return MissionServer::Result::InvalidArgument; // FIXME
+            return MissionRawServer::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidSequence:
-            return MissionServer::Result::InvalidArgument; // FIXME
+            return MissionRawServer::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::CurrentInvalid:
-            return MissionServer::Result::InvalidArgument; // FIXME
+            return MissionRawServer::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::ProtocolError:
-            return MissionServer::Result::Error; // FIXME
+            return MissionRawServer::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidParam:
-            return MissionServer::Result::InvalidArgument; // FIXME
+            return MissionRawServer::Result::InvalidArgument; // FIXME
         case MAVLinkMissionTransfer::Result::IntMessagesNotSupported:
-            return MissionServer::Result::Unsupported; // FIXME
+            return MissionRawServer::Result::Unsupported; // FIXME
         default:
-            return MissionServer::Result::Unknown;
+            return MissionRawServer::Result::Unknown;
     }
 }
 
-void MissionServerImpl::init()
+void MissionRawServerImpl::init()
 {
     _thread_mission = std::thread([this] {
         while (true) {
@@ -134,8 +134,9 @@ void MissionServerImpl::init()
                 if (_mission_data.last_download.lock()) {
                     _parent->call_user_callback([this]() {
                         if (_incoming_mission_callback) {
-                            MissionServer::MissionPlan mission_plan{};
-                            _incoming_mission_callback(MissionServer::Result::Busy, mission_plan);
+                            MissionRawServer::MissionPlan mission_plan{};
+                            _incoming_mission_callback(
+                                MissionRawServer::Result::Busy, mission_plan);
                         }
                     });
                     return;
@@ -253,48 +254,48 @@ void MissionServerImpl::init()
         this);
 }
 
-void MissionServerImpl::deinit() {}
+void MissionRawServerImpl::deinit() {}
 
-void MissionServerImpl::enable() {}
+void MissionRawServerImpl::enable() {}
 
-void MissionServerImpl::disable() {}
+void MissionRawServerImpl::disable() {}
 
-void MissionServerImpl::subscribe_incoming_mission(
-    const MissionServer::IncomingMissionCallback callback)
+void MissionRawServerImpl::subscribe_incoming_mission(
+    const MissionRawServer::IncomingMissionCallback callback)
 {
     _incoming_mission_callback = callback;
 }
 
-MissionServer::MissionPlan MissionServerImpl::incoming_mission() const
+MissionRawServer::MissionPlan MissionRawServerImpl::incoming_mission() const
 {
     return {};
 }
 
-void MissionServerImpl::subscribe_current_item_changed(
-    MissionServer::CurrentItemChangedCallback callback)
+void MissionRawServerImpl::subscribe_current_item_changed(
+    MissionRawServer::CurrentItemChangedCallback callback)
 {
     _current_item_changed_callback = callback;
 }
 
-void MissionServerImpl::subscribe_clear_all(MissionServer::ClearAllCallback callback)
+void MissionRawServerImpl::subscribe_clear_all(MissionRawServer::ClearAllCallback callback)
 {
     _clear_all_callback = callback;
 }
 
-uint32_t MissionServerImpl::clear_all() const
+uint32_t MissionRawServerImpl::clear_all() const
 {
     // TO-DO
     return {};
 }
 
-MissionServer::MissionItem MissionServerImpl::current_item_changed() const
+MissionRawServer::MissionItem MissionRawServerImpl::current_item_changed() const
 {
     // TO-DO
     return {};
 }
 
-void MissionServerImpl::set_current_item_complete_async(
-    const MissionServer::ResultCallback callback)
+void MissionRawServerImpl::set_current_item_complete_async(
+    const MissionRawServer::ResultCallback callback)
 {
     mavlink_message_t mission_reached;
     mavlink_msg_mission_item_reached_pack(
@@ -309,13 +310,13 @@ void MissionServerImpl::set_current_item_complete_async(
         set_current_seq(_current_seq + 1);
 }
 
-void MissionServerImpl::set_current_item_complete() const
+void MissionRawServerImpl::set_current_item_complete() const
 {
     // TO-DO
     return;
 }
 
-void MissionServerImpl::set_current_seq(int32_t seq)
+void MissionRawServerImpl::set_current_seq(int32_t seq)
 {
     if (_current_mission.size() <= static_cast<size_t>(seq))
         return;
