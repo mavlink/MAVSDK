@@ -499,9 +499,13 @@ void CameraImpl::subscribe_information(const Camera::InformationCallback& callba
     }
 
     if (callback) {
-        _parent->add_call_every([this]() { request_status(); }, 1.0, &_status.call_every_cookie);
+        if (_status.call_every_cookie == nullptr) {
+            _parent->add_call_every(
+                [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
+        }
     } else {
         _parent->remove_call_every(_status.call_every_cookie);
+        _status.call_every_cookie = nullptr;
     }
 }
 
@@ -702,7 +706,7 @@ void CameraImpl::subscribe_mode(const Camera::ModeCallback callback)
 
     if (callback) {
         _parent->add_call_every(
-            [this]() { request_camera_settings(); }, 1.0, &_mode.call_every_cookie);
+            [this]() { request_camera_settings(); }, 5.0, &_mode.call_every_cookie);
     } else {
         _parent->remove_call_every(_mode.call_every_cookie);
     }
@@ -732,9 +736,13 @@ void CameraImpl::subscribe_status(const Camera::StatusCallback callback)
     _status.subscription_callback = callback;
 
     if (callback) {
-        _parent->add_call_every([this]() { request_status(); }, 1.0, &_status.call_every_cookie);
+        if (_status.call_every_cookie == nullptr) {
+            _parent->add_call_every(
+                [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
+        }
     } else {
         _parent->remove_call_every(_status.call_every_cookie);
+        _status.call_every_cookie = nullptr;
     }
 }
 
