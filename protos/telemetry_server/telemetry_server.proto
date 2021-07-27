@@ -13,37 +13,48 @@ option java_outer_classname = "TelemetryServerProto";
  */
 service TelemetryServerService {
     // Publish to 'position' updates.
-    rpc PublishPosition(PublishPositionRequest) returns(PublishPositionResponse) {}
+    rpc PublishPosition(PublishPositionRequest) returns(PublishPositionResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'home position' updates.
-    rpc PublishHome(PublishHomeRequest) returns(PublishHomeResponse) {}
+    rpc PublishHome(PublishHomeRequest) returns(PublishHomeResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Publish 'sys status' updates.
+    rpc PublishSysStatus(PublishSysStatusRequest) returns(PublishSysStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Publish 'extended sys state' updates.
+    rpc PublishExtendedSysState(PublishExtendedSysStateRequest) returns(PublishExtendedSysStateResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to armed updates.
-    rpc PublishArmed(PublishArmedRequest) returns(PublishArmedResponse) {}
+    rpc PublishArmed(PublishArmedRequest) returns(PublishArmedResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'Raw GPS' updates.
-    rpc PublishRawGps(PublishRawGpsRequest) returns(PublishRawGpsResponse) {}
+    rpc PublishRawGps(PublishRawGpsRequest) returns(PublishRawGpsResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'battery' updates.
-    rpc PublishBattery(PublishBatteryRequest) returns(PublishBatteryResponse) {}
+    rpc PublishBattery(PublishBatteryRequest) returns(PublishBatteryResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'flight mode' updates.
-    rpc PublishFlightMode(PublishFlightModeRequest) returns(PublishFlightModeResponse) {}
-    // Publish to 'health' updates.
-    rpc PublishHealth(PublishHealthRequest) returns(PublishHealthResponse) {}
+    rpc PublishFlightMode(PublishFlightModeRequest) returns(PublishFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'status text' updates.
-    rpc PublishStatusText(PublishStatusTextRequest) returns(PublishStatusTextResponse) {}
+    rpc PublishStatusText(PublishStatusTextRequest) returns(PublishStatusTextResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'odometry' updates.
-    rpc PublishOdometry(PublishOdometryRequest) returns(PublishOdometryResponse) {}
+    rpc PublishOdometry(PublishOdometryRequest) returns(PublishOdometryResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'position velocity' updates.
-    rpc PublishPositionVelocityNed(PublishPositionVelocityNedRequest) returns(PublishPositionVelocityNedResponse) {}
+    rpc PublishPositionVelocityNed(PublishPositionVelocityNedRequest) returns(PublishPositionVelocityNedResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'ground truth' updates.
-    rpc PublishGroundTruth(PublishGroundTruthRequest) returns(PublishGroundTruthResponse) {}
+    rpc PublishGroundTruth(PublishGroundTruthRequest) returns(PublishGroundTruthResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'IMU' updates (in SI units in NED body frame).
-    rpc PublishImu(PublishImuRequest) returns(PublishImuResponse) {}
+    rpc PublishImu(PublishImuRequest) returns(PublishImuResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'Scaled IMU' updates.
-    rpc PublishScaledImu(PublishScaledImuRequest) returns(PublishScaledImuResponse) {}
+    rpc PublishScaledImu(PublishScaledImuRequest) returns(PublishScaledImuResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'Raw IMU' updates.
-    rpc PublishRawImu(PublishRawImuRequest) returns(PublishRawImuResponse) {}
-    // Publish to 'HealthAllOk' updates.
-    rpc PublishHealthAllOk(PublishHealthAllOkRequest) returns(PublishHealthAllOkResponse) {}
+    rpc PublishRawImu(PublishRawImuRequest) returns(PublishRawImuResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'unix epoch time' updates.
-    rpc PublishUnixEpochTime(PublishUnixEpochTimeRequest) returns(PublishUnixEpochTimeResponse) {}
+    rpc PublishUnixEpochTime(PublishUnixEpochTimeRequest) returns(PublishUnixEpochTimeResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Subscribe to ARM/DISARM commands
+    rpc SubscribeArmDisarm(SubscribeArmDisarmRequest) returns(stream ArmDisarmResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to DO_SET_MODE
+    rpc SubscribeDoSetMode(SubscribeDoSetModeRequest) returns(stream DoSetModeResponse) { option (mavsdk.options.async_type) = ASYNC; }
+
+    // Can the vehicle arm when requested
+    rpc SetArmable(SetArmableRequest) returns(SetArmableResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Set which modes the vehicle can transition to (Manual always allowed)
+    rpc SetAllowableFlightModes(SetAllowableFlightModeRequest) returns(SetAllowableFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Get which modes the vehicle can transition to (Manual always allowed)
+    rpc GetAllowableFlightModes(GetAllowableFlightModeRequest) returns(GetAllowableFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message PublishPositionRequest {
@@ -53,6 +64,20 @@ message PublishPositionRequest {
 
 message PublishHomeRequest {
     Position home = 1; // The next home position
+}
+
+message PublishSysStatusRequest {
+    Battery battery = 1; // The next 'battery' state
+    bool rc_receiver_status = 2; // rc receiver status
+    bool gyro_status = 3; 
+    bool accel_status = 4; 
+    bool mag_status = 5;
+    bool gps_status = 6; 
+}
+
+message PublishExtendedSysStateRequest {
+    VTOLState vtol_state = 1;
+    LandedState landed_state = 2;
 }
 
 message PublishInAirRequest {
@@ -124,11 +149,40 @@ message PublishUnixEpochTimeRequest {
     uint64 time_us = 1; // The next 'unix epoch time' status
 }
 
+message SetArmableRequest {
+    bool armable = 1; // Is Armable now?
+    bool force_armable = 2; // Is armable with force?
+}
+
+message SetDisarmableRequest {
+    bool disarmable = 1; // Is disarmable now?
+    bool force_disarmable = 2; // Is disarmable with force?
+}
+
+message SetAllowableFlightModeRequest
+{
+    AllowableFlightModes flight_modes = 1;
+}
+
+message GetAllowableFlightModeRequest {}
+
+message SubscribeArmDisarmRequest {}
+
+message SubscribeDoSetModeRequest {}
+
 message PublishPositionResponse {
     TelemetryServerResult telemetry_server_result = 1;
 }
 
 message PublishHomeResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishSysStatusResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message PublishExtendedSysStateResponse {
     TelemetryServerResult telemetry_server_result = 1;
 }
 
@@ -186,6 +240,35 @@ message PublishHealthAllOkResponse {
 
 message PublishUnixEpochTimeResponse {
     TelemetryServerResult telemetry_server_result = 1;
+}
+
+message ArmDisarmResponse
+{
+    TelemetryServerResult telemetry_server_result = 1;
+    ArmDisarm arm = 2;
+}
+
+message DoSetModeResponse
+{
+    TelemetryServerResult telemetry_server_result = 1;
+    FlightMode flight_mode = 2;
+}
+
+message SetArmableResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message SetDisarmableResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message SetAllowableFlightModeResponse {
+    TelemetryServerResult telemetry_server_result = 1;
+}
+
+message GetAllowableFlightModeResponse
+{
+    AllowableFlightModes flight_modes = 1;
 }
 
 // Position type in global coordinates.
@@ -276,6 +359,13 @@ enum FixType {
     FIX_TYPE_RTK_FIXED = 6; // RTK Fixed, 3D position
 }
 
+message AllowableFlightModes
+{
+    bool can_auto_mode = 1; // Auto/mission mode 
+    bool can_guided_mode = 2; // Guided mode
+    bool can_stablize_mode = 3; // Stablize mode
+}
+
 // Battery type.
 message Battery {
     float voltage_v = 1 [(mavsdk.options.default_value)="NaN"]; // Voltage in volts
@@ -304,6 +394,16 @@ enum FlightMode {
     FLIGHT_MODE_ACRO = 12; // In 'Acro' mode
     FLIGHT_MODE_STABILIZED = 13; // In 'Stabilize' mode
     FLIGHT_MODE_RATTITUDE = 14; // In 'Rattitude' mode
+}
+
+// Maps to MAV_VTOL_STATE
+enum VTOLState
+{
+    VTOL_UNDEFINED = 0; // Not VTOL
+    VTOL_TRANSITION_TO_FW = 1; // Transitioning to fixed-wing
+    VTOL_TRANSITION_TO_MC = 2; // Transitioning to multi-copter
+    VTOL_MC = 3; // Multi-copter
+    VTOL_FW = 4; // Fixed-wing
 }
 
 // Health type.
@@ -487,6 +587,18 @@ message Imu {
     MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
     float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
     uint64 timestamp_us = 5; // Timestamp in microseconds
+}
+
+// Arming message type
+message ArmDisarm
+{
+    int32 arm = 1; // Should vehicle arm
+    int32 force = 2; // Should arm override pre-flight checks
+}
+
+message RcReceiverStatus
+{
+    bool health = 1;
 }
 
 // Result type.
