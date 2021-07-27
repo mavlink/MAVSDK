@@ -362,7 +362,7 @@ public:
     struct AllowableFlightModes {
         bool can_auto_mode{}; /**< @brief Auto/mission mode */
         bool can_guided_mode{}; /**< @brief Guided mode */
-        bool can_stablize_mode{}; /**< @brief Stablize mode */
+        bool can_stabilize_mode{}; /**< @brief Stabilize mode */
     };
 
     /**
@@ -1219,7 +1219,7 @@ public:
     Result set_armable(bool armable, bool force_armable) const;
 
     /**
-     * @brief Can the vehicle disarm when requested
+     * @brief Set which modes the vehicle can transition to (Manual always allowed)
      *
      * This function is blocking.
      *
@@ -1228,7 +1228,7 @@ public:
     Result set_allowable_flight_modes(AllowableFlightModes flight_modes) const;
 
     /**
-     * @brief Can the vehicle disarm when requested
+     * @brief Get which modes the vehicle can transition to (Manual always allowed)
      *
      * This function is blocking.
      *

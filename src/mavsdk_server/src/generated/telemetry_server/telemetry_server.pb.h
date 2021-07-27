@@ -9292,7 +9292,7 @@ class AllowableFlightModes PROTOBUF_FINAL :
   enum : int {
     kCanAutoModeFieldNumber = 1,
     kCanGuidedModeFieldNumber = 2,
-    kCanStablizeModeFieldNumber = 3,
+    kCanStabilizeModeFieldNumber = 3,
   };
   // bool can_auto_mode = 1;
   void clear_can_auto_mode();
@@ -9312,13 +9312,13 @@ class AllowableFlightModes PROTOBUF_FINAL :
   void _internal_set_can_guided_mode(bool value);
   public:
 
-  // bool can_stablize_mode = 3;
-  void clear_can_stablize_mode();
-  bool can_stablize_mode() const;
-  void set_can_stablize_mode(bool value);
+  // bool can_stabilize_mode = 3;
+  void clear_can_stabilize_mode();
+  bool can_stabilize_mode() const;
+  void set_can_stabilize_mode(bool value);
   private:
-  bool _internal_can_stablize_mode() const;
-  void _internal_set_can_stablize_mode(bool value);
+  bool _internal_can_stabilize_mode() const;
+  void _internal_set_can_stabilize_mode(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.AllowableFlightModes)
@@ -9330,7 +9330,7 @@ class AllowableFlightModes PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   bool can_auto_mode_;
   bool can_guided_mode_;
-  bool can_stablize_mode_;
+  bool can_stabilize_mode_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
 };
@@ -18179,24 +18179,24 @@ inline void AllowableFlightModes::set_can_guided_mode(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.AllowableFlightModes.can_guided_mode)
 }
 
-// bool can_stablize_mode = 3;
-inline void AllowableFlightModes::clear_can_stablize_mode() {
-  can_stablize_mode_ = false;
+// bool can_stabilize_mode = 3;
+inline void AllowableFlightModes::clear_can_stabilize_mode() {
+  can_stabilize_mode_ = false;
 }
-inline bool AllowableFlightModes::_internal_can_stablize_mode() const {
-  return can_stablize_mode_;
+inline bool AllowableFlightModes::_internal_can_stabilize_mode() const {
+  return can_stabilize_mode_;
 }
-inline bool AllowableFlightModes::can_stablize_mode() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.AllowableFlightModes.can_stablize_mode)
-  return _internal_can_stablize_mode();
+inline bool AllowableFlightModes::can_stabilize_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.AllowableFlightModes.can_stabilize_mode)
+  return _internal_can_stabilize_mode();
 }
-inline void AllowableFlightModes::_internal_set_can_stablize_mode(bool value) {
+inline void AllowableFlightModes::_internal_set_can_stabilize_mode(bool value) {
   
-  can_stablize_mode_ = value;
+  can_stabilize_mode_ = value;
 }
-inline void AllowableFlightModes::set_can_stablize_mode(bool value) {
-  _internal_set_can_stablize_mode(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.AllowableFlightModes.can_stablize_mode)
+inline void AllowableFlightModes::set_can_stabilize_mode(bool value) {
+  _internal_set_can_stabilize_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.AllowableFlightModes.can_stabilize_mode)
 }
 
 // -------------------------------------------------------------------

@@ -540,7 +540,7 @@ public:
 
         rpc_obj->set_can_guided_mode(allowable_flight_modes.can_guided_mode);
 
-        rpc_obj->set_can_stablize_mode(allowable_flight_modes.can_stablize_mode);
+        rpc_obj->set_can_stabilize_mode(allowable_flight_modes.can_stabilize_mode);
 
         return rpc_obj;
     }
@@ -554,7 +554,7 @@ public:
 
         obj.can_guided_mode = allowable_flight_modes.can_guided_mode();
 
-        obj.can_stablize_mode = allowable_flight_modes.can_stablize_mode();
+        obj.can_stabilize_mode = allowable_flight_modes.can_stabilize_mode();
 
         return obj;
     }

@@ -153,7 +153,7 @@ void TelemetryServerImpl::init()
                     allow_mode = _allowed_flight_modes.can_auto_mode;
                     break;
                 case TelemetryServer::FlightMode::Stabilized:
-                    allow_mode = _allowed_flight_modes.can_stablize_mode;
+                    allow_mode = _allowed_flight_modes.can_stabilize_mode;
                     break;
                 default:
                     allow_mode = false;

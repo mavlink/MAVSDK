@@ -197,7 +197,7 @@ class TelemetryServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::SetArmableResponse>> PrepareAsyncSetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetArmableRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::SetArmableResponse>>(PrepareAsyncSetArmableRaw(context, request, cq));
     }
-    // Can the vehicle disarm when requested
+    // Set which modes the vehicle can transition to (Manual always allowed)
     virtual ::grpc::Status SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeRequest& request, ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse>> AsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse>>(AsyncSetAllowableFlightModesRaw(context, request, cq));
@@ -205,7 +205,7 @@ class TelemetryServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse>> PrepareAsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse>>(PrepareAsyncSetAllowableFlightModesRaw(context, request, cq));
     }
-    // Can the vehicle disarm when requested
+    // Get which modes the vehicle can transition to (Manual always allowed)
     virtual ::grpc::Status GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeRequest& request, ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeResponse>> AsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeResponse>>(AsyncGetAllowableFlightModesRaw(context, request, cq));
@@ -347,14 +347,14 @@ class TelemetryServerService final {
       #else
       virtual void SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetArmableRequest* request, ::mavsdk::rpc::telemetry_server::SetArmableResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      // Can the vehicle disarm when requested
+      // Set which modes the vehicle can transition to (Manual always allowed)
       virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       #else
       virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
-      // Can the vehicle disarm when requested
+      // Get which modes the vehicle can transition to (Manual always allowed)
       virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)>) = 0;
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -817,9 +817,9 @@ class TelemetryServerService final {
     virtual ::grpc::Status SubscribeDoSetMode(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::SubscribeDoSetModeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry_server::DoSetModeResponse>* writer);
     // Can the vehicle arm when requested
     virtual ::grpc::Status SetArmable(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::SetArmableRequest* request, ::mavsdk::rpc::telemetry_server::SetArmableResponse* response);
-    // Can the vehicle disarm when requested
+    // Set which modes the vehicle can transition to (Manual always allowed)
     virtual ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::telemetry_server::SetAllowableFlightModeResponse* response);
-    // Can the vehicle disarm when requested
+    // Get which modes the vehicle can transition to (Manual always allowed)
     virtual ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::telemetry_server::GetAllowableFlightModeResponse* response);
   };
   template <class BaseClass>

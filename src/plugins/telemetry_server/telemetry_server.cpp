@@ -333,7 +333,7 @@ bool operator==(
 {
     return (rhs.can_auto_mode == lhs.can_auto_mode) &&
            (rhs.can_guided_mode == lhs.can_guided_mode) &&
-           (rhs.can_stablize_mode == lhs.can_stablize_mode);
+           (rhs.can_stabilize_mode == lhs.can_stabilize_mode);
 }
 
 std::ostream&
@@ -343,7 +343,7 @@ operator<<(std::ostream& str, TelemetryServer::AllowableFlightModes const& allow
     str << "allowable_flight_modes:" << '\n' << "{\n";
     str << "    can_auto_mode: " << allowable_flight_modes.can_auto_mode << '\n';
     str << "    can_guided_mode: " << allowable_flight_modes.can_guided_mode << '\n';
-    str << "    can_stablize_mode: " << allowable_flight_modes.can_stablize_mode << '\n';
+    str << "    can_stabilize_mode: " << allowable_flight_modes.can_stabilize_mode << '\n';
     str << '}';
     return str;
 }
