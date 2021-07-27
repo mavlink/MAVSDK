@@ -363,7 +363,7 @@ message AllowableFlightModes
 {
     bool can_auto_mode = 1; // Auto/mission mode 
     bool can_guided_mode = 2; // Guided mode
-    bool can_stablize_mode = 3; // Stablize mode
+    bool can_stabilize_mode = 3; // Stabilize mode
 }
 
 // Battery type.
