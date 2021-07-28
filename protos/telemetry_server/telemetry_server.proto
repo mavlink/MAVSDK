@@ -24,8 +24,6 @@ service TelemetryServerService {
     rpc PublishRawGps(PublishRawGpsRequest) returns(PublishRawGpsResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'battery' updates.
     rpc PublishBattery(PublishBatteryRequest) returns(PublishBatteryResponse) { option (mavsdk.options.async_type) = SYNC; }
-    // Publish to 'flight mode' updates.
-    rpc PublishFlightMode(PublishFlightModeRequest) returns(PublishFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'status text' updates.
     rpc PublishStatusText(PublishStatusTextRequest) returns(PublishStatusTextResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'odometry' updates.
@@ -84,14 +82,6 @@ message PublishBatteryRequest {
     Battery battery = 1; // The next 'battery' state
 }
 
-message PublishFlightModeRequest {
-    FlightMode flight_mode = 1; // The next flight mode
-}
-
-message PublishHealthRequest {
-    Health health = 1; // The next 'health' state
-}
-
 message PublishRcStatusRequest {
     RcStatus rc_status = 1; // The next RC status
 }
@@ -124,10 +114,6 @@ message PublishRawImuRequest {
     Imu imu = 1; // The next raw IMU status
 }
 
-message PublishHealthAllOkRequest {
-    bool is_health_all_ok = 1; // The next 'health all ok' status
-}
-
 message PublishUnixEpochTimeRequest {
     uint64 time_us = 1; // The next 'unix epoch time' status
 }
@@ -156,13 +142,6 @@ message PublishBatteryResponse {
     TelemetryServerResult telemetry_server_result = 1;
 }
 
-message PublishFlightModeResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
-
-message PublishHealthResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
 
 message PublishStatusTextResponse {
     TelemetryServerResult telemetry_server_result = 1;
@@ -192,9 +171,6 @@ message PublishRawImuResponse {
     TelemetryServerResult telemetry_server_result = 1;
 }
 
-message PublishHealthAllOkResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
 
 message PublishUnixEpochTimeResponse {
     TelemetryServerResult telemetry_server_result = 1;
@@ -288,41 +264,10 @@ enum FixType {
     FIX_TYPE_RTK_FIXED = 6; // RTK Fixed, 3D position
 }
 
-message AllowableFlightModes
-{
-    bool can_auto_mode = 1; // Auto/mission mode 
-    bool can_guided_mode = 2; // Guided mode
-    bool can_stabilize_mode = 3; // Stabilize mode
-}
-
 // Battery type.
 message Battery {
     float voltage_v = 1 [(mavsdk.options.default_value)="NaN"]; // Voltage in volts
     float remaining_percent = 2 [(mavsdk.options.default_value)="NaN"]; // Estimated battery remaining (range: 0.0 to 1.0)
-}
-
-/*
- * Flight modes.
- *
- * For more information about flight modes, check out
- * https://docs.px4.io/master/en/config/flight_mode.html.
- */
-enum FlightMode {
-    FLIGHT_MODE_UNKNOWN = 0; // Mode not known
-    FLIGHT_MODE_READY = 1; // Armed and ready to take off
-    FLIGHT_MODE_TAKEOFF = 2; // Taking off
-    FLIGHT_MODE_HOLD = 3; // Holding (hovering in place (or circling for fixed-wing vehicles)
-    FLIGHT_MODE_MISSION = 4; // In mission
-    FLIGHT_MODE_RETURN_TO_LAUNCH = 5; // Returning to launch position (then landing)
-    FLIGHT_MODE_LAND = 6; // Landing
-    FLIGHT_MODE_OFFBOARD = 7; // In 'offboard' mode
-    FLIGHT_MODE_FOLLOW_ME = 8; // In 'follow-me' mode
-    FLIGHT_MODE_MANUAL = 9; // In 'Manual' mode
-    FLIGHT_MODE_ALTCTL = 10; // In 'Altitude Control' mode
-    FLIGHT_MODE_POSCTL = 11; // In 'Position Control' mode
-    FLIGHT_MODE_ACRO = 12; // In 'Acro' mode
-    FLIGHT_MODE_STABILIZED = 13; // In 'Stabilize' mode
-    FLIGHT_MODE_RATTITUDE = 14; // In 'Rattitude' mode
 }
 
 // Maps to MAV_VTOL_STATE
@@ -335,16 +280,6 @@ enum VtolState
     VTOL_FW = 4; // Fixed-wing
 }
 
-// Health type.
-message Health {
-    bool is_gyrometer_calibration_ok = 1 [(mavsdk.options.default_value)="false"]; // True if the gyrometer is calibrated
-    bool is_accelerometer_calibration_ok = 2 [(mavsdk.options.default_value)="false"]; // True if the accelerometer is calibrated
-    bool is_magnetometer_calibration_ok = 3 [(mavsdk.options.default_value)="false"]; // True if the magnetometer is calibrated
-    bool is_local_position_ok = 5 [(mavsdk.options.default_value)="false"]; // True if the local position estimate is good enough to fly in 'position control' mode
-    bool is_global_position_ok = 6 [(mavsdk.options.default_value)="false"]; // True if the global position estimate is good enough to fly in 'position control' mode
-    bool is_home_position_ok = 7 [(mavsdk.options.default_value)="false"]; // True if the home position has been initialized properly
-    bool is_armable = 8 [(mavsdk.options.default_value)="false"]; // True if system can be armed
-}
 
 // Remote control status type.
 message RcStatus {
