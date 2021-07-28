@@ -2,6 +2,43 @@
 
 namespace mavsdk {
 
+TelemetryServer::FlightMode
+telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode)
+{
+    switch (flight_mode) {
+        case SystemImpl::FlightMode::Ready:
+            return TelemetryServer::FlightMode::Ready;
+        case SystemImpl::FlightMode::Takeoff:
+            return TelemetryServer::FlightMode::Takeoff;
+        case SystemImpl::FlightMode::Hold:
+            return TelemetryServer::FlightMode::Hold;
+        case SystemImpl::FlightMode::Mission:
+            return TelemetryServer::FlightMode::Mission;
+        case SystemImpl::FlightMode::ReturnToLaunch:
+            return TelemetryServer::FlightMode::ReturnToLaunch;
+        case SystemImpl::FlightMode::Land:
+            return TelemetryServer::FlightMode::Land;
+        case SystemImpl::FlightMode::Offboard:
+            return TelemetryServer::FlightMode::Offboard;
+        case SystemImpl::FlightMode::FollowMe:
+            return TelemetryServer::FlightMode::FollowMe;
+        case SystemImpl::FlightMode::Manual:
+            return TelemetryServer::FlightMode::Manual;
+        case SystemImpl::FlightMode::Posctl:
+            return TelemetryServer::FlightMode::Posctl;
+        case SystemImpl::FlightMode::Altctl:
+            return TelemetryServer::FlightMode::Altctl;
+        case SystemImpl::FlightMode::Rattitude:
+            return TelemetryServer::FlightMode::Rattitude;
+        case SystemImpl::FlightMode::Acro:
+            return TelemetryServer::FlightMode::Acro;
+        case SystemImpl::FlightMode::Stabilized:
+            return TelemetryServer::FlightMode::Stabilized;
+        default:
+            return TelemetryServer::FlightMode::Unknown;
+    }
+}
+
 TelemetryServerImpl::TelemetryServerImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -38,6 +75,122 @@ void TelemetryServerImpl::init()
             return msg;
         },
         this);
+
+    _parent->register_mavlink_command_handler(
+        MAV_CMD_COMPONENT_ARM_DISARM,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            TelemetryServer::ArmDisarm armDisarm{
+                static_cast<int32_t>(command.params.param1),
+                static_cast<int32_t>(command.params.param2)};
+
+            // Check arm states - Ugly.
+            uint8_t request_ack = MAV_RESULT_UNSUPPORTED;
+            bool force = armDisarm.force == 21196;
+            if (armDisarm.arm == 1) {
+                request_ack = (_armable || (force && _force_armable)) ?
+                                  MAV_RESULT::MAV_RESULT_ACCEPTED :
+                                  MAV_RESULT_TEMPORARILY_REJECTED;
+            } else {
+                request_ack = (_disarmable || (force && _force_disarmable)) ?
+                                  MAV_RESULT::MAV_RESULT_ACCEPTED :
+                                  MAV_RESULT_TEMPORARILY_REJECTED;
+            }
+
+            if (request_ack == MAV_RESULT::MAV_RESULT_ACCEPTED) {
+                _parent->set_server_armed(armDisarm.arm == 1);
+            }
+
+            auto result = (request_ack == MAV_RESULT::MAV_RESULT_ACCEPTED) ?
+                              TelemetryServer::Result::Success :
+                              TelemetryServer::Result::CommandDenied;
+
+            _parent->call_user_callback(
+                [this, armDisarm, result]() { _arm_disarm_callback(result, armDisarm); });
+
+            mavlink_message_t msg;
+            mavlink_msg_command_ack_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                &msg,
+                command.command,
+                request_ack,
+                100,
+                0,
+                command.origin_system_id,
+                command.origin_component_id);
+            return msg;
+        },
+        this);
+
+    _parent->register_mavlink_command_handler(
+        MAV_CMD_DO_SET_MODE,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            auto base_mode = static_cast<uint8_t>(command.params.param1);
+            auto is_custom = (base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) ==
+                             MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
+            TelemetryServer::FlightMode request_flight_mode = TelemetryServer::FlightMode::Unknown;
+
+            auto custom_mode = static_cast<uint8_t>(command.params.param2);
+            auto sub_custom_mode = static_cast<uint8_t>(command.params.param3);
+
+            if (is_custom) {
+                // PX4 uses custom modes
+                px4_custom_mode px4_mode{};
+                px4_mode.main_mode = custom_mode;
+                px4_mode.sub_mode = sub_custom_mode;
+                auto system_flight_mode = _parent->to_flight_mode_from_custom_mode(px4_mode.data);
+                request_flight_mode = telemetry_flight_mode_from_flight_mode(system_flight_mode);
+            } else {
+                // TO DO non PX4 flight modes...
+            }
+
+            bool allow_mode = false;
+            switch (request_flight_mode) {
+                case TelemetryServer::FlightMode::Manual:
+                    allow_mode = true;
+                    break;
+                case TelemetryServer::FlightMode::Mission:
+                    allow_mode = _allowed_flight_modes.can_auto_mode;
+                    break;
+                case TelemetryServer::FlightMode::Stabilized:
+                    allow_mode = _allowed_flight_modes.can_stablize_mode;
+                    break;
+                default:
+                    allow_mode = false;
+                    break;
+            }
+
+            // PX4...
+            px4_custom_mode px4_mode{};
+            px4_mode.data = _parent->get_custom_mode();
+
+            if (allow_mode) {
+                px4_mode.main_mode = custom_mode;
+                px4_mode.sub_mode = sub_custom_mode;
+                _parent->set_custom_mode(px4_mode.data);
+            }
+
+            _parent->call_user_callback([this, allow_mode, request_flight_mode]() {
+                _do_set_mode_callback(
+                    allow_mode ? TelemetryServer::Result::Success :
+                                 TelemetryServer::Result::CommandDenied,
+                    request_flight_mode);
+            });
+
+            mavlink_message_t msg;
+            mavlink_msg_command_ack_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                &msg,
+                command.command,
+                allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED,
+                100,
+                0,
+                command.origin_system_id,
+                command.origin_component_id);
+            return msg;
+        },
+        this);
 }
 
 void TelemetryServerImpl::deinit() {}
@@ -45,18 +198,6 @@ void TelemetryServerImpl::deinit() {}
 void TelemetryServerImpl::enable() {}
 
 void TelemetryServerImpl::disable() {}
-
-void TelemetryServerImpl::publish_position_async(
-    TelemetryServer::Position position,
-    TelemetryServer::VelocityNed velocity_ned,
-    const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(position);
-
-    UNUSED(velocity_ned);
-
-    UNUSED(callback);
-}
 
 TelemetryServer::Result TelemetryServerImpl::publish_position(
     TelemetryServer::Position position, TelemetryServer::VelocityNed velocity_ned)
@@ -79,14 +220,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
-}
-
-void TelemetryServerImpl::publish_home_async(
-    TelemetryServer::Position home, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(home);
-
-    UNUSED(callback);
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Position home)
@@ -114,32 +247,12 @@ TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Posit
                                         TelemetryServer::Result::Unsupported;
 }
 
-void TelemetryServerImpl::publish_armed_async(
-    bool is_armed, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(is_armed);
-
-    UNUSED(callback);
-}
-
 TelemetryServer::Result TelemetryServerImpl::publish_armed(bool is_armed)
 {
     UNUSED(is_armed);
 
     // TODO :)
     return {};
-}
-
-void TelemetryServerImpl::publish_raw_gps_async(
-    TelemetryServer::RawGps raw_gps,
-    TelemetryServer::GpsInfo gps_info,
-    const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(raw_gps);
-
-    UNUSED(gps_info);
-
-    UNUSED(callback);
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
@@ -171,28 +284,35 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
                                         TelemetryServer::Result::Unsupported;
 }
 
-void TelemetryServerImpl::publish_battery_async(
-    TelemetryServer::Battery battery, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(battery);
-
-    UNUSED(callback);
-}
-
 TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Battery battery)
 {
-    UNUSED(battery);
+    mavlink_message_t msg;
 
-    // TODO :)
-    return {};
-}
+    uint16_t voltages[10] = {0};
+    uint16_t voltages_ext[4] = {0};
+    voltages[0] = static_cast<uint16_t>(battery.voltage_v) * 1E3;
 
-void TelemetryServerImpl::publish_flight_mode_async(
-    TelemetryServer::FlightMode flight_mode, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(flight_mode);
+    mavlink_msg_battery_status_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        0,
+        MAV_BATTERY_FUNCTION_ALL,
+        MAV_BATTERY_TYPE_LIPO,
+        INT16_MAX,
+        voltages,
+        -1, // TODO publish all battery data
+        -1,
+        -1,
+        static_cast<uint16_t>(battery.remaining_percent) * 1E2,
+        0,
+        MAV_BATTERY_CHARGE_STATE_UNDEFINED,
+        voltages_ext,
+        MAV_BATTERY_MODE_UNKNOWN,
+        0);
 
-    UNUSED(callback);
+    return _parent->send_message(msg) ? TelemetryServer::Result::Success :
+                                        TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result
@@ -204,45 +324,54 @@ TelemetryServerImpl::publish_flight_mode(TelemetryServer::FlightMode flight_mode
     return {};
 }
 
-void TelemetryServerImpl::publish_health_async(
-    TelemetryServer::Health health, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(health);
-
-    UNUSED(callback);
-}
-
-TelemetryServer::Result TelemetryServerImpl::publish_health(TelemetryServer::Health health)
-{
-    UNUSED(health);
-
-    // TODO :)
-    return {};
-}
-
-void TelemetryServerImpl::publish_status_text_async(
-    TelemetryServer::StatusText status_text, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(status_text);
-
-    UNUSED(callback);
-}
-
 TelemetryServer::Result
 TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text)
 {
-    UNUSED(status_text);
+    mavlink_message_t msg;
 
-    // TODO :)
-    return {};
-}
+    int type = MAV_SEVERITY_INFO;
+    switch (status_text.type) {
+        case TelemetryServer::StatusTextType::Emergency:
+            type = MAV_SEVERITY_EMERGENCY;
+            break;
+        case TelemetryServer::StatusTextType::Alert:
+            type = MAV_SEVERITY_ALERT;
+            break;
+        case TelemetryServer::StatusTextType::Critical:
+            type = MAV_SEVERITY_CRITICAL;
+            break;
+        case TelemetryServer::StatusTextType::Error:
+            type = MAV_SEVERITY_ERROR;
+            break;
+        case TelemetryServer::StatusTextType::Warning:
+            type = MAV_SEVERITY_WARNING;
+            break;
+        case TelemetryServer::StatusTextType::Notice:
+            type = MAV_SEVERITY_NOTICE;
+            break;
+        case TelemetryServer::StatusTextType::Info:
+            type = MAV_SEVERITY_INFO;
+            break;
+        case TelemetryServer::StatusTextType::Debug:
+            type = MAV_SEVERITY_DEBUG;
+            break;
+        default:
+            LogWarn() << "Unknown StatusText severity";
+            type = MAV_SEVERITY_INFO;
+            break;
+    }
 
-void TelemetryServerImpl::publish_odometry_async(
-    TelemetryServer::Odometry odometry, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(odometry);
+    mavlink_msg_statustext_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        type,
+        status_text.text.data(),
+        0,
+        0);
 
-    UNUSED(callback);
+    _parent->send_message(msg) ? TelemetryServer::Result::Success :
+                                 TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_odometry(TelemetryServer::Odometry odometry)
@@ -251,15 +380,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_odometry(TelemetryServer::O
 
     // TODO :)
     return {};
-}
-
-void TelemetryServerImpl::publish_position_velocity_ned_async(
-    TelemetryServer::PositionVelocityNed position_velocity_ned,
-    const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(position_velocity_ned);
-
-    UNUSED(callback);
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_position_velocity_ned(
@@ -282,14 +402,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_position_velocity_ned(
                                         TelemetryServer::Result::Unsupported;
 }
 
-void TelemetryServerImpl::publish_ground_truth_async(
-    TelemetryServer::GroundTruth ground_truth, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(ground_truth);
-
-    UNUSED(callback);
-}
-
 TelemetryServer::Result
 TelemetryServerImpl::publish_ground_truth(TelemetryServer::GroundTruth ground_truth)
 {
@@ -297,14 +409,6 @@ TelemetryServerImpl::publish_ground_truth(TelemetryServer::GroundTruth ground_tr
 
     // TODO :)
     return {};
-}
-
-void TelemetryServerImpl::publish_imu_async(
-    TelemetryServer::Imu imu, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(imu);
-
-    UNUSED(callback);
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_imu(TelemetryServer::Imu imu)
@@ -315,28 +419,12 @@ TelemetryServer::Result TelemetryServerImpl::publish_imu(TelemetryServer::Imu im
     return {};
 }
 
-void TelemetryServerImpl::publish_scaled_imu_async(
-    TelemetryServer::Imu imu, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(imu);
-
-    UNUSED(callback);
-}
-
 TelemetryServer::Result TelemetryServerImpl::publish_scaled_imu(TelemetryServer::Imu imu)
 {
     UNUSED(imu);
 
     // TODO :)
     return {};
-}
-
-void TelemetryServerImpl::publish_raw_imu_async(
-    TelemetryServer::Imu imu, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(imu);
-
-    UNUSED(callback);
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_raw_imu(TelemetryServer::Imu imu)
@@ -347,14 +435,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_imu(TelemetryServer::Im
     return {};
 }
 
-void TelemetryServerImpl::publish_health_all_ok_async(
-    bool is_health_all_ok, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(is_health_all_ok);
-
-    UNUSED(callback);
-}
-
 TelemetryServer::Result TelemetryServerImpl::publish_health_all_ok(bool is_health_all_ok)
 {
     UNUSED(is_health_all_ok);
@@ -363,20 +443,152 @@ TelemetryServer::Result TelemetryServerImpl::publish_health_all_ok(bool is_healt
     return {};
 }
 
-void TelemetryServerImpl::publish_unix_epoch_time_async(
-    uint64_t time_us, const TelemetryServer::ResultCallback callback)
-{
-    UNUSED(time_us);
-
-    UNUSED(callback);
-}
-
 TelemetryServer::Result TelemetryServerImpl::publish_unix_epoch_time(uint64_t time_us)
 {
     UNUSED(time_us);
 
     // TODO :)
     return {};
+}
+
+void TelemetryServerImpl::subscribe_arm_disarm(TelemetryServer::ArmDisarmCallback callback)
+{
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _arm_disarm_callback = callback;
+}
+
+TelemetryServer::ArmDisarm TelemetryServerImpl::arm_disarm() const
+{
+    // TODO :)
+    return {};
+}
+
+TelemetryServer::Result TelemetryServerImpl::set_armable(bool armable, bool force_armable)
+{
+    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
+    _armable = armable;
+    _force_armable = force_armable;
+    return TelemetryServer::Result::Success;
+}
+
+TelemetryServer::Result TelemetryServerImpl::set_disarmable(bool disarmable, bool force_disarmable)
+{
+    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
+    _disarmable = disarmable;
+    _force_disarmable = force_disarmable;
+    return TelemetryServer::Result::Success;
+}
+
+TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
+    TelemetryServer::Battery battery,
+    bool rc_receiver_status,
+    bool gyro_status,
+    bool accel_status,
+    bool mag_status,
+    bool gps_status) const
+{
+    int32_t sensors = 0;
+
+    if (rc_receiver_status)
+        sensors |= MAV_SYS_STATUS_SENSOR_RC_RECEIVER;
+    if (gyro_status)
+        sensors |= MAV_SYS_STATUS_SENSOR_3D_GYRO;
+    if (accel_status)
+        sensors |= MAV_SYS_STATUS_SENSOR_3D_ACCEL;
+    if (mag_status)
+        sensors |= MAV_SYS_STATUS_SENSOR_3D_MAG;
+    if (gps_status)
+        sensors |= MAV_SYS_STATUS_SENSOR_GPS;
+
+    mavlink_message_t msg;
+    mavlink_msg_sys_status_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        sensors,
+        sensors,
+        sensors,
+        0,
+        static_cast<uint16_t>(battery.voltage_v) * 1E3,
+        -1,
+        static_cast<uint16_t>(battery.remaining_percent) * 1E2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0);
+
+    return _parent->send_message(msg) ? TelemetryServer::Result::Success :
+                                        TelemetryServer::Result::Unsupported;
+}
+
+uint8_t to_mav_vtol_state(TelemetryServer::VTOLState vtol_state)
+{
+    switch (vtol_state) {
+        case TelemetryServer::VTOLState::VtolUndefined:
+            return MAV_VTOL_STATE_UNDEFINED;
+        case TelemetryServer::VTOLState::VtolTransitionToFw:
+            return MAV_VTOL_STATE_TRANSITION_TO_FW;
+        case TelemetryServer::VTOLState::VtolTransitionToMc:
+            return MAV_VTOL_STATE_TRANSITION_TO_MC;
+        case TelemetryServer::VTOLState::VtolMc:
+            return MAV_VTOL_STATE_MC;
+        case TelemetryServer::VTOLState::VtolFw:
+            return MAV_VTOL_STATE_FW;
+        default:
+            return MAV_VTOL_STATE_UNDEFINED;
+    }
+}
+
+uint8_t to_mav_landed_state(TelemetryServer::LandedState landed_state)
+{
+    switch (landed_state) {
+        case TelemetryServer::LandedState::InAir:
+            return MAV_LANDED_STATE_IN_AIR;
+        case TelemetryServer::LandedState::TakingOff:
+            return MAV_LANDED_STATE_TAKEOFF;
+        case TelemetryServer::LandedState::Landing:
+            return MAV_LANDED_STATE_LANDING;
+        case TelemetryServer::LandedState::OnGround:
+            return MAV_LANDED_STATE_ON_GROUND;
+        default:
+            return MAV_LANDED_STATE_UNDEFINED;
+    }
+}
+
+TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
+    TelemetryServer::VTOLState vtol_state, TelemetryServer::LandedState landed_state) const
+{
+    mavlink_message_t msg;
+    mavlink_msg_extended_sys_state_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        to_mav_vtol_state(vtol_state),
+        to_mav_landed_state(landed_state));
+
+    return _parent->send_message(msg) ? TelemetryServer::Result::Success :
+                                        TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result
+TelemetryServerImpl::set_allowable_flight_modes(TelemetryServer::AllowableFlightModes flight_modes)
+{
+    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
+    _allowed_flight_modes = flight_modes;
+}
+
+TelemetryServer::AllowableFlightModes TelemetryServerImpl::get_allowable_flight_modes()
+{
+    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
+    return _allowed_flight_modes;
+}
+
+void TelemetryServerImpl::subscribe_do_set_mode(TelemetryServer::DoSetModeCallback callback)
+{
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _do_set_mode_callback = callback;
 }
 
 } // namespace mavsdk

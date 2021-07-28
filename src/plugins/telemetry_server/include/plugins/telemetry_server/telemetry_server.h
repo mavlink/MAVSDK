@@ -111,6 +111,25 @@ public:
     operator<<(std::ostream& str, TelemetryServer::FlightMode const& flight_mode);
 
     /**
+     * @brief Maps to MAV_VTOL_STATE
+     */
+    enum class VTOLState {
+        VtolUndefined, /**< @brief Not VTOL. */
+        VtolTransitionToFw, /**< @brief Transitioning to fixed-wing. */
+        VtolTransitionToMc, /**< @brief Transitioning to multi-copter. */
+        VtolMc, /**< @brief Multi-copter. */
+        VtolFw, /**< @brief Fixed-wing. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `TelemetryServer::VTOLState`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::VTOLState const& v_t_o_l_state);
+
+    /**
      * @brief Status types.
      */
     enum class StatusTextType {
@@ -336,6 +355,32 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::RawGps const& raw_gps);
+
+    /**
+     * @brief
+     */
+    struct AllowableFlightModes {
+        bool can_auto_mode{}; /**< @brief Auto/mission mode */
+        bool can_guided_mode{}; /**< @brief Guided mode */
+        bool can_stablize_mode{}; /**< @brief Stablize mode */
+    };
+
+    /**
+     * @brief Equal operator to compare two `TelemetryServer::AllowableFlightModes` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const TelemetryServer::AllowableFlightModes& lhs,
+        const TelemetryServer::AllowableFlightModes& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `TelemetryServer::AllowableFlightModes`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(
+        std::ostream& str, TelemetryServer::AllowableFlightModes const& allowable_flight_modes);
 
     /**
      * @brief Battery type.
@@ -920,6 +965,53 @@ public:
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu const& imu);
 
     /**
+     * @brief Arming message type
+     */
+    struct ArmDisarm {
+        int32_t arm{}; /**< @brief Should vehicle arm */
+        int32_t force{}; /**< @brief Should arm override pre-flight checks */
+    };
+
+    /**
+     * @brief Equal operator to compare two `TelemetryServer::ArmDisarm` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const TelemetryServer::ArmDisarm& lhs, const TelemetryServer::ArmDisarm& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `TelemetryServer::ArmDisarm`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::ArmDisarm const& arm_disarm);
+
+    /**
+     * @brief
+     */
+    struct RcReceiverStatus {
+        bool health{}; /**< @brief */
+    };
+
+    /**
+     * @brief Equal operator to compare two `TelemetryServer::RcReceiverStatus` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const TelemetryServer::RcReceiverStatus& lhs, const TelemetryServer::RcReceiverStatus& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `TelemetryServer::RcReceiverStatus`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::RcReceiverStatus const& rc_receiver_status);
+
+    /**
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {
@@ -948,15 +1040,7 @@ public:
     /**
      * @brief Publish to 'position' updates.
      *
-     * This function is non-blocking. See 'publish_position' for the blocking counterpart.
-     */
-    void publish_position_async(
-        Position position, VelocityNed velocity_ned, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'position' updates.
-     *
-     * This function is blocking. See 'publish_position_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -965,30 +1049,40 @@ public:
     /**
      * @brief Publish to 'home position' updates.
      *
-     * This function is non-blocking. See 'publish_home' for the blocking counterpart.
-     */
-    void publish_home_async(Position home, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'home position' updates.
-     *
-     * This function is blocking. See 'publish_home_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result publish_home(Position home) const;
 
     /**
-     * @brief Publish to armed updates.
+     * @brief Publish 'sys status' updates.
      *
-     * This function is non-blocking. See 'publish_armed' for the blocking counterpart.
+     * This function is blocking.
+     *
+     * @return Result of request.
      */
-    void publish_armed_async(bool is_armed, const ResultCallback callback);
+    Result publish_sys_status(
+        Battery battery,
+        bool rc_receiver_status,
+        bool gyro_status,
+        bool accel_status,
+        bool mag_status,
+        bool gps_status) const;
+
+    /**
+     * @brief Publish 'extended sys state' updates.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result publish_extended_sys_state(VTOLState vtol_state, LandedState landed_state) const;
 
     /**
      * @brief Publish to armed updates.
      *
-     * This function is blocking. See 'publish_armed_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -997,14 +1091,7 @@ public:
     /**
      * @brief Publish to 'Raw GPS' updates.
      *
-     * This function is non-blocking. See 'publish_raw_gps' for the blocking counterpart.
-     */
-    void publish_raw_gps_async(RawGps raw_gps, GpsInfo gps_info, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'Raw GPS' updates.
-     *
-     * This function is blocking. See 'publish_raw_gps_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1013,14 +1100,7 @@ public:
     /**
      * @brief Publish to 'battery' updates.
      *
-     * This function is non-blocking. See 'publish_battery' for the blocking counterpart.
-     */
-    void publish_battery_async(Battery battery, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'battery' updates.
-     *
-     * This function is blocking. See 'publish_battery_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1029,46 +1109,16 @@ public:
     /**
      * @brief Publish to 'flight mode' updates.
      *
-     * This function is non-blocking. See 'publish_flight_mode' for the blocking counterpart.
-     */
-    void publish_flight_mode_async(FlightMode flight_mode, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'flight mode' updates.
-     *
-     * This function is blocking. See 'publish_flight_mode_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result publish_flight_mode(FlightMode flight_mode) const;
 
     /**
-     * @brief Publish to 'health' updates.
-     *
-     * This function is non-blocking. See 'publish_health' for the blocking counterpart.
-     */
-    void publish_health_async(Health health, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'health' updates.
-     *
-     * This function is blocking. See 'publish_health_async' for the non-blocking counterpart.
-     *
-     * @return Result of request.
-     */
-    Result publish_health(Health health) const;
-
-    /**
      * @brief Publish to 'status text' updates.
      *
-     * This function is non-blocking. See 'publish_status_text' for the blocking counterpart.
-     */
-    void publish_status_text_async(StatusText status_text, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'status text' updates.
-     *
-     * This function is blocking. See 'publish_status_text_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1077,14 +1127,7 @@ public:
     /**
      * @brief Publish to 'odometry' updates.
      *
-     * This function is non-blocking. See 'publish_odometry' for the blocking counterpart.
-     */
-    void publish_odometry_async(Odometry odometry, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'odometry' updates.
-     *
-     * This function is blocking. See 'publish_odometry_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1093,17 +1136,7 @@ public:
     /**
      * @brief Publish to 'position velocity' updates.
      *
-     * This function is non-blocking. See 'publish_position_velocity_ned' for the blocking
-     * counterpart.
-     */
-    void publish_position_velocity_ned_async(
-        PositionVelocityNed position_velocity_ned, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'position velocity' updates.
-     *
-     * This function is blocking. See 'publish_position_velocity_ned_async' for the non-blocking
-     * counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1112,14 +1145,7 @@ public:
     /**
      * @brief Publish to 'ground truth' updates.
      *
-     * This function is non-blocking. See 'publish_ground_truth' for the blocking counterpart.
-     */
-    void publish_ground_truth_async(GroundTruth ground_truth, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'ground truth' updates.
-     *
-     * This function is blocking. See 'publish_ground_truth_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1128,14 +1154,7 @@ public:
     /**
      * @brief Publish to 'IMU' updates (in SI units in NED body frame).
      *
-     * This function is non-blocking. See 'publish_imu' for the blocking counterpart.
-     */
-    void publish_imu_async(Imu imu, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'IMU' updates (in SI units in NED body frame).
-     *
-     * This function is blocking. See 'publish_imu_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1144,14 +1163,7 @@ public:
     /**
      * @brief Publish to 'Scaled IMU' updates.
      *
-     * This function is non-blocking. See 'publish_scaled_imu' for the blocking counterpart.
-     */
-    void publish_scaled_imu_async(Imu imu, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'Scaled IMU' updates.
-     *
-     * This function is blocking. See 'publish_scaled_imu_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
@@ -1160,52 +1172,69 @@ public:
     /**
      * @brief Publish to 'Raw IMU' updates.
      *
-     * This function is non-blocking. See 'publish_raw_imu' for the blocking counterpart.
-     */
-    void publish_raw_imu_async(Imu imu, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'Raw IMU' updates.
-     *
-     * This function is blocking. See 'publish_raw_imu_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result publish_raw_imu(Imu imu) const;
 
     /**
-     * @brief Publish to 'HealthAllOk' updates.
-     *
-     * This function is non-blocking. See 'publish_health_all_ok' for the blocking counterpart.
-     */
-    void publish_health_all_ok_async(bool is_health_all_ok, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'HealthAllOk' updates.
-     *
-     * This function is blocking. See 'publish_health_all_ok_async' for the non-blocking
-     * counterpart.
-     *
-     * @return Result of request.
-     */
-    Result publish_health_all_ok(bool is_health_all_ok) const;
-
-    /**
      * @brief Publish to 'unix epoch time' updates.
      *
-     * This function is non-blocking. See 'publish_unix_epoch_time' for the blocking counterpart.
-     */
-    void publish_unix_epoch_time_async(uint64_t time_us, const ResultCallback callback);
-
-    /**
-     * @brief Publish to 'unix epoch time' updates.
-     *
-     * This function is blocking. See 'publish_unix_epoch_time_async' for the non-blocking
-     * counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */
     Result publish_unix_epoch_time(uint64_t time_us) const;
+
+    /**
+     * @brief Callback type for subscribe_arm_disarm.
+     */
+
+    using ArmDisarmCallback = std::function<void(TelemetryServer::Result, ArmDisarm)>;
+
+    /**
+     * @brief Subscribe to ARM/DISARM commands
+     */
+    void subscribe_arm_disarm(ArmDisarmCallback callback);
+
+    /**
+     * @brief Callback type for subscribe_do_set_mode.
+     */
+
+    using DoSetModeCallback = std::function<void(TelemetryServer::Result, FlightMode)>;
+
+    /**
+     * @brief Subscribe to DO_SET_MODE
+     */
+    void subscribe_do_set_mode(DoSetModeCallback callback);
+
+    /**
+     * @brief Can the vehicle arm when requested
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_armable(bool armable, bool force_armable) const;
+
+    /**
+     * @brief Can the vehicle disarm when requested
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_allowable_flight_modes(AllowableFlightModes flight_modes) const;
+
+    /**
+     * @brief Can the vehicle disarm when requested
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    TelemetryServer::AllowableFlightModes get_allowable_flight_modes() const;
 
     /**
      * @brief Copy constructor.

@@ -16,6 +16,7 @@ using EulerAngle = TelemetryServer::EulerAngle;
 using AngularVelocityBody = TelemetryServer::AngularVelocityBody;
 using GpsInfo = TelemetryServer::GpsInfo;
 using RawGps = TelemetryServer::RawGps;
+using AllowableFlightModes = TelemetryServer::AllowableFlightModes;
 using Battery = TelemetryServer::Battery;
 using Health = TelemetryServer::Health;
 using RcStatus = TelemetryServer::RcStatus;
@@ -37,6 +38,8 @@ using AccelerationFrd = TelemetryServer::AccelerationFrd;
 using AngularVelocityFrd = TelemetryServer::AngularVelocityFrd;
 using MagneticFieldFrd = TelemetryServer::MagneticFieldFrd;
 using Imu = TelemetryServer::Imu;
+using ArmDisarm = TelemetryServer::ArmDisarm;
+using RcReceiverStatus = TelemetryServer::RcReceiverStatus;
 
 TelemetryServer::TelemetryServer(System& system) :
     PluginBase(),
@@ -50,21 +53,10 @@ TelemetryServer::TelemetryServer(std::shared_ptr<System> system) :
 
 TelemetryServer::~TelemetryServer() {}
 
-void TelemetryServer::publish_position_async(
-    Position position, VelocityNed velocity_ned, const ResultCallback callback)
-{
-    _impl->publish_position_async(position, velocity_ned, callback);
-}
-
 TelemetryServer::Result
 TelemetryServer::publish_position(Position position, VelocityNed velocity_ned) const
 {
     return _impl->publish_position(position, velocity_ned);
-}
-
-void TelemetryServer::publish_home_async(Position home, const ResultCallback callback)
-{
-    _impl->publish_home_async(home, callback);
 }
 
 TelemetryServer::Result TelemetryServer::publish_home(Position home) const
@@ -72,9 +64,22 @@ TelemetryServer::Result TelemetryServer::publish_home(Position home) const
     return _impl->publish_home(home);
 }
 
-void TelemetryServer::publish_armed_async(bool is_armed, const ResultCallback callback)
+TelemetryServer::Result TelemetryServer::publish_sys_status(
+    Battery battery,
+    bool rc_receiver_status,
+    bool gyro_status,
+    bool accel_status,
+    bool mag_status,
+    bool gps_status) const
 {
-    _impl->publish_armed_async(is_armed, callback);
+    return _impl->publish_sys_status(
+        battery, rc_receiver_status, gyro_status, accel_status, mag_status, gps_status);
+}
+
+TelemetryServer::Result
+TelemetryServer::publish_extended_sys_state(VTOLState vtol_state, LandedState landed_state) const
+{
+    return _impl->publish_extended_sys_state(vtol_state, landed_state);
 }
 
 TelemetryServer::Result TelemetryServer::publish_armed(bool is_armed) const
@@ -82,20 +87,9 @@ TelemetryServer::Result TelemetryServer::publish_armed(bool is_armed) const
     return _impl->publish_armed(is_armed);
 }
 
-void TelemetryServer::publish_raw_gps_async(
-    RawGps raw_gps, GpsInfo gps_info, const ResultCallback callback)
-{
-    _impl->publish_raw_gps_async(raw_gps, gps_info, callback);
-}
-
 TelemetryServer::Result TelemetryServer::publish_raw_gps(RawGps raw_gps, GpsInfo gps_info) const
 {
     return _impl->publish_raw_gps(raw_gps, gps_info);
-}
-
-void TelemetryServer::publish_battery_async(Battery battery, const ResultCallback callback)
-{
-    _impl->publish_battery_async(battery, callback);
 }
 
 TelemetryServer::Result TelemetryServer::publish_battery(Battery battery) const
@@ -103,31 +97,9 @@ TelemetryServer::Result TelemetryServer::publish_battery(Battery battery) const
     return _impl->publish_battery(battery);
 }
 
-void TelemetryServer::publish_flight_mode_async(
-    FlightMode flight_mode, const ResultCallback callback)
-{
-    _impl->publish_flight_mode_async(flight_mode, callback);
-}
-
 TelemetryServer::Result TelemetryServer::publish_flight_mode(FlightMode flight_mode) const
 {
     return _impl->publish_flight_mode(flight_mode);
-}
-
-void TelemetryServer::publish_health_async(Health health, const ResultCallback callback)
-{
-    _impl->publish_health_async(health, callback);
-}
-
-TelemetryServer::Result TelemetryServer::publish_health(Health health) const
-{
-    return _impl->publish_health(health);
-}
-
-void TelemetryServer::publish_status_text_async(
-    StatusText status_text, const ResultCallback callback)
-{
-    _impl->publish_status_text_async(status_text, callback);
 }
 
 TelemetryServer::Result TelemetryServer::publish_status_text(StatusText status_text) const
@@ -135,20 +107,9 @@ TelemetryServer::Result TelemetryServer::publish_status_text(StatusText status_t
     return _impl->publish_status_text(status_text);
 }
 
-void TelemetryServer::publish_odometry_async(Odometry odometry, const ResultCallback callback)
-{
-    _impl->publish_odometry_async(odometry, callback);
-}
-
 TelemetryServer::Result TelemetryServer::publish_odometry(Odometry odometry) const
 {
     return _impl->publish_odometry(odometry);
-}
-
-void TelemetryServer::publish_position_velocity_ned_async(
-    PositionVelocityNed position_velocity_ned, const ResultCallback callback)
-{
-    _impl->publish_position_velocity_ned_async(position_velocity_ned, callback);
 }
 
 TelemetryServer::Result
@@ -157,20 +118,9 @@ TelemetryServer::publish_position_velocity_ned(PositionVelocityNed position_velo
     return _impl->publish_position_velocity_ned(position_velocity_ned);
 }
 
-void TelemetryServer::publish_ground_truth_async(
-    GroundTruth ground_truth, const ResultCallback callback)
-{
-    _impl->publish_ground_truth_async(ground_truth, callback);
-}
-
 TelemetryServer::Result TelemetryServer::publish_ground_truth(GroundTruth ground_truth) const
 {
     return _impl->publish_ground_truth(ground_truth);
-}
-
-void TelemetryServer::publish_imu_async(Imu imu, const ResultCallback callback)
-{
-    _impl->publish_imu_async(imu, callback);
 }
 
 TelemetryServer::Result TelemetryServer::publish_imu(Imu imu) const
@@ -178,19 +128,9 @@ TelemetryServer::Result TelemetryServer::publish_imu(Imu imu) const
     return _impl->publish_imu(imu);
 }
 
-void TelemetryServer::publish_scaled_imu_async(Imu imu, const ResultCallback callback)
-{
-    _impl->publish_scaled_imu_async(imu, callback);
-}
-
 TelemetryServer::Result TelemetryServer::publish_scaled_imu(Imu imu) const
 {
     return _impl->publish_scaled_imu(imu);
-}
-
-void TelemetryServer::publish_raw_imu_async(Imu imu, const ResultCallback callback)
-{
-    _impl->publish_raw_imu_async(imu, callback);
 }
 
 TelemetryServer::Result TelemetryServer::publish_raw_imu(Imu imu) const
@@ -198,25 +138,35 @@ TelemetryServer::Result TelemetryServer::publish_raw_imu(Imu imu) const
     return _impl->publish_raw_imu(imu);
 }
 
-void TelemetryServer::publish_health_all_ok_async(
-    bool is_health_all_ok, const ResultCallback callback)
-{
-    _impl->publish_health_all_ok_async(is_health_all_ok, callback);
-}
-
-TelemetryServer::Result TelemetryServer::publish_health_all_ok(bool is_health_all_ok) const
-{
-    return _impl->publish_health_all_ok(is_health_all_ok);
-}
-
-void TelemetryServer::publish_unix_epoch_time_async(uint64_t time_us, const ResultCallback callback)
-{
-    _impl->publish_unix_epoch_time_async(time_us, callback);
-}
-
 TelemetryServer::Result TelemetryServer::publish_unix_epoch_time(uint64_t time_us) const
 {
     return _impl->publish_unix_epoch_time(time_us);
+}
+
+void TelemetryServer::subscribe_arm_disarm(ArmDisarmCallback callback)
+{
+    _impl->subscribe_arm_disarm(callback);
+}
+
+void TelemetryServer::subscribe_do_set_mode(DoSetModeCallback callback)
+{
+    _impl->subscribe_do_set_mode(callback);
+}
+
+TelemetryServer::Result TelemetryServer::set_armable(bool armable, bool force_armable) const
+{
+    return _impl->set_armable(armable, force_armable);
+}
+
+TelemetryServer::Result
+TelemetryServer::set_allowable_flight_modes(AllowableFlightModes flight_modes) const
+{
+    return _impl->set_allowable_flight_modes(flight_modes);
+}
+
+TelemetryServer::AllowableFlightModes TelemetryServer::get_allowable_flight_modes() const
+{
+    return _impl->get_allowable_flight_modes();
 }
 
 bool operator==(const TelemetryServer::Position& lhs, const TelemetryServer::Position& rhs)
@@ -373,6 +323,27 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::RawGps const& raw_g
     str << "    velocity_uncertainty_m_s: " << raw_gps.velocity_uncertainty_m_s << '\n';
     str << "    heading_uncertainty_deg: " << raw_gps.heading_uncertainty_deg << '\n';
     str << "    yaw_deg: " << raw_gps.yaw_deg << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(
+    const TelemetryServer::AllowableFlightModes& lhs,
+    const TelemetryServer::AllowableFlightModes& rhs)
+{
+    return (rhs.can_auto_mode == lhs.can_auto_mode) &&
+           (rhs.can_guided_mode == lhs.can_guided_mode) &&
+           (rhs.can_stablize_mode == lhs.can_stablize_mode);
+}
+
+std::ostream&
+operator<<(std::ostream& str, TelemetryServer::AllowableFlightModes const& allowable_flight_modes)
+{
+    str << std::setprecision(15);
+    str << "allowable_flight_modes:" << '\n' << "{\n";
+    str << "    can_auto_mode: " << allowable_flight_modes.can_auto_mode << '\n';
+    str << "    can_guided_mode: " << allowable_flight_modes.can_guided_mode << '\n';
+    str << "    can_stablize_mode: " << allowable_flight_modes.can_stablize_mode << '\n';
     str << '}';
     return str;
 }
@@ -845,6 +816,37 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu const& imu)
     return str;
 }
 
+bool operator==(const TelemetryServer::ArmDisarm& lhs, const TelemetryServer::ArmDisarm& rhs)
+{
+    return (rhs.arm == lhs.arm) && (rhs.force == lhs.force);
+}
+
+std::ostream& operator<<(std::ostream& str, TelemetryServer::ArmDisarm const& arm_disarm)
+{
+    str << std::setprecision(15);
+    str << "arm_disarm:" << '\n' << "{\n";
+    str << "    arm: " << arm_disarm.arm << '\n';
+    str << "    force: " << arm_disarm.force << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(
+    const TelemetryServer::RcReceiverStatus& lhs, const TelemetryServer::RcReceiverStatus& rhs)
+{
+    return (rhs.health == lhs.health);
+}
+
+std::ostream&
+operator<<(std::ostream& str, TelemetryServer::RcReceiverStatus const& rc_receiver_status)
+{
+    str << std::setprecision(15);
+    str << "rc_receiver_status:" << '\n' << "{\n";
+    str << "    health: " << rc_receiver_status.health << '\n';
+    str << '}';
+    return str;
+}
+
 std::ostream& operator<<(std::ostream& str, TelemetryServer::Result const& result)
 {
     switch (result) {
@@ -924,6 +926,24 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::FlightMode const& f
             return str << "Stabilized";
         case TelemetryServer::FlightMode::Rattitude:
             return str << "Rattitude";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, TelemetryServer::VTOLState const& v_t_o_l_state)
+{
+    switch (v_t_o_l_state) {
+        case TelemetryServer::VTOLState::VtolUndefined:
+            return str << "Vtol Undefined";
+        case TelemetryServer::VTOLState::VtolTransitionToFw:
+            return str << "Vtol Transition To Fw";
+        case TelemetryServer::VTOLState::VtolTransitionToMc:
+            return str << "Vtol Transition To Mc";
+        case TelemetryServer::VTOLState::VtolMc:
+            return str << "Vtol Mc";
+        case TelemetryServer::VTOLState::VtolFw:
+            return str << "Vtol Fw";
         default:
             return str << "Unknown";
     }

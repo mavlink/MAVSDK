@@ -106,8 +106,75 @@ public:
 
     TelemetryServer::Result publish_unix_epoch_time(uint64_t time_us);
 
+    void subscribe_arm_disarm(TelemetryServer::ArmDisarmCallback callback);
+
+    TelemetryServer::ArmDisarm arm_disarm() const;
+
+    void set_armable_async(
+        bool armable, bool force_armable, const TelemetryServer::ResultCallback callback);
+
+    TelemetryServer::Result set_armable(bool armable, bool force_armable);
+
+    void set_disarmable_async(
+        bool disarmable, bool force_disarmable, const TelemetryServer::ResultCallback callback);
+
+    TelemetryServer::Result set_disarmable(bool disarmable, bool force_disarmable);
+
+    TelemetryServer::Result
+    set_allowable_flight_modes(TelemetryServer::AllowableFlightModes flight_modes);
+
+    TelemetryServer::AllowableFlightModes get_allowable_flight_modes();
+
+    void subscribe_do_set_mode(TelemetryServer::DoSetModeCallback callback);
+
+    void publish_sys_status_async(
+        TelemetryServer::Battery battery,
+        bool rc_receiver_status,
+        bool gyro_status,
+        bool accel_status,
+        bool mag_status,
+        bool gps_status,
+        const TelemetryServer::ResultCallback callback);
+
+    TelemetryServer::Result publish_sys_status(
+        TelemetryServer::Battery battery,
+        bool rc_receiver_status,
+        bool gyro_status,
+        bool accel_status,
+        bool mag_status,
+        bool gps_status) const;
+
+    void publish_extended_sys_state_async(
+        TelemetryServer::VTOLState vtol_state,
+        TelemetryServer::LandedState landed_state,
+        const TelemetryServer::ResultCallback callback);
+
+    TelemetryServer::Result publish_extended_sys_state(
+        TelemetryServer::VTOLState vtol_state, TelemetryServer::LandedState landed_state) const;
+
 private:
     std::chrono::time_point<std::chrono::steady_clock> _start_time;
+    TelemetryServer::ArmDisarmCallback _arm_disarm_callback;
+    TelemetryServer::DoSetModeCallback _do_set_mode_callback;
+    std::atomic<bool> _armable = false;
+    std::atomic<bool> _force_armable = false;
+    std::atomic<bool> _disarmable = false;
+    std::atomic<bool> _force_disarmable = false;
+
+    std::mutex _flight_mode_mutex;
+    std::mutex _callback_mutex;
+
+    union px4_custom_mode {
+        struct {
+            uint16_t reserved;
+            uint8_t main_mode;
+            uint8_t sub_mode;
+        };
+        uint32_t data;
+        float data_float;
+    };
+
+    TelemetryServer::AllowableFlightModes _allowed_flight_modes{};
 
     uint64_t get_boot_time()
     {
