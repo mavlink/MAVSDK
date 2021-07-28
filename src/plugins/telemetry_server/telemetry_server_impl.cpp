@@ -2,43 +2,6 @@
 
 namespace mavsdk {
 
-TelemetryServer::FlightMode
-telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode)
-{
-    switch (flight_mode) {
-        case SystemImpl::FlightMode::Ready:
-            return TelemetryServer::FlightMode::Ready;
-        case SystemImpl::FlightMode::Takeoff:
-            return TelemetryServer::FlightMode::Takeoff;
-        case SystemImpl::FlightMode::Hold:
-            return TelemetryServer::FlightMode::Hold;
-        case SystemImpl::FlightMode::Mission:
-            return TelemetryServer::FlightMode::Mission;
-        case SystemImpl::FlightMode::ReturnToLaunch:
-            return TelemetryServer::FlightMode::ReturnToLaunch;
-        case SystemImpl::FlightMode::Land:
-            return TelemetryServer::FlightMode::Land;
-        case SystemImpl::FlightMode::Offboard:
-            return TelemetryServer::FlightMode::Offboard;
-        case SystemImpl::FlightMode::FollowMe:
-            return TelemetryServer::FlightMode::FollowMe;
-        case SystemImpl::FlightMode::Manual:
-            return TelemetryServer::FlightMode::Manual;
-        case SystemImpl::FlightMode::Posctl:
-            return TelemetryServer::FlightMode::Posctl;
-        case SystemImpl::FlightMode::Altctl:
-            return TelemetryServer::FlightMode::Altctl;
-        case SystemImpl::FlightMode::Rattitude:
-            return TelemetryServer::FlightMode::Rattitude;
-        case SystemImpl::FlightMode::Acro:
-            return TelemetryServer::FlightMode::Acro;
-        case SystemImpl::FlightMode::Stabilized:
-            return TelemetryServer::FlightMode::Stabilized;
-        default:
-            return TelemetryServer::FlightMode::Unknown;
-    }
-}
-
 TelemetryServerImpl::TelemetryServerImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -68,122 +31,6 @@ void TelemetryServerImpl::init()
                 &msg,
                 command.command,
                 MAV_RESULT::MAV_RESULT_ACCEPTED,
-                100,
-                0,
-                command.origin_system_id,
-                command.origin_component_id);
-            return msg;
-        },
-        this);
-
-    _parent->register_mavlink_command_handler(
-        MAV_CMD_COMPONENT_ARM_DISARM,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
-            TelemetryServer::ArmDisarm armDisarm{
-                static_cast<int32_t>(command.params.param1),
-                static_cast<int32_t>(command.params.param2)};
-
-            // Check arm states - Ugly.
-            uint8_t request_ack = MAV_RESULT_UNSUPPORTED;
-            bool force = armDisarm.force == 21196;
-            if (armDisarm.arm == 1) {
-                request_ack = (_armable || (force && _force_armable)) ?
-                                  MAV_RESULT::MAV_RESULT_ACCEPTED :
-                                  MAV_RESULT_TEMPORARILY_REJECTED;
-            } else {
-                request_ack = (_disarmable || (force && _force_disarmable)) ?
-                                  MAV_RESULT::MAV_RESULT_ACCEPTED :
-                                  MAV_RESULT_TEMPORARILY_REJECTED;
-            }
-
-            if (request_ack == MAV_RESULT::MAV_RESULT_ACCEPTED) {
-                _parent->set_server_armed(armDisarm.arm == 1);
-            }
-
-            auto result = (request_ack == MAV_RESULT::MAV_RESULT_ACCEPTED) ?
-                              TelemetryServer::Result::Success :
-                              TelemetryServer::Result::CommandDenied;
-
-            _parent->call_user_callback(
-                [this, armDisarm, result]() { _arm_disarm_callback(result, armDisarm); });
-
-            mavlink_message_t msg;
-            mavlink_msg_command_ack_pack(
-                _parent->get_own_system_id(),
-                _parent->get_own_component_id(),
-                &msg,
-                command.command,
-                request_ack,
-                100,
-                0,
-                command.origin_system_id,
-                command.origin_component_id);
-            return msg;
-        },
-        this);
-
-    _parent->register_mavlink_command_handler(
-        MAV_CMD_DO_SET_MODE,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
-            auto base_mode = static_cast<uint8_t>(command.params.param1);
-            auto is_custom = (base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) ==
-                             MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
-            TelemetryServer::FlightMode request_flight_mode = TelemetryServer::FlightMode::Unknown;
-
-            auto custom_mode = static_cast<uint8_t>(command.params.param2);
-            auto sub_custom_mode = static_cast<uint8_t>(command.params.param3);
-
-            if (is_custom) {
-                // PX4 uses custom modes
-                px4_custom_mode px4_mode{};
-                px4_mode.main_mode = custom_mode;
-                px4_mode.sub_mode = sub_custom_mode;
-                auto system_flight_mode = _parent->to_flight_mode_from_custom_mode(px4_mode.data);
-                request_flight_mode = telemetry_flight_mode_from_flight_mode(system_flight_mode);
-            } else {
-                // TO DO non PX4 flight modes...
-            }
-
-            bool allow_mode = false;
-            switch (request_flight_mode) {
-                case TelemetryServer::FlightMode::Manual:
-                    allow_mode = true;
-                    break;
-                case TelemetryServer::FlightMode::Mission:
-                    allow_mode = _allowed_flight_modes.can_auto_mode;
-                    break;
-                case TelemetryServer::FlightMode::Stabilized:
-                    allow_mode = _allowed_flight_modes.can_stabilize_mode;
-                    break;
-                default:
-                    allow_mode = false;
-                    break;
-            }
-
-            // PX4...
-            px4_custom_mode px4_mode{};
-            px4_mode.data = _parent->get_custom_mode();
-
-            if (allow_mode) {
-                px4_mode.main_mode = custom_mode;
-                px4_mode.sub_mode = sub_custom_mode;
-                _parent->set_custom_mode(px4_mode.data);
-            }
-
-            _parent->call_user_callback([this, allow_mode, request_flight_mode]() {
-                _do_set_mode_callback(
-                    allow_mode ? TelemetryServer::Result::Success :
-                                 TelemetryServer::Result::CommandDenied,
-                    request_flight_mode);
-            });
-
-            mavlink_message_t msg;
-            mavlink_msg_command_ack_pack(
-                _parent->get_own_system_id(),
-                _parent->get_own_component_id(),
-                &msg,
-                command.command,
-                allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED,
                 100,
                 0,
                 command.origin_system_id,
@@ -247,14 +94,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Posit
                                         TelemetryServer::Result::Unsupported;
 }
 
-TelemetryServer::Result TelemetryServerImpl::publish_armed(bool is_armed)
-{
-    UNUSED(is_armed);
-
-    // TODO :)
-    return {};
-}
-
 TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
     TelemetryServer::RawGps raw_gps, TelemetryServer::GpsInfo gps_info)
 {
@@ -313,15 +152,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
-}
-
-TelemetryServer::Result
-TelemetryServerImpl::publish_flight_mode(TelemetryServer::FlightMode flight_mode)
-{
-    UNUSED(flight_mode);
-
-    // TODO :)
-    return {};
 }
 
 TelemetryServer::Result
@@ -435,48 +265,12 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_imu(TelemetryServer::Im
     return {};
 }
 
-TelemetryServer::Result TelemetryServerImpl::publish_health_all_ok(bool is_health_all_ok)
-{
-    UNUSED(is_health_all_ok);
-
-    // TODO :)
-    return {};
-}
-
 TelemetryServer::Result TelemetryServerImpl::publish_unix_epoch_time(uint64_t time_us)
 {
     UNUSED(time_us);
 
     // TODO :)
     return {};
-}
-
-void TelemetryServerImpl::subscribe_arm_disarm(TelemetryServer::ArmDisarmCallback callback)
-{
-    std::lock_guard<std::mutex> lock(_callback_mutex);
-    _arm_disarm_callback = callback;
-}
-
-TelemetryServer::ArmDisarm TelemetryServerImpl::arm_disarm() const
-{
-    // TODO :)
-    return {};
-}
-
-TelemetryServer::Result TelemetryServerImpl::set_armable(bool armable, bool force_armable)
-{
-    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
-    _armable = armable;
-    _force_armable = force_armable;
-    return TelemetryServer::Result::Success;
-}
-
-TelemetryServer::Result TelemetryServerImpl::set_disarmable(bool disarmable, bool force_disarmable)
-{
-    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
-    _disarmable = disarmable;
-    _force_disarmable = force_disarmable;
-    return TelemetryServer::Result::Success;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
@@ -523,18 +317,18 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
                                         TelemetryServer::Result::Unsupported;
 }
 
-uint8_t to_mav_vtol_state(TelemetryServer::VTOLState vtol_state)
+uint8_t to_mav_vtol_state(TelemetryServer::VtolState vtol_state)
 {
     switch (vtol_state) {
-        case TelemetryServer::VTOLState::VtolUndefined:
+        case TelemetryServer::VtolState::VtolUndefined:
             return MAV_VTOL_STATE_UNDEFINED;
-        case TelemetryServer::VTOLState::VtolTransitionToFw:
+        case TelemetryServer::VtolState::VtolTransitionToFw:
             return MAV_VTOL_STATE_TRANSITION_TO_FW;
-        case TelemetryServer::VTOLState::VtolTransitionToMc:
+        case TelemetryServer::VtolState::VtolTransitionToMc:
             return MAV_VTOL_STATE_TRANSITION_TO_MC;
-        case TelemetryServer::VTOLState::VtolMc:
+        case TelemetryServer::VtolState::VtolMc:
             return MAV_VTOL_STATE_MC;
-        case TelemetryServer::VTOLState::VtolFw:
+        case TelemetryServer::VtolState::VtolFw:
             return MAV_VTOL_STATE_FW;
         default:
             return MAV_VTOL_STATE_UNDEFINED;
@@ -558,7 +352,7 @@ uint8_t to_mav_landed_state(TelemetryServer::LandedState landed_state)
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
-    TelemetryServer::VTOLState vtol_state, TelemetryServer::LandedState landed_state) const
+    TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state) const
 {
     mavlink_message_t msg;
     mavlink_msg_extended_sys_state_pack(
@@ -570,25 +364,6 @@ TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
-}
-
-TelemetryServer::Result
-TelemetryServerImpl::set_allowable_flight_modes(TelemetryServer::AllowableFlightModes flight_modes)
-{
-    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
-    _allowed_flight_modes = flight_modes;
-}
-
-TelemetryServer::AllowableFlightModes TelemetryServerImpl::get_allowable_flight_modes()
-{
-    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
-    return _allowed_flight_modes;
-}
-
-void TelemetryServerImpl::subscribe_do_set_mode(TelemetryServer::DoSetModeCallback callback)
-{
-    std::lock_guard<std::mutex> lock(_callback_mutex);
-    _do_set_mode_callback = callback;
 }
 
 } // namespace mavsdk

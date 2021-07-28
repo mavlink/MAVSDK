@@ -91,123 +91,43 @@ public:
         }
     }
 
-    static rpc::telemetry_server::FlightMode
-    translateToRpcFlightMode(const mavsdk::TelemetryServer::FlightMode& flight_mode)
+    static rpc::telemetry_server::VtolState
+    translateToRpcVtolState(const mavsdk::TelemetryServer::VtolState& vtol_state)
     {
-        switch (flight_mode) {
+        switch (vtol_state) {
             default:
-                LogErr() << "Unknown flight_mode enum value: " << static_cast<int>(flight_mode);
+                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
             // FALLTHROUGH
-            case mavsdk::TelemetryServer::FlightMode::Unknown:
-                return rpc::telemetry_server::FLIGHT_MODE_UNKNOWN;
-            case mavsdk::TelemetryServer::FlightMode::Ready:
-                return rpc::telemetry_server::FLIGHT_MODE_READY;
-            case mavsdk::TelemetryServer::FlightMode::Takeoff:
-                return rpc::telemetry_server::FLIGHT_MODE_TAKEOFF;
-            case mavsdk::TelemetryServer::FlightMode::Hold:
-                return rpc::telemetry_server::FLIGHT_MODE_HOLD;
-            case mavsdk::TelemetryServer::FlightMode::Mission:
-                return rpc::telemetry_server::FLIGHT_MODE_MISSION;
-            case mavsdk::TelemetryServer::FlightMode::ReturnToLaunch:
-                return rpc::telemetry_server::FLIGHT_MODE_RETURN_TO_LAUNCH;
-            case mavsdk::TelemetryServer::FlightMode::Land:
-                return rpc::telemetry_server::FLIGHT_MODE_LAND;
-            case mavsdk::TelemetryServer::FlightMode::Offboard:
-                return rpc::telemetry_server::FLIGHT_MODE_OFFBOARD;
-            case mavsdk::TelemetryServer::FlightMode::FollowMe:
-                return rpc::telemetry_server::FLIGHT_MODE_FOLLOW_ME;
-            case mavsdk::TelemetryServer::FlightMode::Manual:
-                return rpc::telemetry_server::FLIGHT_MODE_MANUAL;
-            case mavsdk::TelemetryServer::FlightMode::Altctl:
-                return rpc::telemetry_server::FLIGHT_MODE_ALTCTL;
-            case mavsdk::TelemetryServer::FlightMode::Posctl:
-                return rpc::telemetry_server::FLIGHT_MODE_POSCTL;
-            case mavsdk::TelemetryServer::FlightMode::Acro:
-                return rpc::telemetry_server::FLIGHT_MODE_ACRO;
-            case mavsdk::TelemetryServer::FlightMode::Stabilized:
-                return rpc::telemetry_server::FLIGHT_MODE_STABILIZED;
-            case mavsdk::TelemetryServer::FlightMode::Rattitude:
-                return rpc::telemetry_server::FLIGHT_MODE_RATTITUDE;
+            case mavsdk::TelemetryServer::VtolState::VtolUndefined:
+                return rpc::telemetry_server::VTOL_STATE_VTOL_UNDEFINED;
+            case mavsdk::TelemetryServer::VtolState::VtolTransitionToFw:
+                return rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_FW;
+            case mavsdk::TelemetryServer::VtolState::VtolTransitionToMc:
+                return rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_MC;
+            case mavsdk::TelemetryServer::VtolState::VtolMc:
+                return rpc::telemetry_server::VTOL_STATE_VTOL_MC;
+            case mavsdk::TelemetryServer::VtolState::VtolFw:
+                return rpc::telemetry_server::VTOL_STATE_VTOL_FW;
         }
     }
 
-    static mavsdk::TelemetryServer::FlightMode
-    translateFromRpcFlightMode(const rpc::telemetry_server::FlightMode flight_mode)
+    static mavsdk::TelemetryServer::VtolState
+    translateFromRpcVtolState(const rpc::telemetry_server::VtolState vtol_state)
     {
-        switch (flight_mode) {
+        switch (vtol_state) {
             default:
-                LogErr() << "Unknown flight_mode enum value: " << static_cast<int>(flight_mode);
+                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
             // FALLTHROUGH
-            case rpc::telemetry_server::FLIGHT_MODE_UNKNOWN:
-                return mavsdk::TelemetryServer::FlightMode::Unknown;
-            case rpc::telemetry_server::FLIGHT_MODE_READY:
-                return mavsdk::TelemetryServer::FlightMode::Ready;
-            case rpc::telemetry_server::FLIGHT_MODE_TAKEOFF:
-                return mavsdk::TelemetryServer::FlightMode::Takeoff;
-            case rpc::telemetry_server::FLIGHT_MODE_HOLD:
-                return mavsdk::TelemetryServer::FlightMode::Hold;
-            case rpc::telemetry_server::FLIGHT_MODE_MISSION:
-                return mavsdk::TelemetryServer::FlightMode::Mission;
-            case rpc::telemetry_server::FLIGHT_MODE_RETURN_TO_LAUNCH:
-                return mavsdk::TelemetryServer::FlightMode::ReturnToLaunch;
-            case rpc::telemetry_server::FLIGHT_MODE_LAND:
-                return mavsdk::TelemetryServer::FlightMode::Land;
-            case rpc::telemetry_server::FLIGHT_MODE_OFFBOARD:
-                return mavsdk::TelemetryServer::FlightMode::Offboard;
-            case rpc::telemetry_server::FLIGHT_MODE_FOLLOW_ME:
-                return mavsdk::TelemetryServer::FlightMode::FollowMe;
-            case rpc::telemetry_server::FLIGHT_MODE_MANUAL:
-                return mavsdk::TelemetryServer::FlightMode::Manual;
-            case rpc::telemetry_server::FLIGHT_MODE_ALTCTL:
-                return mavsdk::TelemetryServer::FlightMode::Altctl;
-            case rpc::telemetry_server::FLIGHT_MODE_POSCTL:
-                return mavsdk::TelemetryServer::FlightMode::Posctl;
-            case rpc::telemetry_server::FLIGHT_MODE_ACRO:
-                return mavsdk::TelemetryServer::FlightMode::Acro;
-            case rpc::telemetry_server::FLIGHT_MODE_STABILIZED:
-                return mavsdk::TelemetryServer::FlightMode::Stabilized;
-            case rpc::telemetry_server::FLIGHT_MODE_RATTITUDE:
-                return mavsdk::TelemetryServer::FlightMode::Rattitude;
-        }
-    }
-
-    static rpc::telemetry_server::VTOLState
-    translateToRpcVTOLState(const mavsdk::TelemetryServer::VTOLState& v_t_o_l_state)
-    {
-        switch (v_t_o_l_state) {
-            default:
-                LogErr() << "Unknown v_t_o_l_state enum value: " << static_cast<int>(v_t_o_l_state);
-            // FALLTHROUGH
-            case mavsdk::TelemetryServer::VTOLState::VtolUndefined:
-                return rpc::telemetry_server::V_T_O_L_STATE_VTOL_UNDEFINED;
-            case mavsdk::TelemetryServer::VTOLState::VtolTransitionToFw:
-                return rpc::telemetry_server::V_T_O_L_STATE_VTOL_TRANSITION_TO_FW;
-            case mavsdk::TelemetryServer::VTOLState::VtolTransitionToMc:
-                return rpc::telemetry_server::V_T_O_L_STATE_VTOL_TRANSITION_TO_MC;
-            case mavsdk::TelemetryServer::VTOLState::VtolMc:
-                return rpc::telemetry_server::V_T_O_L_STATE_VTOL_MC;
-            case mavsdk::TelemetryServer::VTOLState::VtolFw:
-                return rpc::telemetry_server::V_T_O_L_STATE_VTOL_FW;
-        }
-    }
-
-    static mavsdk::TelemetryServer::VTOLState
-    translateFromRpcVTOLState(const rpc::telemetry_server::VTOLState v_t_o_l_state)
-    {
-        switch (v_t_o_l_state) {
-            default:
-                LogErr() << "Unknown v_t_o_l_state enum value: " << static_cast<int>(v_t_o_l_state);
-            // FALLTHROUGH
-            case rpc::telemetry_server::V_T_O_L_STATE_VTOL_UNDEFINED:
-                return mavsdk::TelemetryServer::VTOLState::VtolUndefined;
-            case rpc::telemetry_server::V_T_O_L_STATE_VTOL_TRANSITION_TO_FW:
-                return mavsdk::TelemetryServer::VTOLState::VtolTransitionToFw;
-            case rpc::telemetry_server::V_T_O_L_STATE_VTOL_TRANSITION_TO_MC:
-                return mavsdk::TelemetryServer::VTOLState::VtolTransitionToMc;
-            case rpc::telemetry_server::V_T_O_L_STATE_VTOL_MC:
-                return mavsdk::TelemetryServer::VTOLState::VtolMc;
-            case rpc::telemetry_server::V_T_O_L_STATE_VTOL_FW:
-                return mavsdk::TelemetryServer::VTOLState::VtolFw;
+            case rpc::telemetry_server::VTOL_STATE_VTOL_UNDEFINED:
+                return mavsdk::TelemetryServer::VtolState::VtolUndefined;
+            case rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_FW:
+                return mavsdk::TelemetryServer::VtolState::VtolTransitionToFw;
+            case rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_MC:
+                return mavsdk::TelemetryServer::VtolState::VtolTransitionToMc;
+            case rpc::telemetry_server::VTOL_STATE_VTOL_MC:
+                return mavsdk::TelemetryServer::VtolState::VtolMc;
+            case rpc::telemetry_server::VTOL_STATE_VTOL_FW:
+                return mavsdk::TelemetryServer::VtolState::VtolFw;
         }
     }
 
@@ -530,35 +450,6 @@ public:
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry_server::AllowableFlightModes>
-    translateToRpcAllowableFlightModes(
-        const mavsdk::TelemetryServer::AllowableFlightModes& allowable_flight_modes)
-    {
-        auto rpc_obj = std::make_unique<rpc::telemetry_server::AllowableFlightModes>();
-
-        rpc_obj->set_can_auto_mode(allowable_flight_modes.can_auto_mode);
-
-        rpc_obj->set_can_guided_mode(allowable_flight_modes.can_guided_mode);
-
-        rpc_obj->set_can_stabilize_mode(allowable_flight_modes.can_stabilize_mode);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::TelemetryServer::AllowableFlightModes translateFromRpcAllowableFlightModes(
-        const rpc::telemetry_server::AllowableFlightModes& allowable_flight_modes)
-    {
-        mavsdk::TelemetryServer::AllowableFlightModes obj;
-
-        obj.can_auto_mode = allowable_flight_modes.can_auto_mode();
-
-        obj.can_guided_mode = allowable_flight_modes.can_guided_mode();
-
-        obj.can_stabilize_mode = allowable_flight_modes.can_stabilize_mode();
-
-        return obj;
-    }
-
     static std::unique_ptr<rpc::telemetry_server::Battery>
     translateToRpcBattery(const mavsdk::TelemetryServer::Battery& battery)
     {
@@ -579,50 +470,6 @@ public:
         obj.voltage_v = battery.voltage_v();
 
         obj.remaining_percent = battery.remaining_percent();
-
-        return obj;
-    }
-
-    static std::unique_ptr<rpc::telemetry_server::Health>
-    translateToRpcHealth(const mavsdk::TelemetryServer::Health& health)
-    {
-        auto rpc_obj = std::make_unique<rpc::telemetry_server::Health>();
-
-        rpc_obj->set_is_gyrometer_calibration_ok(health.is_gyrometer_calibration_ok);
-
-        rpc_obj->set_is_accelerometer_calibration_ok(health.is_accelerometer_calibration_ok);
-
-        rpc_obj->set_is_magnetometer_calibration_ok(health.is_magnetometer_calibration_ok);
-
-        rpc_obj->set_is_local_position_ok(health.is_local_position_ok);
-
-        rpc_obj->set_is_global_position_ok(health.is_global_position_ok);
-
-        rpc_obj->set_is_home_position_ok(health.is_home_position_ok);
-
-        rpc_obj->set_is_armable(health.is_armable);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::TelemetryServer::Health
-    translateFromRpcHealth(const rpc::telemetry_server::Health& health)
-    {
-        mavsdk::TelemetryServer::Health obj;
-
-        obj.is_gyrometer_calibration_ok = health.is_gyrometer_calibration_ok();
-
-        obj.is_accelerometer_calibration_ok = health.is_accelerometer_calibration_ok();
-
-        obj.is_magnetometer_calibration_ok = health.is_magnetometer_calibration_ok();
-
-        obj.is_local_position_ok = health.is_local_position_ok();
-
-        obj.is_global_position_ok = health.is_global_position_ok();
-
-        obj.is_home_position_ok = health.is_home_position_ok();
-
-        obj.is_armable = health.is_armable();
 
         return obj;
     }
@@ -1239,30 +1086,6 @@ public:
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry_server::ArmDisarm>
-    translateToRpcArmDisarm(const mavsdk::TelemetryServer::ArmDisarm& arm_disarm)
-    {
-        auto rpc_obj = std::make_unique<rpc::telemetry_server::ArmDisarm>();
-
-        rpc_obj->set_arm(arm_disarm.arm);
-
-        rpc_obj->set_force(arm_disarm.force);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::TelemetryServer::ArmDisarm
-    translateFromRpcArmDisarm(const rpc::telemetry_server::ArmDisarm& arm_disarm)
-    {
-        mavsdk::TelemetryServer::ArmDisarm obj;
-
-        obj.arm = arm_disarm.arm();
-
-        obj.force = arm_disarm.force();
-
-        return obj;
-    }
-
     static std::unique_ptr<rpc::telemetry_server::RcReceiverStatus> translateToRpcRcReceiverStatus(
         const mavsdk::TelemetryServer::RcReceiverStatus& rc_receiver_status)
     {
@@ -1448,36 +1271,8 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->publish_extended_sys_state(
-            translateFromRpcVTOLState(request->vtol_state()),
+            translateFromRpcVtolState(request->vtol_state()),
             translateFromRpcLandedState(request->landed_state()));
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status PublishArmed(
-        grpc::ServerContext* /* context */,
-        const rpc::telemetry_server::PublishArmedRequest* request,
-        rpc::telemetry_server::PublishArmedResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "PublishArmed sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->publish_armed(request->is_armed());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -1537,35 +1332,6 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->publish_battery(
             translateFromRpcBattery(request->battery()));
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status PublishFlightMode(
-        grpc::ServerContext* /* context */,
-        const rpc::telemetry_server::PublishFlightModeRequest* request,
-        rpc::telemetry_server::PublishFlightModeResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "PublishFlightMode sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->publish_flight_mode(
-            translateFromRpcFlightMode(request->flight_mode()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -1799,193 +1565,6 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SubscribeArmDisarm(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry_server::SubscribeArmDisarmRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry_server::ArmDisarmResponse>* writer) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            rpc::telemetry_server::ArmDisarmResponse rpc_response;
-            auto result = mavsdk::TelemetryServer::Result::NoSystem;
-            fillResponseWithResult(&rpc_response, result);
-            writer->Write(rpc_response);
-
-            return grpc::Status::OK;
-        }
-
-        auto stream_closed_promise = std::make_shared<std::promise<void>>();
-        auto stream_closed_future = stream_closed_promise->get_future();
-        register_stream_stop_promise(stream_closed_promise);
-
-        auto is_finished = std::make_shared<bool>(false);
-        auto subscribe_mutex = std::make_shared<std::mutex>();
-
-        _lazy_plugin.maybe_plugin()->subscribe_arm_disarm(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                mavsdk::TelemetryServer::Result result,
-                const mavsdk::TelemetryServer::ArmDisarm arm_disarm) {
-                rpc::telemetry_server::ArmDisarmResponse rpc_response;
-
-                rpc_response.set_allocated_arm(translateToRpcArmDisarm(arm_disarm).release());
-
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_telemetry_server_result =
-                    new rpc::telemetry_server::TelemetryServerResult();
-                rpc_telemetry_server_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_telemetry_server_result->set_result_str(ss.str());
-                rpc_response.set_allocated_telemetry_server_result(rpc_telemetry_server_result);
-
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_arm_disarm(nullptr);
-
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
-
-        stream_closed_future.wait();
-        std::unique_lock<std::mutex> lock(*subscribe_mutex);
-        *is_finished = true;
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SubscribeDoSetMode(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry_server::SubscribeDoSetModeRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry_server::DoSetModeResponse>* writer) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            rpc::telemetry_server::DoSetModeResponse rpc_response;
-            auto result = mavsdk::TelemetryServer::Result::NoSystem;
-            fillResponseWithResult(&rpc_response, result);
-            writer->Write(rpc_response);
-
-            return grpc::Status::OK;
-        }
-
-        auto stream_closed_promise = std::make_shared<std::promise<void>>();
-        auto stream_closed_future = stream_closed_promise->get_future();
-        register_stream_stop_promise(stream_closed_promise);
-
-        auto is_finished = std::make_shared<bool>(false);
-        auto subscribe_mutex = std::make_shared<std::mutex>();
-
-        _lazy_plugin.maybe_plugin()->subscribe_do_set_mode(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                mavsdk::TelemetryServer::Result result,
-                const mavsdk::TelemetryServer::FlightMode do_set_mode) {
-                rpc::telemetry_server::DoSetModeResponse rpc_response;
-
-                rpc_response.set_flight_mode(translateToRpcFlightMode(do_set_mode));
-
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_telemetry_server_result =
-                    new rpc::telemetry_server::TelemetryServerResult();
-                rpc_telemetry_server_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_telemetry_server_result->set_result_str(ss.str());
-                rpc_response.set_allocated_telemetry_server_result(rpc_telemetry_server_result);
-
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_do_set_mode(nullptr);
-
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
-
-        stream_closed_future.wait();
-        std::unique_lock<std::mutex> lock(*subscribe_mutex);
-        *is_finished = true;
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SetArmable(
-        grpc::ServerContext* /* context */,
-        const rpc::telemetry_server::SetArmableRequest* request,
-        rpc::telemetry_server::SetArmableResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "SetArmable sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result =
-            _lazy_plugin.maybe_plugin()->set_armable(request->armable(), request->force_armable());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SetAllowableFlightModes(
-        grpc::ServerContext* /* context */,
-        const rpc::telemetry_server::SetAllowableFlightModesRequest* request,
-        rpc::telemetry_server::SetAllowableFlightModesResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "SetAllowableFlightModes sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->set_allowable_flight_modes(
-            translateFromRpcAllowableFlightModes(request->flight_modes()));
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status GetAllowableFlightModes(
-        grpc::ServerContext* /* context */,
-        const rpc::telemetry_server::GetAllowableFlightModesRequest* /* request */,
-        rpc::telemetry_server::GetAllowableFlightModesResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->get_allowable_flight_modes();
-
-        if (response != nullptr) {
-            response->set_allocated_flight_modes(
-                translateToRpcAllowableFlightModes(result).release());
         }
 
         return grpc::Status::OK;

@@ -79,41 +79,9 @@ public:
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::FixType const& fix_type);
 
     /**
-     * @brief Flight modes.
-     *
-     * For more information about flight modes, check out
-     * https://docs.px4.io/master/en/config/flight_mode.html.
-     */
-    enum class FlightMode {
-        Unknown, /**< @brief Mode not known. */
-        Ready, /**< @brief Armed and ready to take off. */
-        Takeoff, /**< @brief Taking off. */
-        Hold, /**< @brief Holding (hovering in place (or circling for fixed-wing vehicles). */
-        Mission, /**< @brief In mission. */
-        ReturnToLaunch, /**< @brief Returning to launch position (then landing). */
-        Land, /**< @brief Landing. */
-        Offboard, /**< @brief In 'offboard' mode. */
-        FollowMe, /**< @brief In 'follow-me' mode. */
-        Manual, /**< @brief In 'Manual' mode. */
-        Altctl, /**< @brief In 'Altitude Control' mode. */
-        Posctl, /**< @brief In 'Position Control' mode. */
-        Acro, /**< @brief In 'Acro' mode. */
-        Stabilized, /**< @brief In 'Stabilize' mode. */
-        Rattitude, /**< @brief In 'Rattitude' mode. */
-    };
-
-    /**
-     * @brief Stream operator to print information about a `TelemetryServer::FlightMode`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream&
-    operator<<(std::ostream& str, TelemetryServer::FlightMode const& flight_mode);
-
-    /**
      * @brief Maps to MAV_VTOL_STATE
      */
-    enum class VTOLState {
+    enum class VtolState {
         VtolUndefined, /**< @brief Not VTOL. */
         VtolTransitionToFw, /**< @brief Transitioning to fixed-wing. */
         VtolTransitionToMc, /**< @brief Transitioning to multi-copter. */
@@ -122,12 +90,12 @@ public:
     };
 
     /**
-     * @brief Stream operator to print information about a `TelemetryServer::VTOLState`.
+     * @brief Stream operator to print information about a `TelemetryServer::VtolState`.
      *
      * @return A reference to the stream.
      */
     friend std::ostream&
-    operator<<(std::ostream& str, TelemetryServer::VTOLState const& v_t_o_l_state);
+    operator<<(std::ostream& str, TelemetryServer::VtolState const& vtol_state);
 
     /**
      * @brief Status types.
@@ -357,32 +325,6 @@ public:
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::RawGps const& raw_gps);
 
     /**
-     * @brief
-     */
-    struct AllowableFlightModes {
-        bool can_auto_mode{}; /**< @brief Auto/mission mode */
-        bool can_guided_mode{}; /**< @brief Guided mode */
-        bool can_stabilize_mode{}; /**< @brief Stabilize mode */
-    };
-
-    /**
-     * @brief Equal operator to compare two `TelemetryServer::AllowableFlightModes` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(
-        const TelemetryServer::AllowableFlightModes& lhs,
-        const TelemetryServer::AllowableFlightModes& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `TelemetryServer::AllowableFlightModes`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(
-        std::ostream& str, TelemetryServer::AllowableFlightModes const& allowable_flight_modes);
-
-    /**
      * @brief Battery type.
      */
     struct Battery {
@@ -405,38 +347,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Battery const& battery);
-
-    /**
-     * @brief Health type.
-     */
-    struct Health {
-        bool is_gyrometer_calibration_ok{false}; /**< @brief True if the gyrometer is calibrated */
-        bool is_accelerometer_calibration_ok{
-            false}; /**< @brief True if the accelerometer is calibrated */
-        bool is_magnetometer_calibration_ok{
-            false}; /**< @brief True if the magnetometer is calibrated */
-        bool is_local_position_ok{false}; /**< @brief True if the local position estimate is good
-                                             enough to fly in 'position control' mode */
-        bool is_global_position_ok{false}; /**< @brief True if the global position estimate is good
-                                              enough to fly in 'position control' mode */
-        bool is_home_position_ok{
-            false}; /**< @brief True if the home position has been initialized properly */
-        bool is_armable{false}; /**< @brief True if system can be armed */
-    };
-
-    /**
-     * @brief Equal operator to compare two `TelemetryServer::Health` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const TelemetryServer::Health& lhs, const TelemetryServer::Health& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `TelemetryServer::Health`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Health const& health);
 
     /**
      * @brief Remote control status type.
@@ -965,30 +875,6 @@ public:
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu const& imu);
 
     /**
-     * @brief Arming message type
-     */
-    struct ArmDisarm {
-        int32_t arm{}; /**< @brief Should vehicle arm */
-        int32_t force{}; /**< @brief Should arm override pre-flight checks */
-    };
-
-    /**
-     * @brief Equal operator to compare two `TelemetryServer::ArmDisarm` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool
-    operator==(const TelemetryServer::ArmDisarm& lhs, const TelemetryServer::ArmDisarm& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `TelemetryServer::ArmDisarm`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream&
-    operator<<(std::ostream& str, TelemetryServer::ArmDisarm const& arm_disarm);
-
-    /**
      * @brief
      */
     struct RcReceiverStatus {
@@ -1077,16 +963,7 @@ public:
      *
      * @return Result of request.
      */
-    Result publish_extended_sys_state(VTOLState vtol_state, LandedState landed_state) const;
-
-    /**
-     * @brief Publish to armed updates.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Result publish_armed(bool is_armed) const;
+    Result publish_extended_sys_state(VtolState vtol_state, LandedState landed_state) const;
 
     /**
      * @brief Publish to 'Raw GPS' updates.
@@ -1105,15 +982,6 @@ public:
      * @return Result of request.
      */
     Result publish_battery(Battery battery) const;
-
-    /**
-     * @brief Publish to 'flight mode' updates.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Result publish_flight_mode(FlightMode flight_mode) const;
 
     /**
      * @brief Publish to 'status text' updates.
@@ -1186,55 +1054,6 @@ public:
      * @return Result of request.
      */
     Result publish_unix_epoch_time(uint64_t time_us) const;
-
-    /**
-     * @brief Callback type for subscribe_arm_disarm.
-     */
-
-    using ArmDisarmCallback = std::function<void(TelemetryServer::Result, ArmDisarm)>;
-
-    /**
-     * @brief Subscribe to ARM/DISARM commands
-     */
-    void subscribe_arm_disarm(ArmDisarmCallback callback);
-
-    /**
-     * @brief Callback type for subscribe_do_set_mode.
-     */
-
-    using DoSetModeCallback = std::function<void(TelemetryServer::Result, FlightMode)>;
-
-    /**
-     * @brief Subscribe to DO_SET_MODE
-     */
-    void subscribe_do_set_mode(DoSetModeCallback callback);
-
-    /**
-     * @brief Can the vehicle arm when requested
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Result set_armable(bool armable, bool force_armable) const;
-
-    /**
-     * @brief Set which modes the vehicle can transition to (Manual always allowed)
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Result set_allowable_flight_modes(AllowableFlightModes flight_modes) const;
-
-    /**
-     * @brief Get which modes the vehicle can transition to (Manual always allowed)
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    TelemetryServer::AllowableFlightModes get_allowable_flight_modes() const;
 
     /**
      * @brief Copy constructor.

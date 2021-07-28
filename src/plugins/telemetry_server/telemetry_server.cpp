@@ -16,9 +16,7 @@ using EulerAngle = TelemetryServer::EulerAngle;
 using AngularVelocityBody = TelemetryServer::AngularVelocityBody;
 using GpsInfo = TelemetryServer::GpsInfo;
 using RawGps = TelemetryServer::RawGps;
-using AllowableFlightModes = TelemetryServer::AllowableFlightModes;
 using Battery = TelemetryServer::Battery;
-using Health = TelemetryServer::Health;
 using RcStatus = TelemetryServer::RcStatus;
 using StatusText = TelemetryServer::StatusText;
 using ActuatorControlTarget = TelemetryServer::ActuatorControlTarget;
@@ -38,7 +36,6 @@ using AccelerationFrd = TelemetryServer::AccelerationFrd;
 using AngularVelocityFrd = TelemetryServer::AngularVelocityFrd;
 using MagneticFieldFrd = TelemetryServer::MagneticFieldFrd;
 using Imu = TelemetryServer::Imu;
-using ArmDisarm = TelemetryServer::ArmDisarm;
 using RcReceiverStatus = TelemetryServer::RcReceiverStatus;
 
 TelemetryServer::TelemetryServer(System& system) :
@@ -77,14 +74,9 @@ TelemetryServer::Result TelemetryServer::publish_sys_status(
 }
 
 TelemetryServer::Result
-TelemetryServer::publish_extended_sys_state(VTOLState vtol_state, LandedState landed_state) const
+TelemetryServer::publish_extended_sys_state(VtolState vtol_state, LandedState landed_state) const
 {
     return _impl->publish_extended_sys_state(vtol_state, landed_state);
-}
-
-TelemetryServer::Result TelemetryServer::publish_armed(bool is_armed) const
-{
-    return _impl->publish_armed(is_armed);
 }
 
 TelemetryServer::Result TelemetryServer::publish_raw_gps(RawGps raw_gps, GpsInfo gps_info) const
@@ -95,11 +87,6 @@ TelemetryServer::Result TelemetryServer::publish_raw_gps(RawGps raw_gps, GpsInfo
 TelemetryServer::Result TelemetryServer::publish_battery(Battery battery) const
 {
     return _impl->publish_battery(battery);
-}
-
-TelemetryServer::Result TelemetryServer::publish_flight_mode(FlightMode flight_mode) const
-{
-    return _impl->publish_flight_mode(flight_mode);
 }
 
 TelemetryServer::Result TelemetryServer::publish_status_text(StatusText status_text) const
@@ -141,32 +128,6 @@ TelemetryServer::Result TelemetryServer::publish_raw_imu(Imu imu) const
 TelemetryServer::Result TelemetryServer::publish_unix_epoch_time(uint64_t time_us) const
 {
     return _impl->publish_unix_epoch_time(time_us);
-}
-
-void TelemetryServer::subscribe_arm_disarm(ArmDisarmCallback callback)
-{
-    _impl->subscribe_arm_disarm(callback);
-}
-
-void TelemetryServer::subscribe_do_set_mode(DoSetModeCallback callback)
-{
-    _impl->subscribe_do_set_mode(callback);
-}
-
-TelemetryServer::Result TelemetryServer::set_armable(bool armable, bool force_armable) const
-{
-    return _impl->set_armable(armable, force_armable);
-}
-
-TelemetryServer::Result
-TelemetryServer::set_allowable_flight_modes(AllowableFlightModes flight_modes) const
-{
-    return _impl->set_allowable_flight_modes(flight_modes);
-}
-
-TelemetryServer::AllowableFlightModes TelemetryServer::get_allowable_flight_modes() const
-{
-    return _impl->get_allowable_flight_modes();
 }
 
 bool operator==(const TelemetryServer::Position& lhs, const TelemetryServer::Position& rhs)
@@ -327,27 +288,6 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::RawGps const& raw_g
     return str;
 }
 
-bool operator==(
-    const TelemetryServer::AllowableFlightModes& lhs,
-    const TelemetryServer::AllowableFlightModes& rhs)
-{
-    return (rhs.can_auto_mode == lhs.can_auto_mode) &&
-           (rhs.can_guided_mode == lhs.can_guided_mode) &&
-           (rhs.can_stabilize_mode == lhs.can_stabilize_mode);
-}
-
-std::ostream&
-operator<<(std::ostream& str, TelemetryServer::AllowableFlightModes const& allowable_flight_modes)
-{
-    str << std::setprecision(15);
-    str << "allowable_flight_modes:" << '\n' << "{\n";
-    str << "    can_auto_mode: " << allowable_flight_modes.can_auto_mode << '\n';
-    str << "    can_guided_mode: " << allowable_flight_modes.can_guided_mode << '\n';
-    str << "    can_stabilize_mode: " << allowable_flight_modes.can_stabilize_mode << '\n';
-    str << '}';
-    return str;
-}
-
 bool operator==(const TelemetryServer::Battery& lhs, const TelemetryServer::Battery& rhs)
 {
     return ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
@@ -362,33 +302,6 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::Battery const& batt
     str << "battery:" << '\n' << "{\n";
     str << "    voltage_v: " << battery.voltage_v << '\n';
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(const TelemetryServer::Health& lhs, const TelemetryServer::Health& rhs)
-{
-    return (rhs.is_gyrometer_calibration_ok == lhs.is_gyrometer_calibration_ok) &&
-           (rhs.is_accelerometer_calibration_ok == lhs.is_accelerometer_calibration_ok) &&
-           (rhs.is_magnetometer_calibration_ok == lhs.is_magnetometer_calibration_ok) &&
-           (rhs.is_local_position_ok == lhs.is_local_position_ok) &&
-           (rhs.is_global_position_ok == lhs.is_global_position_ok) &&
-           (rhs.is_home_position_ok == lhs.is_home_position_ok) &&
-           (rhs.is_armable == lhs.is_armable);
-}
-
-std::ostream& operator<<(std::ostream& str, TelemetryServer::Health const& health)
-{
-    str << std::setprecision(15);
-    str << "health:" << '\n' << "{\n";
-    str << "    is_gyrometer_calibration_ok: " << health.is_gyrometer_calibration_ok << '\n';
-    str << "    is_accelerometer_calibration_ok: " << health.is_accelerometer_calibration_ok
-        << '\n';
-    str << "    is_magnetometer_calibration_ok: " << health.is_magnetometer_calibration_ok << '\n';
-    str << "    is_local_position_ok: " << health.is_local_position_ok << '\n';
-    str << "    is_global_position_ok: " << health.is_global_position_ok << '\n';
-    str << "    is_home_position_ok: " << health.is_home_position_ok << '\n';
-    str << "    is_armable: " << health.is_armable << '\n';
     str << '}';
     return str;
 }
@@ -816,21 +729,6 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu const& imu)
     return str;
 }
 
-bool operator==(const TelemetryServer::ArmDisarm& lhs, const TelemetryServer::ArmDisarm& rhs)
-{
-    return (rhs.arm == lhs.arm) && (rhs.force == lhs.force);
-}
-
-std::ostream& operator<<(std::ostream& str, TelemetryServer::ArmDisarm const& arm_disarm)
-{
-    str << std::setprecision(15);
-    str << "arm_disarm:" << '\n' << "{\n";
-    str << "    arm: " << arm_disarm.arm << '\n';
-    str << "    force: " << arm_disarm.force << '\n';
-    str << '}';
-    return str;
-}
-
 bool operator==(
     const TelemetryServer::RcReceiverStatus& lhs, const TelemetryServer::RcReceiverStatus& rhs)
 {
@@ -893,56 +791,18 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::FixType const& fix_
     }
 }
 
-std::ostream& operator<<(std::ostream& str, TelemetryServer::FlightMode const& flight_mode)
+std::ostream& operator<<(std::ostream& str, TelemetryServer::VtolState const& vtol_state)
 {
-    switch (flight_mode) {
-        case TelemetryServer::FlightMode::Unknown:
-            return str << "Unknown";
-        case TelemetryServer::FlightMode::Ready:
-            return str << "Ready";
-        case TelemetryServer::FlightMode::Takeoff:
-            return str << "Takeoff";
-        case TelemetryServer::FlightMode::Hold:
-            return str << "Hold";
-        case TelemetryServer::FlightMode::Mission:
-            return str << "Mission";
-        case TelemetryServer::FlightMode::ReturnToLaunch:
-            return str << "Return To Launch";
-        case TelemetryServer::FlightMode::Land:
-            return str << "Land";
-        case TelemetryServer::FlightMode::Offboard:
-            return str << "Offboard";
-        case TelemetryServer::FlightMode::FollowMe:
-            return str << "Follow Me";
-        case TelemetryServer::FlightMode::Manual:
-            return str << "Manual";
-        case TelemetryServer::FlightMode::Altctl:
-            return str << "Altctl";
-        case TelemetryServer::FlightMode::Posctl:
-            return str << "Posctl";
-        case TelemetryServer::FlightMode::Acro:
-            return str << "Acro";
-        case TelemetryServer::FlightMode::Stabilized:
-            return str << "Stabilized";
-        case TelemetryServer::FlightMode::Rattitude:
-            return str << "Rattitude";
-        default:
-            return str << "Unknown";
-    }
-}
-
-std::ostream& operator<<(std::ostream& str, TelemetryServer::VTOLState const& v_t_o_l_state)
-{
-    switch (v_t_o_l_state) {
-        case TelemetryServer::VTOLState::VtolUndefined:
+    switch (vtol_state) {
+        case TelemetryServer::VtolState::VtolUndefined:
             return str << "Vtol Undefined";
-        case TelemetryServer::VTOLState::VtolTransitionToFw:
+        case TelemetryServer::VtolState::VtolTransitionToFw:
             return str << "Vtol Transition To Fw";
-        case TelemetryServer::VTOLState::VtolTransitionToMc:
+        case TelemetryServer::VtolState::VtolTransitionToMc:
             return str << "Vtol Transition To Mc";
-        case TelemetryServer::VTOLState::VtolMc:
+        case TelemetryServer::VtolState::VtolMc:
             return str << "Vtol Mc";
-        case TelemetryServer::VTOLState::VtolFw:
+        case TelemetryServer::VtolState::VtolFw:
             return str << "Vtol Fw";
         default:
             return str << "Unknown";
