@@ -1,6 +1,5 @@
 #pragma once
 
-#include "locked_queue.h"
 #include "plugins/mission_raw_server/mission_raw_server.h"
 #include "plugin_impl_base.h"
 
