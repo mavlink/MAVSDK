@@ -20,8 +20,6 @@ service TelemetryServerService {
     rpc PublishSysStatus(PublishSysStatusRequest) returns(PublishSysStatusResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish 'extended sys state' updates.
     rpc PublishExtendedSysState(PublishExtendedSysStateRequest) returns(PublishExtendedSysStateResponse) { option (mavsdk.options.async_type) = SYNC; }
-    // Publish to armed updates.
-    rpc PublishArmed(PublishArmedRequest) returns(PublishArmedResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'Raw GPS' updates.
     rpc PublishRawGps(PublishRawGpsRequest) returns(PublishRawGpsResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'battery' updates.
@@ -44,17 +42,6 @@ service TelemetryServerService {
     rpc PublishRawImu(PublishRawImuRequest) returns(PublishRawImuResponse) { option (mavsdk.options.async_type) = SYNC; }
     // Publish to 'unix epoch time' updates.
     rpc PublishUnixEpochTime(PublishUnixEpochTimeRequest) returns(PublishUnixEpochTimeResponse) { option (mavsdk.options.async_type) = SYNC; }
-    // Subscribe to ARM/DISARM commands
-    rpc SubscribeArmDisarm(SubscribeArmDisarmRequest) returns(stream ArmDisarmResponse) { option (mavsdk.options.async_type) = ASYNC; }
-    // Subscribe to DO_SET_MODE
-    rpc SubscribeDoSetMode(SubscribeDoSetModeRequest) returns(stream DoSetModeResponse) { option (mavsdk.options.async_type) = ASYNC; }
-
-    // Can the vehicle arm when requested
-    rpc SetArmable(SetArmableRequest) returns(SetArmableResponse) { option (mavsdk.options.async_type) = SYNC; }
-    // Set which modes the vehicle can transition to (Manual always allowed)
-    rpc SetAllowableFlightModes(SetAllowableFlightModeRequest) returns(SetAllowableFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
-    // Get which modes the vehicle can transition to (Manual always allowed)
-    rpc GetAllowableFlightModes(GetAllowableFlightModeRequest) returns(GetAllowableFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message PublishPositionRequest {
@@ -76,7 +63,7 @@ message PublishSysStatusRequest {
 }
 
 message PublishExtendedSysStateRequest {
-    VTOLState vtol_state = 1;
+    VtolState vtol_state = 1;
     LandedState landed_state = 2;
 }
 
@@ -86,10 +73,6 @@ message PublishInAirRequest {
 
 message PublishLandedStateRequest {
     LandedState landed_state = 1; // The next 'landed' state
-}
-
-message PublishArmedRequest {
-   bool is_armed = 1; // The next 'armed' state
 }
 
 message PublishRawGpsRequest {
@@ -149,27 +132,6 @@ message PublishUnixEpochTimeRequest {
     uint64 time_us = 1; // The next 'unix epoch time' status
 }
 
-message SetArmableRequest {
-    bool armable = 1; // Is Armable now?
-    bool force_armable = 2; // Is armable with force?
-}
-
-message SetDisarmableRequest {
-    bool disarmable = 1; // Is disarmable now?
-    bool force_disarmable = 2; // Is disarmable with force?
-}
-
-message SetAllowableFlightModeRequest
-{
-    AllowableFlightModes flight_modes = 1;
-}
-
-message GetAllowableFlightModeRequest {}
-
-message SubscribeArmDisarmRequest {}
-
-message SubscribeDoSetModeRequest {}
-
 message PublishPositionResponse {
     TelemetryServerResult telemetry_server_result = 1;
 }
@@ -183,10 +145,6 @@ message PublishSysStatusResponse {
 }
 
 message PublishExtendedSysStateResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
-
-message PublishArmedResponse {
     TelemetryServerResult telemetry_server_result = 1;
 }
 
@@ -240,35 +198,6 @@ message PublishHealthAllOkResponse {
 
 message PublishUnixEpochTimeResponse {
     TelemetryServerResult telemetry_server_result = 1;
-}
-
-message ArmDisarmResponse
-{
-    TelemetryServerResult telemetry_server_result = 1;
-    ArmDisarm arm = 2;
-}
-
-message DoSetModeResponse
-{
-    TelemetryServerResult telemetry_server_result = 1;
-    FlightMode flight_mode = 2;
-}
-
-message SetArmableResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
-
-message SetDisarmableResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
-
-message SetAllowableFlightModeResponse {
-    TelemetryServerResult telemetry_server_result = 1;
-}
-
-message GetAllowableFlightModeResponse
-{
-    AllowableFlightModes flight_modes = 1;
 }
 
 // Position type in global coordinates.
@@ -397,7 +326,7 @@ enum FlightMode {
 }
 
 // Maps to MAV_VTOL_STATE
-enum VTOLState
+enum VtolState
 {
     VTOL_UNDEFINED = 0; // Not VTOL
     VTOL_TRANSITION_TO_FW = 1; // Transitioning to fixed-wing
@@ -587,13 +516,6 @@ message Imu {
     MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
     float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
     uint64 timestamp_us = 5; // Timestamp in microseconds
-}
-
-// Arming message type
-message ArmDisarm
-{
-    int32 arm = 1; // Should vehicle arm
-    int32 force = 2; // Should arm override pre-flight checks
 }
 
 message RcReceiverStatus
