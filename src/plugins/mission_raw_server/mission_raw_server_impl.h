@@ -33,13 +33,13 @@ private:
     MissionRawServer::ClearAllCallback _clear_all_callback;
     std::thread _thread_mission;
     std::atomic<int> _target_component;
-    std::atomic<bool> _do_upload;
     std::atomic<int> _mission_count;
     std::atomic<bool> _mission_completed;
 
     std::queue<std::function<void()>> _work_queue;
     std::condition_variable _wait_for_new_task;
     std::mutex _work_mutex;
+    std::atomic<bool> _stop_work_thread = false;
 
     std::vector<MAVLinkMissionTransfer::ItemInt> _current_mission;
     uint32_t _current_seq;

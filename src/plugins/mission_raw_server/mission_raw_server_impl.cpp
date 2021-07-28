@@ -128,7 +128,7 @@ MissionRawServer::Result convert_result(MAVLinkMissionTransfer::Result result)
 void MissionRawServerImpl::init()
 {
     _thread_mission = std::thread([this] {
-        while (true) {
+        while (_stop_work_thread) {
             std::unique_lock<std::mutex> lock(_work_mutex);
             if (!_work_queue.empty()) {
                 auto task = _work_queue.front();
@@ -263,7 +263,11 @@ void MissionRawServerImpl::init()
         this);
 }
 
-void MissionRawServerImpl::deinit() {}
+void MissionRawServerImpl::deinit() {
+    _stop_work_thread = true;
+    _wait_for_new_task.notify_all();
+    _thread_mission.join();
+}
 
 void MissionRawServerImpl::enable() {}
 
