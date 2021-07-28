@@ -134,8 +134,8 @@ message AllowableFlightModes {
 
 // Arming message type
 message ArmDisarm {
-    int32 arm = 1; // Should vehicle arm
-    int32 force = 2; // Should arm override pre-flight checks
+    bool arm = 1; // Should vehicle arm
+    bool force = 2; // Should arm override pre-flight checks
 }
 
 /*
@@ -159,7 +159,6 @@ enum FlightMode {
     FLIGHT_MODE_POSCTL = 11; // In 'Position Control' mode
     FLIGHT_MODE_ACRO = 12; // In 'Acro' mode
     FLIGHT_MODE_STABILIZED = 13; // In 'Stabilize' mode
-    FLIGHT_MODE_RATTITUDE = 14; // In 'Rattitude' mode
 }
 
 // Result type.
