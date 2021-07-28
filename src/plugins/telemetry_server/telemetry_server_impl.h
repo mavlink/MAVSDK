@@ -70,7 +70,7 @@ public:
 private:
     std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
-    uint64_t get_boot_time()
+    uint64_t get_boot_time_ms()
     {
         return std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::steady_clock::now() - _start_time)

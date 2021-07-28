@@ -31,7 +31,7 @@ void TelemetryServerImpl::init()
                 &msg,
                 command.command,
                 MAV_RESULT::MAV_RESULT_ACCEPTED,
-                100,
+                255,
                 0,
                 command.origin_system_id,
                 command.origin_component_id);
@@ -54,14 +54,14 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &msg,
-        get_boot_time(),
-        static_cast<uint32_t>(position.latitude_deg) * 1E7,
-        static_cast<uint32_t>(position.longitude_deg) * 1E7,
-        static_cast<uint32_t>(position.absolute_altitude_m) * 1E3,
-        static_cast<uint32_t>(position.relative_altitude_m) * 1E3,
-        static_cast<uint32_t>(velocity_ned.north_m_s) * 1E2,
-        static_cast<uint32_t>(velocity_ned.east_m_s) * 1E2,
-        static_cast<uint32_t>(velocity_ned.down_m_s) * 1E2,
+        get_boot_time_ms(),
+        static_cast<uint32_t>(position.latitude_deg* 1E7),
+        static_cast<uint32_t>(position.longitude_deg* 1E7),
+        static_cast<uint32_t>(position.absolute_altitude_m * 1E3),
+        static_cast<uint32_t>(position.relative_altitude_m * 1E3),
+        static_cast<uint32_t>(velocity_ned.north_m_s * 1E2),
+        static_cast<uint32_t>(velocity_ned.east_m_s * 1E2),
+        static_cast<uint32_t>(velocity_ned.down_m_s * 1E2),
         0 // T0-DO: heading
     );
 
@@ -72,14 +72,14 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
 TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Position home)
 {
     mavlink_message_t msg;
-    float q[4] = {};
+    const float q[4] = {};
     mavlink_msg_home_position_pack(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &msg,
-        home.latitude_deg * 1E7,
-        home.longitude_deg * 1E7,
-        static_cast<int>(home.absolute_altitude_m) * 1E-3,
+        static_cast<int>(home.latitude_deg * 1E7),
+        static_cast<int>(home.longitude_deg * 1E7),
+        static_cast<int>(home.absolute_altitude_m * 1E-3),
         0, // Local X
         0, // Local Y
         0, // Local Z
@@ -87,7 +87,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Posit
         NAN, // approach x
         NAN, // approach y
         NAN, // approach z
-        get_boot_time() // TO-DO: System boot
+        get_boot_time_ms() // TO-DO: System boot
     );
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
@@ -104,20 +104,20 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
         &msg,
         raw_gps.timestamp_us,
         static_cast<uint8_t>(gps_info.fix_type),
-        static_cast<uint32_t>(raw_gps.latitude_deg) * 1E7,
-        static_cast<uint32_t>(raw_gps.longitude_deg) * 1E7,
-        static_cast<uint32_t>(raw_gps.absolute_altitude_m) * 1E3,
-        static_cast<uint32_t>(raw_gps.hdop) * 1E2,
-        static_cast<uint32_t>(raw_gps.vdop) * 1E2,
-        static_cast<uint32_t>(raw_gps.velocity_m_s) * 1E2,
-        static_cast<uint32_t>(raw_gps.cog_deg) * 1E2,
+        static_cast<uint32_t>(raw_gps.latitude_deg * 1E7),
+        static_cast<uint32_t>(raw_gps.longitude_deg * 1E7),
+        static_cast<uint32_t>(raw_gps.absolute_altitude_m * 1E3),
+        static_cast<uint32_t>(raw_gps.hdop * 1E2),
+        static_cast<uint32_t>(raw_gps.vdop * 1E2),
+        static_cast<uint32_t>(raw_gps.velocity_m_s * 1E2),
+        static_cast<uint32_t>(raw_gps.cog_deg * 1E2),
         gps_info.num_satellites,
-        static_cast<uint32_t>(raw_gps.altitude_ellipsoid_m) * 1E3,
-        static_cast<uint32_t>(raw_gps.horizontal_uncertainty_m) * 1E3,
-        static_cast<uint32_t>(raw_gps.vertical_uncertainty_m) * 1E3,
-        static_cast<uint32_t>(raw_gps.velocity_uncertainty_m_s) * 1E3,
-        static_cast<uint32_t>(raw_gps.heading_uncertainty_deg) * 1E5,
-        static_cast<uint32_t>(raw_gps.yaw_deg) * 1E2);
+        static_cast<uint32_t>(raw_gps.altitude_ellipsoid_m * 1E3),
+        static_cast<uint32_t>(raw_gps.horizontal_uncertainty_m * 1E3),
+        static_cast<uint32_t>(raw_gps.vertical_uncertainty_m * 1E3),
+        static_cast<uint32_t>(raw_gps.velocity_uncertainty_m_s * 1E3),
+        static_cast<uint32_t>(raw_gps.heading_uncertainty_deg * 1E5),
+        static_cast<uint32_t>(raw_gps.yaw_deg * 1E2));
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
@@ -129,7 +129,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
 
     uint16_t voltages[10] = {0};
     uint16_t voltages_ext[4] = {0};
-    voltages[0] = static_cast<uint16_t>(battery.voltage_v) * 1E3;
+    voltages[0] = static_cast<uint16_t>(battery.voltage_v * 1E3);
 
     mavlink_msg_battery_status_pack(
         _parent->get_own_system_id(),
@@ -143,7 +143,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
         -1, // TODO publish all battery data
         -1,
         -1,
-        static_cast<uint16_t>(battery.remaining_percent) * 1E2,
+        static_cast<uint16_t>(battery.remaining_percent * 1E2),
         0,
         MAV_BATTERY_CHARGE_STATE_UNDEFINED,
         voltages_ext,
@@ -220,7 +220,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_position_velocity_ned(
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &msg,
-        get_boot_time(),
+        get_boot_time_ms(),
         position_velocity_ned.position.north_m,
         position_velocity_ned.position.east_m,
         position_velocity_ned.position.down_m,
@@ -284,16 +284,25 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
     int32_t sensors = 0;
 
     if (rc_receiver_status)
+    {
         sensors |= MAV_SYS_STATUS_SENSOR_RC_RECEIVER;
+    }
     if (gyro_status)
+    {
         sensors |= MAV_SYS_STATUS_SENSOR_3D_GYRO;
+    }
     if (accel_status)
+    {
         sensors |= MAV_SYS_STATUS_SENSOR_3D_ACCEL;
+    }
     if (mag_status)
+    {
         sensors |= MAV_SYS_STATUS_SENSOR_3D_MAG;
+    }
     if (gps_status)
+    {
         sensors |= MAV_SYS_STATUS_SENSOR_GPS;
-
+    }
     mavlink_message_t msg;
     mavlink_msg_sys_status_pack(
         _parent->get_own_system_id(),
@@ -303,9 +312,9 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
         sensors,
         sensors,
         0,
-        static_cast<uint16_t>(battery.voltage_v) * 1E3,
+        static_cast<uint16_t>(battery.voltage_v * 1E3),
         -1,
-        static_cast<uint16_t>(battery.remaining_percent) * 1E2,
+        static_cast<uint16_t>(battery.remaining_percent * 1E2),
         0,
         0,
         0,
