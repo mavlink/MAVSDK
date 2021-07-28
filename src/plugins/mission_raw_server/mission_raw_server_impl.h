@@ -1,5 +1,6 @@
 #pragma once
 
+#include "locked_queue.h"
 #include "plugins/mission_raw_server/mission_raw_server.h"
 #include "plugin_impl_base.h"
 
@@ -37,6 +38,10 @@ private:
     std::atomic<int> _mission_count;
     std::atomic<bool> _mission_completed;
 
+    std::queue<std::function<void()>> _work_queue;
+    std::condition_variable _wait_for_new_task;
+    std::mutex _work_mutex;
+
     std::vector<MAVLinkMissionTransfer::ItemInt> _current_mission;
     uint32_t _current_seq;
 
@@ -64,6 +69,13 @@ private:
         const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
 
     void set_current_seq(int32_t seq);
+
+    void add_task(std::function<void()> task)
+    {
+        std::unique_lock<std::mutex> lock(_work_mutex);
+        _work_queue.push(task);
+        _wait_for_new_task.notify_one();
+    }
 
     bool _enable_return_to_launch_after_mission{false};
 

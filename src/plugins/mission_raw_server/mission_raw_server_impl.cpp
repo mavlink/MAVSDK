@@ -129,7 +129,32 @@ void MissionRawServerImpl::init()
 {
     _thread_mission = std::thread([this] {
         while (true) {
-            if (_do_upload) {
+            std::unique_lock<std::mutex> lock(_work_mutex);
+            if (!_work_queue.empty()) {
+                auto task = _work_queue.front();
+                _work_queue.pop();
+                lock.unlock();
+                task();
+            } else {
+                _wait_for_new_task.wait(lock);
+            }
+        }
+    });
+
+    // Handle Initiate Upload
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_MISSION_COUNT,
+        [this](const mavlink_message_t& message) {
+            LogDebug() << "Receive Mission Count in Server";
+
+            // Decode the count
+            _target_component = message.compid;
+            mavlink_mission_count_t count;
+            mavlink_msg_mission_count_decode(&message, &count);
+            _mission_count = count.count;
+
+            // We need to queue this on a different thread or it will deadlock
+            add_task([this]() {
                 // Mission Upload Inbound
                 if (_mission_data.last_download.lock()) {
                     _parent->call_user_callback([this]() {
@@ -161,23 +186,7 @@ void MissionRawServerImpl::init()
                                     set_current_seq(0);
                                 });
                         });
-                _do_upload = false;
-            }
-        }
-    });
-
-    // Handle Initiate Upload
-    _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MISSION_COUNT,
-        [this](const mavlink_message_t& message) {
-            LogDebug() << "Receive Mission Count in Server";
-
-            // Decode the count
-            _target_component = message.compid;
-            mavlink_mission_count_t count;
-            mavlink_msg_mission_count_decode(&message, &count);
-            _mission_count = count.count;
-            _do_upload = true;
+            });
         },
         this);
 
