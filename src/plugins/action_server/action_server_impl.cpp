@@ -2,8 +2,7 @@
 
 namespace mavsdk {
 
-ActionServer::FlightMode
-telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode)
+ActionServer::FlightMode telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode)
 {
     switch (flight_mode) {
         case SystemImpl::FlightMode::Ready:
@@ -52,14 +51,14 @@ ActionServerImpl::~ActionServerImpl()
     _parent->unregister_plugin(this);
 }
 
-void ActionServerImpl::init() {
-        // Arming / Disarm / Kill
-        _parent->register_mavlink_command_handler(
+void ActionServerImpl::init()
+{
+    // Arming / Disarm / Kill
+    _parent->register_mavlink_command_handler(
         MAV_CMD_COMPONENT_ARM_DISARM,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             ActionServer::ArmDisarm armDisarm{
-                command.params.param1 == 1,
-                command.params.param2 == 21196};
+                command.params.param1 == 1, command.params.param2 == 21196};
 
             // Check arm states - Ugly.
             uint8_t request_ack = MAV_RESULT_UNSUPPORTED;
@@ -75,7 +74,7 @@ void ActionServerImpl::init() {
             }
 
             if (request_ack == MAV_RESULT::MAV_RESULT_ACCEPTED) {
-                _parent->set_server_armed(armDisarm.arm == 1);
+                _parent->set_server_armed(armDisarm.arm);
             }
 
             auto result = (request_ack == MAV_RESULT::MAV_RESULT_ACCEPTED) ?
@@ -92,7 +91,7 @@ void ActionServerImpl::init() {
                 &msg,
                 command.command,
                 request_ack,
-                100,
+                std::numeric_limits<uint8_t>::max(),
                 0,
                 command.origin_system_id,
                 command.origin_component_id);
@@ -100,8 +99,8 @@ void ActionServerImpl::init() {
         },
         this);
 
-        // Flight mode
-        _parent->register_mavlink_command_handler(
+    // Flight mode
+    _parent->register_mavlink_command_handler(
         MAV_CMD_DO_SET_MODE,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             auto base_mode = static_cast<uint8_t>(command.params.param1);
@@ -120,7 +119,24 @@ void ActionServerImpl::init() {
                 auto system_flight_mode = _parent->to_flight_mode_from_custom_mode(px4_mode.data);
                 request_flight_mode = telemetry_flight_mode_from_flight_mode(system_flight_mode);
             } else {
-                // TO DO non PX4 flight modes...
+                // TO DO: non PX4 flight modes...
+                // Just bug out now if not using PX4 modes
+                _parent->call_user_callback([this, request_flight_mode]() {
+                    _flight_mode_change_callback(
+                        ActionServer::Result::ParameterError, request_flight_mode);
+                });
+                mavlink_message_t msg;
+                mavlink_msg_command_ack_pack(
+                    _parent->get_own_system_id(),
+                    _parent->get_own_component_id(),
+                    &msg,
+                    command.command,
+                    MAV_RESULT::MAV_RESULT_UNSUPPORTED,
+                    std::numeric_limits<uint8_t>::max(),
+                    0,
+                    command.origin_system_id,
+                    command.origin_component_id);
+                return msg;
             }
 
             bool allow_mode = false;
@@ -163,7 +179,7 @@ void ActionServerImpl::init() {
                 &msg,
                 command.command,
                 allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED,
-                100,
+                255,
                 0,
                 command.origin_system_id,
                 command.origin_component_id);
@@ -178,17 +194,11 @@ void ActionServerImpl::enable() {}
 
 void ActionServerImpl::disable() {}
 
-
-
 void ActionServerImpl::subscribe_arm_disarm(ActionServer::ArmDisarmCallback callback)
 {
     std::lock_guard<std::mutex> lock(_callback_mutex);
     _arm_disarm_callback = callback;
 }
-
-
-
-
 
 void ActionServerImpl::subscribe_flight_mode_change(ActionServer::FlightModeChangeCallback callback)
 {
@@ -196,87 +206,46 @@ void ActionServerImpl::subscribe_flight_mode_change(ActionServer::FlightModeChan
     _flight_mode_change_callback = callback;
 }
 
-
-
-
-
 void ActionServerImpl::subscribe_takeoff(ActionServer::TakeoffCallback callback)
 {
-    
     UNUSED(callback);
 }
-
-
-
-
 
 void ActionServerImpl::subscribe_land(ActionServer::LandCallback callback)
 {
-    
     UNUSED(callback);
 }
-
-
-
-
 
 void ActionServerImpl::subscribe_reboot(ActionServer::RebootCallback callback)
 {
-    
     UNUSED(callback);
 }
-
-
-
-
 
 void ActionServerImpl::subscribe_shutdown(ActionServer::ShutdownCallback callback)
 {
-    
     UNUSED(callback);
 }
-
-
-
-
 
 void ActionServerImpl::subscribe_terminate(ActionServer::TerminateCallback callback)
 {
-    
     UNUSED(callback);
 }
 
-
-
-
-
-
-
 ActionServer::Result ActionServerImpl::set_allow_takeoff(bool allow_takeoff)
 {
-    
     UNUSED(allow_takeoff);
-    
 
     // TODO :)
     return {};
 }
 
-
-
-
-
 ActionServer::Result ActionServerImpl::set_armable(bool armable, bool force_armable)
 {
-     std::lock_guard<std::mutex> lock(_flight_mode_mutex);
+    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
     _armable = armable;
     _force_armable = force_armable;
     return ActionServer::Result::Success;
 }
-
-
-
-
 
 ActionServer::Result ActionServerImpl::set_disarmable(bool disarmable, bool force_disarmable)
 {
@@ -286,27 +255,18 @@ ActionServer::Result ActionServerImpl::set_disarmable(bool disarmable, bool forc
     return ActionServer::Result::Success;
 }
 
-
-
-
-
-ActionServer::Result ActionServerImpl::set_allowable_flight_modes(ActionServer::AllowableFlightModes flight_modes)
+ActionServer::Result
+ActionServerImpl::set_allowable_flight_modes(ActionServer::AllowableFlightModes flight_modes)
 {
     std::lock_guard<std::mutex> lock(_flight_mode_mutex);
     _allowed_flight_modes = flight_modes;
     return ActionServer::Result::Success;
 }
 
-
-
-
-
 ActionServer::AllowableFlightModes ActionServerImpl::get_allowable_flight_modes()
 {
     std::lock_guard<std::mutex> lock(_flight_mode_mutex);
     return _allowed_flight_modes;
 }
-
-
 
 } // namespace mavsdk
