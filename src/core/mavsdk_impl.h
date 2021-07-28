@@ -85,6 +85,11 @@ public:
 
     MAVLinkAddress own_address{};
 
+    void set_base_mode(uint8_t base_mode);
+    bool get_base_mode() const;
+    void set_custom_mode(uint32_t custom_mode);
+    uint32_t get_custom_mode() const;
+
 private:
     void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(
@@ -143,6 +148,9 @@ private:
     void* _heartbeat_send_cookie{nullptr};
 
     std::atomic<bool> _should_exit = {false};
+
+    std::atomic<uint8_t> _base_mode = 0;
+    std::atomic<uint32_t> _custom_mode = 0;
 };
 
 } // namespace mavsdk

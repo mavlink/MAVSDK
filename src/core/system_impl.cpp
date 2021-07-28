@@ -1234,4 +1234,30 @@ void SystemImpl::unregister_all_mavlink_command_handlers(const void* cookie)
     _receive_commands.unregister_all_mavlink_command_handlers(cookie);
 }
 
+void SystemImpl::set_server_armed(bool armed)
+{
+    uint8_t base_mode = _parent.get_base_mode();
+    if (armed) {
+        base_mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    } else {
+        base_mode &= ~MAV_MODE_FLAG_SAFETY_ARMED;
+    }
+    _parent.set_base_mode(base_mode);
+}
+
+bool SystemImpl::is_server_armed() const
+{
+    return _parent.get_base_mode() & MAV_MODE_FLAG_SAFETY_ARMED == MAV_MODE_FLAG_SAFETY_ARMED;
+}
+
+void SystemImpl::set_custom_mode(uint32_t custom_mode)
+{
+    _parent.set_custom_mode(custom_mode);
+}
+
+uint32_t SystemImpl::get_custom_mode() const
+{
+    return _parent.get_custom_mode();
+}
+
 } // namespace mavsdk
