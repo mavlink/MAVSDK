@@ -200,7 +200,7 @@ TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text
         0,
         0);
 
-    _parent->send_message(msg) ? TelemetryServer::Result::Success :
+    return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                  TelemetryServer::Result::Unsupported;
 }
 
