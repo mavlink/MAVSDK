@@ -453,11 +453,6 @@ message Imu {
     uint64 timestamp_us = 5; // Timestamp in microseconds
 }
 
-message RcReceiverStatus
-{
-    bool health = 1;
-}
-
 // Result type.
 message TelemetryServerResult {
     // Possible results returned for telemetry requests.
