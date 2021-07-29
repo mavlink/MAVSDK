@@ -263,7 +263,8 @@ void MissionRawServerImpl::init()
         this);
 }
 
-void MissionRawServerImpl::deinit() {
+void MissionRawServerImpl::deinit()
+{
     _stop_work_thread = true;
     _wait_for_new_task.notify_all();
     _thread_mission.join();
