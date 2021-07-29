@@ -50,18 +50,6 @@ public:
         Stabilized,
     };
 
-    // Used when MAVSDK acting as autopilot
-    struct AutopilotVersion {
-        uint64_t capabilities{MAV_PROTOCOL_CAPABILITY_COMMAND_INT};
-        uint32_t flight_sw_version{0};
-        uint32_t middleware_sw_version{0};
-        uint32_t os_sw_version{0};
-        uint32_t board_version{0};
-        uint16_t vendor_id{0};
-        uint16_t product_id{0};
-        uint64_t uid{0};
-    };
-
     explicit SystemImpl(MavsdkImpl& parent);
     ~SystemImpl();
 
@@ -284,7 +272,7 @@ public:
     void set_vendor_id(uint16_t vendor_id);
     void set_product_id(uint16_t product_id);
     void set_uid(uint64_t uid);
-    AutopilotVersion get_autopilot_version_data();
+    System::AutopilotVersion get_autopilot_version_data();
 
 private:
     static bool is_autopilot(uint8_t comp_id);
@@ -391,7 +379,8 @@ private:
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
     std::mutex _autopilot_version_mutex{};
-    AutopilotVersion _autopilot_version{MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};
+    System::AutopilotVersion _autopilot_version{
+        MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};
 };
 
 } // namespace mavsdk

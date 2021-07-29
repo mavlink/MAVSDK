@@ -1101,7 +1101,7 @@ void SystemImpl::set_uid(uint64_t uid)
     _autopilot_version.uid = uid;
 }
 
-SystemImpl::AutopilotVersion SystemImpl::get_autopilot_version_data()
+System::AutopilotVersion SystemImpl::get_autopilot_version_data()
 {
     std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
     return _autopilot_version;
