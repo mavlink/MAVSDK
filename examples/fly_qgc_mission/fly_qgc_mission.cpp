@@ -102,7 +102,7 @@ int main(int argc, char** argv)
 
     std::cout << "System ready\n";
 
-    std::cout << "Importing mission from mission plan: " << argv[2] << std::endl;
+    std::cout << "Importing mission from mission plan: " << argv[2] << '\n';
     std::pair<MissionRaw::Result, MissionRaw::MissionImportData> import_res =
         mission_raw.import_qgroundcontrol_mission(argv[2]);
     if (import_res.first != MissionRaw::Result::Success) {
