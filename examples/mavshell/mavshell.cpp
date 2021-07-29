@@ -4,81 +4,80 @@
 #include <iostream>
 
 using namespace mavsdk;
+using std::chrono::seconds;
 
-#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
+void run_interactive_shell(std::shared_ptr<System> system);
 
-void print_usage(const std::string& bin_name);
-bool start_discovery(Mavsdk& mavsdk, const std::string& connection_url);
-void wait_until_discover(Mavsdk& mavsdk);
-void run_interactive_shell(Mavsdk& mavsdk);
+void usage(const std::string& bin_name)
+{
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n";
+}
+
+std::shared_ptr<System> get_system(Mavsdk& mavsdk)
+{
+    std::cout << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
+
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
+
+        if (system->has_autopilot()) {
+            std::cout << "Discovered autopilot\n";
+
+            // Unsubscribe again as we only want to find one system.
+            mavsdk.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
+        }
+    });
+
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found.\n";
+        return {};
+    }
+
+    // Get discovered system now.
+    return fut.get();
+}
 
 int main(int argc, char** argv)
 {
     if (argc != 2) {
-        const auto binary_name = argv[0];
-        print_usage(binary_name);
+        usage(argv[0]);
         return 1;
     }
 
     Mavsdk mavsdk;
-    const std::string connection_url(argv[1]);
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
-    if (!start_discovery(mavsdk, connection_url)) {
+    if (connection_result != ConnectionResult::Success) {
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
-    wait_until_discover(mavsdk);
-    run_interactive_shell(mavsdk);
+    auto system = get_system(mavsdk);
+    if (!system) {
+        return 1;
+    }
+
+    // Instantiate plugins.
+    run_interactive_shell(system);
 
     return 0;
 }
 
-void print_usage(const std::string& bin_name)
+void run_interactive_shell(std::shared_ptr<System> system)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
-}
-
-bool start_discovery(Mavsdk& mavsdk, const std::string& connection_url)
-{
-    const auto connection_result = mavsdk.add_any_connection(connection_url);
-
-    if (connection_result != ConnectionResult::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
-        return false;
-    }
-
-    return true;
-}
-
-void wait_until_discover(Mavsdk& mavsdk)
-{
-    std::cout << "Waiting to discover system..." << std::endl;
-    std::promise<void> discover_promise;
-    auto discover_future = discover_promise.get_future();
-
-    mavsdk.subscribe_on_new_system([&mavsdk, &discover_promise]() {
-        const auto system = mavsdk.systems().at(0);
-
-        if (system->is_connected()) {
-            std::cout << "Discovered system" << std::endl;
-            discover_promise.set_value();
-        }
-    });
-
-    discover_future.wait();
-}
-
-void run_interactive_shell(Mavsdk& mavsdk)
-{
-    Shell shell(mavsdk.systems().at(0));
+    Shell shell{system};
 
     shell.subscribe_receive([](const std::string output) { std::cout << output; });
 
@@ -92,5 +91,5 @@ void run_interactive_shell(Mavsdk& mavsdk)
 
         shell.send(command);
     }
-    std::cout << std::endl;
+    std::cout << '\n';
 }
