@@ -269,18 +269,7 @@ std::optional<mavlink_message_t>
 SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
 {
     LogDebug() << "Autopilot Capabilities Request";
-
-    // auto capabilities = MAV_PROTOCOL_CAPABILITY_MISSION_FLOAT |
-    //                    MAV_PROTOCOL_CAPABILITY_COMMAND_INT | MAV_PROTOCOL_CAPABILITY_MISSION_INT;
-    auto flight_sw_version = 1;
-    auto middleware_sw_version = 2;
-    auto os_sw_version = 3;
-    auto board_version = 4;
-    auto vendor_id = 5;
-    auto product_id = 6;
-    auto uid = get_own_system_id();
-
-    uint8_t custom = 0;
+    const uint8_t custom_values = 0; // TO-DO: maybe?
 
     mavlink_message_t msg;
     mavlink_msg_autopilot_version_pack(
