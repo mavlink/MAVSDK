@@ -1,11 +1,8 @@
-/**
- * @file offboard_velocity.cpp
- * @brief Example that demonstrates offboard velocity control in local NED and
- * body coordinates
- *
- * @authors Author: Julian Oes <julian@oes.ch>,
- *                  Shakthi Prashanth <shakthi.prashanth.m@intel.com>
- */
+//
+// Example that demonstrates offboard control using attitude, velocity control
+// in NED (North-East-Down), and velocity control in body (Forward-Right-Down)
+// coordinates.
+//
 
 #include <chrono>
 #include <cmath>
@@ -23,61 +20,68 @@ using std::chrono::milliseconds;
 using std::chrono::seconds;
 using std::this_thread::sleep_for;
 
-#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
-
-// Handles Action's result
-inline void action_error_exit(Action::Result result, const std::string& message)
+void usage(const std::string& bin_name)
 {
-    if (result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n";
+}
+
+std::shared_ptr<System> get_system(Mavsdk& mavsdk)
+{
+    std::cout << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
+
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
+
+        if (system->has_autopilot()) {
+            std::cout << "Discovered autopilot\n";
+
+            // Unsubscribe again as we only want to find one system.
+            mavsdk.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
+        }
+    });
+
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found.\n";
+        return {};
     }
+
+    // Get discovered system now.
+    return fut.get();
 }
 
-// Handles Offboard's result
-inline void offboard_error_exit(Offboard::Result result, const std::string& message)
-{
-    if (result != Offboard::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-
-// Handles connection result
-inline void connection_error_exit(ConnectionResult result, const std::string& message)
-{
-    if (result != ConnectionResult::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << result << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-
-// Logs during Offboard control
-inline void offboard_log(const std::string& offb_mode, const std::string msg)
-{
-    std::cout << "[" << offb_mode << "] " << msg << std::endl;
-}
-
-/**
- * Does Offboard control using NED co-ordinates.
- *
- * returns true if everything went well in Offboard control, exits with a log
- * otherwise.
- */
+//
+// Does Offboard control using NED co-ordinates.
+//
+// returns true if everything went well in Offboard control
+//
 bool offb_ctrl_ned(mavsdk::Offboard& offboard)
 {
-    const std::string offb_mode = "NED";
+    std::cout << "Starting Offboard velocity control in NED coordinates\n";
+
     // Send it once before starting offboard, otherwise it will be rejected.
     const Offboard::VelocityNedYaw stay{};
     offboard.set_velocity_ned(stay);
 
     Offboard::Result offboard_result = offboard.start();
-    offboard_error_exit(offboard_result, "Offboard start failed");
-    offboard_log(offb_mode, "Offboard started");
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
+        return false;
+    }
 
-    offboard_log(offb_mode, "Turn to face East");
+    std::cout << "Offboard started\n";
+    std::cout << "Turn to face East\n";
 
     Offboard::VelocityNedYaw turn_east{};
     turn_east.yaw_deg = 90.0f;
@@ -89,7 +93,8 @@ bool offb_ctrl_ned(mavsdk::Offboard& offboard)
         const float one_cycle = 2.0f * (float)M_PI;
         const unsigned steps = 2 * unsigned(one_cycle / step_size);
 
-        offboard_log(offb_mode, "Go North and back South");
+        std::cout << "Go North and back South\n";
+
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
             Offboard::VelocityNedYaw north_and_back_south{};
@@ -100,106 +105,115 @@ bool offb_ctrl_ned(mavsdk::Offboard& offboard)
         }
     }
 
-    offboard_log(offb_mode, "Turn to face West");
+    std::cout << "Turn to face West\n";
     Offboard::VelocityNedYaw turn_west{};
     turn_west.yaw_deg = 270.0f;
     offboard.set_velocity_ned(turn_west);
     sleep_for(seconds(2));
 
-    offboard_log(offb_mode, "Go up 2 m/s, turn to face South");
+    std::cout << "Go up 2 m/s, turn to face South\n";
     Offboard::VelocityNedYaw up_and_south{};
     up_and_south.down_m_s = -2.0f;
     up_and_south.yaw_deg = 180.0f;
     offboard.set_velocity_ned(up_and_south);
     sleep_for(seconds(4));
 
-    offboard_log(offb_mode, "Go down 1 m/s, turn to face North");
+    std::cout << "Go down 1 m/s, turn to face North\n";
     Offboard::VelocityNedYaw down_and_north{};
     up_and_south.down_m_s = 1.0f;
     offboard.set_velocity_ned(down_and_north);
     sleep_for(seconds(4));
 
-    // Now, stop offboard mode.
     offboard_result = offboard.stop();
-    offboard_error_exit(offboard_result, "Offboard stop failed: ");
-    offboard_log(offb_mode, "Offboard stopped");
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
+        return false;
+    }
+    std::cout << "Offboard stopped\n";
 
     return true;
 }
 
-/**
- * Does Offboard control using body co-ordinates.
- *
- * returns true if everything went well in Offboard control, exits with a log
- * otherwise.
- */
+//
+// Does Offboard control using body co-ordinates.
+// Body coordinates really means world coordinates rotated by the yaw of the
+// vehicle, so if the vehicle pitches down, the forward axis does still point
+// forward and not down into the ground.
+//
+// returns true if everything went well in Offboard control.
+//
 bool offb_ctrl_body(mavsdk::Offboard& offboard)
 {
-    const std::string offb_mode = "BODY";
+    std::cout << "Starting Offboard velocity control in body coordinates\n";
 
     // Send it once before starting offboard, otherwise it will be rejected.
     Offboard::VelocityBodyYawspeed stay{};
     offboard.set_velocity_body(stay);
 
     Offboard::Result offboard_result = offboard.start();
-    offboard_error_exit(offboard_result, "Offboard start failed: ");
-    offboard_log(offb_mode, "Offboard started");
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
+        return false;
+    }
+    std::cout << "Offboard started\n";
 
-    offboard_log(offb_mode, "Turn clock-wise and climb");
+    std::cout << "Turn clock-wise and climb\n";
     Offboard::VelocityBodyYawspeed cc_and_climb{};
     cc_and_climb.down_m_s = -1.0f;
     cc_and_climb.yawspeed_deg_s = 60.0f;
     offboard.set_velocity_body(cc_and_climb);
     sleep_for(seconds(5));
 
-    offboard_log(offb_mode, "Turn back anti-clockwise");
+    std::cout << "Turn back anti-clockwise\n";
     Offboard::VelocityBodyYawspeed ccw{};
     ccw.down_m_s = -1.0f;
     ccw.yawspeed_deg_s = -60.0f;
     offboard.set_velocity_body(ccw);
     sleep_for(seconds(5));
 
-    offboard_log(offb_mode, "Wait for a bit");
+    std::cout << "Wait for a bit\n";
     offboard.set_velocity_body(stay);
     sleep_for(seconds(2));
 
-    offboard_log(offb_mode, "Fly a circle");
+    std::cout << "Fly a circle\n";
     Offboard::VelocityBodyYawspeed circle{};
     circle.forward_m_s = 5.0f;
     circle.yawspeed_deg_s = 30.0f;
     offboard.set_velocity_body(circle);
     sleep_for(seconds(15));
 
-    offboard_log(offb_mode, "Wait for a bit");
+    std::cout << "Wait for a bit\n";
     offboard.set_velocity_body(stay);
     sleep_for(seconds(5));
 
-    offboard_log(offb_mode, "Fly a circle sideways");
+    std::cout << "Fly a circle sideways\n";
     circle.right_m_s = -5.0f;
     circle.yawspeed_deg_s = 30.0f;
     offboard.set_velocity_body(circle);
     sleep_for(seconds(15));
 
-    offboard_log(offb_mode, "Wait for a bit");
+    std::cout << "Wait for a bit\n";
     offboard.set_velocity_body(stay);
     sleep_for(seconds(8));
 
     offboard_result = offboard.stop();
-    offboard_error_exit(offboard_result, "Offboard stop failed: ");
-    offboard_log(offb_mode, "Offboard stopped");
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
+        return false;
+    }
+    std::cout << "Offboard stopped\n";
 
     return true;
 }
 
-/**
- * Does Offboard control using attitude commands.
- *
- * returns true if everything went well in Offboard control, exits with a log
- * otherwise.
- */
+//
+// Does Offboard control using attitude commands.
+//
+// returns true if everything went well in Offboard control.
+//
 bool offb_ctrl_attitude(mavsdk::Offboard& offboard)
 {
-    const std::string offb_mode = "ATTITUDE";
+    std::cout << "Starting Offboard attitude control\n";
 
     // Send it once before starting offboard, otherwise it will be rejected.
     Offboard::Attitude roll{};
@@ -208,165 +222,132 @@ bool offb_ctrl_attitude(mavsdk::Offboard& offboard)
     offboard.set_attitude(roll);
 
     Offboard::Result offboard_result = offboard.start();
-    offboard_error_exit(offboard_result, "Offboard start failed");
-    offboard_log(offb_mode, "Offboard started");
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
+        return false;
+    }
+    std::cout << "Offboard started\n";
 
-    offboard_log(offb_mode, "ROLL 30");
+    std::cout << "Roll 30 degrees to the right\n";
     offboard.set_attitude(roll);
-    sleep_for(seconds(2)); // rolling
+    sleep_for(seconds(2));
 
-    offboard_log(offb_mode, "ROLL -30");
-    roll.roll_deg = -30.0f;
-    offboard.set_attitude(roll);
-    sleep_for(seconds(2)); // Let yaw settle.
-
-    offboard_log(offb_mode, "ROLL 0");
+    std::cout << "Stay horizontal\n";
     roll.roll_deg = 0.0f;
     offboard.set_attitude(roll);
-    sleep_for(seconds(2)); // Let yaw settle.
+    sleep_for(seconds(1));
 
-    // Now, stop offboard mode.
+    std::cout << "Roll 30 degrees to the left\n";
+    roll.roll_deg = -30.0f;
+    offboard.set_attitude(roll);
+    sleep_for(seconds(2));
+
+    std::cout << "Stay horizontal\n";
+    roll.roll_deg = 0.0f;
+    offboard.set_attitude(roll);
+    sleep_for(seconds(2));
+
     offboard_result = offboard.stop();
-    offboard_error_exit(offboard_result, "Offboard stop failed: ");
-    offboard_log(offb_mode, "Offboard stopped");
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
+        return false;
+    }
+    std::cout << "Offboard stopped\n";
 
     return true;
 }
 
-void wait_until_discover(Mavsdk& mavsdk)
-{
-    std::cout << "Waiting to discover system..." << std::endl;
-    std::promise<void> discover_promise;
-    auto discover_future = discover_promise.get_future();
-
-    mavsdk.subscribe_on_new_system([&mavsdk, &discover_promise]() {
-        const auto system = mavsdk.systems().at(0);
-
-        if (system->is_connected()) {
-            std::cout << "Discovered system" << std::endl;
-            discover_promise.set_value();
-        }
-    });
-
-    discover_future.wait();
-}
-
-void usage(std::string bin_name)
-{
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
-}
-
-Telemetry::LandedStateCallback
-landed_state_callback(Telemetry& telemetry, std::promise<void>& landed_promise)
-{
-    return [&landed_promise, &telemetry](Telemetry::LandedState landed) {
-        switch (landed) {
-            case Telemetry::LandedState::OnGround:
-                std::cout << "On ground" << std::endl;
-                break;
-            case Telemetry::LandedState::TakingOff:
-                std::cout << "Taking off..." << std::endl;
-                break;
-            case Telemetry::LandedState::Landing:
-                std::cout << "Landing..." << std::endl;
-                break;
-            case Telemetry::LandedState::InAir:
-                std::cout << "Taking off has finished." << std::endl;
-                telemetry.subscribe_landed_state(nullptr);
-                landed_promise.set_value();
-                break;
-            case Telemetry::LandedState::Unknown:
-                std::cout << "Unknown landed state." << std::endl;
-                break;
-        }
-    };
-}
-
 int main(int argc, char** argv)
 {
-    Mavsdk mavsdk;
-    std::string connection_url;
-    ConnectionResult connection_result;
-
-    if (argc == 2) {
-        connection_url = argv[1];
-        connection_result = mavsdk.add_any_connection(connection_url);
-    } else {
+    if (argc != 2) {
         usage(argv[0]);
         return 1;
     }
 
+    Mavsdk mavsdk;
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
+
     if (connection_result != ConnectionResult::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
-    // Wait for the system to connect via heartbeat
-    wait_until_discover(mavsdk);
+    auto system = get_system(mavsdk);
+    if (!system) {
+        return 1;
+    }
 
-    // System got discovered.
-    auto system = mavsdk.systems().at(0);
+    // Instantiate plugins.
     auto action = Action{system};
     auto offboard = Offboard{system};
     auto telemetry = Telemetry{system};
 
     while (!telemetry.health_all_ok()) {
-        std::cout << "Waiting for system to be ready" << std::endl;
+        std::cout << "Waiting for system to be ready\n";
         sleep_for(seconds(1));
     }
-    std::cout << "System is ready" << std::endl;
+    std::cout << "System is ready\n";
 
-    std::promise<void> in_air_promise;
+    const auto arm_result = action.arm();
+    if (arm_result != Action::Result::Success) {
+        std::cerr << "Arming failed: " << arm_result << '\n';
+        return 1;
+    }
+    std::cout << "Armed\n";
+
+    const auto takeoff_result = action.takeoff();
+    if (takeoff_result != Action::Result::Success) {
+        std::cerr << "Takeoff failed: " << takeoff_result << '\n';
+        return 1;
+    }
+
+    auto in_air_promise = std::promise<void>{};
     auto in_air_future = in_air_promise.get_future();
-
-    Action::Result arm_result = action.arm();
-    action_error_exit(arm_result, "Arming failed");
-    std::cout << "Armed" << std::endl;
-
-    Action::Result takeoff_result = action.takeoff();
-    action_error_exit(takeoff_result, "Takeoff failed");
-
-    telemetry.subscribe_landed_state(landed_state_callback(telemetry, in_air_promise));
-    in_air_future.wait();
+    telemetry.subscribe_landed_state([&telemetry, &in_air_promise](Telemetry::LandedState state) {
+        if (state == Telemetry::LandedState::InAir) {
+            std::cout << "Taking off has finished\n.";
+            telemetry.subscribe_landed_state(nullptr);
+            in_air_promise.set_value();
+        }
+    });
+    in_air_future.wait_for(seconds(10));
+    if (in_air_future.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "Takeoff timed out.\n";
+        return 1;
+    }
 
     //  using attitude control
-    bool ret = offb_ctrl_attitude(offboard);
-    if (ret == false) {
-        return EXIT_FAILURE;
+    if (!offb_ctrl_attitude(offboard)) {
+        return 1;
     }
 
     //  using local NED co-ordinates
-    ret = offb_ctrl_ned(offboard);
-    if (ret == false) {
-        return EXIT_FAILURE;
+    if (!offb_ctrl_ned(offboard)) {
+        return 1;
     }
 
     //  using body co-ordinates
-    ret = offb_ctrl_body(offboard);
-    if (ret == false) {
-        return EXIT_FAILURE;
+    if (!offb_ctrl_body(offboard)) {
+        return 1;
     }
 
-    const Action::Result land_result = action.land();
-    action_error_exit(land_result, "Landing failed");
+    const auto land_result = action.land();
+    if (land_result != Action::Result::Success) {
+        std::cerr << "Landing failed: " << land_result << '\n';
+        return 1;
+    }
 
     // Check if vehicle is still in air
     while (telemetry.in_air()) {
-        std::cout << "Vehicle is landing..." << std::endl;
+        std::cout << "Vehicle is landing...\n";
         sleep_for(seconds(1));
     }
-    std::cout << "Landed!" << std::endl;
+    std::cout << "Landed!\n";
 
     // We are relying on auto-disarming but let's keep watching the telemetry for
     // a bit longer.
     sleep_for(seconds(3));
-    std::cout << "Finished..." << std::endl;
+    std::cout << "Finished...\n";
 
-    return EXIT_SUCCESS;
+    return 0;
 }
