@@ -87,7 +87,8 @@ public:
     friend std::ostream& operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode);
 
     /**
-     * @brief
+     * @brief State to check if the vehicle can transition to
+     * respective flightmodes
      */
     struct AllowableFlightModes {
         bool can_auto_mode{}; /**< @brief Auto/mission mode */
