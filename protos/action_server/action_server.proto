@@ -126,6 +126,8 @@ message GetAllowableFlightModeResponse {
     AllowableFlightModes flight_modes = 1;
 }
 
+// State to check if the vehicle can transition to
+// respective flightmodes
 message AllowableFlightModes {
     bool can_auto_mode = 1; // Auto/mission mode 
     bool can_guided_mode = 2; // Guided mode
