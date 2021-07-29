@@ -614,6 +614,10 @@ TEST_F(MAVLinkMissionTransferTest, UploadMissionNacksAreHandled)
         });
         mmt.do_work();
 
+        EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                        return is_the_same_mission_item_int(items[0], message);
+                    })));
+
         message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
         // Send nack now.
