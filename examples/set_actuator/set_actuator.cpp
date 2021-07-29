@@ -1,7 +1,6 @@
 //
 // Simple example to demonstrate how to control actuators (i.e. servos) using MAVSDK.
 //
-// Author: Kalyan Sriram <kalyan@coderkalyan.com>
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
