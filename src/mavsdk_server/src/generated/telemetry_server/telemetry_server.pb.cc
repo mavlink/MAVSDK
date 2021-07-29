@@ -790,18 +790,6 @@ struct ImuDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ImuDefaultTypeInternal _Imu_default_instance_;
-constexpr RcReceiverStatus::RcReceiverStatus(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : health_(false){}
-struct RcReceiverStatusDefaultTypeInternal {
-  constexpr RcReceiverStatusDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~RcReceiverStatusDefaultTypeInternal() {}
-  union {
-    RcReceiverStatus _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RcReceiverStatusDefaultTypeInternal _RcReceiverStatus_default_instance_;
 constexpr TelemetryServerResult::TelemetryServerResult(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -819,7 +807,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TelemetryServerResultDefaultTyp
 }  // namespace telemetry_server
 }  // namespace rpc
 }  // namespace mavsdk
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[59];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[58];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto[6];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto = nullptr;
 
@@ -1244,12 +1232,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_telemetry_5fserver_2ftelemetry
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::Imu, temperature_degc_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::Imu, timestamp_us_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::RcReceiverStatus, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::RcReceiverStatus, health_),
-  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::TelemetryServerResult, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -1315,8 +1297,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 393, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityFrd)},
   { 401, -1, sizeof(::mavsdk::rpc::telemetry_server::MagneticFieldFrd)},
   { 409, -1, sizeof(::mavsdk::rpc::telemetry_server::Imu)},
-  { 419, -1, sizeof(::mavsdk::rpc::telemetry_server::RcReceiverStatus)},
-  { 425, -1, sizeof(::mavsdk::rpc::telemetry_server::TelemetryServerResult)},
+  { 419, -1, sizeof(::mavsdk::rpc::telemetry_server::TelemetryServerResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1377,7 +1358,6 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry_server::_AngularVelocityFrd_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry_server::_MagneticFieldFrd_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry_server::_Imu_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry_server::_RcReceiverStatus_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry_server::_TelemetryServerResult_default_instance_),
 };
 
@@ -1557,90 +1537,89 @@ const char descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2ep
   "gnetic_field_frd\030\003 \001(\0132-.mavsdk.rpc.tele"
   "metry_server.MagneticFieldFrd\022!\n\020tempera"
   "ture_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us"
-  "\030\005 \001(\004\"\"\n\020RcReceiverStatus\022\016\n\006health\030\001 \001"
-  "(\010\"\264\002\n\025TelemetryServerResult\022I\n\006result\030\001"
-  " \001(\01629.mavsdk.rpc.telemetry_server.Telem"
-  "etryServerResult.Result\022\022\n\nresult_str\030\002 "
-  "\001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RE"
-  "SULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027"
-  "RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY"
-  "\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RESULT_"
-  "TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPORTED\020\007*\244\001\n\007Fi"
-  "xType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n\017FIX_TYPE_N"
-  "O_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022\023\n\017FIX_TYPE"
-  "_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022FIX_"
-  "TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_RTK_FIXED\020\006"
-  "*o\n\tVtolState\022\022\n\016VTOL_UNDEFINED\020\000\022\031\n\025VTO"
-  "L_TRANSITION_TO_FW\020\001\022\031\n\025VTOL_TRANSITION_"
-  "TO_MC\020\002\022\013\n\007VTOL_MC\020\003\022\013\n\007VTOL_FW\020\004*\371\001\n\016St"
-  "atusTextType\022\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000"
-  "\022\031\n\025STATUS_TEXT_TYPE_INFO\020\001\022\033\n\027STATUS_TE"
-  "XT_TYPE_NOTICE\020\002\022\034\n\030STATUS_TEXT_TYPE_WAR"
-  "NING\020\003\022\032\n\026STATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031ST"
-  "ATUS_TEXT_TYPE_CRITICAL\020\005\022\032\n\026STATUS_TEXT"
-  "_TYPE_ALERT\020\006\022\036\n\032STATUS_TEXT_TYPE_EMERGE"
-  "NCY\020\007*\223\001\n\013LandedState\022\030\n\024LANDED_STATE_UN"
-  "KNOWN\020\000\022\032\n\026LANDED_STATE_ON_GROUND\020\001\022\027\n\023L"
-  "ANDED_STATE_IN_AIR\020\002\022\033\n\027LANDED_STATE_TAK"
-  "ING_OFF\020\003\022\030\n\024LANDED_STATE_LANDING\020\0042\214\017\n\026"
-  "TelemetryServerService\022\202\001\n\017PublishPositi"
-  "on\0223.mavsdk.rpc.telemetry_server.Publish"
-  "PositionRequest\0324.mavsdk.rpc.telemetry_s"
-  "erver.PublishPositionResponse\"\004\200\265\030\001\022v\n\013P"
-  "ublishHome\022/.mavsdk.rpc.telemetry_server"
-  ".PublishHomeRequest\0320.mavsdk.rpc.telemet"
-  "ry_server.PublishHomeResponse\"\004\200\265\030\001\022\205\001\n\020"
-  "PublishSysStatus\0224.mavsdk.rpc.telemetry_"
-  "server.PublishSysStatusRequest\0325.mavsdk."
-  "rpc.telemetry_server.PublishSysStatusRes"
-  "ponse\"\004\200\265\030\001\022\232\001\n\027PublishExtendedSysState\022"
-  ";.mavsdk.rpc.telemetry_server.PublishExt"
-  "endedSysStateRequest\032<.mavsdk.rpc.teleme"
-  "try_server.PublishExtendedSysStateRespon"
-  "se\"\004\200\265\030\001\022|\n\rPublishRawGps\0221.mavsdk.rpc.t"
-  "elemetry_server.PublishRawGpsRequest\0322.m"
-  "avsdk.rpc.telemetry_server.PublishRawGps"
-  "Response\"\004\200\265\030\001\022\177\n\016PublishBattery\0222.mavsd"
-  "k.rpc.telemetry_server.PublishBatteryReq"
-  "uest\0323.mavsdk.rpc.telemetry_server.Publi"
-  "shBatteryResponse\"\004\200\265\030\001\022\210\001\n\021PublishStatu"
-  "sText\0225.mavsdk.rpc.telemetry_server.Publ"
-  "ishStatusTextRequest\0326.mavsdk.rpc.teleme"
-  "try_server.PublishStatusTextResponse\"\004\200\265"
-  "\030\001\022\202\001\n\017PublishOdometry\0223.mavsdk.rpc.tele"
-  "metry_server.PublishOdometryRequest\0324.ma"
-  "vsdk.rpc.telemetry_server.PublishOdometr"
-  "yResponse\"\004\200\265\030\001\022\243\001\n\032PublishPositionVeloc"
-  "ityNed\022>.mavsdk.rpc.telemetry_server.Pub"
-  "lishPositionVelocityNedRequest\032\?.mavsdk."
-  "rpc.telemetry_server.PublishPositionVelo"
-  "cityNedResponse\"\004\200\265\030\001\022\213\001\n\022PublishGroundT"
-  "ruth\0226.mavsdk.rpc.telemetry_server.Publi"
-  "shGroundTruthRequest\0327.mavsdk.rpc.teleme"
-  "try_server.PublishGroundTruthResponse\"\004\200"
-  "\265\030\001\022s\n\nPublishImu\022..mavsdk.rpc.telemetry"
-  "_server.PublishImuRequest\032/.mavsdk.rpc.t"
-  "elemetry_server.PublishImuResponse\"\004\200\265\030\001"
-  "\022\205\001\n\020PublishScaledImu\0224.mavsdk.rpc.telem"
-  "etry_server.PublishScaledImuRequest\0325.ma"
-  "vsdk.rpc.telemetry_server.PublishScaledI"
-  "muResponse\"\004\200\265\030\001\022|\n\rPublishRawImu\0221.mavs"
-  "dk.rpc.telemetry_server.PublishRawImuReq"
-  "uest\0322.mavsdk.rpc.telemetry_server.Publi"
-  "shRawImuResponse\"\004\200\265\030\001\022\221\001\n\024PublishUnixEp"
-  "ochTime\0228.mavsdk.rpc.telemetry_server.Pu"
-  "blishUnixEpochTimeRequest\0329.mavsdk.rpc.t"
-  "elemetry_server.PublishUnixEpochTimeResp"
-  "onse\"\004\200\265\030\001B2\n\032io.mavsdk.telemetry_server"
-  "B\024TelemetryServerProtob\006proto3"
+  "\030\005 \001(\004\"\264\002\n\025TelemetryServerResult\022I\n\006resu"
+  "lt\030\001 \001(\01629.mavsdk.rpc.telemetry_server.T"
+  "elemetryServerResult.Result\022\022\n\nresult_st"
+  "r\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022"
+  "\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002"
+  "\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_"
+  "BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RES"
+  "ULT_TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPORTED\020\007*\244\001"
+  "\n\007FixType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n\017FIX_TY"
+  "PE_NO_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022\023\n\017FIX_"
+  "TYPE_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022"
+  "FIX_TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_RTK_FIX"
+  "ED\020\006*o\n\tVtolState\022\022\n\016VTOL_UNDEFINED\020\000\022\031\n"
+  "\025VTOL_TRANSITION_TO_FW\020\001\022\031\n\025VTOL_TRANSIT"
+  "ION_TO_MC\020\002\022\013\n\007VTOL_MC\020\003\022\013\n\007VTOL_FW\020\004*\371\001"
+  "\n\016StatusTextType\022\032\n\026STATUS_TEXT_TYPE_DEB"
+  "UG\020\000\022\031\n\025STATUS_TEXT_TYPE_INFO\020\001\022\033\n\027STATU"
+  "S_TEXT_TYPE_NOTICE\020\002\022\034\n\030STATUS_TEXT_TYPE"
+  "_WARNING\020\003\022\032\n\026STATUS_TEXT_TYPE_ERROR\020\004\022\035"
+  "\n\031STATUS_TEXT_TYPE_CRITICAL\020\005\022\032\n\026STATUS_"
+  "TEXT_TYPE_ALERT\020\006\022\036\n\032STATUS_TEXT_TYPE_EM"
+  "ERGENCY\020\007*\223\001\n\013LandedState\022\030\n\024LANDED_STAT"
+  "E_UNKNOWN\020\000\022\032\n\026LANDED_STATE_ON_GROUND\020\001\022"
+  "\027\n\023LANDED_STATE_IN_AIR\020\002\022\033\n\027LANDED_STATE"
+  "_TAKING_OFF\020\003\022\030\n\024LANDED_STATE_LANDING\020\0042"
+  "\214\017\n\026TelemetryServerService\022\202\001\n\017PublishPo"
+  "sition\0223.mavsdk.rpc.telemetry_server.Pub"
+  "lishPositionRequest\0324.mavsdk.rpc.telemet"
+  "ry_server.PublishPositionResponse\"\004\200\265\030\001\022"
+  "v\n\013PublishHome\022/.mavsdk.rpc.telemetry_se"
+  "rver.PublishHomeRequest\0320.mavsdk.rpc.tel"
+  "emetry_server.PublishHomeResponse\"\004\200\265\030\001\022"
+  "\205\001\n\020PublishSysStatus\0224.mavsdk.rpc.teleme"
+  "try_server.PublishSysStatusRequest\0325.mav"
+  "sdk.rpc.telemetry_server.PublishSysStatu"
+  "sResponse\"\004\200\265\030\001\022\232\001\n\027PublishExtendedSysSt"
+  "ate\022;.mavsdk.rpc.telemetry_server.Publis"
+  "hExtendedSysStateRequest\032<.mavsdk.rpc.te"
+  "lemetry_server.PublishExtendedSysStateRe"
+  "sponse\"\004\200\265\030\001\022|\n\rPublishRawGps\0221.mavsdk.r"
+  "pc.telemetry_server.PublishRawGpsRequest"
+  "\0322.mavsdk.rpc.telemetry_server.PublishRa"
+  "wGpsResponse\"\004\200\265\030\001\022\177\n\016PublishBattery\0222.m"
+  "avsdk.rpc.telemetry_server.PublishBatter"
+  "yRequest\0323.mavsdk.rpc.telemetry_server.P"
+  "ublishBatteryResponse\"\004\200\265\030\001\022\210\001\n\021PublishS"
+  "tatusText\0225.mavsdk.rpc.telemetry_server."
+  "PublishStatusTextRequest\0326.mavsdk.rpc.te"
+  "lemetry_server.PublishStatusTextResponse"
+  "\"\004\200\265\030\001\022\202\001\n\017PublishOdometry\0223.mavsdk.rpc."
+  "telemetry_server.PublishOdometryRequest\032"
+  "4.mavsdk.rpc.telemetry_server.PublishOdo"
+  "metryResponse\"\004\200\265\030\001\022\243\001\n\032PublishPositionV"
+  "elocityNed\022>.mavsdk.rpc.telemetry_server"
+  ".PublishPositionVelocityNedRequest\032\?.mav"
+  "sdk.rpc.telemetry_server.PublishPosition"
+  "VelocityNedResponse\"\004\200\265\030\001\022\213\001\n\022PublishGro"
+  "undTruth\0226.mavsdk.rpc.telemetry_server.P"
+  "ublishGroundTruthRequest\0327.mavsdk.rpc.te"
+  "lemetry_server.PublishGroundTruthRespons"
+  "e\"\004\200\265\030\001\022s\n\nPublishImu\022..mavsdk.rpc.telem"
+  "etry_server.PublishImuRequest\032/.mavsdk.r"
+  "pc.telemetry_server.PublishImuResponse\"\004"
+  "\200\265\030\001\022\205\001\n\020PublishScaledImu\0224.mavsdk.rpc.t"
+  "elemetry_server.PublishScaledImuRequest\032"
+  "5.mavsdk.rpc.telemetry_server.PublishSca"
+  "ledImuResponse\"\004\200\265\030\001\022|\n\rPublishRawImu\0221."
+  "mavsdk.rpc.telemetry_server.PublishRawIm"
+  "uRequest\0322.mavsdk.rpc.telemetry_server.P"
+  "ublishRawImuResponse\"\004\200\265\030\001\022\221\001\n\024PublishUn"
+  "ixEpochTime\0228.mavsdk.rpc.telemetry_serve"
+  "r.PublishUnixEpochTimeRequest\0329.mavsdk.r"
+  "pc.telemetry_server.PublishUnixEpochTime"
+  "Response\"\004\200\265\030\001B2\n\032io.mavsdk.telemetry_se"
+  "rverB\024TelemetryServerProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto = {
-  false, false, 10030, descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2eproto, "telemetry_server/telemetry_server.proto", 
-  &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once, descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_deps, 1, 59,
+  false, false, 9994, descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2eproto, "telemetry_server/telemetry_server.proto", 
+  &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once, descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_deps, 1, 58,
   schemas, file_default_instances, TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto::offsets,
   file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto, file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto, file_level_service_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto,
 };
@@ -15167,193 +15146,6 @@ void Imu::InternalSwap(Imu* other) {
 
 // ===================================================================
 
-class RcReceiverStatus::_Internal {
- public:
-};
-
-RcReceiverStatus::RcReceiverStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
-  SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-}
-RcReceiverStatus::RcReceiverStatus(const RcReceiverStatus& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  health_ = from.health_;
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-}
-
-void RcReceiverStatus::SharedCtor() {
-health_ = false;
-}
-
-RcReceiverStatus::~RcReceiverStatus() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-void RcReceiverStatus::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
-}
-
-void RcReceiverStatus::ArenaDtor(void* object) {
-  RcReceiverStatus* _this = reinterpret_cast< RcReceiverStatus* >(object);
-  (void)_this;
-}
-void RcReceiverStatus::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void RcReceiverStatus::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void RcReceiverStatus::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  health_ = false;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* RcReceiverStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // bool health = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          health_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* RcReceiverStatus::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bool health = 1;
-  if (this->health() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_health(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  return target;
-}
-
-size_t RcReceiverStatus::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // bool health = 1;
-  if (this->health() != 0) {
-    total_size += 1 + 1;
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void RcReceiverStatus::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  GOOGLE_DCHECK_NE(&from, this);
-  const RcReceiverStatus* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<RcReceiverStatus>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-    MergeFrom(*source);
-  }
-}
-
-void RcReceiverStatus::MergeFrom(const RcReceiverStatus& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.health() != 0) {
-    _internal_set_health(from._internal_health());
-  }
-}
-
-void RcReceiverStatus::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void RcReceiverStatus::CopyFrom(const RcReceiverStatus& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry_server.RcReceiverStatus)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool RcReceiverStatus::IsInitialized() const {
-  return true;
-}
-
-void RcReceiverStatus::InternalSwap(RcReceiverStatus* other) {
-  using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  swap(health_, other->health_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata RcReceiverStatus::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
 class TelemetryServerResult::_Internal {
  public:
 };
@@ -15755,9 +15547,6 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::MagneticFieldFrd* 
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Imu* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Imu >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Imu >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::RcReceiverStatus* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::RcReceiverStatus >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::RcReceiverStatus >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::TelemetryServerResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::TelemetryServerResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::TelemetryServerResult >(arena);

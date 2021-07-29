@@ -48,7 +48,7 @@ struct TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[59]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[58]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -215,9 +215,6 @@ extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
 class RawGps;
 struct RawGpsDefaultTypeInternal;
 extern RawGpsDefaultTypeInternal _RawGps_default_instance_;
-class RcReceiverStatus;
-struct RcReceiverStatusDefaultTypeInternal;
-extern RcReceiverStatusDefaultTypeInternal _RcReceiverStatus_default_instance_;
 class RcStatus;
 struct RcStatusDefaultTypeInternal;
 extern RcStatusDefaultTypeInternal _RcStatus_default_instance_;
@@ -292,7 +289,6 @@ template<> ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest* Arena::
 template<> ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Quaternion* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Quaternion>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::RawGps* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::RawGps>(Arena*);
-template<> ::mavsdk::rpc::telemetry_server::RcReceiverStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::RcReceiverStatus>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::RcStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::RcStatus>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::ScaledPressure* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::ScaledPressure>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::StatusText* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::StatusText>(Arena*);
@@ -9580,143 +9576,6 @@ class Imu PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class RcReceiverStatus PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.RcReceiverStatus) */ {
- public:
-  inline RcReceiverStatus() : RcReceiverStatus(nullptr) {}
-  virtual ~RcReceiverStatus();
-  explicit constexpr RcReceiverStatus(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  RcReceiverStatus(const RcReceiverStatus& from);
-  RcReceiverStatus(RcReceiverStatus&& from) noexcept
-    : RcReceiverStatus() {
-    *this = ::std::move(from);
-  }
-
-  inline RcReceiverStatus& operator=(const RcReceiverStatus& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline RcReceiverStatus& operator=(RcReceiverStatus&& from) noexcept {
-    if (GetArena() == from.GetArena()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const RcReceiverStatus& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const RcReceiverStatus* internal_default_instance() {
-    return reinterpret_cast<const RcReceiverStatus*>(
-               &_RcReceiverStatus_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    57;
-
-  friend void swap(RcReceiverStatus& a, RcReceiverStatus& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(RcReceiverStatus* other) {
-    if (other == this) return;
-    if (GetArena() == other->GetArena()) {
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(RcReceiverStatus* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RcReceiverStatus* New() const final {
-    return CreateMaybeMessage<RcReceiverStatus>(nullptr);
-  }
-
-  RcReceiverStatus* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<RcReceiverStatus>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const RcReceiverStatus& from);
-  void MergeFrom(const RcReceiverStatus& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(RcReceiverStatus* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.telemetry_server.RcReceiverStatus";
-  }
-  protected:
-  explicit RcReceiverStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    return ::descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_metadata_getter(kIndexInFileMessages);
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kHealthFieldNumber = 1,
-  };
-  // bool health = 1;
-  void clear_health();
-  bool health() const;
-  void set_health(bool value);
-  private:
-  bool _internal_health() const;
-  void _internal_set_health(bool value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.RcReceiverStatus)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  bool health_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
-};
-// -------------------------------------------------------------------
-
 class TelemetryServerResult PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.TelemetryServerResult) */ {
  public:
@@ -9760,7 +9619,7 @@ class TelemetryServerResult PROTOBUF_FINAL :
                &_TelemetryServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    57;
 
   friend void swap(TelemetryServerResult& a, TelemetryServerResult& b) {
     a.Swap(&b);
@@ -15471,30 +15330,6 @@ inline void Imu::set_timestamp_us(::PROTOBUF_NAMESPACE_ID::uint64 value) {
 
 // -------------------------------------------------------------------
 
-// RcReceiverStatus
-
-// bool health = 1;
-inline void RcReceiverStatus::clear_health() {
-  health_ = false;
-}
-inline bool RcReceiverStatus::_internal_health() const {
-  return health_;
-}
-inline bool RcReceiverStatus::health() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.RcReceiverStatus.health)
-  return _internal_health();
-}
-inline void RcReceiverStatus::_internal_set_health(bool value) {
-  
-  health_ = value;
-}
-inline void RcReceiverStatus::set_health(bool value) {
-  _internal_set_health(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.RcReceiverStatus.health)
-}
-
-// -------------------------------------------------------------------
-
 // TelemetryServerResult
 
 // .mavsdk.rpc.telemetry_server.TelemetryServerResult.Result result = 1;
@@ -15581,8 +15416,6 @@ inline void TelemetryServerResult::set_allocated_result_str(std::string* result_
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

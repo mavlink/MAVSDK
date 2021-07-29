@@ -875,29 +875,6 @@ public:
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu const& imu);
 
     /**
-     * @brief
-     */
-    struct RcReceiverStatus {
-        bool health{}; /**< @brief */
-    };
-
-    /**
-     * @brief Equal operator to compare two `TelemetryServer::RcReceiverStatus` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(
-        const TelemetryServer::RcReceiverStatus& lhs, const TelemetryServer::RcReceiverStatus& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `TelemetryServer::RcReceiverStatus`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream&
-    operator<<(std::ostream& str, TelemetryServer::RcReceiverStatus const& rc_receiver_status);
-
-    /**
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {

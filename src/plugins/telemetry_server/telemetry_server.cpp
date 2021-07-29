@@ -36,7 +36,6 @@ using AccelerationFrd = TelemetryServer::AccelerationFrd;
 using AngularVelocityFrd = TelemetryServer::AngularVelocityFrd;
 using MagneticFieldFrd = TelemetryServer::MagneticFieldFrd;
 using Imu = TelemetryServer::Imu;
-using RcReceiverStatus = TelemetryServer::RcReceiverStatus;
 
 TelemetryServer::TelemetryServer(System& system) :
     PluginBase(),
@@ -725,22 +724,6 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu const& imu)
     str << "    magnetic_field_frd: " << imu.magnetic_field_frd << '\n';
     str << "    temperature_degc: " << imu.temperature_degc << '\n';
     str << "    timestamp_us: " << imu.timestamp_us << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(
-    const TelemetryServer::RcReceiverStatus& lhs, const TelemetryServer::RcReceiverStatus& rhs)
-{
-    return (rhs.health == lhs.health);
-}
-
-std::ostream&
-operator<<(std::ostream& str, TelemetryServer::RcReceiverStatus const& rc_receiver_status)
-{
-    str << std::setprecision(15);
-    str << "rc_receiver_status:" << '\n' << "{\n";
-    str << "    health: " << rc_receiver_status.health << '\n';
     str << '}';
     return str;
 }

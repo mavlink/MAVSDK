@@ -1086,26 +1086,6 @@ public:
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry_server::RcReceiverStatus> translateToRpcRcReceiverStatus(
-        const mavsdk::TelemetryServer::RcReceiverStatus& rc_receiver_status)
-    {
-        auto rpc_obj = std::make_unique<rpc::telemetry_server::RcReceiverStatus>();
-
-        rpc_obj->set_health(rc_receiver_status.health);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::TelemetryServer::RcReceiverStatus translateFromRpcRcReceiverStatus(
-        const rpc::telemetry_server::RcReceiverStatus& rc_receiver_status)
-    {
-        mavsdk::TelemetryServer::RcReceiverStatus obj;
-
-        obj.health = rc_receiver_status.health();
-
-        return obj;
-    }
-
     static rpc::telemetry_server::TelemetryServerResult::Result
     translateToRpcResult(const mavsdk::TelemetryServer::Result& result)
     {
