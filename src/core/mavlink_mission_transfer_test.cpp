@@ -578,58 +578,64 @@ TEST_F(MAVLinkMissionTransferTest, UploadMissionAckArrivesTooEarly)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MAVLinkMissionTransferTest, UploadMissionNacksAreHandled)
+class MAVLinkMissionTransferNackTests
+    : public MAVLinkMissionTransferTest,
+      public ::testing::WithParamInterface<std::pair<uint8_t, Result>> {};
+
+TEST_P(MAVLinkMissionTransferNackTests, UploadMissionNackAreHandled)
 {
-    const std::vector<std::pair<uint8_t, Result>> nack_cases{
-        {MAV_MISSION_ERROR, Result::ProtocolError},
-        {MAV_MISSION_UNSUPPORTED_FRAME, Result::UnsupportedFrame},
-        {MAV_MISSION_UNSUPPORTED, Result::Unsupported},
-        {MAV_MISSION_NO_SPACE, Result::TooManyMissionItems},
-        {MAV_MISSION_INVALID, Result::InvalidParam},
-        {MAV_MISSION_INVALID_PARAM1, Result::InvalidParam},
-        {MAV_MISSION_INVALID_PARAM2, Result::InvalidParam},
-        {MAV_MISSION_INVALID_PARAM3, Result::InvalidParam},
-        {MAV_MISSION_INVALID_PARAM4, Result::InvalidParam},
-        {MAV_MISSION_INVALID_PARAM5_X, Result::InvalidParam},
-        {MAV_MISSION_INVALID_PARAM6_Y, Result::InvalidParam},
-        {MAV_MISSION_INVALID_PARAM7, Result::InvalidParam},
-        {MAV_MISSION_INVALID_SEQUENCE, Result::InvalidSequence},
-        {MAV_MISSION_DENIED, Result::Denied},
-        {MAV_MISSION_OPERATION_CANCELLED, Result::Cancelled},
-    };
+    uint8_t mavlink_nack = std::get<0>(GetParam());
+    Result mavsdk_nack = std::get<1>(GetParam());
 
-    for (const auto& nack_case : nack_cases) {
-        std::vector<ItemInt> items;
-        items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
-        items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+    std::vector<ItemInt> items;
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
-        ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
 
-        std::promise<void> prom;
-        auto fut = prom.get_future();
+    std::promise<void> prom;
+    auto fut = prom.get_future();
 
-        mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom, &nack_case](Result result) {
-            EXPECT_EQ(result, nack_case.second);
-            prom.set_value();
-        });
-        mmt.do_work();
+    mmt.upload_items_async(MAV_MISSION_TYPE_MISSION, items, [&prom, &mavsdk_nack](Result result) {
+        EXPECT_EQ(result, mavsdk_nack);
+        prom.set_value();
+    });
+    mmt.do_work();
 
-        EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
-                        return is_the_same_mission_item_int(items[0], message);
-                    })));
+    EXPECT_CALL(mock_sender, send_message(Truly([&items](const mavlink_message_t& message) {
+                    return is_the_same_mission_item_int(items[0], message);
+                })));
 
-        message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
-        // Send nack now.
-        message_handler.process_message(
-            make_mission_ack(MAV_MISSION_TYPE_MISSION, nack_case.first));
+    // Send nack now.
+    message_handler.process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, mavlink_nack));
 
-        EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-        mmt.do_work();
-        EXPECT_TRUE(mmt.is_idle());
-    }
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
 }
+
+INSTANTIATE_TEST_CASE_P(
+    MAVLinkMissionTransferTests,
+    MAVLinkMissionTransferNackTests,
+    ::testing::Values(
+        std::make_pair(MAV_MISSION_ERROR, Result::ProtocolError),
+        std::make_pair(MAV_MISSION_UNSUPPORTED_FRAME, Result::UnsupportedFrame),
+        std::make_pair(MAV_MISSION_UNSUPPORTED, Result::Unsupported),
+        std::make_pair(MAV_MISSION_NO_SPACE, Result::TooManyMissionItems),
+        std::make_pair(MAV_MISSION_INVALID, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_PARAM1, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_PARAM2, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_PARAM3, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_PARAM4, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_PARAM5_X, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_PARAM6_Y, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_PARAM7, Result::InvalidParam),
+        std::make_pair(MAV_MISSION_INVALID_SEQUENCE, Result::InvalidSequence),
+        std::make_pair(MAV_MISSION_DENIED, Result::Denied),
+        std::make_pair(MAV_MISSION_OPERATION_CANCELLED, Result::Cancelled)));
 
 TEST_F(MAVLinkMissionTransferTest, UploadMissionTimeoutNotTriggeredDuringTransfer)
 {
