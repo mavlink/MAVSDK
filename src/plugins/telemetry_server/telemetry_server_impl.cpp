@@ -55,8 +55,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
         _parent->get_own_component_id(),
         &msg,
         get_boot_time_ms(),
-        static_cast<uint32_t>(position.latitude_deg* 1E7),
-        static_cast<uint32_t>(position.longitude_deg* 1E7),
+        static_cast<uint32_t>(position.latitude_deg * 1E7),
+        static_cast<uint32_t>(position.longitude_deg * 1E7),
         static_cast<uint32_t>(position.absolute_altitude_m * 1E3),
         static_cast<uint32_t>(position.relative_altitude_m * 1E3),
         static_cast<uint32_t>(velocity_ned.north_m_s * 1E2),
@@ -283,24 +283,19 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
 {
     int32_t sensors = 0;
 
-    if (rc_receiver_status)
-    {
+    if (rc_receiver_status) {
         sensors |= MAV_SYS_STATUS_SENSOR_RC_RECEIVER;
     }
-    if (gyro_status)
-    {
+    if (gyro_status) {
         sensors |= MAV_SYS_STATUS_SENSOR_3D_GYRO;
     }
-    if (accel_status)
-    {
+    if (accel_status) {
         sensors |= MAV_SYS_STATUS_SENSOR_3D_ACCEL;
     }
-    if (mag_status)
-    {
+    if (mag_status) {
         sensors |= MAV_SYS_STATUS_SENSOR_3D_MAG;
     }
-    if (gps_status)
-    {
+    if (gps_status) {
         sensors |= MAV_SYS_STATUS_SENSOR_GPS;
     }
     mavlink_message_t msg;
