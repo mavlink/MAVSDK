@@ -27,6 +27,10 @@ void TimeoutHandler::add(std::function<void()> callback, double duration_s, void
 
 void TimeoutHandler::refresh(const void* cookie)
 {
+    if (cookie == nullptr) {
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
     auto it = _timeouts.find(const_cast<void*>(cookie));
@@ -38,6 +42,10 @@ void TimeoutHandler::refresh(const void* cookie)
 
 void TimeoutHandler::remove(const void* cookie)
 {
+    if (cookie == nullptr) {
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
     auto it = _timeouts.find(const_cast<void*>(cookie));
