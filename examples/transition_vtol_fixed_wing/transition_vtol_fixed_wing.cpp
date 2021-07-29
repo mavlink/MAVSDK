@@ -1,22 +1,62 @@
+//
+// Example showing how to make a VTOL takeoff, transition to fixedwing, loiter
+// for a bit, and then transition back and return to launch.
+//
+
 #include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <thread>
 #include <cmath>
+#include <future>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 
 using std::this_thread::sleep_for;
 using std::chrono::seconds;
-using std::chrono::milliseconds;
 using namespace mavsdk;
 
-static constexpr auto ERROR_CONSOLE_TEXT = "\033[31m";
-static constexpr auto TELEMETRY_CONSOLE_TEXT = "\033[34m";
-static constexpr auto NORMAL_CONSOLE_TEXT = "\033[0m";
+void usage(const std::string& bin_name)
+{
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n";
+}
 
-void usage(const std::string& bin_name);
+std::shared_ptr<System> get_system(Mavsdk& mavsdk)
+{
+    std::cout << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
+
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
+
+        if (system->has_autopilot()) {
+            std::cout << "Discovered autopilot\n";
+
+            // Unsubscribe again as we only want to find one system.
+            mavsdk.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
+        }
+    });
+
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found.\n";
+        return {};
+    }
+
+    // Get discovered system now.
+    return fut.get();
+}
 
 int main(int argc, char** argv)
 {
@@ -25,77 +65,66 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    const std::string connection_url = argv[1];
-
     Mavsdk mavsdk;
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
-    // Add connection specified by CLI argument.
-    const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
     if (connection_result != ConnectionResult::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
-    // We need an autopilot connected to start.
-    while (!mavsdk.systems().at(0)->has_autopilot()) {
-        sleep_for(seconds(1));
-        std::cout << "Waiting for system to connect." << std::endl;
+    auto system = get_system(mavsdk);
+    if (!system) {
+        return 1;
     }
 
-    // Get system and plugins.
-    auto system = mavsdk.systems().at(0);
+    // Instantiate plugins.
     auto telemetry = Telemetry{system};
     auto action = Action{system};
 
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed: " << set_rate_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Setting rate failed: " << set_rate_result << '\n';
         return 1;
     }
 
     // Set up callback to monitor altitude.
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << TELEMETRY_CONSOLE_TEXT << "Altitude: " << position.relative_altitude_m << " m"
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << "Altitude: " << position.relative_altitude_m << " m\n";
     });
 
     // Wait until we are ready to arm.
     while (!telemetry.health_all_ok()) {
-        std::cout << "Waiting for vehicle to be ready to arm..." << std::endl;
+        std::cout << "Waiting for vehicle to be ready to arm...\n";
         sleep_for(seconds(1));
     }
 
     // Arm vehicle
-    std::cout << "Arming." << std::endl;
+    std::cout << "Arming.\n";
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Arming failed: " << arm_result << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Arming failed: " << arm_result << '\n';
         return 1;
     }
 
     // Take off
-    std::cout << "Taking off." << std::endl;
+    std::cout << "Taking off.\n";
     const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:n" << takeoff_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Takeoff failed:n" << takeoff_result << '\n';
         return 1;
     }
 
     // Wait while it takes off.
     sleep_for(seconds(10));
 
-    std::cout << "Transition to fixedwing." << std::endl;
+    std::cout << "Transition to fixedwing.\n";
     const Action::Result fw_result = action.transition_to_fixedwing();
 
     if (fw_result != Action::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Transition to fixed wing failed: " << fw_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Transition to fixed wing failed: " << fw_result << '\n';
         return 1;
     }
 
@@ -103,12 +132,11 @@ int main(int argc, char** argv)
     sleep_for(seconds(30));
 
     // Send it South.
-    std::cout << "Sending it to location." << std::endl;
+    std::cout << "Sending it to location.\n";
     // We pass latitude and longitude but leave altitude and yaw unset by passing NAN.
     const Action::Result goto_result = action.goto_location(47.3633001, 8.5428515, NAN, NAN);
     if (goto_result != Action::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Goto command failed: " << goto_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Goto command failed: " << goto_result << '\n';
         return 1;
     }
 
@@ -116,11 +144,10 @@ int main(int argc, char** argv)
     sleep_for(seconds(20));
 
     // Let's stop before reaching the goto point and go back to hover.
-    std::cout << "Transition back to multicopter..." << std::endl;
+    std::cout << "Transition back to multicopter...\n";
     const Action::Result mc_result = action.transition_to_multicopter();
     if (mc_result != Action::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Transition to multi copter failed: " << mc_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Transition to multi copter failed: " << mc_result << '\n';
         return 1;
     }
 
@@ -128,32 +155,20 @@ int main(int argc, char** argv)
     sleep_for(seconds(5));
 
     // Now just land here.
-    std::cout << "Landing..." << std::endl;
+    std::cout << "Landing...\n";
     const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Land failed: " << land_result << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Land failed: " << land_result << '\n';
         return 1;
     }
 
     // Wait until disarmed.
     while (telemetry.armed()) {
-        std::cout << "Waiting for vehicle to land and disarm." << std::endl;
+        std::cout << "Waiting for vehicle to land and disarm\n.";
         sleep_for(seconds(1));
     }
 
-    std::cout << "Disarmed, exiting." << std::endl;
+    std::cout << "Disarmed, exiting.\n";
 
     return 0;
-}
-
-void usage(const std::string& bin_name)
-{
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
