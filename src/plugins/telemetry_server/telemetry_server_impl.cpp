@@ -201,7 +201,7 @@ TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text
         0);
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
-                                 TelemetryServer::Result::Unsupported;
+                                        TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_odometry(TelemetryServer::Odometry odometry)
