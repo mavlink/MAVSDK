@@ -1,13 +1,10 @@
-/**
- * @file manual_control.cpp
- * @brief Example that demonstrates how to use manual control to fly a drone
- * using a joystick or gamepad accessed using sdl2.
- *
- * Requires libsdl2 to be installed
- * (for Ubuntu: sudo apt install libsdl2-dev).
- *
- * @authors Author: Julian Oes <julian@oes.ch>,
- */
+//
+// Example that demonstrates how to use manual control to fly a drone
+// using a joystick or gamepad accessed using SDL2.
+//
+// Requires libsdl2 to be installed
+// (for Ubuntu: sudo apt install libsdl2-dev).
+//
 
 #include <chrono>
 #include <future>
@@ -22,6 +19,9 @@
 #include "joystick.h"
 
 using namespace mavsdk;
+using std::chrono::seconds;
+using std::chrono::milliseconds;
+using std::this_thread::sleep_for;
 
 // This config works for Logitech Extreme 3D Pro
 struct JoystickMapping {
@@ -36,71 +36,83 @@ struct JoystickMapping {
     bool throttle_inverted = true;
 } joystick_mapping{};
 
-void wait_until_discover(Mavsdk& mavsdk)
+std::shared_ptr<System> get_system(Mavsdk& mavsdk)
 {
-    std::cout << "Waiting to discover system..." << std::endl;
-    std::promise<void> discover_promise;
-    auto discover_future = discover_promise.get_future();
+    std::cout << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
 
-    mavsdk.subscribe_on_new_system([&mavsdk, &discover_promise]() {
-        const auto system = mavsdk.systems().at(0);
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
 
-        if (system->is_connected()) {
-            std::cout << "Discovered system" << std::endl;
-            discover_promise.set_value();
+        if (system->has_autopilot()) {
+            std::cout << "Discovered autopilot\n";
+
+            // Unsubscribe again as we only want to find one system.
+            mavsdk.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
         }
     });
 
-    discover_future.wait();
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found.\n";
+        return {};
+    }
+
+    // Get discovered system now.
+    return fut.get();
 }
 
-void usage(std::string bin_name)
+void usage(const std::string& bin_name)
 {
-    std::cout << "Usage : " << bin_name << " <connection_url>" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n";
 }
 
 int main(int argc, char** argv)
 {
-    Mavsdk mavsdk;
-    std::string connection_url;
-    ConnectionResult connection_result;
-
-    if (argc == 2) {
-        connection_url = argv[1];
-        connection_result = mavsdk.add_any_connection(connection_url);
-    } else {
+    if (argc != 2) {
         usage(argv[0]);
-        return 1;
-    }
-
-    if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << std::endl;
         return 1;
     }
 
     auto joystick = Joystick::create();
     if (!joystick) {
-        std::cerr << "Could not find any joystick" << std::endl;
+        std::cerr << "Could not find any joystick\n";
         return 1;
     }
 
-    wait_until_discover(mavsdk);
+    Mavsdk mavsdk;
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
-    auto system = mavsdk.systems().at(0);
+    if (connection_result != ConnectionResult::Success) {
+        std::cerr << "Connection failed: " << connection_result << '\n';
+        return 1;
+    }
+
+    auto system = get_system(mavsdk);
+    if (!system) {
+        return 1;
+    }
+
+    // Instantiate plugins.
     auto action = Action{system};
     auto telemetry = Telemetry{system};
     auto manual_control = ManualControl{system};
 
     while (!telemetry.health_all_ok()) {
-        std::cout << "Waiting for system to be ready" << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::cout << "Waiting for system to be ready\n";
+        sleep_for(seconds(1));
     }
-    std::cout << "System is ready" << std::endl;
+    std::cout << "System is ready\n";
 
     for (unsigned i = 0; i << 10; ++i) {
         manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
@@ -108,7 +120,7 @@ int main(int argc, char** argv)
 
     auto action_result = action.arm();
     if (action_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << action_result << std::endl;
+        std::cerr << "Arming failed: " << action_result << '\n';
         return 1;
     }
 
@@ -118,7 +130,7 @@ int main(int argc, char** argv)
 
     auto manual_control_result = manual_control.start_position_control();
     if (manual_control_result != ManualControl::Result::Success) {
-        std::cerr << "Position control start failed: " << manual_control_result << std::endl;
+        std::cerr << "Position control start failed: " << manual_control_result << '\n';
         return 1;
     }
 
@@ -136,17 +148,17 @@ int main(int argc, char** argv)
         throttle = throttle / 2.f + 0.5f;
 
         // std::cout << "Joystick input: roll: " << roll << ", pitch: " << pitch << ", yaw: " << yaw
-        //           << ", throttle " << throttle << std::endl;
+        //           << ", throttle " << throttle << '\n';
 
         manual_control.set_manual_control_input(pitch, roll, throttle, yaw);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        sleep_for(milliseconds(20));
     }
 
     while (telemetry.armed()) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        sleep_for(seconds(1));
     }
-    std::cout << "Disarmed!" << std::endl;
+    std::cout << "Disarmed!\n";
 
     return 0;
 }
