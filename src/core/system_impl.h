@@ -52,14 +52,14 @@ public:
 
     // Used when MAVSDK acting as autopilot
     struct AutopilotVersion {
-        std::atomic<uint64_t> capabilities{};
-        std::atomic<uint32_t> flight_sw_version{};
-        std::atomic<uint32_t> middleware_sw_version{};
-        std::atomic<uint32_t> os_sw_version{};
-        std::atomic<uint32_t> board_version{};
-        std::atomic<uint16_t> vendor_id{};
-        std::atomic<uint16_t> product_id{};
-        std::atomic<uint16_t> uid{};
+        uint64_t capabilities{MAV_PROTOCOL_CAPABILITY_COMMAND_INT};
+        uint32_t flight_sw_version{0};
+        uint32_t middleware_sw_version{0};
+        uint32_t os_sw_version{0};
+        uint32_t board_version{0};
+        uint16_t vendor_id{0};
+        uint16_t product_id{0};
+        uint64_t uid{0};
     };
 
     explicit SystemImpl(MavsdkImpl& parent);
@@ -275,8 +275,16 @@ public:
 
     double timeout_s() const;
 
+    // Autopilot version data
     void add_capabilities(uint64_t capabilities);
-    uint64_t get_capabilities();
+    void set_flight_sw_version(uint32_t flight_sw_version);
+    void set_middleware_sw_version(uint32_t middleware_sw_version);
+    void set_os_sw_version(uint32_t os_sw_version);
+    void set_board_version(uint32_t board_version);
+    void set_vendor_id(uint16_t vendor_id);
+    void set_product_id(uint16_t product_id);
+    void set_uid(uint64_t uid);
+    AutopilotVersion get_autopilot_version_data();
 
 private:
     static bool is_autopilot(uint8_t comp_id);
@@ -382,6 +390,7 @@ private:
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+    std::mutex _autopilot_version_mutex{};
     AutopilotVersion _autopilot_version{MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};
 };
 

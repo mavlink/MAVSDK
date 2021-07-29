@@ -1064,14 +1064,45 @@ void SystemImpl::receive_int_param(
     }
 }
 
-void SystemImpl::add_capabilities(uint64_t capabilities)
+void SystemImpl::set_flight_sw_version(uint32_t flight_sw_version)
 {
-    _autopilot_version.capabilities |= capabilities;
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.flight_sw_version = flight_sw_version;
 }
-
-uint64_t SystemImpl::get_capabilities()
+void SystemImpl::set_middleware_sw_version(uint32_t middleware_sw_version)
 {
-    return _autopilot_version.capabilities;
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.middleware_sw_version = middleware_sw_version;
+}
+void SystemImpl::set_os_sw_version(uint32_t os_sw_version)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.os_sw_version = os_sw_version;
+}
+void SystemImpl::set_board_version(uint32_t board_version)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.board_version = board_version;
+}
+void SystemImpl::set_vendor_id(uint16_t vendor_id)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.vendor_id = vendor_id;
+}
+void SystemImpl::set_product_id(uint16_t product_id)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.product_id = product_id;
+}
+void SystemImpl::set_uid(uint64_t uid)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.uid = uid;
+}
+SystemImpl::AutopilotVersion SystemImpl::get_autopilot_version_data()
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    return _autopilot_version;
 }
 
 uint8_t SystemImpl::get_autopilot_id() const
