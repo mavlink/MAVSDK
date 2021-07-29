@@ -298,7 +298,7 @@ SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::Comm
         &msg,
         command.command,
         MAV_RESULT::MAV_RESULT_ACCEPTED,
-        100,
+        255,
         0,
         command.origin_system_id,
         command.origin_component_id);
