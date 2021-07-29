@@ -50,6 +50,18 @@ public:
         Stabilized,
     };
 
+    // Used when MAVSDK acting as autopilot
+    struct AutopilotVersion {
+        std::atomic<uint64_t> capabilities{};
+        std::atomic<uint32_t> flight_sw_version{};
+        std::atomic<uint32_t> middleware_sw_version{};
+        std::atomic<uint32_t> os_sw_version{};
+        std::atomic<uint32_t> board_version{};
+        std::atomic<uint16_t> vendor_id{};
+        std::atomic<uint16_t> product_id{};
+        std::atomic<uint16_t> uid{};
+    };
+
     explicit SystemImpl(MavsdkImpl& parent);
     ~SystemImpl();
 
@@ -263,6 +275,9 @@ public:
 
     double timeout_s() const;
 
+    void add_capabilities(uint64_t capabilities);
+    uint64_t get_capabilities();
+
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
@@ -275,6 +290,9 @@ private:
     void heartbeats_timed_out();
     void set_connected();
     void set_disconnected();
+
+    std::optional<mavlink_message_t>
+    process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command);
 
     static std::string component_name(uint8_t component_id);
     static System::ComponentType component_type(uint8_t component_id);
@@ -364,6 +382,7 @@ private:
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+    AutopilotVersion _autopilot_version{MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};
 };
 
 } // namespace mavsdk

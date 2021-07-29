@@ -69,6 +69,11 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
         std::bind(&SystemImpl::process_autopilot_version, this, _1),
         this);
 
+    register_mavlink_command_handler(
+        MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
+        std::bind(&SystemImpl::process_autopilot_version_request, this, std::placeholders::_1),
+        this);
+
     add_new_component(comp_id);
 }
 
@@ -258,6 +263,57 @@ void SystemImpl::system_thread()
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
+}
+
+std::optional<mavlink_message_t>
+SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
+{
+    LogDebug() << "Autopilot Capabilities Request";
+
+    // auto capabilities = MAV_PROTOCOL_CAPABILITY_MISSION_FLOAT |
+    //                    MAV_PROTOCOL_CAPABILITY_COMMAND_INT | MAV_PROTOCOL_CAPABILITY_MISSION_INT;
+    auto flight_sw_version = 1;
+    auto middleware_sw_version = 2;
+    auto os_sw_version = 3;
+    auto board_version = 4;
+    auto vendor_id = 5;
+    auto product_id = 6;
+    auto uid = get_own_system_id();
+
+    uint8_t custom = 0;
+
+    mavlink_message_t msg;
+    mavlink_msg_autopilot_version_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        _autopilot_version.capabilities,
+        _autopilot_version.flight_sw_version,
+        _autopilot_version.middleware_sw_version,
+        _autopilot_version.os_sw_version,
+        _autopilot_version.board_version,
+        &custom,
+        &custom,
+        &custom,
+        _autopilot_version.vendor_id,
+        _autopilot_version.product_id,
+        _autopilot_version.uid,
+        &custom);
+
+    _parent.send_message(msg);
+
+    msg = {};
+    mavlink_msg_command_ack_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        command.command,
+        MAV_RESULT::MAV_RESULT_ACCEPTED,
+        100,
+        0,
+        command.origin_system_id,
+        command.origin_component_id);
+    return msg;
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)
@@ -1006,6 +1062,16 @@ void SystemImpl::receive_int_param(
             callback(result, 0);
         }
     }
+}
+
+void SystemImpl::add_capabilities(uint64_t capabilities)
+{
+    _autopilot_version.capabilities |= capabilities;
+}
+
+uint64_t SystemImpl::get_capabilities()
+{
+    return _autopilot_version.capabilities;
 }
 
 uint8_t SystemImpl::get_autopilot_id() const
