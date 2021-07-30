@@ -5,21 +5,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(terminate)
 
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra ")
-    # This warning is triggered by the MAVLink includes.
-    add_definitions("-Wno-address-of-packed-member")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(terminate
     terminate.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(terminate
     MAVSDK::mavsdk
     MAVSDK::mavsdk_action
 )
+
+if(NOT MSVC)
+    add_compile_options(terminate PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(terminate PRIVATE -WX -W2)
+endif()

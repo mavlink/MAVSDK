@@ -5,12 +5,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(transponder)
 
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
 find_package(MAVSDK REQUIRED)
 
 add_executable(transponder
@@ -21,3 +15,9 @@ target_link_libraries(transponder
     MAVSDK::mavsdk_transponder
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(transponder PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(transponder PRIVATE -WX -W2)
+endif()
