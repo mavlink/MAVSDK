@@ -1,0 +1,186 @@
+syntax = "proto3";
+
+package mavsdk.rpc.action_server;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.action_server";
+option java_outer_classname = "ActionServerProto";
+
+// Provide vehicle actions (as a server) such as arming, taking off, and landing.
+service ActionServerService {
+    // Subscribe to ARM/DISARM commands
+    rpc SubscribeArmDisarm(SubscribeArmDisarmRequest) returns(stream ArmDisarmResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to DO_SET_MODE
+    rpc SubscribeFlightModeChange(SubscribeFlightModeChangeRequest) returns(stream FlightModeChangeResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to takeoff command
+    rpc SubscribeTakeoff(SubscribeTakeoffRequest) returns(stream TakeoffResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to land command
+    rpc SubscribeLand(SubscribeLandRequest) returns(stream LandResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to reboot command
+    rpc SubscribeReboot(SubscribeRebootRequest) returns(stream RebootResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to shutdown command
+    rpc SubscribeShutdown(SubscribeShutdownRequest) returns(stream ShutdownResponse) { option (mavsdk.options.async_type) = ASYNC; }
+    // Subscribe to terminate command
+    rpc SubscribeTerminate(SubscribeTerminateRequest) returns(stream TerminateResponse) { option (mavsdk.options.async_type) = ASYNC; }
+
+    // Can the vehicle takeoff
+    rpc SetAllowTakeoff(SetAllowTakeoffRequest) returns(SetAllowTakeoffResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Can the vehicle arm when requested
+    rpc SetArmable(SetArmableRequest) returns(SetArmableResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Can the vehicle disarm when requested
+    rpc SetDisarmable(SetDisarmableRequest) returns(SetDisarmableResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Set which modes the vehicle can transition to (Manual always allowed)
+    rpc SetAllowableFlightModes(SetAllowableFlightModeRequest) returns(SetAllowableFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
+    // Get which modes the vehicle can transition to (Manual always allowed)
+    rpc GetAllowableFlightModes(GetAllowableFlightModeRequest) returns(GetAllowableFlightModeResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+message SetAllowTakeoffRequest {
+    bool allow_takeoff = 1; // Is takeoff allowed?
+}
+
+message SetArmableRequest {
+    bool armable = 1; // Is Armable now?
+    bool force_armable = 2; // Is armable with force?
+}
+
+message SetDisarmableRequest {
+    bool disarmable = 1; // Is disarmable now?
+    bool force_disarmable = 2; // Is disarmable with force? (Kill)
+}
+
+message SetAllowableFlightModeRequest
+{
+    AllowableFlightModes flight_modes = 1;
+}
+
+message GetAllowableFlightModeRequest {}
+
+message SubscribeArmDisarmRequest {}
+
+message SubscribeFlightModeChangeRequest {}
+
+message SubscribeTakeoffRequest {}
+
+message SubscribeLandRequest {}
+
+message SubscribeRebootRequest {}
+
+message SubscribeShutdownRequest {}
+
+message SubscribeTerminateRequest {}
+
+message ArmDisarmResponse {
+    ActionServerResult action_server_result = 1;
+    ArmDisarm arm = 2;
+}
+
+message FlightModeChangeResponse {
+    ActionServerResult action_server_result = 1;
+    FlightMode flight_mode = 2;
+}
+
+message TakeoffResponse {
+    ActionServerResult action_server_result = 1;
+    bool takeoff = 2;
+}
+
+message LandResponse {
+    ActionServerResult action_server_result = 1;
+    bool land = 2;
+}
+
+message RebootResponse {
+    ActionServerResult action_server_result = 1;
+    bool reboot = 2;
+}
+
+message ShutdownResponse {
+    ActionServerResult action_server_result = 1;
+    bool shutdown = 2;
+}
+
+message TerminateResponse {
+    ActionServerResult action_server_result = 1;
+    bool terminate = 2;
+}
+
+message SetArmableResponse {
+    ActionServerResult action_server_result = 1;
+}
+
+message SetDisarmableResponse {
+    ActionServerResult action_server_result = 1;
+}
+
+message SetAllowableFlightModeResponse {
+    ActionServerResult action_server_result = 1;
+}
+
+message SetAllowTakeoffResponse {
+    ActionServerResult action_server_result = 1;
+}
+
+message GetAllowableFlightModeResponse {
+    AllowableFlightModes flight_modes = 1;
+}
+
+// State to check if the vehicle can transition to
+// respective flightmodes
+message AllowableFlightModes {
+    bool can_auto_mode = 1; // Auto/mission mode 
+    bool can_guided_mode = 2; // Guided mode
+    bool can_stabilize_mode = 3; // Stabilize mode
+}
+
+// Arming message type
+message ArmDisarm {
+    bool arm = 1; // Should vehicle arm
+    bool force = 2; // Should arm override pre-flight checks
+}
+
+/*
+ * Flight modes.
+ *
+ * For more information about flight modes, check out
+ * https://docs.px4.io/master/en/config/flight_mode.html.
+ */
+enum FlightMode {
+    FLIGHT_MODE_UNKNOWN = 0; // Mode not known
+    FLIGHT_MODE_READY = 1; // Armed and ready to take off
+    FLIGHT_MODE_TAKEOFF = 2; // Taking off
+    FLIGHT_MODE_HOLD = 3; // Holding (hovering in place (or circling for fixed-wing vehicles)
+    FLIGHT_MODE_MISSION = 4; // In mission
+    FLIGHT_MODE_RETURN_TO_LAUNCH = 5; // Returning to launch position (then landing)
+    FLIGHT_MODE_LAND = 6; // Landing
+    FLIGHT_MODE_OFFBOARD = 7; // In 'offboard' mode
+    FLIGHT_MODE_FOLLOW_ME = 8; // In 'follow-me' mode
+    FLIGHT_MODE_MANUAL = 9; // In 'Manual' mode
+    FLIGHT_MODE_ALTCTL = 10; // In 'Altitude Control' mode
+    FLIGHT_MODE_POSCTL = 11; // In 'Position Control' mode
+    FLIGHT_MODE_ACRO = 12; // In 'Acro' mode
+    FLIGHT_MODE_STABILIZED = 13; // In 'Stabilize' mode
+}
+
+// Result type.
+message ActionServerResult {
+    // Possible results returned for action requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request was successful
+        RESULT_NO_SYSTEM = 2; // No system is connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
+        RESULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6; // Command refused because landed state is unknown
+        RESULT_COMMAND_DENIED_NOT_LANDED = 7; // Command refused because vehicle not landed
+        RESULT_TIMEOUT = 8; // Request timed out
+        RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9; // Hybrid/VTOL transition support is unknown
+        RESULT_NO_VTOL_TRANSITION_SUPPORT = 10; // Vehicle does not support hybrid/VTOL transitions
+        RESULT_PARAMETER_ERROR = 11; // Error getting or setting parameter
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
