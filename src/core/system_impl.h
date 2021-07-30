@@ -239,6 +239,7 @@ public:
         const std::string& filename, const int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
+    void send_autopilot_version();
     void send_flight_information_request();
 
     MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };

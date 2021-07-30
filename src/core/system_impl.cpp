@@ -74,6 +74,44 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
         std::bind(&SystemImpl::process_autopilot_version_request, this, std::placeholders::_1),
         this);
 
+    // TO-DO!
+    register_mavlink_command_handler(
+        MAV_CMD_SET_MESSAGE_INTERVAL,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            mavlink_message_t msg;
+            mavlink_msg_command_ack_pack(
+                _parent.get_own_system_id(),
+                _parent.get_own_component_id(),
+                &msg,
+                command.command,
+                MAV_RESULT::MAV_RESULT_UNSUPPORTED,
+                100,
+                0,
+                command.origin_system_id,
+                command.origin_component_id);
+            return msg;
+        },
+        this);
+
+    // TO-DO!
+    register_mavlink_command_handler(
+        MAV_CMD_REQUEST_MESSAGE,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            mavlink_message_t msg;
+            mavlink_msg_command_ack_pack(
+                _parent.get_own_system_id(),
+                _parent.get_own_component_id(),
+                &msg,
+                command.command,
+                MAV_RESULT::MAV_RESULT_UNSUPPORTED,
+                100,
+                0,
+                command.origin_system_id,
+                command.origin_component_id);
+            return msg;
+        },
+        this);
+
     add_new_component(comp_id);
 }
 
@@ -269,29 +307,10 @@ std::optional<mavlink_message_t>
 SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
 {
     LogDebug() << "Autopilot Capabilities Request";
-    const uint8_t custom_values[8] = {0}; // TO-DO: maybe?
 
-    mavlink_message_t msg;
-    mavlink_msg_autopilot_version_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
-        &msg,
-        _autopilot_version.capabilities,
-        _autopilot_version.flight_sw_version,
-        _autopilot_version.middleware_sw_version,
-        _autopilot_version.os_sw_version,
-        _autopilot_version.board_version,
-        custom_values,
-        custom_values,
-        custom_values,
-        _autopilot_version.vendor_id,
-        _autopilot_version.product_id,
-        0,
-        _autopilot_version.uid2.data());
+    send_autopilot_version();
 
-    _parent.send_message(msg);
-
-    msg = {};
+    mavlink_message_t msg{};
     mavlink_msg_command_ack_pack(
         _parent.get_own_system_id(),
         _parent.get_own_component_id(),
@@ -462,6 +481,32 @@ void SystemImpl::send_autopilot_version_request()
     command.target_component_id = get_autopilot_id();
 
     send_command_async(command, nullptr);
+}
+
+void SystemImpl::send_autopilot_version()
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    const uint8_t custom_values[8] = {0}; // TO-DO: maybe?
+
+    mavlink_message_t msg;
+    mavlink_msg_autopilot_version_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        _autopilot_version.capabilities,
+        _autopilot_version.flight_sw_version,
+        _autopilot_version.middleware_sw_version,
+        _autopilot_version.os_sw_version,
+        _autopilot_version.board_version,
+        custom_values,
+        custom_values,
+        custom_values,
+        _autopilot_version.vendor_id,
+        _autopilot_version.product_id,
+        0,
+        _autopilot_version.uid2.data());
+
+    _parent.send_message(msg);
 }
 
 void SystemImpl::send_flight_information_request()
@@ -1055,8 +1100,12 @@ void SystemImpl::receive_int_param(
 
 void SystemImpl::add_capabilities(uint64_t add_capabilities)
 {
-    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    std::unique_lock<std::mutex> lock(_autopilot_version_mutex);
     _autopilot_version.capabilities |= add_capabilities;
+
+    // We need to resend capabilities...
+    lock.unlock();
+    send_autopilot_version();
 }
 
 void SystemImpl::set_flight_sw_version(uint32_t flight_sw_version)
