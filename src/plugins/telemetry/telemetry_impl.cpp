@@ -145,6 +145,7 @@ void TelemetryImpl::init()
 
 void TelemetryImpl::deinit()
 {
+    _parent->remove_call_every(_calibration_cookie);
     _parent->unregister_statustext_handler(this);
     _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
     _parent->unregister_timeout_handler(_unix_epoch_timeout_cookie);
@@ -165,45 +166,7 @@ void TelemetryImpl::enable()
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
 
-    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
-        if (_parent->has_autopilot()) {
-            _parent->get_param_int_async(
-                std::string("CAL_GYRO0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
-                this);
-
-            _parent->get_param_int_async(
-                std::string("CAL_ACC0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
-                this);
-
-            _parent->get_param_int_async(
-                std::string("CAL_MAG0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
-                this);
-
-            _parent->get_param_int_async(
-                std::string("SYS_HITL"),
-                std::bind(
-                    &TelemetryImpl::receive_param_hitl,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
-                this);
-        }
-    }
+    _parent->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
 }
 
 void TelemetryImpl::disable() {}
@@ -2147,6 +2110,60 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_
         });
 
     return fut.get();
+}
+
+void TelemetryImpl::check_calibration()
+{
+    {
+        std::lock_guard<std::mutex> lock(_health_mutex);
+        if (_health.is_gyrometer_calibration_ok && _health.is_accelerometer_calibration_ok &&
+            _health.is_magnetometer_calibration_ok) {
+            _parent->remove_call_every(_calibration_cookie);
+            return;
+        }
+    }
+
+    if (_parent->autopilot() != SystemImpl::Autopilot::ArduPilot) {
+        if (_parent->has_autopilot()) {
+            _parent->get_param_int_async(
+                std::string("CAL_GYRO0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_int_async(
+                std::string("CAL_ACC0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_int_async(
+                std::string("CAL_MAG0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_int_async(
+                std::string("SYS_HITL"),
+                std::bind(
+                    &TelemetryImpl::receive_param_hitl,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        }
+    } else {
+        _parent->remove_call_every(_calibration_cookie);
+    }
 }
 
 void TelemetryImpl::process_parameter_update(const std::string& name)
