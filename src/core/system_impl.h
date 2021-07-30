@@ -271,7 +271,7 @@ public:
     void set_board_version(uint32_t board_version);
     void set_vendor_id(uint16_t vendor_id);
     void set_product_id(uint16_t product_id);
-    void set_uid(uint64_t uid);
+    bool set_uid2(std::string uid2);
     System::AutopilotVersion get_autopilot_version_data();
 
 private:

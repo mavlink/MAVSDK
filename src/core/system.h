@@ -28,14 +28,22 @@ public:
      * Other MAVLink systems can use this to identify and match software and capabilities.
      */
     struct AutopilotVersion {
+        /** @brief MAVLink autopilot_version capabilities. */
         uint64_t capabilities{};
+        /** @brief MAVLink autopilot_version flight_sw_version */
         uint32_t flight_sw_version{0};
+        /** @brief MAVLink autopilot_version middleware_sw_version */
         uint32_t middleware_sw_version{0};
+        /** @brief MAVLink autopilot_version os_sw_version */
         uint32_t os_sw_version{0};
+        /** @brief MAVLink autopilot_version board_version */
         uint32_t board_version{0};
+        /** @brief MAVLink autopilot_version vendor_id */
         uint16_t vendor_id{0};
+        /** @brief MAVLink autopilot_version product_id */
         uint16_t product_id{0};
-        uint64_t uid{0};
+        /** @brief MAVLink autopilot_version uid2 */
+        std::array<uint8_t, 18> uid2{0};
     };
 
     /** @private Constructor, used internally
@@ -205,11 +213,13 @@ public:
     void set_product_id(uint16_t product_id);
 
     /**
-     * @brief Set uid (only used if MAVSDK is autopilot)
+     * @brief Set uid2, 18 chars max (only used if MAVSDK is autopilot) 
      *
      * @param uid unique hardware id
+     * @return true if valid size, false if too large, 
      */
-    void set_uid(uint64_t uid);
+    bool set_uid2(std::string uid2);
+
 
     /**
      * @brief Get autopilot version data

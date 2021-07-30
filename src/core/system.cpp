@@ -104,9 +104,9 @@ void System::set_product_id(uint16_t product_id)
     _system_impl->set_product_id(product_id);
 }
 
-void System::set_uid(uint64_t uid)
+bool System::set_uid2(std::string uid2)
 {
-    _system_impl->set_uid(uid);
+    return _system_impl->set_uid2(uid2);
 }
 
 System::AutopilotVersion System::get_autopilot_version_data()

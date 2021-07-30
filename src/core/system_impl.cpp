@@ -269,7 +269,7 @@ std::optional<mavlink_message_t>
 SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
 {
     LogDebug() << "Autopilot Capabilities Request";
-    const uint8_t custom_values = 0; // TO-DO: maybe?
+    const uint8_t custom_values[8] = {0}; // TO-DO: maybe?
 
     mavlink_message_t msg;
     mavlink_msg_autopilot_version_pack(
@@ -281,13 +281,13 @@ SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::Comm
         _autopilot_version.middleware_sw_version,
         _autopilot_version.os_sw_version,
         _autopilot_version.board_version,
-        &custom_values,
-        &custom_values,
-        &custom_values,
+        custom_values,
+        custom_values,
+        custom_values,
         _autopilot_version.vendor_id,
         _autopilot_version.product_id,
-        _autopilot_version.uid,
-        &custom_values);
+        0,
+        _autopilot_version.uid2.data());
 
     _parent.send_message(msg);
 
@@ -1095,10 +1095,16 @@ void SystemImpl::set_product_id(uint16_t product_id)
     _autopilot_version.product_id = product_id;
 }
 
-void SystemImpl::set_uid(uint64_t uid)
+bool SystemImpl::set_uid2(std::string uid2)
 {
     std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
-    _autopilot_version.uid = uid;
+    if(uid2.size() > _autopilot_version.uid2.size())
+    {
+        return false;
+    }
+    _autopilot_version.uid2 = {0};
+    std::copy(uid2.begin(), uid2.end(), _autopilot_version.uid2.data());
+    return true;
 }
 
 System::AutopilotVersion SystemImpl::get_autopilot_version_data()
