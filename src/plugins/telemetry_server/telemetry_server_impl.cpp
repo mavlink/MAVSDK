@@ -57,11 +57,11 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
         get_boot_time_ms(),
         static_cast<uint32_t>(position.latitude_deg * 1E7),
         static_cast<uint32_t>(position.longitude_deg * 1E7),
-        static_cast<uint32_t>(position.absolute_altitude_m * 1E3),
-        static_cast<uint32_t>(position.relative_altitude_m * 1E3),
-        static_cast<uint32_t>(velocity_ned.north_m_s * 1E2),
-        static_cast<uint32_t>(velocity_ned.east_m_s * 1E2),
-        static_cast<uint32_t>(velocity_ned.down_m_s * 1E2),
+        static_cast<uint32_t>(static_cast<double>(position.absolute_altitude_m) * 1E3),
+        static_cast<uint32_t>(static_cast<double>(position.relative_altitude_m) * 1E3),
+        static_cast<uint32_t>(static_cast<double>(velocity_ned.north_m_s) * 1E2),
+        static_cast<uint32_t>(static_cast<double>(velocity_ned.east_m_s) * 1E2),
+        static_cast<uint32_t>(static_cast<double>(velocity_ned.down_m_s) * 1E2),
         0 // T0-DO: heading
     );
 
@@ -77,9 +77,9 @@ TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Posit
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &msg,
-        static_cast<int>(home.latitude_deg * 1E7),
-        static_cast<int>(home.longitude_deg * 1E7),
-        static_cast<int>(home.absolute_altitude_m * 1E-3),
+        static_cast<uint32_t>(home.latitude_deg * 1E7),
+        static_cast<uint32_t>(home.longitude_deg * 1E7),
+        static_cast<uint32_t>(static_cast<double>(home.absolute_altitude_m) * 1E-3),
         0, // Local X
         0, // Local Y
         0, // Local Z
@@ -106,18 +106,18 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
         static_cast<uint8_t>(gps_info.fix_type),
         static_cast<uint32_t>(raw_gps.latitude_deg * 1E7),
         static_cast<uint32_t>(raw_gps.longitude_deg * 1E7),
-        static_cast<uint32_t>(raw_gps.absolute_altitude_m * 1E3),
-        static_cast<uint32_t>(raw_gps.hdop * 1E2),
-        static_cast<uint32_t>(raw_gps.vdop * 1E2),
-        static_cast<uint32_t>(raw_gps.velocity_m_s * 1E2),
-        static_cast<uint32_t>(raw_gps.cog_deg * 1E2),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.absolute_altitude_m) * 1E3),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.hdop) * 1E2),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.vdop) * 1E2),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_m_s) * 1E2),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.cog_deg) * 1E2),
         gps_info.num_satellites,
-        static_cast<uint32_t>(raw_gps.altitude_ellipsoid_m * 1E3),
-        static_cast<uint32_t>(raw_gps.horizontal_uncertainty_m * 1E3),
-        static_cast<uint32_t>(raw_gps.vertical_uncertainty_m * 1E3),
-        static_cast<uint32_t>(raw_gps.velocity_uncertainty_m_s * 1E3),
-        static_cast<uint32_t>(raw_gps.heading_uncertainty_deg * 1E5),
-        static_cast<uint32_t>(raw_gps.yaw_deg * 1E2));
+        static_cast<uint32_t>(static_cast<double>(raw_gps.altitude_ellipsoid_m) * 1E3),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.horizontal_uncertainty_m) * 1E3),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.vertical_uncertainty_m) * 1E3),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s) * 1E3),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
@@ -129,7 +129,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
 
     uint16_t voltages[10] = {0};
     uint16_t voltages_ext[4] = {0};
-    voltages[0] = static_cast<uint16_t>(battery.voltage_v * 1E3);
+    voltages[0] = static_cast<uint16_t>(static_cast<double>(battery.voltage_v) * 1E3);
 
     mavlink_msg_battery_status_pack(
         _parent->get_own_system_id(),
@@ -143,7 +143,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
         -1, // TODO publish all battery data
         -1,
         -1,
-        static_cast<uint16_t>(battery.remaining_percent * 1E2),
+        static_cast<uint16_t>(static_cast<double>(battery.remaining_percent) * 1E2),
         0,
         MAV_BATTERY_CHARGE_STATE_UNDEFINED,
         voltages_ext,
@@ -307,9 +307,9 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
         sensors,
         sensors,
         0,
-        static_cast<uint16_t>(battery.voltage_v * 1E3),
+        static_cast<uint16_t>(static_cast<double>(battery.voltage_v) * 1E3),
         -1,
-        static_cast<uint16_t>(battery.remaining_percent * 1E2),
+        static_cast<uint16_t>(static_cast<double>(battery.remaining_percent) * 1E2),
         0,
         0,
         0,
