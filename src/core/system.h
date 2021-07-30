@@ -213,13 +213,12 @@ public:
     void set_product_id(uint16_t product_id);
 
     /**
-     * @brief Set uid2, 18 chars max (only used if MAVSDK is autopilot) 
+     * @brief Set uid2, 18 chars max (only used if MAVSDK is autopilot)
      *
      * @param uid unique hardware id
-     * @return true if valid size, false if too large, 
+     * @return true if valid size, false if too large,
      */
     bool set_uid2(std::string uid2);
-
 
     /**
      * @brief Get autopilot version data

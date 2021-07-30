@@ -1098,8 +1098,7 @@ void SystemImpl::set_product_id(uint16_t product_id)
 bool SystemImpl::set_uid2(std::string uid2)
 {
     std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
-    if(uid2.size() > _autopilot_version.uid2.size())
-    {
+    if (uid2.size() > _autopilot_version.uid2.size()) {
         return false;
     }
     _autopilot_version.uid2 = {0};
