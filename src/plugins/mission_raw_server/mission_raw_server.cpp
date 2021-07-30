@@ -46,11 +46,6 @@ MissionRawServer::MissionItem MissionRawServer::current_item_changed() const
     return _impl->current_item_changed();
 }
 
-void MissionRawServer::set_current_item_complete_async(const ResultCallback callback)
-{
-    _impl->set_current_item_complete_async(callback);
-}
-
 void MissionRawServer::set_current_item_complete() const
 {
     _impl->set_current_item_complete();

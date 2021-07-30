@@ -20,8 +20,7 @@ public:
     void subscribe_incoming_mission(MissionRawServer::IncomingMissionCallback callback);
     void subscribe_current_item_changed(MissionRawServer::CurrentItemChangedCallback callback);
     void subscribe_clear_all(MissionRawServer::ClearAllCallback callback);
-    void set_current_item_complete_async(const MissionRawServer::ResultCallback callback);
-    void set_current_item_complete() const;
+    void set_current_item_complete();
 
     MissionRawServer::MissionPlan incoming_mission() const;
     MissionRawServer::MissionItem current_item_changed() const;

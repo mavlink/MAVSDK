@@ -329,7 +329,7 @@ const char descriptor_table_protodef_mission_5fraw_5fserver_2fmission_5fraw_5fse
   "ESULT_UNSUPPORTED\020\007\022\037\n\033RESULT_NO_MISSION"
   "_AVAILABLE\020\010\022\"\n\036RESULT_UNSUPPORTED_MISSI"
   "ON_CMD\020\013\022\035\n\031RESULT_TRANSFER_CANCELLED\020\014\022"
-  "\024\n\020RESULT_NO_SYSTEM\020\r2\362\004\n\027MissionRawServ"
+  "\024\n\020RESULT_NO_SYSTEM\020\r2\366\004\n\027MissionRawServ"
   "erService\022\226\001\n\030SubscribeIncomingMission\022>"
   ".mavsdk.rpc.mission_raw_server.Subscribe"
   "IncomingMissionRequest\0326.mavsdk.rpc.miss"
@@ -338,22 +338,22 @@ const char descriptor_table_protodef_mission_5fraw_5fserver_2fmission_5fraw_5fse
   "sdk.rpc.mission_raw_server.SubscribeCurr"
   "entItemChangedRequest\0329.mavsdk.rpc.missi"
   "on_raw_server.CurrentItemChangedResponse"
-  "\"\0000\001\022\227\001\n\026SetCurrentItemComplete\022<.mavsdk"
+  "\"\0000\001\022\233\001\n\026SetCurrentItemComplete\022<.mavsdk"
   ".rpc.mission_raw_server.SetCurrentItemCo"
   "mpleteRequest\032=.mavsdk.rpc.mission_raw_s"
-  "erver.SetCurrentItemCompleteResponse\"\000\022\201"
-  "\001\n\021SubscribeClearAll\0227.mavsdk.rpc.missio"
-  "n_raw_server.SubscribeClearAllRequest\032/."
-  "mavsdk.rpc.mission_raw_server.ClearAllRe"
-  "sponse\"\0000\001B5\n\034io.mavsdk.mission_raw_serv"
-  "erB\025MissionRawServerProtob\006proto3"
+  "erver.SetCurrentItemCompleteResponse\"\004\200\265"
+  "\030\001\022\201\001\n\021SubscribeClearAll\0227.mavsdk.rpc.mi"
+  "ssion_raw_server.SubscribeClearAllReques"
+  "t\032/.mavsdk.rpc.mission_raw_server.ClearA"
+  "llResponse\"\0000\001B5\n\034io.mavsdk.mission_raw_"
+  "serverB\025MissionRawServerProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto = {
-  false, false, 2033, descriptor_table_protodef_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto, "mission_raw_server/mission_raw_server.proto", 
+  false, false, 2037, descriptor_table_protodef_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto, "mission_raw_server/mission_raw_server.proto", 
   &descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto_once, descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto_deps, 1, 12,
   schemas, file_default_instances, TableStruct_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto::offsets,
   file_level_metadata_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto, file_level_enum_descriptors_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto, file_level_service_descriptors_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto,

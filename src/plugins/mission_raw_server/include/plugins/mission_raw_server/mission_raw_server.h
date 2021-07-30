@@ -213,15 +213,7 @@ public:
     /**
      * @brief Set Current item as completed
      *
-     * This function is non-blocking. See 'set_current_item_complete' for the blocking counterpart.
-     */
-    void set_current_item_complete_async(const ResultCallback callback);
-
-    /**
-     * @brief Set Current item as completed
-     *
-     * This function is blocking. See 'set_current_item_complete_async' for the non-blocking
-     * counterpart.
+     * This function is blocking.
      *
      * @return Result of request.
      */

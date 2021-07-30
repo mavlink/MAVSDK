@@ -308,8 +308,7 @@ MissionRawServer::MissionItem MissionRawServerImpl::current_item_changed() const
     return {};
 }
 
-void MissionRawServerImpl::set_current_item_complete_async(
-    const MissionRawServer::ResultCallback callback)
+void MissionRawServerImpl::set_current_item_complete()
 {
     mavlink_message_t mission_reached;
     mavlink_msg_mission_item_reached_pack(
@@ -318,16 +317,11 @@ void MissionRawServerImpl::set_current_item_complete_async(
         &mission_reached,
         _current_seq);
     _parent->send_message(mission_reached);
-    if (_current_seq + 1 == _current_mission.size())
+    if (_current_seq + 1 == _current_mission.size()) {
         _mission_completed = true;
-    else
+    } else {
         set_current_seq(_current_seq + 1);
-}
-
-void MissionRawServerImpl::set_current_item_complete() const
-{
-    // TO-DO
-    return;
+    }
 }
 
 void MissionRawServerImpl::set_current_seq(int32_t seq)
