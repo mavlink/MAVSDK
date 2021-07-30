@@ -1052,8 +1052,8 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionSendsMissionRequests)
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [](Result result, std::vector<ItemInt> items) {
-            UNUSED(items);
+        [](Result result, std::vector<ItemInt> output_items) {
+            UNUSED(output_items);
             UNUSED(result);
             EXPECT_TRUE(false);
         });
@@ -1122,8 +1122,8 @@ TEST_F(
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [&prom](Result result, std::vector<ItemInt> items) {
-            UNUSED(items);
+        [&prom](Result result, std::vector<ItemInt> output_items) {
+            UNUSED(output_items);
             EXPECT_EQ(result, Result::Timeout);
             prom.set_value();
         });
@@ -1349,8 +1349,8 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionResendsRequestItemAgain
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [&prom](Result result, std::vector<ItemInt> items) {
-            UNUSED(items);
+        [&prom](Result result, std::vector<ItemInt> output_items) {
+            UNUSED(output_items);
             EXPECT_EQ(result, Result::Timeout);
             prom.set_value();
         });
@@ -1560,8 +1560,8 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionCanBeCancelled)
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [&prom](Result result, std::vector<ItemInt> items) {
-            UNUSED(items);
+        [&prom](Result result, std::vector<ItemInt> output_items) {
+            UNUSED(output_items);
             EXPECT_EQ(result, Result::Cancelled);
             prom.set_value();
         });
