@@ -23,7 +23,7 @@ service MissionRawServerService {
     /*
      *  Set Current item as completed
      */
-    rpc SetCurrentItemComplete(SetCurrentItemCompleteRequest) returns(SetCurrentItemCompleteResponse) {}
+    rpc SetCurrentItemComplete(SetCurrentItemCompleteRequest) returns(SetCurrentItemCompleteResponse) { option (mavsdk.options.async_type) = SYNC; }
 
     /*
      *  Subscribe when a MISSION_CLEAR_ALL is received
