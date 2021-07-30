@@ -127,8 +127,10 @@ MissionRawServer::Result convert_result(MAVLinkMissionTransfer::Result result)
 
 void MissionRawServerImpl::init()
 {
+    _parent->add_capabilities(MAV_PROTOCOL_CAPABILITY_MISSION_INT);
+
     _thread_mission = std::thread([this] {
-        while (_stop_work_thread) {
+        while (!_stop_work_thread) {
             std::unique_lock<std::mutex> lock(_work_mutex);
             if (!_work_queue.empty()) {
                 auto task = _work_queue.front();
