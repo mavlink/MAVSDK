@@ -83,11 +83,6 @@ public:
 
     double timeout_s() const { return _timeout_s; };
 
-    void set_base_mode(uint8_t base_mode);
-    void set_custom_mode(uint32_t custom_mode);
-    uint8_t get_base_mode() const;
-    uint32_t get_custom_mode() const;
-
     MAVLinkAddress own_address{};
 
     void set_base_mode(uint8_t base_mode);
