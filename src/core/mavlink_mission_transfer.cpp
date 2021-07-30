@@ -481,8 +481,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
             break;
 
         case Step::SendItems:
-            LogWarn() << "send_items: timeout";
-            callback_and_reset(Result::Timeout);
+            // When waiting for items requested we should wait longer than
+            // just our timeout, otherwise we give up too quickly.
+            ++_retries_done;
+            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
             break;
     }
 }

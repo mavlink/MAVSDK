@@ -718,8 +718,17 @@ TEST_F(MAVLinkMissionTransferTest, UploadMissionTimeoutAfterSendMissionItem)
 
     message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
-    time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
+    // Make sure single timeout does not trigger it yet.
+    time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1000. + 250)));
     timeout_handler.run_once();
+
+    EXPECT_EQ(fut.wait_for(std::chrono::milliseconds(50)), std::future_status::timeout);
+
+    // But multiple do.
+    for (unsigned i = 0; i < (MAVLinkMissionTransfer::retries - 1); ++i) {
+        time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1000.)));
+        timeout_handler.run_once();
+    }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
