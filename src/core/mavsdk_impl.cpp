@@ -594,8 +594,8 @@ void MavsdkImpl::send_heartbeat()
         get_mav_type(),
         get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
                                                            MAV_AUTOPILOT_INVALID,
-        0,
-        0,
+        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
+        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
         0);
     send_message(message);
 }
@@ -634,6 +634,26 @@ uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
     }
 
     return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+}
+
+void MavsdkImpl::set_base_mode(uint8_t base_mode)
+{
+    _base_mode = base_mode;
+}
+
+bool MavsdkImpl::get_base_mode() const
+{
+    return _base_mode;
+}
+
+void MavsdkImpl::set_custom_mode(uint32_t custom_mode)
+{
+    _custom_mode = custom_mode;
+}
+
+uint32_t MavsdkImpl::get_custom_mode() const
+{
+    return _custom_mode;
 }
 
 } // namespace mavsdk
