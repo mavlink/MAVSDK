@@ -4,6 +4,7 @@ include_directories(
 )
 
 add_subdirectory(action)
+add_subdirectory(action_server)
 add_subdirectory(calibration)
 add_subdirectory(camera)
 add_subdirectory(failure)
@@ -26,6 +27,7 @@ add_subdirectory(telemetry)
 add_subdirectory(tracking_server)
 add_subdirectory(server_utility)
 add_subdirectory(transponder)
+add_subdirectory(telemetry_server)
 add_subdirectory(tune)
 
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

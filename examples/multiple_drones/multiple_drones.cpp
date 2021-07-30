@@ -2,8 +2,6 @@
 // Example to connect multiple vehicles and make them take off and land in parallel.
 //./multiple_drones udp://:14540 udp://:14541
 //
-// Author: Julian Oes <julian@oes.ch>
-// Author: Shayaan Haider (via Slack)
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
@@ -20,15 +18,21 @@ using namespace std::chrono;
 
 static void takeoff_and_land(std::shared_ptr<System> system);
 
-#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
+void usage(const std::string& bin_name)
+{
+    std::cerr << "Usage : " << bin_name << " <connection_url_1> [<connection_url_2> ...]\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n";
+}
 
 int main(int argc, char* argv[])
 {
-    if (argc == 1) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Please specify connection" << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+    if (argc < 2) {
+        std::cerr << "Please specify connection\n";
+        usage(argv[0]);
         return 1;
     }
 
@@ -40,20 +44,19 @@ int main(int argc, char* argv[])
     for (int i = 1; i < argc; ++i) {
         ConnectionResult connection_result = mavsdk.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::Success) {
-            std::cerr << ERROR_CONSOLE_TEXT << "Connection error: " << connection_result
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cerr << "Connection error: " << connection_result << '\n';
             return 1;
         }
     }
 
     std::atomic<size_t> num_systems_discovered{0};
 
-    std::cout << "Waiting to discover system..." << std::endl;
+    std::cout << "Waiting to discover system...\n";
     mavsdk.subscribe_on_new_system([&mavsdk, &num_systems_discovered]() {
         const auto systems = mavsdk.systems();
 
         if (systems.size() > num_systems_discovered) {
-            std::cout << "Discovered system" << std::endl;
+            std::cout << "Discovered system\n";
             num_systems_discovered = systems.size();
         }
     });
@@ -63,8 +66,7 @@ int main(int argc, char* argv[])
     sleep_for(seconds(2));
 
     if (num_systems_discovered != total_udp_ports) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Not all systems found, exiting." << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Not all systems found, exiting.\n";
         return 1;
     }
 
@@ -91,62 +93,55 @@ void takeoff_and_land(std::shared_ptr<System> system)
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
 
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Setting rate failed:" << set_rate_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Setting rate failed:" << set_rate_result << '\n';
         return;
     }
 
     // Set up callback to monitor altitude while the vehicle is in flight
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
-                  << "Altitude: " << position.relative_altitude_m << " m"
-                  << NORMAL_CONSOLE_TEXT // set to default color again
-                  << std::endl;
+        std::cout << "Altitude: " << position.relative_altitude_m << " m\n";
     });
 
     // Check if vehicle is ready to arm
     while (telemetry.health_all_ok() != true) {
-        std::cout << "Vehicle is getting ready to arm" << std::endl;
+        std::cout << "Vehicle is getting ready to arm\n";
         sleep_for(seconds(1));
     }
 
     // Arm vehicle
-    std::cout << "Arming..." << std::endl;
+    std::cout << "Arming...\n";
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Arming failed:" << arm_result << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Arming failed:" << arm_result << '\n';
     }
 
     // Take off
-    std::cout << "Taking off..." << std::endl;
+    std::cout << "Taking off...\n";
     const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Takeoff failed:" << takeoff_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Takeoff failed:" << takeoff_result << '\n';
     }
 
     // Let it hover for a bit before landing again.
     sleep_for(seconds(20));
 
-    std::cout << "Landing..." << std::endl;
+    std::cout << "Landing...\n";
     const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << ERROR_CONSOLE_TEXT << "Land failed:" << land_result << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Land failed:" << land_result << '\n';
     }
 
     // Check if vehicle is still in air
     while (telemetry.in_air()) {
-        std::cout << "Vehicle is landing..." << std::endl;
+        std::cout << "Vehicle is landing...\n";
         sleep_for(seconds(1));
     }
-    std::cout << "Landed!" << std::endl;
+    std::cout << "Landed!\n";
 
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
 
     sleep_for(seconds(5));
-    std::cout << "Finished..." << std::endl;
+    std::cout << "Finished...\n";
     return;
 }

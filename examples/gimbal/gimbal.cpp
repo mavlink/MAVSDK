@@ -3,8 +3,6 @@
 //
 // Can be tested against PX4 SITL with Typhoon H480:
 //     make px4_sitl gazebo_typhoon_h480
-//
-// Author: Julian Oes <julian@oes.ch>
 
 #include <chrono>
 #include <cstdint>
@@ -20,7 +18,7 @@ using namespace mavsdk;
 using std::chrono::seconds;
 using std::this_thread::sleep_for;
 
-void usage(std::string bin_name)
+void usage(const std::string& bin_name)
 {
     std::cerr << "Usage : " << bin_name << " <connection_url>\n"
               << "Connection URL format should be :\n"
@@ -30,21 +28,8 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540\n";
 }
 
-int main(int argc, char** argv)
+std::shared_ptr<System> get_system(Mavsdk& mavsdk)
 {
-    if (argc != 2) {
-        usage(argv[0]);
-        return 1;
-    }
-
-    Mavsdk mavsdk;
-    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
-
-    if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
-        return 1;
-    }
-
     std::cout << "Waiting to discover system...\n";
     auto prom = std::promise<std::shared_ptr<System>>{};
     auto fut = prom.get_future();
@@ -66,12 +51,33 @@ int main(int argc, char** argv)
     // We usually receive heartbeats at 1Hz, therefore we should find a
     // system after around 3 seconds max, surely.
     if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
-        std::cerr << "No autopilot found, exiting.\n";
-        return 1;
+        std::cerr << "No autopilot found.\n";
+        return {};
     }
 
     // Get discovered system now.
-    auto system = fut.get();
+    return fut.get();
+}
+
+int main(int argc, char** argv)
+{
+    if (argc != 2) {
+        usage(argv[0]);
+        return 1;
+    }
+
+    Mavsdk mavsdk;
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
+
+    if (connection_result != ConnectionResult::Success) {
+        std::cerr << "Connection failed: " << connection_result << '\n';
+        return 1;
+    }
+
+    auto system = get_system(mavsdk);
+    if (!system) {
+        return 1;
+    }
 
     // Instantiate plugins.
     auto telemetry = Telemetry{system};

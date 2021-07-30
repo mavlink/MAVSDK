@@ -275,6 +275,12 @@ public:
     bool set_uid2(std::string uid2);
     System::AutopilotVersion get_autopilot_version_data();
 
+    // Used when acting as autopilot!
+    void set_server_armed(bool armed);
+    bool is_server_armed() const;
+    void set_custom_mode(uint32_t custom_mode);
+    uint32_t get_custom_mode() const;
+
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);

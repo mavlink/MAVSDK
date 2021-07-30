@@ -1,11 +1,6 @@
-/**
- * @file ftp_client.cpp
- *
- * @brief Demonstrates how to use a FTP client with MAVSDK.
- *
- * @author Matej Frančeškin <matej@auterion.com>,
- * @date 2019-09-06
- */
+//
+// Example how to use an FTP client with MAVSDK.
+//
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/ftp/ftp.h>
@@ -16,67 +11,65 @@
 #include <iomanip>
 #include <cstring>
 
-#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
-#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
-
 using namespace mavsdk;
+using std::chrono::seconds;
 
 void usage(const std::string& bin_name)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name
-              << " <connection_url> <server component id> <command> <parameters>" << std::endl
-              << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl
-              << std::endl
+    std::cerr << "Usage : " << bin_name
+              << " <connection_url> <server component id> <command> <parameters>\n"
+              << '\n'
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+              << "For example, to connect to the simulator use URL: udp://:14540\n"
+              << '\n'
               << "Server component id is for example 1 for autopilot or 240 for companion computer."
-              << std::endl
-              << std::endl
-              << "Supported commands :" << std::endl
-              << " put <file> <path>    : Upload one file to remote directory" << std::endl
-              << " get <file> <path>    : Download remote file to local directory" << std::endl
-              << " delete <file>        : Delete remote file" << std::endl
-              << " rename <old> <new>   : Rename file" << std::endl
-              << " dir <path>           : List contents of remote directory" << std::endl
-              << " mkdir <path>         : Make directory on remote machine" << std::endl
+              << '\n'
+              << '\n'
+              << "Supported commands :\n"
+              << " put <file> <path>    : Upload one file to remote directory\n"
+              << " get <file> <path>    : Download remote file to local directory\n"
+              << " delete <file>        : Delete remote file\n"
+              << " rename <old> <new>   : Rename file\n"
+              << " dir <path>           : List contents of remote directory\n"
+              << " mkdir <path>         : Make directory on remote machine\n"
               << " rmdir [-r] <path>    : Remove directory on remote machine. [-r] recursively"
-              << std::endl
-              << " cmp <local> <remote> : Compare local and remote file" << std::endl
-              << std::endl
-              << "Return codes:" << std::endl
-              << " 0 : Success" << std::endl
-              << " 1 : Failure" << std::endl
-              << " 2 : File does not exist" << std::endl
-              << " 3 : Files are different (cmp command)" << std::endl;
+              << '\n'
+              << " cmp <local> <remote> : Compare local and remote file\n"
+              << '\n'
+              << "Return codes:\n"
+              << " 0 : Success\n"
+              << " 1 : Failure\n"
+              << " 2 : File does not exist\n"
+              << " 3 : Files are different (cmp command)\n";
 }
 
 Ftp::Result reset_server(Ftp& ftp)
 {
-    auto prom = std::make_shared<std::promise<Ftp::Result>>();
-    auto future_result = prom->get_future();
-    ftp.reset_async([prom](Ftp::Result result) { prom->set_value(result); });
+    auto prom = std::promise<Ftp::Result>{};
+    auto future_result = prom.get_future();
+    ftp.reset_async([&prom](Ftp::Result result) { prom.set_value(result); });
     return future_result.get();
 }
 
 Ftp::Result create_directory(Ftp& ftp, const std::string& path)
 {
-    std::cout << "Creating directory: " << path << std::endl;
-    auto prom = std::make_shared<std::promise<Ftp::Result>>();
-    auto future_result = prom->get_future();
-    ftp.create_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
+    std::cerr << "Creating directory: " << path << '\n';
+    auto prom = std::promise<Ftp::Result>();
+    auto future_result = prom.get_future();
+    ftp.create_directory_async(path, [&prom](Ftp::Result result) { prom.set_value(result); });
 
     return future_result.get();
 }
 
 Ftp::Result remove_file(Ftp& ftp, const std::string& path)
 {
-    std::cout << "Removing file: " << path << std::endl;
-    auto prom = std::make_shared<std::promise<Ftp::Result>>();
-    auto future_result = prom->get_future();
-    ftp.remove_file_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
+    std::cerr << "Removing file: " << path << '\n';
+    auto prom = std::promise<Ftp::Result>{};
+    auto future_result = prom.get_future();
+    ftp.remove_file_async(path, [&prom](Ftp::Result result) { prom.set_value(result); });
 
     return future_result.get();
 }
@@ -84,11 +77,10 @@ Ftp::Result remove_file(Ftp& ftp, const std::string& path)
 Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive = true)
 {
     if (recursive) {
-        auto prom =
-            std::make_shared<std::promise<std::pair<Ftp::Result, std::vector<std::string>>>>();
-        auto future_result = prom->get_future();
-        ftp.list_directory_async(path, [prom](Ftp::Result result, std::vector<std::string> list) {
-            prom->set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
+        auto prom = std::promise<std::pair<Ftp::Result, std::vector<std::string>>>{};
+        auto future_result = prom.get_future();
+        ftp.list_directory_async(path, [&prom](Ftp::Result result, std::vector<std::string> list) {
+            prom.set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
         });
 
         std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
@@ -104,28 +96,28 @@ Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive =
             }
         }
     }
-    std::cout << "Removing dir:  " << path << std::endl;
+    std::cerr << "Removing dir:  " << path << '\n';
 
-    auto prom = std::make_shared<std::promise<Ftp::Result>>();
-    auto future_result = prom->get_future();
-    ftp.remove_directory_async(path, [prom](Ftp::Result result) { prom->set_value(result); });
+    auto prom = std::promise<Ftp::Result>{};
+    auto future_result = prom.get_future();
+    ftp.remove_directory_async(path, [&prom](Ftp::Result result) { prom.set_value(result); });
 
     return future_result.get();
 }
 
 Ftp::Result list_directory(Ftp& ftp, const std::string& path)
 {
-    std::cout << "List directory: " << path << std::endl;
-    auto prom = std::make_shared<std::promise<std::pair<Ftp::Result, std::vector<std::string>>>>();
-    auto future_result = prom->get_future();
-    ftp.list_directory_async(path, [prom](Ftp::Result result, std::vector<std::string> list) {
-        prom->set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
+    std::cerr << "List directory: " << path << '\n';
+    auto prom = std::promise<std::pair<Ftp::Result, std::vector<std::string>>>{};
+    auto future_result = prom.get_future();
+    ftp.list_directory_async(path, [&prom](Ftp::Result result, std::vector<std::string> list) {
+        prom.set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
     });
 
     std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
     if (result.first == Ftp::Result::Success) {
         for (auto entry : result.second) {
-            std::cout << entry << std::endl;
+            std::cerr << entry << '\n';
         }
     }
     return result.first;
@@ -134,20 +126,20 @@ Ftp::Result list_directory(Ftp& ftp, const std::string& path)
 Ftp::Result
 download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& local_path)
 {
-    std::cout << "Download file: " << remote_file_path << " to " << local_path << std::endl;
-    auto prom = std::make_shared<std::promise<Ftp::Result>>();
-    auto future_result = prom->get_future();
+    std::cerr << "Download file: " << remote_file_path << " to " << local_path << '\n';
+    auto prom = std::promise<Ftp::Result>{};
+    auto future_result = prom.get_future();
     ftp.download_async(
-        remote_file_path, local_path, [prom](Ftp::Result result, Ftp::ProgressData progress) {
+        remote_file_path, local_path, [&prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
                 int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
-                std::cout << "\rDownloading [" << std::setw(3) << percentage << "%] "
+                std::cerr << "\rDownloading [" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
                 if (progress.bytes_transferred >= progress.total_bytes) {
-                    std::cout << std::endl;
+                    std::cerr << '\n';
                 }
             } else {
-                prom->set_value(result);
+                prom.set_value(result);
             }
         });
 
@@ -157,21 +149,21 @@ download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& 
 Ftp::Result
 upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& remote_path)
 {
-    std::cout << "Upload file: " << local_file_path << " to " << remote_path << std::endl;
-    auto prom = std::make_shared<std::promise<Ftp::Result>>();
-    auto future_result = prom->get_future();
+    std::cerr << "Upload file: " << local_file_path << " to " << remote_path << '\n';
+    auto prom = std::promise<Ftp::Result>{};
+    auto future_result = prom.get_future();
     ftp.upload_async(
-        local_file_path, remote_path, [prom](Ftp::Result result, Ftp::ProgressData progress) {
+        local_file_path, remote_path, [&prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
                 int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
-                std::cout << "\rUploading "
+                std::cerr << "\rUploading "
                           << "[" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
                 if (progress.bytes_transferred == progress.total_bytes) {
-                    std::cout << std::endl;
+                    std::cerr << '\n';
                 }
             } else {
-                prom->set_value(result);
+                prom.set_value(result);
             }
         });
     return future_result.get();
@@ -179,71 +171,75 @@ upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& rem
 
 Ftp::Result rename_file(Ftp& ftp, const std::string& old_name, const std::string& new_name)
 {
-    std::cout << "Rename file: " << old_name << " to " << new_name << std::endl;
-    auto prom = std::make_shared<std::promise<Ftp::Result>>();
-    auto future_result = prom->get_future();
-    ftp.rename_async(old_name, new_name, [prom](Ftp::Result result) { prom->set_value(result); });
+    std::cerr << "Rename file: " << old_name << " to " << new_name << '\n';
+    auto prom = std::promise<Ftp::Result>{};
+    auto future_result = prom.get_future();
+    ftp.rename_async(old_name, new_name, [&prom](Ftp::Result result) { prom.set_value(result); });
 
     return future_result.get();
 }
 
+std::shared_ptr<System> get_system(Mavsdk& mavsdk)
+{
+    std::cerr << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
+
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+        auto system = mavsdk.systems().back();
+
+        // Unsubscribe again as we only want to find one system.
+        mavsdk.subscribe_on_new_system(nullptr);
+        prom.set_value(system);
+    });
+
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found.\n";
+        return {};
+    }
+
+    // Get discovered system now.
+    return fut.get();
+}
+
 int main(int argc, char** argv)
 {
-    Mavsdk mavsdk;
-
-    std::string connection_url;
-    ConnectionResult connection_result;
-
-    if (argc >= 4) {
-        connection_url = argv[1];
-        connection_result = mavsdk.add_any_connection(connection_url);
-    } else {
+    if (argc < 4) {
         usage(argv[0]);
         return 1;
     }
 
+    Mavsdk mavsdk;
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
+
     if (connection_result != ConnectionResult::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: " << connection_result
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
-    auto prom = std::make_shared<std::promise<void>>();
-    auto future_result = prom->get_future();
-
-    std::cout << NORMAL_CONSOLE_TEXT << "Waiting to discover system..." << std::endl;
-    mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
-        const auto system = mavsdk.systems().at(0);
-
-        if (system->is_connected()) {
-            std::cout << "Discovered system" << std::endl;
-            prom->set_value();
-        }
-    });
-
-    auto status = future_result.wait_for(std::chrono::seconds(5));
-    if (status == std::future_status::timeout) {
-        std::cout << "Timeout waiting for connection." << std::endl;
+    auto system = get_system(mavsdk);
+    if (!system) {
         return 1;
     }
 
-    future_result.get();
+    // Instantiate plugins.
 
-    auto system = mavsdk.systems().at(0);
     auto ftp = Ftp{system};
     try {
         ftp.set_target_compid(std::stoi(argv[2]));
     } catch (...) {
-        std::cout << ERROR_CONSOLE_TEXT << "Invalid argument: " << argv[2] << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Invalid argument: " << argv[2] << '\n';
         return 1;
     }
 
     Ftp::Result res;
     res = reset_server(ftp);
     if (res != Ftp::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Reset server error: " << res << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Reset server error: " << res << '\n';
         return 1;
     }
 
@@ -256,10 +252,9 @@ int main(int argc, char** argv)
         }
         res = upload_file(ftp, argv[4], argv[5]);
         if (res == Ftp::Result::Success) {
-            std::cout << "File uploaded." << std::endl;
+            std::cerr << "File uploaded.\n";
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "File upload error: " << res << NORMAL_CONSOLE_TEXT
-                      << std::endl;
+            std::cerr << "File upload error: " << res << '\n';
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "get") {
@@ -269,10 +264,9 @@ int main(int argc, char** argv)
         }
         res = download_file(ftp, argv[4], (argc == 6) ? argv[5] : ".");
         if (res == Ftp::Result::Success) {
-            std::cout << "File downloaded." << std::endl;
+            std::cerr << "File downloaded.\n";
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "File download error: " << res << NORMAL_CONSOLE_TEXT
-                      << std::endl;
+            std::cerr << "File download error: " << res << '\n';
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "rename") {
@@ -282,10 +276,9 @@ int main(int argc, char** argv)
         }
         res = rename_file(ftp, argv[4], argv[5]);
         if (res == Ftp::Result::Success) {
-            std::cout << "File renamed." << std::endl;
+            std::cerr << "File renamed.\n";
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "File rename error: " << res << NORMAL_CONSOLE_TEXT
-                      << std::endl;
+            std::cerr << "File rename error: " << res << '\n';
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "mkdir") {
@@ -295,12 +288,11 @@ int main(int argc, char** argv)
         }
         res = create_directory(ftp, argv[4]);
         if (res == Ftp::Result::Success) {
-            std::cout << "Directory created." << std::endl;
+            std::cerr << "Directory created.\n";
         } else if (res == Ftp::Result::FileExists) {
-            std::cout << "Directory already exists." << std::endl;
+            std::cerr << "Directory already exists.\n";
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "Create directory error: " << res
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cerr << "Create directory error: " << res << '\n';
             return 1;
         }
     } else if (command == "rmdir") {
@@ -320,13 +312,12 @@ int main(int argc, char** argv)
         }
         res = remove_directory(ftp, path, recursive);
         if (res == Ftp::Result::Success) {
-            std::cout << "Directory removed." << std::endl;
+            std::cerr << "Directory removed.\n";
         } else if (res == Ftp::Result::FileDoesNotExist) {
-            std::cout << "Directory does not exist." << std::endl;
+            std::cerr << "Directory does not exist.\n";
             return 2;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "Remove directory error: " << res
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cerr << "Remove directory error: " << res << '\n';
             return 1;
         }
     } else if (command == "dir") {
@@ -336,13 +327,12 @@ int main(int argc, char** argv)
         }
         res = list_directory(ftp, argv[4]);
         if (res == Ftp::Result::Success) {
-            std::cout << "Directory listed." << std::endl;
+            std::cerr << "Directory listed.\n";
         } else if (res == Ftp::Result::FileDoesNotExist) {
-            std::cout << "Directory does not exist." << std::endl;
+            std::cerr << "Directory does not exist.\n";
             return 2;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "List directory error: " << res
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cerr << "List directory error: " << res << '\n';
             return 1;
         }
     } else if (command == "delete") {
@@ -352,13 +342,12 @@ int main(int argc, char** argv)
         }
         res = remove_file(ftp, argv[4]);
         if (res == Ftp::Result::Success) {
-            std::cout << "File deleted." << std::endl;
+            std::cerr << "File deleted.\n";
         } else if (res == Ftp::Result::FileDoesNotExist) {
-            std::cout << "File does not exist." << std::endl;
+            std::cerr << "File does not exist.\n";
             return 2;
         } else {
-            std::cout << ERROR_CONSOLE_TEXT << "Delete file error: " << res << NORMAL_CONSOLE_TEXT
-                      << std::endl;
+            std::cerr << "Delete file error: " << res << '\n';
             return 1;
         }
     } else if (command == "cmp") {
@@ -367,31 +356,29 @@ int main(int argc, char** argv)
             return 1;
         }
 
-        auto prom = std::make_shared<std::promise<std::pair<Ftp::Result, bool>>>();
-        auto future_result = prom->get_future();
+        auto prom = std::promise<std::pair<Ftp::Result, bool>>{};
+        auto future_result = prom.get_future();
 
         ftp.are_files_identical_async(
             argv[4], argv[5], [&prom](Ftp::Result result, bool identical) {
-                prom->set_value(std::make_pair<>(result, identical));
+                prom.set_value(std::make_pair<>(result, identical));
             });
 
         auto result = future_result.get();
 
         if (result.first != Ftp::Result::Success) {
-            std::cout << ERROR_CONSOLE_TEXT << "Error comparing files." << NORMAL_CONSOLE_TEXT
-                      << std::endl;
+            std::cerr << "Error comparing files:" << result.first << '\n';
             return 1;
         }
 
         if (result.second) {
-            std::cout << "Files are equal" << std::endl;
+            std::cerr << "Files are equal\n";
         } else {
-            std::cout << "Files are different" << std::endl;
+            std::cerr << "Files are different\n";
             return 3;
         }
     } else {
-        std::cout << ERROR_CONSOLE_TEXT << "Unknown command: " << command << NORMAL_CONSOLE_TEXT
-                  << std::endl;
+        std::cerr << "Unknown command: " << command << '\n';
         return 1;
     }
 

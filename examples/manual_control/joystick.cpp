@@ -30,7 +30,7 @@ std::unique_ptr<Joystick> Joystick::create()
 bool Joystick::init()
 {
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
-        std::cerr << "Could not initialize SDL joystick: " << SDL_GetError();
+        std::cerr << "Could not initialize SDL joystick: " << SDL_GetError() << '\n';
         return false;
     }
 
@@ -51,7 +51,7 @@ bool Joystick::connect()
     }
 
     else if (num == 0) {
-        std::cout << "No joystick found" << std::endl;
+        std::cout << "No joystick found\n";
         return false;
     }
 
@@ -62,7 +62,7 @@ bool Joystick::connect()
     }
 
     else {
-        std::cout << "More than one joystick found, not sure what to use." << std::endl;
+        std::cout << "More than one joystick found, not sure what to use.\n";
         return false;
     }
 }
@@ -101,12 +101,12 @@ void Joystick::start_poll_loop()
                     break;
 
                 case SDL_JOYDEVICEREMOVED:
-                    std::cout << "joystick removed" << std::endl;
+                    std::cout << "joystick removed\n";
                     disconnect();
                     break;
 
                 case SDL_JOYDEVICEADDED:
-                    // std::cout << "joystick added" << std::endl;
+                    // std::cout << "joystick added\n";
                     connect();
                     break;
 
@@ -153,7 +153,7 @@ void Joystick::print_values()
         std::cout << "axis " << i << " -> " << _state.axes[i] << '\n';
     }
 
-    std::cout << std::endl;
+    std::cout << '\n';
 }
 
 void Joystick::set_button(int button, bool value)
