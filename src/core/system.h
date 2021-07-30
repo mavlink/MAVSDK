@@ -215,7 +215,7 @@ public:
     /**
      * @brief Set uid2, 18 chars max (only used if MAVSDK is autopilot)
      *
-     * @param uid unique hardware id
+     * @param uid2 unique hardware id
      * @return true if valid size, false if too large,
      */
     bool set_uid2(std::string uid2);
