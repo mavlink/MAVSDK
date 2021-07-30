@@ -150,6 +150,9 @@ void ActionServerImpl::init()
                 case ActionServer::FlightMode::Stabilized:
                     allow_mode = _allowed_flight_modes.can_stabilize_mode;
                     break;
+                case ActionServer::FlightMode::Offboard:
+                    allow_mode = _allowed_flight_modes.can_guided_mode;
+                    break;
                 default:
                     allow_mode = false;
                     break;
