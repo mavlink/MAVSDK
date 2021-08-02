@@ -63,7 +63,8 @@ void TelemetryServerImpl::init()
                 } else {
                     // Update Interval
                     found->interval = interval_ms;
-                    _parent->change_call_every(interval_ms, found->cookie);
+                    _parent->change_call_every(
+                        static_cast<double>(interval_ms) * 1E-3, found->cookie);
                 }
             }
 
