@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <array>
 #include <functional>
 
 #include "deprecated.h"
