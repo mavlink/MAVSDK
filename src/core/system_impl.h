@@ -239,6 +239,7 @@ public:
         const std::string& filename, const int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
+    void send_autopilot_version();
     void send_flight_information_request();
 
     MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };
@@ -263,6 +264,17 @@ public:
 
     double timeout_s() const;
 
+    // Autopilot version data
+    void add_capabilities(uint64_t capabilities);
+    void set_flight_sw_version(uint32_t flight_sw_version);
+    void set_middleware_sw_version(uint32_t middleware_sw_version);
+    void set_os_sw_version(uint32_t os_sw_version);
+    void set_board_version(uint32_t board_version);
+    void set_vendor_id(uint16_t vendor_id);
+    void set_product_id(uint16_t product_id);
+    bool set_uid2(std::string uid2);
+    System::AutopilotVersion get_autopilot_version_data();
+
     // Used when acting as autopilot!
     void set_server_armed(bool armed);
     bool is_server_armed() const;
@@ -281,6 +293,9 @@ private:
     void heartbeats_timed_out();
     void set_connected();
     void set_disconnected();
+
+    std::optional<mavlink_message_t>
+    process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command);
 
     static std::string component_name(uint8_t component_id);
     static System::ComponentType component_type(uint8_t component_id);
@@ -370,6 +385,9 @@ private:
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+    std::mutex _autopilot_version_mutex{};
+    System::AutopilotVersion _autopilot_version{
+        MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};
 };
 
 } // namespace mavsdk
