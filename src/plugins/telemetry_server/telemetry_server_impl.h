@@ -9,6 +9,12 @@ namespace mavsdk {
 
 class TelemetryServerImpl : public PluginImplBase {
 public:
+    struct RequestMsgInterval {
+        uint32_t msg_id{0};
+        uint32_t interval{0};
+        void* cookie{nullptr};
+    };
+
     explicit TelemetryServerImpl(System& system);
     explicit TelemetryServerImpl(std::shared_ptr<System> system);
     ~TelemetryServerImpl();
@@ -62,13 +68,20 @@ public:
         bool gyro_status,
         bool accel_status,
         bool mag_status,
-        bool gps_status) const;
+        bool gps_status);
 
     TelemetryServer::Result publish_extended_sys_state(
-        TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state) const;
+        TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state);
 
 private:
     std::chrono::time_point<std::chrono::steady_clock> _start_time;
+
+    std::vector<RequestMsgInterval> _interval_requests;
+    std::mutex _interval_mutex;
+    std::mutex _msg_cache_mutex;
+    std::map<uint64_t, mavlink_message_t> _msg_cache;
+
+    void add_msg_cache(uint64_t id, mavlink_message_t& msg);
 
     uint64_t get_boot_time_ms()
     {

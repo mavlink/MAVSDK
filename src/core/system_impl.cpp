@@ -76,25 +76,6 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
 
     // TO-DO!
     register_mavlink_command_handler(
-        MAV_CMD_SET_MESSAGE_INTERVAL,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
-            mavlink_message_t msg;
-            mavlink_msg_command_ack_pack(
-                _parent.get_own_system_id(),
-                _parent.get_own_component_id(),
-                &msg,
-                command.command,
-                MAV_RESULT::MAV_RESULT_UNSUPPORTED,
-                100,
-                0,
-                command.origin_system_id,
-                command.origin_component_id);
-            return msg;
-        },
-        this);
-
-    // TO-DO!
-    register_mavlink_command_handler(
         MAV_CMD_REQUEST_MESSAGE,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             mavlink_message_t msg;
@@ -104,7 +85,7 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
                 &msg,
                 command.command,
                 MAV_RESULT::MAV_RESULT_UNSUPPORTED,
-                100,
+                255,
                 0,
                 command.origin_system_id,
                 command.origin_component_id);
