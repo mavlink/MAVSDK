@@ -225,13 +225,6 @@ void MissionRawServerImpl::init()
                 _parent->send_message(status_message);
             } else {
                 set_current_seq(set_current.seq);
-                mavlink_message_t mission_current;
-                mavlink_msg_mission_current_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    &mission_current,
-                    set_current.seq);
-                _parent->send_message(mission_current);
             }
         },
         this);
@@ -321,21 +314,31 @@ void MissionRawServerImpl::set_current_item_complete()
     _parent->send_message(mission_reached);
     if (_current_seq + 1 == _current_mission.size()) {
         _mission_completed = true;
+        set_current_seq(0);
     } else {
         set_current_seq(_current_seq + 1);
     }
 }
 
-void MissionRawServerImpl::set_current_seq(int32_t seq)
+void MissionRawServerImpl::set_current_seq(uint16_t seq)
 {
-    if (_current_mission.size() <= static_cast<size_t>(seq))
+    if (_current_mission.size() <= static_cast<size_t>(seq)) {
         return;
+    }
 
     _current_seq = seq;
 
     auto converted_item = convert_item(_current_mission.at(_current_seq));
     _parent->call_user_callback(
         [this, converted_item]() { _current_item_changed_callback(converted_item); });
+
+    mavlink_message_t mission_current;
+    mavlink_msg_mission_current_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &mission_current,
+        _current_seq);
+    _parent->send_message(mission_current);
 }
 
 } // namespace mavsdk
