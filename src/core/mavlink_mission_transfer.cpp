@@ -716,7 +716,6 @@ MAVLinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
     _mission_count(mission_count),
     _target_component(target_component)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
 }
 
 MAVLinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
