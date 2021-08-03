@@ -3,6 +3,7 @@
 #include "plugins/telemetry_server/telemetry_server.h"
 #include "plugin_impl_base.h"
 
+#include <unordered_map>
 #include <chrono>
 
 namespace mavsdk {
@@ -78,8 +79,7 @@ private:
 
     std::vector<RequestMsgInterval> _interval_requests;
     std::mutex _interval_mutex;
-    std::mutex _msg_cache_mutex;
-    std::map<uint64_t, mavlink_message_t> _msg_cache;
+    std::unordered_map<uint64_t, mavlink_message_t> _msg_cache;
 
     void add_msg_cache(uint64_t id, mavlink_message_t& msg);
 

@@ -47,7 +47,7 @@ void TelemetryServerImpl::init()
                 _interval_requests.push_back({msgid, interval_ms, nullptr});
                 _parent->add_call_every(
                     [this, msgid]() {
-                        std::lock_guard<std::mutex> cache_lock(_msg_cache_mutex);
+                        std::lock_guard<std::mutex> lock_interval(_interval_mutex);
                         if (_msg_cache.find(msgid) != _msg_cache.end()) {
                             // Publish if callback exists :)
                             _parent->send_message(_msg_cache.at(msgid));
