@@ -359,5 +359,10 @@ private:
     bool _has_bat_status{false};
 
     void* _calibration_cookie{nullptr};
+
+    bool _has_received_hitl_param{false};
+    bool _has_received_gyro_calibration{false};
+    bool _has_received_accel_calibration{false};
+    bool _has_received_mag_calibration{false};
 };
 } // namespace mavsdk
