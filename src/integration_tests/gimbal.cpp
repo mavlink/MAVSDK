@@ -23,7 +23,7 @@ TEST(SitlTestGimbal, GimbalMove)
 {
     Mavsdk mavsdk;
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection(14550);
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -75,7 +75,7 @@ TEST(SitlTestGimbal, GimbalAngles)
 {
     Mavsdk mavsdk;
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_udp_connection(14550);
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
