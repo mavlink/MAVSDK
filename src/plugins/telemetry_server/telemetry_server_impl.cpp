@@ -16,14 +16,58 @@ TelemetryServerImpl::TelemetryServerImpl(std::shared_ptr<System> system) : Plugi
 TelemetryServerImpl::~TelemetryServerImpl()
 {
     _parent->unregister_plugin(this);
+    std::unique_lock<std::mutex> lock(_interval_mutex);
+    for (const auto& request : _interval_requests) {
+        _parent->remove_call_every(request.cookie);
+    }
 }
 
 void TelemetryServerImpl::init()
 {
+    // Handle SET_MESSAGE_INTERVAL
     _parent->register_mavlink_command_handler(
         MAV_CMD_SET_MESSAGE_INTERVAL,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
-            // TO-DO handle mssage #245 and #33
+            std::lock_guard<std::mutex> lock(_interval_mutex);
+            uint32_t msgid = static_cast<uint32_t>(command.params.param1);
+            // Set interval to 1hz if 0 (default rate)
+            uint32_t interval_ms =
+                command.params.param2 == 0 ?
+                    1000 :
+                    static_cast<uint32_t>(static_cast<double>(command.params.param2) * 1E-3);
+            LogDebug() << "Setting interval for msg id: " << std::to_string(msgid)
+                       << " interval_ms:" << std::to_string(interval_ms);
+            auto found = std::find_if(
+                _interval_requests.begin(),
+                _interval_requests.end(),
+                [msgid](const RequestMsgInterval& item) { return item.msg_id == msgid; });
+
+            if (found == _interval_requests.end() && command.params.param2 != -1) {
+                // If not found interval already, add a new one
+                _interval_requests.push_back({msgid, interval_ms, nullptr});
+                _parent->add_call_every(
+                    [this, msgid]() {
+                        std::lock_guard<std::mutex> lock_interval(_interval_mutex);
+                        if (_msg_cache.find(msgid) != _msg_cache.end()) {
+                            // Publish if callback exists :)
+                            _parent->send_message(_msg_cache.at(msgid));
+                        }
+                    },
+                    static_cast<double>(interval_ms) * 1E-3,
+                    &_interval_requests.back().cookie);
+            } else {
+                if (command.params.param2 == -1) {
+                    // Deregister with -1 interval
+                    _parent->remove_call_every(found->cookie);
+                    _interval_requests.erase(found);
+                } else {
+                    // Update Interval
+                    found->interval = interval_ms;
+                    _parent->change_call_every(
+                        static_cast<double>(interval_ms) * 1E-3, found->cookie);
+                }
+            }
+
             mavlink_message_t msg;
             mavlink_msg_command_ack_pack(
                 _parent->get_own_system_id(),
@@ -65,6 +109,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
         0 // T0-DO: heading
     );
 
+    add_msg_cache(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, msg);
+
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
 }
@@ -89,6 +135,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Posit
         NAN, // approach z
         get_boot_time_ms() // TO-DO: System boot
     );
+
+    add_msg_cache(MAVLINK_MSG_ID_HOME_POSITION, msg);
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
@@ -118,6 +166,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
         static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5),
         static_cast<uint32_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
+
+    add_msg_cache(MAVLINK_MSG_ID_GPS_RAW_INT, msg);
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
@@ -149,6 +199,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
         voltages_ext,
         MAV_BATTERY_MODE_UNKNOWN,
         0);
+
+    add_msg_cache(MAVLINK_MSG_ID_BATTERY_STATUS, msg);
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
@@ -228,6 +280,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_position_velocity_ned(
         position_velocity_ned.velocity.east_m_s,
         position_velocity_ned.velocity.down_m_s);
 
+    add_msg_cache(MAVLINK_MSG_ID_LOCAL_POSITION_NED, msg);
+
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
 }
@@ -279,7 +333,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
     bool gyro_status,
     bool accel_status,
     bool mag_status,
-    bool gps_status) const
+    bool gps_status)
 {
     int32_t sensors = 0;
 
@@ -316,6 +370,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
         0,
         0,
         0);
+
+    add_msg_cache(MAVLINK_MSG_ID_SYS_STATUS, msg);
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
@@ -356,7 +412,7 @@ uint8_t to_mav_landed_state(TelemetryServer::LandedState landed_state)
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
-    TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state) const
+    TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state)
 {
     mavlink_message_t msg;
     mavlink_msg_extended_sys_state_pack(
@@ -366,8 +422,16 @@ TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
         to_mav_vtol_state(vtol_state),
         to_mav_landed_state(landed_state));
 
+    add_msg_cache(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, msg);
+
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;
+}
+
+void TelemetryServerImpl::add_msg_cache(uint64_t id, mavlink_message_t& msg)
+{
+    std::unique_lock<std::mutex> lock(_interval_mutex);
+    _msg_cache.insert_or_assign(id, msg);
 }
 
 } // namespace mavsdk
