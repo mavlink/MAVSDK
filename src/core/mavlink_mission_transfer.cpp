@@ -715,8 +715,7 @@ MAVLinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
     _callback(callback),
     _mission_count(mission_count),
     _target_component(target_component)
-{
-}
+{}
 
 MAVLinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
 {
