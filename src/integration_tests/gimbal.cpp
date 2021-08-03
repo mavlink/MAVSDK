@@ -56,12 +56,12 @@ TEST(SitlTestGimbal, GimbalMove)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     LogInfo() << "Yaw right for a bit";
-    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(0.0f, 10.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(0.0f, 20.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     LogInfo() << "Yaw left for a bit";
-    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(0.0f, -10.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    EXPECT_EQ(gimbal->set_pitch_rate_and_yaw_rate(0.0f, -20.0f), Gimbal::Result::Success);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     LogInfo() << "Reset back to 0,0";
     EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
