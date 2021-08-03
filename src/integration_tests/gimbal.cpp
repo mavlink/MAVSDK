@@ -94,29 +94,10 @@ TEST(SitlTestGimbal, GimbalAngles)
 
     EXPECT_EQ(gimbal->set_mode(Gimbal::GimbalMode::YawFollow), Gimbal::Result::Success);
 
-    LogInfo() << "Pitch 45 degrees down";
-    EXPECT_EQ(gimbal->set_pitch_and_yaw(-45.0f, 0.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    LogInfo() << "Pitch back up";
-    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    LogInfo() << "Pitch 45 degrees up";
-    EXPECT_EQ(gimbal->set_pitch_and_yaw(45.0f, 0.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    LogInfo() << "Pitch back down";
-    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
+    LogInfo() << "Yaw 45 degrees to the right";
+    EXPECT_EQ(gimbal->set_pitch_and_yaw(-90.0f, -135.0f), Gimbal::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    LogInfo() << "Yaw 45 degrees to the right";
-    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 45.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    LogInfo() << "Yaw forward";
-    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    LogInfo() << "Yaw 45 degrees to the left";
-    EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, -45.0f), Gimbal::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    LogInfo() << "Yaw forward";
     EXPECT_EQ(gimbal->set_pitch_and_yaw(0.0f, 0.0f), Gimbal::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
