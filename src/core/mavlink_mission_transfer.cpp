@@ -286,6 +286,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
         mavlink_mission_request_t request;
         mavlink_msg_mission_request_decode(&request_message, &request);
 
+        // FIXME: this will mess with the sequence number.
         mavlink_message_t request_int_message;
         mavlink_msg_mission_request_int_pack(
             request_message.sysid,
