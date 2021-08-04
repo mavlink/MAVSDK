@@ -85,28 +85,11 @@ void MavlinkCommandSender::queue_command_async(
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
-    auto new_work = std::make_shared<Work>(_parent.timeout_s());
-
-    mavlink_msg_command_int_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
-        &new_work->mavlink_message,
-        command.target_system_id,
-        command.target_component_id,
-        command.frame,
-        command.command,
-        command.current,
-        command.autocontinue,
-        command.params.param1,
-        command.params.param2,
-        command.params.param3,
-        command.params.param4,
-        command.params.x,
-        command.params.y,
-        command.params.z);
-
-    new_work->callback = callback;
+    auto new_work = std::make_shared<Work>();
+    new_work->timeout_s = _parent.timeout_s();
+    new_work->command = command;
     new_work->mavlink_command = command.command;
+    new_work->callback = callback;
     _work_queue.push_back(new_work);
 }
 
@@ -116,25 +99,11 @@ void MavlinkCommandSender::queue_command_async(
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
 
-    auto new_work = std::make_shared<Work>(_parent.timeout_s());
-    mavlink_msg_command_long_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
-        &new_work->mavlink_message,
-        command.target_system_id,
-        command.target_component_id,
-        command.command,
-        command.confirmation,
-        command.params.param1,
-        command.params.param2,
-        command.params.param3,
-        command.params.param4,
-        command.params.param5,
-        command.params.param6,
-        command.params.param7);
-
-    new_work->callback = callback;
+    auto new_work = std::make_shared<Work>();
+    new_work->timeout_s = _parent.timeout_s();
+    new_work->command = command;
     new_work->mavlink_command = command.command;
+    new_work->callback = callback;
     new_work->time_started = _parent.get_time().steady_time();
     _work_queue.push_back(new_work);
 }
@@ -264,7 +233,8 @@ void MavlinkCommandSender::receive_timeout(const uint16_t command)
                       << " s, retries to do: " << work->retries_to_do << "  ("
                       << work->mavlink_command << ").";
 
-            if (!_parent.send_message(work->mavlink_message)) {
+            mavlink_message_t message = create_mavlink_message(work->command);
+            if (!_parent.send_message(message)) {
                 LogErr() << "connection send error in retransmit (" << work->mavlink_command
                          << ").";
                 temp_callback = work->callback;
@@ -332,7 +302,8 @@ void MavlinkCommandSender::do_work()
             return;
         }
 
-        if (!_parent.send_message(work->mavlink_message)) {
+        mavlink_message_t message = create_mavlink_message(work->command);
+        if (!_parent.send_message(message)) {
             LogErr() << "connection send error (" << work->mavlink_command << ")";
             auto temp_callback = work->callback;
             auto temp_result = std::make_pair<Result, float>(Result::ConnectionError, NAN);
@@ -366,6 +337,49 @@ void MavlinkCommandSender::call_callback(
     // It seems that we need to queue the callback on the thread pool otherwise
     // we lock ourselves out when we send a command in the callback receiving a command result.
     _parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
+}
+
+mavlink_message_t MavlinkCommandSender::create_mavlink_message(const Command& command)
+{
+    mavlink_message_t message;
+
+    if (auto command_int = std::get_if<CommandInt>(&command)) {
+        mavlink_msg_command_int_pack(
+            _parent.get_own_system_id(),
+            _parent.get_own_component_id(),
+            &message,
+            command_int->target_system_id,
+            command_int->target_component_id,
+            command_int->frame,
+            command_int->command,
+            command_int->current,
+            command_int->autocontinue,
+            command_int->params.param1,
+            command_int->params.param2,
+            command_int->params.param3,
+            command_int->params.param4,
+            command_int->params.x,
+            command_int->params.y,
+            command_int->params.z);
+
+    } else if (auto command_long = std::get_if<CommandLong>(&command)) {
+        mavlink_msg_command_long_pack(
+            _parent.get_own_system_id(),
+            _parent.get_own_component_id(),
+            &message,
+            command_long->target_system_id,
+            command_long->target_component_id,
+            command_long->command,
+            command_long->confirmation,
+            command_long->params.param1,
+            command_long->params.param2,
+            command_long->params.param3,
+            command_long->params.param4,
+            command_long->params.param5,
+            command_long->params.param6,
+            command_long->params.param7);
+    }
+    return message;
 }
 
 MavlinkCommandReceiver::MavlinkCommandReceiver(SystemImpl& system_impl) : _parent(system_impl)
