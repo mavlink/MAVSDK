@@ -1381,7 +1381,7 @@ void SystemImpl::set_server_armed(bool armed)
 
 bool SystemImpl::is_server_armed() const
 {
-    return _parent.get_base_mode() & (MAV_MODE_FLAG_SAFETY_ARMED == MAV_MODE_FLAG_SAFETY_ARMED);
+    return (_parent.get_base_mode() & MAV_MODE_FLAG_SAFETY_ARMED) == MAV_MODE_FLAG_SAFETY_ARMED;
 }
 
 void SystemImpl::set_custom_mode(uint32_t custom_mode)
