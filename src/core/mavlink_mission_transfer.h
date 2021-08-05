@@ -302,7 +302,7 @@ public:
         unsigned _retries_done{0};
     };
 
-    static constexpr unsigned retries = 4;
+    static constexpr unsigned retries = 5;
 
     using TimeoutSCallback = std::function<double()>;
 
