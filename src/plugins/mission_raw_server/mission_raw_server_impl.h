@@ -41,7 +41,7 @@ private:
     std::atomic<bool> _stop_work_thread = false;
 
     std::vector<MAVLinkMissionTransfer::ItemInt> _current_mission;
-    uint16_t _current_seq;
+    std::size_t _current_seq;
 
     struct MissionData {
         mutable std::recursive_mutex mutex{};
@@ -66,7 +66,7 @@ private:
         MAVLinkMissionTransfer::Result result,
         const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
 
-    void set_current_seq(uint16_t seq);
+    void set_current_seq(std::size_t seq);
 
     void add_task(std::function<void()> task)
     {

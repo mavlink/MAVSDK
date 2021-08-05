@@ -310,7 +310,7 @@ void MissionRawServerImpl::set_current_item_complete()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &mission_reached,
-        _current_seq);
+        static_cast<uint16_t>(_current_seq));
     _parent->send_message(mission_reached);
     if (_current_seq + 1 == _current_mission.size()) {
         _mission_completed = true;
@@ -320,7 +320,7 @@ void MissionRawServerImpl::set_current_item_complete()
     }
 }
 
-void MissionRawServerImpl::set_current_seq(uint16_t seq)
+void MissionRawServerImpl::set_current_seq(std::size_t seq)
 {
     if (_current_mission.size() <= static_cast<size_t>(seq)) {
         return;
@@ -337,7 +337,7 @@ void MissionRawServerImpl::set_current_seq(uint16_t seq)
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &mission_current,
-        _current_seq);
+        static_cast<uint16_t>(_current_seq));
     _parent->send_message(mission_current);
 }
 

@@ -86,7 +86,7 @@ public:
     MAVLinkAddress own_address{};
 
     void set_base_mode(uint8_t base_mode);
-    bool get_base_mode() const;
+    uint8_t get_base_mode() const;
     void set_custom_mode(uint32_t custom_mode);
     uint32_t get_custom_mode() const;
 

@@ -641,7 +641,7 @@ void MavsdkImpl::set_base_mode(uint8_t base_mode)
     _base_mode = base_mode;
 }
 
-bool MavsdkImpl::get_base_mode() const
+uint8_t MavsdkImpl::get_base_mode() const
 {
     return _base_mode;
 }
