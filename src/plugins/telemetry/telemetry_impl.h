@@ -214,6 +214,8 @@ private:
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
+    void check_calibration();
+
     static Telemetry::Result
     telemetry_result_from_command_result(MavlinkCommandSender::Result command_result);
 
@@ -355,5 +357,12 @@ private:
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
     bool _has_bat_status{false};
+
+    void* _calibration_cookie{nullptr};
+
+    bool _has_received_hitl_param{false};
+    bool _has_received_gyro_calibration{false};
+    bool _has_received_accel_calibration{false};
+    bool _has_received_mag_calibration{false};
 };
 } // namespace mavsdk

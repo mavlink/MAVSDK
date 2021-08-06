@@ -9,6 +9,7 @@
 #include <mutex>
 #include <optional>
 #include <unordered_map>
+#include <variant>
 
 namespace mavsdk {
 
@@ -112,23 +113,27 @@ public:
     const MavlinkCommandSender& operator=(const MavlinkCommandSender&) = delete;
 
 private:
+    // The std::monostate is required to work around the fact that
+    // the default ctor of CommandLong and CommandInt is ill-defined.
+    using Command = std::variant<std::monostate, CommandLong, CommandInt>;
+
     struct Work {
         int retries_to_do{3};
         double timeout_s{0.5};
-        uint16_t mavlink_command{0};
         bool already_sent{false};
-        mavlink_message_t mavlink_message{};
+        Command command;
+        uint16_t mavlink_command{};
         CommandResultCallback callback{};
         dl_time_t time_started{};
         void* timeout_cookie = nullptr;
-
-        explicit Work(double new_timeout_s) : timeout_s(new_timeout_s) {}
     };
 
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout(const uint16_t command);
 
     void call_callback(const CommandResultCallback& callback, Result result, float progress);
+
+    mavlink_message_t create_mavlink_message(const Command& command);
 
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};

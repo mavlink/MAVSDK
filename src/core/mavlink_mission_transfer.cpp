@@ -251,6 +251,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
         return;
     }
 
+    // LogDebug() << "Sending send_count, count: " << _items.size() << ", retries: " <<
+    // _retries_done;
+
     ++_retries_done;
 }
 
@@ -283,6 +286,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
         mavlink_mission_request_t request;
         mavlink_msg_mission_request_decode(&request_message, &request);
 
+        // FIXME: this will mess with the sequence number.
         mavlink_message_t request_int_message;
         mavlink_msg_mission_request_int_pack(
             request_message.sysid,
@@ -329,6 +333,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
 
     _step = Step::SendItems;
 
+    // LogDebug() << "Process mission_request_int, seq: " << request_int.seq
+    //            << ", next expected sequence: " << _next_sequence;
+
     if (_next_sequence < request_int.seq) {
         // We should not go back to a previous one.
         // TODO: figure out if we should error here.
@@ -338,6 +345,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
     } else if (_next_sequence > request_int.seq) {
         // We have already sent that one before.
         if (_retries_done >= retries) {
+            LogWarn() << "mission_request_int: retries exceeded";
             _timeout_handler.remove(_cookie);
             callback_and_reset(Result::Timeout);
             return;
@@ -382,6 +390,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
         _items[_next_sequence].z,
         _type);
 
+    // LogDebug() << "Sending mission_item_int seq: " << _next_sequence
+    //           << ", retry: " << _retries_done;
+
     ++_next_sequence;
 
     if (!_sender.send_message(message)) {
@@ -399,6 +410,8 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_ack(const mavlink_m
 
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
+
+    // LogDebug() << "Received mission_ack type: " << static_cast<int>(mission_ack.type);
 
     _timeout_handler.remove(_cookie);
 
@@ -454,7 +467,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
+    // LogDebug() << "Timeout triggered, retries: " << _retries_done;
+
     if (_retries_done >= retries) {
+        LogWarn() << "timeout: retries exceeded";
         callback_and_reset(Result::Timeout);
         return;
     }
@@ -466,7 +482,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
             break;
 
         case Step::SendItems:
-            callback_and_reset(Result::Timeout);
+            // When waiting for items requested we should wait longer than
+            // just our timeout, otherwise we give up too quickly.
+            ++_retries_done;
+            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
             break;
     }
 }
