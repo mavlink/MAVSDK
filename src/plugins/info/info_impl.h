@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mutex>
+#include <chrono>
 
 #include "global_include.h"
 #include "mavlink_include.h"
@@ -27,6 +28,7 @@ public:
     std::pair<Info::Result, Info::Product> get_product() const;
     std::pair<Info::Result, Info::FlightInfo> get_flight_information() const;
     std::pair<Info::Result, double> get_speed_factor() const;
+    std::pair<Info::Result, std::chrono::milliseconds> get_time() const;
 
     InfoImpl(const InfoImpl&) = delete;
     InfoImpl& operator=(const InfoImpl&) = delete;

@@ -1,5 +1,6 @@
-#include <functional>
+#include <chrono>
 #include <cstring>
+#include <functional>
 #include <numeric>
 #include "info_impl.h"
 #include "system.h"
@@ -264,6 +265,13 @@ void InfoImpl::process_attitude(const mavlink_message_t& message)
 
     _last_time_boot_ms = attitude.time_boot_ms;
     _last_time_attitude_arrived = _time.steady_time();
+}
+
+std::pair<Info::Result, std::chrono::milliseconds> InfoImpl::get_time() const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return std::make_pair<mavsdk::Info::Result, std::chrono::milliseconds>(
+        Info::Result::Success, std::chrono::milliseconds(_last_time_boot_ms));
 }
 
 std::pair<Info::Result, double> InfoImpl::get_speed_factor() const

@@ -2,6 +2,7 @@
 // Edits need to be made to the proto files
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/info/info.proto)
 
+#include <chrono>
 #include <iomanip>
 
 #include "info_impl.h"
@@ -44,6 +45,10 @@ std::pair<Info::Result, Info::Version> Info::get_version() const
 std::pair<Info::Result, double> Info::get_speed_factor() const
 {
     return _impl->get_speed_factor();
+}
+std::pair<Info::Result, std::chrono::milliseconds> Info::get_time() const
+{
+    return _impl->get_time();
 }
 
 bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs)

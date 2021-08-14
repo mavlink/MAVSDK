@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <functional>
 #include <limits>
@@ -226,6 +227,7 @@ public:
      * @return Result of request.
      */
     std::pair<Result, double> get_speed_factor() const;
+    std::pair<Result, std::chrono::milliseconds> get_time() const;
 
     /**
      * @brief Copy constructor.
