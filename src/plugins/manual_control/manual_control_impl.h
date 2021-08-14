@@ -25,6 +25,10 @@ public:
 
     ManualControl::Result start_altitude_control();
 
+    void start_stablized_control_async(const ManualControl::ResultCallback callback);
+
+    ManualControl::Result start_stablized_control();
+
     ManualControl::Result set_manual_control_input(float x, float y, float z, float r);
 
 private:

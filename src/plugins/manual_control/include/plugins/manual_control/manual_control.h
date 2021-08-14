@@ -130,6 +130,7 @@ public:
      */
     Result start_altitude_control() const;
 
+    Result start_stablized_control() const;
     /**
      * @brief Set manual control input
      *

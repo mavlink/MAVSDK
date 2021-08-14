@@ -32,6 +32,11 @@ ManualControl::Result ManualControl::start_position_control() const
     return _impl->start_position_control();
 }
 
+ManualControl::Result ManualControl::start_stablized_control() const
+{
+    return _impl->start_stablized_control();
+}
+
 void ManualControl::start_altitude_control_async(const ResultCallback callback)
 {
     _impl->start_altitude_control_async(callback);
