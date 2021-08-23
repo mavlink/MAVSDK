@@ -10,6 +10,7 @@
 namespace mavsdk {
 
 using Position = Telemetry::Position;
+using Heading = Telemetry::Heading;
 using Quaternion = Telemetry::Quaternion;
 using EulerAngle = Telemetry::EulerAngle;
 using AngularVelocityBody = Telemetry::AngularVelocityBody;
@@ -359,6 +360,16 @@ Telemetry::ScaledPressure Telemetry::scaled_pressure() const
     return _impl->scaled_pressure();
 }
 
+void Telemetry::subscribe_heading(HeadingCallback callback)
+{
+    _impl->subscribe_heading(callback);
+}
+
+Telemetry::Heading Telemetry::heading() const
+{
+    return _impl->heading();
+}
+
 void Telemetry::set_rate_position_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_position_async(rate_hz, callback);
@@ -600,6 +611,22 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position)
     str << "    longitude_deg: " << position.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << position.absolute_altitude_m << '\n';
     str << "    relative_altitude_m: " << position.relative_altitude_m << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Telemetry::Heading& lhs, const Telemetry::Heading& rhs)
+{
+    return (
+        (std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
+        rhs.heading_deg == lhs.heading_deg);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading)
+{
+    str << std::setprecision(15);
+    str << "heading:" << '\n' << "{\n";
+    str << "    heading_deg: " << heading.heading_deg << '\n';
     str << '}';
     return str;
 }

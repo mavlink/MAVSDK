@@ -31,8 +31,10 @@ public:
         TelemetryServer::VelocityNed velocity_ned,
         const TelemetryServer::ResultCallback callback);
 
-    TelemetryServer::Result
-    publish_position(TelemetryServer::Position position, TelemetryServer::VelocityNed velocity_ned);
+    TelemetryServer::Result publish_position(
+        TelemetryServer::Position position,
+        TelemetryServer::VelocityNed velocity_ned,
+        TelemetryServer::Heading heading);
 
     TelemetryServer::Result publish_home(TelemetryServer::Position home);
 
