@@ -9,6 +9,7 @@ class MockTelemetry {
 public:
     MOCK_CONST_METHOD1(subscribe_position, void(Telemetry::PositionCallback)){};
     MOCK_CONST_METHOD1(subscribe_health, void(Telemetry::HealthCallback)){};
+    MOCK_CONST_METHOD1(subscribe_heading, void(Telemetry::HeadingCallback)){};
     MOCK_CONST_METHOD1(subscribe_home, void(Telemetry::PositionCallback)){};
     MOCK_CONST_METHOD1(subscribe_in_air, void(Telemetry::InAirCallback)){};
     MOCK_CONST_METHOD1(subscribe_status_text, void(Telemetry::StatusTextCallback)){};
