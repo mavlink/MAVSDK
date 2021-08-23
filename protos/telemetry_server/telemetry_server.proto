@@ -45,6 +45,7 @@ service TelemetryServerService {
 message PublishPositionRequest {
     Position position = 1; // The next position
     VelocityNed velocity_ned = 2; // The next velocity (NED)
+    Heading heading = 3; // Heading (yaw) in degrees
 }
 
 message PublishHomeRequest {
@@ -182,6 +183,11 @@ message Position {
     double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to +180)
     float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
     float relative_altitude_m = 4 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
+}
+
+// Heading type used for global position
+message Heading {
+    double heading_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Heading in degrees (range: 0 to +360)
 }
 
 /*
