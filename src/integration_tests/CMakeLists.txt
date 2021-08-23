@@ -23,6 +23,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 # This includes all GTests that run integration tests
 add_executable(integration_tests_runner
     ../core/unittests_main.cpp
+    mission.cpp
     action_hover_async.cpp
     action_hover_sync.cpp
     action_takeoff_and_kill.cpp
@@ -54,6 +55,7 @@ add_executable(integration_tests_runner
     mission_raw_import_and_fly.cpp
     mission_set_current.cpp
     mission_takeoff_land.cpp
+    mission_transition.cpp
     offboard_acceleration.cpp
     offboard_velocity.cpp
     offboard_position.cpp
