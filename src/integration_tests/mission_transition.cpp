@@ -21,11 +21,6 @@ TEST_F(SitlTest, MissionTakeoffAndLandHigh)
     do_mission_takeoff_transitions_land(20);
 }
 
-TEST_F(SitlTest, MissionTakeoffAndLandLow)
-{
-    do_mission_takeoff_transitions_land(5);
-}
-
 void do_mission_takeoff_transitions_land(float mission_altitude_m)
 {
     Mavsdk mavsdk;
@@ -85,11 +80,11 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m)
     mission_plan.mission_items.push_back(new_item);
 
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::TransitionToFw;
-    mission_plane.mission_items.push_back(new_item);
+    mission_plan.mission_items.push_back(new_item);
 
     new_item.latitude_deg = 47.398570327054473;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::TransitionToMc;
-    mission_plane.mission_items.push_back(new_item);
+    mission_plan.mission_items.push_back(new_item);
 
     new_item.latitude_deg = 47.398170327054473;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;

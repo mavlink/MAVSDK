@@ -486,10 +486,10 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             switch (item.vehicle_action) {
                 case VehicleAction::Takeoff:
                     command =
-                        MAV_CMD_NAV_TAKEOFF_LOCAL; // Takeoff at current position with same heading
+                        MAV_CMD_NAV_TAKEOFF; // Takeoff at current position with same heading
                     break;
                 case VehicleAction::Land:
-                    command = MAV_CMD_NAV_LAND_LOCAL; // Land at current position with same heading
+                    command = MAV_CMD_NAV_LAND; // Land at current position with same heading
                     break;
                 case VehicleAction::TransitionToFw:
                     command = MAV_CMD_DO_VTOL_TRANSITION; // Do transition
@@ -662,9 +662,9 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
                 new_mission_item.camera_action = CameraAction::StopVideo;
 
-            } else if (int_item.command == MAV_CMD_NAV_TAKEOFF_LOCAL) {
+            } else if (int_item.command == MAV_CMD_NAV_TAKEOFF) {
                 new_mission_item.vehicle_action = VehicleAction::Takeoff;
-            } else if (int_item.command == MAV_CMD_NAV_LAND_LOCAL) {
+            } else if (int_item.command == MAV_CMD_NAV_LAND) {
                 new_mission_item.vehicle_action = VehicleAction::Land;
             } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION) {
                 if (int_item.param1 == MAV_VTOL_STATE_FW) {
@@ -1076,9 +1076,9 @@ Mission::Result MissionImpl::build_mission_items(
         } else if (command == MAV_CMD_VIDEO_STOP_CAPTURE) {
             new_mission_item.camera_action = CameraAction::StopVideo;
 
-        } else if (command == MAV_CMD_NAV_TAKEOFF_LOCAL) {
+        } else if (command == MAV_CMD_NAV_TAKEOFF) {
             new_mission_item.vehicle_action = VehicleAction::Takeoff;
-        } else if (command == MAV_CMD_NAV_LAND_LOCAL) {
+        } else if (command == MAV_CMD_NAV_LAND) {
             new_mission_item.vehicle_action = VehicleAction::Land;
         } else if (command == MAV_CMD_DO_VTOL_TRANSITION) {
             if (params[0] == MAV_VTOL_STATE_FW) {
