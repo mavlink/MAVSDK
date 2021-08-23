@@ -81,8 +81,11 @@ void ActionServerImpl::init()
                               ActionServer::Result::Success :
                               ActionServer::Result::CommandDenied;
 
-            _parent->call_user_callback(
-                [this, armDisarm, result]() { _arm_disarm_callback(result, armDisarm); });
+            _parent->call_user_callback([this, armDisarm, result]() {
+                if (_arm_disarm_callback) {
+                    _arm_disarm_callback(result, armDisarm);
+                }
+            });
 
             mavlink_message_t msg;
             mavlink_msg_command_ack_pack(
@@ -122,8 +125,10 @@ void ActionServerImpl::init()
                 // TO DO: non PX4 flight modes...
                 // Just bug out now if not using PX4 modes
                 _parent->call_user_callback([this, request_flight_mode]() {
-                    _flight_mode_change_callback(
-                        ActionServer::Result::ParameterError, request_flight_mode);
+                    if (_flight_mode_change_callback) {
+                        _flight_mode_change_callback(
+                            ActionServer::Result::ParameterError, request_flight_mode);
+                    }
                 });
                 mavlink_message_t msg;
                 mavlink_msg_command_ack_pack(
@@ -169,10 +174,12 @@ void ActionServerImpl::init()
             }
 
             _parent->call_user_callback([this, allow_mode, request_flight_mode]() {
-                _flight_mode_change_callback(
-                    allow_mode ? ActionServer::Result::Success :
-                                 ActionServer::Result::CommandDenied,
-                    request_flight_mode);
+                if (_flight_mode_change_callback) {
+                    _flight_mode_change_callback(
+                        allow_mode ? ActionServer::Result::Success :
+                                     ActionServer::Result::CommandDenied,
+                        request_flight_mode);
+                }
             });
 
             mavlink_message_t msg;
