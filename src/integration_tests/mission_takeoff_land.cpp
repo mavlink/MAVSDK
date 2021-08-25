@@ -70,15 +70,21 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         Telemetry::LandedState::TakingOff,
         Telemetry::LandedState::InAir,
         Telemetry::LandedState::Landing,
+        Telemetry::LandedState::OnGround,
         Telemetry::LandedState::TakingOff,
         Telemetry::LandedState::InAir,
         Telemetry::LandedState::Landing,
         Telemetry::LandedState::OnGround};
+    
 
     std::vector<Telemetry::LandedState> landed_states;
-    telemetry->subscribe_landed_state([&landed_states](Telemetry::LandedState landed_state) {
-        LogInfo() << landed_state;
-        landed_states.push_back(landed_state);
+    Telemetry::LandedState landed_state_previous = Telemetry::LandedState::Unknown;
+    telemetry->subscribe_landed_state([&landed_states, &landed_state_previous](Telemetry::LandedState landed_state) {
+        if(landed_state_previous != landed_state){
+            LogInfo() << landed_state;
+            landed_state_previous = landed_state;
+            landed_states.push_back(landed_state);
+        }
     });
 
     while (!telemetry->health_all_ok()) {

@@ -16,7 +16,7 @@ using namespace std::placeholders; // for `_1`
 
 void do_mission_takeoff_transitions_land(float mission_altitude_m);
 
-TEST_F(SitlTest, MissionTakeoffAndLandHigh)
+TEST_F(SitlTest, MissionTakeoffTransitionAndLandHigh)
 {
     do_mission_takeoff_transitions_land(20);
 }
@@ -74,7 +74,8 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m)
     new_item.latitude_deg = 47.398170327054473;
     new_item.longitude_deg = 8.5456490218639658;
     new_item.relative_altitude_m = mission_altitude_m;
-    new_item.vehicle_action = Mission::MissionItem::VehicleAction::Takeoff;
+
+    new_item.vehicle_action = Mission::MissionItem::VehicleAction::None;
 
     Mission::MissionPlan mission_plan{};
     mission_plan.mission_items.push_back(new_item);
@@ -82,11 +83,16 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m)
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::TransitionToFw;
     mission_plan.mission_items.push_back(new_item);
 
+    new_item.latitude_deg = 47.398170327054473;
+    new_item.longitude_deg = 8.5501389;
+    new_item.vehicle_action = Mission::MissionItem::VehicleAction::None;
+    mission_plan.mission_items.push_back(new_item);
+
     new_item.latitude_deg = 47.398570327054473;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::TransitionToMc;
     mission_plan.mission_items.push_back(new_item);
 
-    new_item.latitude_deg = 47.398170327054473;
+    new_item.latitude_deg = 47.398770327054473;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;
     mission_plan.mission_items.push_back(new_item);
 

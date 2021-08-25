@@ -485,8 +485,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             float param3 = NAN;
             switch (item.vehicle_action) {
                 case VehicleAction::Takeoff:
-                    command =
-                        MAV_CMD_NAV_TAKEOFF; // Takeoff at current position with same heading
+                    command = MAV_CMD_NAV_TAKEOFF; // Takeoff at current position with same heading
                     break;
                 case VehicleAction::Land:
                     command = MAV_CMD_NAV_LAND; // Land at current position with same heading
@@ -506,20 +505,34 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     break;
             }
 
+            const int32_t x = int32_t(std::round(item.latitude_deg * 1e7));
+            const int32_t y = int32_t(std::round(item.longitude_deg * 1e7));
+            float z = item.relative_altitude_m;
+            MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT; 
+
+            if (command == MAV_CMD_NAV_LAND){
+                    z = 0;
+            }
+
+            if (command == MAV_CMD_DO_VTOL_TRANSITION){
+                frame = MAV_FRAME_MISSION;
+            }
+               
+
             MAVLinkMissionTransfer::ItemInt next_item{
-                static_cast<uint16_t>(int_items.size()),
-                MAV_FRAME_MISSION,
-                command,
-                current,
-                autocontinue,
-                param1,
-                param2,
-                param3,
-                NAN,
-                0,
-                0,
-                NAN,
-                MAV_MISSION_TYPE_MISSION};
+                        static_cast<uint16_t>(int_items.size()),
+                        frame,
+                        command,
+                        current,
+                        autocontinue,
+                        param1,
+                        param2,
+                        param3,
+                        NAN,
+                        x,
+                        y,
+                        z,
+                        MAV_MISSION_TYPE_MISSION};
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
             int_items.push_back(next_item);
