@@ -79,7 +79,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param);
 
     /**
-     * @brief Type for float paramters.
+     * @brief Type for float parameters.
      */
     struct FloatParam {
         std::string name{}; /**< @brief Name of the parameter */
@@ -134,6 +134,7 @@ public:
         ConnectionError, /**< @brief Connection error. */
         WrongType, /**< @brief Wrong type. */
         ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

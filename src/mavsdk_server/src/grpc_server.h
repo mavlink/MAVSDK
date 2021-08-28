@@ -54,55 +54,55 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-class GRPCServer {
+class GrpcServer {
 public:
-    GRPCServer(Mavsdk& mavsdk) :
+    GrpcServer(Mavsdk& mavsdk) :
         _mavsdk(mavsdk),
-        _core(_mavsdk),
-        _action(_mavsdk.system()),
-        _action_service(_action),
-        _calibration(_mavsdk.system()),
-        _calibration_service(_calibration),
-        _camera(_mavsdk.system()),
-        _camera_service(_camera),
-        _failure(_mavsdk.system()),
-        _failure_service(_failure),
-        _follow_me(_mavsdk.system()),
-        _follow_me_service(_follow_me),
-        _ftp(_mavsdk.system()),
-        _ftp_service(_ftp),
-        _geofence(_mavsdk.system()),
-        _geofence_service(_geofence),
-        _gimbal(_mavsdk.system()),
-        _gimbal_service(_gimbal),
-        _info(_mavsdk.system()),
-        _info_service(_info),
-        _log_files(_mavsdk.system()),
-        _log_files_service(_log_files),
-        _manual_control(_mavsdk.system()),
-        _manual_control_service(_manual_control),
-        _mission(_mavsdk.system()),
-        _mission_service(_mission),
-        _mission_raw(_mavsdk.system()),
-        _mission_raw_service(_mission_raw),
-        _mocap(_mavsdk.system()),
-        _mocap_service(_mocap),
-        _offboard(_mavsdk.system()),
-        _offboard_service(_offboard),
-        _param(_mavsdk.system()),
-        _param_service(_param),
-        _server_utility(_mavsdk.system()),
-        _server_utility_service(_server_utility),
-        _shell(_mavsdk.system()),
-        _shell_service(_shell),
-        _telemetry(_mavsdk.system()),
-        _telemetry_service(_telemetry),
-        _tracking_server(_mavsdk.system()),
-        _tracking_server_service(_tracking_server),
-        _tune(_mavsdk.system()),
-        _tune_service(_tune),
-        _transponder(_mavsdk.system()),
-        _transponder_service(_transponder)
+        _core(mavsdk),
+        _action_lazy_plugin(mavsdk),
+        _action_service(_action_lazy_plugin),
+        _calibration_lazy_plugin(mavsdk),
+        _calibration_service(_calibration_lazy_plugin),
+        _camera_lazy_plugin(mavsdk),
+        _camera_service(_camera_lazy_plugin),
+        _failure_lazy_plugin(mavsdk),
+        _failure_service(_failure_lazy_plugin),
+        _follow_me_lazy_plugin(mavsdk),
+        _follow_me_service(_follow_me_lazy_plugin),
+        _ftp_lazy_plugin(mavsdk),
+        _ftp_service(_ftp_lazy_plugin),
+        _geofence_lazy_plugin(mavsdk),
+        _geofence_service(_geofence_lazy_plugin),
+        _gimbal_lazy_plugin(mavsdk),
+        _gimbal_service(_gimbal_lazy_plugin),
+        _info_lazy_plugin(mavsdk),
+        _info_service(_info_lazy_plugin),
+        _log_files_lazy_plugin(mavsdk),
+        _log_files_service(_log_files_lazy_plugin),
+        _manual_control_lazy_plugin(mavsdk),
+        _manual_control_service(_manual_control_lazy_plugin),
+        _mission_lazy_plugin(mavsdk),
+        _mission_service(_mission_lazy_plugin),
+        _mission_raw_lazy_plugin(mavsdk),
+        _mission_raw_service(_mission_raw_lazy_plugin),
+        _mocap_lazy_plugin(mavsdk),
+        _mocap_service(_mocap_lazy_plugin),
+        _offboard_lazy_plugin(mavsdk),
+        _offboard_service(_offboard_lazy_plugin),
+        _param_lazy_plugin(mavsdk),
+        _param_service(_param_lazy_plugin),
+        _server_utility_lazy_plugin(mavsdk),
+        _server_utility_service(_server_utility_lazy_plugin),
+        _shell_lazy_plugin(mavsdk),
+        _shell_service(_shell_lazy_plugin),
+        _telemetry_lazy_plugin(mavsdk),
+        _telemetry_service(_telemetry_lazy_plugin),
+        _tracking_server_lazy_plugin(mavsdk),
+        _tracking_server_service(_tracking_server_lazy_plugin),
+        _tune_lazy_plugin(mavsdk),
+        _tune_service(_tune_lazy_plugin),
+        _transponder_lazy_plugin(mavsdk),
+        _transponder_service(_transponder_lazy_plugin)
     {}
 
     int run();
@@ -115,49 +115,49 @@ private:
 
     Mavsdk& _mavsdk;
     CoreServiceImpl<> _core;
-    Action _action;
+    LazyPlugin<Action> _action_lazy_plugin;
     ActionServiceImpl<> _action_service;
-    Calibration _calibration;
+    LazyPlugin<Calibration> _calibration_lazy_plugin;
     CalibrationServiceImpl<> _calibration_service;
-    Camera _camera;
+    LazyPlugin<Camera> _camera_lazy_plugin;
     CameraServiceImpl<> _camera_service;
-    Failure _failure;
+    LazyPlugin<Failure> _failure_lazy_plugin;
     FailureServiceImpl<> _failure_service;
-    FollowMe _follow_me;
+    LazyPlugin<FollowMe> _follow_me_lazy_plugin;
     FollowMeServiceImpl<> _follow_me_service;
-    Ftp _ftp;
+    LazyPlugin<Ftp> _ftp_lazy_plugin;
     FtpServiceImpl<> _ftp_service;
-    Geofence _geofence;
+    LazyPlugin<Geofence> _geofence_lazy_plugin;
     GeofenceServiceImpl<> _geofence_service;
-    Gimbal _gimbal;
+    LazyPlugin<Gimbal> _gimbal_lazy_plugin;
     GimbalServiceImpl<> _gimbal_service;
-    Info _info;
+    LazyPlugin<Info> _info_lazy_plugin;
     InfoServiceImpl<> _info_service;
-    LogFiles _log_files;
+    LazyPlugin<LogFiles> _log_files_lazy_plugin;
     LogFilesServiceImpl<> _log_files_service;
-    ManualControl _manual_control;
+    LazyPlugin<ManualControl> _manual_control_lazy_plugin;
     ManualControlServiceImpl<> _manual_control_service;
-    Mission _mission;
+    LazyPlugin<Mission> _mission_lazy_plugin;
     MissionServiceImpl<> _mission_service;
-    MissionRaw _mission_raw;
+    LazyPlugin<MissionRaw> _mission_raw_lazy_plugin;
     MissionRawServiceImpl<> _mission_raw_service;
-    Mocap _mocap;
+    LazyPlugin<Mocap> _mocap_lazy_plugin;
     MocapServiceImpl<> _mocap_service;
-    Offboard _offboard;
+    LazyPlugin<Offboard> _offboard_lazy_plugin;
     OffboardServiceImpl<> _offboard_service;
-    Param _param;
+    LazyPlugin<Param> _param_lazy_plugin;
     ParamServiceImpl<> _param_service;
-    ServerUtility _server_utility;
+    LazyPlugin<ServerUtility> _server_utility_lazy_plugin;
     ServerUtilityServiceImpl<> _server_utility_service;
-    Shell _shell;
+    LazyPlugin<Shell> _shell_lazy_plugin;
     ShellServiceImpl<> _shell_service;
-    Telemetry _telemetry;
+    LazyPlugin<Telemetry> _telemetry_lazy_plugin;
     TelemetryServiceImpl<> _telemetry_service;
-    TrackingServer _tracking_server;
+    LazyPlugin<TrackingServer> _tracking_server_lazy_plugin;
     TrackingServerServiceImpl<> _tracking_server_service;
-    Tune _tune;
+    LazyPlugin<Tune> _tune_lazy_plugin;
     TuneServiceImpl<> _tune_service;
-    Transponder _transponder;
+    LazyPlugin<Transponder> _transponder_lazy_plugin;
     TransponderServiceImpl<> _transponder_service;
 
     std::unique_ptr<grpc::Server> _server;

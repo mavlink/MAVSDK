@@ -5,20 +5,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(camera)
 
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(camera
     camera.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(camera
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk_camera
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(camera PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(camera PRIVATE -WX -W2)
+endif()

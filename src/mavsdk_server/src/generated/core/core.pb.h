@@ -46,7 +46,7 @@ struct TableStruct_core_2fcore_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[6]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[5]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -63,15 +63,12 @@ extern ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
 class ConnectionStateResponse;
 struct ConnectionStateResponseDefaultTypeInternal;
 extern ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
-class ListRunningPluginsRequest;
-struct ListRunningPluginsRequestDefaultTypeInternal;
-extern ListRunningPluginsRequestDefaultTypeInternal _ListRunningPluginsRequest_default_instance_;
-class ListRunningPluginsResponse;
-struct ListRunningPluginsResponseDefaultTypeInternal;
-extern ListRunningPluginsResponseDefaultTypeInternal _ListRunningPluginsResponse_default_instance_;
-class PluginInfo;
-struct PluginInfoDefaultTypeInternal;
-extern PluginInfoDefaultTypeInternal _PluginInfo_default_instance_;
+class SetMavlinkTimeoutRequest;
+struct SetMavlinkTimeoutRequestDefaultTypeInternal;
+extern SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
+class SetMavlinkTimeoutResponse;
+struct SetMavlinkTimeoutResponseDefaultTypeInternal;
+extern SetMavlinkTimeoutResponseDefaultTypeInternal _SetMavlinkTimeoutResponse_default_instance_;
 class SubscribeConnectionStateRequest;
 struct SubscribeConnectionStateRequestDefaultTypeInternal;
 extern SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionStateRequest_default_instance_;
@@ -81,9 +78,8 @@ extern SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionSt
 PROTOBUF_NAMESPACE_OPEN
 template<> ::mavsdk::rpc::core::ConnectionState* Arena::CreateMaybeMessage<::mavsdk::rpc::core::ConnectionState>(Arena*);
 template<> ::mavsdk::rpc::core::ConnectionStateResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::core::ConnectionStateResponse>(Arena*);
-template<> ::mavsdk::rpc::core::ListRunningPluginsRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::core::ListRunningPluginsRequest>(Arena*);
-template<> ::mavsdk::rpc::core::ListRunningPluginsResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::core::ListRunningPluginsResponse>(Arena*);
-template<> ::mavsdk::rpc::core::PluginInfo* Arena::CreateMaybeMessage<::mavsdk::rpc::core::PluginInfo>(Arena*);
+template<> ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::core::SetMavlinkTimeoutRequest>(Arena*);
+template<> ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::core::SetMavlinkTimeoutResponse>(Arena*);
 template<> ::mavsdk::rpc::core::SubscribeConnectionStateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::core::SubscribeConnectionStateRequest>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
@@ -362,24 +358,24 @@ class ConnectionStateResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class ListRunningPluginsRequest PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.ListRunningPluginsRequest) */ {
+class SetMavlinkTimeoutRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SetMavlinkTimeoutRequest) */ {
  public:
-  inline ListRunningPluginsRequest() : ListRunningPluginsRequest(nullptr) {}
-  virtual ~ListRunningPluginsRequest();
-  explicit constexpr ListRunningPluginsRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline SetMavlinkTimeoutRequest() : SetMavlinkTimeoutRequest(nullptr) {}
+  virtual ~SetMavlinkTimeoutRequest();
+  explicit constexpr SetMavlinkTimeoutRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  ListRunningPluginsRequest(const ListRunningPluginsRequest& from);
-  ListRunningPluginsRequest(ListRunningPluginsRequest&& from) noexcept
-    : ListRunningPluginsRequest() {
+  SetMavlinkTimeoutRequest(const SetMavlinkTimeoutRequest& from);
+  SetMavlinkTimeoutRequest(SetMavlinkTimeoutRequest&& from) noexcept
+    : SetMavlinkTimeoutRequest() {
     *this = ::std::move(from);
   }
 
-  inline ListRunningPluginsRequest& operator=(const ListRunningPluginsRequest& from) {
+  inline SetMavlinkTimeoutRequest& operator=(const SetMavlinkTimeoutRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ListRunningPluginsRequest& operator=(ListRunningPluginsRequest&& from) noexcept {
+  inline SetMavlinkTimeoutRequest& operator=(SetMavlinkTimeoutRequest&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -397,20 +393,20 @@ class ListRunningPluginsRequest PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const ListRunningPluginsRequest& default_instance() {
+  static const SetMavlinkTimeoutRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ListRunningPluginsRequest* internal_default_instance() {
-    return reinterpret_cast<const ListRunningPluginsRequest*>(
-               &_ListRunningPluginsRequest_default_instance_);
+  static inline const SetMavlinkTimeoutRequest* internal_default_instance() {
+    return reinterpret_cast<const SetMavlinkTimeoutRequest*>(
+               &_SetMavlinkTimeoutRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     2;
 
-  friend void swap(ListRunningPluginsRequest& a, ListRunningPluginsRequest& b) {
+  friend void swap(SetMavlinkTimeoutRequest& a, SetMavlinkTimeoutRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(ListRunningPluginsRequest* other) {
+  inline void Swap(SetMavlinkTimeoutRequest* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -418,7 +414,7 @@ class ListRunningPluginsRequest PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ListRunningPluginsRequest* other) {
+  void UnsafeArenaSwap(SetMavlinkTimeoutRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -426,17 +422,17 @@ class ListRunningPluginsRequest PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline ListRunningPluginsRequest* New() const final {
-    return CreateMaybeMessage<ListRunningPluginsRequest>(nullptr);
+  inline SetMavlinkTimeoutRequest* New() const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutRequest>(nullptr);
   }
 
-  ListRunningPluginsRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<ListRunningPluginsRequest>(arena);
+  SetMavlinkTimeoutRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutRequest>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const ListRunningPluginsRequest& from);
-  void MergeFrom(const ListRunningPluginsRequest& from);
+  void CopyFrom(const SetMavlinkTimeoutRequest& from);
+  void MergeFrom(const SetMavlinkTimeoutRequest& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -450,137 +446,13 @@ class ListRunningPluginsRequest PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ListRunningPluginsRequest* other);
+  void InternalSwap(SetMavlinkTimeoutRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.core.ListRunningPluginsRequest";
+    return "mavsdk.rpc.core.SetMavlinkTimeoutRequest";
   }
   protected:
-  explicit ListRunningPluginsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    return ::descriptor_table_core_2fcore_2eproto_metadata_getter(kIndexInFileMessages);
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.ListRunningPluginsRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_core_2fcore_2eproto;
-};
-// -------------------------------------------------------------------
-
-class ListRunningPluginsResponse PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.ListRunningPluginsResponse) */ {
- public:
-  inline ListRunningPluginsResponse() : ListRunningPluginsResponse(nullptr) {}
-  virtual ~ListRunningPluginsResponse();
-  explicit constexpr ListRunningPluginsResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  ListRunningPluginsResponse(const ListRunningPluginsResponse& from);
-  ListRunningPluginsResponse(ListRunningPluginsResponse&& from) noexcept
-    : ListRunningPluginsResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline ListRunningPluginsResponse& operator=(const ListRunningPluginsResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ListRunningPluginsResponse& operator=(ListRunningPluginsResponse&& from) noexcept {
-    if (GetArena() == from.GetArena()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const ListRunningPluginsResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const ListRunningPluginsResponse* internal_default_instance() {
-    return reinterpret_cast<const ListRunningPluginsResponse*>(
-               &_ListRunningPluginsResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    3;
-
-  friend void swap(ListRunningPluginsResponse& a, ListRunningPluginsResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(ListRunningPluginsResponse* other) {
-    if (other == this) return;
-    if (GetArena() == other->GetArena()) {
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ListRunningPluginsResponse* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ListRunningPluginsResponse* New() const final {
-    return CreateMaybeMessage<ListRunningPluginsResponse>(nullptr);
-  }
-
-  ListRunningPluginsResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<ListRunningPluginsResponse>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const ListRunningPluginsResponse& from);
-  void MergeFrom(const ListRunningPluginsResponse& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(ListRunningPluginsResponse* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.core.ListRunningPluginsResponse";
-  }
-  protected:
-  explicit ListRunningPluginsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit SetMavlinkTimeoutRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -599,34 +471,149 @@ class ListRunningPluginsResponse PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPluginInfoFieldNumber = 1,
+    kTimeoutSFieldNumber = 1,
   };
-  // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-  int plugin_info_size() const;
+  // double timeout_s = 1;
+  void clear_timeout_s();
+  double timeout_s() const;
+  void set_timeout_s(double value);
   private:
-  int _internal_plugin_info_size() const;
+  double _internal_timeout_s() const;
+  void _internal_set_timeout_s(double value);
   public:
-  void clear_plugin_info();
-  ::mavsdk::rpc::core::PluginInfo* mutable_plugin_info(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::core::PluginInfo >*
-      mutable_plugin_info();
-  private:
-  const ::mavsdk::rpc::core::PluginInfo& _internal_plugin_info(int index) const;
-  ::mavsdk::rpc::core::PluginInfo* _internal_add_plugin_info();
-  public:
-  const ::mavsdk::rpc::core::PluginInfo& plugin_info(int index) const;
-  ::mavsdk::rpc::core::PluginInfo* add_plugin_info();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::core::PluginInfo >&
-      plugin_info() const;
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.ListRunningPluginsResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::core::PluginInfo > plugin_info_;
+  double timeout_s_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetMavlinkTimeoutResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SetMavlinkTimeoutResponse) */ {
+ public:
+  inline SetMavlinkTimeoutResponse() : SetMavlinkTimeoutResponse(nullptr) {}
+  virtual ~SetMavlinkTimeoutResponse();
+  explicit constexpr SetMavlinkTimeoutResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SetMavlinkTimeoutResponse(const SetMavlinkTimeoutResponse& from);
+  SetMavlinkTimeoutResponse(SetMavlinkTimeoutResponse&& from) noexcept
+    : SetMavlinkTimeoutResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetMavlinkTimeoutResponse& operator=(const SetMavlinkTimeoutResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetMavlinkTimeoutResponse& operator=(SetMavlinkTimeoutResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SetMavlinkTimeoutResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetMavlinkTimeoutResponse* internal_default_instance() {
+    return reinterpret_cast<const SetMavlinkTimeoutResponse*>(
+               &_SetMavlinkTimeoutResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(SetMavlinkTimeoutResponse& a, SetMavlinkTimeoutResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetMavlinkTimeoutResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetMavlinkTimeoutResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SetMavlinkTimeoutResponse* New() const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutResponse>(nullptr);
+  }
+
+  SetMavlinkTimeoutResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SetMavlinkTimeoutResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SetMavlinkTimeoutResponse& from);
+  void MergeFrom(const SetMavlinkTimeoutResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetMavlinkTimeoutResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.core.SetMavlinkTimeoutResponse";
+  }
+  protected:
+  explicit SetMavlinkTimeoutResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_core_2fcore_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_core_2fcore_2eproto;
 };
@@ -767,179 +754,6 @@ class ConnectionState PROTOBUF_FINAL :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_core_2fcore_2eproto;
 };
-// -------------------------------------------------------------------
-
-class PluginInfo PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.PluginInfo) */ {
- public:
-  inline PluginInfo() : PluginInfo(nullptr) {}
-  virtual ~PluginInfo();
-  explicit constexpr PluginInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  PluginInfo(const PluginInfo& from);
-  PluginInfo(PluginInfo&& from) noexcept
-    : PluginInfo() {
-    *this = ::std::move(from);
-  }
-
-  inline PluginInfo& operator=(const PluginInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline PluginInfo& operator=(PluginInfo&& from) noexcept {
-    if (GetArena() == from.GetArena()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const PluginInfo& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const PluginInfo* internal_default_instance() {
-    return reinterpret_cast<const PluginInfo*>(
-               &_PluginInfo_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    5;
-
-  friend void swap(PluginInfo& a, PluginInfo& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(PluginInfo* other) {
-    if (other == this) return;
-    if (GetArena() == other->GetArena()) {
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(PluginInfo* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline PluginInfo* New() const final {
-    return CreateMaybeMessage<PluginInfo>(nullptr);
-  }
-
-  PluginInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PluginInfo>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PluginInfo& from);
-  void MergeFrom(const PluginInfo& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(PluginInfo* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.core.PluginInfo";
-  }
-  protected:
-  explicit PluginInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    return ::descriptor_table_core_2fcore_2eproto_metadata_getter(kIndexInFileMessages);
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kNameFieldNumber = 1,
-    kAddressFieldNumber = 2,
-    kPortFieldNumber = 3,
-  };
-  // string name = 1;
-  void clear_name();
-  const std::string& name() const;
-  void set_name(const std::string& value);
-  void set_name(std::string&& value);
-  void set_name(const char* value);
-  void set_name(const char* value, size_t size);
-  std::string* mutable_name();
-  std::string* release_name();
-  void set_allocated_name(std::string* name);
-  private:
-  const std::string& _internal_name() const;
-  void _internal_set_name(const std::string& value);
-  std::string* _internal_mutable_name();
-  public:
-
-  // string address = 2;
-  void clear_address();
-  const std::string& address() const;
-  void set_address(const std::string& value);
-  void set_address(std::string&& value);
-  void set_address(const char* value);
-  void set_address(const char* value, size_t size);
-  std::string* mutable_address();
-  std::string* release_address();
-  void set_allocated_address(std::string* address);
-  private:
-  const std::string& _internal_address() const;
-  void _internal_set_address(const std::string& value);
-  std::string* _internal_mutable_address();
-  public:
-
-  // int32 port = 3;
-  void clear_port();
-  ::PROTOBUF_NAMESPACE_ID::int32 port() const;
-  void set_port(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_port() const;
-  void _internal_set_port(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.PluginInfo)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr address_;
-  ::PROTOBUF_NAMESPACE_ID::int32 port_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_core_2fcore_2eproto;
-};
 // ===================================================================
 
 
@@ -1040,50 +854,31 @@ inline void ConnectionStateResponse::set_allocated_connection_state(::mavsdk::rp
 
 // -------------------------------------------------------------------
 
-// ListRunningPluginsRequest
+// SetMavlinkTimeoutRequest
+
+// double timeout_s = 1;
+inline void SetMavlinkTimeoutRequest::clear_timeout_s() {
+  timeout_s_ = 0;
+}
+inline double SetMavlinkTimeoutRequest::_internal_timeout_s() const {
+  return timeout_s_;
+}
+inline double SetMavlinkTimeoutRequest::timeout_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.SetMavlinkTimeoutRequest.timeout_s)
+  return _internal_timeout_s();
+}
+inline void SetMavlinkTimeoutRequest::_internal_set_timeout_s(double value) {
+  
+  timeout_s_ = value;
+}
+inline void SetMavlinkTimeoutRequest::set_timeout_s(double value) {
+  _internal_set_timeout_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.SetMavlinkTimeoutRequest.timeout_s)
+}
 
 // -------------------------------------------------------------------
 
-// ListRunningPluginsResponse
-
-// repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-inline int ListRunningPluginsResponse::_internal_plugin_info_size() const {
-  return plugin_info_.size();
-}
-inline int ListRunningPluginsResponse::plugin_info_size() const {
-  return _internal_plugin_info_size();
-}
-inline void ListRunningPluginsResponse::clear_plugin_info() {
-  plugin_info_.Clear();
-}
-inline ::mavsdk::rpc::core::PluginInfo* ListRunningPluginsResponse::mutable_plugin_info(int index) {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.core.ListRunningPluginsResponse.plugin_info)
-  return plugin_info_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::core::PluginInfo >*
-ListRunningPluginsResponse::mutable_plugin_info() {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.core.ListRunningPluginsResponse.plugin_info)
-  return &plugin_info_;
-}
-inline const ::mavsdk::rpc::core::PluginInfo& ListRunningPluginsResponse::_internal_plugin_info(int index) const {
-  return plugin_info_.Get(index);
-}
-inline const ::mavsdk::rpc::core::PluginInfo& ListRunningPluginsResponse::plugin_info(int index) const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.ListRunningPluginsResponse.plugin_info)
-  return _internal_plugin_info(index);
-}
-inline ::mavsdk::rpc::core::PluginInfo* ListRunningPluginsResponse::_internal_add_plugin_info() {
-  return plugin_info_.Add();
-}
-inline ::mavsdk::rpc::core::PluginInfo* ListRunningPluginsResponse::add_plugin_info() {
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.core.ListRunningPluginsResponse.plugin_info)
-  return _internal_add_plugin_info();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::core::PluginInfo >&
-ListRunningPluginsResponse::plugin_info() const {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.core.ListRunningPluginsResponse.plugin_info)
-  return plugin_info_;
-}
+// SetMavlinkTimeoutResponse
 
 // -------------------------------------------------------------------
 
@@ -1109,157 +904,9 @@ inline void ConnectionState::set_is_connected(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.core.ConnectionState.is_connected)
 }
 
-// -------------------------------------------------------------------
-
-// PluginInfo
-
-// string name = 1;
-inline void PluginInfo::clear_name() {
-  name_.ClearToEmpty();
-}
-inline const std::string& PluginInfo::name() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.PluginInfo.name)
-  return _internal_name();
-}
-inline void PluginInfo::set_name(const std::string& value) {
-  _internal_set_name(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.PluginInfo.name)
-}
-inline std::string* PluginInfo::mutable_name() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.core.PluginInfo.name)
-  return _internal_mutable_name();
-}
-inline const std::string& PluginInfo::_internal_name() const {
-  return name_.Get();
-}
-inline void PluginInfo::_internal_set_name(const std::string& value) {
-  
-  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline void PluginInfo::set_name(std::string&& value) {
-  
-  name_.Set(
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:mavsdk.rpc.core.PluginInfo.name)
-}
-inline void PluginInfo::set_name(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
-  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.core.PluginInfo.name)
-}
-inline void PluginInfo::set_name(const char* value,
-    size_t size) {
-  
-  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.core.PluginInfo.name)
-}
-inline std::string* PluginInfo::_internal_mutable_name() {
-  
-  return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* PluginInfo::release_name() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.core.PluginInfo.name)
-  return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void PluginInfo::set_allocated_name(std::string* name) {
-  if (name != nullptr) {
-    
-  } else {
-    
-  }
-  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.core.PluginInfo.name)
-}
-
-// string address = 2;
-inline void PluginInfo::clear_address() {
-  address_.ClearToEmpty();
-}
-inline const std::string& PluginInfo::address() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.PluginInfo.address)
-  return _internal_address();
-}
-inline void PluginInfo::set_address(const std::string& value) {
-  _internal_set_address(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.PluginInfo.address)
-}
-inline std::string* PluginInfo::mutable_address() {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.core.PluginInfo.address)
-  return _internal_mutable_address();
-}
-inline const std::string& PluginInfo::_internal_address() const {
-  return address_.Get();
-}
-inline void PluginInfo::_internal_set_address(const std::string& value) {
-  
-  address_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline void PluginInfo::set_address(std::string&& value) {
-  
-  address_.Set(
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:mavsdk.rpc.core.PluginInfo.address)
-}
-inline void PluginInfo::set_address(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  address_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
-  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.core.PluginInfo.address)
-}
-inline void PluginInfo::set_address(const char* value,
-    size_t size) {
-  
-  address_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.core.PluginInfo.address)
-}
-inline std::string* PluginInfo::_internal_mutable_address() {
-  
-  return address_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* PluginInfo::release_address() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.core.PluginInfo.address)
-  return address_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void PluginInfo::set_allocated_address(std::string* address) {
-  if (address != nullptr) {
-    
-  } else {
-    
-  }
-  address_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), address,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.core.PluginInfo.address)
-}
-
-// int32 port = 3;
-inline void PluginInfo::clear_port() {
-  port_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PluginInfo::_internal_port() const {
-  return port_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PluginInfo::port() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.PluginInfo.port)
-  return _internal_port();
-}
-inline void PluginInfo::_internal_set_port(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  port_ = value;
-}
-inline void PluginInfo::set_port(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_port(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.PluginInfo.port)
-}
-
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

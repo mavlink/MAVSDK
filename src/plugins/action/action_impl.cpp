@@ -226,7 +226,7 @@ Action::Result ActionImpl::transition_to_multicopter() const
 void ActionImpl::arm_async(const Action::ResultCallback& callback) const
 {
     auto send_arm_command = [this, callback]() {
-        MavlinkCommandSender::CommandLong command{};
+        MavlinkCommandSender::CommandLong command{*_parent};
 
         command.command = MAV_CMD_COMPONENT_ARM_DISARM;
         command.params.param1 = 1.0f; // arm
@@ -267,7 +267,7 @@ void ActionImpl::disarm_async(const Action::ResultCallback& callback) const
         return;
     }
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // disarm
@@ -281,7 +281,7 @@ void ActionImpl::disarm_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::terminate_async(const Action::ResultCallback& callback) const
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_DO_FLIGHTTERMINATION;
     command.params.param1 = 1;
@@ -295,7 +295,7 @@ void ActionImpl::terminate_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::kill_async(const Action::ResultCallback& callback) const
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // kill
@@ -310,7 +310,7 @@ void ActionImpl::kill_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::reboot_async(const Action::ResultCallback& callback) const
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN;
     command.params.param1 = 1.0f; // reboot autopilot
@@ -327,7 +327,7 @@ void ActionImpl::reboot_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN;
     command.params.param1 = 2.0f; // shutdown autopilot
@@ -344,10 +344,14 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.target_component_id = _parent->get_autopilot_id();
+
+    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        command.params.param7 = get_takeoff_altitude().second;
+    }
 
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
@@ -357,7 +361,7 @@ void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::land_async(const Action::ResultCallback& callback) const
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_NAV_LAND;
     command.params.param4 = NAN; // Don't change yaw.
@@ -437,7 +441,7 @@ void ActionImpl::hold_async(const Action::ResultCallback& callback) const
 void ActionImpl::set_actuator_async(
     const int index, const float value, const Action::ResultCallback& callback)
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_DO_SET_ACTUATOR;
     command.target_component_id = _parent->get_autopilot_id();
@@ -486,7 +490,7 @@ void ActionImpl::transition_to_fixedwing_async(const Action::ResultCallback& cal
         return;
     }
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.param1 = float(MAV_VTOL_STATE_FW);
@@ -513,7 +517,7 @@ void ActionImpl::transition_to_multicopter_async(const Action::ResultCallback& c
         }
         return;
     }
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.param1 = float(MAV_VTOL_STATE_MC);
@@ -573,13 +577,14 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t& message)
 }
 
 void ActionImpl::set_takeoff_altitude_async(
-    const float relative_altitude_m, const Action::ResultCallback& callback) const
+    const float relative_altitude_m, const Action::ResultCallback& callback)
 {
     callback(set_takeoff_altitude(relative_altitude_m));
 }
 
-Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m) const
+Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
+    _takeoff_altitude = relative_altitude_m;
     const MAVLinkParameters::Result result =
         _parent->set_param_float(TAKEOFF_ALT_PARAM, relative_altitude_m);
     return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
@@ -595,11 +600,15 @@ void ActionImpl::get_takeoff_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
-    auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
-    return std::make_pair<>(
-        (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
-                                                               Action::Result::ParameterError,
-        result.second);
+    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        return std::make_pair<>(Action::Result::Success, _takeoff_altitude);
+    } else {
+        auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
+        return std::make_pair<>(
+            (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
+                                                                   Action::Result::ParameterError,
+            result.second);
+    }
 }
 
 void ActionImpl::set_maximum_speed_async(

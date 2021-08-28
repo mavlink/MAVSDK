@@ -2,15 +2,12 @@
 
 #include <atomic>
 #include <mutex>
+#include <optional>
 
 #include "plugins/telemetry/telemetry.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 #include "system.h"
-
-// Since not all vehicles support/require level calibration, this
-// is disabled for now.
-//#define LEVEL_CALIBRATION
 
 namespace mavsdk {
 
@@ -171,8 +168,8 @@ private:
     void set_health_gyrometer_calibration(bool ok);
     void set_health_accelerometer_calibration(bool ok);
     void set_health_magnetometer_calibration(bool ok);
-    void set_health_level_calibration(bool ok);
-    void set_rc_status(bool available, float signal_strength_percent);
+    void set_health_armable(bool ok);
+    void set_rc_status(std::optional<bool> available, std::optional<float> signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
     void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);
     void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
@@ -195,6 +192,7 @@ private:
     void process_extended_sys_state(const mavlink_message_t& message);
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
+    void process_battery_status(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
     void process_unix_epoch_time(const mavlink_message_t& message);
@@ -208,9 +206,6 @@ private:
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
 
     void process_parameter_update(const std::string& name);
-#ifdef LEVEL_CALIBRATION
-    void receive_param_cal_level(MAVLinkParameters::Result result, float value);
-#endif
     void receive_param_hitl(MAVLinkParameters::Result result, int value);
 
     void receive_rc_channels_timeout();
@@ -218,6 +213,8 @@ private:
     void receive_unix_epoch_timeout();
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
+
+    void check_calibration();
 
     static Telemetry::Result
     telemetry_result_from_command_result(MavlinkCommandSender::Result command_result);
@@ -356,5 +353,16 @@ private:
     void* _rc_channels_timeout_cookie{nullptr};
     void* _gps_raw_timeout_cookie{nullptr};
     void* _unix_epoch_timeout_cookie{nullptr};
+
+    // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
+    // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
+    bool _has_bat_status{false};
+
+    void* _calibration_cookie{nullptr};
+
+    bool _has_received_hitl_param{false};
+    bool _has_received_gyro_calibration{false};
+    bool _has_received_accel_calibration{false};
+    bool _has_received_mag_calibration{false};
 };
 } // namespace mavsdk

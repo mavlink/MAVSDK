@@ -39,7 +39,7 @@ void GimbalImpl::enable()
     _parent->register_timeout_handler(
         [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.params.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
     command.target_component_id = 0; // any component
@@ -57,6 +57,7 @@ void GimbalImpl::receive_protocol_timeout()
     // assume Version2 is not available.
     LogDebug() << "Falling back to Gimbal Version 1";
     _gimbal_protocol.reset(new GimbalProtocolV1(*_parent));
+    _protocol_cookie = nullptr;
 }
 
 void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& message)
@@ -64,13 +65,16 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
     mavlink_gimbal_manager_information_t gimbal_manager_information;
     mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
 
-    LogDebug() << "Using Gimbal Version 2 as gimbal manager information for gimbal device "
-               << static_cast<int>(gimbal_manager_information.gimbal_device_id)
-               << " was discovered";
+    if (_protocol_cookie != nullptr) {
+        LogDebug() << "Using Gimbal Version 2 as gimbal manager information for gimbal device "
+                   << static_cast<int>(gimbal_manager_information.gimbal_device_id)
+                   << " was discovered";
 
-    _parent->unregister_timeout_handler(_protocol_cookie);
-    _gimbal_protocol.reset(
-        new GimbalProtocolV2(*_parent, gimbal_manager_information, message.sysid, message.compid));
+        _parent->unregister_timeout_handler(_protocol_cookie);
+        _protocol_cookie = nullptr;
+        _gimbal_protocol.reset(new GimbalProtocolV2(
+            *_parent, gimbal_manager_information, message.sysid, message.compid));
+    }
 }
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)

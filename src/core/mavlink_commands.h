@@ -8,6 +8,8 @@
 #include <functional>
 #include <mutex>
 #include <optional>
+#include <unordered_map>
+#include <variant>
 
 namespace mavsdk {
 
@@ -66,19 +68,22 @@ public:
     };
 
     struct CommandLong {
+        CommandLong() = delete;
+        explicit CommandLong(const SystemImpl& system_impl);
+
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
         uint16_t command{0};
         uint8_t confirmation = 0;
         struct Params {
-            float param1 = NAN;
-            float param2 = NAN;
-            float param3 = NAN;
-            float param4 = NAN;
-            float param5 = NAN;
-            float param6 = NAN;
-            float param7 = NAN;
-        } params{};
+            float param1;
+            float param2;
+            float param3;
+            float param4;
+            float param5;
+            float param6;
+            float param7;
+        } params;
 
         // TODO: rename to set_all
         static void set_as_reserved(Params& params, float reserved_value = NAN)
@@ -108,27 +113,32 @@ public:
     const MavlinkCommandSender& operator=(const MavlinkCommandSender&) = delete;
 
 private:
+    // The std::monostate is required to work around the fact that
+    // the default ctor of CommandLong and CommandInt is ill-defined.
+    using Command = std::variant<std::monostate, CommandLong, CommandInt>;
+
     struct Work {
         int retries_to_do{3};
         double timeout_s{0.5};
-        uint16_t mavlink_command{0};
         bool already_sent{false};
-        mavlink_message_t mavlink_message{};
+        Command command;
+        uint16_t mavlink_command{};
         CommandResultCallback callback{};
         dl_time_t time_started{};
-
-        explicit Work(double new_timeout_s) : timeout_s(new_timeout_s) {}
+        void* timeout_cookie = nullptr;
     };
 
     void receive_command_ack(mavlink_message_t message);
-    void receive_timeout();
+    void receive_timeout(const uint16_t command);
 
     void call_callback(const CommandResultCallback& callback, Result result, float progress);
 
+    mavlink_message_t create_mavlink_message(const Command& command);
+
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};
-
-    void* _timeout_cookie = nullptr;
+    std::unordered_map<uint16_t, std::shared_ptr<Work>> _sent_commands{};
+    std::mutex _sent_commands_mutex{};
 };
 
 class MavlinkCommandReceiver {

@@ -1,7 +1,6 @@
 //
 // Simple example to demonstrate how to control actuators (i.e. servos) using MAVSDK.
 //
-// Author: Kalyan Sriram <kalyan@coderkalyan.com>
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
@@ -12,17 +11,13 @@
 
 using namespace mavsdk;
 
-void usage(std::string bin_name)
+void usage(const std::string& bin_name)
 {
     std::cerr << "Usage :" << bin_name << " <connection_url> <actuator_index> <actuator_value>\n"
               << "Connection URL format should be :\n"
-              << '\n'
               << " For TCP : tcp://[server_host][:server_port]\n"
-              << '\n'
               << " For UDP : udp://[bind_host][:bind_port]\n"
-              << '\n'
               << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << '\n'
               << "For example, to connect to the simulator use URL: udp://:14540\n";
 }
 

@@ -628,14 +628,14 @@ bool wait_for_yaw_estimator_to_converge(const AttitudeData& attitude_data)
     for (unsigned i = 0; i < 200; ++i) {
         const auto gimbal_attitude = attitude_data.gimbal_attitude();
         if (gimbal_attitude.yaw_deg < 1.0f && gimbal_attitude.yaw_deg > -1.0f) {
-            std::cout << "PASS" << std::endl;
+            std::cout << "PASS\n";
             return true;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     std::cout << "FAIL\n";
-    std::cout << "-> timeout waiting for yaw to converge to 0" << std::endl;
+    std::cout << "-> timeout waiting for yaw to converge to 0\n";
 
     return false;
 }
@@ -649,7 +649,7 @@ bool sysid_compid_correct()
     if (receiver_data.sysid != own_sysid) {
         std::cout << "FAIL\n";
         std::cout << "-> sysid should be the same as sysid of this tester (" << int(own_sysid)
-                  << ", not " << int(receiver_data.sysid) << ")" << std::endl;
+                  << ", not " << int(receiver_data.sysid) << ")\n";
         return false;
     } else if (
         receiver_data.compid != MAV_COMP_ID_GIMBAL && receiver_data.compid != MAV_COMP_ID_GIMBAL2 &&
@@ -658,23 +658,22 @@ bool sysid_compid_correct()
         receiver_data.compid != MAV_COMP_ID_GIMBAL5 &&
         receiver_data.compid != MAV_COMP_ID_GIMBAL6) {
         std::cout << "FAIL\n";
-        std::cout << "-> compid should be the MAV_COMP_ID_GIMBAL, MAV_COMP_ID_GIMBAL2..6"
-                  << std::endl;
+        std::cout << "-> compid should be the MAV_COMP_ID_GIMBAL, MAV_COMP_ID_GIMBAL2..6\n";
         return false;
     } else if (receiver_data.target_sysid != 0) {
         std::cout << "FAIL\n";
         std::cout << "-> target_system should be 0 (all, not " << int(receiver_data.target_sysid)
-                  << ")" << std::endl;
+                  << ")\n";
         return false;
     } else if (receiver_data.target_compid != 0) {
         std::cout << "FAIL\n";
         std::cout << "-> target_component should be 0 (all, not" << int(receiver_data.target_compid)
-                  << ")" << std::endl;
+                  << ")\n";
         return false;
     } else if (receiver_data.mav_type != MAV_TYPE_GIMBAL) {
         std::cout << "FAIL\n";
         std::cout << "-> heartbeat.type should be MAV_TYPE_GIMBAL (all, not"
-                  << int(receiver_data.mav_type) << ")" << std::endl;
+                  << int(receiver_data.mav_type) << ")\n";
         return false;
     } else {
         std::cout << "PASS\n";
@@ -684,7 +683,7 @@ bool sysid_compid_correct()
 
 bool request_gimbal_device_information(MavlinkPassthrough& mavlink_passthrough)
 {
-    MavlinkPassthrough::CommandLong command;
+    MavlinkPassthrough::CommandLong command{};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION);
     command.target_sysid = mavlink_passthrough.get_target_sysid();
@@ -723,17 +722,17 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
 
     if (!request_gimbal_device_information(mavlink_passthrough)) {
         std::cout << "FAIL\n";
-        std::cout << "-> could not request gimbal device information" << std::endl;
+        std::cout << "-> could not request gimbal device information\n";
         return false;
     }
 
     if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
         std::cout << "FAIL\n";
-        std::cout << "-> no gimbal device information received" << std::endl;
+        std::cout << "-> no gimbal device information received\n";
         return false;
     }
 
-    std::cout << "PASS" << std::endl;
+    std::cout << "PASS\n";
     return true;
 }
 
@@ -782,12 +781,11 @@ void subscribe_to_gimbal_device_attitude_status(
 
 void usage(const std::string& bin_name)
 {
-    std::cout << "Usage : " << bin_name << " <connection_url>" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+    std::cout << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP : tcp://[server_host][:server_port]\n"
+              << " For UDP : udp://[bind_host][:bind_port]\n"
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n";
 }
 
 int main(int argc, char** argv)
@@ -808,7 +806,7 @@ int main(int argc, char** argv)
 
     if (connection_result != ConnectionResult::Success) {
         std::cout << "FAIL\n";
-        std::cout << "-> connection failed: " << connection_result << std::endl;
+        std::cout << "-> connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -823,7 +821,7 @@ int main(int argc, char** argv)
 
         if (fut.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
             std::cout << "FAIL\n";
-            std::cout << "-> no device found" << std::endl;
+            std::cout << "-> no device found\n";
             return 1;
         }
         mavsdk.subscribe_on_new_system(nullptr);

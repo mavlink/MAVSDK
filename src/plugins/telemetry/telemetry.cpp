@@ -38,11 +38,12 @@ using MagneticFieldFrd = Telemetry::MagneticFieldFrd;
 using Imu = Telemetry::Imu;
 using GpsGlobalOrigin = Telemetry::GpsGlobalOrigin;
 
-Telemetry::Telemetry(System& system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
+Telemetry::Telemetry(System& system) : PluginBase(), _impl{std::make_unique<TelemetryImpl>(system)}
+{}
 
 Telemetry::Telemetry(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new TelemetryImpl(system)}
+    _impl{std::make_unique<TelemetryImpl>(system)}
 {}
 
 Telemetry::~Telemetry() {}
@@ -738,7 +739,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::RawGps const& raw_gps)
 
 bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
 {
-    return ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
+    return (rhs.id == lhs.id) &&
+           ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
             rhs.voltage_v == lhs.voltage_v) &&
            ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) ||
             rhs.remaining_percent == lhs.remaining_percent);
@@ -748,6 +750,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
 {
     str << std::setprecision(15);
     str << "battery:" << '\n' << "{\n";
+    str << "    id: " << battery.id << '\n';
     str << "    voltage_v: " << battery.voltage_v << '\n';
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
     str << '}';
@@ -759,10 +762,10 @@ bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs)
     return (rhs.is_gyrometer_calibration_ok == lhs.is_gyrometer_calibration_ok) &&
            (rhs.is_accelerometer_calibration_ok == lhs.is_accelerometer_calibration_ok) &&
            (rhs.is_magnetometer_calibration_ok == lhs.is_magnetometer_calibration_ok) &&
-           (rhs.is_level_calibration_ok == lhs.is_level_calibration_ok) &&
            (rhs.is_local_position_ok == lhs.is_local_position_ok) &&
            (rhs.is_global_position_ok == lhs.is_global_position_ok) &&
-           (rhs.is_home_position_ok == lhs.is_home_position_ok);
+           (rhs.is_home_position_ok == lhs.is_home_position_ok) &&
+           (rhs.is_armable == lhs.is_armable);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
@@ -773,10 +776,10 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
     str << "    is_accelerometer_calibration_ok: " << health.is_accelerometer_calibration_ok
         << '\n';
     str << "    is_magnetometer_calibration_ok: " << health.is_magnetometer_calibration_ok << '\n';
-    str << "    is_level_calibration_ok: " << health.is_level_calibration_ok << '\n';
     str << "    is_local_position_ok: " << health.is_local_position_ok << '\n';
     str << "    is_global_position_ok: " << health.is_global_position_ok << '\n';
     str << "    is_home_position_ok: " << health.is_home_position_ok << '\n';
+    str << "    is_armable: " << health.is_armable << '\n';
     str << '}';
     return str;
 }
@@ -1230,6 +1233,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Result const& result)
             return str << "Command Denied";
         case Telemetry::Result::Timeout:
             return str << "Timeout";
+        case Telemetry::Result::Unsupported:
+            return str << "Unsupported";
         default:
             return str << "Unknown";
     }

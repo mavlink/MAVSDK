@@ -45,7 +45,7 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong& command)
 {
-    MavlinkCommandSender::CommandLong command_internal{};
+    MavlinkCommandSender::CommandLong command_internal{*_parent};
     command_internal.target_system_id = command.target_sysid;
     command_internal.target_component_id = command.target_compid;
     command_internal.command = command.command;

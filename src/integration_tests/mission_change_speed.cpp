@@ -142,6 +142,7 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
     new_item.longitude_deg = longitude_deg;
     new_item.relative_altitude_m = relative_altitude_m;
     new_item.speed_m_s = speed_m_s;
+    new_item.acceptance_radius_m = 1.0f;
     return new_item;
 }
 

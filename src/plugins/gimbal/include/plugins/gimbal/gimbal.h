@@ -126,6 +126,7 @@ public:
         Error, /**< @brief Error occurred sending the command. */
         Timeout, /**< @brief Command timed out. */
         Unsupported, /**< @brief Functionality not supported. */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

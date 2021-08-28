@@ -185,12 +185,13 @@ enum FtpResult_Result : int {
   FtpResult_Result_RESULT_INVALID_PARAMETER = 9,
   FtpResult_Result_RESULT_UNSUPPORTED = 10,
   FtpResult_Result_RESULT_PROTOCOL_ERROR = 11,
+  FtpResult_Result_RESULT_NO_SYSTEM = 12,
   FtpResult_Result_FtpResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   FtpResult_Result_FtpResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool FtpResult_Result_IsValid(int value);
 constexpr FtpResult_Result FtpResult_Result_Result_MIN = FtpResult_Result_RESULT_UNKNOWN;
-constexpr FtpResult_Result FtpResult_Result_Result_MAX = FtpResult_Result_RESULT_PROTOCOL_ERROR;
+constexpr FtpResult_Result FtpResult_Result_Result_MAX = FtpResult_Result_RESULT_NO_SYSTEM;
 constexpr int FtpResult_Result_Result_ARRAYSIZE = FtpResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FtpResult_Result_descriptor();
@@ -4065,6 +4066,8 @@ class FtpResult PROTOBUF_FINAL :
     FtpResult_Result_RESULT_UNSUPPORTED;
   static constexpr Result RESULT_PROTOCOL_ERROR =
     FtpResult_Result_RESULT_PROTOCOL_ERROR;
+  static constexpr Result RESULT_NO_SYSTEM =
+    FtpResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return FtpResult_Result_IsValid(value);
   }

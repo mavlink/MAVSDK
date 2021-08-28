@@ -331,6 +331,7 @@ public:
      * @brief Battery type.
      */
     struct Battery {
+        uint32_t id{0}; /**< @brief Battery ID, for systems with multiple batteries */
         float voltage_v{float(NAN)}; /**< @brief Voltage in volts */
         float remaining_percent{
             float(NAN)}; /**< @brief Estimated battery remaining (range: 0.0 to 1.0) */
@@ -359,14 +360,13 @@ public:
             false}; /**< @brief True if the accelerometer is calibrated */
         bool is_magnetometer_calibration_ok{
             false}; /**< @brief True if the magnetometer is calibrated */
-        bool is_level_calibration_ok{
-            false}; /**< @brief True if the vehicle has a valid level calibration */
         bool is_local_position_ok{false}; /**< @brief True if the local position estimate is good
                                              enough to fly in 'position control' mode */
         bool is_global_position_ok{false}; /**< @brief True if the global position estimate is good
                                               enough to fly in 'position control' mode */
         bool is_home_position_ok{
             false}; /**< @brief True if the home position has been initialized properly */
+        bool is_armable{false}; /**< @brief True if system can be armed */
     };
 
     /**
@@ -389,7 +389,8 @@ public:
     struct RcStatus {
         bool was_available_once{false}; /**< @brief True if an RC signal has been available once */
         bool is_available{false}; /**< @brief True if the RC signal is available now */
-        float signal_strength_percent{0}; /**< @brief Signal strength (range: 0 to 100) */
+        float signal_strength_percent{
+            float(NAN)}; /**< @brief Signal strength (range: 0 to 100, NaN if unknown) */
     };
 
     /**
@@ -640,9 +641,9 @@ public:
         uint64_t timestamp_us{}; /**< @brief Timestamp (time since system boot) */
         float absolute_pressure_hpa{}; /**< @brief Absolute pressure in hPa */
         float differential_pressure_hpa{}; /**< @brief Differential pressure 1 in hPa */
-        float temperature_deg{}; /**< @brief Absolute pressure temperature (in celcius) */
+        float temperature_deg{}; /**< @brief Absolute pressure temperature (in celsius) */
         float differential_pressure_temperature_deg{}; /**< @brief Differential pressure temperature
-                                                          (in celcius, 0 if not available) */
+                                                          (in celsius, 0 if not available) */
     };
 
     /**
@@ -926,6 +927,7 @@ public:
         Busy, /**< @brief Vehicle is busy. */
         CommandDenied, /**< @brief Command refused by vehicle. */
         Timeout, /**< @brief Request timed out. */
+        Unsupported, /**< @brief Request not supported. */
     };
 
     /**

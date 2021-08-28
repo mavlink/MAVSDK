@@ -221,12 +221,13 @@ enum MissionResult_Result : int {
   MissionResult_Result_RESULT_NO_MISSION_AVAILABLE = 8,
   MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD = 11,
   MissionResult_Result_RESULT_TRANSFER_CANCELLED = 12,
+  MissionResult_Result_RESULT_NO_SYSTEM = 13,
   MissionResult_Result_MissionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MissionResult_Result_MissionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MissionResult_Result_IsValid(int value);
 constexpr MissionResult_Result MissionResult_Result_Result_MIN = MissionResult_Result_RESULT_UNKNOWN;
-constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_NO_SYSTEM;
 constexpr int MissionResult_Result_Result_ARRAYSIZE = MissionResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionResult_Result_descriptor();
@@ -3736,6 +3737,8 @@ class MissionItem PROTOBUF_FINAL :
     kCameraActionFieldNumber = 8,
     kCameraPhotoIntervalSFieldNumber = 10,
     kLoiterTimeSFieldNumber = 9,
+    kAcceptanceRadiusMFieldNumber = 11,
+    kYawDegFieldNumber = 12,
   };
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
   void clear_latitude_deg();
@@ -3827,6 +3830,24 @@ class MissionItem PROTOBUF_FINAL :
   void _internal_set_loiter_time_s(float value);
   public:
 
+  // float acceptance_radius_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_acceptance_radius_m();
+  float acceptance_radius_m() const;
+  void set_acceptance_radius_m(float value);
+  private:
+  float _internal_acceptance_radius_m() const;
+  void _internal_set_acceptance_radius_m(float value);
+  public:
+
+  // float yaw_deg = 12 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_yaw_deg();
+  float yaw_deg() const;
+  void set_yaw_deg(float value);
+  private:
+  float _internal_yaw_deg() const;
+  void _internal_set_yaw_deg(float value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionItem)
  private:
   class _Internal;
@@ -3844,6 +3865,8 @@ class MissionItem PROTOBUF_FINAL :
   int camera_action_;
   double camera_photo_interval_s_;
   float loiter_time_s_;
+  float acceptance_radius_m_;
+  float yaw_deg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -4276,6 +4299,8 @@ class MissionResult PROTOBUF_FINAL :
     MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
   static constexpr Result RESULT_TRANSFER_CANCELLED =
     MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+  static constexpr Result RESULT_NO_SYSTEM =
+    MissionResult_Result_RESULT_NO_SYSTEM;
   static inline bool Result_IsValid(int value) {
     return MissionResult_Result_IsValid(value);
   }
@@ -5891,6 +5916,46 @@ inline void MissionItem::_internal_set_camera_photo_interval_s(double value) {
 inline void MissionItem::set_camera_photo_interval_s(double value) {
   _internal_set_camera_photo_interval_s(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_interval_s)
+}
+
+// float acceptance_radius_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+inline void MissionItem::clear_acceptance_radius_m() {
+  acceptance_radius_m_ = 0;
+}
+inline float MissionItem::_internal_acceptance_radius_m() const {
+  return acceptance_radius_m_;
+}
+inline float MissionItem::acceptance_radius_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.acceptance_radius_m)
+  return _internal_acceptance_radius_m();
+}
+inline void MissionItem::_internal_set_acceptance_radius_m(float value) {
+  
+  acceptance_radius_m_ = value;
+}
+inline void MissionItem::set_acceptance_radius_m(float value) {
+  _internal_set_acceptance_radius_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.acceptance_radius_m)
+}
+
+// float yaw_deg = 12 [(.mavsdk.options.default_value) = "NaN"];
+inline void MissionItem::clear_yaw_deg() {
+  yaw_deg_ = 0;
+}
+inline float MissionItem::_internal_yaw_deg() const {
+  return yaw_deg_;
+}
+inline float MissionItem::yaw_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.yaw_deg)
+  return _internal_yaw_deg();
+}
+inline void MissionItem::_internal_set_yaw_deg(float value) {
+  
+  yaw_deg_ = value;
+}
+inline void MissionItem::set_yaw_deg(float value) {
+  _internal_set_yaw_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.yaw_deg)
 }
 
 // -------------------------------------------------------------------

@@ -18,6 +18,8 @@ protected:
         const int ret = system((std::string("./tools/start_px4_sitl.sh ") + model).c_str());
         if (ret != 0) {
             mavsdk::LogErr() << "./tools/start_px4_sitl.sh failed, giving up.";
+            fflush(stdout);
+            fflush(stderr);
             abort();
         }
 #else
@@ -32,6 +34,8 @@ protected:
         const int ret = system("./tools/stop_px4_sitl.sh");
         if (ret != 0) {
             mavsdk::LogErr() << "./tools/stop_px4_sitl.sh failed, giving up.";
+            fflush(stdout);
+            fflush(stderr);
             abort();
         }
 #else

@@ -14,6 +14,14 @@
 #include "cli_arg.h"
 #include "version.h"
 
+static mavlink_status_t status_;
+
+mavlink_status_t* mavlink_get_channel_status(uint8_t chan)
+{
+    UNUSED(chan);
+    return &status_;
+}
+
 namespace mavsdk {
 
 MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
@@ -24,6 +32,13 @@ MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
         if (env_p && std::string("1").compare(env_p) == 0) {
             LogDebug() << "Callback debugging is on.";
             _callback_debugging = true;
+        }
+    }
+
+    if (const char* env_p = std::getenv("MAVSDK_MESSAGE_DEBUGGING")) {
+        if (env_p && std::string("1").compare(env_p) == 0) {
+            LogDebug() << "Message debugging is on.";
+            _message_logging_on = true;
         }
     }
 
@@ -112,30 +127,12 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
 
 void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connection)
 {
-    /**
-     * @brief forward_message Function implementing Mavlink routing rules.
-     * See https://mavlink.io/en/guide/routing.html
-     *
-     * This function was adapted from PX4 Firmware v1.11.3
-     * https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L460
-     */
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+    // Forward_message Function implementing Mavlink routing rules.
+    // See https://mavlink.io/en/guide/routing.html
 
     bool forward_heartbeats_enabled = true;
-    int target_system_id = 0;
-    int target_component_id = 0;
-
-    // might be nullptr if message is unknown
-    if (meta) {
-        // Extract target system and target component if set
-        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
-            target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
-        }
-
-        if (meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT) {
-            target_component_id = (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
-        }
-    }
+    const uint8_t target_system_id = get_target_system_id(message);
+    const uint8_t target_component_id = get_target_component_id(message);
 
     // If it's a message only for us, we keep it, otherwise, we forward it.
     const bool targeted_only_at_us =
@@ -167,6 +164,11 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
 
 void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connection)
 {
+    if (_message_logging_on) {
+        LogDebug() << "Processing message " << message.msgid << " from "
+                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
+    }
+
     /** @note: Forward message if option is enabled and multiple interfaces are connected.
      *  Performs message forwarding checks for every messages if message forwarding
      *  is enabled on at least one connection, and in case of a single forwarding connection,
@@ -180,11 +182,19 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
     if (_connections.size() > 1 && connection->forwarding_connections_count() > 0 &&
         (connection->forwarding_connections_count() > 1 ||
          !connection->should_forward_messages())) {
+        if (_message_logging_on) {
+            LogDebug() << "Forwarding message " << message.msgid << " from "
+                       << static_cast<int>(message.sysid) << "/"
+                       << static_cast<int>(message.compid);
+        }
         forward_message(message, connection);
     }
 
     // Don't ever create a system with sysid 0.
     if (message.sysid == 0) {
+        if (_message_logging_on) {
+            LogDebug() << "Ignoring message with sysid == 0";
+        }
         return;
     }
 
@@ -198,6 +208,9 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
     // instead of PX4 because the check `has_autopilot()` is not used.
     if (_configuration.get_usage_type() == Mavsdk::Configuration::UsageType::GroundStation &&
         message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
+        if (_message_logging_on) {
+            LogDebug() << "Ignoring messages from QGC as we are also a ground station";
+        }
         return;
     }
 
@@ -237,19 +250,19 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
 bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
+    if (_message_logging_on) {
+        LogDebug() << "Sending message " << message.msgid << " from "
+                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
+    }
+
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
     uint8_t successful_emissions = 0;
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
-        // Checks whether connection knows target system ID by extracting target system if set.
-        // https://github.com/PX4/PX4-Autopilot/blob/v1.11.3/src/modules/mavlink/mavlink_main.cpp#L472
-        const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+        const uint8_t target_system_id = get_target_system_id(message);
 
-        if (meta && meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) {
-            int target_system_id = (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
-            if (!(**it).has_system_id(target_system_id)) {
-                continue;
-            }
+        if (target_system_id != 0 && !(**it).has_system_id(target_system_id)) {
+            continue;
         }
 
         if ((**it).send_message(message)) {
@@ -405,70 +418,10 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
         start_sending_heartbeats();
     } else if (
         !new_configuration.get_always_send_heartbeats() &&
-        _configuration.get_always_send_heartbeats() && !is_connected()) {
+        _configuration.get_always_send_heartbeats() && !is_any_system_connected()) {
         _configuration = new_configuration;
         stop_sending_heartbeats();
     }
-}
-
-std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
-{
-    std::vector<uint64_t> uuids = {};
-
-    for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        uint64_t uuid = it->second->_system_impl->get_uuid();
-        if (uuid != 0) {
-            uuids.push_back(uuid);
-        }
-    }
-
-    return uuids;
-}
-
-System& MavsdkImpl::get_system()
-{
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-
-    // In get_system without uuid, we expect to have only
-    // one system connected.
-
-    if (_systems.size() == 1) {
-        // Expected case.
-
-    } else if (_systems.size() > 1) {
-        LogWarn()
-            << "More than one system found. You should be using `get_system(uuid)` instead of `get_system()`!";
-        // Just return first system instead of failing.
-
-    } else {
-        uint8_t system_id = 0, comp_id = 0;
-        make_system_with_component(system_id, comp_id);
-    }
-
-    return *(_systems[0].second);
-}
-
-System& MavsdkImpl::get_system(const uint64_t uuid)
-{
-    {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        // TODO: make a cache map for this.
-        for (auto& system : _systems) {
-            if (system.second->_system_impl->get_uuid() == uuid) {
-                return *system.second;
-            }
-        }
-    }
-
-    // We have not found a system with this UUID.
-    // TODO: this is an error condition that we ought to handle properly.
-    LogErr() << "System with UUID: " << uuid << " not found";
-
-    // Create a dummy
-    uint8_t system_id = 0, comp_id = 0;
-    make_system_with_component(system_id, comp_id);
-
-    return *_systems[0].second;
 }
 
 uint8_t MavsdkImpl::get_own_system_id() const
@@ -502,29 +455,6 @@ uint8_t MavsdkImpl::get_mav_type() const
     }
 }
 
-bool MavsdkImpl::is_connected() const
-{
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-
-    if (_systems.empty()) {
-        return false;
-    }
-
-    return _systems.begin()->second->is_connected();
-}
-
-bool MavsdkImpl::is_connected(const uint64_t uuid) const
-{
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-
-    for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        if (it->second->_system_impl->get_uuid() == uuid) {
-            return it->second->is_connected();
-        }
-    }
-    return false;
-}
-
 void MavsdkImpl::make_system_with_component(
     uint8_t system_id, uint8_t comp_id, bool always_connected)
 {
@@ -543,12 +473,8 @@ void MavsdkImpl::make_system_with_component(
     _systems.push_back(std::pair<uint8_t, std::shared_ptr<System>>(system_id, new_system));
 }
 
-void MavsdkImpl::notify_on_discover(const uint64_t uuid)
+void MavsdkImpl::notify_on_discover()
 {
-    if (_on_discover_callback) {
-        _on_discover_callback(uuid);
-    }
-
     std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
     if (_new_system_callback) {
         auto temp_callback = _new_system_callback;
@@ -556,13 +482,8 @@ void MavsdkImpl::notify_on_discover(const uint64_t uuid)
     }
 }
 
-void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
+void MavsdkImpl::notify_on_timeout()
 {
-    LogDebug() << "Lost " << uuid;
-    if (_on_timeout_callback) {
-        _on_timeout_callback(uuid);
-    }
-
     std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
     if (_new_system_callback) {
         auto temp_callback = _new_system_callback;
@@ -575,42 +496,17 @@ void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
     std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
     _new_system_callback = callback;
 
-    const auto is_any_system_connected = [this]() {
-        std::vector<std::shared_ptr<System>> connected_systems = systems();
-        return std::any_of(connected_systems.cbegin(), connected_systems.cend(), [](auto& system) {
-            return system->is_connected();
-        });
-    };
-
     if (_new_system_callback != nullptr && is_any_system_connected()) {
         _new_system_callback();
     }
 }
 
-void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
+bool MavsdkImpl::is_any_system_connected()
 {
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-
-    if (callback) {
-        for (auto const& connected_system : _systems) {
-            // Ignore dummy system with system ID 0.
-            if (connected_system.first == 0) {
-                continue;
-            }
-            // Ignore system if UUID is not initialized yet.
-            if (connected_system.second->_system_impl->get_uuid() == 0) {
-                continue;
-            }
-            callback(connected_system.second->_system_impl->get_uuid());
-        }
-    }
-
-    _on_discover_callback = callback;
-}
-
-void MavsdkImpl::register_on_timeout(const Mavsdk::event_callback_t callback)
-{
-    _on_timeout_callback = callback;
+    std::vector<std::shared_ptr<System>> connected_systems = systems();
+    return std::any_of(connected_systems.cbegin(), connected_systems.cend(), [](auto& system) {
+        return system->is_connected();
+    });
 }
 
 void MavsdkImpl::work_thread()
@@ -706,10 +602,66 @@ void MavsdkImpl::send_heartbeat()
         get_mav_type(),
         get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
                                                            MAV_AUTOPILOT_INVALID,
-        0,
-        0,
+        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
+        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
         0);
     send_message(message);
+}
+
+uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
+{
+    // Checks whether connection knows target system ID by extracting target system if set.
+    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+
+    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM)) {
+        return 0;
+    }
+
+    // Don't look at the target system offset if it is outside of the payload length.
+    // This can happen if the fields are trimmed.
+    if (meta->target_system_ofs >= message.len) {
+        return 0;
+    }
+
+    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+}
+
+uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
+{
+    // Checks whether connection knows target system ID by extracting target system if set.
+    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
+
+    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT)) {
+        return 0;
+    }
+
+    // Don't look at the target component offset if it is outside of the payload length.
+    // This can happen if the fields are trimmed.
+    if (meta->target_component_ofs >= message.len) {
+        return 0;
+    }
+
+    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+}
+
+void MavsdkImpl::set_base_mode(uint8_t base_mode)
+{
+    _base_mode = base_mode;
+}
+
+uint8_t MavsdkImpl::get_base_mode() const
+{
+    return _base_mode;
+}
+
+void MavsdkImpl::set_custom_mode(uint32_t custom_mode)
+{
+    _custom_mode = custom_mode;
+}
+
+uint32_t MavsdkImpl::get_custom_mode() const
+{
+    return _custom_mode;
 }
 
 } // namespace mavsdk

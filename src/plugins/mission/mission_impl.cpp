@@ -48,7 +48,7 @@ void MissionImpl::enable()
     _parent->register_timeout_handler(
         [this]() { receive_protocol_timeout(); }, 1.0, &_gimbal_protocol_cookie);
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.params.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
     command.target_component_id = 0; // any component
@@ -106,9 +106,11 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
 void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& message)
 {
     UNUSED(message);
-    LogDebug() << "Using gimbal protocol v2";
-    _gimbal_protocol = GimbalProtocol::V2;
-    _parent->unregister_timeout_handler(_gimbal_protocol_cookie);
+    if (_gimbal_protocol_cookie != nullptr) {
+        LogDebug() << "Using gimbal protocol v2";
+        _gimbal_protocol = GimbalProtocol::V2;
+        _parent->unregister_timeout_handler(_gimbal_protocol_cookie);
+    }
 }
 
 void MissionImpl::wait_for_protocol()
@@ -128,6 +130,7 @@ void MissionImpl::receive_protocol_timeout()
 {
     LogDebug() << "Falling back to gimbal protocol v1";
     _gimbal_protocol = GimbalProtocol::V1;
+    _gimbal_protocol_cookie = nullptr;
 }
 
 Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_plan)
@@ -148,12 +151,6 @@ void MissionImpl::upload_mission_async(
                 callback(Mission::Result::Busy);
             }
         });
-        return;
-    }
-
-    if (!_parent->does_support_mission_int()) {
-        LogWarn() << "Mission int messages not supported";
-        // report_mission_result(callback, Mission::Result::Error);
         return;
     }
 
@@ -267,7 +264,9 @@ float MissionImpl::hold_time(const MissionItem& item)
 float MissionImpl::acceptance_radius(const MissionItem& item)
 {
     float acceptance_radius_m;
-    if (item.is_fly_through) {
+    if (std::isfinite(item.acceptance_radius_m)) {
+        acceptance_radius_m = item.acceptance_radius_m;
+    } else if (item.is_fly_through) {
         // _acceptance_radius_m is 0, determine the radius using fly_through
         acceptance_radius_m = 3.0f;
     } else {
@@ -307,7 +306,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                 hold_time(item),
                 acceptance_radius(item),
                 0.0f,
-                NAN,
+                item.yaw_deg,
                 x,
                 y,
                 z,
@@ -542,8 +541,10 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 new_mission_item.latitude_deg = double(int_item.x) * 1e-7;
                 new_mission_item.longitude_deg = double(int_item.y) * 1e-7;
                 new_mission_item.relative_altitude_m = int_item.z;
+                new_mission_item.yaw_deg = int_item.param4;
 
                 new_mission_item.is_fly_through = !(int_item.param1 > 0);
+                new_mission_item.acceptance_radius_m = int_item.param2;
 
                 have_set_position = true;
 
@@ -936,97 +937,11 @@ Mission::Result MissionImpl::convert_result(MAVLinkMissionTransfer::Result resul
             return Mission::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidParam:
             return Mission::Result::InvalidArgument; // FIXME
+        case MAVLinkMissionTransfer::Result::IntMessagesNotSupported:
+            return Mission::Result::Unsupported; // FIXME
         default:
             return Mission::Result::Unknown;
     }
-}
-
-// Build a mission item out of command, params and add them to the mission vector.
-Mission::Result MissionImpl::build_mission_items(
-    MAV_CMD command,
-    std::vector<double> params,
-    MissionItem& new_mission_item,
-    std::vector<Mission::MissionItem>& all_mission_items)
-{
-    Mission::Result result = Mission::Result::Success;
-
-    // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
-    do {
-        if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF ||
-            command == MAV_CMD_NAV_LAND) {
-            if (has_valid_position(new_mission_item)) {
-                if (command == MAV_CMD_NAV_TAKEOFF) {
-                    LogWarn() << "Converted takeoff mission item to normal waypoint";
-                } else if (command == MAV_CMD_NAV_LAND) {
-                    LogWarn() << "Converted land mission item to normal waypoint";
-                }
-                all_mission_items.push_back(new_mission_item);
-                new_mission_item = {};
-            }
-
-            if (command == MAV_CMD_NAV_WAYPOINT) {
-                auto is_fly_through = !(int(params[0]) > 0);
-                new_mission_item.is_fly_through = is_fly_through;
-            }
-            new_mission_item.loiter_time_s = params[0];
-            auto lat = params[4], lon = params[5];
-            new_mission_item.latitude_deg = lat;
-            new_mission_item.longitude_deg = lon;
-
-            auto rel_alt = float(params[6]);
-            new_mission_item.relative_altitude_m = rel_alt;
-
-        } else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
-            new_mission_item.gimbal_pitch_deg = float(params[0]);
-            new_mission_item.gimbal_yaw_deg = float(params[2]);
-
-        } else if (command == MAV_CMD_NAV_LOITER_TIME) {
-            auto loiter_time_s = float(params[0]);
-            new_mission_item.loiter_time_s = loiter_time_s;
-
-        } else if (command == MAV_CMD_IMAGE_START_CAPTURE) {
-            auto photo_interval = int(params[1]), photo_count = int(params[2]);
-
-            if (photo_interval > 0 && photo_count == 0) {
-                new_mission_item.camera_action = CameraAction::StartPhotoInterval;
-                new_mission_item.camera_photo_interval_s = photo_interval;
-            } else if (photo_interval == 0 && photo_count == 1) {
-                new_mission_item.camera_action = CameraAction::TakePhoto;
-            } else {
-                LogErr() << "Mission item START_CAPTURE params unsupported.";
-                result = Mission::Result::Unsupported;
-                break;
-            }
-
-        } else if (command == MAV_CMD_IMAGE_STOP_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::StopPhotoInterval;
-
-        } else if (command == MAV_CMD_VIDEO_START_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::StartVideo;
-
-        } else if (command == MAV_CMD_VIDEO_STOP_CAPTURE) {
-            new_mission_item.camera_action = CameraAction::StopVideo;
-
-        } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
-            enum { AirSpeed = 0, GroundSpeed = 1 };
-            auto speed_type = int(params[0]);
-            auto speed_m_s = float(params[1]);
-            auto throttle = params[2];
-            auto is_absolute = (params[3] == 0);
-
-            if (speed_type == int(GroundSpeed) && throttle < 0 && is_absolute) {
-                new_mission_item.speed_m_s = speed_m_s;
-            } else {
-                LogErr() << command << "Mission item DO_CHANGE_SPEED params unsupported";
-                result = Mission::Result::Unsupported;
-                break;
-            }
-        } else {
-            LogWarn() << "UNSUPPORTED mission item command (" << command << ")";
-        }
-    } while (false); // Executed once per method invokation.
-
-    return result;
 }
 
 void MissionImpl::add_gimbal_items_v1(

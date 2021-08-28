@@ -9,6 +9,7 @@
 
 #include "mission/mission_service_impl.h"
 #include "mission/mocks/mission_mock.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
@@ -20,7 +21,9 @@ using testing::NiceMock;
 using testing::Return;
 
 using MockMission = NiceMock<mavsdk::testing::MockMission>;
-using MissionServiceImpl = mavsdk::mavsdk_server::MissionServiceImpl<MockMission>;
+using MockLazyPlugin =
+    testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockMission>>;
+using MissionServiceImpl = mavsdk::mavsdk_server::MissionServiceImpl<MockMission, MockLazyPlugin>;
 using MissionService = mavsdk::rpc::mission::MissionService;
 using InputPair = std::pair<std::string, mavsdk::Mission::Result>;
 
@@ -138,15 +141,15 @@ mavsdk::Mission::MissionPlan generateListOfMultipleItems()
 
 class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair> {
 protected:
-    MissionServiceImplTestBase() : _mission_service(_mission)
+    MissionServiceImplTestBase() : _mission_service(_lazy_plugin)
     {
+        ON_CALL(_lazy_plugin, maybe_plugin()).WillByDefault(Return(&_mission));
+
         _callback_saved_future = _callback_saved_promise.get_future();
     }
 
-    /* The mocked mission module. */
+    MockLazyPlugin _lazy_plugin{};
     MockMission _mission{};
-
-    /* The mission service that is actually being tested here. */
     MissionServiceImpl _mission_service;
 
     /* The mission returns its result through a callback, which is saved in _result_callback. */

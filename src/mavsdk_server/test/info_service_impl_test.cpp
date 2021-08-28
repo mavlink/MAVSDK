@@ -5,6 +5,7 @@
 
 #include "info/info_service_impl.h"
 #include "info/mocks/info_mock.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
@@ -13,7 +14,8 @@ using testing::NiceMock;
 using testing::Return;
 
 using MockInfo = NiceMock<mavsdk::testing::MockInfo>;
-using InfoServiceImpl = mavsdk::mavsdk_server::InfoServiceImpl<MockInfo>;
+using MockLazyPlugin = testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockInfo>>;
+using InfoServiceImpl = mavsdk::mavsdk_server::InfoServiceImpl<MockInfo, MockLazyPlugin>;
 
 using InfoResult = mavsdk::rpc::info::InfoResult;
 using InputPair = std::pair<std::string, mavsdk::Info::Result>;
@@ -50,8 +52,10 @@ mavsdk::Info::Result translateFromRpcResult(const mavsdk::rpc::info::InfoResult:
 
 TEST_F(InfoServiceImplTest, getVersionCallsGetter)
 {
+    MockLazyPlugin lazy_plugin;
     MockInfo info;
-    InfoServiceImpl infoService(info);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&info));
+    InfoServiceImpl infoService(lazy_plugin);
     EXPECT_CALL(info, get_version()).Times(1);
     mavsdk::rpc::info::GetVersionResponse response;
 
@@ -60,8 +64,10 @@ TEST_F(InfoServiceImplTest, getVersionCallsGetter)
 
 TEST_P(InfoServiceImplTest, getsCorrectVersion)
 {
+    MockLazyPlugin lazy_plugin;
     MockInfo info;
-    InfoServiceImpl infoService(info);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&info));
+    InfoServiceImpl infoService(lazy_plugin);
 
     mavsdk::Info::Version arbitrary_version;
 
@@ -98,8 +104,10 @@ TEST_P(InfoServiceImplTest, getsCorrectVersion)
 
 TEST_F(InfoServiceImplTest, getVersionDoesNotCrashWithNullResponse)
 {
+    MockLazyPlugin lazy_plugin;
     MockInfo info;
-    InfoServiceImpl infoService(info);
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&info));
+    InfoServiceImpl infoService(lazy_plugin);
 
     infoService.GetVersion(nullptr, nullptr, nullptr);
 }

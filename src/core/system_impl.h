@@ -85,6 +85,8 @@ public:
 
     bool send_message(mavlink_message_t& message) override;
 
+    Autopilot autopilot() const override { return _autopilot; };
+
     static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
@@ -121,16 +123,13 @@ public:
     bool has_camera(int camera_id = -1) const;
     bool has_gimbal() const;
 
-    uint64_t get_uuid() const;
-    uint8_t get_system_id() const;
+    uint8_t get_system_id() const override;
 
     void set_system_id(uint8_t system_id);
 
-    uint8_t get_own_system_id() const;
-    uint8_t get_own_component_id() const;
+    uint8_t get_own_system_id() const override;
+    uint8_t get_own_component_id() const override;
     uint8_t get_own_mav_type() const;
-
-    bool does_support_mission_int() const { return _supports_mission_int; }
 
     bool is_armed() const { return _armed; }
 
@@ -149,6 +148,10 @@ public:
         const std::string& name, float value, success_t callback, const void* cookie);
     void set_param_ext_int_async(
         const std::string& name, int32_t value, success_t callback, const void* cookie);
+
+    void provide_server_param_float(const std::string& name, float value);
+    void provide_server_param_int(const std::string& name, int32_t value);
+    std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
 
     using SubscribeParamIntCallback = std::function<void(int)>;
     void subscribe_param_int(
@@ -171,6 +174,10 @@ public:
         get_param_float_callback_t;
     typedef std::function<void(MAVLinkParameters::Result result, int32_t value)>
         get_param_int_callback_t;
+
+    std::pair<MAVLinkParameters::Result, float>
+    retrieve_server_param_float(const std::string& name);
+    std::pair<MAVLinkParameters::Result, int> retrieve_server_param_int(const std::string& name);
 
     std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
     std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
@@ -232,6 +239,7 @@ public:
         const std::string& filename, const int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
+    void send_autopilot_version();
     void send_flight_information_request();
 
     MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };
@@ -256,13 +264,28 @@ public:
 
     double timeout_s() const;
 
+    // Autopilot version data
+    void add_capabilities(uint64_t capabilities);
+    void set_flight_sw_version(uint32_t flight_sw_version);
+    void set_middleware_sw_version(uint32_t middleware_sw_version);
+    void set_os_sw_version(uint32_t os_sw_version);
+    void set_board_version(uint32_t board_version);
+    void set_vendor_id(uint16_t vendor_id);
+    void set_product_id(uint16_t product_id);
+    bool set_uid2(std::string uid2);
+    System::AutopilotVersion get_autopilot_version_data();
+
+    // Used when acting as autopilot!
+    void set_server_armed(bool armed);
+    bool is_server_armed() const;
+    void set_custom_mode(uint32_t custom_mode);
+    uint32_t get_custom_mode() const;
+
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
 
     void request_autopilot_version();
-
-    bool have_uuid() const { return _uuid != 0 && _uuid_initialized; }
 
     void process_heartbeat(const mavlink_message_t& message);
     void process_autopilot_version(const mavlink_message_t& message);
@@ -270,6 +293,9 @@ private:
     void heartbeats_timed_out();
     void set_connected();
     void set_disconnected();
+
+    std::optional<mavlink_message_t>
+    process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command);
 
     static std::string component_name(uint8_t component_id);
     static System::ComponentType component_type(uint8_t component_id);
@@ -312,15 +338,11 @@ private:
     std::mutex _statustext_handler_callbacks_mutex{};
     std::vector<StatustextCallback> _statustext_handler_callbacks;
 
-    uint64_t _uuid{0};
-
-    int _uuid_retries = 0;
-    std::atomic<bool> _uuid_initialized{false};
-
-    bool _supports_mission_int{false};
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
     bool _always_connected{false};
+
+    std::atomic<Autopilot> _autopilot{Autopilot::Unknown};
 
     MavsdkImpl& _parent;
 
@@ -363,6 +385,9 @@ private:
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+    std::mutex _autopilot_version_mutex{};
+    System::AutopilotVersion _autopilot_version{
+        MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};
 };
 
 } // namespace mavsdk

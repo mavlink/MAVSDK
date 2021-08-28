@@ -9,6 +9,7 @@
 
 #include "telemetry/mocks/telemetry_mock.h"
 #include "telemetry/telemetry_service_impl.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
@@ -16,7 +17,10 @@ using testing::_;
 using testing::NiceMock;
 
 using MockTelemetry = NiceMock<mavsdk::testing::MockTelemetry>;
-using TelemetryServiceImpl = mavsdk::mavsdk_server::TelemetryServiceImpl<MockTelemetry>;
+using MockLazyPlugin =
+    testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockTelemetry>>;
+using TelemetryServiceImpl =
+    mavsdk::mavsdk_server::TelemetryServiceImpl<MockTelemetry, MockLazyPlugin>;
 using TelemetryService = mavsdk::rpc::telemetry::TelemetryService;
 
 using PositionResponse = mavsdk::rpc::telemetry::PositionResponse;
@@ -52,8 +56,11 @@ class TelemetryServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
+        _lazy_plugin = std::make_unique<MockLazyPlugin>();
         _telemetry = std::make_unique<MockTelemetry>();
-        _telemetry_service = std::make_unique<TelemetryServiceImpl>(*_telemetry);
+        _telemetry_service = std::make_unique<TelemetryServiceImpl>(*_lazy_plugin);
+
+        ON_CALL(*_lazy_plugin, maybe_plugin()).WillByDefault(Return(_telemetry.get()));
 
         grpc::ServerBuilder builder;
         builder.RegisterService(_telemetry_service.get());
@@ -94,7 +101,8 @@ protected:
     FixType translateRPCGpsFixType(RPCFixType fixType) const;
 
     void checkSendsBatteryEvents(const std::vector<Battery>& battery_events) const;
-    Battery createBattery(const float voltage_v, const float remaining_percent) const;
+    Battery
+    createBattery(const uint32_t id, const float voltage_v, const float remaining_percent) const;
     std::future<void> subscribeBatteryAsync(std::vector<Battery>& battery_events) const;
 
     void checkSendsFlightModeEvents(const std::vector<FlightMode>& flight_mode_events) const;
@@ -150,6 +158,7 @@ protected:
     std::future<void> subscribeActuatorOutputStatusAsync(
         std::vector<ActuatorOutputStatus>& actuator_output_status_events) const;
 
+    std::unique_ptr<MockLazyPlugin> _lazy_plugin{};
     std::unique_ptr<grpc::Server> _server{};
     std::unique_ptr<TelemetryService::Stub> _stub{};
     std::unique_ptr<MockTelemetry> _telemetry{};
@@ -301,7 +310,6 @@ std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Hea
             health.is_gyrometer_calibration_ok = health_rpc.is_gyrometer_calibration_ok();
             health.is_accelerometer_calibration_ok = health_rpc.is_accelerometer_calibration_ok();
             health.is_magnetometer_calibration_ok = health_rpc.is_magnetometer_calibration_ok();
-            health.is_level_calibration_ok = health_rpc.is_level_calibration_ok();
             health.is_local_position_ok = health_rpc.is_local_position_ok();
             health.is_global_position_ok = health_rpc.is_global_position_ok();
             health.is_home_position_ok = health_rpc.is_home_position_ok();
@@ -370,7 +378,6 @@ Health TelemetryServiceImplTest::createRandomHealth()
     health.is_gyrometer_calibration_ok = generateRandomBool();
     health.is_accelerometer_calibration_ok = generateRandomBool();
     health.is_magnetometer_calibration_ok = generateRandomBool();
-    health.is_level_calibration_ok = generateRandomBool();
     health.is_local_position_ok = generateRandomBool();
     health.is_global_position_ok = generateRandomBool();
     health.is_home_position_ok = generateRandomBool();
@@ -791,6 +798,7 @@ TelemetryServiceImplTest::subscribeBatteryAsync(std::vector<Battery>& battery_ev
             auto battery_rpc = response.battery();
 
             Battery battery;
+            battery.id = battery_rpc.id();
             battery.voltage_v = battery_rpc.voltage_v();
             battery.remaining_percent = battery_rpc.remaining_percent();
 
@@ -815,15 +823,16 @@ TEST_F(TelemetryServiceImplTest, doesNotSendBatteryIfCallbackNotCalled)
 TEST_F(TelemetryServiceImplTest, sendsOneBatteryEvent)
 {
     std::vector<Battery> battery_events;
-    battery_events.push_back(createBattery(4.2f, 0.63f));
+    battery_events.push_back(createBattery(0, 4.2f, 0.63f));
 
     checkSendsBatteryEvents(battery_events);
 }
 
-Battery
-TelemetryServiceImplTest::createBattery(const float voltage_v, const float remaining_percent) const
+Battery TelemetryServiceImplTest::createBattery(
+    const uint32_t id, const float voltage_v, const float remaining_percent) const
 {
     Battery battery;
+    battery.id = id;
     battery.voltage_v = voltage_v;
     battery.remaining_percent = remaining_percent;
 
@@ -858,10 +867,10 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleBatteryEvents)
 {
     std::vector<Battery> battery_events;
 
-    battery_events.push_back(createBattery(4.1f, 0.34f));
-    battery_events.push_back(createBattery(5.1f, 0.12f));
-    battery_events.push_back(createBattery(2.4f, 0.99f));
-    battery_events.push_back(createBattery(5.7f, 1.0f));
+    battery_events.push_back(createBattery(0, 4.1f, 0.34f));
+    battery_events.push_back(createBattery(1, 5.1f, 0.12f));
+    battery_events.push_back(createBattery(2, 2.4f, 0.99f));
+    battery_events.push_back(createBattery(3, 5.7f, 1.0f));
 
     checkSendsBatteryEvents(battery_events);
 }
@@ -1755,7 +1764,7 @@ void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
         subscribeActuatorControlTargetAsync(received_actuator_control_target_events);
     subscription_future.wait();
 
-    for (const auto actuator_control_target : actuator_control_target_events) {
+    for (const auto& actuator_control_target : actuator_control_target_events) {
         actuator_control_target_callback(actuator_control_target);
     }
     _telemetry_service->stop();
@@ -1782,7 +1791,7 @@ void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
     auto actuator_output_status_stream_future =
         subscribeActuatorOutputStatusAsync(received_actuator_output_status_events);
     subscription_future.wait();
-    for (const auto actuator_output_status : actuator_output_status_events) {
+    for (const auto& actuator_output_status : actuator_output_status_events) {
         actuator_output_status_callback(actuator_output_status);
     }
     _telemetry_service->stop();

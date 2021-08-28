@@ -11,9 +11,9 @@ namespace mavsdk {
 
 using ProgressData = Ftp::ProgressData;
 
-Ftp::Ftp(System& system) : PluginBase(), _impl{new FtpImpl(system)} {}
+Ftp::Ftp(System& system) : PluginBase(), _impl{std::make_unique<FtpImpl>(system)} {}
 
-Ftp::Ftp(std::shared_ptr<System> system) : PluginBase(), _impl{new FtpImpl(system)} {}
+Ftp::Ftp(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<FtpImpl>(system)} {}
 
 Ftp::~Ftp() {}
 
@@ -155,6 +155,8 @@ std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
             return str << "Unsupported";
         case Ftp::Result::ProtocolError:
             return str << "Protocol Error";
+        case Ftp::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }

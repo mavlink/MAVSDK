@@ -5,6 +5,8 @@
 #include "failure/failure.grpc.pb.h"
 #include "plugins/failure/failure.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Failure = Failure>
+template<typename Failure = Failure, typename LazyPlugin = LazyPlugin<Failure>>
 class FailureServiceImpl final : public rpc::failure::FailureService::Service {
 public:
-    FailureServiceImpl(Failure& failure) : _failure(failure) {}
+    FailureServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Failure::Result& result) const
@@ -225,12 +227,21 @@ public:
         const rpc::failure::InjectRequest* request,
         rpc::failure::InjectResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Failure::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "Inject sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _failure.inject(
+        auto result = _lazy_plugin.maybe_plugin()->inject(
             translateFromRpcFailureUnit(request->failure_unit()),
             translateFromRpcFailureType(request->failure_type()),
             request->instance());
@@ -277,7 +288,7 @@ private:
         }
     }
 
-    Failure& _failure;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

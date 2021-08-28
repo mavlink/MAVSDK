@@ -5,20 +5,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(gimbal)
 
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(gimbal
     gimbal.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(gimbal
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk_gimbal
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(gimbal PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(gimbal PRIVATE -WX -W2)
+endif()

@@ -1,22 +1,22 @@
 #pragma once
 
-#include <functional>
 #include <atomic>
+#include <functional>
+#include <memory>
 #include <thread>
 
 /**
- * @brief The FakeLocationProvider class
- * This class provides periodic reports on the fake location of the system.
+ * Class that provides periodic reports on the fake location of a system.
  */
 class FakeLocationProvider {
 public:
-    typedef std::function<void(double lat, double lon)> location_callback_t;
+    using LocationCallback = std::function<void(double lat, double lon)>;
 
     FakeLocationProvider();
 
     ~FakeLocationProvider();
 
-    void request_location_updates(location_callback_t callback);
+    void request_location_updates(LocationCallback callback);
     bool is_running() { return !should_exit_; };
 
 private:
@@ -24,15 +24,14 @@ private:
     void stop();
     void compute_locations();
 
-    std::thread* thread_{nullptr};
+    std::unique_ptr<std::thread> thread_{};
     std::atomic<bool> should_exit_{false};
 
-    location_callback_t location_callback_ = nullptr;
-    double latitude_deg_ = 47.3977419;
-    double longitude_deg_ = 8.5455938;
-    size_t count_ = 0u;
+    LocationCallback location_callback_{nullptr};
+    double latitude_deg_{47.3977419};
+    double longitude_deg_{8.5455938};
+    size_t count_{0};
 
-    static const size_t MAX_LOCATIONS;
-    static const double LATITUDE_DEG_PER_METER;
-    static const double LONGITUDE_DEG_PER_METER;
+    static constexpr double LATITUDE_DEG_PER_METER = 0.000009044;
+    static constexpr double LONGITUDE_DEG_PER_METER = 0.000008985;
 };

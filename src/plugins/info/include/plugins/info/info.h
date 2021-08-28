@@ -166,6 +166,7 @@ public:
         Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         InformationNotReceivedYet, /**< @brief Information has not been received yet. */
+        NoSystem, /**< @brief No system is connected. */
     };
 
     /**

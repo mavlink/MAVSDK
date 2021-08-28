@@ -140,15 +140,6 @@ void MissionRawImpl::upload_mission_async(
         return;
     }
 
-    if (!_parent->does_support_mission_int()) {
-        _parent->call_user_callback([callback]() {
-            if (callback) {
-                callback(MissionRaw::Result::Unsupported);
-            }
-        });
-        return;
-    }
-
     reset_mission_progress();
 
     const auto int_items = convert_to_int_items(mission_raw);
@@ -522,6 +513,8 @@ MissionRaw::Result MissionRawImpl::convert_result(MAVLinkMissionTransfer::Result
             return MissionRaw::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidParam:
             return MissionRaw::Result::InvalidArgument; // FIXME
+        case MAVLinkMissionTransfer::Result::IntMessagesNotSupported:
+            return MissionRaw::Result::Unsupported; // FIXME
         default:
             return MissionRaw::Result::Unknown;
     }

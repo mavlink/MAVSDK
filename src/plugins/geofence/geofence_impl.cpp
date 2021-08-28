@@ -129,6 +129,8 @@ Geofence::Result GeofenceImpl::convert_result(MAVLinkMissionTransfer::Result res
             return Geofence::Result::Error; // FIXME
         case MAVLinkMissionTransfer::Result::InvalidParam:
             return Geofence::Result::InvalidArgument; // FIXME
+        case MAVLinkMissionTransfer::Result::IntMessagesNotSupported:
+            return Geofence::Result::Error; // FIXME
         default:
             return Geofence::Result::Unknown;
     }

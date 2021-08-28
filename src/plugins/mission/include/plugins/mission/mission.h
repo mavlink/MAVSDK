@@ -100,6 +100,9 @@ public:
         float loiter_time_s{float(NAN)}; /**< @brief Loiter time (in seconds) */
         double camera_photo_interval_s{
             1.0}; /**< @brief Camera photo interval to use after this mission item (in seconds) */
+        float acceptance_radius_m{
+            float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
+        float yaw_deg{float(NAN)}; /**< @brief Absolute yaw angle (in degrees) */
     };
 
     /**
@@ -177,6 +180,7 @@ public:
         NoMissionAvailable, /**< @brief No mission available on the system. */
         UnsupportedMissionCmd, /**< @brief Unsupported mission command. */
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
+        NoSystem, /**< @brief No system connected. */
     };
 
     /**

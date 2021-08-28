@@ -16,14 +16,19 @@ namespace mavsdk {
 
 class Sender {
 public:
-    Sender(MAVLinkAddress& new_own_address, MAVLinkAddress& new_target_address) :
-        own_address(new_own_address),
-        target_address(new_target_address)
-    {}
+    enum class Autopilot {
+        Unknown,
+        Px4,
+        ArduPilot,
+    };
+
+    Sender() = default;
     virtual ~Sender() = default;
     virtual bool send_message(mavlink_message_t& message) = 0;
-    MAVLinkAddress& own_address;
-    MAVLinkAddress& target_address;
+    virtual uint8_t get_own_system_id() const = 0;
+    virtual uint8_t get_own_component_id() const = 0;
+    virtual uint8_t get_system_id() const = 0;
+    virtual Autopilot autopilot() const = 0;
 };
 
 class MAVLinkMissionTransfer {
@@ -43,6 +48,7 @@ public:
         CurrentInvalid,
         ProtocolError,
         InvalidParam,
+        IntMessagesNotSupported
     };
 
     struct ItemInt {
@@ -145,6 +151,51 @@ public:
         std::size_t _next_sequence{0};
         void* _cookie{nullptr};
         unsigned _retries_done{0};
+    };
+
+    class ReceiveIncomingMission : public WorkItem {
+    public:
+        explicit ReceiveIncomingMission(
+            Sender& sender,
+            MAVLinkMessageHandler& message_handler,
+            TimeoutHandler& timeout_handler,
+            uint8_t type,
+            double timeout_s,
+            ResultAndItemsCallback callback,
+            uint32_t mission_count,
+            uint8_t target_component);
+        virtual ~ReceiveIncomingMission();
+
+        void start() override;
+        void cancel() override;
+
+        ReceiveIncomingMission(const ReceiveIncomingMission&) = delete;
+        ReceiveIncomingMission(ReceiveIncomingMission&&) = delete;
+        ReceiveIncomingMission& operator=(const ReceiveIncomingMission&) = delete;
+        ReceiveIncomingMission& operator=(ReceiveIncomingMission&&) = delete;
+
+    private:
+        void request_item();
+        void send_ack_and_finish();
+        void send_cancel_and_finish();
+        void process_mission_count();
+        void process_mission_item_int(const mavlink_message_t& message);
+        void process_timeout();
+        void callback_and_reset(Result result);
+
+        enum class Step {
+            RequestList,
+            RequestItem,
+        } _step{Step::RequestList};
+
+        std::vector<ItemInt> _items{};
+        ResultAndItemsCallback _callback{nullptr};
+        void* _cookie{nullptr};
+        std::size_t _next_sequence{0};
+        std::size_t _expected_count{0};
+        unsigned _retries_done{0};
+        uint32_t _mission_count{0};
+        uint8_t _target_component{0};
     };
 
     class DownloadWorkItem : public WorkItem {
@@ -251,7 +302,7 @@ public:
         unsigned _retries_done{0};
     };
 
-    static constexpr unsigned retries = 4;
+    static constexpr unsigned retries = 5;
 
     using TimeoutSCallback = std::function<double()>;
 
@@ -268,12 +319,21 @@ public:
 
     std::weak_ptr<WorkItem> download_items_async(uint8_t type, ResultAndItemsCallback callback);
 
+    // Server-side
+    std::weak_ptr<WorkItem> receive_incoming_items_async(
+        uint8_t type,
+        uint32_t mission_count,
+        uint8_t target_component,
+        ResultAndItemsCallback callback);
+
     void clear_items_async(uint8_t type, ResultCallback callback);
 
     void set_current_item_async(int current, ResultCallback callback);
 
     void do_work();
     bool is_idle();
+
+    void set_int_messages_supported(bool supported);
 
     // Non-copyable
     MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;
@@ -286,6 +346,8 @@ private:
     TimeoutSCallback _timeout_s_callback;
 
     LockedQueue<WorkItem> _work_queue{};
+
+    bool _int_messages_supported{true};
 };
 
 } // namespace mavsdk

@@ -61,23 +61,14 @@ public:
 
     void set_configuration(Mavsdk::Configuration new_configuration);
 
-    std::vector<uint64_t> get_system_uuids() const;
-    System& get_system();
-    System& get_system(uint64_t uuid);
-
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
     uint8_t get_mav_type() const;
 
-    bool is_connected() const;
-    bool is_connected(uint64_t uuid) const;
-
     void subscribe_on_new_system(Mavsdk::NewSystemCallback callback);
-    void register_on_discover(Mavsdk::event_callback_t callback);
-    void register_on_timeout(Mavsdk::event_callback_t callback);
 
-    void notify_on_discover(uint64_t uuid);
-    void notify_on_timeout(uint64_t uuid);
+    void notify_on_discover();
+    void notify_on_timeout();
 
     void start_sending_heartbeats();
     void stop_sending_heartbeats();
@@ -94,6 +85,11 @@ public:
 
     MAVLinkAddress own_address{};
 
+    void set_base_mode(uint8_t base_mode);
+    uint8_t get_base_mode() const;
+    void set_custom_mode(uint32_t custom_mode);
+    uint32_t get_custom_mode() const;
+
 private:
     void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(
@@ -103,6 +99,10 @@ private:
     void process_user_callbacks_thread();
 
     void send_heartbeat();
+    bool is_any_system_connected();
+
+    static uint8_t get_target_system_id(const mavlink_message_t& message);
+    static uint8_t get_target_component_id(const mavlink_message_t& message);
 
     std::mutex _connections_mutex{};
     std::vector<std::shared_ptr<Connection>> _connections{};
@@ -113,9 +113,6 @@ private:
 
     std::mutex _new_system_callback_mutex{};
     Mavsdk::NewSystemCallback _new_system_callback{nullptr};
-
-    Mavsdk::event_callback_t _on_discover_callback{nullptr};
-    Mavsdk::event_callback_t _on_timeout_callback{nullptr};
 
     Time _time{};
 
@@ -141,6 +138,8 @@ private:
     std::thread* _work_thread{nullptr};
     std::thread* _process_user_callbacks_thread{nullptr};
     SafeQueue<UserCallback> _user_callback_queue{};
+
+    bool _message_logging_on{false};
     bool _callback_debugging{false};
 
     std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
@@ -149,6 +148,9 @@ private:
     void* _heartbeat_send_cookie{nullptr};
 
     std::atomic<bool> _should_exit = {false};
+
+    std::atomic<uint8_t> _base_mode = 0;
+    std::atomic<uint32_t> _custom_mode = 0;
 };
 
 } // namespace mavsdk

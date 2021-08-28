@@ -5,17 +5,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(fly_qgc_mission)
 
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(fly_qgc_mission
     fly_qgc_mission.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(fly_qgc_mission
     MAVSDK::mavsdk_action
@@ -23,3 +17,9 @@ target_link_libraries(fly_qgc_mission
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(fly_qgc_mission PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(fly_qgc_mission PRIVATE -WX -W2)
+endif()

@@ -73,7 +73,7 @@ Failure::Result FailureImpl::inject(
         return Failure::Result::Disabled;
     }
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*_parent};
 
     command.command = MAV_CMD_INJECT_FAILURE;
     command.params.param1 = static_cast<float>(failure_unit);

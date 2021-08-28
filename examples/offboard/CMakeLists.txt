@@ -5,21 +5,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(offboard)
 
-if(MINGW OR MSVC)
-    add_definitions("-D_USE_MATH_DEFINES") # For M_PI
-endif()
-
-if(MSVC)
-    add_definitions("-WX -W2")
-else()
-    add_definitions("-Wall -Wextra")
-endif()
+add_executable(offboard
+    offboard.cpp
+)
 
 find_package(MAVSDK REQUIRED)
-
-add_executable(offboard
-    offboard_velocity.cpp
-)
 
 target_link_libraries(offboard
     MAVSDK::mavsdk_action
@@ -27,3 +17,14 @@ target_link_libraries(offboard
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
 )
+
+if(NOT MSVC)
+    add_compile_options(offboard PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(offboard PRIVATE -WX -W2)
+endif()
+
+if(MINGW OR MSVC)
+    # For M_PI
+    add_target_definitions(offboard "-D_USE_MATH_DEFINES")
+endif()

@@ -20,6 +20,13 @@ MAVLinkMissionTransfer::~MAVLinkMissionTransfer() {}
 std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_items_async(
     uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback)
 {
+    if (!_int_messages_supported) {
+        if (callback) {
+            callback(Result::IntMessagesNotSupported);
+        }
+        return {};
+    }
+
     auto ptr = std::make_shared<UploadWorkItem>(
         _sender, _message_handler, _timeout_handler, type, items, _timeout_s_callback(), callback);
 
@@ -31,8 +38,41 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_i
 std::weak_ptr<MAVLinkMissionTransfer::WorkItem>
 MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallback callback)
 {
+    if (!_int_messages_supported) {
+        if (callback) {
+            callback(Result::IntMessagesNotSupported, {});
+        }
+        return {};
+    }
+
     auto ptr = std::make_shared<DownloadWorkItem>(
         _sender, _message_handler, _timeout_handler, type, _timeout_s_callback(), callback);
+
+    _work_queue.push_back(ptr);
+
+    return std::weak_ptr<WorkItem>(ptr);
+}
+
+std::weak_ptr<MAVLinkMissionTransfer::WorkItem>
+MAVLinkMissionTransfer::receive_incoming_items_async(
+    uint8_t type, uint32_t mission_count, uint8_t target_component, ResultAndItemsCallback callback)
+{
+    if (!_int_messages_supported) {
+        if (callback) {
+            callback(Result::IntMessagesNotSupported, {});
+        }
+        return {};
+    }
+
+    auto ptr = std::make_shared<ReceiveIncomingMission>(
+        _sender,
+        _message_handler,
+        _timeout_handler,
+        type,
+        _timeout_s_callback(),
+        callback,
+        mission_count,
+        target_component);
 
     _work_queue.push_back(ptr);
 
@@ -197,11 +237,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
 {
     mavlink_message_t message;
     mavlink_msg_mission_count_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _items.size(),
         _type);
 
@@ -211,6 +251,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
         return;
     }
 
+    // LogDebug() << "Sending send_count, count: " << _items.size() << ", retries: " <<
+    // _retries_done;
+
     ++_retries_done;
 }
 
@@ -218,11 +261,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         MAV_MISSION_OPERATION_CANCELLED,
         _type);
 
@@ -236,30 +279,48 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 }
 
 void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
-    const mavlink_message_t& unused)
+    const mavlink_message_t& request_message)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    if (_sender.autopilot() == Sender::Autopilot::ArduPilot) {
+        // ArduCopter 3.6 sends MISSION_REQUEST (not _INT) but actually accepts ITEM_INT in reply
+        mavlink_mission_request_t request;
+        mavlink_msg_mission_request_decode(&request_message, &request);
 
-    // We only support int, so we nack this and thus tell the autopilot to use int.
-    UNUSED(unused);
+        // FIXME: this will mess with the sequence number.
+        mavlink_message_t request_int_message;
+        mavlink_msg_mission_request_int_pack(
+            request_message.sysid,
+            request_message.compid,
+            &request_int_message,
+            request.target_system,
+            request.target_component,
+            request.seq,
+            request.mission_type);
 
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
-        &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
-        MAV_MISSION_UNSUPPORTED,
-        _type);
+        process_mission_request_int(request_int_message);
+    } else {
+        std::lock_guard<std::mutex> lock(_mutex);
 
-    if (!_sender.send_message(message)) {
-        _timeout_handler.remove(_cookie);
-        callback_and_reset(Result::ConnectionError);
-        return;
+        // We only support int, so we nack this and thus tell the autopilot to use int.
+        UNUSED(request_message);
+
+        mavlink_message_t message;
+        mavlink_msg_mission_ack_pack(
+            _sender.get_own_system_id(),
+            _sender.get_own_component_id(),
+            &message,
+            _sender.get_system_id(),
+            MAV_COMP_ID_AUTOPILOT1,
+            MAV_MISSION_UNSUPPORTED,
+            _type);
+
+        if (!_sender.send_message(message)) {
+            _timeout_handler.remove(_cookie);
+            callback_and_reset(Result::ConnectionError);
+            return;
+        }
+        _timeout_handler.refresh(_cookie);
     }
-
-    _timeout_handler.refresh(_cookie);
 }
 
 void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
@@ -272,6 +333,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
 
     _step = Step::SendItems;
 
+    // LogDebug() << "Process mission_request_int, seq: " << request_int.seq
+    //            << ", next expected sequence: " << _next_sequence;
+
     if (_next_sequence < request_int.seq) {
         // We should not go back to a previous one.
         // TODO: figure out if we should error here.
@@ -281,6 +345,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
     } else if (_next_sequence > request_int.seq) {
         // We have already sent that one before.
         if (_retries_done >= retries) {
+            LogWarn() << "mission_request_int: retries exceeded";
             _timeout_handler.remove(_cookie);
             callback_and_reset(Result::Timeout);
             return;
@@ -306,11 +371,11 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
 
     mavlink_message_t message;
     mavlink_msg_mission_item_int_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _next_sequence,
         _items[_next_sequence].frame,
         _items[_next_sequence].command,
@@ -324,6 +389,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
         _items[_next_sequence].y,
         _items[_next_sequence].z,
         _type);
+
+    // LogDebug() << "Sending mission_item_int seq: " << _next_sequence
+    //           << ", retry: " << _retries_done;
 
     ++_next_sequence;
 
@@ -342,6 +410,8 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_ack(const mavlink_m
 
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
+
+    // LogDebug() << "Received mission_ack type: " << static_cast<int>(mission_ack.type);
 
     _timeout_handler.remove(_cookie);
 
@@ -397,7 +467,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
+    // LogDebug() << "Timeout triggered, retries: " << _retries_done;
+
     if (_retries_done >= retries) {
+        LogWarn() << "timeout: retries exceeded";
         callback_and_reset(Result::Timeout);
         return;
     }
@@ -409,7 +482,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
             break;
 
         case Step::SendItems:
-            callback_and_reset(Result::Timeout);
+            // When waiting for items requested we should wait longer than
+            // just our timeout, otherwise we give up too quickly.
+            ++_retries_done;
+            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
             break;
     }
 }
@@ -477,11 +553,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_list()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_list_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _type);
 
     if (!_sender.send_message(message)) {
@@ -497,11 +573,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_int_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _next_sequence,
         _type);
 
@@ -518,11 +594,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         MAV_MISSION_ACCEPTED,
         _type);
 
@@ -539,11 +615,11 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         MAV_MISSION_OPERATION_CANCELLED,
         _type);
 
@@ -645,6 +721,190 @@ void MAVLinkMissionTransfer::DownloadWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
+MAVLinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
+    Sender& sender,
+    MAVLinkMessageHandler& message_handler,
+    TimeoutHandler& timeout_handler,
+    uint8_t type,
+    double timeout_s,
+    ResultAndItemsCallback callback,
+    uint32_t mission_count,
+    uint8_t target_component) :
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
+    _callback(callback),
+    _mission_count(mission_count),
+    _target_component(target_component)
+{}
+
+MAVLinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _message_handler.unregister_all(this);
+    _timeout_handler.remove(_cookie);
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::start()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_MISSION_ITEM_INT,
+        [this](const mavlink_message_t& message) { process_mission_item_int(message); },
+        this);
+
+    _items.clear();
+
+    _started = true;
+    _retries_done = 0;
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    process_mission_count();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::cancel()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _timeout_handler.remove(_cookie);
+    send_cancel_and_finish();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::request_item()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_request_int_pack(
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
+        &message,
+        _sender.get_system_id(),
+        _target_component,
+        _next_sequence,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        _timeout_handler.remove(_cookie);
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    ++_retries_done;
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
+        &message,
+        _sender.get_system_id(),
+        _target_component,
+        MAV_MISSION_ACCEPTED,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    // We do not wait on anything coming back after this.
+    callback_and_reset(Result::Success);
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
+        &message,
+        _sender.get_system_id(),
+        _target_component,
+        MAV_MISSION_OPERATION_CANCELLED,
+        _type);
+
+    if (!_sender.send_message(message)) {
+        callback_and_reset(Result::ConnectionError);
+        return;
+    }
+
+    // We do not wait on anything coming back after this.
+    callback_and_reset(Result::Cancelled);
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_count()
+{
+    if (_mission_count == 0) {
+        send_ack_and_finish();
+        _timeout_handler.remove(_cookie);
+        return;
+    }
+
+    _timeout_handler.refresh(_cookie);
+    _next_sequence = 0;
+    _step = Step::RequestItem;
+    _retries_done = 0;
+    _expected_count = _mission_count;
+    request_item();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_item_int(
+    const mavlink_message_t& message)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _timeout_handler.refresh(_cookie);
+
+    mavlink_mission_item_int_t item_int;
+    mavlink_msg_mission_item_int_decode(&message, &item_int);
+
+    _items.push_back(ItemInt{
+        item_int.seq,
+        item_int.frame,
+        item_int.command,
+        item_int.current,
+        item_int.autocontinue,
+        item_int.param1,
+        item_int.param2,
+        item_int.param3,
+        item_int.param4,
+        item_int.x,
+        item_int.y,
+        item_int.z,
+        item_int.mission_type});
+
+    if (_next_sequence + 1 == _expected_count) {
+        _timeout_handler.remove(_cookie);
+        send_ack_and_finish();
+
+    } else {
+        _next_sequence = item_int.seq + 1;
+        _retries_done = 0;
+        request_item();
+    }
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::process_timeout()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    if (_retries_done >= retries) {
+        callback_and_reset(Result::Timeout);
+        return;
+    }
+
+    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    request_item();
+}
+
+void MAVLinkMissionTransfer::ReceiveIncomingMission::callback_and_reset(Result result)
+{
+    if (_callback) {
+        _callback(result, _items);
+    }
+    _callback = nullptr;
+    _done = true;
+}
+
 MAVLinkMissionTransfer::ClearWorkItem::ClearWorkItem(
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
@@ -693,11 +953,11 @@ void MAVLinkMissionTransfer::ClearWorkItem::send_clear()
 {
     mavlink_message_t message;
     mavlink_msg_mission_clear_all_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _type);
 
     if (!_sender.send_message(message)) {
@@ -785,6 +1045,11 @@ void MAVLinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
+void MAVLinkMissionTransfer::set_int_messages_supported(bool supported)
+{
+    _int_messages_supported = supported;
+}
+
 MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
@@ -840,11 +1105,11 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_set_current_pack(
-        _sender.own_address.system_id,
-        _sender.own_address.component_id,
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &message,
-        _sender.target_address.system_id,
-        _sender.target_address.component_id,
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
         _current);
 
     if (!_sender.send_message(message)) {

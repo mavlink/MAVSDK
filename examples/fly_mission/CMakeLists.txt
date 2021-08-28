@@ -5,24 +5,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(fly_mission)
 
-find_package(Threads REQUIRED)
-
-if(NOT MSVC)
-    add_definitions("-Wall -Wextra")
-else()
-    add_definitions("-WX -W2")
-endif()
-
-find_package(MAVSDK REQUIRED)
-
 add_executable(fly_mission
     fly_mission.cpp
 )
+
+find_package(MAVSDK REQUIRED)
 
 target_link_libraries(fly_mission
     MAVSDK::mavsdk_action
     MAVSDK::mavsdk_mission
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
-    ${CMAKE_THREAD_LIBS_INIT}
 )
+
+if(NOT MSVC)
+    add_compile_options(fly_mission PRIVATE -Wall -Wextra)
+else()
+    add_compile_options(fly_mission PRIVATE -WX -W2)
+endif()

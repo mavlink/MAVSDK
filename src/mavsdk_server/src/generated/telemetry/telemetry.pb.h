@@ -663,12 +663,13 @@ enum TelemetryResult_Result : int {
   TelemetryResult_Result_RESULT_BUSY = 4,
   TelemetryResult_Result_RESULT_COMMAND_DENIED = 5,
   TelemetryResult_Result_RESULT_TIMEOUT = 6,
+  TelemetryResult_Result_RESULT_UNSUPPORTED = 7,
   TelemetryResult_Result_TelemetryResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   TelemetryResult_Result_TelemetryResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool TelemetryResult_Result_IsValid(int value);
 constexpr TelemetryResult_Result TelemetryResult_Result_Result_MIN = TelemetryResult_Result_RESULT_UNKNOWN;
-constexpr TelemetryResult_Result TelemetryResult_Result_Result_MAX = TelemetryResult_Result_RESULT_TIMEOUT;
+constexpr TelemetryResult_Result TelemetryResult_Result_Result_MAX = TelemetryResult_Result_RESULT_UNSUPPORTED;
 constexpr int TelemetryResult_Result_Result_ARRAYSIZE = TelemetryResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TelemetryResult_Result_descriptor();
@@ -17289,6 +17290,7 @@ class Battery PROTOBUF_FINAL :
   enum : int {
     kVoltageVFieldNumber = 1,
     kRemainingPercentFieldNumber = 2,
+    kIdFieldNumber = 3,
   };
   // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_voltage_v();
@@ -17308,6 +17310,15 @@ class Battery PROTOBUF_FINAL :
   void _internal_set_remaining_percent(float value);
   public:
 
+  // uint32 id = 3 [(.mavsdk.options.default_value) = "0"];
+  void clear_id();
+  ::PROTOBUF_NAMESPACE_ID::uint32 id() const;
+  void set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_id() const;
+  void _internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Battery)
  private:
   class _Internal;
@@ -17317,6 +17328,7 @@ class Battery PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   float voltage_v_;
   float remaining_percent_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 id_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -17438,10 +17450,10 @@ class Health PROTOBUF_FINAL :
     kIsGyrometerCalibrationOkFieldNumber = 1,
     kIsAccelerometerCalibrationOkFieldNumber = 2,
     kIsMagnetometerCalibrationOkFieldNumber = 3,
-    kIsLevelCalibrationOkFieldNumber = 4,
     kIsLocalPositionOkFieldNumber = 5,
     kIsGlobalPositionOkFieldNumber = 6,
     kIsHomePositionOkFieldNumber = 7,
+    kIsArmableFieldNumber = 8,
   };
   // bool is_gyrometer_calibration_ok = 1 [(.mavsdk.options.default_value) = "false"];
   void clear_is_gyrometer_calibration_ok();
@@ -17468,15 +17480,6 @@ class Health PROTOBUF_FINAL :
   private:
   bool _internal_is_magnetometer_calibration_ok() const;
   void _internal_set_is_magnetometer_calibration_ok(bool value);
-  public:
-
-  // bool is_level_calibration_ok = 4 [(.mavsdk.options.default_value) = "false"];
-  void clear_is_level_calibration_ok();
-  bool is_level_calibration_ok() const;
-  void set_is_level_calibration_ok(bool value);
-  private:
-  bool _internal_is_level_calibration_ok() const;
-  void _internal_set_is_level_calibration_ok(bool value);
   public:
 
   // bool is_local_position_ok = 5 [(.mavsdk.options.default_value) = "false"];
@@ -17506,6 +17509,15 @@ class Health PROTOBUF_FINAL :
   void _internal_set_is_home_position_ok(bool value);
   public:
 
+  // bool is_armable = 8 [(.mavsdk.options.default_value) = "false"];
+  void clear_is_armable();
+  bool is_armable() const;
+  void set_is_armable(bool value);
+  private:
+  bool _internal_is_armable() const;
+  void _internal_set_is_armable(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Health)
  private:
   class _Internal;
@@ -17516,10 +17528,10 @@ class Health PROTOBUF_FINAL :
   bool is_gyrometer_calibration_ok_;
   bool is_accelerometer_calibration_ok_;
   bool is_magnetometer_calibration_ok_;
-  bool is_level_calibration_ok_;
   bool is_local_position_ok_;
   bool is_global_position_ok_;
   bool is_home_position_ok_;
+  bool is_armable_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -17660,7 +17672,7 @@ class RcStatus PROTOBUF_FINAL :
   void _internal_set_is_available(bool value);
   public:
 
-  // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "0"];
+  // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_signal_strength_percent();
   float signal_strength_percent() const;
   void set_signal_strength_percent(float value);
@@ -21056,6 +21068,8 @@ class TelemetryResult PROTOBUF_FINAL :
     TelemetryResult_Result_RESULT_COMMAND_DENIED;
   static constexpr Result RESULT_TIMEOUT =
     TelemetryResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_UNSUPPORTED =
+    TelemetryResult_Result_RESULT_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return TelemetryResult_Result_IsValid(value);
   }
@@ -26993,6 +27007,26 @@ inline void RawGps::set_yaw_deg(float value) {
 
 // Battery
 
+// uint32 id = 3 [(.mavsdk.options.default_value) = "0"];
+inline void Battery::clear_id() {
+  id_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Battery::_internal_id() const {
+  return id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Battery::id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.id)
+  return _internal_id();
+}
+inline void Battery::_internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  id_ = value;
+}
+inline void Battery::set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.id)
+}
+
 // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
 inline void Battery::clear_voltage_v() {
   voltage_v_ = 0;
@@ -27097,26 +27131,6 @@ inline void Health::set_is_magnetometer_calibration_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_magnetometer_calibration_ok)
 }
 
-// bool is_level_calibration_ok = 4 [(.mavsdk.options.default_value) = "false"];
-inline void Health::clear_is_level_calibration_ok() {
-  is_level_calibration_ok_ = false;
-}
-inline bool Health::_internal_is_level_calibration_ok() const {
-  return is_level_calibration_ok_;
-}
-inline bool Health::is_level_calibration_ok() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Health.is_level_calibration_ok)
-  return _internal_is_level_calibration_ok();
-}
-inline void Health::_internal_set_is_level_calibration_ok(bool value) {
-  
-  is_level_calibration_ok_ = value;
-}
-inline void Health::set_is_level_calibration_ok(bool value) {
-  _internal_set_is_level_calibration_ok(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_level_calibration_ok)
-}
-
 // bool is_local_position_ok = 5 [(.mavsdk.options.default_value) = "false"];
 inline void Health::clear_is_local_position_ok() {
   is_local_position_ok_ = false;
@@ -27177,6 +27191,26 @@ inline void Health::set_is_home_position_ok(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_home_position_ok)
 }
 
+// bool is_armable = 8 [(.mavsdk.options.default_value) = "false"];
+inline void Health::clear_is_armable() {
+  is_armable_ = false;
+}
+inline bool Health::_internal_is_armable() const {
+  return is_armable_;
+}
+inline bool Health::is_armable() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Health.is_armable)
+  return _internal_is_armable();
+}
+inline void Health::_internal_set_is_armable(bool value) {
+  
+  is_armable_ = value;
+}
+inline void Health::set_is_armable(bool value) {
+  _internal_set_is_armable(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Health.is_armable)
+}
+
 // -------------------------------------------------------------------
 
 // RcStatus
@@ -27221,7 +27255,7 @@ inline void RcStatus::set_is_available(bool value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.RcStatus.is_available)
 }
 
-// float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "0"];
+// float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void RcStatus::clear_signal_strength_percent() {
   signal_strength_percent_ = 0;
 }

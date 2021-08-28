@@ -49,12 +49,6 @@ bool System::is_connected() const
     return _system_impl->is_connected();
 }
 
-uint64_t System::get_uuid() const
-{
-    // We want to support UUIDs if the autopilot tells us.
-    return _system_impl->get_uuid();
-}
-
 uint8_t System::get_system_id() const
 {
     return _system_impl->get_system_id();
@@ -73,6 +67,51 @@ void System::register_component_discovered_callback(DiscoverCallback callback) c
 void System::enable_timesync()
 {
     _system_impl->enable_timesync();
+}
+
+void System::add_capabilities(uint64_t add_capabilities)
+{
+    _system_impl->add_capabilities(add_capabilities);
+}
+
+void System::set_flight_sw_version(uint32_t flight_sw_version)
+{
+    _system_impl->set_flight_sw_version(flight_sw_version);
+}
+
+void System::set_middleware_sw_version(uint32_t middleware_sw_version)
+{
+    _system_impl->set_middleware_sw_version(middleware_sw_version);
+}
+
+void System::set_os_sw_version(uint32_t os_sw_version)
+{
+    _system_impl->set_os_sw_version(os_sw_version);
+}
+
+void System::set_board_version(uint32_t board_version)
+{
+    _system_impl->set_board_version(board_version);
+}
+
+void System::set_vendor_id(uint16_t vendor_id)
+{
+    _system_impl->set_vendor_id(vendor_id);
+}
+
+void System::set_product_id(uint16_t product_id)
+{
+    _system_impl->set_product_id(product_id);
+}
+
+bool System::set_uid2(std::string uid2)
+{
+    return _system_impl->set_uid2(uid2);
+}
+
+System::AutopilotVersion System::get_autopilot_version_data()
+{
+    return _system_impl->get_autopilot_version_data();
 }
 
 } // namespace mavsdk

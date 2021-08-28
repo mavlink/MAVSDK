@@ -10,11 +10,14 @@
 
 namespace mavsdk {
 
-ManualControl::ManualControl(System& system) : PluginBase(), _impl{new ManualControlImpl(system)} {}
+ManualControl::ManualControl(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<ManualControlImpl>(system)}
+{}
 
 ManualControl::ManualControl(std::shared_ptr<System> system) :
     PluginBase(),
-    _impl{new ManualControlImpl(system)}
+    _impl{std::make_unique<ManualControlImpl>(system)}
 {}
 
 ManualControl::~ManualControl() {}

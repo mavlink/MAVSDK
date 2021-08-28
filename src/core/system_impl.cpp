@@ -18,7 +18,7 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
-    Sender(parent.own_address, _target_address),
+    Sender(),
     _parent(parent),
     _params(*this),
     _send_commands(*this),
@@ -36,7 +36,6 @@ SystemImpl::~SystemImpl()
     _should_exit = true;
     _message_handler.unregister_all(this);
 
-    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
     if (!_always_connected) {
         unregister_timeout_handler(_heartbeat_timeout_cookie);
     }
@@ -56,23 +55,43 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
 
     if (connected) {
         _always_connected = true;
-        _uuid = system_id;
-        _uuid_initialized = true;
         set_connected();
     }
 
     _message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
 
-    // We're registering for Autopilot version because it is a good time do so,
-    // regardless whether we deal with Autopilot.
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
+
     _message_handler.register_one(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&SystemImpl::process_autopilot_version, this, _1),
         this);
 
-    _message_handler.register_one(
-        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
+    register_mavlink_command_handler(
+        MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
+        std::bind(&SystemImpl::process_autopilot_version_request, this, std::placeholders::_1),
+        this);
+
+    // TO-DO!
+    register_mavlink_command_handler(
+        MAV_CMD_REQUEST_MESSAGE,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            mavlink_message_t msg;
+            mavlink_msg_command_ack_pack(
+                _parent.get_own_system_id(),
+                _parent.get_own_component_id(),
+                &msg,
+                command.command,
+                MAV_RESULT::MAV_RESULT_UNSUPPORTED,
+                255,
+                0,
+                command.origin_system_id,
+                command.origin_component_id);
+            return msg;
+        },
+        this);
 
     add_new_component(comp_id);
 }
@@ -195,51 +214,13 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
         }
     }
 
-    // If the component is an autopilot and we don't know its UUID, then try to find out.
-    // If it's an autopilot, set_connected() will be called in process_autopilot_version().
-    if (is_autopilot(message.compid) && !_uuid_initialized) {
-        request_autopilot_version();
-    } else {
-        set_connected();
-    }
-}
-
-void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
-{
-    // Ignore if they don't come from the autopilot component
-    if (message.compid != MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
-        return;
+    if (heartbeat.autopilot == MAV_AUTOPILOT_PX4) {
+        _autopilot = Autopilot::Px4;
+    } else if (heartbeat.autopilot == MAV_AUTOPILOT_ARDUPILOTMEGA) {
+        _autopilot = Autopilot::ArduPilot;
     }
 
-    mavlink_autopilot_version_t autopilot_version;
-    mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
-
-    _supports_mission_int =
-        ((autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT) ? true : false);
-
-    if (_uuid == 0 && autopilot_version.uid != 0) {
-        // This is the best case. The system has a UUID and we were able to get it.
-        LogDebug() << "Setting UUID to: " << autopilot_version.uid;
-        _uuid = autopilot_version.uid;
-
-    } else if (_uuid == 0 && autopilot_version.uid == 0) {
-        // This is not ideal because the system has no valid UUID.
-        // In this case we use the mavlink system ID as the UUID.
-        LogWarn() << "Fall back to MAVLink system ID " << static_cast<int>(target_address.system_id)
-                  << " because autopilot_version.uid was not set";
-        _uuid = target_address.system_id;
-
-    } else if (_uuid != autopilot_version.uid) {
-        // TODO: this is bad, we should raise a flag to invalidate system.
-        LogErr() << "Error: UUID changed from: " << _uuid << " to " << autopilot_version.uid;
-        _uuid = autopilot_version.uid;
-    }
-
-    _uuid_initialized = true;
     set_connected();
-
-    _autopilot_version_pending = false;
-    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
 }
 
 void SystemImpl::process_statustext(const mavlink_message_t& message)
@@ -259,6 +240,15 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
             entry.callback(maybe_result.value());
         }
     }
+}
+
+void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
+{
+    mavlink_autopilot_version_t autopilot_version;
+    mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
+
+    _mission_transfer.set_int_messages_supported(
+        autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT);
 }
 
 void SystemImpl::heartbeats_timed_out()
@@ -292,6 +282,27 @@ void SystemImpl::system_thread()
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
+}
+
+std::optional<mavlink_message_t>
+SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
+{
+    LogDebug() << "Autopilot Capabilities Request";
+
+    send_autopilot_version();
+
+    mavlink_message_t msg{};
+    mavlink_msg_command_ack_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        command.command,
+        MAV_RESULT::MAV_RESULT_ACCEPTED,
+        255,
+        0,
+        command.origin_system_id,
+        command.origin_component_id);
+    return msg;
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)
@@ -441,46 +452,10 @@ bool SystemImpl::send_message(mavlink_message_t& message)
     return _parent.send_message(message);
 }
 
-void SystemImpl::request_autopilot_version()
-{
-    if (_uuid_initialized) {
-        // Already initialized, we can exit.
-        return;
-    }
-
-    if (!_autopilot_version_pending && _uuid_retries >= 3) {
-        // We give up getting a UUID and use the system ID.
-
-        LogWarn() << "No autopilot_version.uid received, using MAVLink system ID instead.";
-        _uuid = target_address.system_id;
-        _uuid_initialized = true;
-        set_connected();
-        return;
-    }
-
-    if (!_autopilot_version_pending) {
-        _autopilot_version_pending = true;
-        send_autopilot_version_request();
-
-        ++_uuid_retries;
-
-        // We set a timeout to stay "pending" for half a second. This way, we
-        // don't give up too early e.g. because multiple components might send
-        // heartbeats and we receive them all at once and run out of retries.
-        // Also, with simulation sped up we might get too many heartbeats in
-        // fast succession.
-
-        register_timeout_handler(
-            [this]() { _autopilot_version_pending = false; },
-            0.5,
-            &_autopilot_version_timed_out_cookie);
-    }
-}
-
 void SystemImpl::send_autopilot_version_request()
 {
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
     command.params.param1 = 1.0f;
@@ -489,10 +464,36 @@ void SystemImpl::send_autopilot_version_request()
     send_command_async(command, nullptr);
 }
 
+void SystemImpl::send_autopilot_version()
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    const uint8_t custom_values[8] = {0}; // TO-DO: maybe?
+
+    mavlink_message_t msg;
+    mavlink_msg_autopilot_version_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        _autopilot_version.capabilities,
+        _autopilot_version.flight_sw_version,
+        _autopilot_version.middleware_sw_version,
+        _autopilot_version.os_sw_version,
+        _autopilot_version.board_version,
+        custom_values,
+        custom_values,
+        custom_values,
+        _autopilot_version.vendor_id,
+        _autopilot_version.product_id,
+        0,
+        _autopilot_version.uid2.data());
+
+    _parent.send_message(msg);
+}
+
 void SystemImpl::send_flight_information_request()
 {
     // We don't care about an answer, we mostly care about receiving FLIGHT_INFORMATION.
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
     command.params.param1 = 1.0f;
@@ -508,11 +509,10 @@ void SystemImpl::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected) {
-            LogDebug() << "Discovered " << _components.size() << " component(s) "
-                       << "(UUID: " << _uuid << ")";
+            LogDebug() << "Discovered " << _components.size() << " component(s)";
 
             _connected = true;
-            _parent.notify_on_discover(_uuid);
+            _parent.notify_on_discover();
 
             // Send a heartbeat back immediately.
             _parent.start_sending_heartbeats();
@@ -536,6 +536,8 @@ void SystemImpl::set_connected()
         // If not yet connected there is nothing to do/
     }
     if (enable_needed) {
+        send_autopilot_version_request();
+
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
         for (auto plugin_impl : _plugin_impls) {
             plugin_impl->enable();
@@ -554,7 +556,7 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _parent.notify_on_timeout(_uuid);
+        _parent.notify_on_timeout();
         if (_is_connected_callback) {
             const auto temp_callback = _is_connected_callback;
             _parent.call_user_callback([temp_callback]() { temp_callback(false); });
@@ -569,12 +571,6 @@ void SystemImpl::set_disconnected()
             plugin_impl->disable();
         }
     }
-}
-
-uint64_t SystemImpl::get_uuid() const
-{
-    // We want to support UUIDs if the autopilot tells us.
-    return _uuid;
 }
 
 uint8_t SystemImpl::get_system_id() const
@@ -647,6 +643,20 @@ void SystemImpl::set_param_float_async(
     _params.set_param_async(name, param_value, callback, cookie);
 }
 
+void SystemImpl::provide_server_param_int(const std::string& name, int32_t value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set<int32_t>(value);
+    _params.provide_server_param(name, param_value);
+}
+
+void SystemImpl::provide_server_param_float(const std::string& name, float value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set<float>(value);
+    _params.provide_server_param(name, param_value);
+}
+
 void SystemImpl::set_param_int_async(
     const std::string& name, int32_t value, success_t callback, const void* cookie)
 {
@@ -669,6 +679,29 @@ void SystemImpl::set_param_ext_int_async(
     MAVLinkParameters::ParamValue param_value;
     param_value.set<int32_t>(value);
     _params.set_param_async(name, param_value, callback, cookie, true);
+}
+
+std::pair<MAVLinkParameters::Result, int>
+SystemImpl::retrieve_server_param_int(const std::string& name)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set<int32_t>(0);
+    auto res = _params.retrieve_server_param(name, param_value);
+    return {res.first, res.second.get<int32_t>()};
+}
+
+std::pair<MAVLinkParameters::Result, float>
+SystemImpl::retrieve_server_param_float(const std::string& name)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set<float>(0.0f);
+    auto res = _params.retrieve_server_param(name, param_value);
+    return {res.first, res.second.get<float>()};
+}
+
+std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::retrieve_all_server_params()
+{
+    return _params.retrieve_all_server_params();
 }
 
 std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const std::string& name)
@@ -925,11 +958,11 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
             break;
         default:
             LogErr() << "Unknown Flight mode.";
-            MavlinkCommandSender::CommandLong empty_command{};
+            MavlinkCommandSender::CommandLong empty_command{*this};
             return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
     }
 
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     command.command = MAV_CMD_DO_SET_MODE;
     command.params.param1 = float(mode);
@@ -1046,6 +1079,69 @@ void SystemImpl::receive_int_param(
     }
 }
 
+void SystemImpl::add_capabilities(uint64_t add_capabilities)
+{
+    std::unique_lock<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.capabilities |= add_capabilities;
+
+    // We need to resend capabilities...
+    lock.unlock();
+    send_autopilot_version();
+}
+
+void SystemImpl::set_flight_sw_version(uint32_t flight_sw_version)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.flight_sw_version = flight_sw_version;
+}
+
+void SystemImpl::set_middleware_sw_version(uint32_t middleware_sw_version)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.middleware_sw_version = middleware_sw_version;
+}
+
+void SystemImpl::set_os_sw_version(uint32_t os_sw_version)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.os_sw_version = os_sw_version;
+}
+
+void SystemImpl::set_board_version(uint32_t board_version)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.board_version = board_version;
+}
+
+void SystemImpl::set_vendor_id(uint16_t vendor_id)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.vendor_id = vendor_id;
+}
+
+void SystemImpl::set_product_id(uint16_t product_id)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    _autopilot_version.product_id = product_id;
+}
+
+bool SystemImpl::set_uid2(std::string uid2)
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    if (uid2.size() > _autopilot_version.uid2.size()) {
+        return false;
+    }
+    _autopilot_version.uid2 = {0};
+    std::copy(uid2.begin(), uid2.end(), _autopilot_version.uid2.data());
+    return true;
+}
+
+System::AutopilotVersion SystemImpl::get_autopilot_version_data()
+{
+    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+    return _autopilot_version;
+}
+
 uint8_t SystemImpl::get_autopilot_id() const
 {
     for (auto compid : _components)
@@ -1141,7 +1237,7 @@ void SystemImpl::set_msg_rate_async(
 MavlinkCommandSender::CommandLong
 SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
-    MavlinkCommandSender::CommandLong command{};
+    MavlinkCommandSender::CommandLong command{*this};
 
     // 0 to request default rate, -1 to stop stream
 
@@ -1270,6 +1366,32 @@ void SystemImpl::unregister_mavlink_command_handler(uint16_t cmd_id, const void*
 void SystemImpl::unregister_all_mavlink_command_handlers(const void* cookie)
 {
     _receive_commands.unregister_all_mavlink_command_handlers(cookie);
+}
+
+void SystemImpl::set_server_armed(bool armed)
+{
+    uint8_t base_mode = _parent.get_base_mode();
+    if (armed) {
+        base_mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    } else {
+        base_mode &= ~MAV_MODE_FLAG_SAFETY_ARMED;
+    }
+    _parent.set_base_mode(base_mode);
+}
+
+bool SystemImpl::is_server_armed() const
+{
+    return (_parent.get_base_mode() & MAV_MODE_FLAG_SAFETY_ARMED) == MAV_MODE_FLAG_SAFETY_ARMED;
+}
+
+void SystemImpl::set_custom_mode(uint32_t custom_mode)
+{
+    _parent.set_custom_mode(custom_mode);
+}
+
+uint32_t SystemImpl::get_custom_mode() const
+{
+    return _parent.get_custom_mode();
 }
 
 } // namespace mavsdk

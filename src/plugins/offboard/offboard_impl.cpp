@@ -577,6 +577,8 @@ Offboard::Result OffboardImpl::send_attitude()
     q[2] = float(cos_phi_2 * sin_theta_2 * cos_psi_2 + sin_phi_2 * cos_theta_2 * sin_psi_2);
     q[3] = float(cos_phi_2 * cos_theta_2 * sin_psi_2 - sin_phi_2 * sin_theta_2 * cos_psi_2);
 
+    const float thrust_body[3] = {0.0f, 0.0f, 0.0f};
+
     mavlink_message_t message;
     mavlink_msg_set_attitude_target_pack(
         _parent->get_own_system_id(),
@@ -590,7 +592,8 @@ Offboard::Result OffboardImpl::send_attitude()
         0,
         0,
         0,
-        thrust);
+        thrust,
+        thrust_body);
     return _parent->send_message(message) ? Offboard::Result::Success :
                                             Offboard::Result::ConnectionError;
 }
@@ -603,6 +606,8 @@ Offboard::Result OffboardImpl::send_attitude_rate()
         std::lock_guard<std::mutex> lock(_mutex);
         return _attitude_rate;
     }();
+
+    const float thrust_body[3] = {0.0f, 0.0f, 0.0f};
 
     mavlink_message_t message;
     mavlink_msg_set_attitude_target_pack(
@@ -617,7 +622,8 @@ Offboard::Result OffboardImpl::send_attitude_rate()
         to_rad_from_deg(attitude_rate.roll_deg_s),
         to_rad_from_deg(attitude_rate.pitch_deg_s),
         to_rad_from_deg(attitude_rate.yaw_deg_s),
-        _attitude_rate.thrust_value);
+        _attitude_rate.thrust_value,
+        thrust_body);
     return _parent->send_message(message) ? Offboard::Result::Success :
                                             Offboard::Result::ConnectionError;
 }

@@ -5,6 +5,8 @@
 #include "follow_me/follow_me.grpc.pb.h"
 #include "plugins/follow_me/follow_me.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename FollowMe = FollowMe>
+template<typename FollowMe = FollowMe, typename LazyPlugin = LazyPlugin<FollowMe>>
 class FollowMeServiceImpl final : public rpc::follow_me::FollowMeService::Service {
 public:
-    FollowMeServiceImpl(FollowMe& follow_me) : _follow_me(follow_me) {}
+    FollowMeServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::FollowMe::Result& result) const
@@ -210,7 +212,11 @@ public:
         const rpc::follow_me::GetConfigRequest* /* request */,
         rpc::follow_me::GetConfigResponse* response) override
     {
-        auto result = _follow_me.get_config();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_config();
 
         if (response != nullptr) {
             response->set_allocated_config(translateToRpcConfig(result).release());
@@ -224,12 +230,22 @@ public:
         const rpc::follow_me::SetConfigRequest* request,
         rpc::follow_me::SetConfigResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetConfig sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _follow_me.set_config(translateFromRpcConfig(request->config()));
+        auto result =
+            _lazy_plugin.maybe_plugin()->set_config(translateFromRpcConfig(request->config()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -243,7 +259,11 @@ public:
         const rpc::follow_me::IsActiveRequest* /* request */,
         rpc::follow_me::IsActiveResponse* response) override
     {
-        auto result = _follow_me.is_active();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->is_active();
 
         if (response != nullptr) {
             response->set_is_active(result);
@@ -257,13 +277,22 @@ public:
         const rpc::follow_me::SetTargetLocationRequest* request,
         rpc::follow_me::SetTargetLocationResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SetTargetLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result =
-            _follow_me.set_target_location(translateFromRpcTargetLocation(request->location()));
+        auto result = _lazy_plugin.maybe_plugin()->set_target_location(
+            translateFromRpcTargetLocation(request->location()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -277,7 +306,11 @@ public:
         const rpc::follow_me::GetLastLocationRequest* /* request */,
         rpc::follow_me::GetLastLocationResponse* response) override
     {
-        auto result = _follow_me.get_last_location();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_last_location();
 
         if (response != nullptr) {
             response->set_allocated_location(translateToRpcTargetLocation(result).release());
@@ -291,7 +324,16 @@ public:
         const rpc::follow_me::StartRequest* /* request */,
         rpc::follow_me::StartResponse* response) override
     {
-        auto result = _follow_me.start();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->start();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -305,7 +347,16 @@ public:
         const rpc::follow_me::StopRequest* /* request */,
         rpc::follow_me::StopResponse* response) override
     {
-        auto result = _follow_me.stop();
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::FollowMe::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->stop();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -349,7 +400,7 @@ private:
         }
     }
 
-    FollowMe& _follow_me;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

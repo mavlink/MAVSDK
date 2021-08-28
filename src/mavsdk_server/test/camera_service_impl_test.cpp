@@ -8,6 +8,7 @@
 
 #include "camera/camera_service_impl.h"
 #include "camera/mocks/camera_mock.h"
+#include "mocks/lazy_plugin_mock.h"
 
 namespace {
 
@@ -17,7 +18,9 @@ using testing::NiceMock;
 using testing::Return;
 
 using MockCamera = NiceMock<mavsdk::testing::MockCamera>;
-using CameraServiceImpl = mavsdk::mavsdk_server::CameraServiceImpl<MockCamera>;
+using MockLazyPlugin =
+    testing::NiceMock<mavsdk::mavsdk_server::testing::MockLazyPlugin<MockCamera>>;
+using CameraServiceImpl = mavsdk::mavsdk_server::CameraServiceImpl<MockCamera, MockLazyPlugin>;
 using CameraService = mavsdk::rpc::camera::CameraService;
 
 using CameraResult = mavsdk::rpc::camera::CameraResult;
@@ -47,8 +50,10 @@ std::vector<InputPair> generateInputPairs();
 
 class CameraServiceImplTest : public ::testing::TestWithParam<InputPair> {
 protected:
-    CameraServiceImplTest() : _camera_service(_camera)
+    CameraServiceImplTest() : _camera_service(_lazy_plugin)
     {
+        ON_CALL(_lazy_plugin, maybe_plugin()).WillByDefault(Return(&_camera));
+
         _callback_saved_future = _callback_saved_promise.get_future();
     }
 
@@ -144,6 +149,7 @@ protected:
         std::shared_ptr<mavsdk::rpc::camera::SetSettingResponse> response,
         mavsdk::Camera::Result result);
 
+    MockLazyPlugin _lazy_plugin{};
     MockCamera _camera{};
     CameraServiceImpl _camera_service;
     std::unique_ptr<grpc::Server> _server{};
@@ -538,7 +544,7 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
     auto video_info_events_future =
         subscribeVideoStreamInfoAsync(received_video_info_events, context);
     subscription_future.wait();
-    for (const auto video_info_event : video_info_events) {
+    for (const auto& video_info_event : video_info_events) {
         video_info_callback(video_info_event);
     }
     context->TryCancel();
@@ -673,7 +679,7 @@ void CameraServiceImplTest::checkSendsCaptureInfo(
     auto capture_info_events_future =
         subscribeCaptureInfoAsync(received_capture_info_events, context);
     subscription_future.wait();
-    for (const auto capture_info_event : capture_info_events) {
+    for (const auto& capture_info_event : capture_info_events) {
         capture_info_callback(capture_info_event);
     }
     context->TryCancel();
@@ -816,7 +822,7 @@ void CameraServiceImplTest::checkSendsStatus(
     std::vector<mavsdk::Camera::Status> received_camera_status_events;
     auto camera_status_events_future = subscribeStatusAsync(received_camera_status_events, context);
     subscription_future.wait();
-    for (const auto camera_status_event : camera_status_events) {
+    for (const auto& camera_status_event : camera_status_events) {
         camera_status_callback(camera_status_event);
     }
     context->TryCancel();
@@ -965,7 +971,7 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
     auto current_settings_events_future =
         subscribeCurrentSettingsAsync(received_current_settings_events, context);
     subscription_future.wait();
-    for (const auto current_settings_event : current_settings_events) {
+    for (const auto& current_settings_event : current_settings_events) {
         current_settings_callback(current_settings_event);
     }
     context->TryCancel();
@@ -1117,7 +1123,7 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
     auto possible_setting_options_events_future =
         subscribePossibleSettingOptionsAsync(received_possible_setting_options_events, context);
     subscription_future.wait();
-    for (const auto possible_setting_options_event : possible_setting_options_events) {
+    for (const auto& possible_setting_options_event : possible_setting_options_events) {
         possible_setting_options_callback(possible_setting_options_event);
     }
     context->TryCancel();

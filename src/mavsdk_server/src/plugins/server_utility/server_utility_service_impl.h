@@ -6,6 +6,8 @@
 #include "server_utility/server_utility.grpc.pb.h"
 #include "plugins/server_utility/server_utility.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -18,10 +20,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename ServerUtility = ServerUtility>
+template<typename ServerUtility = ServerUtility, typename LazyPlugin = LazyPlugin<ServerUtility>>
 class ServerUtilityServiceImpl final : public rpc::server_utility::ServerUtilityService::Service {
 public:
-    ServerUtilityServiceImpl(ServerUtility& server_utility) : _server_utility(server_utility) {}
+    ServerUtilityServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ServerUtility::Result& result) const
@@ -136,12 +138,21 @@ public:
         const rpc::server_utility::SendStatusTextRequest* request,
         rpc::server_utility::SendStatusTextResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::ServerUtility::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "SendStatusText sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _server_utility.send_status_text(
+        auto result = _lazy_plugin.maybe_plugin()->send_status_text(
             translateFromRpcStatusTextType(request->type()), request->text());
 
         if (response != nullptr) {
@@ -186,7 +197,7 @@ private:
         }
     }
 
-    ServerUtility& _server_utility;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

@@ -70,44 +70,9 @@ void Mavsdk::set_timeout_s(double timeout_s)
     _impl->set_timeout_s(timeout_s);
 }
 
-std::vector<uint64_t> Mavsdk::system_uuids() const
-{
-    return _impl->get_system_uuids();
-}
-
-System& Mavsdk::system() const
-{
-    return _impl->get_system();
-}
-
-System& Mavsdk::system(const uint64_t uuid) const
-{
-    return _impl->get_system(uuid);
-}
-
-bool Mavsdk::is_connected() const
-{
-    return _impl->is_connected();
-}
-
-bool Mavsdk::is_connected(const uint64_t uuid) const
-{
-    return _impl->is_connected(uuid);
-}
-
 void Mavsdk::subscribe_on_new_system(const NewSystemCallback callback)
 {
     _impl->subscribe_on_new_system(callback);
-}
-
-void Mavsdk::register_on_discover(const event_callback_t callback)
-{
-    _impl->register_on_discover(callback);
-}
-
-void Mavsdk::register_on_timeout(const event_callback_t callback)
-{
-    _impl->register_on_timeout(callback);
 }
 
 Mavsdk::Configuration::Configuration(

@@ -34,32 +34,13 @@ public:
         return grpc::Status::OK;
     }
 
-    // For now, the running plugins are hardcoded and we assume they are always started by the
-    // mavsdk_server.
-    grpc::Status ListRunningPlugins(
+    grpc::Status SetMavlinkTimeout(
         grpc::ServerContext* /* context */,
-        const rpc::core::ListRunningPluginsRequest* /* request */,
-        mavsdk::rpc::core::ListRunningPluginsResponse* response) override
+        const rpc::core::SetMavlinkTimeoutRequest* request,
+        rpc::core::SetMavlinkTimeoutResponse* /* response */) override
     {
-        std::string plugin_names[12] = {
-            "action",
-            "calibration",
-            "camera",
-            "core",
-            "gimbal",
-            "info",
-            "mission",
-            "mocap",
-            "offboard",
-            "param",
-            "shell",
-            "telemetry"};
-
-        for (const auto& plugin_name : plugin_names) {
-            auto plugin_info = response->add_plugin_info();
-            plugin_info->set_name(plugin_name);
-            plugin_info->set_address("localhost");
-            plugin_info->set_port(50051);
+        if (request != nullptr) {
+            _mavsdk.set_timeout_s(request->timeout_s());
         }
 
         return grpc::Status::OK;

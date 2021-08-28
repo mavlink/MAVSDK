@@ -5,6 +5,8 @@
 #include "geofence/geofence.grpc.pb.h"
 #include "plugins/geofence/geofence.h"
 
+#include "mavsdk.h"
+#include "lazy_plugin.h"
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -17,10 +19,10 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Geofence = Geofence>
+template<typename Geofence = Geofence, typename LazyPlugin = LazyPlugin<Geofence>>
 class GeofenceServiceImpl final : public rpc::geofence::GeofenceService::Service {
 public:
-    GeofenceServiceImpl(Geofence& geofence) : _geofence(geofence) {}
+    GeofenceServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Geofence::Result& result) const
@@ -137,6 +139,8 @@ public:
                 return rpc::geofence::GeofenceResult_Result_RESULT_TIMEOUT;
             case mavsdk::Geofence::Result::InvalidArgument:
                 return rpc::geofence::GeofenceResult_Result_RESULT_INVALID_ARGUMENT;
+            case mavsdk::Geofence::Result::NoSystem:
+                return rpc::geofence::GeofenceResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -161,6 +165,8 @@ public:
                 return mavsdk::Geofence::Result::Timeout;
             case rpc::geofence::GeofenceResult_Result_RESULT_INVALID_ARGUMENT:
                 return mavsdk::Geofence::Result::InvalidArgument;
+            case rpc::geofence::GeofenceResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::Geofence::Result::NoSystem;
         }
     }
 
@@ -169,6 +175,15 @@ public:
         const rpc::geofence::UploadGeofenceRequest* request,
         rpc::geofence::UploadGeofenceResponse* response) override
     {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Geofence::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
         if (request == nullptr) {
             LogWarn() << "UploadGeofence sent with a null request! Ignoring...";
             return grpc::Status::OK;
@@ -179,7 +194,7 @@ public:
             polygons_vec.push_back(translateFromRpcPolygon(elem));
         }
 
-        auto result = _geofence.upload_geofence(polygons_vec);
+        auto result = _lazy_plugin.maybe_plugin()->upload_geofence(polygons_vec);
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -223,7 +238,7 @@ private:
         }
     }
 
-    Geofence& _geofence;
+    LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
