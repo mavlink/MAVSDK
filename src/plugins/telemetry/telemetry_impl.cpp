@@ -577,6 +577,12 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
         set_velocity_ned(velocity);
     }
 
+    {
+        Telemetry::Heading heading;
+        heading.heading_deg = global_position_int.hdg * 1e-2f;
+        set_heading(heading);
+    }
+
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     if (_position_subscription) {
         auto callback = _position_subscription;
@@ -587,6 +593,12 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
     if (_velocity_ned_subscription) {
         auto callback = _velocity_ned_subscription;
         auto arg = velocity_ned();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
+    if (_heading_subscription) {
+        auto callback = _heading_subscription;
+        auto arg = heading();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -1482,6 +1494,18 @@ void TelemetryImpl::set_position(Telemetry::Position position)
     _position = position;
 }
 
+Telemetry::Heading TelemetryImpl::heading() const
+{
+    std::lock_guard<std::mutex> lock(_heading_mutex);
+    return _heading;
+}
+
+void TelemetryImpl::set_heading(Telemetry::Heading heading)
+{
+    std::lock_guard<std::mutex> lock(_heading_mutex);
+    _heading = heading;
+}
+
 Telemetry::Position TelemetryImpl::home() const
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
@@ -2051,6 +2075,12 @@ void TelemetryImpl::subscribe_scaled_pressure(Telemetry::ScaledPressureCallback&
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _scaled_pressure_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_heading(Telemetry::HeadingCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _heading_subscription = callback;
 }
 
 void TelemetryImpl::get_gps_global_origin_async(

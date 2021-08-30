@@ -91,7 +91,9 @@ void TelemetryServerImpl::enable() {}
 void TelemetryServerImpl::disable() {}
 
 TelemetryServer::Result TelemetryServerImpl::publish_position(
-    TelemetryServer::Position position, TelemetryServer::VelocityNed velocity_ned)
+    TelemetryServer::Position position,
+    TelemetryServer::VelocityNed velocity_ned,
+    TelemetryServer::Heading heading)
 {
     mavlink_message_t msg;
     mavlink_msg_global_position_int_pack(
@@ -106,8 +108,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
         static_cast<uint32_t>(static_cast<double>(velocity_ned.north_m_s) * 1E2),
         static_cast<uint32_t>(static_cast<double>(velocity_ned.east_m_s) * 1E2),
         static_cast<uint32_t>(static_cast<double>(velocity_ned.down_m_s) * 1E2),
-        0 // T0-DO: heading
-    );
+        static_cast<uint32_t>(static_cast<double>(heading.heading_deg) * 1E2));
 
     add_msg_cache(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, msg);
 

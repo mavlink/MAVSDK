@@ -48,7 +48,7 @@ struct TableStruct_telemetry_2ftelemetry_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[140]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[143]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -146,6 +146,12 @@ extern GroundTruthDefaultTypeInternal _GroundTruth_default_instance_;
 class GroundTruthResponse;
 struct GroundTruthResponseDefaultTypeInternal;
 extern GroundTruthResponseDefaultTypeInternal _GroundTruthResponse_default_instance_;
+class Heading;
+struct HeadingDefaultTypeInternal;
+extern HeadingDefaultTypeInternal _Heading_default_instance_;
+class HeadingResponse;
+struct HeadingResponseDefaultTypeInternal;
+extern HeadingResponseDefaultTypeInternal _HeadingResponse_default_instance_;
 class Health;
 struct HealthDefaultTypeInternal;
 extern HealthDefaultTypeInternal _Health_default_instance_;
@@ -413,6 +419,9 @@ extern SubscribeGpsInfoRequestDefaultTypeInternal _SubscribeGpsInfoRequest_defau
 class SubscribeGroundTruthRequest;
 struct SubscribeGroundTruthRequestDefaultTypeInternal;
 extern SubscribeGroundTruthRequestDefaultTypeInternal _SubscribeGroundTruthRequest_default_instance_;
+class SubscribeHeadingRequest;
+struct SubscribeHeadingRequestDefaultTypeInternal;
+extern SubscribeHeadingRequestDefaultTypeInternal _SubscribeHeadingRequest_default_instance_;
 class SubscribeHealthAllOkRequest;
 struct SubscribeHealthAllOkRequestDefaultTypeInternal;
 extern SubscribeHealthAllOkRequestDefaultTypeInternal _SubscribeHealthAllOkRequest_default_instance_;
@@ -512,6 +521,8 @@ template<> ::mavsdk::rpc::telemetry::GpsInfo* Arena::CreateMaybeMessage<::mavsdk
 template<> ::mavsdk::rpc::telemetry::GpsInfoResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GpsInfoResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GroundTruth* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GroundTruth>(Arena*);
 template<> ::mavsdk::rpc::telemetry::GroundTruthResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::GroundTruthResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::Heading* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Heading>(Arena*);
+template<> ::mavsdk::rpc::telemetry::HeadingResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::HeadingResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Health* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Health>(Arena*);
 template<> ::mavsdk::rpc::telemetry::HealthAllOkResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::HealthAllOkResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::HealthResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::HealthResponse>(Arena*);
@@ -601,6 +612,7 @@ template<> ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* Arena::Cr
 template<> ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeFlightModeRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeHeadingRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeHealthRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeHealthRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeHomeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeHomeRequest>(Arena*);
@@ -9131,6 +9143,276 @@ class ScaledPressureResponse PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class SubscribeHeadingRequest PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeHeadingRequest) */ {
+ public:
+  inline SubscribeHeadingRequest() : SubscribeHeadingRequest(nullptr) {}
+  virtual ~SubscribeHeadingRequest();
+  explicit constexpr SubscribeHeadingRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SubscribeHeadingRequest(const SubscribeHeadingRequest& from);
+  SubscribeHeadingRequest(SubscribeHeadingRequest&& from) noexcept
+    : SubscribeHeadingRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeHeadingRequest& operator=(const SubscribeHeadingRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeHeadingRequest& operator=(SubscribeHeadingRequest&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SubscribeHeadingRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeHeadingRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeHeadingRequest*>(
+               &_SubscribeHeadingRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    62;
+
+  friend void swap(SubscribeHeadingRequest& a, SubscribeHeadingRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeHeadingRequest* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeHeadingRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeHeadingRequest* New() const final {
+    return CreateMaybeMessage<SubscribeHeadingRequest>(nullptr);
+  }
+
+  SubscribeHeadingRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeHeadingRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SubscribeHeadingRequest& from);
+  void MergeFrom(const SubscribeHeadingRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeHeadingRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SubscribeHeadingRequest";
+  }
+  protected:
+  explicit SubscribeHeadingRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeHeadingRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class HeadingResponse PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.HeadingResponse) */ {
+ public:
+  inline HeadingResponse() : HeadingResponse(nullptr) {}
+  virtual ~HeadingResponse();
+  explicit constexpr HeadingResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  HeadingResponse(const HeadingResponse& from);
+  HeadingResponse(HeadingResponse&& from) noexcept
+    : HeadingResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline HeadingResponse& operator=(const HeadingResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline HeadingResponse& operator=(HeadingResponse&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const HeadingResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const HeadingResponse* internal_default_instance() {
+    return reinterpret_cast<const HeadingResponse*>(
+               &_HeadingResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    63;
+
+  friend void swap(HeadingResponse& a, HeadingResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(HeadingResponse* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(HeadingResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline HeadingResponse* New() const final {
+    return CreateMaybeMessage<HeadingResponse>(nullptr);
+  }
+
+  HeadingResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<HeadingResponse>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const HeadingResponse& from);
+  void MergeFrom(const HeadingResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(HeadingResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.HeadingResponse";
+  }
+  protected:
+  explicit HeadingResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kHeadingDegFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.Heading heading_deg = 1;
+  bool has_heading_deg() const;
+  private:
+  bool _internal_has_heading_deg() const;
+  public:
+  void clear_heading_deg();
+  const ::mavsdk::rpc::telemetry::Heading& heading_deg() const;
+  ::mavsdk::rpc::telemetry::Heading* release_heading_deg();
+  ::mavsdk::rpc::telemetry::Heading* mutable_heading_deg();
+  void set_allocated_heading_deg(::mavsdk::rpc::telemetry::Heading* heading_deg);
+  private:
+  const ::mavsdk::rpc::telemetry::Heading& _internal_heading_deg() const;
+  ::mavsdk::rpc::telemetry::Heading* _internal_mutable_heading_deg();
+  public:
+  void unsafe_arena_set_allocated_heading_deg(
+      ::mavsdk::rpc::telemetry::Heading* heading_deg);
+  ::mavsdk::rpc::telemetry::Heading* unsafe_arena_release_heading_deg();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.HeadingResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::Heading* heading_deg_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SetRatePositionRequest PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRatePositionRequest) */ {
  public:
@@ -9174,7 +9456,7 @@ class SetRatePositionRequest PROTOBUF_FINAL :
                &_SetRatePositionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    62;
+    64;
 
   friend void swap(SetRatePositionRequest& a, SetRatePositionRequest& b) {
     a.Swap(&b);
@@ -9311,7 +9593,7 @@ class SetRatePositionResponse PROTOBUF_FINAL :
                &_SetRatePositionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    63;
+    65;
 
   friend void swap(SetRatePositionResponse& a, SetRatePositionResponse& b) {
     a.Swap(&b);
@@ -9457,7 +9739,7 @@ class SetRateHomeRequest PROTOBUF_FINAL :
                &_SetRateHomeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    64;
+    66;
 
   friend void swap(SetRateHomeRequest& a, SetRateHomeRequest& b) {
     a.Swap(&b);
@@ -9594,7 +9876,7 @@ class SetRateHomeResponse PROTOBUF_FINAL :
                &_SetRateHomeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    65;
+    67;
 
   friend void swap(SetRateHomeResponse& a, SetRateHomeResponse& b) {
     a.Swap(&b);
@@ -9740,7 +10022,7 @@ class SetRateInAirRequest PROTOBUF_FINAL :
                &_SetRateInAirRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    66;
+    68;
 
   friend void swap(SetRateInAirRequest& a, SetRateInAirRequest& b) {
     a.Swap(&b);
@@ -9877,7 +10159,7 @@ class SetRateInAirResponse PROTOBUF_FINAL :
                &_SetRateInAirResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    67;
+    69;
 
   friend void swap(SetRateInAirResponse& a, SetRateInAirResponse& b) {
     a.Swap(&b);
@@ -10023,7 +10305,7 @@ class SetRateLandedStateRequest PROTOBUF_FINAL :
                &_SetRateLandedStateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    68;
+    70;
 
   friend void swap(SetRateLandedStateRequest& a, SetRateLandedStateRequest& b) {
     a.Swap(&b);
@@ -10160,7 +10442,7 @@ class SetRateLandedStateResponse PROTOBUF_FINAL :
                &_SetRateLandedStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    69;
+    71;
 
   friend void swap(SetRateLandedStateResponse& a, SetRateLandedStateResponse& b) {
     a.Swap(&b);
@@ -10306,7 +10588,7 @@ class SetRateAttitudeRequest PROTOBUF_FINAL :
                &_SetRateAttitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    70;
+    72;
 
   friend void swap(SetRateAttitudeRequest& a, SetRateAttitudeRequest& b) {
     a.Swap(&b);
@@ -10443,7 +10725,7 @@ class SetRateAttitudeResponse PROTOBUF_FINAL :
                &_SetRateAttitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    71;
+    73;
 
   friend void swap(SetRateAttitudeResponse& a, SetRateAttitudeResponse& b) {
     a.Swap(&b);
@@ -10589,7 +10871,7 @@ class SetRateAttitudeAngularVelocityBodyRequest PROTOBUF_FINAL :
                &_SetRateAttitudeAngularVelocityBodyRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    72;
+    74;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyRequest& a, SetRateAttitudeAngularVelocityBodyRequest& b) {
     a.Swap(&b);
@@ -10726,7 +11008,7 @@ class SetRateAttitudeAngularVelocityBodyResponse PROTOBUF_FINAL :
                &_SetRateAttitudeAngularVelocityBodyResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    73;
+    75;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyResponse& a, SetRateAttitudeAngularVelocityBodyResponse& b) {
     a.Swap(&b);
@@ -10872,7 +11154,7 @@ class SetRateCameraAttitudeQuaternionRequest PROTOBUF_FINAL :
                &_SetRateCameraAttitudeQuaternionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    74;
+    76;
 
   friend void swap(SetRateCameraAttitudeQuaternionRequest& a, SetRateCameraAttitudeQuaternionRequest& b) {
     a.Swap(&b);
@@ -11009,7 +11291,7 @@ class SetRateCameraAttitudeQuaternionResponse PROTOBUF_FINAL :
                &_SetRateCameraAttitudeQuaternionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    75;
+    77;
 
   friend void swap(SetRateCameraAttitudeQuaternionResponse& a, SetRateCameraAttitudeQuaternionResponse& b) {
     a.Swap(&b);
@@ -11155,7 +11437,7 @@ class SetRateCameraAttitudeRequest PROTOBUF_FINAL :
                &_SetRateCameraAttitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    76;
+    78;
 
   friend void swap(SetRateCameraAttitudeRequest& a, SetRateCameraAttitudeRequest& b) {
     a.Swap(&b);
@@ -11292,7 +11574,7 @@ class SetRateCameraAttitudeResponse PROTOBUF_FINAL :
                &_SetRateCameraAttitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    77;
+    79;
 
   friend void swap(SetRateCameraAttitudeResponse& a, SetRateCameraAttitudeResponse& b) {
     a.Swap(&b);
@@ -11438,7 +11720,7 @@ class SetRateVelocityNedRequest PROTOBUF_FINAL :
                &_SetRateVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    78;
+    80;
 
   friend void swap(SetRateVelocityNedRequest& a, SetRateVelocityNedRequest& b) {
     a.Swap(&b);
@@ -11575,7 +11857,7 @@ class SetRateVelocityNedResponse PROTOBUF_FINAL :
                &_SetRateVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    79;
+    81;
 
   friend void swap(SetRateVelocityNedResponse& a, SetRateVelocityNedResponse& b) {
     a.Swap(&b);
@@ -11721,7 +12003,7 @@ class SetRateGpsInfoRequest PROTOBUF_FINAL :
                &_SetRateGpsInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    80;
+    82;
 
   friend void swap(SetRateGpsInfoRequest& a, SetRateGpsInfoRequest& b) {
     a.Swap(&b);
@@ -11858,7 +12140,7 @@ class SetRateGpsInfoResponse PROTOBUF_FINAL :
                &_SetRateGpsInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    81;
+    83;
 
   friend void swap(SetRateGpsInfoResponse& a, SetRateGpsInfoResponse& b) {
     a.Swap(&b);
@@ -12004,7 +12286,7 @@ class SetRateRawGpsRequest PROTOBUF_FINAL :
                &_SetRateRawGpsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    82;
+    84;
 
   friend void swap(SetRateRawGpsRequest& a, SetRateRawGpsRequest& b) {
     a.Swap(&b);
@@ -12141,7 +12423,7 @@ class SetRateBatteryRequest PROTOBUF_FINAL :
                &_SetRateBatteryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    83;
+    85;
 
   friend void swap(SetRateBatteryRequest& a, SetRateBatteryRequest& b) {
     a.Swap(&b);
@@ -12278,7 +12560,7 @@ class SetRateBatteryResponse PROTOBUF_FINAL :
                &_SetRateBatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    84;
+    86;
 
   friend void swap(SetRateBatteryResponse& a, SetRateBatteryResponse& b) {
     a.Swap(&b);
@@ -12424,7 +12706,7 @@ class SetRateRcStatusRequest PROTOBUF_FINAL :
                &_SetRateRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    85;
+    87;
 
   friend void swap(SetRateRcStatusRequest& a, SetRateRcStatusRequest& b) {
     a.Swap(&b);
@@ -12561,7 +12843,7 @@ class SetRateRcStatusResponse PROTOBUF_FINAL :
                &_SetRateRcStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    86;
+    88;
 
   friend void swap(SetRateRcStatusResponse& a, SetRateRcStatusResponse& b) {
     a.Swap(&b);
@@ -12707,7 +12989,7 @@ class SetRateActuatorControlTargetRequest PROTOBUF_FINAL :
                &_SetRateActuatorControlTargetRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    87;
+    89;
 
   friend void swap(SetRateActuatorControlTargetRequest& a, SetRateActuatorControlTargetRequest& b) {
     a.Swap(&b);
@@ -12844,7 +13126,7 @@ class SetRateActuatorControlTargetResponse PROTOBUF_FINAL :
                &_SetRateActuatorControlTargetResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    88;
+    90;
 
   friend void swap(SetRateActuatorControlTargetResponse& a, SetRateActuatorControlTargetResponse& b) {
     a.Swap(&b);
@@ -12990,7 +13272,7 @@ class SetRateActuatorOutputStatusRequest PROTOBUF_FINAL :
                &_SetRateActuatorOutputStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    89;
+    91;
 
   friend void swap(SetRateActuatorOutputStatusRequest& a, SetRateActuatorOutputStatusRequest& b) {
     a.Swap(&b);
@@ -13127,7 +13409,7 @@ class SetRateActuatorOutputStatusResponse PROTOBUF_FINAL :
                &_SetRateActuatorOutputStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    90;
+    92;
 
   friend void swap(SetRateActuatorOutputStatusResponse& a, SetRateActuatorOutputStatusResponse& b) {
     a.Swap(&b);
@@ -13273,7 +13555,7 @@ class SetRateOdometryRequest PROTOBUF_FINAL :
                &_SetRateOdometryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    91;
+    93;
 
   friend void swap(SetRateOdometryRequest& a, SetRateOdometryRequest& b) {
     a.Swap(&b);
@@ -13410,7 +13692,7 @@ class SetRateOdometryResponse PROTOBUF_FINAL :
                &_SetRateOdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    92;
+    94;
 
   friend void swap(SetRateOdometryResponse& a, SetRateOdometryResponse& b) {
     a.Swap(&b);
@@ -13556,7 +13838,7 @@ class SetRatePositionVelocityNedRequest PROTOBUF_FINAL :
                &_SetRatePositionVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    93;
+    95;
 
   friend void swap(SetRatePositionVelocityNedRequest& a, SetRatePositionVelocityNedRequest& b) {
     a.Swap(&b);
@@ -13693,7 +13975,7 @@ class SetRatePositionVelocityNedResponse PROTOBUF_FINAL :
                &_SetRatePositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    94;
+    96;
 
   friend void swap(SetRatePositionVelocityNedResponse& a, SetRatePositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -13839,7 +14121,7 @@ class SetRateGroundTruthRequest PROTOBUF_FINAL :
                &_SetRateGroundTruthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    95;
+    97;
 
   friend void swap(SetRateGroundTruthRequest& a, SetRateGroundTruthRequest& b) {
     a.Swap(&b);
@@ -13976,7 +14258,7 @@ class SetRateGroundTruthResponse PROTOBUF_FINAL :
                &_SetRateGroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    96;
+    98;
 
   friend void swap(SetRateGroundTruthResponse& a, SetRateGroundTruthResponse& b) {
     a.Swap(&b);
@@ -14122,7 +14404,7 @@ class SetRateFixedwingMetricsRequest PROTOBUF_FINAL :
                &_SetRateFixedwingMetricsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    97;
+    99;
 
   friend void swap(SetRateFixedwingMetricsRequest& a, SetRateFixedwingMetricsRequest& b) {
     a.Swap(&b);
@@ -14259,7 +14541,7 @@ class SetRateFixedwingMetricsResponse PROTOBUF_FINAL :
                &_SetRateFixedwingMetricsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    98;
+    100;
 
   friend void swap(SetRateFixedwingMetricsResponse& a, SetRateFixedwingMetricsResponse& b) {
     a.Swap(&b);
@@ -14405,7 +14687,7 @@ class SetRateImuRequest PROTOBUF_FINAL :
                &_SetRateImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    99;
+    101;
 
   friend void swap(SetRateImuRequest& a, SetRateImuRequest& b) {
     a.Swap(&b);
@@ -14542,7 +14824,7 @@ class SetRateImuResponse PROTOBUF_FINAL :
                &_SetRateImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    100;
+    102;
 
   friend void swap(SetRateImuResponse& a, SetRateImuResponse& b) {
     a.Swap(&b);
@@ -14688,7 +14970,7 @@ class SetRateScaledImuRequest PROTOBUF_FINAL :
                &_SetRateScaledImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    101;
+    103;
 
   friend void swap(SetRateScaledImuRequest& a, SetRateScaledImuRequest& b) {
     a.Swap(&b);
@@ -14825,7 +15107,7 @@ class SetRateScaledImuResponse PROTOBUF_FINAL :
                &_SetRateScaledImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    102;
+    104;
 
   friend void swap(SetRateScaledImuResponse& a, SetRateScaledImuResponse& b) {
     a.Swap(&b);
@@ -14971,7 +15253,7 @@ class SetRateRawImuRequest PROTOBUF_FINAL :
                &_SetRateRawImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    103;
+    105;
 
   friend void swap(SetRateRawImuRequest& a, SetRateRawImuRequest& b) {
     a.Swap(&b);
@@ -15108,7 +15390,7 @@ class SetRateRawImuResponse PROTOBUF_FINAL :
                &_SetRateRawImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    104;
+    106;
 
   friend void swap(SetRateRawImuResponse& a, SetRateRawImuResponse& b) {
     a.Swap(&b);
@@ -15254,7 +15536,7 @@ class SetRateUnixEpochTimeRequest PROTOBUF_FINAL :
                &_SetRateUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    105;
+    107;
 
   friend void swap(SetRateUnixEpochTimeRequest& a, SetRateUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -15391,7 +15673,7 @@ class SetRateUnixEpochTimeResponse PROTOBUF_FINAL :
                &_SetRateUnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    106;
+    108;
 
   friend void swap(SetRateUnixEpochTimeResponse& a, SetRateUnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -15537,7 +15819,7 @@ class SetRateDistanceSensorRequest PROTOBUF_FINAL :
                &_SetRateDistanceSensorRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    107;
+    109;
 
   friend void swap(SetRateDistanceSensorRequest& a, SetRateDistanceSensorRequest& b) {
     a.Swap(&b);
@@ -15674,7 +15956,7 @@ class SetRateDistanceSensorResponse PROTOBUF_FINAL :
                &_SetRateDistanceSensorResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    108;
+    110;
 
   friend void swap(SetRateDistanceSensorResponse& a, SetRateDistanceSensorResponse& b) {
     a.Swap(&b);
@@ -15820,7 +16102,7 @@ class GetGpsGlobalOriginRequest PROTOBUF_FINAL :
                &_GetGpsGlobalOriginRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    109;
+    111;
 
   friend void swap(GetGpsGlobalOriginRequest& a, GetGpsGlobalOriginRequest& b) {
     a.Swap(&b);
@@ -15944,7 +16226,7 @@ class GetGpsGlobalOriginResponse PROTOBUF_FINAL :
                &_GetGpsGlobalOriginResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    110;
+    112;
 
   friend void swap(GetGpsGlobalOriginResponse& a, GetGpsGlobalOriginResponse& b) {
     a.Swap(&b);
@@ -16110,7 +16392,7 @@ class Position PROTOBUF_FINAL :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    111;
+    113;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -16237,6 +16519,143 @@ class Position PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class Heading PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.Heading) */ {
+ public:
+  inline Heading() : Heading(nullptr) {}
+  virtual ~Heading();
+  explicit constexpr Heading(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Heading(const Heading& from);
+  Heading(Heading&& from) noexcept
+    : Heading() {
+    *this = ::std::move(from);
+  }
+
+  inline Heading& operator=(const Heading& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Heading& operator=(Heading&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const Heading& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Heading* internal_default_instance() {
+    return reinterpret_cast<const Heading*>(
+               &_Heading_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    114;
+
+  friend void swap(Heading& a, Heading& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Heading* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Heading* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Heading* New() const final {
+    return CreateMaybeMessage<Heading>(nullptr);
+  }
+
+  Heading* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Heading>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const Heading& from);
+  void MergeFrom(const Heading& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Heading* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.Heading";
+  }
+  protected:
+  explicit Heading(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kHeadingDegFieldNumber = 1,
+  };
+  // double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_heading_deg();
+  double heading_deg() const;
+  void set_heading_deg(double value);
+  private:
+  double _internal_heading_deg() const;
+  void _internal_set_heading_deg(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Heading)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  double heading_deg_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Quaternion PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.Quaternion) */ {
  public:
@@ -16280,7 +16699,7 @@ class Quaternion PROTOBUF_FINAL :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    112;
+    115;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -16461,7 +16880,7 @@ class EulerAngle PROTOBUF_FINAL :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    113;
+    116;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -16631,7 +17050,7 @@ class AngularVelocityBody PROTOBUF_FINAL :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    114;
+    117;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -16790,7 +17209,7 @@ class GpsInfo PROTOBUF_FINAL :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    115;
+    118;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -16938,7 +17357,7 @@ class RawGps PROTOBUF_FINAL :
                &_RawGps_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    116;
+    119;
 
   friend void swap(RawGps& a, RawGps& b) {
     a.Swap(&b);
@@ -17218,7 +17637,7 @@ class Battery PROTOBUF_FINAL :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    117;
+    120;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -17377,7 +17796,7 @@ class Health PROTOBUF_FINAL :
                &_Health_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    118;
+    121;
 
   friend void swap(Health& a, Health& b) {
     a.Swap(&b);
@@ -17580,7 +17999,7 @@ class RcStatus PROTOBUF_FINAL :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    119;
+    122;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -17739,7 +18158,7 @@ class StatusText PROTOBUF_FINAL :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    120;
+    123;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -17894,7 +18313,7 @@ class ActuatorControlTarget PROTOBUF_FINAL :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    121;
+    124;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -18056,7 +18475,7 @@ class ActuatorOutputStatus PROTOBUF_FINAL :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    122;
+    125;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -18218,7 +18637,7 @@ class Covariance PROTOBUF_FINAL :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    123;
+    126;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -18369,7 +18788,7 @@ class VelocityBody PROTOBUF_FINAL :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    124;
+    127;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -18528,7 +18947,7 @@ class PositionBody PROTOBUF_FINAL :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    125;
+    128;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -18687,7 +19106,7 @@ class Odometry PROTOBUF_FINAL :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    126;
+    129;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -19000,7 +19419,7 @@ class DistanceSensor PROTOBUF_FINAL :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    127;
+    130;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -19159,7 +19578,7 @@ class ScaledPressure PROTOBUF_FINAL :
                &_ScaledPressure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    128;
+    131;
 
   friend void swap(ScaledPressure& a, ScaledPressure& b) {
     a.Swap(&b);
@@ -19340,7 +19759,7 @@ class PositionNed PROTOBUF_FINAL :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    129;
+    132;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -19499,7 +19918,7 @@ class VelocityNed PROTOBUF_FINAL :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    130;
+    133;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -19658,7 +20077,7 @@ class PositionVelocityNed PROTOBUF_FINAL :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    131;
+    134;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -19824,7 +20243,7 @@ class GroundTruth PROTOBUF_FINAL :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    132;
+    135;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -19983,7 +20402,7 @@ class FixedwingMetrics PROTOBUF_FINAL :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    133;
+    136;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -20142,7 +20561,7 @@ class AccelerationFrd PROTOBUF_FINAL :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    134;
+    137;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -20301,7 +20720,7 @@ class AngularVelocityFrd PROTOBUF_FINAL :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    135;
+    138;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -20460,7 +20879,7 @@ class MagneticFieldFrd PROTOBUF_FINAL :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    136;
+    139;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -20619,7 +21038,7 @@ class Imu PROTOBUF_FINAL :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    137;
+    140;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -20827,7 +21246,7 @@ class GpsGlobalOrigin PROTOBUF_FINAL :
                &_GpsGlobalOrigin_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    138;
+    141;
 
   friend void swap(GpsGlobalOrigin& a, GpsGlobalOrigin& b) {
     a.Swap(&b);
@@ -20986,7 +21405,7 @@ class TelemetryResult PROTOBUF_FINAL :
                &_TelemetryResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    139;
+    142;
 
   friend void swap(TelemetryResult& a, TelemetryResult& b) {
     a.Swap(&b);
@@ -23586,6 +24005,97 @@ inline void ScaledPressureResponse::set_allocated_scaled_pressure(::mavsdk::rpc:
   }
   scaled_pressure_ = scaled_pressure;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.ScaledPressureResponse.scaled_pressure)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeHeadingRequest
+
+// -------------------------------------------------------------------
+
+// HeadingResponse
+
+// .mavsdk.rpc.telemetry.Heading heading_deg = 1;
+inline bool HeadingResponse::_internal_has_heading_deg() const {
+  return this != internal_default_instance() && heading_deg_ != nullptr;
+}
+inline bool HeadingResponse::has_heading_deg() const {
+  return _internal_has_heading_deg();
+}
+inline void HeadingResponse::clear_heading_deg() {
+  if (GetArena() == nullptr && heading_deg_ != nullptr) {
+    delete heading_deg_;
+  }
+  heading_deg_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::Heading& HeadingResponse::_internal_heading_deg() const {
+  const ::mavsdk::rpc::telemetry::Heading* p = heading_deg_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::Heading&>(
+      ::mavsdk::rpc::telemetry::_Heading_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::Heading& HeadingResponse::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HeadingResponse.heading_deg)
+  return _internal_heading_deg();
+}
+inline void HeadingResponse::unsafe_arena_set_allocated_heading_deg(
+    ::mavsdk::rpc::telemetry::Heading* heading_deg) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(heading_deg_);
+  }
+  heading_deg_ = heading_deg;
+  if (heading_deg) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.HeadingResponse.heading_deg)
+}
+inline ::mavsdk::rpc::telemetry::Heading* HeadingResponse::release_heading_deg() {
+  
+  ::mavsdk::rpc::telemetry::Heading* temp = heading_deg_;
+  heading_deg_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Heading* HeadingResponse::unsafe_arena_release_heading_deg() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.HeadingResponse.heading_deg)
+  
+  ::mavsdk::rpc::telemetry::Heading* temp = heading_deg_;
+  heading_deg_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Heading* HeadingResponse::_internal_mutable_heading_deg() {
+  
+  if (heading_deg_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::Heading>(GetArena());
+    heading_deg_ = p;
+  }
+  return heading_deg_;
+}
+inline ::mavsdk::rpc::telemetry::Heading* HeadingResponse::mutable_heading_deg() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.HeadingResponse.heading_deg)
+  return _internal_mutable_heading_deg();
+}
+inline void HeadingResponse::set_allocated_heading_deg(::mavsdk::rpc::telemetry::Heading* heading_deg) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete heading_deg_;
+  }
+  if (heading_deg) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(heading_deg);
+    if (message_arena != submessage_arena) {
+      heading_deg = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, heading_deg, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  heading_deg_ = heading_deg;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.HeadingResponse.heading_deg)
 }
 
 // -------------------------------------------------------------------
@@ -26421,6 +26931,30 @@ inline void Position::_internal_set_relative_altitude_m(float value) {
 inline void Position::set_relative_altitude_m(float value) {
   _internal_set_relative_altitude_m(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Position.relative_altitude_m)
+}
+
+// -------------------------------------------------------------------
+
+// Heading
+
+// double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void Heading::clear_heading_deg() {
+  heading_deg_ = 0;
+}
+inline double Heading::_internal_heading_deg() const {
+  return heading_deg_;
+}
+inline double Heading::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Heading.heading_deg)
+  return _internal_heading_deg();
+}
+inline void Heading::_internal_set_heading_deg(double value) {
+  
+  heading_deg_ = value;
+}
+inline void Heading::set_heading_deg(double value) {
+  _internal_set_heading_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Heading.heading_deg)
 }
 
 // -------------------------------------------------------------------
@@ -29474,6 +30008,12 @@ inline void TelemetryResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
