@@ -13,6 +13,11 @@ MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
         this);
 
     _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_PARAM_SET,
+        std::bind(&MAVLinkParameters::process_param_set, this, std::placeholders::_1),
+        this);
+
+    _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_VALUE,
         std::bind(&MAVLinkParameters::process_param_ext_value, this, std::placeholders::_1),
         this);
@@ -707,6 +712,34 @@ std::ostream& operator<<(std::ostream& strm, const MAVLinkParameters::ParamValue
 {
     strm << obj.get_string();
     return strm;
+}
+
+void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
+{
+    mavlink_param_set_t set_request{};
+    mavlink_msg_param_set_decode(&message, &set_request);
+
+    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    if (safe_param_id != "") {
+        LogDebug() << "Set Param Request: " << safe_param_id;
+        // Use the ID
+        if (_param_server_store.find(safe_param_id) != _param_server_store.end()) {
+            ParamValue value{};
+            if (!value.set_from_mavlink_param_set(set_request)) {
+                LogDebug() << "Invalid Param Set Request: " << safe_param_id;
+                return;
+            }
+            _param_server_store.at(safe_param_id) = value;
+            auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+            new_work->type = WorkItem::Type::Value;
+            new_work->param_name = safe_param_id;
+            new_work->param_value = _param_server_store.at(safe_param_id);
+            new_work->extended = false;
+            _work_queue.push_back(new_work);
+        } else {
+            LogDebug() << "Missing Param: " << safe_param_id;
+        }
+    }
 }
 
 void MAVLinkParameters::process_param_request_read(const mavlink_message_t& message)
