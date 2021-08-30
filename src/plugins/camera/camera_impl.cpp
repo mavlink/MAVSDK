@@ -1738,12 +1738,12 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
         cmd_format, [this, callback](MavlinkCommandSender::Result result, float progress) {
             UNUSED(progress);
 
-            receive_command_result(result, [this, callback](Camera::Result result) {
-                if (result == Camera::Result::Success) {
+            receive_command_result(result, [this, callback](Camera::Result camera_result) {
+                if (camera_result == Camera::Result::Success) {
                     _status.photo_list.clear();
                 }
 
-                callback(result);
+                callback(camera_result);
             });
         });
 }
