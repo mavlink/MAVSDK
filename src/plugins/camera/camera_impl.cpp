@@ -1735,7 +1735,17 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     _parent->send_command_async(
-        cmd_format, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
+        cmd_format, [this, callback](MavlinkCommandSender::Result result, float progress) {
+            UNUSED(progress);
+
+            receive_command_result(result, [this, callback](Camera::Result result) {
+                if (result == Camera::Result::Success) {
+                    _status.photo_list.clear();
+                }
+
+                callback(result);
+            });
+        });
 }
 
 std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
