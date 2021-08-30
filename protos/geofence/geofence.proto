@@ -14,6 +14,10 @@ service GeofenceService {
      * on the drone even if a connection is lost.
      */
     rpc UploadGeofence(UploadGeofenceRequest) returns(UploadGeofenceResponse) {}
+    /*
+     * Clear all geofences saved on the vehicle.
+     */
+    rpc ClearGeofence(ClearGeofenceRequest) returns(ClearGeofenceResponse) {}
 }
 
 // Point type.
@@ -39,6 +43,11 @@ message UploadGeofenceRequest {
 }
 
 message UploadGeofenceResponse {
+    GeofenceResult geofence_result = 1;
+}
+
+message ClearGeofenceRequest {}
+message ClearGeofenceResponse {
     GeofenceResult geofence_result = 1;
 }
 
