@@ -28,6 +28,10 @@ public:
     void upload_geofence_async(
         const std::vector<Geofence::Polygon>& polygons, const Geofence::ResultCallback& callback);
 
+    Geofence::Result clear_geofence();
+
+    void clear_geofence_async(const Geofence::ResultCallback& callback);
+
     // Non-copyable
     GeofenceImpl(const GeofenceImpl&) = delete;
     const GeofenceImpl& operator=(const GeofenceImpl&) = delete;

@@ -31,6 +31,16 @@ Geofence::Result Geofence::upload_geofence(std::vector<Polygon> polygons) const
     return _impl->upload_geofence(polygons);
 }
 
+void Geofence::clear_geofence_async(const ResultCallback callback)
+{
+    _impl->clear_geofence_async(callback);
+}
+
+Geofence::Result Geofence::clear_geofence() const
+{
+    return _impl->clear_geofence();
+}
+
 bool operator==(const Geofence::Point& lhs, const Geofence::Point& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||

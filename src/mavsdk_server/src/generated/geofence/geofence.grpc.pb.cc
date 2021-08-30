@@ -25,6 +25,7 @@ namespace geofence {
 
 static const char* GeofenceService_method_names[] = {
   "/mavsdk.rpc.geofence.GeofenceService/UploadGeofence",
+  "/mavsdk.rpc.geofence.GeofenceService/ClearGeofence",
 };
 
 std::unique_ptr< GeofenceService::Stub> GeofenceService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -35,6 +36,7 @@ std::unique_ptr< GeofenceService::Stub> GeofenceService::NewStub(const std::shar
 
 GeofenceService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_UploadGeofence_(GeofenceService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ClearGeofence_(GeofenceService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status GeofenceService::Stub::UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response) {
@@ -60,6 +62,29 @@ void GeofenceService::Stub::experimental_async::UploadGeofence(::grpc::ClientCon
   return result;
 }
 
+::grpc::Status GeofenceService::Stub::ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ClearGeofence_, context, request, response);
+}
+
+void GeofenceService::Stub::experimental_async::ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ClearGeofence_, context, request, response, std::move(f));
+}
+
+void GeofenceService::Stub::experimental_async::ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ClearGeofence_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* GeofenceService::Stub::PrepareAsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::geofence::ClearGeofenceResponse, ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ClearGeofence_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* GeofenceService::Stub::AsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncClearGeofenceRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 GeofenceService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       GeofenceService_method_names[0],
@@ -71,12 +96,29 @@ GeofenceService::Service::Service() {
              ::mavsdk::rpc::geofence::UploadGeofenceResponse* resp) {
                return service->UploadGeofence(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      GeofenceService_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< GeofenceService::Service, ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](GeofenceService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::geofence::ClearGeofenceRequest* req,
+             ::mavsdk::rpc::geofence::ClearGeofenceResponse* resp) {
+               return service->ClearGeofence(ctx, req, resp);
+             }, this)));
 }
 
 GeofenceService::Service::~Service() {
 }
 
 ::grpc::Status GeofenceService::Service::UploadGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status GeofenceService::Service::ClearGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response) {
   (void) context;
   (void) request;
   (void) response;
