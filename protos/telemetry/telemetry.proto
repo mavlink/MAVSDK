@@ -793,3 +793,12 @@ message TelemetryResult {
     Result result = 1; // Result enum value
     string result_str = 2; // Human-readable English string describing the result
 }
+
+enum VtolState
+{
+    VTOL_UNDEFINED = 0; // Not VTOL
+    VTOL_TRANSITION_TO_FW = 1; // Transitioning to fixed-wing
+    VTOL_TRANSITION_TO_MC = 2; // Transitioning to multi-copter
+    VTOL_MC = 3; // Multi-copter
+    VTOL_FW = 4; // Fixed-wing
+}
