@@ -43,8 +43,8 @@ public:
     ActionServer::AllowableFlightModes get_allowable_flight_modes();
 
 private:
-    ActionServer::ArmDisarmCallback _arm_disarm_callback;
-    ActionServer::FlightModeChangeCallback _flight_mode_change_callback;
+    ActionServer::ArmDisarmCallback _arm_disarm_callback{nullptr};
+    ActionServer::FlightModeChangeCallback _flight_mode_change_callback{nullptr};
     std::mutex _callback_mutex;
 
     std::atomic<bool> _armable = false;
