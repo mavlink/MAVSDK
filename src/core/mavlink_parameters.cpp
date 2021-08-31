@@ -726,7 +726,7 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
         if (_param_server_store.find(safe_param_id) != _param_server_store.end()) {
             ParamValue value{};
             if (!value.set_from_mavlink_param_set(set_request)) {
-                LogDebug() << "Invalid Param Set Request: " << safe_param_id;
+                LogWarn() << "Invalid Param Set Request: " << safe_param_id;
                 return;
             }
             _param_server_store.at(safe_param_id) = value;
@@ -739,6 +739,8 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
         } else {
             LogDebug() << "Missing Param: " << safe_param_id;
         }
+    } else {
+        LogWarn() << "Invalid Param Set ID Request: " << safe_param_id;
     }
 }
 
