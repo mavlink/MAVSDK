@@ -23,7 +23,7 @@ public:
 
     class ParamValue {
     public:
-        void set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
+        bool set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
         {
             union {
                 float float_value;
@@ -43,8 +43,17 @@ public:
                 default:
                     // This would be worrying
                     LogErr() << "Error: unknown mavlink param type";
-                    break;
+                    return false;
             }
+            return true;
+        }
+
+        bool set_from_mavlink_param_set(mavlink_param_set_t mavlink_set)
+        {
+            mavlink_param_value_t mavlink_value{};
+            mavlink_value.param_value = mavlink_set.param_value;
+            mavlink_value.param_type = mavlink_set.param_type;
+            return set_from_mavlink_param_value(mavlink_value);
         }
 
         void set_from_mavlink_param_ext_value(mavlink_param_ext_value_t mavlink_ext_value)
@@ -498,6 +507,7 @@ public:
 
 private:
     void process_param_value(const mavlink_message_t& message);
+    void process_param_set(const mavlink_message_t& message);
     void process_param_ext_value(const mavlink_message_t& message);
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
@@ -558,7 +568,6 @@ private:
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_ext_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);
-    void process_param_set(const mavlink_message_t& message);
 };
 
 } // namespace mavsdk
