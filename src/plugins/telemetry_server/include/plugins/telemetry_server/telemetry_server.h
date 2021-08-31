@@ -166,6 +166,28 @@ public:
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Position const& position);
 
     /**
+     * @brief Heading type used for global position
+     */
+    struct Heading {
+        double heading_deg{double(NAN)}; /**< @brief Heading in degrees (range: 0 to +360) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `TelemetryServer::Heading` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const TelemetryServer::Heading& lhs, const TelemetryServer::Heading& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `TelemetryServer::Heading`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Heading const& heading);
+
+    /**
      * @brief Quaternion type.
      *
      * All rotations and axis systems follow the right-hand rule.
@@ -907,7 +929,7 @@ public:
      *
      * @return Result of request.
      */
-    Result publish_position(Position position, VelocityNed velocity_ned) const;
+    Result publish_position(Position position, VelocityNed velocity_ned, Heading heading) const;
 
     /**
      * @brief Publish to 'home position' updates.

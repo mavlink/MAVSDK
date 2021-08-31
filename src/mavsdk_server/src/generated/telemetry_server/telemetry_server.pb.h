@@ -48,7 +48,7 @@ struct TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[58]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[59]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -95,6 +95,9 @@ extern GpsInfoDefaultTypeInternal _GpsInfo_default_instance_;
 class GroundTruth;
 struct GroundTruthDefaultTypeInternal;
 extern GroundTruthDefaultTypeInternal _GroundTruth_default_instance_;
+class Heading;
+struct HeadingDefaultTypeInternal;
+extern HeadingDefaultTypeInternal _Heading_default_instance_;
 class Imu;
 struct ImuDefaultTypeInternal;
 extern ImuDefaultTypeInternal _Imu_default_instance_;
@@ -249,6 +252,7 @@ template<> ::mavsdk::rpc::telemetry_server::EulerAngle* Arena::CreateMaybeMessag
 template<> ::mavsdk::rpc::telemetry_server::FixedwingMetrics* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::FixedwingMetrics>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::GpsInfo* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::GpsInfo>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::GroundTruth* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::GroundTruth>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::Heading* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Heading>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Imu* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Imu>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::MagneticFieldFrd* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::MagneticFieldFrd>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Odometry* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Odometry>(Arena*);
@@ -592,6 +596,7 @@ class PublishPositionRequest PROTOBUF_FINAL :
   enum : int {
     kPositionFieldNumber = 1,
     kVelocityNedFieldNumber = 2,
+    kHeadingFieldNumber = 3,
   };
   // .mavsdk.rpc.telemetry_server.Position position = 1;
   bool has_position() const;
@@ -629,6 +634,24 @@ class PublishPositionRequest PROTOBUF_FINAL :
       ::mavsdk::rpc::telemetry_server::VelocityNed* velocity_ned);
   ::mavsdk::rpc::telemetry_server::VelocityNed* unsafe_arena_release_velocity_ned();
 
+  // .mavsdk.rpc.telemetry_server.Heading heading = 3;
+  bool has_heading() const;
+  private:
+  bool _internal_has_heading() const;
+  public:
+  void clear_heading();
+  const ::mavsdk::rpc::telemetry_server::Heading& heading() const;
+  ::mavsdk::rpc::telemetry_server::Heading* release_heading();
+  ::mavsdk::rpc::telemetry_server::Heading* mutable_heading();
+  void set_allocated_heading(::mavsdk::rpc::telemetry_server::Heading* heading);
+  private:
+  const ::mavsdk::rpc::telemetry_server::Heading& _internal_heading() const;
+  ::mavsdk::rpc::telemetry_server::Heading* _internal_mutable_heading();
+  public:
+  void unsafe_arena_set_allocated_heading(
+      ::mavsdk::rpc::telemetry_server::Heading* heading);
+  ::mavsdk::rpc::telemetry_server::Heading* unsafe_arena_release_heading();
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishPositionRequest)
  private:
   class _Internal;
@@ -638,6 +661,7 @@ class PublishPositionRequest PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::mavsdk::rpc::telemetry_server::Position* position_;
   ::mavsdk::rpc::telemetry_server::VelocityNed* velocity_ned_;
+  ::mavsdk::rpc::telemetry_server::Heading* heading_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
 };
@@ -5243,6 +5267,143 @@ class Position PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class Heading PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.Heading) */ {
+ public:
+  inline Heading() : Heading(nullptr) {}
+  virtual ~Heading();
+  explicit constexpr Heading(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Heading(const Heading& from);
+  Heading(Heading&& from) noexcept
+    : Heading() {
+    *this = ::std::move(from);
+  }
+
+  inline Heading& operator=(const Heading& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Heading& operator=(Heading&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const Heading& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Heading* internal_default_instance() {
+    return reinterpret_cast<const Heading*>(
+               &_Heading_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    32;
+
+  friend void swap(Heading& a, Heading& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Heading* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Heading* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Heading* New() const final {
+    return CreateMaybeMessage<Heading>(nullptr);
+  }
+
+  Heading* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Heading>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const Heading& from);
+  void MergeFrom(const Heading& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Heading* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.Heading";
+  }
+  protected:
+  explicit Heading(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    return ::descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_metadata_getter(kIndexInFileMessages);
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kHeadingDegFieldNumber = 1,
+  };
+  // double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_heading_deg();
+  double heading_deg() const;
+  void set_heading_deg(double value);
+  private:
+  double _internal_heading_deg() const;
+  void _internal_set_heading_deg(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.Heading)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  double heading_deg_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Quaternion PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.Quaternion) */ {
  public:
@@ -5286,7 +5447,7 @@ class Quaternion PROTOBUF_FINAL :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    33;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -5467,7 +5628,7 @@ class EulerAngle PROTOBUF_FINAL :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    34;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -5637,7 +5798,7 @@ class AngularVelocityBody PROTOBUF_FINAL :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    35;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -5796,7 +5957,7 @@ class GpsInfo PROTOBUF_FINAL :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    36;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -5944,7 +6105,7 @@ class RawGps PROTOBUF_FINAL :
                &_RawGps_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    37;
 
   friend void swap(RawGps& a, RawGps& b) {
     a.Swap(&b);
@@ -6224,7 +6385,7 @@ class Battery PROTOBUF_FINAL :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    38;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -6372,7 +6533,7 @@ class RcStatus PROTOBUF_FINAL :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    39;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -6531,7 +6692,7 @@ class StatusText PROTOBUF_FINAL :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    40;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -6686,7 +6847,7 @@ class ActuatorControlTarget PROTOBUF_FINAL :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    41;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -6848,7 +7009,7 @@ class ActuatorOutputStatus PROTOBUF_FINAL :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    42;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -7010,7 +7171,7 @@ class Covariance PROTOBUF_FINAL :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    43;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -7161,7 +7322,7 @@ class VelocityBody PROTOBUF_FINAL :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    44;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -7320,7 +7481,7 @@ class PositionBody PROTOBUF_FINAL :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    45;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -7479,7 +7640,7 @@ class Odometry PROTOBUF_FINAL :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    46;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -7792,7 +7953,7 @@ class DistanceSensor PROTOBUF_FINAL :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    47;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -7951,7 +8112,7 @@ class ScaledPressure PROTOBUF_FINAL :
                &_ScaledPressure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    48;
 
   friend void swap(ScaledPressure& a, ScaledPressure& b) {
     a.Swap(&b);
@@ -8132,7 +8293,7 @@ class PositionNed PROTOBUF_FINAL :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    49;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -8291,7 +8452,7 @@ class VelocityNed PROTOBUF_FINAL :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    50;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -8450,7 +8611,7 @@ class PositionVelocityNed PROTOBUF_FINAL :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    51;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -8616,7 +8777,7 @@ class GroundTruth PROTOBUF_FINAL :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    52;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -8775,7 +8936,7 @@ class FixedwingMetrics PROTOBUF_FINAL :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    53;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -8934,7 +9095,7 @@ class AccelerationFrd PROTOBUF_FINAL :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    54;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -9093,7 +9254,7 @@ class AngularVelocityFrd PROTOBUF_FINAL :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    55;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -9252,7 +9413,7 @@ class MagneticFieldFrd PROTOBUF_FINAL :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    56;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -9411,7 +9572,7 @@ class Imu PROTOBUF_FINAL :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    57;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -9619,7 +9780,7 @@ class TelemetryServerResult PROTOBUF_FINAL :
                &_TelemetryServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    58;
 
   friend void swap(TelemetryServerResult& a, TelemetryServerResult& b) {
     a.Swap(&b);
@@ -9946,6 +10107,89 @@ inline void PublishPositionRequest::set_allocated_velocity_ned(::mavsdk::rpc::te
   }
   velocity_ned_ = velocity_ned;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishPositionRequest.velocity_ned)
+}
+
+// .mavsdk.rpc.telemetry_server.Heading heading = 3;
+inline bool PublishPositionRequest::_internal_has_heading() const {
+  return this != internal_default_instance() && heading_ != nullptr;
+}
+inline bool PublishPositionRequest::has_heading() const {
+  return _internal_has_heading();
+}
+inline void PublishPositionRequest::clear_heading() {
+  if (GetArena() == nullptr && heading_ != nullptr) {
+    delete heading_;
+  }
+  heading_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry_server::Heading& PublishPositionRequest::_internal_heading() const {
+  const ::mavsdk::rpc::telemetry_server::Heading* p = heading_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::Heading&>(
+      ::mavsdk::rpc::telemetry_server::_Heading_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::Heading& PublishPositionRequest::heading() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishPositionRequest.heading)
+  return _internal_heading();
+}
+inline void PublishPositionRequest::unsafe_arena_set_allocated_heading(
+    ::mavsdk::rpc::telemetry_server::Heading* heading) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(heading_);
+  }
+  heading_ = heading;
+  if (heading) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishPositionRequest.heading)
+}
+inline ::mavsdk::rpc::telemetry_server::Heading* PublishPositionRequest::release_heading() {
+  
+  ::mavsdk::rpc::telemetry_server::Heading* temp = heading_;
+  heading_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::Heading* PublishPositionRequest::unsafe_arena_release_heading() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishPositionRequest.heading)
+  
+  ::mavsdk::rpc::telemetry_server::Heading* temp = heading_;
+  heading_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::Heading* PublishPositionRequest::_internal_mutable_heading() {
+  
+  if (heading_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Heading>(GetArena());
+    heading_ = p;
+  }
+  return heading_;
+}
+inline ::mavsdk::rpc::telemetry_server::Heading* PublishPositionRequest::mutable_heading() {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishPositionRequest.heading)
+  return _internal_mutable_heading();
+}
+inline void PublishPositionRequest::set_allocated_heading(::mavsdk::rpc::telemetry_server::Heading* heading) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete heading_;
+  }
+  if (heading) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(heading);
+    if (message_arena != submessage_arena) {
+      heading = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, heading, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  heading_ = heading;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishPositionRequest.heading)
 }
 
 // -------------------------------------------------------------------
@@ -12591,6 +12835,30 @@ inline void Position::_internal_set_relative_altitude_m(float value) {
 inline void Position::set_relative_altitude_m(float value) {
   _internal_set_relative_altitude_m(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.Position.relative_altitude_m)
+}
+
+// -------------------------------------------------------------------
+
+// Heading
+
+// double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void Heading::clear_heading_deg() {
+  heading_deg_ = 0;
+}
+inline double Heading::_internal_heading_deg() const {
+  return heading_deg_;
+}
+inline double Heading::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.Heading.heading_deg)
+  return _internal_heading_deg();
+}
+inline void Heading::_internal_set_heading_deg(double value) {
+  
+  heading_deg_ = value;
+}
+inline void Heading::set_heading_deg(double value) {
+  _internal_set_heading_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.Heading.heading_deg)
 }
 
 // -------------------------------------------------------------------
@@ -15416,6 +15684,8 @@ inline void TelemetryServerResult::set_allocated_result_str(std::string* result_
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

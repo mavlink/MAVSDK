@@ -257,6 +257,26 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::telemetry_server::Heading>
+    translateToRpcHeading(const mavsdk::TelemetryServer::Heading& heading)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry_server::Heading>();
+
+        rpc_obj->set_heading_deg(heading.heading_deg);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::TelemetryServer::Heading
+    translateFromRpcHeading(const rpc::telemetry_server::Heading& heading)
+    {
+        mavsdk::TelemetryServer::Heading obj;
+
+        obj.heading_deg = heading.heading_deg();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry_server::Quaternion>
     translateToRpcQuaternion(const mavsdk::TelemetryServer::Quaternion& quaternion)
     {
@@ -1159,7 +1179,8 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->publish_position(
             translateFromRpcPosition(request->position()),
-            translateFromRpcVelocityNed(request->velocity_ned()));
+            translateFromRpcVelocityNed(request->velocity_ned()),
+            translateFromRpcHeading(request->heading()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

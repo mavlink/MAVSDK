@@ -45,6 +45,8 @@ TEST_F(SitlTest, GeofenceInclusion)
     polygons.push_back(new_polygon);
 
     EXPECT_EQ(Geofence::Result::Success, geofence->upload_geofence(polygons));
+
+    EXPECT_EQ(Geofence::Result::Success, geofence->clear_geofence());
 }
 
 Geofence::Point add_point(double latitude_deg, double longitude_deg)

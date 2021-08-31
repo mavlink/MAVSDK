@@ -203,6 +203,29 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status ClearGeofence(
+        grpc::ServerContext* /* context */,
+        const rpc::geofence::ClearGeofenceRequest* /* request */,
+        rpc::geofence::ClearGeofenceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Geofence::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->clear_geofence();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

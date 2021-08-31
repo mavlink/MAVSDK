@@ -11,6 +11,7 @@
 namespace mavsdk {
 
 using Position = TelemetryServer::Position;
+using Heading = TelemetryServer::Heading;
 using Quaternion = TelemetryServer::Quaternion;
 using EulerAngle = TelemetryServer::EulerAngle;
 using AngularVelocityBody = TelemetryServer::AngularVelocityBody;
@@ -49,10 +50,10 @@ TelemetryServer::TelemetryServer(std::shared_ptr<System> system) :
 
 TelemetryServer::~TelemetryServer() {}
 
-TelemetryServer::Result
-TelemetryServer::publish_position(Position position, VelocityNed velocity_ned) const
+TelemetryServer::Result TelemetryServer::publish_position(
+    Position position, VelocityNed velocity_ned, Heading heading) const
 {
-    return _impl->publish_position(position, velocity_ned);
+    return _impl->publish_position(position, velocity_ned, heading);
 }
 
 TelemetryServer::Result TelemetryServer::publish_home(Position home) const
@@ -149,6 +150,22 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::Position const& pos
     str << "    longitude_deg: " << position.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << position.absolute_altitude_m << '\n';
     str << "    relative_altitude_m: " << position.relative_altitude_m << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const TelemetryServer::Heading& lhs, const TelemetryServer::Heading& rhs)
+{
+    return (
+        (std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
+        rhs.heading_deg == lhs.heading_deg);
+}
+
+std::ostream& operator<<(std::ostream& str, TelemetryServer::Heading const& heading)
+{
+    str << std::setprecision(15);
+    str << "heading:" << '\n' << "{\n";
+    str << "    heading_deg: " << heading.heading_deg << '\n';
     str << '}';
     return str;
 }

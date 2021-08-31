@@ -175,6 +175,27 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position);
 
     /**
+     * @brief Heading type used for global position
+     */
+    struct Heading {
+        double heading_deg{double(NAN)}; /**< @brief Heading in degrees (range: 0 to +360) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::Heading` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Telemetry::Heading& lhs, const Telemetry::Heading& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::Heading`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading);
+
+    /**
      * @brief Quaternion type.
      *
      * All rotations and axis systems follow the right-hand rule.
@@ -1499,6 +1520,24 @@ public:
      * @return One ScaledPressure update.
      */
     ScaledPressure scaled_pressure() const;
+
+    /**
+     * @brief Callback type for subscribe_heading.
+     */
+
+    using HeadingCallback = std::function<void(Heading)>;
+
+    /**
+     * @brief Subscribe to 'Heading' updates.
+     */
+    void subscribe_heading(HeadingCallback callback);
+
+    /**
+     * @brief Poll for 'Heading' (blocking).
+     *
+     * @return One Heading update.
+     */
+    Heading heading() const;
 
     /**
      * @brief Set rate to 'position' updates.

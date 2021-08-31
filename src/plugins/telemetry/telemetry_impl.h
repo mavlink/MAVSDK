@@ -105,6 +105,7 @@ public:
     Telemetry::DistanceSensor distance_sensor() const;
     Telemetry::ScaledPressure scaled_pressure() const;
     uint64_t unix_epoch_time() const;
+    Telemetry::Heading heading() const;
 
     void subscribe_position_velocity_ned(Telemetry::PositionVelocityNedCallback& callback);
     void subscribe_position(Telemetry::PositionCallback& callback);
@@ -138,6 +139,7 @@ public:
     void subscribe_odometry(Telemetry::OdometryCallback& callback);
     void subscribe_distance_sensor(Telemetry::DistanceSensorCallback& callback);
     void subscribe_scaled_pressure(Telemetry::ScaledPressureCallback& callback);
+    void subscribe_heading(Telemetry::HeadingCallback& callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
@@ -176,6 +178,7 @@ private:
     void set_odometry(Telemetry::Odometry& odometry);
     void set_distance_sensor(Telemetry::DistanceSensor& distance_sensor);
     void set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressure);
+    void set_heading(Telemetry::Heading heading);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);
@@ -232,6 +235,9 @@ private:
     // methods marked const.
     mutable std::mutex _position_mutex{};
     Telemetry::Position _position{};
+
+    mutable std::mutex _heading_mutex{};
+    Telemetry::Heading _heading{};
 
     mutable std::mutex _position_velocity_ned_mutex{};
     Telemetry::PositionVelocityNed _position_velocity_ned{};
@@ -344,6 +350,7 @@ private:
     Telemetry::OdometryCallback _odometry_subscription{nullptr};
     Telemetry::DistanceSensorCallback _distance_sensor_subscription{nullptr};
     Telemetry::ScaledPressureCallback _scaled_pressure_subscription{nullptr};
+    Telemetry::HeadingCallback _heading_subscription{nullptr};
 
     // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // we just use the faster between the two.
