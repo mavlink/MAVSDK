@@ -52,6 +52,28 @@ void GeofenceImpl::upload_geofence_async(
         });
 }
 
+Geofence::Result GeofenceImpl::clear_geofence()
+{
+    auto prom = std::promise<Geofence::Result>();
+    auto fut = prom.get_future();
+
+    clear_geofence_async([&prom](Geofence::Result result) { prom.set_value(result); });
+    return fut.get();
+}
+
+void GeofenceImpl::clear_geofence_async(const Geofence::ResultCallback& callback)
+{
+    _parent->mission_transfer().clear_items_async(
+        MAV_MISSION_TYPE_FENCE, [this, callback](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            _parent->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
+            });
+        });
+}
+
 std::vector<MAVLinkMissionTransfer::ItemInt>
 GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
 {

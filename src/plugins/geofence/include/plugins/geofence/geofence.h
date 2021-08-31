@@ -165,6 +165,22 @@ public:
     Result upload_geofence(std::vector<Polygon> polygons) const;
 
     /**
+     * @brief Clear all geofences saved on the vehicle.
+     *
+     * This function is non-blocking. See 'clear_geofence' for the blocking counterpart.
+     */
+    void clear_geofence_async(const ResultCallback callback);
+
+    /**
+     * @brief Clear all geofences saved on the vehicle.
+     *
+     * This function is blocking. See 'clear_geofence_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result clear_geofence() const;
+
+    /**
      * @brief Copy constructor.
      */
     Geofence(const Geofence& other);
