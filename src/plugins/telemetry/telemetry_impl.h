@@ -30,6 +30,7 @@ public:
     Telemetry::Result set_rate_home(double rate_hz);
     Telemetry::Result set_rate_in_air(double rate_hz);
     Telemetry::Result set_rate_landed_state(double rate_hz);
+    Telemetry::Result set_rate_vtol_state(double rate_hz);
     Telemetry::Result set_rate_attitude(double rate_hz);
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
     Telemetry::Result set_rate_velocity_ned(double rate_hz);
@@ -53,6 +54,7 @@ public:
     void set_rate_home_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_in_air_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_landed_state_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_vtol_state_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -79,6 +81,7 @@ public:
     Telemetry::Position home() const;
     bool in_air() const;
     bool armed() const;
+    Telemetry::VtolState vtol_state() const;
     Telemetry::LandedState landed_state() const;
     Telemetry::StatusText status_text() const;
     Telemetry::EulerAngle attitude_euler() const;
@@ -131,6 +134,7 @@ public:
     void subscribe_flight_mode(Telemetry::FlightModeCallback& callback);
     void subscribe_health(Telemetry::HealthCallback& callback);
     void subscribe_health_all_ok(Telemetry::HealthAllOkCallback& callback);
+    void subscribe_vtol_state(Telemetry::VtolStateCallback& callback);
     void subscribe_landed_state(Telemetry::LandedStateCallback& callback);
     void subscribe_rc_status(Telemetry::RcStatusCallback& callback);
     void subscribe_unix_epoch_time(Telemetry::UnixEpochTimeCallback& callback);
@@ -149,6 +153,7 @@ private:
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
+    void set_vtol_state(Telemetry::VtolState vtol_state);
     void set_landed_state(Telemetry::LandedState landed_state);
     void set_status_text(Telemetry::StatusText status_text);
     void set_armed(bool armed);
@@ -226,6 +231,7 @@ private:
         MavlinkCommandSender::Result command_result, const Telemetry::ResultCallback& callback);
 
     static Telemetry::LandedState to_landed_state(mavlink_extended_sys_state_t extended_sys_state);
+    static Telemetry::VtolState to_vtol_state(mavlink_extended_sys_state_t extended_sys_state);
 
     static Telemetry::FlightMode
     telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode);
@@ -291,6 +297,9 @@ private:
     mutable std::mutex _health_mutex{};
     Telemetry::Health _health{};
 
+    mutable std::mutex _vtol_state_mutex{};
+    Telemetry::VtolState _vtol_state{Telemetry::VtolState::Undefined};
+
     mutable std::mutex _landed_state_mutex{};
     Telemetry::LandedState _landed_state{Telemetry::LandedState::Unknown};
 
@@ -342,6 +351,7 @@ private:
     Telemetry::FlightModeCallback _flight_mode_subscription{nullptr};
     Telemetry::HealthCallback _health_subscription{nullptr};
     Telemetry::HealthAllOkCallback _health_all_ok_subscription{nullptr};
+    Telemetry::VtolStateCallback _votl_state_subscription{nullptr};
     Telemetry::LandedStateCallback _landed_state_subscription{nullptr};
     Telemetry::RcStatusCallback _rc_status_subscription{nullptr};
     Telemetry::UnixEpochTimeCallback _unix_epoch_time_subscription{nullptr};

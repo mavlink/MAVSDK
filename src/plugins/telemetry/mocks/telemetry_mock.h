@@ -46,6 +46,7 @@ public:
     MOCK_CONST_METHOD1(subscribe_raw_imu, void(Telemetry::RawImuCallback)){};
     MOCK_CONST_METHOD1(subscribe_health_all_ok, void(Telemetry::HealthAllOkCallback)){};
     MOCK_CONST_METHOD1(subscribe_unix_epoch_time, void(Telemetry::UnixEpochTimeCallback)){};
+    MOCK_CONST_METHOD1(subscribe_vtol_state, void(Telemetry::VtolStateCallback)){};
 
     MOCK_METHOD1(set_rate_position, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_home, Telemetry::Result(double)){};
@@ -70,6 +71,7 @@ public:
     MOCK_METHOD1(set_rate_scaled_imu, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_raw_imu, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_unix_epoch_time, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_vtol_state, Telemetry::Result(double)){};
 
     MOCK_CONST_METHOD2(set_rate_position_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_home_async, void(double, Telemetry::ResultCallback)){};

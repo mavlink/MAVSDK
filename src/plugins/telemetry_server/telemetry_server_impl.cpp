@@ -381,15 +381,15 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
 uint8_t to_mav_vtol_state(TelemetryServer::VtolState vtol_state)
 {
     switch (vtol_state) {
-        case TelemetryServer::VtolState::VtolUndefined:
+        case TelemetryServer::VtolState::Undefined:
             return MAV_VTOL_STATE_UNDEFINED;
-        case TelemetryServer::VtolState::VtolTransitionToFw:
+        case TelemetryServer::VtolState::TransitionToFw:
             return MAV_VTOL_STATE_TRANSITION_TO_FW;
-        case TelemetryServer::VtolState::VtolTransitionToMc:
+        case TelemetryServer::VtolState::TransitionToMc:
             return MAV_VTOL_STATE_TRANSITION_TO_MC;
-        case TelemetryServer::VtolState::VtolMc:
+        case TelemetryServer::VtolState::Mc:
             return MAV_VTOL_STATE_MC;
-        case TelemetryServer::VtolState::VtolFw:
+        case TelemetryServer::VtolState::Fw:
             return MAV_VTOL_STATE_FW;
         default:
             return MAV_VTOL_STATE_UNDEFINED;

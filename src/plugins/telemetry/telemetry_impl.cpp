@@ -201,6 +201,11 @@ Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
     return set_rate_landed_state(rate_hz);
 }
 
+Telemetry::Result TelemetryImpl::set_rate_vtol_state(double rate_hz)
+{
+    return set_rate_landed_state(rate_hz);
+}
+
 Telemetry::Result TelemetryImpl::set_rate_landed_state(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -342,6 +347,11 @@ void TelemetryImpl::set_rate_home_async(double rate_hz, Telemetry::ResultCallbac
 }
 
 void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    set_rate_landed_state_async(rate_hz, callback);
+}
+
+void TelemetryImpl::set_rate_vtol_state_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     set_rate_landed_state_async(rate_hz, callback);
 }
@@ -956,12 +966,21 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
     {
         Telemetry::LandedState landed_state = to_landed_state(extended_sys_state);
         set_landed_state(landed_state);
+
+        Telemetry::VtolState vtol_state = to_vtol_state(extended_sys_state);
+        set_vtol_state(vtol_state);
     }
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     if (_landed_state_subscription) {
         auto callback = _landed_state_subscription;
         auto arg = landed_state();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
+    if (_votl_state_subscription) {
+        auto callback = _votl_state_subscription;
+        auto arg = vtol_state();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
@@ -1363,6 +1382,22 @@ TelemetryImpl::to_landed_state(mavlink_extended_sys_state_t extended_sys_state)
             return Telemetry::LandedState::OnGround;
         default:
             return Telemetry::LandedState::Unknown;
+    }
+}
+
+Telemetry::VtolState TelemetryImpl::to_vtol_state(mavlink_extended_sys_state_t extended_sys_state)
+{
+    switch (extended_sys_state.vtol_state) {
+        case MAV_VTOL_STATE::MAV_VTOL_STATE_TRANSITION_TO_FW:
+            return Telemetry::VtolState::TransitionToFw;
+        case MAV_VTOL_STATE_TRANSITION_TO_MC:
+            return Telemetry::VtolState::TransitionToMc;
+        case MAV_VTOL_STATE_MC:
+            return Telemetry::VtolState::Mc;
+        case MAV_VTOL_STATE_FW:
+            return Telemetry::VtolState::Fw;
+        default:
+            return Telemetry::VtolState::Undefined;
     }
 }
 
@@ -1819,6 +1854,18 @@ void TelemetryImpl::set_health_armable(bool ok)
     _health.is_armable = ok;
 }
 
+Telemetry::VtolState TelemetryImpl::vtol_state() const
+{
+    std::lock_guard<std::mutex> lock(_vtol_state_mutex);
+    return _vtol_state;
+}
+
+void TelemetryImpl::set_vtol_state(Telemetry::VtolState vtol_state)
+{
+    std::lock_guard<std::mutex> lock(_vtol_state_mutex);
+    _vtol_state = vtol_state;
+}
+
 Telemetry::LandedState TelemetryImpl::landed_state() const
 {
     std::lock_guard<std::mutex> lock(_landed_state_mutex);
@@ -2025,6 +2072,12 @@ void TelemetryImpl::subscribe_health_all_ok(Telemetry::HealthAllOkCallback& call
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _health_all_ok_subscription = callback;
+}
+
+void TelemetryImpl::subscribe_vtol_state(Telemetry::VtolStateCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _votl_state_subscription = callback;
 }
 
 void TelemetryImpl::subscribe_landed_state(Telemetry::LandedStateCallback& callback)

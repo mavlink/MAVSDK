@@ -82,11 +82,11 @@ public:
      * @brief Maps to MAV_VTOL_STATE
      */
     enum class VtolState {
-        VtolUndefined, /**< @brief Not VTOL. */
-        VtolTransitionToFw, /**< @brief Transitioning to fixed-wing. */
-        VtolTransitionToMc, /**< @brief Transitioning to multi-copter. */
-        VtolMc, /**< @brief Multi-copter. */
-        VtolFw, /**< @brief Fixed-wing. */
+        Undefined, /**< @brief Not VTOL. */
+        TransitionToFw, /**< @brief Transitioning to fixed-wing. */
+        TransitionToMc, /**< @brief Transitioning to multi-copter. */
+        Mc, /**< @brief Multi-copter. */
+        Fw, /**< @brief Fixed-wing. */
     };
 
     /**
