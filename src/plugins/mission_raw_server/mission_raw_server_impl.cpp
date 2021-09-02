@@ -180,13 +180,16 @@ void MissionRawServerImpl::init()
                             _current_mission = items;
                             auto converted_result = convert_result(result);
                             auto converted_items = convert_items(items);
-                            _parent->call_user_callback(
-                                [this, converted_result, converted_items]() {
+                            _parent->call_user_callback([this,
+                                                         converted_result,
+                                                         converted_items]() {
+                                if (_incoming_mission_callback) {
                                     _incoming_mission_callback(converted_result, {converted_items});
+                                }
 
-                                    _mission_completed = false;
-                                    set_current_seq(0);
-                                });
+                                _mission_completed = false;
+                                set_current_seq(0);
+                            });
                         });
             });
         },
@@ -239,8 +242,11 @@ void MissionRawServerImpl::init()
                 clear_all.mission_type == MAV_MISSION_TYPE_MISSION) {
                 _current_mission.clear();
                 _current_seq = 0;
-                _parent->call_user_callback(
-                    [this, clear_all]() { _clear_all_callback(clear_all.mission_type); });
+                _parent->call_user_callback([this, clear_all]() {
+                    if (_clear_all_callback) {
+                        _clear_all_callback(clear_all.mission_type);
+                    }
+                });
             }
 
             // Send the MISSION_ACK
@@ -329,8 +335,11 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
     _current_seq = seq;
 
     auto converted_item = convert_item(_current_mission.at(_current_seq));
-    _parent->call_user_callback(
-        [this, converted_item]() { _current_item_changed_callback(converted_item); });
+    _parent->call_user_callback([this, converted_item]() {
+        if (_current_item_changed_callback) {
+            _current_item_changed_callback(converted_item);
+        }
+    });
 
     mavlink_message_t mission_current;
     mavlink_msg_mission_current_pack(

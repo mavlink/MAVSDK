@@ -149,6 +149,24 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed_state);
 
     /**
+     * @brief VTOL State enumeration
+     */
+    enum class VtolState {
+        Undefined, /**< @brief MAV is not configured as VTOL. */
+        TransitionToFw, /**< @brief VTOL is in transition from multicopter to fixed-wing. */
+        TransitionToMc, /**< @brief VTOL is in transition from fixed-wing to multicopter. */
+        Mc, /**< @brief VTOL is in multicopter state. */
+        Fw, /**< @brief VTOL is in fixed-wing state. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::VtolState`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::VtolState const& vtol_state);
+
+    /**
      * @brief Position type in global coordinates.
      */
     struct Position {
@@ -1054,6 +1072,24 @@ public:
     bool armed() const;
 
     /**
+     * @brief Callback type for subscribe_vtol_state.
+     */
+
+    using VtolStateCallback = std::function<void(VtolState)>;
+
+    /**
+     * @brief subscribe to vtol state Updates
+     */
+    void subscribe_vtol_state(VtolStateCallback callback);
+
+    /**
+     * @brief Poll for 'VtolState' (blocking).
+     *
+     * @return One VtolState update.
+     */
+    VtolState vtol_state() const;
+
+    /**
      * @brief Callback type for subscribe_attitude_quaternion.
      */
 
@@ -1603,6 +1639,22 @@ public:
      * @return Result of request.
      */
     Result set_rate_landed_state(double rate_hz) const;
+
+    /**
+     * @brief Set rate to VTOL state updates
+     *
+     * This function is non-blocking. See 'set_rate_vtol_state' for the blocking counterpart.
+     */
+    void set_rate_vtol_state_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to VTOL state updates
+     *
+     * This function is blocking. See 'set_rate_vtol_state_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_vtol_state(double rate_hz) const;
 
     /**
      * @brief Set rate to 'attitude' updates.

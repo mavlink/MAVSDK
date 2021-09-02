@@ -259,6 +259,46 @@ public:
         }
     }
 
+    static rpc::telemetry::VtolState
+    translateToRpcVtolState(const mavsdk::Telemetry::VtolState& vtol_state)
+    {
+        switch (vtol_state) {
+            default:
+                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
+            // FALLTHROUGH
+            case mavsdk::Telemetry::VtolState::Undefined:
+                return rpc::telemetry::VTOL_STATE_UNDEFINED;
+            case mavsdk::Telemetry::VtolState::TransitionToFw:
+                return rpc::telemetry::VTOL_STATE_TRANSITION_TO_FW;
+            case mavsdk::Telemetry::VtolState::TransitionToMc:
+                return rpc::telemetry::VTOL_STATE_TRANSITION_TO_MC;
+            case mavsdk::Telemetry::VtolState::Mc:
+                return rpc::telemetry::VTOL_STATE_MC;
+            case mavsdk::Telemetry::VtolState::Fw:
+                return rpc::telemetry::VTOL_STATE_FW;
+        }
+    }
+
+    static mavsdk::Telemetry::VtolState
+    translateFromRpcVtolState(const rpc::telemetry::VtolState vtol_state)
+    {
+        switch (vtol_state) {
+            default:
+                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
+            // FALLTHROUGH
+            case rpc::telemetry::VTOL_STATE_UNDEFINED:
+                return mavsdk::Telemetry::VtolState::Undefined;
+            case rpc::telemetry::VTOL_STATE_TRANSITION_TO_FW:
+                return mavsdk::Telemetry::VtolState::TransitionToFw;
+            case rpc::telemetry::VTOL_STATE_TRANSITION_TO_MC:
+                return mavsdk::Telemetry::VtolState::TransitionToMc;
+            case rpc::telemetry::VTOL_STATE_MC:
+                return mavsdk::Telemetry::VtolState::Mc;
+            case rpc::telemetry::VTOL_STATE_FW:
+                return mavsdk::Telemetry::VtolState::Fw;
+        }
+    }
+
     static std::unique_ptr<rpc::telemetry::Position>
     translateToRpcPosition(const mavsdk::Telemetry::Position& position)
     {
@@ -1447,6 +1487,46 @@ public:
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
                     _lazy_plugin.maybe_plugin()->subscribe_armed(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeVtolState(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeVtolStateRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::VtolStateResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        _lazy_plugin.maybe_plugin()->subscribe_vtol_state(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+                const mavsdk::Telemetry::VtolState vtol_state) {
+                rpc::telemetry::VtolStateResponse rpc_response;
+
+                rpc_response.set_vtol_state(translateToRpcVtolState(vtol_state));
+
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _lazy_plugin.maybe_plugin()->subscribe_vtol_state(nullptr);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2659,6 +2739,34 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->set_rate_landed_state(request->rate_hz());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRateVtolState(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateVtolStateRequest* request,
+        rpc::telemetry::SetRateVtolStateResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetRateVtolState sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_vtol_state(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

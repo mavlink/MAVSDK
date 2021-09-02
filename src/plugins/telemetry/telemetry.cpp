@@ -99,6 +99,16 @@ bool Telemetry::armed() const
     return _impl->armed();
 }
 
+void Telemetry::subscribe_vtol_state(VtolStateCallback callback)
+{
+    _impl->subscribe_vtol_state(callback);
+}
+
+Telemetry::VtolState Telemetry::vtol_state() const
+{
+    return _impl->vtol_state();
+}
+
 void Telemetry::subscribe_attitude_quaternion(AttitudeQuaternionCallback callback)
 {
     _impl->subscribe_attitude_quaternion(callback);
@@ -408,6 +418,16 @@ void Telemetry::set_rate_landed_state_async(double rate_hz, const ResultCallback
 Telemetry::Result Telemetry::set_rate_landed_state(double rate_hz) const
 {
     return _impl->set_rate_landed_state(rate_hz);
+}
+
+void Telemetry::set_rate_vtol_state_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_vtol_state_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_vtol_state(double rate_hz) const
+{
+    return _impl->set_rate_vtol_state(rate_hz);
 }
 
 void Telemetry::set_rate_attitude_async(double rate_hz, const ResultCallback callback)
@@ -1364,6 +1384,24 @@ std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed
             return str << "Taking Off";
         case Telemetry::LandedState::Landing:
             return str << "Landing";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::VtolState const& vtol_state)
+{
+    switch (vtol_state) {
+        case Telemetry::VtolState::Undefined:
+            return str << "Undefined";
+        case Telemetry::VtolState::TransitionToFw:
+            return str << "Transition To Fw";
+        case Telemetry::VtolState::TransitionToMc:
+            return str << "Transition To Mc";
+        case Telemetry::VtolState::Mc:
+            return str << "Mc";
+        case Telemetry::VtolState::Fw:
+            return str << "Fw";
         default:
             return str << "Unknown";
     }

@@ -794,16 +794,16 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::FixType const& fix_
 std::ostream& operator<<(std::ostream& str, TelemetryServer::VtolState const& vtol_state)
 {
     switch (vtol_state) {
-        case TelemetryServer::VtolState::VtolUndefined:
-            return str << "Vtol Undefined";
-        case TelemetryServer::VtolState::VtolTransitionToFw:
-            return str << "Vtol Transition To Fw";
-        case TelemetryServer::VtolState::VtolTransitionToMc:
-            return str << "Vtol Transition To Mc";
-        case TelemetryServer::VtolState::VtolMc:
-            return str << "Vtol Mc";
-        case TelemetryServer::VtolState::VtolFw:
-            return str << "Vtol Fw";
+        case TelemetryServer::VtolState::Undefined:
+            return str << "Undefined";
+        case TelemetryServer::VtolState::TransitionToFw:
+            return str << "Transition To Fw";
+        case TelemetryServer::VtolState::TransitionToMc:
+            return str << "Transition To Mc";
+        case TelemetryServer::VtolState::Mc:
+            return str << "Mc";
+        case TelemetryServer::VtolState::Fw:
+            return str << "Fw";
         default:
             return str << "Unknown";
     }

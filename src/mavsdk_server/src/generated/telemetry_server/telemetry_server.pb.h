@@ -393,17 +393,17 @@ inline bool FixType_Parse(
     FixType_descriptor(), name, value);
 }
 enum VtolState : int {
-  VTOL_UNDEFINED = 0,
-  VTOL_TRANSITION_TO_FW = 1,
-  VTOL_TRANSITION_TO_MC = 2,
-  VTOL_MC = 3,
-  VTOL_FW = 4,
+  VTOL_STATE_UNDEFINED = 0,
+  VTOL_STATE_TRANSITION_TO_FW = 1,
+  VTOL_STATE_TRANSITION_TO_MC = 2,
+  VTOL_STATE_MC = 3,
+  VTOL_STATE_FW = 4,
   VtolState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   VtolState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool VtolState_IsValid(int value);
-constexpr VtolState VtolState_MIN = VTOL_UNDEFINED;
-constexpr VtolState VtolState_MAX = VTOL_FW;
+constexpr VtolState VtolState_MIN = VTOL_STATE_UNDEFINED;
+constexpr VtolState VtolState_MAX = VTOL_STATE_FW;
 constexpr int VtolState_ARRAYSIZE = VtolState_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VtolState_descriptor();
