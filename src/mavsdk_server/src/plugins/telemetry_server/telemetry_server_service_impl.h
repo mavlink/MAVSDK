@@ -98,16 +98,16 @@ public:
             default:
                 LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
             // FALLTHROUGH
-            case mavsdk::TelemetryServer::VtolState::VtolUndefined:
-                return rpc::telemetry_server::VTOL_STATE_VTOL_UNDEFINED;
-            case mavsdk::TelemetryServer::VtolState::VtolTransitionToFw:
-                return rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_FW;
-            case mavsdk::TelemetryServer::VtolState::VtolTransitionToMc:
-                return rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_MC;
-            case mavsdk::TelemetryServer::VtolState::VtolMc:
-                return rpc::telemetry_server::VTOL_STATE_VTOL_MC;
-            case mavsdk::TelemetryServer::VtolState::VtolFw:
-                return rpc::telemetry_server::VTOL_STATE_VTOL_FW;
+            case mavsdk::TelemetryServer::VtolState::Undefined:
+                return rpc::telemetry_server::VTOL_STATE_UNDEFINED;
+            case mavsdk::TelemetryServer::VtolState::TransitionToFw:
+                return rpc::telemetry_server::VTOL_STATE_TRANSITION_TO_FW;
+            case mavsdk::TelemetryServer::VtolState::TransitionToMc:
+                return rpc::telemetry_server::VTOL_STATE_TRANSITION_TO_MC;
+            case mavsdk::TelemetryServer::VtolState::Mc:
+                return rpc::telemetry_server::VTOL_STATE_MC;
+            case mavsdk::TelemetryServer::VtolState::Fw:
+                return rpc::telemetry_server::VTOL_STATE_FW;
         }
     }
 
@@ -118,16 +118,16 @@ public:
             default:
                 LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
             // FALLTHROUGH
-            case rpc::telemetry_server::VTOL_STATE_VTOL_UNDEFINED:
-                return mavsdk::TelemetryServer::VtolState::VtolUndefined;
-            case rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_FW:
-                return mavsdk::TelemetryServer::VtolState::VtolTransitionToFw;
-            case rpc::telemetry_server::VTOL_STATE_VTOL_TRANSITION_TO_MC:
-                return mavsdk::TelemetryServer::VtolState::VtolTransitionToMc;
-            case rpc::telemetry_server::VTOL_STATE_VTOL_MC:
-                return mavsdk::TelemetryServer::VtolState::VtolMc;
-            case rpc::telemetry_server::VTOL_STATE_VTOL_FW:
-                return mavsdk::TelemetryServer::VtolState::VtolFw;
+            case rpc::telemetry_server::VTOL_STATE_UNDEFINED:
+                return mavsdk::TelemetryServer::VtolState::Undefined;
+            case rpc::telemetry_server::VTOL_STATE_TRANSITION_TO_FW:
+                return mavsdk::TelemetryServer::VtolState::TransitionToFw;
+            case rpc::telemetry_server::VTOL_STATE_TRANSITION_TO_MC:
+                return mavsdk::TelemetryServer::VtolState::TransitionToMc;
+            case rpc::telemetry_server::VTOL_STATE_MC:
+                return mavsdk::TelemetryServer::VtolState::Mc;
+            case rpc::telemetry_server::VTOL_STATE_FW:
+                return mavsdk::TelemetryServer::VtolState::Fw;
         }
     }
 
