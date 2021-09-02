@@ -22,6 +22,8 @@ service TelemetryService {
     rpc SubscribeLandedState(SubscribeLandedStateRequest) returns(stream LandedStateResponse) {}
     // Subscribe to armed updates.
     rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
+    // subscribe to vtol state Updates
+    rpc SubscribeVtolState(SubscribeVtolStateRequest) returns(stream VtolStateResponse) {}
     // Subscribe to 'attitude' updates (quaternion).
     rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
     // Subscribe to 'attitude' updates (Euler).
@@ -76,8 +78,6 @@ service TelemetryService {
     rpc SubscribeScaledPressure(SubscribeScaledPressureRequest) returns(stream ScaledPressureResponse) {}
     // Subscribe to 'Heading' updates.
     rpc SubscribeHeading(SubscribeHeadingRequest) returns(stream HeadingResponse) {}
-    // Subscribe to 'VTOL state' updates.
-    rpc SubscribeVtolState(SubscribeVtolStateRequest) returns(stream VtolStateResponse) {}
 
     // Set rate to 'position' updates.
     rpc SetRatePosition(SetRatePositionRequest) returns(SetRatePositionResponse) {}
@@ -87,6 +87,8 @@ service TelemetryService {
     rpc SetRateInAir(SetRateInAirRequest) returns(SetRateInAirResponse) {}
     // Set rate to landed state updates
     rpc SetRateLandedState(SetRateLandedStateRequest) returns(SetRateLandedStateResponse) {}
+    // Set rate to VTOL state updates
+    rpc SetRateVtolState(SetRateVtolStateRequest) returns(SetRateVtolStateResponse) {}
     // Set rate to 'attitude' updates.
     rpc SetRateAttitude(SetRateAttitudeRequest) returns(SetRateAttitudeResponse) {}
     // Set rate of camera attitude updates.
@@ -149,6 +151,11 @@ message LandedStateResponse {
 message SubscribeArmedRequest {}
 message ArmedResponse {
    bool is_armed = 1; // The next 'armed' state
+}
+
+message SubscribeVtolStateRequest {}
+message VtolStateResponse {
+    VtolState vtol_state = 1; // The next 'vtol' state
 }
 
 message SubscribeAttitudeQuaternionRequest {}
@@ -286,11 +293,6 @@ message HeadingResponse {
     Heading heading_deg = 1; // The next heading (yaw) in degrees
 }
 
-message SubscribeVtolStateRequest {}
-message VtolStateResponse {
-    VtolState vtol_state = 1; // The next VTOL state
-}
-
 message SetRatePositionRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
@@ -316,6 +318,13 @@ message SetRateLandedStateRequest {
     double rate_hz = 1; // The requested rate (in Hertz)
 }
 message SetRateLandedStateResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateVtolStateRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateVtolStateResponse {
     TelemetryResult telemetry_result = 1;
 }
 
@@ -643,6 +652,15 @@ enum LandedState {
     LANDED_STATE_LANDING = 4; // The vehicle is landing
 }
 
+// VTOL State enumeration
+enum VtolState {
+    VTOL_STATE_UNDEFINED = 0; // MAV is not configured as VTOL
+    VTOL_STATE_TRANSITION_TO_FW = 1; // VTOL is in transition from multicopter to fixed-wing
+	VTOL_STATE_TRANSITION_TO_MC = 2; // VTOL is in transition from fixed-wing to multicopter
+    VTOL_STATE_MC = 3; // VTOL is in multicopter state
+    VTOL_STATE_FW = 4; // VTOL is in fixed-wing state
+}
+
 /*
  * Covariance type.
  *
@@ -792,13 +810,4 @@ message TelemetryResult {
 
     Result result = 1; // Result enum value
     string result_str = 2; // Human-readable English string describing the result
-}
-
-enum VtolState
-{
-    VTOL_STATE_UNDEFINED = 0; // Not VTOL
-    VTOL_STATE_TRANSITION_TO_FW = 1; // Transitioning to fixed-wing
-    VTOL_STATE_TRANSITION_TO_MC = 2; // Transitioning to multi-copter
-    VTOL_STATE_MC = 3; // Multi-copter
-    VTOL_STATE_FW = 4; // Fixed-wing
 }
