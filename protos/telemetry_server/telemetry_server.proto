@@ -55,10 +55,10 @@ message PublishHomeRequest {
 message PublishSysStatusRequest {
     Battery battery = 1; // The next 'battery' state
     bool rc_receiver_status = 2; // rc receiver status
-    bool gyro_status = 3; 
-    bool accel_status = 4; 
+    bool gyro_status = 3;
+    bool accel_status = 4;
     bool mag_status = 5;
-    bool gps_status = 6; 
+    bool gps_status = 6;
 }
 
 message PublishExtendedSysStateRequest {
@@ -279,11 +279,11 @@ message Battery {
 // Maps to MAV_VTOL_STATE
 enum VtolState
 {
-    VTOL_UNDEFINED = 0; // Not VTOL
-    VTOL_TRANSITION_TO_FW = 1; // Transitioning to fixed-wing
-    VTOL_TRANSITION_TO_MC = 2; // Transitioning to multi-copter
-    VTOL_MC = 3; // Multi-copter
-    VTOL_FW = 4; // Fixed-wing
+    VTOL_STATE_UNDEFINED = 0; // Not VTOL
+    VTOL_STATE_TRANSITION_TO_FW = 1; // Transitioning to fixed-wing
+    VTOL_STATE_TRANSITION_TO_MC = 2; // Transitioning to multi-copter
+    VTOL_STATE_MC = 3; // Multi-copter
+    VTOL_STATE_FW = 4; // Fixed-wing
 }
 
 
