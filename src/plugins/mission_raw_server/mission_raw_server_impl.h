@@ -27,9 +27,9 @@ public:
     uint32_t clear_all() const;
 
 private:
-    MissionRawServer::IncomingMissionCallback _incoming_mission_callback;
-    MissionRawServer::CurrentItemChangedCallback _current_item_changed_callback;
-    MissionRawServer::ClearAllCallback _clear_all_callback;
+    MissionRawServer::IncomingMissionCallback _incoming_mission_callback{nullptr};
+    MissionRawServer::CurrentItemChangedCallback _current_item_changed_callback{nullptr};
+    MissionRawServer::ClearAllCallback _clear_all_callback{nullptr};
     std::thread _thread_mission;
     std::atomic<int> _target_component;
     std::atomic<int> _mission_count;
