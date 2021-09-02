@@ -55,10 +55,10 @@ message PublishHomeRequest {
 message PublishSysStatusRequest {
     Battery battery = 1; // The next 'battery' state
     bool rc_receiver_status = 2; // rc receiver status
-    bool gyro_status = 3; 
-    bool accel_status = 4; 
+    bool gyro_status = 3;
+    bool accel_status = 4;
     bool mag_status = 5;
-    bool gps_status = 6; 
+    bool gps_status = 6;
 }
 
 message PublishExtendedSysStateRequest {
