@@ -571,7 +571,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
             } else if (int_item.command == MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE) {
                 // We need to ignore it in order to not throw an "Unsupported" error
-                break;
+                continue;
 
             } else if (int_item.command == MAV_CMD_DO_MOUNT_CONFIGURE) {
                 if (int(int_item.param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
