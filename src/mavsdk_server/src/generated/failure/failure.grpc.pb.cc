@@ -29,23 +29,23 @@ static const char* FailureService_method_names[] = {
 
 std::unique_ptr< FailureService::Stub> FailureService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< FailureService::Stub> stub(new FailureService::Stub(channel));
+  std::unique_ptr< FailureService::Stub> stub(new FailureService::Stub(channel, options));
   return stub;
 }
 
-FailureService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_Inject_(FailureService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+FailureService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_Inject_(FailureService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status FailureService::Stub::Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest& request, ::mavsdk::rpc::failure::InjectResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Inject_, context, request, response);
 }
 
-void FailureService::Stub::experimental_async::Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, std::function<void(::grpc::Status)> f) {
+void FailureService::Stub::async::Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::failure::InjectRequest, ::mavsdk::rpc::failure::InjectResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Inject_, context, request, response, std::move(f));
 }
 
-void FailureService::Stub::experimental_async::Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void FailureService::Stub::async::Inject(::grpc::ClientContext* context, const ::mavsdk::rpc::failure::InjectRequest* request, ::mavsdk::rpc::failure::InjectResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Inject_, context, request, response, reactor);
 }
 

@@ -7,7 +7,6 @@
 #include "transponder/transponder.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -59,30 +58,18 @@ class TransponderService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::transponder::SetRateTransponderResponse>> PrepareAsyncSetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::transponder::SetRateTransponderResponse>>(PrepareAsyncSetRateTransponderRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       // Subscribe to 'transponder' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeTransponder(::grpc::ClientContext* context, ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::transponder::TransponderResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeTransponder(::grpc::ClientContext* context, ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::transponder::TransponderResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::transponder::TransponderResponse>* reactor) = 0;
       // Set rate to 'transponder' updates.
       virtual void SetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::transponder::TransponderResponse>* SubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::transponder::TransponderResponse>* AsyncSubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
@@ -92,7 +79,7 @@ class TransponderService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::transponder::TransponderResponse>> SubscribeTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::transponder::TransponderResponse>>(SubscribeTransponderRaw(context, request));
     }
@@ -109,31 +96,23 @@ class TransponderService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::transponder::SetRateTransponderResponse>> PrepareAsyncSetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::transponder::SetRateTransponderResponse>>(PrepareAsyncSetRateTransponderRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeTransponder(::grpc::ClientContext* context, ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::transponder::TransponderResponse>* reactor) override;
-      #else
-      void SubscribeTransponder(::grpc::ClientContext* context, ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::transponder::TransponderResponse>* reactor) override;
-      #endif
+      void SubscribeTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::transponder::TransponderResponse>* reactor) override;
       void SetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateTransponder(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientReader< ::mavsdk::rpc::transponder::TransponderResponse>* SubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::transponder::TransponderResponse>* AsyncSubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::transponder::TransponderResponse>* PrepareAsyncSubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -195,27 +174,17 @@ class TransponderService final {
   };
   typedef WithAsyncMethod_SubscribeTransponder<WithAsyncMethod_SetRateTransponder<Service > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeTransponder : public BaseClass {
+  class WithCallbackMethod_SubscribeTransponder : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeTransponder() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_SubscribeTransponder() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::transponder::SubscribeTransponderRequest, ::mavsdk::rpc::transponder::TransponderResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request) { return this->SubscribeTransponder(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest* request) { return this->SubscribeTransponder(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeTransponder() override {
+    ~WithCallbackMethod_SubscribeTransponder() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -223,46 +192,26 @@ class TransponderService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::transponder::TransponderResponse>* SubscribeTransponder(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::transponder::TransponderResponse>* SubscribeTransponder(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateTransponder : public BaseClass {
+  class WithCallbackMethod_SetRateTransponder : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateTransponder() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_SetRateTransponder() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::transponder::SetRateTransponderRequest, ::mavsdk::rpc::transponder::SetRateTransponderResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response) { return this->SetRateTransponder(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* request, ::mavsdk::rpc::transponder::SetRateTransponderResponse* response) { return this->SetRateTransponder(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateTransponder(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::transponder::SetRateTransponderRequest, ::mavsdk::rpc::transponder::SetRateTransponderResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::transponder::SetRateTransponderRequest, ::mavsdk::rpc::transponder::SetRateTransponderResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::transponder::SetRateTransponderRequest, ::mavsdk::rpc::transponder::SetRateTransponderResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateTransponder() override {
+    ~WithCallbackMethod_SetRateTransponder() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -270,20 +219,11 @@ class TransponderService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateTransponder(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* /*request*/, ::mavsdk::rpc::transponder::SetRateTransponderResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateTransponder(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* /*request*/, ::mavsdk::rpc::transponder::SetRateTransponderResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::transponder::SetRateTransponderRequest* /*request*/, ::mavsdk::rpc::transponder::SetRateTransponderResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SubscribeTransponder<ExperimentalWithCallbackMethod_SetRateTransponder<Service > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_SubscribeTransponder<ExperimentalWithCallbackMethod_SetRateTransponder<Service > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_SubscribeTransponder<WithCallbackMethod_SetRateTransponder<Service > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeTransponder : public BaseClass {
    private:
@@ -359,27 +299,17 @@ class TransponderService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeTransponder : public BaseClass {
+  class WithRawCallbackMethod_SubscribeTransponder : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeTransponder() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_SubscribeTransponder() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeTransponder(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTransponder(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeTransponder() override {
+    ~WithRawCallbackMethod_SubscribeTransponder() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -387,37 +317,21 @@ class TransponderService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTransponder(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTransponder(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateTransponder : public BaseClass {
+  class WithRawCallbackMethod_SetRateTransponder : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateTransponder() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_SetRateTransponder() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateTransponder(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateTransponder(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateTransponder() override {
+    ~WithRawCallbackMethod_SetRateTransponder() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -425,14 +339,8 @@ class TransponderService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateTransponder(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateTransponder(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetRateTransponder : public BaseClass {

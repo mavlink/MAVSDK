@@ -7,7 +7,6 @@
 #include "manual_control/manual_control.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -75,50 +74,34 @@ class ManualControlService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>> PrepareAsyncSetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>>(PrepareAsyncSetManualControlInputRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       //
       // Start position control using e.g. joystick input.
       //
       // Requires manual control input to be sent regularly already.
       // Requires a valid position using e.g. GPS, external vision, or optical flow.
       virtual void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Start altitude control
       //
       // Requires manual control input to be sent regularly already.
       // Does not require a  valid position e.g. GPS.
       virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set manual control input
       //
       // The manual control input needs to be sent at a rate high enough to prevent
       // triggering of RC loss, a good minimum rate is 10 Hz.
       virtual void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* AsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* PrepareAsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -129,7 +112,7 @@ class ManualControlService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     ::grpc::Status StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartPositionControlResponse>> AsyncStartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartPositionControlResponse>>(AsyncStartPositionControlRaw(context, request, cq));
@@ -151,38 +134,26 @@ class ManualControlService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>> PrepareAsyncSetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::SetManualControlInputResponse>>(PrepareAsyncSetManualControlInputRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
       void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void StartPositionControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void StartAltitudeControl(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetManualControlInput(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* AsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* PrepareAsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* AsyncStartAltitudeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -280,36 +251,22 @@ class ManualControlService final {
   };
   typedef WithAsyncMethod_StartPositionControl<WithAsyncMethod_StartAltitudeControl<WithAsyncMethod_SetManualControlInput<Service > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_StartPositionControl : public BaseClass {
+  class WithCallbackMethod_StartPositionControl : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_StartPositionControl() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_StartPositionControl() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response) { return this->StartPositionControl(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* request, ::mavsdk::rpc::manual_control::StartPositionControlResponse* response) { return this->StartPositionControl(context, request, response); }));}
     void SetMessageAllocatorFor_StartPositionControl(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartPositionControlRequest, ::mavsdk::rpc::manual_control::StartPositionControlResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_StartPositionControl() override {
+    ~WithCallbackMethod_StartPositionControl() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -317,46 +274,26 @@ class ManualControlService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* StartPositionControl(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* /*request*/, ::mavsdk::rpc::manual_control::StartPositionControlResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* StartPositionControl(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* /*request*/, ::mavsdk::rpc::manual_control::StartPositionControlResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::StartPositionControlRequest* /*request*/, ::mavsdk::rpc::manual_control::StartPositionControlResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_StartAltitudeControl : public BaseClass {
+  class WithCallbackMethod_StartAltitudeControl : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_StartAltitudeControl() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_StartAltitudeControl() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response) { return this->StartAltitudeControl(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* request, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* response) { return this->StartAltitudeControl(context, request, response); }));}
     void SetMessageAllocatorFor_StartAltitudeControl(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::StartAltitudeControlRequest, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_StartAltitudeControl() override {
+    ~WithCallbackMethod_StartAltitudeControl() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -364,46 +301,26 @@ class ManualControlService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* StartAltitudeControl(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* /*request*/, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* StartAltitudeControl(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* /*request*/, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest* /*request*/, ::mavsdk::rpc::manual_control::StartAltitudeControlResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetManualControlInput : public BaseClass {
+  class WithCallbackMethod_SetManualControlInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetManualControlInput() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(2,
+    WithCallbackMethod_SetManualControlInput() {
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response) { return this->SetManualControlInput(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* request, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* response) { return this->SetManualControlInput(context, request, response); }));}
     void SetMessageAllocatorFor_SetManualControlInput(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::manual_control::SetManualControlInputRequest, ::mavsdk::rpc::manual_control::SetManualControlInputResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetManualControlInput() override {
+    ~WithCallbackMethod_SetManualControlInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -411,20 +328,11 @@ class ManualControlService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetManualControlInput(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* /*request*/, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetManualControlInput(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* /*request*/, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::manual_control::SetManualControlInputRequest* /*request*/, ::mavsdk::rpc::manual_control::SetManualControlInputResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_StartPositionControl<ExperimentalWithCallbackMethod_StartAltitudeControl<ExperimentalWithCallbackMethod_SetManualControlInput<Service > > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_StartPositionControl<ExperimentalWithCallbackMethod_StartAltitudeControl<ExperimentalWithCallbackMethod_SetManualControlInput<Service > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_StartPositionControl<WithCallbackMethod_StartAltitudeControl<WithCallbackMethod_SetManualControlInput<Service > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_StartPositionControl : public BaseClass {
    private:
@@ -537,27 +445,17 @@ class ManualControlService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_StartPositionControl : public BaseClass {
+  class WithRawCallbackMethod_StartPositionControl : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_StartPositionControl() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_StartPositionControl() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartPositionControl(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartPositionControl(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_StartPositionControl() override {
+    ~WithRawCallbackMethod_StartPositionControl() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -565,37 +463,21 @@ class ManualControlService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* StartPositionControl(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* StartPositionControl(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_StartAltitudeControl : public BaseClass {
+  class WithRawCallbackMethod_StartAltitudeControl : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_StartAltitudeControl() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_StartAltitudeControl() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartAltitudeControl(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartAltitudeControl(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_StartAltitudeControl() override {
+    ~WithRawCallbackMethod_StartAltitudeControl() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -603,37 +485,21 @@ class ManualControlService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* StartAltitudeControl(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* StartAltitudeControl(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetManualControlInput : public BaseClass {
+  class WithRawCallbackMethod_SetManualControlInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetManualControlInput() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(2,
+    WithRawCallbackMethod_SetManualControlInput() {
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetManualControlInput(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetManualControlInput(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetManualControlInput() override {
+    ~WithRawCallbackMethod_SetManualControlInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -641,14 +507,8 @@ class ManualControlService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetManualControlInput(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetManualControlInput(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_StartPositionControl : public BaseClass {

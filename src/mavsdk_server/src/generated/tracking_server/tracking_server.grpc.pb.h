@@ -7,7 +7,6 @@
 #include "tracking_server/tracking_server.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -117,77 +116,37 @@ class TrackingServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>> PrepareAsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>>(PrepareAsyncRespondTrackingOffCommandRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       // Set/update the current point tracking status.
       virtual void SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set/update the current rectangle tracking status.
       virtual void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set the current tracking status to off.
       virtual void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Subscribe to incoming tracking point command.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeTrackingPointCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeTrackingPointCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) = 0;
       // Subscribe to incoming tracking rectangle command.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) = 0;
       // Subscribe to incoming tracking off command.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeTrackingOffCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeTrackingOffCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) = 0;
       // Respond to an incoming tracking point command.
       virtual void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Respond to an incoming tracking rectangle command.
       virtual void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Respond to an incoming tracking off command.
       virtual void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* AsyncSetTrackingPointStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* PrepareAsyncSetTrackingPointStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -213,7 +172,7 @@ class TrackingServerService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     ::grpc::Status SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>> AsyncSetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>>(AsyncSetTrackingPointStatusRaw(context, request, cq));
@@ -283,71 +242,35 @@ class TrackingServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>> PrepareAsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>>(PrepareAsyncRespondTrackingOffCommandRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
       void SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeTrackingPointCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) override;
-      #else
-      void SubscribeTrackingPointCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) override;
-      #else
-      void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeTrackingOffCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) override;
-      #else
-      void SubscribeTrackingOffCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) override;
-      #endif
+      void SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) override;
+      void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) override;
+      void SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) override;
       void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* AsyncSetTrackingPointStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* PrepareAsyncSetTrackingPointStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse>* AsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -586,36 +509,22 @@ class TrackingServerService final {
   };
   typedef WithAsyncMethod_SetTrackingPointStatus<WithAsyncMethod_SetTrackingRectangleStatus<WithAsyncMethod_SetTrackingOffStatus<WithAsyncMethod_SubscribeTrackingPointCommand<WithAsyncMethod_SubscribeTrackingRectangleCommand<WithAsyncMethod_SubscribeTrackingOffCommand<WithAsyncMethod_RespondTrackingPointCommand<WithAsyncMethod_RespondTrackingRectangleCommand<WithAsyncMethod_RespondTrackingOffCommand<Service > > > > > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetTrackingPointStatus : public BaseClass {
+  class WithCallbackMethod_SetTrackingPointStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetTrackingPointStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_SetTrackingPointStatus() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response) { return this->SetTrackingPointStatus(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response) { return this->SetTrackingPointStatus(context, request, response); }));}
     void SetMessageAllocatorFor_SetTrackingPointStatus(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetTrackingPointStatus() override {
+    ~WithCallbackMethod_SetTrackingPointStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -623,46 +532,26 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTrackingPointStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTrackingPointStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetTrackingRectangleStatus : public BaseClass {
+  class WithCallbackMethod_SetTrackingRectangleStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetTrackingRectangleStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response) { return this->SetTrackingRectangleStatus(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response) { return this->SetTrackingRectangleStatus(context, request, response); }));}
     void SetMessageAllocatorFor_SetTrackingRectangleStatus(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetTrackingRectangleStatus() override {
+    ~WithCallbackMethod_SetTrackingRectangleStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -670,46 +559,26 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTrackingRectangleStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTrackingRectangleStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetTrackingOffStatus : public BaseClass {
+  class WithCallbackMethod_SetTrackingOffStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetTrackingOffStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(2,
+    WithCallbackMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response) { return this->SetTrackingOffStatus(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response) { return this->SetTrackingOffStatus(context, request, response); }));}
     void SetMessageAllocatorFor_SetTrackingOffStatus(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetTrackingOffStatus() override {
+    ~WithCallbackMethod_SetTrackingOffStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -717,37 +586,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTrackingOffStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTrackingOffStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeTrackingPointCommand : public BaseClass {
+  class WithCallbackMethod_SubscribeTrackingPointCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeTrackingPointCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(3,
+    WithCallbackMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest, ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request) { return this->SubscribeTrackingPointCommand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request) { return this->SubscribeTrackingPointCommand(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeTrackingPointCommand() override {
+    ~WithCallbackMethod_SubscribeTrackingPointCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -755,37 +608,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* SubscribeTrackingPointCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* SubscribeTrackingPointCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+  class WithCallbackMethod_SubscribeTrackingRectangleCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeTrackingRectangleCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(4,
+    WithCallbackMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest, ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request) { return this->SubscribeTrackingRectangleCommand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request) { return this->SubscribeTrackingRectangleCommand(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeTrackingRectangleCommand() override {
+    ~WithCallbackMethod_SubscribeTrackingRectangleCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -793,37 +630,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* SubscribeTrackingRectangleCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* SubscribeTrackingRectangleCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeTrackingOffCommand : public BaseClass {
+  class WithCallbackMethod_SubscribeTrackingOffCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeTrackingOffCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(5,
+    WithCallbackMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest, ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request) { return this->SubscribeTrackingOffCommand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request) { return this->SubscribeTrackingOffCommand(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeTrackingOffCommand() override {
+    ~WithCallbackMethod_SubscribeTrackingOffCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -831,46 +652,26 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* SubscribeTrackingOffCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* SubscribeTrackingOffCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_RespondTrackingPointCommand : public BaseClass {
+  class WithCallbackMethod_RespondTrackingPointCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_RespondTrackingPointCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(6,
+    WithCallbackMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodCallback(6,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response) { return this->RespondTrackingPointCommand(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response) { return this->RespondTrackingPointCommand(context, request, response); }));}
     void SetMessageAllocatorFor_RespondTrackingPointCommand(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(6);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_RespondTrackingPointCommand() override {
+    ~WithCallbackMethod_RespondTrackingPointCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -878,46 +679,26 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RespondTrackingPointCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RespondTrackingPointCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_RespondTrackingRectangleCommand : public BaseClass {
+  class WithCallbackMethod_RespondTrackingRectangleCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_RespondTrackingRectangleCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(7,
+    WithCallbackMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response) { return this->RespondTrackingRectangleCommand(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response) { return this->RespondTrackingRectangleCommand(context, request, response); }));}
     void SetMessageAllocatorFor_RespondTrackingRectangleCommand(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(7);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_RespondTrackingRectangleCommand() override {
+    ~WithCallbackMethod_RespondTrackingRectangleCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -925,46 +706,26 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RespondTrackingRectangleCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RespondTrackingRectangleCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_RespondTrackingOffCommand : public BaseClass {
+  class WithCallbackMethod_RespondTrackingOffCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_RespondTrackingOffCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(8,
+    WithCallbackMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response) { return this->RespondTrackingOffCommand(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response) { return this->RespondTrackingOffCommand(context, request, response); }));}
     void SetMessageAllocatorFor_RespondTrackingOffCommand(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_RespondTrackingOffCommand() override {
+    ~WithCallbackMethod_RespondTrackingOffCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -972,20 +733,11 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RespondTrackingOffCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RespondTrackingOffCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SetTrackingPointStatus<ExperimentalWithCallbackMethod_SetTrackingRectangleStatus<ExperimentalWithCallbackMethod_SetTrackingOffStatus<ExperimentalWithCallbackMethod_SubscribeTrackingPointCommand<ExperimentalWithCallbackMethod_SubscribeTrackingRectangleCommand<ExperimentalWithCallbackMethod_SubscribeTrackingOffCommand<ExperimentalWithCallbackMethod_RespondTrackingPointCommand<ExperimentalWithCallbackMethod_RespondTrackingRectangleCommand<ExperimentalWithCallbackMethod_RespondTrackingOffCommand<Service > > > > > > > > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_SetTrackingPointStatus<ExperimentalWithCallbackMethod_SetTrackingRectangleStatus<ExperimentalWithCallbackMethod_SetTrackingOffStatus<ExperimentalWithCallbackMethod_SubscribeTrackingPointCommand<ExperimentalWithCallbackMethod_SubscribeTrackingRectangleCommand<ExperimentalWithCallbackMethod_SubscribeTrackingOffCommand<ExperimentalWithCallbackMethod_RespondTrackingPointCommand<ExperimentalWithCallbackMethod_RespondTrackingRectangleCommand<ExperimentalWithCallbackMethod_RespondTrackingOffCommand<Service > > > > > > > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_SetTrackingPointStatus<WithCallbackMethod_SetTrackingRectangleStatus<WithCallbackMethod_SetTrackingOffStatus<WithCallbackMethod_SubscribeTrackingPointCommand<WithCallbackMethod_SubscribeTrackingRectangleCommand<WithCallbackMethod_SubscribeTrackingOffCommand<WithCallbackMethod_RespondTrackingPointCommand<WithCallbackMethod_RespondTrackingRectangleCommand<WithCallbackMethod_RespondTrackingOffCommand<Service > > > > > > > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetTrackingPointStatus : public BaseClass {
    private:
@@ -1320,27 +1072,17 @@ class TrackingServerService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetTrackingPointStatus : public BaseClass {
+  class WithRawCallbackMethod_SetTrackingPointStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetTrackingPointStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_SetTrackingPointStatus() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingPointStatus(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingPointStatus(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetTrackingPointStatus() override {
+    ~WithRawCallbackMethod_SetTrackingPointStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1348,37 +1090,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTrackingPointStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTrackingPointStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetTrackingRectangleStatus : public BaseClass {
+  class WithRawCallbackMethod_SetTrackingRectangleStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetTrackingRectangleStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingRectangleStatus(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingRectangleStatus(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetTrackingRectangleStatus() override {
+    ~WithRawCallbackMethod_SetTrackingRectangleStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1386,37 +1112,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTrackingRectangleStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTrackingRectangleStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetTrackingOffStatus : public BaseClass {
+  class WithRawCallbackMethod_SetTrackingOffStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetTrackingOffStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(2,
+    WithRawCallbackMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingOffStatus(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingOffStatus(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetTrackingOffStatus() override {
+    ~WithRawCallbackMethod_SetTrackingOffStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1424,37 +1134,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTrackingOffStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTrackingOffStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeTrackingPointCommand : public BaseClass {
+  class WithRawCallbackMethod_SubscribeTrackingPointCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeTrackingPointCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(3,
+    WithRawCallbackMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingPointCommand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingPointCommand(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeTrackingPointCommand() override {
+    ~WithRawCallbackMethod_SubscribeTrackingPointCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1462,37 +1156,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingPointCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingPointCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+  class WithRawCallbackMethod_SubscribeTrackingRectangleCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeTrackingRectangleCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(4,
+    WithRawCallbackMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingRectangleCommand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingRectangleCommand(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeTrackingRectangleCommand() override {
+    ~WithRawCallbackMethod_SubscribeTrackingRectangleCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1500,37 +1178,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingRectangleCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingRectangleCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeTrackingOffCommand : public BaseClass {
+  class WithRawCallbackMethod_SubscribeTrackingOffCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeTrackingOffCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(5,
+    WithRawCallbackMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingOffCommand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingOffCommand(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeTrackingOffCommand() override {
+    ~WithRawCallbackMethod_SubscribeTrackingOffCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1538,37 +1200,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingOffCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingOffCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_RespondTrackingPointCommand : public BaseClass {
+  class WithRawCallbackMethod_RespondTrackingPointCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_RespondTrackingPointCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(6,
+    WithRawCallbackMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodRawCallback(6,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingPointCommand(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingPointCommand(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_RespondTrackingPointCommand() override {
+    ~WithRawCallbackMethod_RespondTrackingPointCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1576,37 +1222,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RespondTrackingPointCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RespondTrackingPointCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_RespondTrackingRectangleCommand : public BaseClass {
+  class WithRawCallbackMethod_RespondTrackingRectangleCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_RespondTrackingRectangleCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(7,
+    WithRawCallbackMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodRawCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingRectangleCommand(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingRectangleCommand(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_RespondTrackingRectangleCommand() override {
+    ~WithRawCallbackMethod_RespondTrackingRectangleCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1614,37 +1244,21 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RespondTrackingRectangleCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RespondTrackingRectangleCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_RespondTrackingOffCommand : public BaseClass {
+  class WithRawCallbackMethod_RespondTrackingOffCommand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_RespondTrackingOffCommand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(8,
+    WithRawCallbackMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodRawCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingOffCommand(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingOffCommand(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_RespondTrackingOffCommand() override {
+    ~WithRawCallbackMethod_RespondTrackingOffCommand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1652,14 +1266,8 @@ class TrackingServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RespondTrackingOffCommand(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RespondTrackingOffCommand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetTrackingPointStatus : public BaseClass {

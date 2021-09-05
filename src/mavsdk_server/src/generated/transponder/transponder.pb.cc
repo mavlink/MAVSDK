@@ -231,10 +231,8 @@ const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_transp
   schemas, file_default_instances, TableStruct_transponder_2ftransponder_2eproto::offsets,
   file_level_metadata_transponder_2ftransponder_2eproto, file_level_enum_descriptors_transponder_2ftransponder_2eproto, file_level_service_descriptors_transponder_2ftransponder_2eproto,
 };
-PROTOBUF_ATTRIBUTE_WEAK ::PROTOBUF_NAMESPACE_ID::Metadata
-descriptor_table_transponder_2ftransponder_2eproto_metadata_getter(int index) {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_transponder_2ftransponder_2eproto);
-  return descriptor_table_transponder_2ftransponder_2eproto.file_level_metadata[index];
+PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable* descriptor_table_transponder_2ftransponder_2eproto_getter() {
+  return &descriptor_table_transponder_2ftransponder_2eproto;
 }
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -312,10 +310,13 @@ class SubscribeTransponderRequest::_Internal {
  public:
 };
 
-SubscribeTransponderRequest::SubscribeTransponderRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+SubscribeTransponderRequest::SubscribeTransponderRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.transponder.SubscribeTransponderRequest)
 }
 SubscribeTransponderRequest::SubscribeTransponderRequest(const SubscribeTransponderRequest& from)
@@ -324,17 +325,18 @@ SubscribeTransponderRequest::SubscribeTransponderRequest(const SubscribeTranspon
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.transponder.SubscribeTransponderRequest)
 }
 
-void SubscribeTransponderRequest::SharedCtor() {
+inline void SubscribeTransponderRequest::SharedCtor() {
 }
 
 SubscribeTransponderRequest::~SubscribeTransponderRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.transponder.SubscribeTransponderRequest)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void SubscribeTransponderRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void SubscribeTransponderRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SubscribeTransponderRequest::ArenaDtor(void* object) {
@@ -361,8 +363,8 @@ const char* SubscribeTransponderRequest::_InternalParse(const char* ptr, ::PROTO
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -411,35 +413,26 @@ size_t SubscribeTransponderRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void SubscribeTransponderRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.transponder.SubscribeTransponderRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  const SubscribeTransponderRequest* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeTransponderRequest>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.transponder.SubscribeTransponderRequest)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.transponder.SubscribeTransponderRequest)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SubscribeTransponderRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SubscribeTransponderRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeTransponderRequest::GetClassData() const { return &_class_data_; }
+
+void SubscribeTransponderRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<SubscribeTransponderRequest *>(to)->MergeFrom(
+      static_cast<const SubscribeTransponderRequest &>(from));
 }
+
 
 void SubscribeTransponderRequest::MergeFrom(const SubscribeTransponderRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.transponder.SubscribeTransponderRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-}
-
-void SubscribeTransponderRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.transponder.SubscribeTransponderRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SubscribeTransponderRequest::CopyFrom(const SubscribeTransponderRequest& from) {
@@ -455,13 +448,14 @@ bool SubscribeTransponderRequest::IsInitialized() const {
 
 void SubscribeTransponderRequest::InternalSwap(SubscribeTransponderRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeTransponderRequest::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_transponder_2ftransponder_2eproto_getter, &descriptor_table_transponder_2ftransponder_2eproto_once,
+      file_level_metadata_transponder_2ftransponder_2eproto[0]);
 }
-
 
 // ===================================================================
 
@@ -474,10 +468,13 @@ const ::mavsdk::rpc::transponder::AdsbVehicle&
 TransponderResponse::_Internal::transponder(const TransponderResponse* msg) {
   return *msg->transponder_;
 }
-TransponderResponse::TransponderResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+TransponderResponse::TransponderResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.transponder.TransponderResponse)
 }
 TransponderResponse::TransponderResponse(const TransponderResponse& from)
@@ -491,18 +488,19 @@ TransponderResponse::TransponderResponse(const TransponderResponse& from)
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.transponder.TransponderResponse)
 }
 
-void TransponderResponse::SharedCtor() {
+inline void TransponderResponse::SharedCtor() {
 transponder_ = nullptr;
 }
 
 TransponderResponse::~TransponderResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.transponder.TransponderResponse)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void TransponderResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TransponderResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete transponder_;
 }
 
@@ -522,7 +520,7 @@ void TransponderResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArena() == nullptr && transponder_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && transponder_ != nullptr) {
     delete transponder_;
   }
   transponder_ = nullptr;
@@ -534,7 +532,6 @@ const char* TransponderResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAME
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.transponder.AdsbVehicle transponder = 1;
       case 1:
@@ -545,7 +542,8 @@ const char* TransponderResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAME
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -572,7 +570,7 @@ failure:
   (void) cached_has_bits;
 
   // .mavsdk.rpc.transponder.AdsbVehicle transponder = 1;
-  if (this->has_transponder()) {
+  if (this->_internal_has_transponder()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -596,7 +594,7 @@ size_t TransponderResponse::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // .mavsdk.rpc.transponder.AdsbVehicle transponder = 1;
-  if (this->has_transponder()) {
+  if (this->_internal_has_transponder()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *transponder_);
@@ -611,38 +609,29 @@ size_t TransponderResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void TransponderResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.transponder.TransponderResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  const TransponderResponse* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TransponderResponse>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.transponder.TransponderResponse)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.transponder.TransponderResponse)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TransponderResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    TransponderResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TransponderResponse::GetClassData() const { return &_class_data_; }
+
+void TransponderResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<TransponderResponse *>(to)->MergeFrom(
+      static_cast<const TransponderResponse &>(from));
 }
+
 
 void TransponderResponse::MergeFrom(const TransponderResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.transponder.TransponderResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_transponder()) {
+  if (from._internal_has_transponder()) {
     _internal_mutable_transponder()->::mavsdk::rpc::transponder::AdsbVehicle::MergeFrom(from._internal_transponder());
   }
-}
-
-void TransponderResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.transponder.TransponderResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TransponderResponse::CopyFrom(const TransponderResponse& from) {
@@ -658,14 +647,15 @@ bool TransponderResponse::IsInitialized() const {
 
 void TransponderResponse::InternalSwap(TransponderResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(transponder_, other->transponder_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TransponderResponse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_transponder_2ftransponder_2eproto_getter, &descriptor_table_transponder_2ftransponder_2eproto_once,
+      file_level_metadata_transponder_2ftransponder_2eproto[1]);
 }
-
 
 // ===================================================================
 
@@ -673,10 +663,13 @@ class SetRateTransponderRequest::_Internal {
  public:
 };
 
-SetRateTransponderRequest::SetRateTransponderRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+SetRateTransponderRequest::SetRateTransponderRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.transponder.SetRateTransponderRequest)
 }
 SetRateTransponderRequest::SetRateTransponderRequest(const SetRateTransponderRequest& from)
@@ -686,18 +679,19 @@ SetRateTransponderRequest::SetRateTransponderRequest(const SetRateTransponderReq
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.transponder.SetRateTransponderRequest)
 }
 
-void SetRateTransponderRequest::SharedCtor() {
+inline void SetRateTransponderRequest::SharedCtor() {
 rate_hz_ = 0;
 }
 
 SetRateTransponderRequest::~SetRateTransponderRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.transponder.SetRateTransponderRequest)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void SetRateTransponderRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void SetRateTransponderRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SetRateTransponderRequest::ArenaDtor(void* object) {
@@ -725,7 +719,6 @@ const char* SetRateTransponderRequest::_InternalParse(const char* ptr, ::PROTOBU
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // double rate_hz = 1;
       case 1:
@@ -736,7 +729,8 @@ const char* SetRateTransponderRequest::_InternalParse(const char* ptr, ::PROTOBU
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -763,7 +757,7 @@ failure:
   (void) cached_has_bits;
 
   // double rate_hz = 1;
-  if (!(this->rate_hz() <= 0 && this->rate_hz() >= 0)) {
+  if (!(this->_internal_rate_hz() <= 0 && this->_internal_rate_hz() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_rate_hz(), target);
   }
@@ -785,7 +779,7 @@ size_t SetRateTransponderRequest::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // double rate_hz = 1;
-  if (!(this->rate_hz() <= 0 && this->rate_hz() >= 0)) {
+  if (!(this->_internal_rate_hz() <= 0 && this->_internal_rate_hz() >= 0)) {
     total_size += 1 + 8;
   }
 
@@ -798,38 +792,29 @@ size_t SetRateTransponderRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void SetRateTransponderRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.transponder.SetRateTransponderRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  const SetRateTransponderRequest* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetRateTransponderRequest>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.transponder.SetRateTransponderRequest)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.transponder.SetRateTransponderRequest)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRateTransponderRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SetRateTransponderRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRateTransponderRequest::GetClassData() const { return &_class_data_; }
+
+void SetRateTransponderRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<SetRateTransponderRequest *>(to)->MergeFrom(
+      static_cast<const SetRateTransponderRequest &>(from));
 }
+
 
 void SetRateTransponderRequest::MergeFrom(const SetRateTransponderRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.transponder.SetRateTransponderRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!(from.rate_hz() <= 0 && from.rate_hz() >= 0)) {
+  if (!(from._internal_rate_hz() <= 0 && from._internal_rate_hz() >= 0)) {
     _internal_set_rate_hz(from._internal_rate_hz());
   }
-}
-
-void SetRateTransponderRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.transponder.SetRateTransponderRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetRateTransponderRequest::CopyFrom(const SetRateTransponderRequest& from) {
@@ -845,14 +830,15 @@ bool SetRateTransponderRequest::IsInitialized() const {
 
 void SetRateTransponderRequest::InternalSwap(SetRateTransponderRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(rate_hz_, other->rate_hz_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateTransponderRequest::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_transponder_2ftransponder_2eproto_getter, &descriptor_table_transponder_2ftransponder_2eproto_once,
+      file_level_metadata_transponder_2ftransponder_2eproto[2]);
 }
-
 
 // ===================================================================
 
@@ -865,10 +851,13 @@ const ::mavsdk::rpc::transponder::TransponderResult&
 SetRateTransponderResponse::_Internal::transponder_result(const SetRateTransponderResponse* msg) {
   return *msg->transponder_result_;
 }
-SetRateTransponderResponse::SetRateTransponderResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+SetRateTransponderResponse::SetRateTransponderResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.transponder.SetRateTransponderResponse)
 }
 SetRateTransponderResponse::SetRateTransponderResponse(const SetRateTransponderResponse& from)
@@ -882,18 +871,19 @@ SetRateTransponderResponse::SetRateTransponderResponse(const SetRateTransponderR
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.transponder.SetRateTransponderResponse)
 }
 
-void SetRateTransponderResponse::SharedCtor() {
+inline void SetRateTransponderResponse::SharedCtor() {
 transponder_result_ = nullptr;
 }
 
 SetRateTransponderResponse::~SetRateTransponderResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.transponder.SetRateTransponderResponse)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void SetRateTransponderResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void SetRateTransponderResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete transponder_result_;
 }
 
@@ -913,7 +903,7 @@ void SetRateTransponderResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArena() == nullptr && transponder_result_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && transponder_result_ != nullptr) {
     delete transponder_result_;
   }
   transponder_result_ = nullptr;
@@ -925,7 +915,6 @@ const char* SetRateTransponderResponse::_InternalParse(const char* ptr, ::PROTOB
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.transponder.TransponderResult transponder_result = 1;
       case 1:
@@ -936,7 +925,8 @@ const char* SetRateTransponderResponse::_InternalParse(const char* ptr, ::PROTOB
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -963,7 +953,7 @@ failure:
   (void) cached_has_bits;
 
   // .mavsdk.rpc.transponder.TransponderResult transponder_result = 1;
-  if (this->has_transponder_result()) {
+  if (this->_internal_has_transponder_result()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -987,7 +977,7 @@ size_t SetRateTransponderResponse::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // .mavsdk.rpc.transponder.TransponderResult transponder_result = 1;
-  if (this->has_transponder_result()) {
+  if (this->_internal_has_transponder_result()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *transponder_result_);
@@ -1002,38 +992,29 @@ size_t SetRateTransponderResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void SetRateTransponderResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.transponder.SetRateTransponderResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  const SetRateTransponderResponse* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetRateTransponderResponse>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.transponder.SetRateTransponderResponse)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.transponder.SetRateTransponderResponse)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRateTransponderResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SetRateTransponderResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRateTransponderResponse::GetClassData() const { return &_class_data_; }
+
+void SetRateTransponderResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<SetRateTransponderResponse *>(to)->MergeFrom(
+      static_cast<const SetRateTransponderResponse &>(from));
 }
+
 
 void SetRateTransponderResponse::MergeFrom(const SetRateTransponderResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.transponder.SetRateTransponderResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_transponder_result()) {
+  if (from._internal_has_transponder_result()) {
     _internal_mutable_transponder_result()->::mavsdk::rpc::transponder::TransponderResult::MergeFrom(from._internal_transponder_result());
   }
-}
-
-void SetRateTransponderResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.transponder.SetRateTransponderResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetRateTransponderResponse::CopyFrom(const SetRateTransponderResponse& from) {
@@ -1049,14 +1030,15 @@ bool SetRateTransponderResponse::IsInitialized() const {
 
 void SetRateTransponderResponse::InternalSwap(SetRateTransponderResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(transponder_result_, other->transponder_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateTransponderResponse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_transponder_2ftransponder_2eproto_getter, &descriptor_table_transponder_2ftransponder_2eproto_once,
+      file_level_metadata_transponder_2ftransponder_2eproto[3]);
 }
-
 
 // ===================================================================
 
@@ -1064,10 +1046,13 @@ class AdsbVehicle::_Internal {
  public:
 };
 
-AdsbVehicle::AdsbVehicle(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+AdsbVehicle::AdsbVehicle(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.transponder.AdsbVehicle)
 }
 AdsbVehicle::AdsbVehicle(const AdsbVehicle& from)
@@ -1076,7 +1061,7 @@ AdsbVehicle::AdsbVehicle(const AdsbVehicle& from)
   callsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_callsign().empty()) {
     callsign_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_callsign(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   ::memcpy(&latitude_deg_, &from.latitude_deg_,
     static_cast<size_t>(reinterpret_cast<char*>(&squawk_) -
@@ -1084,7 +1069,7 @@ AdsbVehicle::AdsbVehicle(const AdsbVehicle& from)
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.transponder.AdsbVehicle)
 }
 
-void AdsbVehicle::SharedCtor() {
+inline void AdsbVehicle::SharedCtor() {
 callsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&latitude_deg_) - reinterpret_cast<char*>(this)),
@@ -1094,12 +1079,13 @@ callsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlr
 
 AdsbVehicle::~AdsbVehicle() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.transponder.AdsbVehicle)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void AdsbVehicle::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void AdsbVehicle::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   callsign_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -1131,7 +1117,6 @@ const char* AdsbVehicle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint32 icao_address = 1;
       case 1:
@@ -1208,7 +1193,8 @@ const char* AdsbVehicle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -1235,49 +1221,49 @@ failure:
   (void) cached_has_bits;
 
   // uint32 icao_address = 1;
-  if (this->icao_address() != 0) {
+  if (this->_internal_icao_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_icao_address(), target);
   }
 
   // double latitude_deg = 2;
-  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+  if (!(this->_internal_latitude_deg() <= 0 && this->_internal_latitude_deg() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_latitude_deg(), target);
   }
 
   // double longitude_deg = 3;
-  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+  if (!(this->_internal_longitude_deg() <= 0 && this->_internal_longitude_deg() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(3, this->_internal_longitude_deg(), target);
   }
 
   // float absolute_altitude_m = 5;
-  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+  if (!(this->_internal_absolute_altitude_m() <= 0 && this->_internal_absolute_altitude_m() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_absolute_altitude_m(), target);
   }
 
   // float heading_deg = 6;
-  if (!(this->heading_deg() <= 0 && this->heading_deg() >= 0)) {
+  if (!(this->_internal_heading_deg() <= 0 && this->_internal_heading_deg() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_heading_deg(), target);
   }
 
   // float horizontal_velocity_m_s = 7;
-  if (!(this->horizontal_velocity_m_s() <= 0 && this->horizontal_velocity_m_s() >= 0)) {
+  if (!(this->_internal_horizontal_velocity_m_s() <= 0 && this->_internal_horizontal_velocity_m_s() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(7, this->_internal_horizontal_velocity_m_s(), target);
   }
 
   // float vertical_velocity_m_s = 8;
-  if (!(this->vertical_velocity_m_s() <= 0 && this->vertical_velocity_m_s() >= 0)) {
+  if (!(this->_internal_vertical_velocity_m_s() <= 0 && this->_internal_vertical_velocity_m_s() >= 0)) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(8, this->_internal_vertical_velocity_m_s(), target);
   }
 
   // string callsign = 9;
-  if (this->callsign().size() > 0) {
+  if (!this->_internal_callsign().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_callsign().data(), static_cast<int>(this->_internal_callsign().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1287,14 +1273,14 @@ failure:
   }
 
   // .mavsdk.rpc.transponder.AdsbEmitterType emitter_type = 10;
-  if (this->emitter_type() != 0) {
+  if (this->_internal_emitter_type() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       10, this->_internal_emitter_type(), target);
   }
 
   // uint32 squawk = 13;
-  if (this->squawk() != 0) {
+  if (this->_internal_squawk() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(13, this->_internal_squawk(), target);
   }
@@ -1316,57 +1302,57 @@ size_t AdsbVehicle::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // string callsign = 9;
-  if (this->callsign().size() > 0) {
+  if (!this->_internal_callsign().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_callsign());
   }
 
   // double latitude_deg = 2;
-  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+  if (!(this->_internal_latitude_deg() <= 0 && this->_internal_latitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
   // double longitude_deg = 3;
-  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+  if (!(this->_internal_longitude_deg() <= 0 && this->_internal_longitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
   // uint32 icao_address = 1;
-  if (this->icao_address() != 0) {
+  if (this->_internal_icao_address() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->_internal_icao_address());
   }
 
   // float absolute_altitude_m = 5;
-  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+  if (!(this->_internal_absolute_altitude_m() <= 0 && this->_internal_absolute_altitude_m() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float heading_deg = 6;
-  if (!(this->heading_deg() <= 0 && this->heading_deg() >= 0)) {
+  if (!(this->_internal_heading_deg() <= 0 && this->_internal_heading_deg() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float horizontal_velocity_m_s = 7;
-  if (!(this->horizontal_velocity_m_s() <= 0 && this->horizontal_velocity_m_s() >= 0)) {
+  if (!(this->_internal_horizontal_velocity_m_s() <= 0 && this->_internal_horizontal_velocity_m_s() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float vertical_velocity_m_s = 8;
-  if (!(this->vertical_velocity_m_s() <= 0 && this->vertical_velocity_m_s() >= 0)) {
+  if (!(this->_internal_vertical_velocity_m_s() <= 0 && this->_internal_vertical_velocity_m_s() >= 0)) {
     total_size += 1 + 4;
   }
 
   // .mavsdk.rpc.transponder.AdsbEmitterType emitter_type = 10;
-  if (this->emitter_type() != 0) {
+  if (this->_internal_emitter_type() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_emitter_type());
   }
 
   // uint32 squawk = 13;
-  if (this->squawk() != 0) {
+  if (this->_internal_squawk() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->_internal_squawk());
@@ -1381,65 +1367,56 @@ size_t AdsbVehicle::ByteSizeLong() const {
   return total_size;
 }
 
-void AdsbVehicle::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.transponder.AdsbVehicle)
-  GOOGLE_DCHECK_NE(&from, this);
-  const AdsbVehicle* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AdsbVehicle>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.transponder.AdsbVehicle)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.transponder.AdsbVehicle)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AdsbVehicle::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    AdsbVehicle::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AdsbVehicle::GetClassData() const { return &_class_data_; }
+
+void AdsbVehicle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<AdsbVehicle *>(to)->MergeFrom(
+      static_cast<const AdsbVehicle &>(from));
 }
+
 
 void AdsbVehicle::MergeFrom(const AdsbVehicle& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.transponder.AdsbVehicle)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.callsign().size() > 0) {
+  if (!from._internal_callsign().empty()) {
     _internal_set_callsign(from._internal_callsign());
   }
-  if (!(from.latitude_deg() <= 0 && from.latitude_deg() >= 0)) {
+  if (!(from._internal_latitude_deg() <= 0 && from._internal_latitude_deg() >= 0)) {
     _internal_set_latitude_deg(from._internal_latitude_deg());
   }
-  if (!(from.longitude_deg() <= 0 && from.longitude_deg() >= 0)) {
+  if (!(from._internal_longitude_deg() <= 0 && from._internal_longitude_deg() >= 0)) {
     _internal_set_longitude_deg(from._internal_longitude_deg());
   }
-  if (from.icao_address() != 0) {
+  if (from._internal_icao_address() != 0) {
     _internal_set_icao_address(from._internal_icao_address());
   }
-  if (!(from.absolute_altitude_m() <= 0 && from.absolute_altitude_m() >= 0)) {
+  if (!(from._internal_absolute_altitude_m() <= 0 && from._internal_absolute_altitude_m() >= 0)) {
     _internal_set_absolute_altitude_m(from._internal_absolute_altitude_m());
   }
-  if (!(from.heading_deg() <= 0 && from.heading_deg() >= 0)) {
+  if (!(from._internal_heading_deg() <= 0 && from._internal_heading_deg() >= 0)) {
     _internal_set_heading_deg(from._internal_heading_deg());
   }
-  if (!(from.horizontal_velocity_m_s() <= 0 && from.horizontal_velocity_m_s() >= 0)) {
+  if (!(from._internal_horizontal_velocity_m_s() <= 0 && from._internal_horizontal_velocity_m_s() >= 0)) {
     _internal_set_horizontal_velocity_m_s(from._internal_horizontal_velocity_m_s());
   }
-  if (!(from.vertical_velocity_m_s() <= 0 && from.vertical_velocity_m_s() >= 0)) {
+  if (!(from._internal_vertical_velocity_m_s() <= 0 && from._internal_vertical_velocity_m_s() >= 0)) {
     _internal_set_vertical_velocity_m_s(from._internal_vertical_velocity_m_s());
   }
-  if (from.emitter_type() != 0) {
+  if (from._internal_emitter_type() != 0) {
     _internal_set_emitter_type(from._internal_emitter_type());
   }
-  if (from.squawk() != 0) {
+  if (from._internal_squawk() != 0) {
     _internal_set_squawk(from._internal_squawk());
   }
-}
-
-void AdsbVehicle::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.transponder.AdsbVehicle)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void AdsbVehicle::CopyFrom(const AdsbVehicle& from) {
@@ -1455,8 +1432,12 @@ bool AdsbVehicle::IsInitialized() const {
 
 void AdsbVehicle::InternalSwap(AdsbVehicle* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  callsign_.Swap(&other->callsign_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &callsign_, GetArenaForAllocation(),
+      &other->callsign_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(AdsbVehicle, squawk_)
       + sizeof(AdsbVehicle::squawk_)
@@ -1466,9 +1447,10 @@ void AdsbVehicle::InternalSwap(AdsbVehicle* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AdsbVehicle::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_transponder_2ftransponder_2eproto_getter, &descriptor_table_transponder_2ftransponder_2eproto_once,
+      file_level_metadata_transponder_2ftransponder_2eproto[4]);
 }
-
 
 // ===================================================================
 
@@ -1476,10 +1458,13 @@ class TransponderResult::_Internal {
  public:
 };
 
-TransponderResult::TransponderResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+TransponderResult::TransponderResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.transponder.TransponderResult)
 }
 TransponderResult::TransponderResult(const TransponderResult& from)
@@ -1488,25 +1473,26 @@ TransponderResult::TransponderResult(const TransponderResult& from)
   result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_result_str().empty()) {
     result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
-      GetArena());
+      GetArenaForAllocation());
   }
   result_ = from.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.transponder.TransponderResult)
 }
 
-void TransponderResult::SharedCtor() {
+inline void TransponderResult::SharedCtor() {
 result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 result_ = 0;
 }
 
 TransponderResult::~TransponderResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.transponder.TransponderResult)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void TransponderResult::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TransponderResult::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   result_str_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -1536,7 +1522,6 @@ const char* TransponderResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.transponder.TransponderResult.Result result = 1;
       case 1:
@@ -1557,7 +1542,8 @@ const char* TransponderResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
         continue;
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
           ctx->SetLastTag(tag);
           goto success;
         }
@@ -1584,14 +1570,14 @@ failure:
   (void) cached_has_bits;
 
   // .mavsdk.rpc.transponder.TransponderResult.Result result = 1;
-  if (this->result() != 0) {
+  if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->_internal_result(), target);
   }
 
   // string result_str = 2;
-  if (this->result_str().size() > 0) {
+  if (!this->_internal_result_str().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1617,14 +1603,14 @@ size_t TransponderResult::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // string result_str = 2;
-  if (this->result_str().size() > 0) {
+  if (!this->_internal_result_str().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_result_str());
   }
 
   // .mavsdk.rpc.transponder.TransponderResult.Result result = 1;
-  if (this->result() != 0) {
+  if (this->_internal_result() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_result());
   }
@@ -1638,41 +1624,32 @@ size_t TransponderResult::ByteSizeLong() const {
   return total_size;
 }
 
-void TransponderResult::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.transponder.TransponderResult)
-  GOOGLE_DCHECK_NE(&from, this);
-  const TransponderResult* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TransponderResult>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.transponder.TransponderResult)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.transponder.TransponderResult)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TransponderResult::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    TransponderResult::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TransponderResult::GetClassData() const { return &_class_data_; }
+
+void TransponderResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<TransponderResult *>(to)->MergeFrom(
+      static_cast<const TransponderResult &>(from));
 }
+
 
 void TransponderResult::MergeFrom(const TransponderResult& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.transponder.TransponderResult)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.result_str().size() > 0) {
+  if (!from._internal_result_str().empty()) {
     _internal_set_result_str(from._internal_result_str());
   }
-  if (from.result() != 0) {
+  if (from._internal_result() != 0) {
     _internal_set_result(from._internal_result());
   }
-}
-
-void TransponderResult::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.transponder.TransponderResult)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TransponderResult::CopyFrom(const TransponderResult& from) {
@@ -1688,15 +1665,20 @@ bool TransponderResult::IsInitialized() const {
 
 void TransponderResult::InternalSwap(TransponderResult* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &result_str_, GetArenaForAllocation(),
+      &other->result_str_, other->GetArenaForAllocation()
+  );
   swap(result_, other->result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TransponderResult::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_transponder_2ftransponder_2eproto_getter, &descriptor_table_transponder_2ftransponder_2eproto_once,
+      file_level_metadata_transponder_2ftransponder_2eproto[5]);
 }
-
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace transponder

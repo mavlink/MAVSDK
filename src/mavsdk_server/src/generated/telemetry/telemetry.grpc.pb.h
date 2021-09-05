@@ -7,7 +7,6 @@
 #include "telemetry/telemetry.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -555,376 +554,148 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>> PrepareAsyncGetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>>(PrepareAsyncGetGpsGlobalOriginRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       // Subscribe to 'position' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribePosition(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionResponse>* reactor) = 0;
-      #else
-      virtual void SubscribePosition(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionResponse>* reactor) = 0;
       // Subscribe to 'home position' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeHome(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HomeResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeHome(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HomeResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HomeResponse>* reactor) = 0;
       // Subscribe to in-air updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeInAir(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::InAirResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeInAir(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::InAirResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::InAirResponse>* reactor) = 0;
       // Subscribe to landed state updates
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeLandedState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeLandedState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* reactor) = 0;
       // Subscribe to armed updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeArmed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeArmed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeArmed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* reactor) = 0;
       // subscribe to vtol state Updates
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeVtolState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeVtolState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* reactor) = 0;
       // Subscribe to 'attitude' updates (quaternion).
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* reactor) = 0;
       // Subscribe to 'attitude' updates (Euler).
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeAttitudeEuler(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* reactor) = 0;
       // Subscribe to 'attitude' updates (angular velocity)
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeAttitudeAngularVelocityBody(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeAttitudeAngularVelocityBody(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeAttitudeAngularVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* reactor) = 0;
       // Subscribe to 'camera attitude' updates (quaternion).
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeCameraAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeCameraAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeCameraAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* reactor) = 0;
       // Subscribe to 'camera attitude' updates (Euler).
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) = 0;
       // Subscribe to 'ground speed' updates (NED).
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) = 0;
       // Subscribe to 'GPS info' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeGpsInfo(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeGpsInfo(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) = 0;
       // Subscribe to 'Raw GPS' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeRawGps(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeRawGps(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeRawGps(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* reactor) = 0;
       // Subscribe to 'battery' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeBattery(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeBattery(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* reactor) = 0;
       // Subscribe to 'flight mode' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeFlightMode(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeFlightMode(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* reactor) = 0;
       // Subscribe to 'health' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeHealth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeHealth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthResponse>* reactor) = 0;
       // Subscribe to 'RC status' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeRcStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeRcStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) = 0;
       // Subscribe to 'status text' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeStatusText(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeStatusText(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) = 0;
       // Subscribe to 'actuator control target' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeActuatorControlTarget(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeActuatorControlTarget(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) = 0;
       // Subscribe to 'actuator output status' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeActuatorOutputStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeActuatorOutputStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) = 0;
       // Subscribe to 'odometry' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeOdometry(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeOdometry(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) = 0;
       // Subscribe to 'position velocity' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribePositionVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* reactor) = 0;
-      #else
-      virtual void SubscribePositionVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* reactor) = 0;
       // Subscribe to 'ground truth' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeGroundTruth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeGroundTruth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* reactor) = 0;
       // Subscribe to 'fixedwing metrics' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeFixedwingMetrics(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeFixedwingMetrics(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* reactor) = 0;
       // Subscribe to 'IMU' updates (in SI units in NED body frame).
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ImuResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ImuResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ImuResponse>* reactor) = 0;
       // Subscribe to 'Scaled IMU' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeScaledImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeScaledImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* reactor) = 0;
       // Subscribe to 'Raw IMU' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeRawImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeRawImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* reactor) = 0;
       // Subscribe to 'HealthAllOk' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeHealthAllOk(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeHealthAllOk(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeHealthAllOk(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* reactor) = 0;
       // Subscribe to 'unix epoch time' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeUnixEpochTime(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeUnixEpochTime(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* reactor) = 0;
       // Subscribe to 'Distance Sensor' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeDistanceSensor(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeDistanceSensor(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* reactor) = 0;
       // Subscribe to 'Scaled Pressure' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeScaledPressure(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeScaledPressure(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeScaledPressure(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* reactor) = 0;
       // Subscribe to 'Heading' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeHeading(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeHeading(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeHeading(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* reactor) = 0;
       // Set rate to 'position' updates.
       virtual void SetRatePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRatePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRatePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'home position' updates.
       virtual void SetRateHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to in-air updates.
       virtual void SetRateInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to landed state updates
       virtual void SetRateLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to VTOL state updates
       virtual void SetRateVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'attitude' updates.
       virtual void SetRateAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate of camera attitude updates.
       virtual void SetRateCameraAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateCameraAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateCameraAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'ground speed' updates (NED).
       virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'GPS info' updates.
       virtual void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'battery' updates.
       virtual void SetRateBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'RC status' updates.
       virtual void SetRateRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'actuator control target' updates.
       virtual void SetRateActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'actuator output status' updates.
       virtual void SetRateActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'odometry' updates.
       virtual void SetRateOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'position velocity' updates.
       virtual void SetRatePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRatePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRatePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'ground truth' updates.
       virtual void SetRateGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'fixedwing metrics' updates.
       virtual void SetRateFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'IMU' updates.
       virtual void SetRateImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'Scaled IMU' updates.
       virtual void SetRateScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'Raw IMU' updates.
       virtual void SetRateRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'unix epoch time' updates.
       virtual void SetRateUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set rate to 'Distance Sensor' updates.
       virtual void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Get the GPS location of where the estimator has been initialized.
       virtual void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::PositionResponse>* SubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::PositionResponse>* AsyncSubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
@@ -1074,7 +845,7 @@ class TelemetryService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::PositionResponse>> SubscribePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::telemetry::PositionResponse>>(SubscribePositionRaw(context, request));
     }
@@ -1533,323 +1304,99 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>> PrepareAsyncGetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>>(PrepareAsyncGetGpsGlobalOriginRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribePosition(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionResponse>* reactor) override;
-      #else
-      void SubscribePosition(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeHome(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HomeResponse>* reactor) override;
-      #else
-      void SubscribeHome(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HomeResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeInAir(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::InAirResponse>* reactor) override;
-      #else
-      void SubscribeInAir(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::InAirResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeLandedState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* reactor) override;
-      #else
-      void SubscribeLandedState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeArmed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* reactor) override;
-      #else
-      void SubscribeArmed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeVtolState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* reactor) override;
-      #else
-      void SubscribeVtolState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* reactor) override;
-      #else
-      void SubscribeAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* reactor) override;
-      #else
-      void SubscribeAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeAttitudeAngularVelocityBody(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* reactor) override;
-      #else
-      void SubscribeAttitudeAngularVelocityBody(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeCameraAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* reactor) override;
-      #else
-      void SubscribeCameraAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) override;
-      #else
-      void SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) override;
-      #else
-      void SubscribeVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeGpsInfo(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) override;
-      #else
-      void SubscribeGpsInfo(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeRawGps(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* reactor) override;
-      #else
-      void SubscribeRawGps(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeBattery(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* reactor) override;
-      #else
-      void SubscribeBattery(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeFlightMode(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* reactor) override;
-      #else
-      void SubscribeFlightMode(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeHealth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthResponse>* reactor) override;
-      #else
-      void SubscribeHealth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeRcStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) override;
-      #else
-      void SubscribeRcStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeStatusText(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) override;
-      #else
-      void SubscribeStatusText(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeActuatorControlTarget(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) override;
-      #else
-      void SubscribeActuatorControlTarget(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeActuatorOutputStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) override;
-      #else
-      void SubscribeActuatorOutputStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeOdometry(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) override;
-      #else
-      void SubscribeOdometry(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribePositionVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* reactor) override;
-      #else
-      void SubscribePositionVelocityNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeGroundTruth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* reactor) override;
-      #else
-      void SubscribeGroundTruth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeFixedwingMetrics(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* reactor) override;
-      #else
-      void SubscribeFixedwingMetrics(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ImuResponse>* reactor) override;
-      #else
-      void SubscribeImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ImuResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeScaledImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* reactor) override;
-      #else
-      void SubscribeScaledImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeRawImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* reactor) override;
-      #else
-      void SubscribeRawImu(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeHealthAllOk(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* reactor) override;
-      #else
-      void SubscribeHealthAllOk(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeUnixEpochTime(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* reactor) override;
-      #else
-      void SubscribeUnixEpochTime(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeDistanceSensor(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* reactor) override;
-      #else
-      void SubscribeDistanceSensor(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeScaledPressure(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* reactor) override;
-      #else
-      void SubscribeScaledPressure(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeHeading(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* reactor) override;
-      #else
-      void SubscribeHeading(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* reactor) override;
-      #endif
+      void SubscribePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionResponse>* reactor) override;
+      void SubscribeHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HomeResponse>* reactor) override;
+      void SubscribeInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::InAirResponse>* reactor) override;
+      void SubscribeLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* reactor) override;
+      void SubscribeArmed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* reactor) override;
+      void SubscribeVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* reactor) override;
+      void SubscribeAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* reactor) override;
+      void SubscribeAttitudeEuler(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* reactor) override;
+      void SubscribeAttitudeAngularVelocityBody(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* reactor) override;
+      void SubscribeCameraAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* reactor) override;
+      void SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) override;
+      void SubscribeVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* reactor) override;
+      void SubscribeGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) override;
+      void SubscribeRawGps(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* reactor) override;
+      void SubscribeBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* reactor) override;
+      void SubscribeFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* reactor) override;
+      void SubscribeHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthResponse>* reactor) override;
+      void SubscribeRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) override;
+      void SubscribeStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) override;
+      void SubscribeActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) override;
+      void SubscribeActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) override;
+      void SubscribeOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) override;
+      void SubscribePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* reactor) override;
+      void SubscribeGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* reactor) override;
+      void SubscribeFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* reactor) override;
+      void SubscribeImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ImuResponse>* reactor) override;
+      void SubscribeScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* reactor) override;
+      void SubscribeRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* reactor) override;
+      void SubscribeHealthAllOk(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* reactor) override;
+      void SubscribeUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* reactor) override;
+      void SubscribeDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* reactor) override;
+      void SubscribeScaledPressure(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* reactor) override;
+      void SubscribeHeading(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* reactor) override;
       void SetRatePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRatePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRatePosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateHome(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateInAir(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateLandedState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateVtolState(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateCameraAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateCameraAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateCameraAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateGpsInfo(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateBattery(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateRcStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRatePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRatePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRatePositionVelocityNed(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateGroundTruth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateFixedwingMetrics(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientReader< ::mavsdk::rpc::telemetry::PositionResponse>* SubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::PositionResponse>* AsyncSubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::PositionResponse>* PrepareAsyncSubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -3293,27 +2840,17 @@ class TelemetryService final {
   };
   typedef WithAsyncMethod_SubscribePosition<WithAsyncMethod_SubscribeHome<WithAsyncMethod_SubscribeInAir<WithAsyncMethod_SubscribeLandedState<WithAsyncMethod_SubscribeArmed<WithAsyncMethod_SubscribeVtolState<WithAsyncMethod_SubscribeAttitudeQuaternion<WithAsyncMethod_SubscribeAttitudeEuler<WithAsyncMethod_SubscribeAttitudeAngularVelocityBody<WithAsyncMethod_SubscribeCameraAttitudeQuaternion<WithAsyncMethod_SubscribeCameraAttitudeEuler<WithAsyncMethod_SubscribeVelocityNed<WithAsyncMethod_SubscribeGpsInfo<WithAsyncMethod_SubscribeRawGps<WithAsyncMethod_SubscribeBattery<WithAsyncMethod_SubscribeFlightMode<WithAsyncMethod_SubscribeHealth<WithAsyncMethod_SubscribeRcStatus<WithAsyncMethod_SubscribeStatusText<WithAsyncMethod_SubscribeActuatorControlTarget<WithAsyncMethod_SubscribeActuatorOutputStatus<WithAsyncMethod_SubscribeOdometry<WithAsyncMethod_SubscribePositionVelocityNed<WithAsyncMethod_SubscribeGroundTruth<WithAsyncMethod_SubscribeFixedwingMetrics<WithAsyncMethod_SubscribeImu<WithAsyncMethod_SubscribeScaledImu<WithAsyncMethod_SubscribeRawImu<WithAsyncMethod_SubscribeHealthAllOk<WithAsyncMethod_SubscribeUnixEpochTime<WithAsyncMethod_SubscribeDistanceSensor<WithAsyncMethod_SubscribeScaledPressure<WithAsyncMethod_SubscribeHeading<WithAsyncMethod_SetRatePosition<WithAsyncMethod_SetRateHome<WithAsyncMethod_SetRateInAir<WithAsyncMethod_SetRateLandedState<WithAsyncMethod_SetRateVtolState<WithAsyncMethod_SetRateAttitude<WithAsyncMethod_SetRateCameraAttitude<WithAsyncMethod_SetRateVelocityNed<WithAsyncMethod_SetRateGpsInfo<WithAsyncMethod_SetRateBattery<WithAsyncMethod_SetRateRcStatus<WithAsyncMethod_SetRateActuatorControlTarget<WithAsyncMethod_SetRateActuatorOutputStatus<WithAsyncMethod_SetRateOdometry<WithAsyncMethod_SetRatePositionVelocityNed<WithAsyncMethod_SetRateGroundTruth<WithAsyncMethod_SetRateFixedwingMetrics<WithAsyncMethod_SetRateImu<WithAsyncMethod_SetRateScaledImu<WithAsyncMethod_SetRateRawImu<WithAsyncMethod_SetRateUnixEpochTime<WithAsyncMethod_SetRateDistanceSensor<WithAsyncMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribePosition : public BaseClass {
+  class WithCallbackMethod_SubscribePosition : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribePosition() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_SubscribePosition() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribePositionRequest, ::mavsdk::rpc::telemetry::PositionResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request) { return this->SubscribePosition(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* request) { return this->SubscribePosition(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribePosition() override {
+    ~WithCallbackMethod_SubscribePosition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3321,37 +2858,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::PositionResponse>* SubscribePosition(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::PositionResponse>* SubscribePosition(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeHome : public BaseClass {
+  class WithCallbackMethod_SubscribeHome : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeHome() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_SubscribeHome() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHomeRequest, ::mavsdk::rpc::telemetry::HomeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request) { return this->SubscribeHome(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request) { return this->SubscribeHome(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeHome() override {
+    ~WithCallbackMethod_SubscribeHome() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3359,37 +2880,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::HomeResponse>* SubscribeHome(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::HomeResponse>* SubscribeHome(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeInAir : public BaseClass {
+  class WithCallbackMethod_SubscribeInAir : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeInAir() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(2,
+    WithCallbackMethod_SubscribeInAir() {
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeInAirRequest, ::mavsdk::rpc::telemetry::InAirResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request) { return this->SubscribeInAir(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request) { return this->SubscribeInAir(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeInAir() override {
+    ~WithCallbackMethod_SubscribeInAir() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3397,37 +2902,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::InAirResponse>* SubscribeInAir(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::InAirResponse>* SubscribeInAir(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeLandedState : public BaseClass {
+  class WithCallbackMethod_SubscribeLandedState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeLandedState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(3,
+    WithCallbackMethod_SubscribeLandedState() {
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest, ::mavsdk::rpc::telemetry::LandedStateResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request) { return this->SubscribeLandedState(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request) { return this->SubscribeLandedState(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeLandedState() override {
+    ~WithCallbackMethod_SubscribeLandedState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3435,37 +2924,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* SubscribeLandedState(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* SubscribeLandedState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeArmed : public BaseClass {
+  class WithCallbackMethod_SubscribeArmed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeArmed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(4,
+    WithCallbackMethod_SubscribeArmed() {
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeArmedRequest, ::mavsdk::rpc::telemetry::ArmedResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request) { return this->SubscribeArmed(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request) { return this->SubscribeArmed(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeArmed() override {
+    ~WithCallbackMethod_SubscribeArmed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3473,37 +2946,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* SubscribeArmed(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* SubscribeArmed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeVtolState : public BaseClass {
+  class WithCallbackMethod_SubscribeVtolState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeVtolState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(5,
+    WithCallbackMethod_SubscribeVtolState() {
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest, ::mavsdk::rpc::telemetry::VtolStateResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request) { return this->SubscribeVtolState(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* request) { return this->SubscribeVtolState(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeVtolState() override {
+    ~WithCallbackMethod_SubscribeVtolState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3511,37 +2968,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* SubscribeVtolState(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::VtolStateResponse>* SubscribeVtolState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVtolStateRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion : public BaseClass {
+  class WithCallbackMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(6,
+    WithCallbackMethod_SubscribeAttitudeQuaternion() {
+      ::grpc::Service::MarkMethodCallback(6,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request) { return this->SubscribeAttitudeQuaternion(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request) { return this->SubscribeAttitudeQuaternion(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion() override {
+    ~WithCallbackMethod_SubscribeAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3549,37 +2990,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* SubscribeAttitudeQuaternion(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* SubscribeAttitudeQuaternion(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeAttitudeEuler : public BaseClass {
+  class WithCallbackMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeAttitudeEuler() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(7,
+    WithCallbackMethod_SubscribeAttitudeEuler() {
+      ::grpc::Service::MarkMethodCallback(7,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest, ::mavsdk::rpc::telemetry::AttitudeEulerResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request) { return this->SubscribeAttitudeEuler(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request) { return this->SubscribeAttitudeEuler(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeAttitudeEuler() override {
+    ~WithCallbackMethod_SubscribeAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3587,37 +3012,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* SubscribeAttitudeEuler(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* SubscribeAttitudeEuler(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
+  class WithCallbackMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(8,
+    WithCallbackMethod_SubscribeAttitudeAngularVelocityBody() {
+      ::grpc::Service::MarkMethodCallback(8,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest, ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request) { return this->SubscribeAttitudeAngularVelocityBody(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request) { return this->SubscribeAttitudeAngularVelocityBody(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody() override {
+    ~WithCallbackMethod_SubscribeAttitudeAngularVelocityBody() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3625,37 +3034,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* SubscribeAttitudeAngularVelocityBody(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* SubscribeAttitudeAngularVelocityBody(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
+  class WithCallbackMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(9,
+    WithCallbackMethod_SubscribeCameraAttitudeQuaternion() {
+      ::grpc::Service::MarkMethodCallback(9,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request) { return this->SubscribeCameraAttitudeQuaternion(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request) { return this->SubscribeCameraAttitudeQuaternion(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion() override {
+    ~WithCallbackMethod_SubscribeCameraAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3663,37 +3056,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* SubscribeCameraAttitudeQuaternion(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* SubscribeCameraAttitudeQuaternion(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler : public BaseClass {
+  class WithCallbackMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(10,
+    WithCallbackMethod_SubscribeCameraAttitudeEuler() {
+      ::grpc::Service::MarkMethodCallback(10,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest, ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request) { return this->SubscribeCameraAttitudeEuler(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request) { return this->SubscribeCameraAttitudeEuler(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler() override {
+    ~WithCallbackMethod_SubscribeCameraAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3701,37 +3078,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* SubscribeCameraAttitudeEuler(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* SubscribeCameraAttitudeEuler(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeVelocityNed : public BaseClass {
+  class WithCallbackMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(11,
+    WithCallbackMethod_SubscribeVelocityNed() {
+      ::grpc::Service::MarkMethodCallback(11,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest, ::mavsdk::rpc::telemetry::VelocityNedResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request) { return this->SubscribeVelocityNed(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* request) { return this->SubscribeVelocityNed(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeVelocityNed() override {
+    ~WithCallbackMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3739,37 +3100,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* SubscribeVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::VelocityNedResponse>* SubscribeVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeGpsInfo : public BaseClass {
+  class WithCallbackMethod_SubscribeGpsInfo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeGpsInfo() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(12,
+    WithCallbackMethod_SubscribeGpsInfo() {
+      ::grpc::Service::MarkMethodCallback(12,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest, ::mavsdk::rpc::telemetry::GpsInfoResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request) { return this->SubscribeGpsInfo(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request) { return this->SubscribeGpsInfo(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeGpsInfo() override {
+    ~WithCallbackMethod_SubscribeGpsInfo() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3777,37 +3122,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* SubscribeGpsInfo(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* SubscribeGpsInfo(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeRawGps : public BaseClass {
+  class WithCallbackMethod_SubscribeRawGps : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeRawGps() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(13,
+    WithCallbackMethod_SubscribeRawGps() {
+      ::grpc::Service::MarkMethodCallback(13,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest, ::mavsdk::rpc::telemetry::RawGpsResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request) { return this->SubscribeRawGps(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* request) { return this->SubscribeRawGps(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeRawGps() override {
+    ~WithCallbackMethod_SubscribeRawGps() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3815,37 +3144,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* SubscribeRawGps(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::RawGpsResponse>* SubscribeRawGps(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRawGpsRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeBattery : public BaseClass {
+  class WithCallbackMethod_SubscribeBattery : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeBattery() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(14,
+    WithCallbackMethod_SubscribeBattery() {
+      ::grpc::Service::MarkMethodCallback(14,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeBatteryRequest, ::mavsdk::rpc::telemetry::BatteryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request) { return this->SubscribeBattery(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request) { return this->SubscribeBattery(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeBattery() override {
+    ~WithCallbackMethod_SubscribeBattery() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3853,37 +3166,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* SubscribeBattery(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* SubscribeBattery(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeFlightMode : public BaseClass {
+  class WithCallbackMethod_SubscribeFlightMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeFlightMode() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(15,
+    WithCallbackMethod_SubscribeFlightMode() {
+      ::grpc::Service::MarkMethodCallback(15,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest, ::mavsdk::rpc::telemetry::FlightModeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request) { return this->SubscribeFlightMode(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request) { return this->SubscribeFlightMode(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeFlightMode() override {
+    ~WithCallbackMethod_SubscribeFlightMode() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3891,37 +3188,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* SubscribeFlightMode(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* SubscribeFlightMode(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeHealth : public BaseClass {
+  class WithCallbackMethod_SubscribeHealth : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeHealth() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(16,
+    WithCallbackMethod_SubscribeHealth() {
+      ::grpc::Service::MarkMethodCallback(16,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHealthRequest, ::mavsdk::rpc::telemetry::HealthResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request) { return this->SubscribeHealth(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request) { return this->SubscribeHealth(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeHealth() override {
+    ~WithCallbackMethod_SubscribeHealth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3929,37 +3210,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::HealthResponse>* SubscribeHealth(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::HealthResponse>* SubscribeHealth(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeRcStatus : public BaseClass {
+  class WithCallbackMethod_SubscribeRcStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeRcStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(17,
+    WithCallbackMethod_SubscribeRcStatus() {
+      ::grpc::Service::MarkMethodCallback(17,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest, ::mavsdk::rpc::telemetry::RcStatusResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request) { return this->SubscribeRcStatus(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request) { return this->SubscribeRcStatus(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeRcStatus() override {
+    ~WithCallbackMethod_SubscribeRcStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -3967,37 +3232,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* SubscribeRcStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* SubscribeRcStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeStatusText : public BaseClass {
+  class WithCallbackMethod_SubscribeStatusText : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeStatusText() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(18,
+    WithCallbackMethod_SubscribeStatusText() {
+      ::grpc::Service::MarkMethodCallback(18,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest, ::mavsdk::rpc::telemetry::StatusTextResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request) { return this->SubscribeStatusText(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request) { return this->SubscribeStatusText(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeStatusText() override {
+    ~WithCallbackMethod_SubscribeStatusText() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4005,37 +3254,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* SubscribeStatusText(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* SubscribeStatusText(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget : public BaseClass {
+  class WithCallbackMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(19,
+    WithCallbackMethod_SubscribeActuatorControlTarget() {
+      ::grpc::Service::MarkMethodCallback(19,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request) { return this->SubscribeActuatorControlTarget(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request) { return this->SubscribeActuatorControlTarget(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget() override {
+    ~WithCallbackMethod_SubscribeActuatorControlTarget() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4043,37 +3276,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* SubscribeActuatorControlTarget(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* SubscribeActuatorControlTarget(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus : public BaseClass {
+  class WithCallbackMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(20,
+    WithCallbackMethod_SubscribeActuatorOutputStatus() {
+      ::grpc::Service::MarkMethodCallback(20,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request) { return this->SubscribeActuatorOutputStatus(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request) { return this->SubscribeActuatorOutputStatus(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus() override {
+    ~WithCallbackMethod_SubscribeActuatorOutputStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4081,37 +3298,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* SubscribeActuatorOutputStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* SubscribeActuatorOutputStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeOdometry : public BaseClass {
+  class WithCallbackMethod_SubscribeOdometry : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeOdometry() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(21,
+    WithCallbackMethod_SubscribeOdometry() {
+      ::grpc::Service::MarkMethodCallback(21,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeOdometryRequest, ::mavsdk::rpc::telemetry::OdometryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request) { return this->SubscribeOdometry(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request) { return this->SubscribeOdometry(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeOdometry() override {
+    ~WithCallbackMethod_SubscribeOdometry() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4119,37 +3320,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* SubscribeOdometry(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* SubscribeOdometry(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribePositionVelocityNed : public BaseClass {
+  class WithCallbackMethod_SubscribePositionVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribePositionVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(22,
+    WithCallbackMethod_SubscribePositionVelocityNed() {
+      ::grpc::Service::MarkMethodCallback(22,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest, ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request) { return this->SubscribePositionVelocityNed(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* request) { return this->SubscribePositionVelocityNed(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribePositionVelocityNed() override {
+    ~WithCallbackMethod_SubscribePositionVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4157,37 +3342,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* SubscribePositionVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>* SubscribePositionVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeGroundTruth : public BaseClass {
+  class WithCallbackMethod_SubscribeGroundTruth : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeGroundTruth() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(23,
+    WithCallbackMethod_SubscribeGroundTruth() {
+      ::grpc::Service::MarkMethodCallback(23,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest, ::mavsdk::rpc::telemetry::GroundTruthResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request) { return this->SubscribeGroundTruth(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* request) { return this->SubscribeGroundTruth(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeGroundTruth() override {
+    ~WithCallbackMethod_SubscribeGroundTruth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4195,37 +3364,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* SubscribeGroundTruth(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::GroundTruthResponse>* SubscribeGroundTruth(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics : public BaseClass {
+  class WithCallbackMethod_SubscribeFixedwingMetrics : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(24,
+    WithCallbackMethod_SubscribeFixedwingMetrics() {
+      ::grpc::Service::MarkMethodCallback(24,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest, ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request) { return this->SubscribeFixedwingMetrics(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* request) { return this->SubscribeFixedwingMetrics(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics() override {
+    ~WithCallbackMethod_SubscribeFixedwingMetrics() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4233,37 +3386,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* SubscribeFixedwingMetrics(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>* SubscribeFixedwingMetrics(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeImu : public BaseClass {
+  class WithCallbackMethod_SubscribeImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(25,
+    WithCallbackMethod_SubscribeImu() {
+      ::grpc::Service::MarkMethodCallback(25,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeImuRequest, ::mavsdk::rpc::telemetry::ImuResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* request) { return this->SubscribeImu(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* request) { return this->SubscribeImu(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeImu() override {
+    ~WithCallbackMethod_SubscribeImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4271,37 +3408,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::ImuResponse>* SubscribeImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::ImuResponse>* SubscribeImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeScaledImu : public BaseClass {
+  class WithCallbackMethod_SubscribeScaledImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeScaledImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(26,
+    WithCallbackMethod_SubscribeScaledImu() {
+      ::grpc::Service::MarkMethodCallback(26,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest, ::mavsdk::rpc::telemetry::ScaledImuResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request) { return this->SubscribeScaledImu(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request) { return this->SubscribeScaledImu(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeScaledImu() override {
+    ~WithCallbackMethod_SubscribeScaledImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4309,37 +3430,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* SubscribeScaledImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* SubscribeScaledImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeRawImu : public BaseClass {
+  class WithCallbackMethod_SubscribeRawImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeRawImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(27,
+    WithCallbackMethod_SubscribeRawImu() {
+      ::grpc::Service::MarkMethodCallback(27,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeRawImuRequest, ::mavsdk::rpc::telemetry::RawImuResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request) { return this->SubscribeRawImu(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request) { return this->SubscribeRawImu(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeRawImu() override {
+    ~WithCallbackMethod_SubscribeRawImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4347,37 +3452,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* SubscribeRawImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* SubscribeRawImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeHealthAllOk : public BaseClass {
+  class WithCallbackMethod_SubscribeHealthAllOk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeHealthAllOk() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(28,
+    WithCallbackMethod_SubscribeHealthAllOk() {
+      ::grpc::Service::MarkMethodCallback(28,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest, ::mavsdk::rpc::telemetry::HealthAllOkResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request) { return this->SubscribeHealthAllOk(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request) { return this->SubscribeHealthAllOk(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeHealthAllOk() override {
+    ~WithCallbackMethod_SubscribeHealthAllOk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4385,37 +3474,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* SubscribeHealthAllOk(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* SubscribeHealthAllOk(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeUnixEpochTime : public BaseClass {
+  class WithCallbackMethod_SubscribeUnixEpochTime : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeUnixEpochTime() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(29,
+    WithCallbackMethod_SubscribeUnixEpochTime() {
+      ::grpc::Service::MarkMethodCallback(29,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest, ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request) { return this->SubscribeUnixEpochTime(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* request) { return this->SubscribeUnixEpochTime(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeUnixEpochTime() override {
+    ~WithCallbackMethod_SubscribeUnixEpochTime() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4423,37 +3496,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* SubscribeUnixEpochTime(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>* SubscribeUnixEpochTime(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeDistanceSensor : public BaseClass {
+  class WithCallbackMethod_SubscribeDistanceSensor : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeDistanceSensor() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(30,
+    WithCallbackMethod_SubscribeDistanceSensor() {
+      ::grpc::Service::MarkMethodCallback(30,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest, ::mavsdk::rpc::telemetry::DistanceSensorResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request) { return this->SubscribeDistanceSensor(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* request) { return this->SubscribeDistanceSensor(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeDistanceSensor() override {
+    ~WithCallbackMethod_SubscribeDistanceSensor() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4461,37 +3518,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* SubscribeDistanceSensor(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::DistanceSensorResponse>* SubscribeDistanceSensor(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeScaledPressure : public BaseClass {
+  class WithCallbackMethod_SubscribeScaledPressure : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeScaledPressure() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(31,
+    WithCallbackMethod_SubscribeScaledPressure() {
+      ::grpc::Service::MarkMethodCallback(31,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest, ::mavsdk::rpc::telemetry::ScaledPressureResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request) { return this->SubscribeScaledPressure(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* request) { return this->SubscribeScaledPressure(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeScaledPressure() override {
+    ~WithCallbackMethod_SubscribeScaledPressure() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4499,37 +3540,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* SubscribeScaledPressure(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::ScaledPressureResponse>* SubscribeScaledPressure(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeHeading : public BaseClass {
+  class WithCallbackMethod_SubscribeHeading : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeHeading() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(32,
+    WithCallbackMethod_SubscribeHeading() {
+      ::grpc::Service::MarkMethodCallback(32,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::telemetry::SubscribeHeadingRequest, ::mavsdk::rpc::telemetry::HeadingResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request) { return this->SubscribeHeading(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* request) { return this->SubscribeHeading(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeHeading() override {
+    ~WithCallbackMethod_SubscribeHeading() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4537,46 +3562,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* SubscribeHeading(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::telemetry::HeadingResponse>* SubscribeHeading(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SubscribeHeadingRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRatePosition : public BaseClass {
+  class WithCallbackMethod_SetRatePosition : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRatePosition() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(33,
+    WithCallbackMethod_SetRatePosition() {
+      ::grpc::Service::MarkMethodCallback(33,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRatePositionRequest, ::mavsdk::rpc::telemetry::SetRatePositionResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response) { return this->SetRatePosition(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionResponse* response) { return this->SetRatePosition(context, request, response); }));}
     void SetMessageAllocatorFor_SetRatePosition(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRatePositionRequest, ::mavsdk::rpc::telemetry::SetRatePositionResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRatePositionRequest, ::mavsdk::rpc::telemetry::SetRatePositionResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(33);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(33);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRatePositionRequest, ::mavsdk::rpc::telemetry::SetRatePositionResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRatePosition() override {
+    ~WithCallbackMethod_SetRatePosition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4584,46 +3589,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRatePosition(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRatePositionResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRatePosition(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRatePositionResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRatePositionRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRatePositionResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateHome : public BaseClass {
+  class WithCallbackMethod_SetRateHome : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateHome() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(34,
+    WithCallbackMethod_SetRateHome() {
+      ::grpc::Service::MarkMethodCallback(34,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateHomeRequest, ::mavsdk::rpc::telemetry::SetRateHomeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response) { return this->SetRateHome(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* request, ::mavsdk::rpc::telemetry::SetRateHomeResponse* response) { return this->SetRateHome(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateHome(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateHomeRequest, ::mavsdk::rpc::telemetry::SetRateHomeResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateHomeRequest, ::mavsdk::rpc::telemetry::SetRateHomeResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(34);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(34);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateHomeRequest, ::mavsdk::rpc::telemetry::SetRateHomeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateHome() override {
+    ~WithCallbackMethod_SetRateHome() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4631,46 +3616,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateHome(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHomeResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateHome(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHomeResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHomeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHomeResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateInAir : public BaseClass {
+  class WithCallbackMethod_SetRateInAir : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateInAir() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(35,
+    WithCallbackMethod_SetRateInAir() {
+      ::grpc::Service::MarkMethodCallback(35,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateInAirRequest, ::mavsdk::rpc::telemetry::SetRateInAirResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response) { return this->SetRateInAir(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* request, ::mavsdk::rpc::telemetry::SetRateInAirResponse* response) { return this->SetRateInAir(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateInAir(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateInAirRequest, ::mavsdk::rpc::telemetry::SetRateInAirResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateInAirRequest, ::mavsdk::rpc::telemetry::SetRateInAirResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(35);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(35);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateInAirRequest, ::mavsdk::rpc::telemetry::SetRateInAirResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateInAir() override {
+    ~WithCallbackMethod_SetRateInAir() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4678,46 +3643,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateInAir(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateInAirResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateInAir(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateInAirResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateInAirRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateInAirResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateLandedState : public BaseClass {
+  class WithCallbackMethod_SetRateLandedState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateLandedState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(36,
+    WithCallbackMethod_SetRateLandedState() {
+      ::grpc::Service::MarkMethodCallback(36,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateLandedStateRequest, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response) { return this->SetRateLandedState(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* request, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* response) { return this->SetRateLandedState(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateLandedState(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateLandedStateRequest, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateLandedStateRequest, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(36);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(36);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateLandedStateRequest, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateLandedState() override {
+    ~WithCallbackMethod_SetRateLandedState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4725,46 +3670,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateLandedState(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateLandedState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateLandedStateRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateVtolState : public BaseClass {
+  class WithCallbackMethod_SetRateVtolState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateVtolState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(37,
+    WithCallbackMethod_SetRateVtolState() {
+      ::grpc::Service::MarkMethodCallback(37,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateVtolStateRequest, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response) { return this->SetRateVtolState(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* request, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* response) { return this->SetRateVtolState(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateVtolState(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateVtolStateRequest, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateVtolStateRequest, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(37);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(37);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateVtolStateRequest, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateVtolState() override {
+    ~WithCallbackMethod_SetRateVtolState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4772,46 +3697,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateVtolState(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateVtolState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVtolStateRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateAttitude : public BaseClass {
+  class WithCallbackMethod_SetRateAttitude : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateAttitude() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(38,
+    WithCallbackMethod_SetRateAttitude() {
+      ::grpc::Service::MarkMethodCallback(38,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response) { return this->SetRateAttitude(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* response) { return this->SetRateAttitude(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateAttitude(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(38);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(38);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateAttitude() override {
+    ~WithCallbackMethod_SetRateAttitude() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4819,46 +3724,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateAttitude(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateAttitude(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateAttitudeResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateCameraAttitude : public BaseClass {
+  class WithCallbackMethod_SetRateCameraAttitude : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateCameraAttitude() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(39,
+    WithCallbackMethod_SetRateCameraAttitude() {
+      ::grpc::Service::MarkMethodCallback(39,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response) { return this->SetRateCameraAttitude(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* response) { return this->SetRateCameraAttitude(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateCameraAttitude(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(39);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(39);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateCameraAttitude() override {
+    ~WithCallbackMethod_SetRateCameraAttitude() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4866,46 +3751,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateCameraAttitude(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateCameraAttitude(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateVelocityNed : public BaseClass {
+  class WithCallbackMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(40,
+    WithCallbackMethod_SetRateVelocityNed() {
+      ::grpc::Service::MarkMethodCallback(40,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response) { return this->SetRateVelocityNed(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* response) { return this->SetRateVelocityNed(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateVelocityNed(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(40);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(40);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateVelocityNed() override {
+    ~WithCallbackMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4913,46 +3778,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateGpsInfo : public BaseClass {
+  class WithCallbackMethod_SetRateGpsInfo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateGpsInfo() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(41,
+    WithCallbackMethod_SetRateGpsInfo() {
+      ::grpc::Service::MarkMethodCallback(41,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response) { return this->SetRateGpsInfo(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* request, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* response) { return this->SetRateGpsInfo(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateGpsInfo(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(41);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(41);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateGpsInfo() override {
+    ~WithCallbackMethod_SetRateGpsInfo() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -4960,46 +3805,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateGpsInfo(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateGpsInfo(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateBattery : public BaseClass {
+  class WithCallbackMethod_SetRateBattery : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateBattery() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(42,
+    WithCallbackMethod_SetRateBattery() {
+      ::grpc::Service::MarkMethodCallback(42,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateBatteryRequest, ::mavsdk::rpc::telemetry::SetRateBatteryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response) { return this->SetRateBattery(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* request, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* response) { return this->SetRateBattery(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateBattery(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateBatteryRequest, ::mavsdk::rpc::telemetry::SetRateBatteryResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateBatteryRequest, ::mavsdk::rpc::telemetry::SetRateBatteryResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(42);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(42);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateBatteryRequest, ::mavsdk::rpc::telemetry::SetRateBatteryResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateBattery() override {
+    ~WithCallbackMethod_SetRateBattery() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5007,46 +3832,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateBattery(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateBattery(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateBatteryRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateBatteryResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateRcStatus : public BaseClass {
+  class WithCallbackMethod_SetRateRcStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateRcStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(43,
+    WithCallbackMethod_SetRateRcStatus() {
+      ::grpc::Service::MarkMethodCallback(43,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateRcStatusRequest, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response) { return this->SetRateRcStatus(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response) { return this->SetRateRcStatus(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateRcStatus(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateRcStatusRequest, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateRcStatusRequest, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(43);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(43);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateRcStatusRequest, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateRcStatus() override {
+    ~WithCallbackMethod_SetRateRcStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5054,46 +3859,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateRcStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateRcStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateActuatorControlTarget : public BaseClass {
+  class WithCallbackMethod_SetRateActuatorControlTarget : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateActuatorControlTarget() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(44,
+    WithCallbackMethod_SetRateActuatorControlTarget() {
+      ::grpc::Service::MarkMethodCallback(44,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response) { return this->SetRateActuatorControlTarget(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response) { return this->SetRateActuatorControlTarget(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateActuatorControlTarget(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(44);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(44);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateActuatorControlTarget() override {
+    ~WithCallbackMethod_SetRateActuatorControlTarget() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5101,46 +3886,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateActuatorControlTarget(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateActuatorControlTarget(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus : public BaseClass {
+  class WithCallbackMethod_SetRateActuatorOutputStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(45,
+    WithCallbackMethod_SetRateActuatorOutputStatus() {
+      ::grpc::Service::MarkMethodCallback(45,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response) { return this->SetRateActuatorOutputStatus(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* response) { return this->SetRateActuatorOutputStatus(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateActuatorOutputStatus(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(45);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(45);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus() override {
+    ~WithCallbackMethod_SetRateActuatorOutputStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5148,46 +3913,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateActuatorOutputStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateActuatorOutputStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateOdometry : public BaseClass {
+  class WithCallbackMethod_SetRateOdometry : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateOdometry() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(46,
+    WithCallbackMethod_SetRateOdometry() {
+      ::grpc::Service::MarkMethodCallback(46,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateOdometryRequest, ::mavsdk::rpc::telemetry::SetRateOdometryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response) { return this->SetRateOdometry(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* request, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* response) { return this->SetRateOdometry(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateOdometry(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateOdometryRequest, ::mavsdk::rpc::telemetry::SetRateOdometryResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateOdometryRequest, ::mavsdk::rpc::telemetry::SetRateOdometryResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(46);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(46);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateOdometryRequest, ::mavsdk::rpc::telemetry::SetRateOdometryResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateOdometry() override {
+    ~WithCallbackMethod_SetRateOdometry() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5195,46 +3940,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateOdometry(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateOdometry(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateOdometryRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateOdometryResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRatePositionVelocityNed : public BaseClass {
+  class WithCallbackMethod_SetRatePositionVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRatePositionVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(47,
+    WithCallbackMethod_SetRatePositionVelocityNed() {
+      ::grpc::Service::MarkMethodCallback(47,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response) { return this->SetRatePositionVelocityNed(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* request, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* response) { return this->SetRatePositionVelocityNed(context, request, response); }));}
     void SetMessageAllocatorFor_SetRatePositionVelocityNed(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(47);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(47);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRatePositionVelocityNed() override {
+    ~WithCallbackMethod_SetRatePositionVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5242,46 +3967,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRatePositionVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRatePositionVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateGroundTruth : public BaseClass {
+  class WithCallbackMethod_SetRateGroundTruth : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateGroundTruth() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(48,
+    WithCallbackMethod_SetRateGroundTruth() {
+      ::grpc::Service::MarkMethodCallback(48,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response) { return this->SetRateGroundTruth(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* request, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* response) { return this->SetRateGroundTruth(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateGroundTruth(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(48);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(48);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateGroundTruth() override {
+    ~WithCallbackMethod_SetRateGroundTruth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5289,46 +3994,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateGroundTruth(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateGroundTruth(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateFixedwingMetrics : public BaseClass {
+  class WithCallbackMethod_SetRateFixedwingMetrics : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateFixedwingMetrics() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(49,
+    WithCallbackMethod_SetRateFixedwingMetrics() {
+      ::grpc::Service::MarkMethodCallback(49,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response) { return this->SetRateFixedwingMetrics(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* request, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* response) { return this->SetRateFixedwingMetrics(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateFixedwingMetrics(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(49);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(49);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateFixedwingMetrics() override {
+    ~WithCallbackMethod_SetRateFixedwingMetrics() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5336,46 +4021,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateFixedwingMetrics(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateFixedwingMetrics(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateImu : public BaseClass {
+  class WithCallbackMethod_SetRateImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(50,
+    WithCallbackMethod_SetRateImu() {
+      ::grpc::Service::MarkMethodCallback(50,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateImuRequest, ::mavsdk::rpc::telemetry::SetRateImuResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response) { return this->SetRateImu(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateImuRequest* request, ::mavsdk::rpc::telemetry::SetRateImuResponse* response) { return this->SetRateImu(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateImu(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateImuRequest, ::mavsdk::rpc::telemetry::SetRateImuResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateImuRequest, ::mavsdk::rpc::telemetry::SetRateImuResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(50);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(50);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateImuRequest, ::mavsdk::rpc::telemetry::SetRateImuResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateImu() override {
+    ~WithCallbackMethod_SetRateImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5383,46 +4048,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateImuResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateImuResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateImuResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateScaledImu : public BaseClass {
+  class WithCallbackMethod_SetRateScaledImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateScaledImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(51,
+    WithCallbackMethod_SetRateScaledImu() {
+      ::grpc::Service::MarkMethodCallback(51,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateScaledImuRequest, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response) { return this->SetRateScaledImu(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* request, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* response) { return this->SetRateScaledImu(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateScaledImu(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateScaledImuRequest, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateScaledImuRequest, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(51);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(51);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateScaledImuRequest, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateScaledImu() override {
+    ~WithCallbackMethod_SetRateScaledImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5430,46 +4075,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateScaledImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateScaledImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateScaledImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateRawImu : public BaseClass {
+  class WithCallbackMethod_SetRateRawImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateRawImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(52,
+    WithCallbackMethod_SetRateRawImu() {
+      ::grpc::Service::MarkMethodCallback(52,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateRawImuRequest, ::mavsdk::rpc::telemetry::SetRateRawImuResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response) { return this->SetRateRawImu(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* request, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* response) { return this->SetRateRawImu(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateRawImu(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateRawImuRequest, ::mavsdk::rpc::telemetry::SetRateRawImuResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateRawImuRequest, ::mavsdk::rpc::telemetry::SetRateRawImuResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(52);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(52);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateRawImuRequest, ::mavsdk::rpc::telemetry::SetRateRawImuResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateRawImu() override {
+    ~WithCallbackMethod_SetRateRawImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5477,46 +4102,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateRawImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateRawImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateRawImuRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateRawImuResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateUnixEpochTime : public BaseClass {
+  class WithCallbackMethod_SetRateUnixEpochTime : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateUnixEpochTime() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(53,
+    WithCallbackMethod_SetRateUnixEpochTime() {
+      ::grpc::Service::MarkMethodCallback(53,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response) { return this->SetRateUnixEpochTime(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* response) { return this->SetRateUnixEpochTime(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateUnixEpochTime(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(53);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(53);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateUnixEpochTime() override {
+    ~WithCallbackMethod_SetRateUnixEpochTime() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5524,46 +4129,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateUnixEpochTime(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateUnixEpochTime(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRateDistanceSensor : public BaseClass {
+  class WithCallbackMethod_SetRateDistanceSensor : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRateDistanceSensor() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(54,
+    WithCallbackMethod_SetRateDistanceSensor() {
+      ::grpc::Service::MarkMethodCallback(54,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response) { return this->SetRateDistanceSensor(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response) { return this->SetRateDistanceSensor(context, request, response); }));}
     void SetMessageAllocatorFor_SetRateDistanceSensor(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(54);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(54);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRateDistanceSensor() override {
+    ~WithCallbackMethod_SetRateDistanceSensor() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5571,46 +4156,26 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateDistanceSensor(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateDistanceSensor(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetGpsGlobalOrigin : public BaseClass {
+  class WithCallbackMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetGpsGlobalOrigin() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(55,
+    WithCallbackMethod_GetGpsGlobalOrigin() {
+      ::grpc::Service::MarkMethodCallback(55,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) { return this->GetGpsGlobalOrigin(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) { return this->GetGpsGlobalOrigin(context, request, response); }));}
     void SetMessageAllocatorFor_GetGpsGlobalOrigin(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(55);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(55);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetGpsGlobalOrigin() override {
+    ~WithCallbackMethod_GetGpsGlobalOrigin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -5618,20 +4183,11 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetGpsGlobalOrigin(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* /*request*/, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetGpsGlobalOrigin(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* /*request*/, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* /*request*/, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SubscribePosition<ExperimentalWithCallbackMethod_SubscribeHome<ExperimentalWithCallbackMethod_SubscribeInAir<ExperimentalWithCallbackMethod_SubscribeLandedState<ExperimentalWithCallbackMethod_SubscribeArmed<ExperimentalWithCallbackMethod_SubscribeVtolState<ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeVelocityNed<ExperimentalWithCallbackMethod_SubscribeGpsInfo<ExperimentalWithCallbackMethod_SubscribeRawGps<ExperimentalWithCallbackMethod_SubscribeBattery<ExperimentalWithCallbackMethod_SubscribeFlightMode<ExperimentalWithCallbackMethod_SubscribeHealth<ExperimentalWithCallbackMethod_SubscribeRcStatus<ExperimentalWithCallbackMethod_SubscribeStatusText<ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget<ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus<ExperimentalWithCallbackMethod_SubscribeOdometry<ExperimentalWithCallbackMethod_SubscribePositionVelocityNed<ExperimentalWithCallbackMethod_SubscribeGroundTruth<ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics<ExperimentalWithCallbackMethod_SubscribeImu<ExperimentalWithCallbackMethod_SubscribeScaledImu<ExperimentalWithCallbackMethod_SubscribeRawImu<ExperimentalWithCallbackMethod_SubscribeHealthAllOk<ExperimentalWithCallbackMethod_SubscribeUnixEpochTime<ExperimentalWithCallbackMethod_SubscribeDistanceSensor<ExperimentalWithCallbackMethod_SubscribeScaledPressure<ExperimentalWithCallbackMethod_SubscribeHeading<ExperimentalWithCallbackMethod_SetRatePosition<ExperimentalWithCallbackMethod_SetRateHome<ExperimentalWithCallbackMethod_SetRateInAir<ExperimentalWithCallbackMethod_SetRateLandedState<ExperimentalWithCallbackMethod_SetRateVtolState<ExperimentalWithCallbackMethod_SetRateAttitude<ExperimentalWithCallbackMethod_SetRateCameraAttitude<ExperimentalWithCallbackMethod_SetRateVelocityNed<ExperimentalWithCallbackMethod_SetRateGpsInfo<ExperimentalWithCallbackMethod_SetRateBattery<ExperimentalWithCallbackMethod_SetRateRcStatus<ExperimentalWithCallbackMethod_SetRateActuatorControlTarget<ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus<ExperimentalWithCallbackMethod_SetRateOdometry<ExperimentalWithCallbackMethod_SetRatePositionVelocityNed<ExperimentalWithCallbackMethod_SetRateGroundTruth<ExperimentalWithCallbackMethod_SetRateFixedwingMetrics<ExperimentalWithCallbackMethod_SetRateImu<ExperimentalWithCallbackMethod_SetRateScaledImu<ExperimentalWithCallbackMethod_SetRateRawImu<ExperimentalWithCallbackMethod_SetRateUnixEpochTime<ExperimentalWithCallbackMethod_SetRateDistanceSensor<ExperimentalWithCallbackMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_SubscribePosition<ExperimentalWithCallbackMethod_SubscribeHome<ExperimentalWithCallbackMethod_SubscribeInAir<ExperimentalWithCallbackMethod_SubscribeLandedState<ExperimentalWithCallbackMethod_SubscribeArmed<ExperimentalWithCallbackMethod_SubscribeVtolState<ExperimentalWithCallbackMethod_SubscribeAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeAttitudeAngularVelocityBody<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeQuaternion<ExperimentalWithCallbackMethod_SubscribeCameraAttitudeEuler<ExperimentalWithCallbackMethod_SubscribeVelocityNed<ExperimentalWithCallbackMethod_SubscribeGpsInfo<ExperimentalWithCallbackMethod_SubscribeRawGps<ExperimentalWithCallbackMethod_SubscribeBattery<ExperimentalWithCallbackMethod_SubscribeFlightMode<ExperimentalWithCallbackMethod_SubscribeHealth<ExperimentalWithCallbackMethod_SubscribeRcStatus<ExperimentalWithCallbackMethod_SubscribeStatusText<ExperimentalWithCallbackMethod_SubscribeActuatorControlTarget<ExperimentalWithCallbackMethod_SubscribeActuatorOutputStatus<ExperimentalWithCallbackMethod_SubscribeOdometry<ExperimentalWithCallbackMethod_SubscribePositionVelocityNed<ExperimentalWithCallbackMethod_SubscribeGroundTruth<ExperimentalWithCallbackMethod_SubscribeFixedwingMetrics<ExperimentalWithCallbackMethod_SubscribeImu<ExperimentalWithCallbackMethod_SubscribeScaledImu<ExperimentalWithCallbackMethod_SubscribeRawImu<ExperimentalWithCallbackMethod_SubscribeHealthAllOk<ExperimentalWithCallbackMethod_SubscribeUnixEpochTime<ExperimentalWithCallbackMethod_SubscribeDistanceSensor<ExperimentalWithCallbackMethod_SubscribeScaledPressure<ExperimentalWithCallbackMethod_SubscribeHeading<ExperimentalWithCallbackMethod_SetRatePosition<ExperimentalWithCallbackMethod_SetRateHome<ExperimentalWithCallbackMethod_SetRateInAir<ExperimentalWithCallbackMethod_SetRateLandedState<ExperimentalWithCallbackMethod_SetRateVtolState<ExperimentalWithCallbackMethod_SetRateAttitude<ExperimentalWithCallbackMethod_SetRateCameraAttitude<ExperimentalWithCallbackMethod_SetRateVelocityNed<ExperimentalWithCallbackMethod_SetRateGpsInfo<ExperimentalWithCallbackMethod_SetRateBattery<ExperimentalWithCallbackMethod_SetRateRcStatus<ExperimentalWithCallbackMethod_SetRateActuatorControlTarget<ExperimentalWithCallbackMethod_SetRateActuatorOutputStatus<ExperimentalWithCallbackMethod_SetRateOdometry<ExperimentalWithCallbackMethod_SetRatePositionVelocityNed<ExperimentalWithCallbackMethod_SetRateGroundTruth<ExperimentalWithCallbackMethod_SetRateFixedwingMetrics<ExperimentalWithCallbackMethod_SetRateImu<ExperimentalWithCallbackMethod_SetRateScaledImu<ExperimentalWithCallbackMethod_SetRateRawImu<ExperimentalWithCallbackMethod_SetRateUnixEpochTime<ExperimentalWithCallbackMethod_SetRateDistanceSensor<ExperimentalWithCallbackMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_SubscribePosition<WithCallbackMethod_SubscribeHome<WithCallbackMethod_SubscribeInAir<WithCallbackMethod_SubscribeLandedState<WithCallbackMethod_SubscribeArmed<WithCallbackMethod_SubscribeVtolState<WithCallbackMethod_SubscribeAttitudeQuaternion<WithCallbackMethod_SubscribeAttitudeEuler<WithCallbackMethod_SubscribeAttitudeAngularVelocityBody<WithCallbackMethod_SubscribeCameraAttitudeQuaternion<WithCallbackMethod_SubscribeCameraAttitudeEuler<WithCallbackMethod_SubscribeVelocityNed<WithCallbackMethod_SubscribeGpsInfo<WithCallbackMethod_SubscribeRawGps<WithCallbackMethod_SubscribeBattery<WithCallbackMethod_SubscribeFlightMode<WithCallbackMethod_SubscribeHealth<WithCallbackMethod_SubscribeRcStatus<WithCallbackMethod_SubscribeStatusText<WithCallbackMethod_SubscribeActuatorControlTarget<WithCallbackMethod_SubscribeActuatorOutputStatus<WithCallbackMethod_SubscribeOdometry<WithCallbackMethod_SubscribePositionVelocityNed<WithCallbackMethod_SubscribeGroundTruth<WithCallbackMethod_SubscribeFixedwingMetrics<WithCallbackMethod_SubscribeImu<WithCallbackMethod_SubscribeScaledImu<WithCallbackMethod_SubscribeRawImu<WithCallbackMethod_SubscribeHealthAllOk<WithCallbackMethod_SubscribeUnixEpochTime<WithCallbackMethod_SubscribeDistanceSensor<WithCallbackMethod_SubscribeScaledPressure<WithCallbackMethod_SubscribeHeading<WithCallbackMethod_SetRatePosition<WithCallbackMethod_SetRateHome<WithCallbackMethod_SetRateInAir<WithCallbackMethod_SetRateLandedState<WithCallbackMethod_SetRateVtolState<WithCallbackMethod_SetRateAttitude<WithCallbackMethod_SetRateCameraAttitude<WithCallbackMethod_SetRateVelocityNed<WithCallbackMethod_SetRateGpsInfo<WithCallbackMethod_SetRateBattery<WithCallbackMethod_SetRateRcStatus<WithCallbackMethod_SetRateActuatorControlTarget<WithCallbackMethod_SetRateActuatorOutputStatus<WithCallbackMethod_SetRateOdometry<WithCallbackMethod_SetRatePositionVelocityNed<WithCallbackMethod_SetRateGroundTruth<WithCallbackMethod_SetRateFixedwingMetrics<WithCallbackMethod_SetRateImu<WithCallbackMethod_SetRateScaledImu<WithCallbackMethod_SetRateRawImu<WithCallbackMethod_SetRateUnixEpochTime<WithCallbackMethod_SetRateDistanceSensor<WithCallbackMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribePosition : public BaseClass {
    private:
@@ -7705,27 +6261,17 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribePosition : public BaseClass {
+  class WithRawCallbackMethod_SubscribePosition : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribePosition() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_SubscribePosition() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribePosition(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribePosition(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribePosition() override {
+    ~WithRawCallbackMethod_SubscribePosition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7733,37 +6279,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribePosition(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribePosition(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeHome : public BaseClass {
+  class WithRawCallbackMethod_SubscribeHome : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeHome() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_SubscribeHome() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeHome(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeHome(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeHome() override {
+    ~WithRawCallbackMethod_SubscribeHome() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7771,37 +6301,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHome(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHome(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeInAir : public BaseClass {
+  class WithRawCallbackMethod_SubscribeInAir : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeInAir() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(2,
+    WithRawCallbackMethod_SubscribeInAir() {
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeInAir(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeInAir(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeInAir() override {
+    ~WithRawCallbackMethod_SubscribeInAir() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7809,37 +6323,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeInAir(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeInAir(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeLandedState : public BaseClass {
+  class WithRawCallbackMethod_SubscribeLandedState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeLandedState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(3,
+    WithRawCallbackMethod_SubscribeLandedState() {
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeLandedState(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeLandedState(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeLandedState() override {
+    ~WithRawCallbackMethod_SubscribeLandedState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7847,37 +6345,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeLandedState(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeLandedState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeArmed : public BaseClass {
+  class WithRawCallbackMethod_SubscribeArmed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeArmed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(4,
+    WithRawCallbackMethod_SubscribeArmed() {
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeArmed(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeArmed(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeArmed() override {
+    ~WithRawCallbackMethod_SubscribeArmed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7885,37 +6367,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeArmed(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeArmed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeVtolState : public BaseClass {
+  class WithRawCallbackMethod_SubscribeVtolState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeVtolState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(5,
+    WithRawCallbackMethod_SubscribeVtolState() {
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeVtolState(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeVtolState(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeVtolState() override {
+    ~WithRawCallbackMethod_SubscribeVtolState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7923,37 +6389,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVtolState(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVtolState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeAttitudeQuaternion : public BaseClass {
+  class WithRawCallbackMethod_SubscribeAttitudeQuaternion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeAttitudeQuaternion() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(6,
+    WithRawCallbackMethod_SubscribeAttitudeQuaternion() {
+      ::grpc::Service::MarkMethodRawCallback(6,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeAttitudeQuaternion(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeAttitudeQuaternion(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeAttitudeQuaternion() override {
+    ~WithRawCallbackMethod_SubscribeAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7961,37 +6411,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeAttitudeQuaternion(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeAttitudeQuaternion(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeAttitudeEuler : public BaseClass {
+  class WithRawCallbackMethod_SubscribeAttitudeEuler : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeAttitudeEuler() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(7,
+    WithRawCallbackMethod_SubscribeAttitudeEuler() {
+      ::grpc::Service::MarkMethodRawCallback(7,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeAttitudeEuler(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeAttitudeEuler(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeAttitudeEuler() override {
+    ~WithRawCallbackMethod_SubscribeAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -7999,37 +6433,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeAttitudeEuler(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeAttitudeEuler(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
+  class WithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(8,
+    WithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody() {
+      ::grpc::Service::MarkMethodRawCallback(8,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeAttitudeAngularVelocityBody(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeAttitudeAngularVelocityBody(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody() override {
+    ~WithRawCallbackMethod_SubscribeAttitudeAngularVelocityBody() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8037,37 +6455,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeAttitudeAngularVelocityBody(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeAttitudeAngularVelocityBody(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
+  class WithRawCallbackMethod_SubscribeCameraAttitudeQuaternion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeQuaternion() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(9,
+    WithRawCallbackMethod_SubscribeCameraAttitudeQuaternion() {
+      ::grpc::Service::MarkMethodRawCallback(9,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCameraAttitudeQuaternion(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCameraAttitudeQuaternion(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeQuaternion() override {
+    ~WithRawCallbackMethod_SubscribeCameraAttitudeQuaternion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8075,37 +6477,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCameraAttitudeQuaternion(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCameraAttitudeQuaternion(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeEuler : public BaseClass {
+  class WithRawCallbackMethod_SubscribeCameraAttitudeEuler : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeEuler() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(10,
+    WithRawCallbackMethod_SubscribeCameraAttitudeEuler() {
+      ::grpc::Service::MarkMethodRawCallback(10,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCameraAttitudeEuler(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCameraAttitudeEuler(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeCameraAttitudeEuler() override {
+    ~WithRawCallbackMethod_SubscribeCameraAttitudeEuler() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8113,37 +6499,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCameraAttitudeEuler(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCameraAttitudeEuler(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeVelocityNed : public BaseClass {
+  class WithRawCallbackMethod_SubscribeVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(11,
+    WithRawCallbackMethod_SubscribeVelocityNed() {
+      ::grpc::Service::MarkMethodRawCallback(11,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeVelocityNed(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeVelocityNed(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeVelocityNed() override {
+    ~WithRawCallbackMethod_SubscribeVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8151,37 +6521,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeGpsInfo : public BaseClass {
+  class WithRawCallbackMethod_SubscribeGpsInfo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeGpsInfo() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(12,
+    WithRawCallbackMethod_SubscribeGpsInfo() {
+      ::grpc::Service::MarkMethodRawCallback(12,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeGpsInfo(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeGpsInfo(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeGpsInfo() override {
+    ~WithRawCallbackMethod_SubscribeGpsInfo() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8189,37 +6543,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeGpsInfo(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeGpsInfo(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeRawGps : public BaseClass {
+  class WithRawCallbackMethod_SubscribeRawGps : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeRawGps() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(13,
+    WithRawCallbackMethod_SubscribeRawGps() {
+      ::grpc::Service::MarkMethodRawCallback(13,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeRawGps(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeRawGps(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeRawGps() override {
+    ~WithRawCallbackMethod_SubscribeRawGps() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8227,37 +6565,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeRawGps(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeRawGps(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeBattery : public BaseClass {
+  class WithRawCallbackMethod_SubscribeBattery : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeBattery() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(14,
+    WithRawCallbackMethod_SubscribeBattery() {
+      ::grpc::Service::MarkMethodRawCallback(14,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeBattery(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeBattery(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeBattery() override {
+    ~WithRawCallbackMethod_SubscribeBattery() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8265,37 +6587,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeBattery(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeBattery(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeFlightMode : public BaseClass {
+  class WithRawCallbackMethod_SubscribeFlightMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeFlightMode() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(15,
+    WithRawCallbackMethod_SubscribeFlightMode() {
+      ::grpc::Service::MarkMethodRawCallback(15,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeFlightMode(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeFlightMode(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeFlightMode() override {
+    ~WithRawCallbackMethod_SubscribeFlightMode() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8303,37 +6609,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFlightMode(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFlightMode(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeHealth : public BaseClass {
+  class WithRawCallbackMethod_SubscribeHealth : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeHealth() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(16,
+    WithRawCallbackMethod_SubscribeHealth() {
+      ::grpc::Service::MarkMethodRawCallback(16,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeHealth(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeHealth(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeHealth() override {
+    ~WithRawCallbackMethod_SubscribeHealth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8341,37 +6631,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHealth(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHealth(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeRcStatus : public BaseClass {
+  class WithRawCallbackMethod_SubscribeRcStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeRcStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(17,
+    WithRawCallbackMethod_SubscribeRcStatus() {
+      ::grpc::Service::MarkMethodRawCallback(17,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeRcStatus(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeRcStatus(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeRcStatus() override {
+    ~WithRawCallbackMethod_SubscribeRcStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8379,37 +6653,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeRcStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeRcStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeStatusText : public BaseClass {
+  class WithRawCallbackMethod_SubscribeStatusText : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeStatusText() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(18,
+    WithRawCallbackMethod_SubscribeStatusText() {
+      ::grpc::Service::MarkMethodRawCallback(18,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeStatusText(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeStatusText(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeStatusText() override {
+    ~WithRawCallbackMethod_SubscribeStatusText() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8417,37 +6675,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeStatusText(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeStatusText(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeActuatorControlTarget : public BaseClass {
+  class WithRawCallbackMethod_SubscribeActuatorControlTarget : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeActuatorControlTarget() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(19,
+    WithRawCallbackMethod_SubscribeActuatorControlTarget() {
+      ::grpc::Service::MarkMethodRawCallback(19,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeActuatorControlTarget(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeActuatorControlTarget(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeActuatorControlTarget() override {
+    ~WithRawCallbackMethod_SubscribeActuatorControlTarget() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8455,37 +6697,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeActuatorControlTarget(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeActuatorControlTarget(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeActuatorOutputStatus : public BaseClass {
+  class WithRawCallbackMethod_SubscribeActuatorOutputStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeActuatorOutputStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(20,
+    WithRawCallbackMethod_SubscribeActuatorOutputStatus() {
+      ::grpc::Service::MarkMethodRawCallback(20,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeActuatorOutputStatus(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeActuatorOutputStatus(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeActuatorOutputStatus() override {
+    ~WithRawCallbackMethod_SubscribeActuatorOutputStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8493,37 +6719,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeActuatorOutputStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeActuatorOutputStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeOdometry : public BaseClass {
+  class WithRawCallbackMethod_SubscribeOdometry : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeOdometry() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(21,
+    WithRawCallbackMethod_SubscribeOdometry() {
+      ::grpc::Service::MarkMethodRawCallback(21,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeOdometry(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeOdometry(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeOdometry() override {
+    ~WithRawCallbackMethod_SubscribeOdometry() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8531,37 +6741,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeOdometry(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeOdometry(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribePositionVelocityNed : public BaseClass {
+  class WithRawCallbackMethod_SubscribePositionVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribePositionVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(22,
+    WithRawCallbackMethod_SubscribePositionVelocityNed() {
+      ::grpc::Service::MarkMethodRawCallback(22,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribePositionVelocityNed(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribePositionVelocityNed(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribePositionVelocityNed() override {
+    ~WithRawCallbackMethod_SubscribePositionVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8569,37 +6763,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribePositionVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribePositionVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeGroundTruth : public BaseClass {
+  class WithRawCallbackMethod_SubscribeGroundTruth : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeGroundTruth() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(23,
+    WithRawCallbackMethod_SubscribeGroundTruth() {
+      ::grpc::Service::MarkMethodRawCallback(23,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeGroundTruth(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeGroundTruth(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeGroundTruth() override {
+    ~WithRawCallbackMethod_SubscribeGroundTruth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8607,37 +6785,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeGroundTruth(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeGroundTruth(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeFixedwingMetrics : public BaseClass {
+  class WithRawCallbackMethod_SubscribeFixedwingMetrics : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeFixedwingMetrics() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(24,
+    WithRawCallbackMethod_SubscribeFixedwingMetrics() {
+      ::grpc::Service::MarkMethodRawCallback(24,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeFixedwingMetrics(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeFixedwingMetrics(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeFixedwingMetrics() override {
+    ~WithRawCallbackMethod_SubscribeFixedwingMetrics() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8645,37 +6807,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFixedwingMetrics(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFixedwingMetrics(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeImu : public BaseClass {
+  class WithRawCallbackMethod_SubscribeImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(25,
+    WithRawCallbackMethod_SubscribeImu() {
+      ::grpc::Service::MarkMethodRawCallback(25,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeImu(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeImu(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeImu() override {
+    ~WithRawCallbackMethod_SubscribeImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8683,37 +6829,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeScaledImu : public BaseClass {
+  class WithRawCallbackMethod_SubscribeScaledImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeScaledImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(26,
+    WithRawCallbackMethod_SubscribeScaledImu() {
+      ::grpc::Service::MarkMethodRawCallback(26,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeScaledImu(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeScaledImu(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeScaledImu() override {
+    ~WithRawCallbackMethod_SubscribeScaledImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8721,37 +6851,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeScaledImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeScaledImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeRawImu : public BaseClass {
+  class WithRawCallbackMethod_SubscribeRawImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeRawImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(27,
+    WithRawCallbackMethod_SubscribeRawImu() {
+      ::grpc::Service::MarkMethodRawCallback(27,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeRawImu(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeRawImu(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeRawImu() override {
+    ~WithRawCallbackMethod_SubscribeRawImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8759,37 +6873,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeRawImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeRawImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeHealthAllOk : public BaseClass {
+  class WithRawCallbackMethod_SubscribeHealthAllOk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeHealthAllOk() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(28,
+    WithRawCallbackMethod_SubscribeHealthAllOk() {
+      ::grpc::Service::MarkMethodRawCallback(28,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeHealthAllOk(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeHealthAllOk(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeHealthAllOk() override {
+    ~WithRawCallbackMethod_SubscribeHealthAllOk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8797,37 +6895,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHealthAllOk(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHealthAllOk(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeUnixEpochTime : public BaseClass {
+  class WithRawCallbackMethod_SubscribeUnixEpochTime : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeUnixEpochTime() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(29,
+    WithRawCallbackMethod_SubscribeUnixEpochTime() {
+      ::grpc::Service::MarkMethodRawCallback(29,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeUnixEpochTime(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeUnixEpochTime(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeUnixEpochTime() override {
+    ~WithRawCallbackMethod_SubscribeUnixEpochTime() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8835,37 +6917,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeUnixEpochTime(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeUnixEpochTime(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeDistanceSensor : public BaseClass {
+  class WithRawCallbackMethod_SubscribeDistanceSensor : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeDistanceSensor() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(30,
+    WithRawCallbackMethod_SubscribeDistanceSensor() {
+      ::grpc::Service::MarkMethodRawCallback(30,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeDistanceSensor(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeDistanceSensor(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeDistanceSensor() override {
+    ~WithRawCallbackMethod_SubscribeDistanceSensor() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8873,37 +6939,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeDistanceSensor(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeDistanceSensor(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeScaledPressure : public BaseClass {
+  class WithRawCallbackMethod_SubscribeScaledPressure : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeScaledPressure() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(31,
+    WithRawCallbackMethod_SubscribeScaledPressure() {
+      ::grpc::Service::MarkMethodRawCallback(31,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeScaledPressure(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeScaledPressure(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeScaledPressure() override {
+    ~WithRawCallbackMethod_SubscribeScaledPressure() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8911,37 +6961,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeScaledPressure(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeScaledPressure(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeHeading : public BaseClass {
+  class WithRawCallbackMethod_SubscribeHeading : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeHeading() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(32,
+    WithRawCallbackMethod_SubscribeHeading() {
+      ::grpc::Service::MarkMethodRawCallback(32,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeHeading(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeHeading(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeHeading() override {
+    ~WithRawCallbackMethod_SubscribeHeading() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8949,37 +6983,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHeading(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeHeading(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRatePosition : public BaseClass {
+  class WithRawCallbackMethod_SetRatePosition : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRatePosition() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(33,
+    WithRawCallbackMethod_SetRatePosition() {
+      ::grpc::Service::MarkMethodRawCallback(33,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRatePosition(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRatePosition(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRatePosition() override {
+    ~WithRawCallbackMethod_SetRatePosition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -8987,37 +7005,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRatePosition(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRatePosition(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateHome : public BaseClass {
+  class WithRawCallbackMethod_SetRateHome : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateHome() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(34,
+    WithRawCallbackMethod_SetRateHome() {
+      ::grpc::Service::MarkMethodRawCallback(34,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateHome(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateHome(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateHome() override {
+    ~WithRawCallbackMethod_SetRateHome() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9025,37 +7027,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateHome(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateHome(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateInAir : public BaseClass {
+  class WithRawCallbackMethod_SetRateInAir : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateInAir() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(35,
+    WithRawCallbackMethod_SetRateInAir() {
+      ::grpc::Service::MarkMethodRawCallback(35,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateInAir(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateInAir(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateInAir() override {
+    ~WithRawCallbackMethod_SetRateInAir() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9063,37 +7049,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateInAir(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateInAir(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateLandedState : public BaseClass {
+  class WithRawCallbackMethod_SetRateLandedState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateLandedState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(36,
+    WithRawCallbackMethod_SetRateLandedState() {
+      ::grpc::Service::MarkMethodRawCallback(36,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateLandedState(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateLandedState(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateLandedState() override {
+    ~WithRawCallbackMethod_SetRateLandedState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9101,37 +7071,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateLandedState(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateLandedState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateVtolState : public BaseClass {
+  class WithRawCallbackMethod_SetRateVtolState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateVtolState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(37,
+    WithRawCallbackMethod_SetRateVtolState() {
+      ::grpc::Service::MarkMethodRawCallback(37,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateVtolState(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateVtolState(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateVtolState() override {
+    ~WithRawCallbackMethod_SetRateVtolState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9139,37 +7093,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateVtolState(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateVtolState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateAttitude : public BaseClass {
+  class WithRawCallbackMethod_SetRateAttitude : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateAttitude() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(38,
+    WithRawCallbackMethod_SetRateAttitude() {
+      ::grpc::Service::MarkMethodRawCallback(38,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateAttitude(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateAttitude(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateAttitude() override {
+    ~WithRawCallbackMethod_SetRateAttitude() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9177,37 +7115,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateAttitude(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateAttitude(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateCameraAttitude : public BaseClass {
+  class WithRawCallbackMethod_SetRateCameraAttitude : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateCameraAttitude() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(39,
+    WithRawCallbackMethod_SetRateCameraAttitude() {
+      ::grpc::Service::MarkMethodRawCallback(39,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateCameraAttitude(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateCameraAttitude(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateCameraAttitude() override {
+    ~WithRawCallbackMethod_SetRateCameraAttitude() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9215,37 +7137,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateCameraAttitude(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateCameraAttitude(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateVelocityNed : public BaseClass {
+  class WithRawCallbackMethod_SetRateVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(40,
+    WithRawCallbackMethod_SetRateVelocityNed() {
+      ::grpc::Service::MarkMethodRawCallback(40,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateVelocityNed(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateVelocityNed(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateVelocityNed() override {
+    ~WithRawCallbackMethod_SetRateVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9253,37 +7159,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateGpsInfo : public BaseClass {
+  class WithRawCallbackMethod_SetRateGpsInfo : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateGpsInfo() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(41,
+    WithRawCallbackMethod_SetRateGpsInfo() {
+      ::grpc::Service::MarkMethodRawCallback(41,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateGpsInfo(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateGpsInfo(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateGpsInfo() override {
+    ~WithRawCallbackMethod_SetRateGpsInfo() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9291,37 +7181,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateGpsInfo(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateGpsInfo(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateBattery : public BaseClass {
+  class WithRawCallbackMethod_SetRateBattery : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateBattery() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(42,
+    WithRawCallbackMethod_SetRateBattery() {
+      ::grpc::Service::MarkMethodRawCallback(42,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateBattery(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateBattery(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateBattery() override {
+    ~WithRawCallbackMethod_SetRateBattery() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9329,37 +7203,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateBattery(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateBattery(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateRcStatus : public BaseClass {
+  class WithRawCallbackMethod_SetRateRcStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateRcStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(43,
+    WithRawCallbackMethod_SetRateRcStatus() {
+      ::grpc::Service::MarkMethodRawCallback(43,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateRcStatus(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateRcStatus(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateRcStatus() override {
+    ~WithRawCallbackMethod_SetRateRcStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9367,37 +7225,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateRcStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateRcStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateActuatorControlTarget : public BaseClass {
+  class WithRawCallbackMethod_SetRateActuatorControlTarget : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateActuatorControlTarget() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(44,
+    WithRawCallbackMethod_SetRateActuatorControlTarget() {
+      ::grpc::Service::MarkMethodRawCallback(44,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateActuatorControlTarget(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateActuatorControlTarget(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateActuatorControlTarget() override {
+    ~WithRawCallbackMethod_SetRateActuatorControlTarget() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9405,37 +7247,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateActuatorControlTarget(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateActuatorControlTarget(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateActuatorOutputStatus : public BaseClass {
+  class WithRawCallbackMethod_SetRateActuatorOutputStatus : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateActuatorOutputStatus() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(45,
+    WithRawCallbackMethod_SetRateActuatorOutputStatus() {
+      ::grpc::Service::MarkMethodRawCallback(45,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateActuatorOutputStatus(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateActuatorOutputStatus(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateActuatorOutputStatus() override {
+    ~WithRawCallbackMethod_SetRateActuatorOutputStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9443,37 +7269,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateActuatorOutputStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateActuatorOutputStatus(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateOdometry : public BaseClass {
+  class WithRawCallbackMethod_SetRateOdometry : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateOdometry() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(46,
+    WithRawCallbackMethod_SetRateOdometry() {
+      ::grpc::Service::MarkMethodRawCallback(46,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateOdometry(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateOdometry(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateOdometry() override {
+    ~WithRawCallbackMethod_SetRateOdometry() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9481,37 +7291,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateOdometry(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateOdometry(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRatePositionVelocityNed : public BaseClass {
+  class WithRawCallbackMethod_SetRatePositionVelocityNed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRatePositionVelocityNed() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(47,
+    WithRawCallbackMethod_SetRatePositionVelocityNed() {
+      ::grpc::Service::MarkMethodRawCallback(47,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRatePositionVelocityNed(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRatePositionVelocityNed(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRatePositionVelocityNed() override {
+    ~WithRawCallbackMethod_SetRatePositionVelocityNed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9519,37 +7313,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRatePositionVelocityNed(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRatePositionVelocityNed(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateGroundTruth : public BaseClass {
+  class WithRawCallbackMethod_SetRateGroundTruth : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateGroundTruth() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(48,
+    WithRawCallbackMethod_SetRateGroundTruth() {
+      ::grpc::Service::MarkMethodRawCallback(48,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateGroundTruth(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateGroundTruth(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateGroundTruth() override {
+    ~WithRawCallbackMethod_SetRateGroundTruth() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9557,37 +7335,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateGroundTruth(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateGroundTruth(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateFixedwingMetrics : public BaseClass {
+  class WithRawCallbackMethod_SetRateFixedwingMetrics : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateFixedwingMetrics() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(49,
+    WithRawCallbackMethod_SetRateFixedwingMetrics() {
+      ::grpc::Service::MarkMethodRawCallback(49,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateFixedwingMetrics(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateFixedwingMetrics(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateFixedwingMetrics() override {
+    ~WithRawCallbackMethod_SetRateFixedwingMetrics() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9595,37 +7357,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateFixedwingMetrics(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateFixedwingMetrics(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateImu : public BaseClass {
+  class WithRawCallbackMethod_SetRateImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(50,
+    WithRawCallbackMethod_SetRateImu() {
+      ::grpc::Service::MarkMethodRawCallback(50,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateImu(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateImu(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateImu() override {
+    ~WithRawCallbackMethod_SetRateImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9633,37 +7379,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateScaledImu : public BaseClass {
+  class WithRawCallbackMethod_SetRateScaledImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateScaledImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(51,
+    WithRawCallbackMethod_SetRateScaledImu() {
+      ::grpc::Service::MarkMethodRawCallback(51,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateScaledImu(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateScaledImu(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateScaledImu() override {
+    ~WithRawCallbackMethod_SetRateScaledImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9671,37 +7401,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateScaledImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateScaledImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateRawImu : public BaseClass {
+  class WithRawCallbackMethod_SetRateRawImu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateRawImu() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(52,
+    WithRawCallbackMethod_SetRateRawImu() {
+      ::grpc::Service::MarkMethodRawCallback(52,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateRawImu(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateRawImu(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateRawImu() override {
+    ~WithRawCallbackMethod_SetRateRawImu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9709,37 +7423,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateRawImu(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateRawImu(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateUnixEpochTime : public BaseClass {
+  class WithRawCallbackMethod_SetRateUnixEpochTime : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateUnixEpochTime() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(53,
+    WithRawCallbackMethod_SetRateUnixEpochTime() {
+      ::grpc::Service::MarkMethodRawCallback(53,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateUnixEpochTime(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateUnixEpochTime(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateUnixEpochTime() override {
+    ~WithRawCallbackMethod_SetRateUnixEpochTime() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9747,37 +7445,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateUnixEpochTime(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateUnixEpochTime(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRateDistanceSensor : public BaseClass {
+  class WithRawCallbackMethod_SetRateDistanceSensor : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRateDistanceSensor() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(54,
+    WithRawCallbackMethod_SetRateDistanceSensor() {
+      ::grpc::Service::MarkMethodRawCallback(54,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateDistanceSensor(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateDistanceSensor(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRateDistanceSensor() override {
+    ~WithRawCallbackMethod_SetRateDistanceSensor() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9785,37 +7467,21 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRateDistanceSensor(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRateDistanceSensor(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetGpsGlobalOrigin : public BaseClass {
+  class WithRawCallbackMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetGpsGlobalOrigin() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(55,
+    WithRawCallbackMethod_GetGpsGlobalOrigin() {
+      ::grpc::Service::MarkMethodRawCallback(55,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetGpsGlobalOrigin(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetGpsGlobalOrigin(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetGpsGlobalOrigin() override {
+    ~WithRawCallbackMethod_GetGpsGlobalOrigin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -9823,14 +7489,8 @@ class TelemetryService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetGpsGlobalOrigin(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetGpsGlobalOrigin(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetRatePosition : public BaseClass {
