@@ -8,6 +8,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+    "-DCMAKE_CXX_STANDARD=11"
     )
 
 if(IOS)
@@ -26,8 +27,7 @@ endforeach()
 ExternalProject_add(
     absl
     GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-    GIT_TAG 20200923.3
+    GIT_TAG 20210324.2
     PREFIX absl
-    PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/absl_c++11.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
