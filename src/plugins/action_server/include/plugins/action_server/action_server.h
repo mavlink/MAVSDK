@@ -152,6 +152,8 @@ public:
         VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition support is unknown. */
         NoVtolTransitionSupport, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
         ParameterError, /**< @brief Error getting or setting parameter. */
+        Next, /**< @brief Intermediate message showing progress or instructions on the next steps.
+               */
     };
 
     /**

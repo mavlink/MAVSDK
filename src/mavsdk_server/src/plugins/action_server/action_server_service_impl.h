@@ -203,6 +203,8 @@ public:
                     ActionServerResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT;
             case mavsdk::ActionServer::Result::ParameterError:
                 return rpc::action_server::ActionServerResult_Result_RESULT_PARAMETER_ERROR;
+            case mavsdk::ActionServer::Result::Next:
+                return rpc::action_server::ActionServerResult_Result_RESULT_NEXT;
         }
     }
 
@@ -239,6 +241,8 @@ public:
                 return mavsdk::ActionServer::Result::NoVtolTransitionSupport;
             case rpc::action_server::ActionServerResult_Result_RESULT_PARAMETER_ERROR:
                 return mavsdk::ActionServer::Result::ParameterError;
+            case rpc::action_server::ActionServerResult_Result_RESULT_NEXT:
+                return mavsdk::ActionServer::Result::Next;
         }
     }
 

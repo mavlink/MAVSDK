@@ -240,46 +240,46 @@ void ActionServerService::Stub::async::SetDisarmable(::grpc::ClientContext* cont
   return result;
 }
 
-::grpc::Status ActionServerService::Stub::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAllowableFlightModes_, context, request, response);
+::grpc::Status ActionServerService::Stub::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAllowableFlightModes_, context, request, response);
 }
 
-void ActionServerService::Stub::async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowableFlightModes_, context, request, response, std::move(f));
+void ActionServerService::Stub::async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowableFlightModes_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowableFlightModes_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* ActionServerService::Stub::PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAllowableFlightModes_, context, request);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* ActionServerService::Stub::PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAllowableFlightModes_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* ActionServerService::Stub::AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* ActionServerService::Stub::AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncSetAllowableFlightModesRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status ActionServerService::Stub::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetAllowableFlightModes_, context, request, response);
+::grpc::Status ActionServerService::Stub::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetAllowableFlightModes_, context, request, response);
 }
 
-void ActionServerService::Stub::async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllowableFlightModes_, context, request, response, std::move(f));
+void ActionServerService::Stub::async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllowableFlightModes_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllowableFlightModes_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* ActionServerService::Stub::PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetAllowableFlightModes_, context, request);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* ActionServerService::Stub::PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetAllowableFlightModes_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* ActionServerService::Stub::AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* ActionServerService::Stub::AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncGetAllowableFlightModesRaw(context, request, cq);
   result->StartCall();
@@ -390,21 +390,21 @@ ActionServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionServerService_method_names[10],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionServerService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* req,
-             ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* resp) {
+             const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* req,
+             ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* resp) {
                return service->SetAllowableFlightModes(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionServerService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionServerService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* req,
-             ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* resp) {
+             const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* req,
+             ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* resp) {
                return service->GetAllowableFlightModes(ctx, req, resp);
              }, this)));
 }
@@ -482,14 +482,14 @@ ActionServerService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status ActionServerService::Service::SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response) {
+::grpc::Status ActionServerService::Service::SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status ActionServerService::Service::GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response) {
+::grpc::Status ActionServerService::Service::GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) {
   (void) context;
   (void) request;
   (void) response;

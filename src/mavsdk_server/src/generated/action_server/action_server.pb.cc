@@ -57,29 +57,29 @@ struct SetDisarmableRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetDisarmableRequestDefaultTypeInternal _SetDisarmableRequest_default_instance_;
-constexpr SetAllowableFlightModeRequest::SetAllowableFlightModeRequest(
+constexpr SetAllowableFlightModesRequest::SetAllowableFlightModesRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : flight_modes_(nullptr){}
-struct SetAllowableFlightModeRequestDefaultTypeInternal {
-  constexpr SetAllowableFlightModeRequestDefaultTypeInternal()
+struct SetAllowableFlightModesRequestDefaultTypeInternal {
+  constexpr SetAllowableFlightModesRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~SetAllowableFlightModeRequestDefaultTypeInternal() {}
+  ~SetAllowableFlightModesRequestDefaultTypeInternal() {}
   union {
-    SetAllowableFlightModeRequest _instance;
+    SetAllowableFlightModesRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAllowableFlightModeRequestDefaultTypeInternal _SetAllowableFlightModeRequest_default_instance_;
-constexpr GetAllowableFlightModeRequest::GetAllowableFlightModeRequest(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAllowableFlightModesRequestDefaultTypeInternal _SetAllowableFlightModesRequest_default_instance_;
+constexpr GetAllowableFlightModesRequest::GetAllowableFlightModesRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
-struct GetAllowableFlightModeRequestDefaultTypeInternal {
-  constexpr GetAllowableFlightModeRequestDefaultTypeInternal()
+struct GetAllowableFlightModesRequestDefaultTypeInternal {
+  constexpr GetAllowableFlightModesRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~GetAllowableFlightModeRequestDefaultTypeInternal() {}
+  ~GetAllowableFlightModesRequestDefaultTypeInternal() {}
   union {
-    GetAllowableFlightModeRequest _instance;
+    GetAllowableFlightModesRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetAllowableFlightModeRequestDefaultTypeInternal _GetAllowableFlightModeRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetAllowableFlightModesRequestDefaultTypeInternal _GetAllowableFlightModesRequest_default_instance_;
 constexpr SubscribeArmDisarmRequest::SubscribeArmDisarmRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
 struct SubscribeArmDisarmRequestDefaultTypeInternal {
@@ -273,18 +273,18 @@ struct SetDisarmableResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetDisarmableResponseDefaultTypeInternal _SetDisarmableResponse_default_instance_;
-constexpr SetAllowableFlightModeResponse::SetAllowableFlightModeResponse(
+constexpr SetAllowableFlightModesResponse::SetAllowableFlightModesResponse(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : action_server_result_(nullptr){}
-struct SetAllowableFlightModeResponseDefaultTypeInternal {
-  constexpr SetAllowableFlightModeResponseDefaultTypeInternal()
+struct SetAllowableFlightModesResponseDefaultTypeInternal {
+  constexpr SetAllowableFlightModesResponseDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~SetAllowableFlightModeResponseDefaultTypeInternal() {}
+  ~SetAllowableFlightModesResponseDefaultTypeInternal() {}
   union {
-    SetAllowableFlightModeResponse _instance;
+    SetAllowableFlightModesResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAllowableFlightModeResponseDefaultTypeInternal _SetAllowableFlightModeResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAllowableFlightModesResponseDefaultTypeInternal _SetAllowableFlightModesResponse_default_instance_;
 constexpr SetAllowTakeoffResponse::SetAllowTakeoffResponse(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : action_server_result_(nullptr){}
@@ -297,18 +297,18 @@ struct SetAllowTakeoffResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetAllowTakeoffResponseDefaultTypeInternal _SetAllowTakeoffResponse_default_instance_;
-constexpr GetAllowableFlightModeResponse::GetAllowableFlightModeResponse(
+constexpr GetAllowableFlightModesResponse::GetAllowableFlightModesResponse(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : flight_modes_(nullptr){}
-struct GetAllowableFlightModeResponseDefaultTypeInternal {
-  constexpr GetAllowableFlightModeResponseDefaultTypeInternal()
+struct GetAllowableFlightModesResponseDefaultTypeInternal {
+  constexpr GetAllowableFlightModesResponseDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~GetAllowableFlightModeResponseDefaultTypeInternal() {}
+  ~GetAllowableFlightModesResponseDefaultTypeInternal() {}
   union {
-    GetAllowableFlightModeResponse _instance;
+    GetAllowableFlightModesResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetAllowableFlightModeResponseDefaultTypeInternal _GetAllowableFlightModeResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetAllowableFlightModesResponseDefaultTypeInternal _GetAllowableFlightModesResponse_default_instance_;
 constexpr AllowableFlightModes::AllowableFlightModes(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : can_auto_mode_(false)
@@ -379,13 +379,13 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_action_5fserver_2faction_5fser
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetDisarmableRequest, disarmable_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetDisarmableRequest, force_disarmable_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, flight_modes_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, flight_modes_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
@@ -486,11 +486,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_action_5fserver_2faction_5fser
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetDisarmableResponse, action_server_result_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, action_server_result_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, action_server_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowTakeoffResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -498,11 +498,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_action_5fserver_2faction_5fser
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::SetAllowTakeoffResponse, action_server_result_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, flight_modes_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, flight_modes_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -530,8 +530,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 0, -1, sizeof(::mavsdk::rpc::action_server::SetAllowTakeoffRequest)},
   { 6, -1, sizeof(::mavsdk::rpc::action_server::SetArmableRequest)},
   { 13, -1, sizeof(::mavsdk::rpc::action_server::SetDisarmableRequest)},
-  { 20, -1, sizeof(::mavsdk::rpc::action_server::SetAllowableFlightModeRequest)},
-  { 26, -1, sizeof(::mavsdk::rpc::action_server::GetAllowableFlightModeRequest)},
+  { 20, -1, sizeof(::mavsdk::rpc::action_server::SetAllowableFlightModesRequest)},
+  { 26, -1, sizeof(::mavsdk::rpc::action_server::GetAllowableFlightModesRequest)},
   { 31, -1, sizeof(::mavsdk::rpc::action_server::SubscribeArmDisarmRequest)},
   { 36, -1, sizeof(::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest)},
   { 41, -1, sizeof(::mavsdk::rpc::action_server::SubscribeTakeoffRequest)},
@@ -548,9 +548,9 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 108, -1, sizeof(::mavsdk::rpc::action_server::TerminateResponse)},
   { 115, -1, sizeof(::mavsdk::rpc::action_server::SetArmableResponse)},
   { 121, -1, sizeof(::mavsdk::rpc::action_server::SetDisarmableResponse)},
-  { 127, -1, sizeof(::mavsdk::rpc::action_server::SetAllowableFlightModeResponse)},
+  { 127, -1, sizeof(::mavsdk::rpc::action_server::SetAllowableFlightModesResponse)},
   { 133, -1, sizeof(::mavsdk::rpc::action_server::SetAllowTakeoffResponse)},
-  { 139, -1, sizeof(::mavsdk::rpc::action_server::GetAllowableFlightModeResponse)},
+  { 139, -1, sizeof(::mavsdk::rpc::action_server::GetAllowableFlightModesResponse)},
   { 145, -1, sizeof(::mavsdk::rpc::action_server::AllowableFlightModes)},
   { 153, -1, sizeof(::mavsdk::rpc::action_server::ArmDisarm)},
   { 160, -1, sizeof(::mavsdk::rpc::action_server::ActionServerResult)},
@@ -560,8 +560,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetAllowTakeoffRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetArmableRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetDisarmableRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetAllowableFlightModeRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_GetAllowableFlightModeRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetAllowableFlightModesRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_GetAllowableFlightModesRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SubscribeArmDisarmRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SubscribeFlightModeChangeRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SubscribeTakeoffRequest_default_instance_),
@@ -578,9 +578,9 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_TerminateResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetArmableResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetDisarmableResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetAllowableFlightModeResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetAllowableFlightModesResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_SetAllowTakeoffResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_GetAllowableFlightModeResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_GetAllowableFlightModesResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_AllowableFlightModes_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_ArmDisarm_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action_server::_ActionServerResult_default_instance_),
@@ -593,122 +593,123 @@ const char descriptor_table_protodef_action_5fserver_2faction_5fserver_2eproto[]
   "akeoff\030\001 \001(\010\";\n\021SetArmableRequest\022\017\n\007arm"
   "able\030\001 \001(\010\022\025\n\rforce_armable\030\002 \001(\010\"D\n\024Set"
   "DisarmableRequest\022\022\n\ndisarmable\030\001 \001(\010\022\030\n"
-  "\020force_disarmable\030\002 \001(\010\"e\n\035SetAllowableF"
-  "lightModeRequest\022D\n\014flight_modes\030\001 \001(\0132."
-  ".mavsdk.rpc.action_server.AllowableFligh"
-  "tModes\"\037\n\035GetAllowableFlightModeRequest\""
-  "\033\n\031SubscribeArmDisarmRequest\"\"\n Subscrib"
-  "eFlightModeChangeRequest\"\031\n\027SubscribeTak"
-  "eoffRequest\"\026\n\024SubscribeLandRequest\"\030\n\026S"
-  "ubscribeRebootRequest\"\032\n\030SubscribeShutdo"
-  "wnRequest\"\033\n\031SubscribeTerminateRequest\"\221"
-  "\001\n\021ArmDisarmResponse\022J\n\024action_server_re"
+  "\020force_disarmable\030\002 \001(\010\"f\n\036SetAllowableF"
+  "lightModesRequest\022D\n\014flight_modes\030\001 \001(\0132"
+  "..mavsdk.rpc.action_server.AllowableFlig"
+  "htModes\" \n\036GetAllowableFlightModesReques"
+  "t\"\033\n\031SubscribeArmDisarmRequest\"\"\n Subscr"
+  "ibeFlightModeChangeRequest\"\031\n\027SubscribeT"
+  "akeoffRequest\"\026\n\024SubscribeLandRequest\"\030\n"
+  "\026SubscribeRebootRequest\"\032\n\030SubscribeShut"
+  "downRequest\"\033\n\031SubscribeTerminateRequest"
+  "\"\221\001\n\021ArmDisarmResponse\022J\n\024action_server_"
+  "result\030\001 \001(\0132,.mavsdk.rpc.action_server."
+  "ActionServerResult\0220\n\003arm\030\002 \001(\0132#.mavsdk"
+  ".rpc.action_server.ArmDisarm\"\241\001\n\030FlightM"
+  "odeChangeResponse\022J\n\024action_server_resul"
+  "t\030\001 \001(\0132,.mavsdk.rpc.action_server.Actio"
+  "nServerResult\0229\n\013flight_mode\030\002 \001(\0162$.mav"
+  "sdk.rpc.action_server.FlightMode\"n\n\017Take"
+  "offResponse\022J\n\024action_server_result\030\001 \001("
+  "\0132,.mavsdk.rpc.action_server.ActionServe"
+  "rResult\022\017\n\007takeoff\030\002 \001(\010\"h\n\014LandResponse"
+  "\022J\n\024action_server_result\030\001 \001(\0132,.mavsdk."
+  "rpc.action_server.ActionServerResult\022\014\n\004"
+  "land\030\002 \001(\010\"l\n\016RebootResponse\022J\n\024action_s"
+  "erver_result\030\001 \001(\0132,.mavsdk.rpc.action_s"
+  "erver.ActionServerResult\022\016\n\006reboot\030\002 \001(\010"
+  "\"p\n\020ShutdownResponse\022J\n\024action_server_re"
   "sult\030\001 \001(\0132,.mavsdk.rpc.action_server.Ac"
-  "tionServerResult\0220\n\003arm\030\002 \001(\0132#.mavsdk.r"
-  "pc.action_server.ArmDisarm\"\241\001\n\030FlightMod"
-  "eChangeResponse\022J\n\024action_server_result\030"
+  "tionServerResult\022\020\n\010shutdown\030\002 \001(\010\"r\n\021Te"
+  "rminateResponse\022J\n\024action_server_result\030"
   "\001 \001(\0132,.mavsdk.rpc.action_server.ActionS"
-  "erverResult\0229\n\013flight_mode\030\002 \001(\0162$.mavsd"
-  "k.rpc.action_server.FlightMode\"n\n\017Takeof"
-  "fResponse\022J\n\024action_server_result\030\001 \001(\0132"
-  ",.mavsdk.rpc.action_server.ActionServerR"
-  "esult\022\017\n\007takeoff\030\002 \001(\010\"h\n\014LandResponse\022J"
-  "\n\024action_server_result\030\001 \001(\0132,.mavsdk.rp"
-  "c.action_server.ActionServerResult\022\014\n\004la"
-  "nd\030\002 \001(\010\"l\n\016RebootResponse\022J\n\024action_ser"
-  "ver_result\030\001 \001(\0132,.mavsdk.rpc.action_ser"
-  "ver.ActionServerResult\022\016\n\006reboot\030\002 \001(\010\"p"
-  "\n\020ShutdownResponse\022J\n\024action_server_resu"
-  "lt\030\001 \001(\0132,.mavsdk.rpc.action_server.Acti"
-  "onServerResult\022\020\n\010shutdown\030\002 \001(\010\"r\n\021Term"
-  "inateResponse\022J\n\024action_server_result\030\001 "
-  "\001(\0132,.mavsdk.rpc.action_server.ActionSer"
-  "verResult\022\021\n\tterminate\030\002 \001(\010\"`\n\022SetArmab"
-  "leResponse\022J\n\024action_server_result\030\001 \001(\013"
-  "2,.mavsdk.rpc.action_server.ActionServer"
-  "Result\"c\n\025SetDisarmableResponse\022J\n\024actio"
-  "n_server_result\030\001 \001(\0132,.mavsdk.rpc.actio"
-  "n_server.ActionServerResult\"l\n\036SetAllowa"
-  "bleFlightModeResponse\022J\n\024action_server_r"
-  "esult\030\001 \001(\0132,.mavsdk.rpc.action_server.A"
-  "ctionServerResult\"e\n\027SetAllowTakeoffResp"
-  "onse\022J\n\024action_server_result\030\001 \001(\0132,.mav"
-  "sdk.rpc.action_server.ActionServerResult"
-  "\"f\n\036GetAllowableFlightModeResponse\022D\n\014fl"
-  "ight_modes\030\001 \001(\0132..mavsdk.rpc.action_ser"
-  "ver.AllowableFlightModes\"b\n\024AllowableFli"
-  "ghtModes\022\025\n\rcan_auto_mode\030\001 \001(\010\022\027\n\017can_g"
-  "uided_mode\030\002 \001(\010\022\032\n\022can_stabilize_mode\030\003"
-  " \001(\010\"\'\n\tArmDisarm\022\013\n\003arm\030\001 \001(\010\022\r\n\005force\030"
-  "\002 \001(\010\"\330\003\n\022ActionServerResult\022C\n\006result\030\001"
-  " \001(\01623.mavsdk.rpc.action_server.ActionSe"
-  "rverResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\350\002"
-  "\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_S"
-  "UCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT"
-  "_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025"
-  "RESULT_COMMAND_DENIED\020\005\022.\n*RESULT_COMMAN"
-  "D_DENIED_LANDED_STATE_UNKNOWN\020\006\022$\n RESUL"
-  "T_COMMAND_DENIED_NOT_LANDED\020\007\022\022\n\016RESULT_"
-  "TIMEOUT\020\010\022*\n&RESULT_VTOL_TRANSITION_SUPP"
-  "ORT_UNKNOWN\020\t\022%\n!RESULT_NO_VTOL_TRANSITI"
-  "ON_SUPPORT\020\n\022\032\n\026RESULT_PARAMETER_ERROR\020\013"
-  "*\353\002\n\nFlightMode\022\027\n\023FLIGHT_MODE_UNKNOWN\020\000"
-  "\022\025\n\021FLIGHT_MODE_READY\020\001\022\027\n\023FLIGHT_MODE_T"
-  "AKEOFF\020\002\022\024\n\020FLIGHT_MODE_HOLD\020\003\022\027\n\023FLIGHT"
-  "_MODE_MISSION\020\004\022 \n\034FLIGHT_MODE_RETURN_TO"
-  "_LAUNCH\020\005\022\024\n\020FLIGHT_MODE_LAND\020\006\022\030\n\024FLIGH"
-  "T_MODE_OFFBOARD\020\007\022\031\n\025FLIGHT_MODE_FOLLOW_"
-  "ME\020\010\022\026\n\022FLIGHT_MODE_MANUAL\020\t\022\026\n\022FLIGHT_M"
-  "ODE_ALTCTL\020\n\022\026\n\022FLIGHT_MODE_POSCTL\020\013\022\024\n\020"
-  "FLIGHT_MODE_ACRO\020\014\022\032\n\026FLIGHT_MODE_STABIL"
-  "IZED\020\r2\231\014\n\023ActionServerService\022~\n\022Subscr"
-  "ibeArmDisarm\0223.mavsdk.rpc.action_server."
-  "SubscribeArmDisarmRequest\032+.mavsdk.rpc.a"
-  "ction_server.ArmDisarmResponse\"\004\200\265\030\0000\001\022\223"
-  "\001\n\031SubscribeFlightModeChange\022:.mavsdk.rp"
-  "c.action_server.SubscribeFlightModeChang"
-  "eRequest\0322.mavsdk.rpc.action_server.Flig"
-  "htModeChangeResponse\"\004\200\265\030\0000\001\022x\n\020Subscrib"
-  "eTakeoff\0221.mavsdk.rpc.action_server.Subs"
-  "cribeTakeoffRequest\032).mavsdk.rpc.action_"
-  "server.TakeoffResponse\"\004\200\265\030\0000\001\022o\n\rSubscr"
-  "ibeLand\022..mavsdk.rpc.action_server.Subsc"
-  "ribeLandRequest\032&.mavsdk.rpc.action_serv"
-  "er.LandResponse\"\004\200\265\030\0000\001\022u\n\017SubscribeRebo"
-  "ot\0220.mavsdk.rpc.action_server.SubscribeR"
-  "ebootRequest\032(.mavsdk.rpc.action_server."
-  "RebootResponse\"\004\200\265\030\0000\001\022{\n\021SubscribeShutd"
-  "own\0222.mavsdk.rpc.action_server.Subscribe"
-  "ShutdownRequest\032*.mavsdk.rpc.action_serv"
-  "er.ShutdownResponse\"\004\200\265\030\0000\001\022~\n\022Subscribe"
-  "Terminate\0223.mavsdk.rpc.action_server.Sub"
-  "scribeTerminateRequest\032+.mavsdk.rpc.acti"
-  "on_server.TerminateResponse\"\004\200\265\030\0000\001\022|\n\017S"
-  "etAllowTakeoff\0220.mavsdk.rpc.action_serve"
-  "r.SetAllowTakeoffRequest\0321.mavsdk.rpc.ac"
-  "tion_server.SetAllowTakeoffResponse\"\004\200\265\030"
-  "\001\022m\n\nSetArmable\022+.mavsdk.rpc.action_serv"
-  "er.SetArmableRequest\032,.mavsdk.rpc.action"
-  "_server.SetArmableResponse\"\004\200\265\030\001\022v\n\rSetD"
-  "isarmable\022..mavsdk.rpc.action_server.Set"
-  "DisarmableRequest\032/.mavsdk.rpc.action_se"
-  "rver.SetDisarmableResponse\"\004\200\265\030\001\022\222\001\n\027Set"
-  "AllowableFlightModes\0227.mavsdk.rpc.action"
-  "_server.SetAllowableFlightModeRequest\0328."
-  "mavsdk.rpc.action_server.SetAllowableFli"
-  "ghtModeResponse\"\004\200\265\030\001\022\222\001\n\027GetAllowableFl"
-  "ightModes\0227.mavsdk.rpc.action_server.Get"
-  "AllowableFlightModeRequest\0328.mavsdk.rpc."
-  "action_server.GetAllowableFlightModeResp"
-  "onse\"\004\200\265\030\001B,\n\027io.mavsdk.action_serverB\021A"
-  "ctionServerProtob\006proto3"
+  "erverResult\022\021\n\tterminate\030\002 \001(\010\"`\n\022SetArm"
+  "ableResponse\022J\n\024action_server_result\030\001 \001"
+  "(\0132,.mavsdk.rpc.action_server.ActionServ"
+  "erResult\"c\n\025SetDisarmableResponse\022J\n\024act"
+  "ion_server_result\030\001 \001(\0132,.mavsdk.rpc.act"
+  "ion_server.ActionServerResult\"m\n\037SetAllo"
+  "wableFlightModesResponse\022J\n\024action_serve"
+  "r_result\030\001 \001(\0132,.mavsdk.rpc.action_serve"
+  "r.ActionServerResult\"e\n\027SetAllowTakeoffR"
+  "esponse\022J\n\024action_server_result\030\001 \001(\0132,."
+  "mavsdk.rpc.action_server.ActionServerRes"
+  "ult\"g\n\037GetAllowableFlightModesResponse\022D"
+  "\n\014flight_modes\030\001 \001(\0132..mavsdk.rpc.action"
+  "_server.AllowableFlightModes\"b\n\024Allowabl"
+  "eFlightModes\022\025\n\rcan_auto_mode\030\001 \001(\010\022\027\n\017c"
+  "an_guided_mode\030\002 \001(\010\022\032\n\022can_stabilize_mo"
+  "de\030\003 \001(\010\"\'\n\tArmDisarm\022\013\n\003arm\030\001 \001(\010\022\r\n\005fo"
+  "rce\030\002 \001(\010\"\351\003\n\022ActionServerResult\022C\n\006resu"
+  "lt\030\001 \001(\01623.mavsdk.rpc.action_server.Acti"
+  "onServerResult.Result\022\022\n\nresult_str\030\002 \001("
+  "\t\"\371\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESU"
+  "LT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RE"
+  "SULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004"
+  "\022\031\n\025RESULT_COMMAND_DENIED\020\005\022.\n*RESULT_CO"
+  "MMAND_DENIED_LANDED_STATE_UNKNOWN\020\006\022$\n R"
+  "ESULT_COMMAND_DENIED_NOT_LANDED\020\007\022\022\n\016RES"
+  "ULT_TIMEOUT\020\010\022*\n&RESULT_VTOL_TRANSITION_"
+  "SUPPORT_UNKNOWN\020\t\022%\n!RESULT_NO_VTOL_TRAN"
+  "SITION_SUPPORT\020\n\022\032\n\026RESULT_PARAMETER_ERR"
+  "OR\020\013\022\017\n\013RESULT_NEXT\020\014*\353\002\n\nFlightMode\022\027\n\023"
+  "FLIGHT_MODE_UNKNOWN\020\000\022\025\n\021FLIGHT_MODE_REA"
+  "DY\020\001\022\027\n\023FLIGHT_MODE_TAKEOFF\020\002\022\024\n\020FLIGHT_"
+  "MODE_HOLD\020\003\022\027\n\023FLIGHT_MODE_MISSION\020\004\022 \n\034"
+  "FLIGHT_MODE_RETURN_TO_LAUNCH\020\005\022\024\n\020FLIGHT"
+  "_MODE_LAND\020\006\022\030\n\024FLIGHT_MODE_OFFBOARD\020\007\022\031"
+  "\n\025FLIGHT_MODE_FOLLOW_ME\020\010\022\026\n\022FLIGHT_MODE"
+  "_MANUAL\020\t\022\026\n\022FLIGHT_MODE_ALTCTL\020\n\022\026\n\022FLI"
+  "GHT_MODE_POSCTL\020\013\022\024\n\020FLIGHT_MODE_ACRO\020\014\022"
+  "\032\n\026FLIGHT_MODE_STABILIZED\020\r2\235\014\n\023ActionSe"
+  "rverService\022~\n\022SubscribeArmDisarm\0223.mavs"
+  "dk.rpc.action_server.SubscribeArmDisarmR"
+  "equest\032+.mavsdk.rpc.action_server.ArmDis"
+  "armResponse\"\004\200\265\030\0000\001\022\223\001\n\031SubscribeFlightM"
+  "odeChange\022:.mavsdk.rpc.action_server.Sub"
+  "scribeFlightModeChangeRequest\0322.mavsdk.r"
+  "pc.action_server.FlightModeChangeRespons"
+  "e\"\004\200\265\030\0000\001\022x\n\020SubscribeTakeoff\0221.mavsdk.r"
+  "pc.action_server.SubscribeTakeoffRequest"
+  "\032).mavsdk.rpc.action_server.TakeoffRespo"
+  "nse\"\004\200\265\030\0000\001\022o\n\rSubscribeLand\022..mavsdk.rp"
+  "c.action_server.SubscribeLandRequest\032&.m"
+  "avsdk.rpc.action_server.LandResponse\"\004\200\265"
+  "\030\0000\001\022u\n\017SubscribeReboot\0220.mavsdk.rpc.act"
+  "ion_server.SubscribeRebootRequest\032(.mavs"
+  "dk.rpc.action_server.RebootResponse\"\004\200\265\030"
+  "\0000\001\022{\n\021SubscribeShutdown\0222.mavsdk.rpc.ac"
+  "tion_server.SubscribeShutdownRequest\032*.m"
+  "avsdk.rpc.action_server.ShutdownResponse"
+  "\"\004\200\265\030\0000\001\022~\n\022SubscribeTerminate\0223.mavsdk."
+  "rpc.action_server.SubscribeTerminateRequ"
+  "est\032+.mavsdk.rpc.action_server.Terminate"
+  "Response\"\004\200\265\030\0000\001\022|\n\017SetAllowTakeoff\0220.ma"
+  "vsdk.rpc.action_server.SetAllowTakeoffRe"
+  "quest\0321.mavsdk.rpc.action_server.SetAllo"
+  "wTakeoffResponse\"\004\200\265\030\001\022m\n\nSetArmable\022+.m"
+  "avsdk.rpc.action_server.SetArmableReques"
+  "t\032,.mavsdk.rpc.action_server.SetArmableR"
+  "esponse\"\004\200\265\030\001\022v\n\rSetDisarmable\022..mavsdk."
+  "rpc.action_server.SetDisarmableRequest\032/"
+  ".mavsdk.rpc.action_server.SetDisarmableR"
+  "esponse\"\004\200\265\030\001\022\224\001\n\027SetAllowableFlightMode"
+  "s\0228.mavsdk.rpc.action_server.SetAllowabl"
+  "eFlightModesRequest\0329.mavsdk.rpc.action_"
+  "server.SetAllowableFlightModesResponse\"\004"
+  "\200\265\030\001\022\224\001\n\027GetAllowableFlightModes\0228.mavsd"
+  "k.rpc.action_server.GetAllowableFlightMo"
+  "desRequest\0329.mavsdk.rpc.action_server.Ge"
+  "tAllowableFlightModesResponse\"\004\200\265\030\001B,\n\027i"
+  "o.mavsdk.action_serverB\021ActionServerProt"
+  "ob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_action_5fserver_2faction_5fserver_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_action_5fserver_2faction_5fserver_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_action_5fserver_2faction_5fserver_2eproto = {
-  false, false, 4584, descriptor_table_protodef_action_5fserver_2faction_5fserver_2eproto, "action_server/action_server.proto", 
+  false, false, 4609, descriptor_table_protodef_action_5fserver_2faction_5fserver_2eproto, "action_server/action_server.proto", 
   &descriptor_table_action_5fserver_2faction_5fserver_2eproto_once, descriptor_table_action_5fserver_2faction_5fserver_2eproto_deps, 1, 27,
   schemas, file_default_instances, TableStruct_action_5fserver_2faction_5fserver_2eproto::offsets,
   file_level_metadata_action_5fserver_2faction_5fserver_2eproto, file_level_enum_descriptors_action_5fserver_2faction_5fserver_2eproto, file_level_service_descriptors_action_5fserver_2faction_5fserver_2eproto,
@@ -740,6 +741,7 @@ bool ActionServerResult_Result_IsValid(int value) {
     case 9:
     case 10:
     case 11:
+    case 12:
       return true;
     default:
       return false;
@@ -759,6 +761,7 @@ constexpr ActionServerResult_Result ActionServerResult::RESULT_TIMEOUT;
 constexpr ActionServerResult_Result ActionServerResult::RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN;
 constexpr ActionServerResult_Result ActionServerResult::RESULT_NO_VTOL_TRANSITION_SUPPORT;
 constexpr ActionServerResult_Result ActionServerResult::RESULT_PARAMETER_ERROR;
+constexpr ActionServerResult_Result ActionServerResult::RESULT_NEXT;
 constexpr ActionServerResult_Result ActionServerResult::Result_MIN;
 constexpr ActionServerResult_Result ActionServerResult::Result_MAX;
 constexpr int ActionServerResult::Result_ARRAYSIZE;
@@ -1407,25 +1410,25 @@ void SetDisarmableRequest::InternalSwap(SetDisarmableRequest* other) {
 
 // ===================================================================
 
-class SetAllowableFlightModeRequest::_Internal {
+class SetAllowableFlightModesRequest::_Internal {
  public:
-  static const ::mavsdk::rpc::action_server::AllowableFlightModes& flight_modes(const SetAllowableFlightModeRequest* msg);
+  static const ::mavsdk::rpc::action_server::AllowableFlightModes& flight_modes(const SetAllowableFlightModesRequest* msg);
 };
 
 const ::mavsdk::rpc::action_server::AllowableFlightModes&
-SetAllowableFlightModeRequest::_Internal::flight_modes(const SetAllowableFlightModeRequest* msg) {
+SetAllowableFlightModesRequest::_Internal::flight_modes(const SetAllowableFlightModesRequest* msg) {
   return *msg->flight_modes_;
 }
-SetAllowableFlightModeRequest::SetAllowableFlightModeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+SetAllowableFlightModesRequest::SetAllowableFlightModesRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
 }
-SetAllowableFlightModeRequest::SetAllowableFlightModeRequest(const SetAllowableFlightModeRequest& from)
+SetAllowableFlightModesRequest::SetAllowableFlightModesRequest(const SetAllowableFlightModesRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_flight_modes()) {
@@ -1433,37 +1436,37 @@ SetAllowableFlightModeRequest::SetAllowableFlightModeRequest(const SetAllowableF
   } else {
     flight_modes_ = nullptr;
   }
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
 }
 
-inline void SetAllowableFlightModeRequest::SharedCtor() {
+inline void SetAllowableFlightModesRequest::SharedCtor() {
 flight_modes_ = nullptr;
 }
 
-SetAllowableFlightModeRequest::~SetAllowableFlightModeRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+SetAllowableFlightModesRequest::~SetAllowableFlightModesRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-inline void SetAllowableFlightModeRequest::SharedDtor() {
+inline void SetAllowableFlightModesRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete flight_modes_;
 }
 
-void SetAllowableFlightModeRequest::ArenaDtor(void* object) {
-  SetAllowableFlightModeRequest* _this = reinterpret_cast< SetAllowableFlightModeRequest* >(object);
+void SetAllowableFlightModesRequest::ArenaDtor(void* object) {
+  SetAllowableFlightModesRequest* _this = reinterpret_cast< SetAllowableFlightModesRequest* >(object);
   (void)_this;
 }
-void SetAllowableFlightModeRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void SetAllowableFlightModesRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void SetAllowableFlightModeRequest::SetCachedSize(int size) const {
+void SetAllowableFlightModesRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void SetAllowableFlightModeRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+void SetAllowableFlightModesRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1475,7 +1478,7 @@ void SetAllowableFlightModeRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SetAllowableFlightModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SetAllowableFlightModesRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -1511,9 +1514,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SetAllowableFlightModeRequest::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* SetAllowableFlightModesRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1529,12 +1532,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
   return target;
 }
 
-size_t SetAllowableFlightModeRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+size_t SetAllowableFlightModesRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1557,21 +1560,21 @@ size_t SetAllowableFlightModeRequest::ByteSizeLong() const {
   return total_size;
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetAllowableFlightModeRequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetAllowableFlightModesRequest::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    SetAllowableFlightModeRequest::MergeImpl
+    SetAllowableFlightModesRequest::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetAllowableFlightModeRequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetAllowableFlightModesRequest::GetClassData() const { return &_class_data_; }
 
-void SetAllowableFlightModeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+void SetAllowableFlightModesRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
                       const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<SetAllowableFlightModeRequest *>(to)->MergeFrom(
-      static_cast<const SetAllowableFlightModeRequest &>(from));
+  static_cast<SetAllowableFlightModesRequest *>(to)->MergeFrom(
+      static_cast<const SetAllowableFlightModesRequest &>(from));
 }
 
 
-void SetAllowableFlightModeRequest::MergeFrom(const SetAllowableFlightModeRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+void SetAllowableFlightModesRequest::MergeFrom(const SetAllowableFlightModesRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1582,24 +1585,24 @@ void SetAllowableFlightModeRequest::MergeFrom(const SetAllowableFlightModeReques
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetAllowableFlightModeRequest::CopyFrom(const SetAllowableFlightModeRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.SetAllowableFlightModeRequest)
+void SetAllowableFlightModesRequest::CopyFrom(const SetAllowableFlightModesRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.SetAllowableFlightModesRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SetAllowableFlightModeRequest::IsInitialized() const {
+bool SetAllowableFlightModesRequest::IsInitialized() const {
   return true;
 }
 
-void SetAllowableFlightModeRequest::InternalSwap(SetAllowableFlightModeRequest* other) {
+void SetAllowableFlightModesRequest::InternalSwap(SetAllowableFlightModesRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(flight_modes_, other->flight_modes_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata SetAllowableFlightModeRequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata SetAllowableFlightModesRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_action_5fserver_2faction_5fserver_2eproto_getter, &descriptor_table_action_5fserver_2faction_5fserver_2eproto_once,
       file_level_metadata_action_5fserver_2faction_5fserver_2eproto[3]);
@@ -1607,51 +1610,51 @@ void SetAllowableFlightModeRequest::InternalSwap(SetAllowableFlightModeRequest* 
 
 // ===================================================================
 
-class GetAllowableFlightModeRequest::_Internal {
+class GetAllowableFlightModesRequest::_Internal {
  public:
 };
 
-GetAllowableFlightModeRequest::GetAllowableFlightModeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+GetAllowableFlightModesRequest::GetAllowableFlightModesRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
 }
-GetAllowableFlightModeRequest::GetAllowableFlightModeRequest(const GetAllowableFlightModeRequest& from)
+GetAllowableFlightModesRequest::GetAllowableFlightModesRequest(const GetAllowableFlightModesRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
 }
 
-inline void GetAllowableFlightModeRequest::SharedCtor() {
+inline void GetAllowableFlightModesRequest::SharedCtor() {
 }
 
-GetAllowableFlightModeRequest::~GetAllowableFlightModeRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+GetAllowableFlightModesRequest::~GetAllowableFlightModesRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-inline void GetAllowableFlightModeRequest::SharedDtor() {
+inline void GetAllowableFlightModesRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
-void GetAllowableFlightModeRequest::ArenaDtor(void* object) {
-  GetAllowableFlightModeRequest* _this = reinterpret_cast< GetAllowableFlightModeRequest* >(object);
+void GetAllowableFlightModesRequest::ArenaDtor(void* object) {
+  GetAllowableFlightModesRequest* _this = reinterpret_cast< GetAllowableFlightModesRequest* >(object);
   (void)_this;
 }
-void GetAllowableFlightModeRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void GetAllowableFlightModesRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void GetAllowableFlightModeRequest::SetCachedSize(int size) const {
+void GetAllowableFlightModesRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void GetAllowableFlightModeRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+void GetAllowableFlightModesRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1659,7 +1662,7 @@ void GetAllowableFlightModeRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* GetAllowableFlightModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* GetAllowableFlightModesRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -1683,9 +1686,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* GetAllowableFlightModeRequest::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* GetAllowableFlightModesRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1693,12 +1696,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
   return target;
 }
 
-size_t GetAllowableFlightModeRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+size_t GetAllowableFlightModesRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1714,21 +1717,21 @@ size_t GetAllowableFlightModeRequest::ByteSizeLong() const {
   return total_size;
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetAllowableFlightModeRequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetAllowableFlightModesRequest::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    GetAllowableFlightModeRequest::MergeImpl
+    GetAllowableFlightModesRequest::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetAllowableFlightModeRequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetAllowableFlightModesRequest::GetClassData() const { return &_class_data_; }
 
-void GetAllowableFlightModeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+void GetAllowableFlightModesRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
                       const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<GetAllowableFlightModeRequest *>(to)->MergeFrom(
-      static_cast<const GetAllowableFlightModeRequest &>(from));
+  static_cast<GetAllowableFlightModesRequest *>(to)->MergeFrom(
+      static_cast<const GetAllowableFlightModesRequest &>(from));
 }
 
 
-void GetAllowableFlightModeRequest::MergeFrom(const GetAllowableFlightModeRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+void GetAllowableFlightModesRequest::MergeFrom(const GetAllowableFlightModesRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1736,23 +1739,23 @@ void GetAllowableFlightModeRequest::MergeFrom(const GetAllowableFlightModeReques
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GetAllowableFlightModeRequest::CopyFrom(const GetAllowableFlightModeRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.GetAllowableFlightModeRequest)
+void GetAllowableFlightModesRequest::CopyFrom(const GetAllowableFlightModesRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.GetAllowableFlightModesRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetAllowableFlightModeRequest::IsInitialized() const {
+bool GetAllowableFlightModesRequest::IsInitialized() const {
   return true;
 }
 
-void GetAllowableFlightModeRequest::InternalSwap(GetAllowableFlightModeRequest* other) {
+void GetAllowableFlightModesRequest::InternalSwap(GetAllowableFlightModesRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GetAllowableFlightModeRequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata GetAllowableFlightModesRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_action_5fserver_2faction_5fserver_2eproto_getter, &descriptor_table_action_5fserver_2faction_5fserver_2eproto_once,
       file_level_metadata_action_5fserver_2faction_5fserver_2eproto[4]);
@@ -4868,25 +4871,25 @@ void SetDisarmableResponse::InternalSwap(SetDisarmableResponse* other) {
 
 // ===================================================================
 
-class SetAllowableFlightModeResponse::_Internal {
+class SetAllowableFlightModesResponse::_Internal {
  public:
-  static const ::mavsdk::rpc::action_server::ActionServerResult& action_server_result(const SetAllowableFlightModeResponse* msg);
+  static const ::mavsdk::rpc::action_server::ActionServerResult& action_server_result(const SetAllowableFlightModesResponse* msg);
 };
 
 const ::mavsdk::rpc::action_server::ActionServerResult&
-SetAllowableFlightModeResponse::_Internal::action_server_result(const SetAllowableFlightModeResponse* msg) {
+SetAllowableFlightModesResponse::_Internal::action_server_result(const SetAllowableFlightModesResponse* msg) {
   return *msg->action_server_result_;
 }
-SetAllowableFlightModeResponse::SetAllowableFlightModeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+SetAllowableFlightModesResponse::SetAllowableFlightModesResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
 }
-SetAllowableFlightModeResponse::SetAllowableFlightModeResponse(const SetAllowableFlightModeResponse& from)
+SetAllowableFlightModesResponse::SetAllowableFlightModesResponse(const SetAllowableFlightModesResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_action_server_result()) {
@@ -4894,37 +4897,37 @@ SetAllowableFlightModeResponse::SetAllowableFlightModeResponse(const SetAllowabl
   } else {
     action_server_result_ = nullptr;
   }
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
 }
 
-inline void SetAllowableFlightModeResponse::SharedCtor() {
+inline void SetAllowableFlightModesResponse::SharedCtor() {
 action_server_result_ = nullptr;
 }
 
-SetAllowableFlightModeResponse::~SetAllowableFlightModeResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+SetAllowableFlightModesResponse::~SetAllowableFlightModesResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-inline void SetAllowableFlightModeResponse::SharedDtor() {
+inline void SetAllowableFlightModesResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete action_server_result_;
 }
 
-void SetAllowableFlightModeResponse::ArenaDtor(void* object) {
-  SetAllowableFlightModeResponse* _this = reinterpret_cast< SetAllowableFlightModeResponse* >(object);
+void SetAllowableFlightModesResponse::ArenaDtor(void* object) {
+  SetAllowableFlightModesResponse* _this = reinterpret_cast< SetAllowableFlightModesResponse* >(object);
   (void)_this;
 }
-void SetAllowableFlightModeResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void SetAllowableFlightModesResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void SetAllowableFlightModeResponse::SetCachedSize(int size) const {
+void SetAllowableFlightModesResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void SetAllowableFlightModeResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+void SetAllowableFlightModesResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -4936,7 +4939,7 @@ void SetAllowableFlightModeResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SetAllowableFlightModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SetAllowableFlightModesResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -4972,9 +4975,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SetAllowableFlightModeResponse::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* SetAllowableFlightModesResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4990,12 +4993,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
   return target;
 }
 
-size_t SetAllowableFlightModeResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+size_t SetAllowableFlightModesResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -5018,21 +5021,21 @@ size_t SetAllowableFlightModeResponse::ByteSizeLong() const {
   return total_size;
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetAllowableFlightModeResponse::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetAllowableFlightModesResponse::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    SetAllowableFlightModeResponse::MergeImpl
+    SetAllowableFlightModesResponse::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetAllowableFlightModeResponse::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetAllowableFlightModesResponse::GetClassData() const { return &_class_data_; }
 
-void SetAllowableFlightModeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+void SetAllowableFlightModesResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
                       const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<SetAllowableFlightModeResponse *>(to)->MergeFrom(
-      static_cast<const SetAllowableFlightModeResponse &>(from));
+  static_cast<SetAllowableFlightModesResponse *>(to)->MergeFrom(
+      static_cast<const SetAllowableFlightModesResponse &>(from));
 }
 
 
-void SetAllowableFlightModeResponse::MergeFrom(const SetAllowableFlightModeResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+void SetAllowableFlightModesResponse::MergeFrom(const SetAllowableFlightModesResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -5043,24 +5046,24 @@ void SetAllowableFlightModeResponse::MergeFrom(const SetAllowableFlightModeRespo
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetAllowableFlightModeResponse::CopyFrom(const SetAllowableFlightModeResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.SetAllowableFlightModeResponse)
+void SetAllowableFlightModesResponse::CopyFrom(const SetAllowableFlightModesResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.SetAllowableFlightModesResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SetAllowableFlightModeResponse::IsInitialized() const {
+bool SetAllowableFlightModesResponse::IsInitialized() const {
   return true;
 }
 
-void SetAllowableFlightModeResponse::InternalSwap(SetAllowableFlightModeResponse* other) {
+void SetAllowableFlightModesResponse::InternalSwap(SetAllowableFlightModesResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(action_server_result_, other->action_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata SetAllowableFlightModeResponse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata SetAllowableFlightModesResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_action_5fserver_2faction_5fserver_2eproto_getter, &descriptor_table_action_5fserver_2faction_5fserver_2eproto_once,
       file_level_metadata_action_5fserver_2faction_5fserver_2eproto[21]);
@@ -5268,25 +5271,25 @@ void SetAllowTakeoffResponse::InternalSwap(SetAllowTakeoffResponse* other) {
 
 // ===================================================================
 
-class GetAllowableFlightModeResponse::_Internal {
+class GetAllowableFlightModesResponse::_Internal {
  public:
-  static const ::mavsdk::rpc::action_server::AllowableFlightModes& flight_modes(const GetAllowableFlightModeResponse* msg);
+  static const ::mavsdk::rpc::action_server::AllowableFlightModes& flight_modes(const GetAllowableFlightModesResponse* msg);
 };
 
 const ::mavsdk::rpc::action_server::AllowableFlightModes&
-GetAllowableFlightModeResponse::_Internal::flight_modes(const GetAllowableFlightModeResponse* msg) {
+GetAllowableFlightModesResponse::_Internal::flight_modes(const GetAllowableFlightModesResponse* msg) {
   return *msg->flight_modes_;
 }
-GetAllowableFlightModeResponse::GetAllowableFlightModeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+GetAllowableFlightModesResponse::GetAllowableFlightModesResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
 }
-GetAllowableFlightModeResponse::GetAllowableFlightModeResponse(const GetAllowableFlightModeResponse& from)
+GetAllowableFlightModesResponse::GetAllowableFlightModesResponse(const GetAllowableFlightModesResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_flight_modes()) {
@@ -5294,37 +5297,37 @@ GetAllowableFlightModeResponse::GetAllowableFlightModeResponse(const GetAllowabl
   } else {
     flight_modes_ = nullptr;
   }
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
 }
 
-inline void GetAllowableFlightModeResponse::SharedCtor() {
+inline void GetAllowableFlightModesResponse::SharedCtor() {
 flight_modes_ = nullptr;
 }
 
-GetAllowableFlightModeResponse::~GetAllowableFlightModeResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+GetAllowableFlightModesResponse::~GetAllowableFlightModesResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-inline void GetAllowableFlightModeResponse::SharedDtor() {
+inline void GetAllowableFlightModesResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete flight_modes_;
 }
 
-void GetAllowableFlightModeResponse::ArenaDtor(void* object) {
-  GetAllowableFlightModeResponse* _this = reinterpret_cast< GetAllowableFlightModeResponse* >(object);
+void GetAllowableFlightModesResponse::ArenaDtor(void* object) {
+  GetAllowableFlightModesResponse* _this = reinterpret_cast< GetAllowableFlightModesResponse* >(object);
   (void)_this;
 }
-void GetAllowableFlightModeResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void GetAllowableFlightModesResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void GetAllowableFlightModeResponse::SetCachedSize(int size) const {
+void GetAllowableFlightModesResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void GetAllowableFlightModeResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+void GetAllowableFlightModesResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -5336,7 +5339,7 @@ void GetAllowableFlightModeResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* GetAllowableFlightModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* GetAllowableFlightModesResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -5372,9 +5375,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* GetAllowableFlightModeResponse::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* GetAllowableFlightModesResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -5390,12 +5393,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
   return target;
 }
 
-size_t GetAllowableFlightModeResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+size_t GetAllowableFlightModesResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -5418,21 +5421,21 @@ size_t GetAllowableFlightModeResponse::ByteSizeLong() const {
   return total_size;
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetAllowableFlightModeResponse::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetAllowableFlightModesResponse::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    GetAllowableFlightModeResponse::MergeImpl
+    GetAllowableFlightModesResponse::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetAllowableFlightModeResponse::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetAllowableFlightModesResponse::GetClassData() const { return &_class_data_; }
 
-void GetAllowableFlightModeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+void GetAllowableFlightModesResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
                       const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<GetAllowableFlightModeResponse *>(to)->MergeFrom(
-      static_cast<const GetAllowableFlightModeResponse &>(from));
+  static_cast<GetAllowableFlightModesResponse *>(to)->MergeFrom(
+      static_cast<const GetAllowableFlightModesResponse &>(from));
 }
 
 
-void GetAllowableFlightModeResponse::MergeFrom(const GetAllowableFlightModeResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+void GetAllowableFlightModesResponse::MergeFrom(const GetAllowableFlightModesResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -5443,24 +5446,24 @@ void GetAllowableFlightModeResponse::MergeFrom(const GetAllowableFlightModeRespo
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GetAllowableFlightModeResponse::CopyFrom(const GetAllowableFlightModeResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.GetAllowableFlightModeResponse)
+void GetAllowableFlightModesResponse::CopyFrom(const GetAllowableFlightModesResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action_server.GetAllowableFlightModesResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetAllowableFlightModeResponse::IsInitialized() const {
+bool GetAllowableFlightModesResponse::IsInitialized() const {
   return true;
 }
 
-void GetAllowableFlightModeResponse::InternalSwap(GetAllowableFlightModeResponse* other) {
+void GetAllowableFlightModesResponse::InternalSwap(GetAllowableFlightModesResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(flight_modes_, other->flight_modes_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GetAllowableFlightModeResponse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata GetAllowableFlightModesResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_action_5fserver_2faction_5fserver_2eproto_getter, &descriptor_table_action_5fserver_2faction_5fserver_2eproto_once,
       file_level_metadata_action_5fserver_2faction_5fserver_2eproto[23]);
@@ -6161,11 +6164,11 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetArmableRequest* Ar
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetDisarmableRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SetDisarmableRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SetDisarmableRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest >(arena);
@@ -6215,14 +6218,14 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetArmableResponse* A
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetDisarmableResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SetDisarmableResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SetDisarmableResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::SetAllowTakeoffResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::SetAllowTakeoffResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action_server::AllowableFlightModes* Arena::CreateMaybeMessage< ::mavsdk::rpc::action_server::AllowableFlightModes >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action_server::AllowableFlightModes >(arena);

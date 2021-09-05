@@ -160,6 +160,8 @@ public:
         UnsupportedMissionCmd, /**< @brief Unsupported mission command. */
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
         NoSystem, /**< @brief No system connected. */
+        Next, /**< @brief Intermediate message showing progress or instructions on the next steps.
+               */
     };
 
     /**

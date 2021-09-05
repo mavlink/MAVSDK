@@ -412,26 +412,26 @@ class RetrieveParamIntResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kParamResultFieldNumber = 1,
+    kParamServerResultFieldNumber = 1,
     kValueFieldNumber = 2,
   };
-  // .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-  bool has_param_result() const;
+  // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+  bool has_param_server_result() const;
   private:
-  bool _internal_has_param_result() const;
+  bool _internal_has_param_server_result() const;
   public:
-  void clear_param_result();
-  const ::mavsdk::rpc::param_server::ParamServerResult& param_result() const;
-  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_result();
-  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_result();
-  void set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result);
+  void clear_param_server_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_server_result();
+  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_server_result();
+  void set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
   private:
-  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_result() const;
-  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_server_result() const;
+  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_server_result();
   public:
-  void unsafe_arena_set_allocated_param_result(
-      ::mavsdk::rpc::param_server::ParamServerResult* param_result);
-  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_result();
+  void unsafe_arena_set_allocated_param_server_result(
+      ::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
+  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_server_result();
 
   // int32 value = 2;
   void clear_value();
@@ -449,7 +449,7 @@ class RetrieveParamIntResponse final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::param_server::ParamServerResult* param_result_;
+  ::mavsdk::rpc::param_server::ParamServerResult* param_server_result_;
   ::PROTOBUF_NAMESPACE_ID::int32 value_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_param_5fserver_2fparam_5fserver_2eproto;
@@ -726,25 +726,25 @@ class ProvideParamIntResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kParamResultFieldNumber = 1,
+    kParamServerResultFieldNumber = 1,
   };
-  // .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-  bool has_param_result() const;
+  // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+  bool has_param_server_result() const;
   private:
-  bool _internal_has_param_result() const;
+  bool _internal_has_param_server_result() const;
   public:
-  void clear_param_result();
-  const ::mavsdk::rpc::param_server::ParamServerResult& param_result() const;
-  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_result();
-  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_result();
-  void set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result);
+  void clear_param_server_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_server_result();
+  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_server_result();
+  void set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
   private:
-  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_result() const;
-  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_server_result() const;
+  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_server_result();
   public:
-  void unsafe_arena_set_allocated_param_result(
-      ::mavsdk::rpc::param_server::ParamServerResult* param_result);
-  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_result();
+  void unsafe_arena_set_allocated_param_server_result(
+      ::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
+  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_server_result();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.param_server.ProvideParamIntResponse)
  private:
@@ -753,7 +753,7 @@ class ProvideParamIntResponse final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::param_server::ParamServerResult* param_result_;
+  ::mavsdk::rpc::param_server::ParamServerResult* param_server_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_param_5fserver_2fparam_5fserver_2eproto;
 };
@@ -1018,26 +1018,26 @@ class RetrieveParamFloatResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kParamResultFieldNumber = 1,
+    kParamServerResultFieldNumber = 1,
     kValueFieldNumber = 2,
   };
-  // .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-  bool has_param_result() const;
+  // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+  bool has_param_server_result() const;
   private:
-  bool _internal_has_param_result() const;
+  bool _internal_has_param_server_result() const;
   public:
-  void clear_param_result();
-  const ::mavsdk::rpc::param_server::ParamServerResult& param_result() const;
-  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_result();
-  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_result();
-  void set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result);
+  void clear_param_server_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_server_result();
+  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_server_result();
+  void set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
   private:
-  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_result() const;
-  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_server_result() const;
+  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_server_result();
   public:
-  void unsafe_arena_set_allocated_param_result(
-      ::mavsdk::rpc::param_server::ParamServerResult* param_result);
-  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_result();
+  void unsafe_arena_set_allocated_param_server_result(
+      ::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
+  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_server_result();
 
   // float value = 2;
   void clear_value();
@@ -1055,7 +1055,7 @@ class RetrieveParamFloatResponse final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::param_server::ParamServerResult* param_result_;
+  ::mavsdk::rpc::param_server::ParamServerResult* param_server_result_;
   float value_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_param_5fserver_2fparam_5fserver_2eproto;
@@ -1332,25 +1332,25 @@ class ProvideParamFloatResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kParamResultFieldNumber = 1,
+    kParamServerResultFieldNumber = 1,
   };
-  // .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-  bool has_param_result() const;
+  // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+  bool has_param_server_result() const;
   private:
-  bool _internal_has_param_result() const;
+  bool _internal_has_param_server_result() const;
   public:
-  void clear_param_result();
-  const ::mavsdk::rpc::param_server::ParamServerResult& param_result() const;
-  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_result();
-  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_result();
-  void set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result);
+  void clear_param_server_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::param_server::ParamServerResult* release_param_server_result();
+  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_server_result();
+  void set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
   private:
-  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_result() const;
-  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_result();
+  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_server_result() const;
+  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_server_result();
   public:
-  void unsafe_arena_set_allocated_param_result(
-      ::mavsdk::rpc::param_server::ParamServerResult* param_result);
-  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_result();
+  void unsafe_arena_set_allocated_param_server_result(
+      ::mavsdk::rpc::param_server::ParamServerResult* param_server_result);
+  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_server_result();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.param_server.ProvideParamFloatResponse)
  private:
@@ -1359,7 +1359,7 @@ class ProvideParamFloatResponse final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::param_server::ParamServerResult* param_result_;
+  ::mavsdk::rpc::param_server::ParamServerResult* param_server_result_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_param_5fserver_2fparam_5fserver_2eproto;
 };
@@ -2367,45 +2367,45 @@ inline void RetrieveParamIntRequest::set_allocated_name(std::string* name) {
 
 // RetrieveParamIntResponse
 
-// .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-inline bool RetrieveParamIntResponse::_internal_has_param_result() const {
-  return this != internal_default_instance() && param_result_ != nullptr;
+// .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+inline bool RetrieveParamIntResponse::_internal_has_param_server_result() const {
+  return this != internal_default_instance() && param_server_result_ != nullptr;
 }
-inline bool RetrieveParamIntResponse::has_param_result() const {
-  return _internal_has_param_result();
+inline bool RetrieveParamIntResponse::has_param_server_result() const {
+  return _internal_has_param_server_result();
 }
-inline void RetrieveParamIntResponse::clear_param_result() {
-  if (GetArenaForAllocation() == nullptr && param_result_ != nullptr) {
-    delete param_result_;
+inline void RetrieveParamIntResponse::clear_param_server_result() {
+  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
+    delete param_server_result_;
   }
-  param_result_ = nullptr;
+  param_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamIntResponse::_internal_param_result() const {
-  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_result_;
+inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamIntResponse::_internal_param_server_result() const {
+  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_server_result_;
   return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::param_server::ParamServerResult&>(
       ::mavsdk::rpc::param_server::_ParamServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamIntResponse::param_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_result)
-  return _internal_param_result();
+inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamIntResponse::param_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_server_result)
+  return _internal_param_server_result();
 }
-inline void RetrieveParamIntResponse::unsafe_arena_set_allocated_param_result(
-    ::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void RetrieveParamIntResponse::unsafe_arena_set_allocated_param_server_result(
+    ::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_server_result_);
   }
-  param_result_ = param_result;
-  if (param_result) {
+  param_server_result_ = param_server_result;
+  if (param_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_server_result)
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::release_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::release_param_server_result() {
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2417,44 +2417,44 @@ inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse:
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::unsafe_arena_release_param_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::unsafe_arena_release_param_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_server_result)
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::_internal_mutable_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::_internal_mutable_param_server_result() {
   
-  if (param_result_ == nullptr) {
+  if (param_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::param_server::ParamServerResult>(GetArenaForAllocation());
-    param_result_ = p;
+    param_server_result_ = p;
   }
-  return param_result_;
+  return param_server_result_;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::mutable_param_result() {
-  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamIntResponse::mutable_param_server_result() {
+  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_server_result)
   return _msg;
 }
-inline void RetrieveParamIntResponse::set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void RetrieveParamIntResponse::set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete param_result_;
+    delete param_server_result_;
   }
-  if (param_result) {
+  if (param_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_result);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_server_result);
     if (message_arena != submessage_arena) {
-      param_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, param_result, submessage_arena);
+      param_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, param_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  param_result_ = param_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_result)
+  param_server_result_ = param_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.RetrieveParamIntResponse.param_server_result)
 }
 
 // int32 value = 2;
@@ -2551,45 +2551,45 @@ inline void ProvideParamIntRequest::set_value(::PROTOBUF_NAMESPACE_ID::int32 val
 
 // ProvideParamIntResponse
 
-// .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-inline bool ProvideParamIntResponse::_internal_has_param_result() const {
-  return this != internal_default_instance() && param_result_ != nullptr;
+// .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+inline bool ProvideParamIntResponse::_internal_has_param_server_result() const {
+  return this != internal_default_instance() && param_server_result_ != nullptr;
 }
-inline bool ProvideParamIntResponse::has_param_result() const {
-  return _internal_has_param_result();
+inline bool ProvideParamIntResponse::has_param_server_result() const {
+  return _internal_has_param_server_result();
 }
-inline void ProvideParamIntResponse::clear_param_result() {
-  if (GetArenaForAllocation() == nullptr && param_result_ != nullptr) {
-    delete param_result_;
+inline void ProvideParamIntResponse::clear_param_server_result() {
+  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
+    delete param_server_result_;
   }
-  param_result_ = nullptr;
+  param_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamIntResponse::_internal_param_result() const {
-  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_result_;
+inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamIntResponse::_internal_param_server_result() const {
+  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_server_result_;
   return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::param_server::ParamServerResult&>(
       ::mavsdk::rpc::param_server::_ParamServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamIntResponse::param_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.ProvideParamIntResponse.param_result)
-  return _internal_param_result();
+inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamIntResponse::param_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.ProvideParamIntResponse.param_server_result)
+  return _internal_param_server_result();
 }
-inline void ProvideParamIntResponse::unsafe_arena_set_allocated_param_result(
-    ::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void ProvideParamIntResponse::unsafe_arena_set_allocated_param_server_result(
+    ::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_server_result_);
   }
-  param_result_ = param_result;
-  if (param_result) {
+  param_server_result_ = param_server_result;
+  if (param_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.ProvideParamIntResponse.param_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.ProvideParamIntResponse.param_server_result)
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::release_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::release_param_server_result() {
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2601,44 +2601,44 @@ inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::unsafe_arena_release_param_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.ProvideParamIntResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::unsafe_arena_release_param_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.ProvideParamIntResponse.param_server_result)
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::_internal_mutable_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::_internal_mutable_param_server_result() {
   
-  if (param_result_ == nullptr) {
+  if (param_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::param_server::ParamServerResult>(GetArenaForAllocation());
-    param_result_ = p;
+    param_server_result_ = p;
   }
-  return param_result_;
+  return param_server_result_;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::mutable_param_result() {
-  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.ProvideParamIntResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamIntResponse::mutable_param_server_result() {
+  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.ProvideParamIntResponse.param_server_result)
   return _msg;
 }
-inline void ProvideParamIntResponse::set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void ProvideParamIntResponse::set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete param_result_;
+    delete param_server_result_;
   }
-  if (param_result) {
+  if (param_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_result);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_server_result);
     if (message_arena != submessage_arena) {
-      param_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, param_result, submessage_arena);
+      param_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, param_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  param_result_ = param_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.ProvideParamIntResponse.param_result)
+  param_server_result_ = param_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.ProvideParamIntResponse.param_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -2695,45 +2695,45 @@ inline void RetrieveParamFloatRequest::set_allocated_name(std::string* name) {
 
 // RetrieveParamFloatResponse
 
-// .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-inline bool RetrieveParamFloatResponse::_internal_has_param_result() const {
-  return this != internal_default_instance() && param_result_ != nullptr;
+// .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+inline bool RetrieveParamFloatResponse::_internal_has_param_server_result() const {
+  return this != internal_default_instance() && param_server_result_ != nullptr;
 }
-inline bool RetrieveParamFloatResponse::has_param_result() const {
-  return _internal_has_param_result();
+inline bool RetrieveParamFloatResponse::has_param_server_result() const {
+  return _internal_has_param_server_result();
 }
-inline void RetrieveParamFloatResponse::clear_param_result() {
-  if (GetArenaForAllocation() == nullptr && param_result_ != nullptr) {
-    delete param_result_;
+inline void RetrieveParamFloatResponse::clear_param_server_result() {
+  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
+    delete param_server_result_;
   }
-  param_result_ = nullptr;
+  param_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamFloatResponse::_internal_param_result() const {
-  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_result_;
+inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamFloatResponse::_internal_param_server_result() const {
+  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_server_result_;
   return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::param_server::ParamServerResult&>(
       ::mavsdk::rpc::param_server::_ParamServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamFloatResponse::param_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_result)
-  return _internal_param_result();
+inline const ::mavsdk::rpc::param_server::ParamServerResult& RetrieveParamFloatResponse::param_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_server_result)
+  return _internal_param_server_result();
 }
-inline void RetrieveParamFloatResponse::unsafe_arena_set_allocated_param_result(
-    ::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void RetrieveParamFloatResponse::unsafe_arena_set_allocated_param_server_result(
+    ::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_server_result_);
   }
-  param_result_ = param_result;
-  if (param_result) {
+  param_server_result_ = param_server_result;
+  if (param_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_server_result)
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::release_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::release_param_server_result() {
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2745,44 +2745,44 @@ inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatRespons
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::unsafe_arena_release_param_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::unsafe_arena_release_param_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_server_result)
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::_internal_mutable_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::_internal_mutable_param_server_result() {
   
-  if (param_result_ == nullptr) {
+  if (param_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::param_server::ParamServerResult>(GetArenaForAllocation());
-    param_result_ = p;
+    param_server_result_ = p;
   }
-  return param_result_;
+  return param_server_result_;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::mutable_param_result() {
-  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* RetrieveParamFloatResponse::mutable_param_server_result() {
+  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_server_result)
   return _msg;
 }
-inline void RetrieveParamFloatResponse::set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void RetrieveParamFloatResponse::set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete param_result_;
+    delete param_server_result_;
   }
-  if (param_result) {
+  if (param_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_result);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_server_result);
     if (message_arena != submessage_arena) {
-      param_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, param_result, submessage_arena);
+      param_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, param_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  param_result_ = param_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_result)
+  param_server_result_ = param_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.RetrieveParamFloatResponse.param_server_result)
 }
 
 // float value = 2;
@@ -2879,45 +2879,45 @@ inline void ProvideParamFloatRequest::set_value(float value) {
 
 // ProvideParamFloatResponse
 
-// .mavsdk.rpc.param_server.ParamServerResult param_result = 1;
-inline bool ProvideParamFloatResponse::_internal_has_param_result() const {
-  return this != internal_default_instance() && param_result_ != nullptr;
+// .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+inline bool ProvideParamFloatResponse::_internal_has_param_server_result() const {
+  return this != internal_default_instance() && param_server_result_ != nullptr;
 }
-inline bool ProvideParamFloatResponse::has_param_result() const {
-  return _internal_has_param_result();
+inline bool ProvideParamFloatResponse::has_param_server_result() const {
+  return _internal_has_param_server_result();
 }
-inline void ProvideParamFloatResponse::clear_param_result() {
-  if (GetArenaForAllocation() == nullptr && param_result_ != nullptr) {
-    delete param_result_;
+inline void ProvideParamFloatResponse::clear_param_server_result() {
+  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
+    delete param_server_result_;
   }
-  param_result_ = nullptr;
+  param_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamFloatResponse::_internal_param_result() const {
-  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_result_;
+inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamFloatResponse::_internal_param_server_result() const {
+  const ::mavsdk::rpc::param_server::ParamServerResult* p = param_server_result_;
   return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::param_server::ParamServerResult&>(
       ::mavsdk::rpc::param_server::_ParamServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamFloatResponse::param_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_result)
-  return _internal_param_result();
+inline const ::mavsdk::rpc::param_server::ParamServerResult& ProvideParamFloatResponse::param_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_server_result)
+  return _internal_param_server_result();
 }
-inline void ProvideParamFloatResponse::unsafe_arena_set_allocated_param_result(
-    ::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void ProvideParamFloatResponse::unsafe_arena_set_allocated_param_server_result(
+    ::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_server_result_);
   }
-  param_result_ = param_result;
-  if (param_result) {
+  param_server_result_ = param_server_result;
+  if (param_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_server_result)
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::release_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::release_param_server_result() {
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2929,44 +2929,44 @@ inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::unsafe_arena_release_param_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::unsafe_arena_release_param_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_server_result)
   
-  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_result_;
-  param_result_ = nullptr;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = param_server_result_;
+  param_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::_internal_mutable_param_result() {
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::_internal_mutable_param_server_result() {
   
-  if (param_result_ == nullptr) {
+  if (param_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::param_server::ParamServerResult>(GetArenaForAllocation());
-    param_result_ = p;
+    param_server_result_ = p;
   }
-  return param_result_;
+  return param_server_result_;
 }
-inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::mutable_param_result() {
-  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_result)
+inline ::mavsdk::rpc::param_server::ParamServerResult* ProvideParamFloatResponse::mutable_param_server_result() {
+  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_server_result)
   return _msg;
 }
-inline void ProvideParamFloatResponse::set_allocated_param_result(::mavsdk::rpc::param_server::ParamServerResult* param_result) {
+inline void ProvideParamFloatResponse::set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* param_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete param_result_;
+    delete param_server_result_;
   }
-  if (param_result) {
+  if (param_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_result);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::param_server::ParamServerResult>::GetOwningArena(param_server_result);
     if (message_arena != submessage_arena) {
-      param_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, param_result, submessage_arena);
+      param_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, param_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  param_result_ = param_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_result)
+  param_server_result_ = param_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.ProvideParamFloatResponse.param_server_result)
 }
 
 // -------------------------------------------------------------------

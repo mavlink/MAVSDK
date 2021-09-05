@@ -158,6 +158,8 @@ std::ostream& operator<<(std::ostream& str, MissionRawServer::Result const& resu
             return str << "Transfer Cancelled";
         case MissionRawServer::Result::NoSystem:
             return str << "No System";
+        case MissionRawServer::Result::Next:
+            return str << "Next";
         default:
             return str << "Unknown";
     }
