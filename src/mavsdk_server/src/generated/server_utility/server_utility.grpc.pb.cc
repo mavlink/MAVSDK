@@ -29,23 +29,23 @@ static const char* ServerUtilityService_method_names[] = {
 
 std::unique_ptr< ServerUtilityService::Stub> ServerUtilityService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< ServerUtilityService::Stub> stub(new ServerUtilityService::Stub(channel));
+  std::unique_ptr< ServerUtilityService::Stub> stub(new ServerUtilityService::Stub(channel, options));
   return stub;
 }
 
-ServerUtilityService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_SendStatusText_(ServerUtilityService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+ServerUtilityService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_SendStatusText_(ServerUtilityService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ServerUtilityService::Stub::SendStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::server_utility::SendStatusTextRequest& request, ::mavsdk::rpc::server_utility::SendStatusTextResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::server_utility::SendStatusTextRequest, ::mavsdk::rpc::server_utility::SendStatusTextResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SendStatusText_, context, request, response);
 }
 
-void ServerUtilityService::Stub::experimental_async::SendStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::server_utility::SendStatusTextRequest* request, ::mavsdk::rpc::server_utility::SendStatusTextResponse* response, std::function<void(::grpc::Status)> f) {
+void ServerUtilityService::Stub::async::SendStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::server_utility::SendStatusTextRequest* request, ::mavsdk::rpc::server_utility::SendStatusTextResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::server_utility::SendStatusTextRequest, ::mavsdk::rpc::server_utility::SendStatusTextResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SendStatusText_, context, request, response, std::move(f));
 }
 
-void ServerUtilityService::Stub::experimental_async::SendStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::server_utility::SendStatusTextRequest* request, ::mavsdk::rpc::server_utility::SendStatusTextResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ServerUtilityService::Stub::async::SendStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::server_utility::SendStatusTextRequest* request, ::mavsdk::rpc::server_utility::SendStatusTextResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SendStatusText_, context, request, response, reactor);
 }
 

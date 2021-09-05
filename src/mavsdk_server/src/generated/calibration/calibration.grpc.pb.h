@@ -7,7 +7,6 @@
 #include "calibration/calibration.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -97,54 +96,26 @@ class CalibrationService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::calibration::CancelResponse>> PrepareAsyncCancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::calibration::CancelResponse>>(PrepareAsyncCancelRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       // Perform gyro calibration.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeCalibrateGyro(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeCalibrateGyro(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeCalibrateGyro(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* reactor) = 0;
       // Perform accelerometer calibration.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeCalibrateAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeCalibrateAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeCalibrateAccelerometer(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* reactor) = 0;
       // Perform magnetometer calibration.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeCalibrateMagnetometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeCalibrateMagnetometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeCalibrateMagnetometer(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* reactor) = 0;
       // Perform board level horizon calibration.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeCalibrateLevelHorizon(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeCalibrateLevelHorizon(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeCalibrateLevelHorizon(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* reactor) = 0;
       // Perform gimbal accelerometer calibration.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeCalibrateGimbalAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeCalibrateGimbalAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeCalibrateGimbalAccelerometer(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* reactor) = 0;
       // Cancel ongoing calibration process.
       virtual void Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* SubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* AsyncSubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
@@ -166,7 +137,7 @@ class CalibrationService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>> SubscribeCalibrateGyro(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>>(SubscribeCalibrateGyroRaw(context, request));
     }
@@ -219,51 +190,27 @@ class CalibrationService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::calibration::CancelResponse>> PrepareAsyncCancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::calibration::CancelResponse>>(PrepareAsyncCancelRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeCalibrateGyro(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* reactor) override;
-      #else
-      void SubscribeCalibrateGyro(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeCalibrateAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* reactor) override;
-      #else
-      void SubscribeCalibrateAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeCalibrateMagnetometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* reactor) override;
-      #else
-      void SubscribeCalibrateMagnetometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeCalibrateLevelHorizon(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* reactor) override;
-      #else
-      void SubscribeCalibrateLevelHorizon(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeCalibrateGimbalAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* reactor) override;
-      #else
-      void SubscribeCalibrateGimbalAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* reactor) override;
-      #endif
+      void SubscribeCalibrateGyro(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* reactor) override;
+      void SubscribeCalibrateAccelerometer(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* reactor) override;
+      void SubscribeCalibrateMagnetometer(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* reactor) override;
+      void SubscribeCalibrateLevelHorizon(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* reactor) override;
+      void SubscribeCalibrateGimbalAccelerometer(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* reactor) override;
       void Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* SubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* AsyncSubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* PrepareAsyncSubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -429,27 +376,17 @@ class CalibrationService final {
   };
   typedef WithAsyncMethod_SubscribeCalibrateGyro<WithAsyncMethod_SubscribeCalibrateAccelerometer<WithAsyncMethod_SubscribeCalibrateMagnetometer<WithAsyncMethod_SubscribeCalibrateLevelHorizon<WithAsyncMethod_SubscribeCalibrateGimbalAccelerometer<WithAsyncMethod_Cancel<Service > > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeCalibrateGyro : public BaseClass {
+  class WithCallbackMethod_SubscribeCalibrateGyro : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeCalibrateGyro() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_SubscribeCalibrateGyro() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest, ::mavsdk::rpc::calibration::CalibrateGyroResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request) { return this->SubscribeCalibrateGyro(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request) { return this->SubscribeCalibrateGyro(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeCalibrateGyro() override {
+    ~WithCallbackMethod_SubscribeCalibrateGyro() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -457,37 +394,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* SubscribeCalibrateGyro(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* SubscribeCalibrateGyro(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeCalibrateAccelerometer : public BaseClass {
+  class WithCallbackMethod_SubscribeCalibrateAccelerometer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeCalibrateAccelerometer() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_SubscribeCalibrateAccelerometer() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest, ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request) { return this->SubscribeCalibrateAccelerometer(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request) { return this->SubscribeCalibrateAccelerometer(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeCalibrateAccelerometer() override {
+    ~WithCallbackMethod_SubscribeCalibrateAccelerometer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -495,37 +416,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* SubscribeCalibrateAccelerometer(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* SubscribeCalibrateAccelerometer(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeCalibrateMagnetometer : public BaseClass {
+  class WithCallbackMethod_SubscribeCalibrateMagnetometer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeCalibrateMagnetometer() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(2,
+    WithCallbackMethod_SubscribeCalibrateMagnetometer() {
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest, ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request) { return this->SubscribeCalibrateMagnetometer(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request) { return this->SubscribeCalibrateMagnetometer(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeCalibrateMagnetometer() override {
+    ~WithCallbackMethod_SubscribeCalibrateMagnetometer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -533,37 +438,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* SubscribeCalibrateMagnetometer(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* SubscribeCalibrateMagnetometer(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeCalibrateLevelHorizon : public BaseClass {
+  class WithCallbackMethod_SubscribeCalibrateLevelHorizon : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeCalibrateLevelHorizon() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(3,
+    WithCallbackMethod_SubscribeCalibrateLevelHorizon() {
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest, ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request) { return this->SubscribeCalibrateLevelHorizon(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* request) { return this->SubscribeCalibrateLevelHorizon(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeCalibrateLevelHorizon() override {
+    ~WithCallbackMethod_SubscribeCalibrateLevelHorizon() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -571,37 +460,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* SubscribeCalibrateLevelHorizon(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateLevelHorizonResponse>* SubscribeCalibrateLevelHorizon(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateLevelHorizonRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeCalibrateGimbalAccelerometer : public BaseClass {
+  class WithCallbackMethod_SubscribeCalibrateGimbalAccelerometer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeCalibrateGimbalAccelerometer() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(4,
+    WithCallbackMethod_SubscribeCalibrateGimbalAccelerometer() {
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest, ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request) { return this->SubscribeCalibrateGimbalAccelerometer(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request) { return this->SubscribeCalibrateGimbalAccelerometer(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeCalibrateGimbalAccelerometer() override {
+    ~WithCallbackMethod_SubscribeCalibrateGimbalAccelerometer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -609,46 +482,26 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* SubscribeCalibrateGimbalAccelerometer(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* SubscribeCalibrateGimbalAccelerometer(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_Cancel : public BaseClass {
+  class WithCallbackMethod_Cancel : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_Cancel() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(5,
+    WithCallbackMethod_Cancel() {
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response) { return this->Cancel(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response) { return this->Cancel(context, request, response); }));}
     void SetMessageAllocatorFor_Cancel(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(5);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::calibration::CancelRequest, ::mavsdk::rpc::calibration::CancelResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_Cancel() override {
+    ~WithCallbackMethod_Cancel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -656,20 +509,11 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* Cancel(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::CancelRequest* /*request*/, ::mavsdk::rpc::calibration::CancelResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* Cancel(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::CancelRequest* /*request*/, ::mavsdk::rpc::calibration::CancelResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::calibration::CancelRequest* /*request*/, ::mavsdk::rpc::calibration::CancelResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SubscribeCalibrateGyro<ExperimentalWithCallbackMethod_SubscribeCalibrateAccelerometer<ExperimentalWithCallbackMethod_SubscribeCalibrateMagnetometer<ExperimentalWithCallbackMethod_SubscribeCalibrateLevelHorizon<ExperimentalWithCallbackMethod_SubscribeCalibrateGimbalAccelerometer<ExperimentalWithCallbackMethod_Cancel<Service > > > > > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_SubscribeCalibrateGyro<ExperimentalWithCallbackMethod_SubscribeCalibrateAccelerometer<ExperimentalWithCallbackMethod_SubscribeCalibrateMagnetometer<ExperimentalWithCallbackMethod_SubscribeCalibrateLevelHorizon<ExperimentalWithCallbackMethod_SubscribeCalibrateGimbalAccelerometer<ExperimentalWithCallbackMethod_Cancel<Service > > > > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_SubscribeCalibrateGyro<WithCallbackMethod_SubscribeCalibrateAccelerometer<WithCallbackMethod_SubscribeCalibrateMagnetometer<WithCallbackMethod_SubscribeCalibrateLevelHorizon<WithCallbackMethod_SubscribeCalibrateGimbalAccelerometer<WithCallbackMethod_Cancel<Service > > > > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeCalibrateGyro : public BaseClass {
    private:
@@ -893,27 +737,17 @@ class CalibrationService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeCalibrateGyro : public BaseClass {
+  class WithRawCallbackMethod_SubscribeCalibrateGyro : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeCalibrateGyro() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_SubscribeCalibrateGyro() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateGyro(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateGyro(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeCalibrateGyro() override {
+    ~WithRawCallbackMethod_SubscribeCalibrateGyro() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -921,37 +755,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateGyro(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateGyro(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeCalibrateAccelerometer : public BaseClass {
+  class WithRawCallbackMethod_SubscribeCalibrateAccelerometer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeCalibrateAccelerometer() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_SubscribeCalibrateAccelerometer() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateAccelerometer(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateAccelerometer(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeCalibrateAccelerometer() override {
+    ~WithRawCallbackMethod_SubscribeCalibrateAccelerometer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -959,37 +777,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateAccelerometer(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateAccelerometer(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeCalibrateMagnetometer : public BaseClass {
+  class WithRawCallbackMethod_SubscribeCalibrateMagnetometer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeCalibrateMagnetometer() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(2,
+    WithRawCallbackMethod_SubscribeCalibrateMagnetometer() {
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateMagnetometer(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateMagnetometer(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeCalibrateMagnetometer() override {
+    ~WithRawCallbackMethod_SubscribeCalibrateMagnetometer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -997,37 +799,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateMagnetometer(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateMagnetometer(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeCalibrateLevelHorizon : public BaseClass {
+  class WithRawCallbackMethod_SubscribeCalibrateLevelHorizon : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeCalibrateLevelHorizon() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(3,
+    WithRawCallbackMethod_SubscribeCalibrateLevelHorizon() {
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateLevelHorizon(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateLevelHorizon(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeCalibrateLevelHorizon() override {
+    ~WithRawCallbackMethod_SubscribeCalibrateLevelHorizon() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1035,37 +821,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateLevelHorizon(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateLevelHorizon(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeCalibrateGimbalAccelerometer : public BaseClass {
+  class WithRawCallbackMethod_SubscribeCalibrateGimbalAccelerometer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeCalibrateGimbalAccelerometer() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(4,
+    WithRawCallbackMethod_SubscribeCalibrateGimbalAccelerometer() {
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateGimbalAccelerometer(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCalibrateGimbalAccelerometer(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeCalibrateGimbalAccelerometer() override {
+    ~WithRawCallbackMethod_SubscribeCalibrateGimbalAccelerometer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1073,37 +843,21 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateGimbalAccelerometer(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCalibrateGimbalAccelerometer(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_Cancel : public BaseClass {
+  class WithRawCallbackMethod_Cancel : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_Cancel() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(5,
+    WithRawCallbackMethod_Cancel() {
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Cancel(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Cancel(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_Cancel() override {
+    ~WithRawCallbackMethod_Cancel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1111,14 +865,8 @@ class CalibrationService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* Cancel(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* Cancel(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_Cancel : public BaseClass {

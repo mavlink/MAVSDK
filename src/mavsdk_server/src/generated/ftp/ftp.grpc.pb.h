@@ -7,7 +7,6 @@
 #include "ftp/ftp.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -152,111 +151,59 @@ class FtpService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp::GetOurCompidResponse>> PrepareAsyncGetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp::GetOurCompidResponse>>(PrepareAsyncGetOurCompidRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       //
       // Resets FTP server in case there are stale open sessions.
       virtual void Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Downloads a file to local directory.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeDownload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::DownloadResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeDownload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::ftp::DownloadResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::DownloadResponse>* reactor) = 0;
       //
       // Uploads local file to remote directory.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeUpload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeUploadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::UploadResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeUpload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeUploadRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::ftp::UploadResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SubscribeUploadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::UploadResponse>* reactor) = 0;
       //
       // Lists items from a remote directory.
       virtual void ListDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void ListDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void ListDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Creates a remote directory.
       virtual void CreateDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void CreateDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void CreateDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Removes a remote directory.
       virtual void RemoveDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void RemoveDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void RemoveDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Removes a remote file.
       virtual void RemoveFile(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void RemoveFile(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void RemoveFile(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Renames a remote file or remote directory.
       virtual void Rename(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void Rename(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void Rename(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Compares a local file to a remote file using a CRC32 checksum.
       virtual void AreFilesIdentical(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void AreFilesIdentical(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void AreFilesIdentical(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set root directory for MAVLink FTP server.
       virtual void SetRootDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetRootDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetRootDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Set target component ID. By default it is the autopilot.
       virtual void SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Get our own component ID.
       virtual void GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp::ResetResponse>* AsyncResetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp::ResetResponse>* PrepareAsyncResetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -287,7 +234,7 @@ class FtpService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     ::grpc::Status Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::mavsdk::rpc::ftp::ResetResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::ResetResponse>> AsyncReset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::ResetResponse>>(AsyncResetRaw(context, request, cq));
@@ -376,90 +323,42 @@ class FtpService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::GetOurCompidResponse>> PrepareAsyncGetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::GetOurCompidResponse>>(PrepareAsyncGetOurCompidRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
       void Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Reset(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeDownload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::DownloadResponse>* reactor) override;
-      #else
-      void SubscribeDownload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::ftp::DownloadResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeUpload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeUploadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::UploadResponse>* reactor) override;
-      #else
-      void SubscribeUpload(::grpc::ClientContext* context, ::mavsdk::rpc::ftp::SubscribeUploadRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::ftp::UploadResponse>* reactor) override;
-      #endif
+      void SubscribeDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::DownloadResponse>* reactor) override;
+      void SubscribeUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SubscribeUploadRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::ftp::UploadResponse>* reactor) override;
       void ListDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void ListDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void ListDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void CreateDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void CreateDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void CreateDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void RemoveDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void RemoveDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void RemoveDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void RemoveFile(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void RemoveFile(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void RemoveFile(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void Rename(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void Rename(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void Rename(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void AreFilesIdentical(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void AreFilesIdentical(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void AreFilesIdentical(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetRootDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetRootDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetRootDirectory(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetTargetCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetOurCompid(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::ResetResponse>* AsyncResetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::ftp::ResetResponse>* PrepareAsyncResetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientReader< ::mavsdk::rpc::ftp::DownloadResponse>* SubscribeDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest& request) override;
@@ -784,36 +683,22 @@ class FtpService final {
   };
   typedef WithAsyncMethod_Reset<WithAsyncMethod_SubscribeDownload<WithAsyncMethod_SubscribeUpload<WithAsyncMethod_ListDirectory<WithAsyncMethod_CreateDirectory<WithAsyncMethod_RemoveDirectory<WithAsyncMethod_RemoveFile<WithAsyncMethod_Rename<WithAsyncMethod_AreFilesIdentical<WithAsyncMethod_SetRootDirectory<WithAsyncMethod_SetTargetCompid<WithAsyncMethod_GetOurCompid<Service > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_Reset : public BaseClass {
+  class WithCallbackMethod_Reset : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_Reset() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_Reset() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::ResetRequest, ::mavsdk::rpc::ftp::ResetResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response) { return this->Reset(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::ResetRequest* request, ::mavsdk::rpc::ftp::ResetResponse* response) { return this->Reset(context, request, response); }));}
     void SetMessageAllocatorFor_Reset(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::ResetRequest, ::mavsdk::rpc::ftp::ResetResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::ResetRequest, ::mavsdk::rpc::ftp::ResetResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::ResetRequest, ::mavsdk::rpc::ftp::ResetResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_Reset() override {
+    ~WithCallbackMethod_Reset() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -821,37 +706,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* Reset(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::ResetRequest* /*request*/, ::mavsdk::rpc::ftp::ResetResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* Reset(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::ResetRequest* /*request*/, ::mavsdk::rpc::ftp::ResetResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::ResetRequest* /*request*/, ::mavsdk::rpc::ftp::ResetResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeDownload : public BaseClass {
+  class WithCallbackMethod_SubscribeDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeDownload() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_SubscribeDownload() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::ftp::SubscribeDownloadRequest, ::mavsdk::rpc::ftp::DownloadResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request) { return this->SubscribeDownload(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest* request) { return this->SubscribeDownload(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeDownload() override {
+    ~WithCallbackMethod_SubscribeDownload() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -859,37 +728,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::ftp::DownloadResponse>* SubscribeDownload(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::ftp::DownloadResponse>* SubscribeDownload(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeUpload : public BaseClass {
+  class WithCallbackMethod_SubscribeUpload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeUpload() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(2,
+    WithCallbackMethod_SubscribeUpload() {
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::ftp::SubscribeUploadRequest, ::mavsdk::rpc::ftp::UploadResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::SubscribeUploadRequest* request) { return this->SubscribeUpload(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::SubscribeUploadRequest* request) { return this->SubscribeUpload(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeUpload() override {
+    ~WithCallbackMethod_SubscribeUpload() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -897,46 +750,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::ftp::UploadResponse>* SubscribeUpload(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SubscribeUploadRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::ftp::UploadResponse>* SubscribeUpload(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SubscribeUploadRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SubscribeUploadRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_ListDirectory : public BaseClass {
+  class WithCallbackMethod_ListDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_ListDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(3,
+    WithCallbackMethod_ListDirectory() {
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::ListDirectoryRequest, ::mavsdk::rpc::ftp::ListDirectoryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response) { return this->ListDirectory(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::ListDirectoryRequest* request, ::mavsdk::rpc::ftp::ListDirectoryResponse* response) { return this->ListDirectory(context, request, response); }));}
     void SetMessageAllocatorFor_ListDirectory(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::ListDirectoryRequest, ::mavsdk::rpc::ftp::ListDirectoryResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::ListDirectoryRequest, ::mavsdk::rpc::ftp::ListDirectoryResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(3);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::ListDirectoryRequest, ::mavsdk::rpc::ftp::ListDirectoryResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_ListDirectory() override {
+    ~WithCallbackMethod_ListDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -944,46 +777,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* ListDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::ListDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::ListDirectoryResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* ListDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::ListDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::ListDirectoryResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::ListDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::ListDirectoryResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_CreateDirectory : public BaseClass {
+  class WithCallbackMethod_CreateDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_CreateDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(4,
+    WithCallbackMethod_CreateDirectory() {
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::CreateDirectoryRequest, ::mavsdk::rpc::ftp::CreateDirectoryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response) { return this->CreateDirectory(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* request, ::mavsdk::rpc::ftp::CreateDirectoryResponse* response) { return this->CreateDirectory(context, request, response); }));}
     void SetMessageAllocatorFor_CreateDirectory(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::CreateDirectoryRequest, ::mavsdk::rpc::ftp::CreateDirectoryResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::CreateDirectoryRequest, ::mavsdk::rpc::ftp::CreateDirectoryResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::CreateDirectoryRequest, ::mavsdk::rpc::ftp::CreateDirectoryResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_CreateDirectory() override {
+    ~WithCallbackMethod_CreateDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -991,46 +804,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* CreateDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::CreateDirectoryResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* CreateDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::CreateDirectoryResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::CreateDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::CreateDirectoryResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_RemoveDirectory : public BaseClass {
+  class WithCallbackMethod_RemoveDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_RemoveDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(5,
+    WithCallbackMethod_RemoveDirectory() {
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::RemoveDirectoryRequest, ::mavsdk::rpc::ftp::RemoveDirectoryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response) { return this->RemoveDirectory(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* request, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* response) { return this->RemoveDirectory(context, request, response); }));}
     void SetMessageAllocatorFor_RemoveDirectory(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::RemoveDirectoryRequest, ::mavsdk::rpc::ftp::RemoveDirectoryResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::RemoveDirectoryRequest, ::mavsdk::rpc::ftp::RemoveDirectoryResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(5);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::RemoveDirectoryRequest, ::mavsdk::rpc::ftp::RemoveDirectoryResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_RemoveDirectory() override {
+    ~WithCallbackMethod_RemoveDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1038,46 +831,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RemoveDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RemoveDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RemoveDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::RemoveDirectoryResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_RemoveFile : public BaseClass {
+  class WithCallbackMethod_RemoveFile : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_RemoveFile() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(6,
+    WithCallbackMethod_RemoveFile() {
+      ::grpc::Service::MarkMethodCallback(6,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::RemoveFileRequest, ::mavsdk::rpc::ftp::RemoveFileResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response) { return this->RemoveFile(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::RemoveFileRequest* request, ::mavsdk::rpc::ftp::RemoveFileResponse* response) { return this->RemoveFile(context, request, response); }));}
     void SetMessageAllocatorFor_RemoveFile(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::RemoveFileRequest, ::mavsdk::rpc::ftp::RemoveFileResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::RemoveFileRequest, ::mavsdk::rpc::ftp::RemoveFileResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(6);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::RemoveFileRequest, ::mavsdk::rpc::ftp::RemoveFileResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_RemoveFile() override {
+    ~WithCallbackMethod_RemoveFile() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1085,46 +858,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RemoveFile(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RemoveFileRequest* /*request*/, ::mavsdk::rpc::ftp::RemoveFileResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RemoveFile(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RemoveFileRequest* /*request*/, ::mavsdk::rpc::ftp::RemoveFileResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RemoveFileRequest* /*request*/, ::mavsdk::rpc::ftp::RemoveFileResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_Rename : public BaseClass {
+  class WithCallbackMethod_Rename : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_Rename() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(7,
+    WithCallbackMethod_Rename() {
+      ::grpc::Service::MarkMethodCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::RenameRequest, ::mavsdk::rpc::ftp::RenameResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response) { return this->Rename(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::RenameRequest* request, ::mavsdk::rpc::ftp::RenameResponse* response) { return this->Rename(context, request, response); }));}
     void SetMessageAllocatorFor_Rename(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::RenameRequest, ::mavsdk::rpc::ftp::RenameResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::RenameRequest, ::mavsdk::rpc::ftp::RenameResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(7);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::RenameRequest, ::mavsdk::rpc::ftp::RenameResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_Rename() override {
+    ~WithCallbackMethod_Rename() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1132,46 +885,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* Rename(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RenameRequest* /*request*/, ::mavsdk::rpc::ftp::RenameResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* Rename(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RenameRequest* /*request*/, ::mavsdk::rpc::ftp::RenameResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::RenameRequest* /*request*/, ::mavsdk::rpc::ftp::RenameResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_AreFilesIdentical : public BaseClass {
+  class WithCallbackMethod_AreFilesIdentical : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_AreFilesIdentical() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(8,
+    WithCallbackMethod_AreFilesIdentical() {
+      ::grpc::Service::MarkMethodCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::AreFilesIdenticalRequest, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response) { return this->AreFilesIdentical(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* request, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* response) { return this->AreFilesIdentical(context, request, response); }));}
     void SetMessageAllocatorFor_AreFilesIdentical(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::AreFilesIdenticalRequest, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::AreFilesIdenticalRequest, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::AreFilesIdenticalRequest, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_AreFilesIdentical() override {
+    ~WithCallbackMethod_AreFilesIdentical() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1179,46 +912,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* AreFilesIdentical(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* /*request*/, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* AreFilesIdentical(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* /*request*/, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* /*request*/, ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetRootDirectory : public BaseClass {
+  class WithCallbackMethod_SetRootDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetRootDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(9,
+    WithCallbackMethod_SetRootDirectory() {
+      ::grpc::Service::MarkMethodCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::SetRootDirectoryRequest, ::mavsdk::rpc::ftp::SetRootDirectoryResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response) { return this->SetRootDirectory(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* request, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* response) { return this->SetRootDirectory(context, request, response); }));}
     void SetMessageAllocatorFor_SetRootDirectory(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::SetRootDirectoryRequest, ::mavsdk::rpc::ftp::SetRootDirectoryResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::SetRootDirectoryRequest, ::mavsdk::rpc::ftp::SetRootDirectoryResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(9);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::SetRootDirectoryRequest, ::mavsdk::rpc::ftp::SetRootDirectoryResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetRootDirectory() override {
+    ~WithCallbackMethod_SetRootDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1226,46 +939,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRootDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRootDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SetRootDirectoryRequest* /*request*/, ::mavsdk::rpc::ftp::SetRootDirectoryResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetTargetCompid : public BaseClass {
+  class WithCallbackMethod_SetTargetCompid : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetTargetCompid() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(10,
+    WithCallbackMethod_SetTargetCompid() {
+      ::grpc::Service::MarkMethodCallback(10,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::SetTargetCompidRequest, ::mavsdk::rpc::ftp::SetTargetCompidResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response) { return this->SetTargetCompid(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* request, ::mavsdk::rpc::ftp::SetTargetCompidResponse* response) { return this->SetTargetCompid(context, request, response); }));}
     void SetMessageAllocatorFor_SetTargetCompid(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::SetTargetCompidRequest, ::mavsdk::rpc::ftp::SetTargetCompidResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::SetTargetCompidRequest, ::mavsdk::rpc::ftp::SetTargetCompidResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(10);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::SetTargetCompidRequest, ::mavsdk::rpc::ftp::SetTargetCompidResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetTargetCompid() override {
+    ~WithCallbackMethod_SetTargetCompid() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1273,46 +966,26 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTargetCompid(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* /*request*/, ::mavsdk::rpc::ftp::SetTargetCompidResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTargetCompid(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* /*request*/, ::mavsdk::rpc::ftp::SetTargetCompidResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::SetTargetCompidRequest* /*request*/, ::mavsdk::rpc::ftp::SetTargetCompidResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetOurCompid : public BaseClass {
+  class WithCallbackMethod_GetOurCompid : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetOurCompid() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(11,
+    WithCallbackMethod_GetOurCompid() {
+      ::grpc::Service::MarkMethodCallback(11,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::GetOurCompidRequest, ::mavsdk::rpc::ftp::GetOurCompidResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response) { return this->GetOurCompid(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::ftp::GetOurCompidRequest* request, ::mavsdk::rpc::ftp::GetOurCompidResponse* response) { return this->GetOurCompid(context, request, response); }));}
     void SetMessageAllocatorFor_GetOurCompid(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::ftp::GetOurCompidRequest, ::mavsdk::rpc::ftp::GetOurCompidResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::ftp::GetOurCompidRequest, ::mavsdk::rpc::ftp::GetOurCompidResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(11);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::ftp::GetOurCompidRequest, ::mavsdk::rpc::ftp::GetOurCompidResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetOurCompid() override {
+    ~WithCallbackMethod_GetOurCompid() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1320,20 +993,11 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetOurCompid(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::GetOurCompidRequest* /*request*/, ::mavsdk::rpc::ftp::GetOurCompidResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetOurCompid(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::GetOurCompidRequest* /*request*/, ::mavsdk::rpc::ftp::GetOurCompidResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::ftp::GetOurCompidRequest* /*request*/, ::mavsdk::rpc::ftp::GetOurCompidResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_Reset<ExperimentalWithCallbackMethod_SubscribeDownload<ExperimentalWithCallbackMethod_SubscribeUpload<ExperimentalWithCallbackMethod_ListDirectory<ExperimentalWithCallbackMethod_CreateDirectory<ExperimentalWithCallbackMethod_RemoveDirectory<ExperimentalWithCallbackMethod_RemoveFile<ExperimentalWithCallbackMethod_Rename<ExperimentalWithCallbackMethod_AreFilesIdentical<ExperimentalWithCallbackMethod_SetRootDirectory<ExperimentalWithCallbackMethod_SetTargetCompid<ExperimentalWithCallbackMethod_GetOurCompid<Service > > > > > > > > > > > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_Reset<ExperimentalWithCallbackMethod_SubscribeDownload<ExperimentalWithCallbackMethod_SubscribeUpload<ExperimentalWithCallbackMethod_ListDirectory<ExperimentalWithCallbackMethod_CreateDirectory<ExperimentalWithCallbackMethod_RemoveDirectory<ExperimentalWithCallbackMethod_RemoveFile<ExperimentalWithCallbackMethod_Rename<ExperimentalWithCallbackMethod_AreFilesIdentical<ExperimentalWithCallbackMethod_SetRootDirectory<ExperimentalWithCallbackMethod_SetTargetCompid<ExperimentalWithCallbackMethod_GetOurCompid<Service > > > > > > > > > > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_Reset<WithCallbackMethod_SubscribeDownload<WithCallbackMethod_SubscribeUpload<WithCallbackMethod_ListDirectory<WithCallbackMethod_CreateDirectory<WithCallbackMethod_RemoveDirectory<WithCallbackMethod_RemoveFile<WithCallbackMethod_Rename<WithCallbackMethod_AreFilesIdentical<WithCallbackMethod_SetRootDirectory<WithCallbackMethod_SetTargetCompid<WithCallbackMethod_GetOurCompid<Service > > > > > > > > > > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Reset : public BaseClass {
    private:
@@ -1779,27 +1443,17 @@ class FtpService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_Reset : public BaseClass {
+  class WithRawCallbackMethod_Reset : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_Reset() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_Reset() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Reset(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Reset(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_Reset() override {
+    ~WithRawCallbackMethod_Reset() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1807,37 +1461,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* Reset(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* Reset(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeDownload : public BaseClass {
+  class WithRawCallbackMethod_SubscribeDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeDownload() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_SubscribeDownload() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeDownload(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeDownload(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeDownload() override {
+    ~WithRawCallbackMethod_SubscribeDownload() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1845,37 +1483,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeDownload(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeDownload(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeUpload : public BaseClass {
+  class WithRawCallbackMethod_SubscribeUpload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeUpload() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(2,
+    WithRawCallbackMethod_SubscribeUpload() {
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeUpload(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeUpload(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeUpload() override {
+    ~WithRawCallbackMethod_SubscribeUpload() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1883,37 +1505,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeUpload(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeUpload(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_ListDirectory : public BaseClass {
+  class WithRawCallbackMethod_ListDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_ListDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(3,
+    WithRawCallbackMethod_ListDirectory() {
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ListDirectory(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ListDirectory(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_ListDirectory() override {
+    ~WithRawCallbackMethod_ListDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1921,37 +1527,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* ListDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* ListDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_CreateDirectory : public BaseClass {
+  class WithRawCallbackMethod_CreateDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_CreateDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(4,
+    WithRawCallbackMethod_CreateDirectory() {
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->CreateDirectory(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->CreateDirectory(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_CreateDirectory() override {
+    ~WithRawCallbackMethod_CreateDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1959,37 +1549,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* CreateDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* CreateDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_RemoveDirectory : public BaseClass {
+  class WithRawCallbackMethod_RemoveDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_RemoveDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(5,
+    WithRawCallbackMethod_RemoveDirectory() {
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RemoveDirectory(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RemoveDirectory(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_RemoveDirectory() override {
+    ~WithRawCallbackMethod_RemoveDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1997,37 +1571,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RemoveDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RemoveDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_RemoveFile : public BaseClass {
+  class WithRawCallbackMethod_RemoveFile : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_RemoveFile() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(6,
+    WithRawCallbackMethod_RemoveFile() {
+      ::grpc::Service::MarkMethodRawCallback(6,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RemoveFile(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RemoveFile(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_RemoveFile() override {
+    ~WithRawCallbackMethod_RemoveFile() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2035,37 +1593,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RemoveFile(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* RemoveFile(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_Rename : public BaseClass {
+  class WithRawCallbackMethod_Rename : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_Rename() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(7,
+    WithRawCallbackMethod_Rename() {
+      ::grpc::Service::MarkMethodRawCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Rename(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Rename(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_Rename() override {
+    ~WithRawCallbackMethod_Rename() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2073,37 +1615,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* Rename(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* Rename(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_AreFilesIdentical : public BaseClass {
+  class WithRawCallbackMethod_AreFilesIdentical : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_AreFilesIdentical() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(8,
+    WithRawCallbackMethod_AreFilesIdentical() {
+      ::grpc::Service::MarkMethodRawCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->AreFilesIdentical(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->AreFilesIdentical(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_AreFilesIdentical() override {
+    ~WithRawCallbackMethod_AreFilesIdentical() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2111,37 +1637,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* AreFilesIdentical(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* AreFilesIdentical(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetRootDirectory : public BaseClass {
+  class WithRawCallbackMethod_SetRootDirectory : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetRootDirectory() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(9,
+    WithRawCallbackMethod_SetRootDirectory() {
+      ::grpc::Service::MarkMethodRawCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRootDirectory(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRootDirectory(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetRootDirectory() override {
+    ~WithRawCallbackMethod_SetRootDirectory() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2149,37 +1659,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetRootDirectory(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetRootDirectory(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetTargetCompid : public BaseClass {
+  class WithRawCallbackMethod_SetTargetCompid : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetTargetCompid() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(10,
+    WithRawCallbackMethod_SetTargetCompid() {
+      ::grpc::Service::MarkMethodRawCallback(10,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTargetCompid(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTargetCompid(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetTargetCompid() override {
+    ~WithRawCallbackMethod_SetTargetCompid() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2187,37 +1681,21 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetTargetCompid(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetTargetCompid(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetOurCompid : public BaseClass {
+  class WithRawCallbackMethod_GetOurCompid : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetOurCompid() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(11,
+    WithRawCallbackMethod_GetOurCompid() {
+      ::grpc::Service::MarkMethodRawCallback(11,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetOurCompid(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetOurCompid(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetOurCompid() override {
+    ~WithRawCallbackMethod_GetOurCompid() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2225,14 +1703,8 @@ class FtpService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetOurCompid(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetOurCompid(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_Reset : public BaseClass {
