@@ -33,7 +33,7 @@ service MissionRawServerService {
 
 message SubscribeIncomingMissionRequest {}
 message IncomingMissionResponse {
-    MissionResult mission_result = 1;
+    MissionRawServerResult mission_raw_server_result = 1;
     MissionPlan mission_plan = 2; // The mission plan
 }
 
@@ -79,7 +79,7 @@ message MissionProgress {
 }
 
 // Result type.
-message MissionResult {
+message MissionRawServerResult {
     // Possible results returned for action requests.
     enum Result {
         RESULT_UNKNOWN = 0; // Unknown result
@@ -94,6 +94,7 @@ message MissionResult {
         RESULT_UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
         RESULT_TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
         RESULT_NO_SYSTEM = 13; // No system connected
+        RESULT_NEXT = 14; // Intermediate message showing progress or instructions on the next steps
     }
 
     Result result = 1; // Result enum value

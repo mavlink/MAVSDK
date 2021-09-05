@@ -44,7 +44,7 @@ message RetrieveParamIntRequest {
 }
 
 message RetrieveParamIntResponse {
-    ParamServerResult param_result = 1;
+    ParamServerResult param_server_result = 1;
     int32 value = 2; // Value of the requested parameter
 }
 
@@ -53,14 +53,14 @@ message ProvideParamIntRequest {
     int32 value = 2; // Value the parameter should be set to
 }
 message ProvideParamIntResponse {
-    ParamServerResult param_result = 1;
+    ParamServerResult param_server_result = 1;
 }
 
 message RetrieveParamFloatRequest {
     string name = 1; // Name of the parameter
 }
 message RetrieveParamFloatResponse {
-    ParamServerResult param_result = 1;
+    ParamServerResult param_server_result = 1;
     float value = 2; // Value of the requested parameter
 }
 
@@ -69,7 +69,7 @@ message ProvideParamFloatRequest {
     float value = 2; // Value the parameter should be set to
 }
 message ProvideParamFloatResponse {
-    ParamServerResult param_result = 1;
+    ParamServerResult param_server_result = 1;
 }
 
 message RetrieveAllParamsRequest {}
