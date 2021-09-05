@@ -76,9 +76,9 @@ extern MissionPlanDefaultTypeInternal _MissionPlan_default_instance_;
 class MissionProgress;
 struct MissionProgressDefaultTypeInternal;
 extern MissionProgressDefaultTypeInternal _MissionProgress_default_instance_;
-class MissionResult;
-struct MissionResultDefaultTypeInternal;
-extern MissionResultDefaultTypeInternal _MissionResult_default_instance_;
+class MissionRawServerResult;
+struct MissionRawServerResultDefaultTypeInternal;
+extern MissionRawServerResultDefaultTypeInternal _MissionRawServerResult_default_instance_;
 class SetCurrentItemCompleteRequest;
 struct SetCurrentItemCompleteRequestDefaultTypeInternal;
 extern SetCurrentItemCompleteRequestDefaultTypeInternal _SetCurrentItemCompleteRequest_default_instance_;
@@ -104,7 +104,7 @@ template<> ::mavsdk::rpc::mission_raw_server::IncomingMissionResponse* Arena::Cr
 template<> ::mavsdk::rpc::mission_raw_server::MissionItem* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::MissionItem>(Arena*);
 template<> ::mavsdk::rpc::mission_raw_server::MissionPlan* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::MissionPlan>(Arena*);
 template<> ::mavsdk::rpc::mission_raw_server::MissionProgress* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::MissionProgress>(Arena*);
-template<> ::mavsdk::rpc::mission_raw_server::MissionResult* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::MissionResult>(Arena*);
+template<> ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::MissionRawServerResult>(Arena*);
 template<> ::mavsdk::rpc::mission_raw_server::SetCurrentItemCompleteRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::SetCurrentItemCompleteRequest>(Arena*);
 template<> ::mavsdk::rpc::mission_raw_server::SetCurrentItemCompleteResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::SetCurrentItemCompleteResponse>(Arena*);
 template<> ::mavsdk::rpc::mission_raw_server::SubscribeClearAllRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::SubscribeClearAllRequest>(Arena*);
@@ -115,40 +115,41 @@ namespace mavsdk {
 namespace rpc {
 namespace mission_raw_server {
 
-enum MissionResult_Result : int {
-  MissionResult_Result_RESULT_UNKNOWN = 0,
-  MissionResult_Result_RESULT_SUCCESS = 1,
-  MissionResult_Result_RESULT_ERROR = 2,
-  MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS = 3,
-  MissionResult_Result_RESULT_BUSY = 4,
-  MissionResult_Result_RESULT_TIMEOUT = 5,
-  MissionResult_Result_RESULT_INVALID_ARGUMENT = 6,
-  MissionResult_Result_RESULT_UNSUPPORTED = 7,
-  MissionResult_Result_RESULT_NO_MISSION_AVAILABLE = 8,
-  MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD = 11,
-  MissionResult_Result_RESULT_TRANSFER_CANCELLED = 12,
-  MissionResult_Result_RESULT_NO_SYSTEM = 13,
-  MissionResult_Result_MissionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  MissionResult_Result_MissionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+enum MissionRawServerResult_Result : int {
+  MissionRawServerResult_Result_RESULT_UNKNOWN = 0,
+  MissionRawServerResult_Result_RESULT_SUCCESS = 1,
+  MissionRawServerResult_Result_RESULT_ERROR = 2,
+  MissionRawServerResult_Result_RESULT_TOO_MANY_MISSION_ITEMS = 3,
+  MissionRawServerResult_Result_RESULT_BUSY = 4,
+  MissionRawServerResult_Result_RESULT_TIMEOUT = 5,
+  MissionRawServerResult_Result_RESULT_INVALID_ARGUMENT = 6,
+  MissionRawServerResult_Result_RESULT_UNSUPPORTED = 7,
+  MissionRawServerResult_Result_RESULT_NO_MISSION_AVAILABLE = 8,
+  MissionRawServerResult_Result_RESULT_UNSUPPORTED_MISSION_CMD = 11,
+  MissionRawServerResult_Result_RESULT_TRANSFER_CANCELLED = 12,
+  MissionRawServerResult_Result_RESULT_NO_SYSTEM = 13,
+  MissionRawServerResult_Result_RESULT_NEXT = 14,
+  MissionRawServerResult_Result_MissionRawServerResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  MissionRawServerResult_Result_MissionRawServerResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool MissionResult_Result_IsValid(int value);
-constexpr MissionResult_Result MissionResult_Result_Result_MIN = MissionResult_Result_RESULT_UNKNOWN;
-constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_NO_SYSTEM;
-constexpr int MissionResult_Result_Result_ARRAYSIZE = MissionResult_Result_Result_MAX + 1;
+bool MissionRawServerResult_Result_IsValid(int value);
+constexpr MissionRawServerResult_Result MissionRawServerResult_Result_Result_MIN = MissionRawServerResult_Result_RESULT_UNKNOWN;
+constexpr MissionRawServerResult_Result MissionRawServerResult_Result_Result_MAX = MissionRawServerResult_Result_RESULT_NEXT;
+constexpr int MissionRawServerResult_Result_Result_ARRAYSIZE = MissionRawServerResult_Result_Result_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionResult_Result_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionRawServerResult_Result_descriptor();
 template<typename T>
-inline const std::string& MissionResult_Result_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, MissionResult_Result>::value ||
+inline const std::string& MissionRawServerResult_Result_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, MissionRawServerResult_Result>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function MissionResult_Result_Name.");
+    "Incorrect type passed to function MissionRawServerResult_Result_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    MissionResult_Result_descriptor(), enum_t_value);
+    MissionRawServerResult_Result_descriptor(), enum_t_value);
 }
-inline bool MissionResult_Result_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, MissionResult_Result* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MissionResult_Result>(
-    MissionResult_Result_descriptor(), name, value);
+inline bool MissionRawServerResult_Result_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, MissionRawServerResult_Result* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MissionRawServerResult_Result>(
+    MissionRawServerResult_Result_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -393,26 +394,26 @@ class IncomingMissionResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMissionResultFieldNumber = 1,
+    kMissionRawServerResultFieldNumber = 1,
     kMissionPlanFieldNumber = 2,
   };
-  // .mavsdk.rpc.mission_raw_server.MissionResult mission_result = 1;
-  bool has_mission_result() const;
+  // .mavsdk.rpc.mission_raw_server.MissionRawServerResult mission_raw_server_result = 1;
+  bool has_mission_raw_server_result() const;
   private:
-  bool _internal_has_mission_result() const;
+  bool _internal_has_mission_raw_server_result() const;
   public:
-  void clear_mission_result();
-  const ::mavsdk::rpc::mission_raw_server::MissionResult& mission_result() const;
-  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::mission_raw_server::MissionResult* release_mission_result();
-  ::mavsdk::rpc::mission_raw_server::MissionResult* mutable_mission_result();
-  void set_allocated_mission_result(::mavsdk::rpc::mission_raw_server::MissionResult* mission_result);
+  void clear_mission_raw_server_result();
+  const ::mavsdk::rpc::mission_raw_server::MissionRawServerResult& mission_raw_server_result() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* release_mission_raw_server_result();
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* mutable_mission_raw_server_result();
+  void set_allocated_mission_raw_server_result(::mavsdk::rpc::mission_raw_server::MissionRawServerResult* mission_raw_server_result);
   private:
-  const ::mavsdk::rpc::mission_raw_server::MissionResult& _internal_mission_result() const;
-  ::mavsdk::rpc::mission_raw_server::MissionResult* _internal_mutable_mission_result();
+  const ::mavsdk::rpc::mission_raw_server::MissionRawServerResult& _internal_mission_raw_server_result() const;
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* _internal_mutable_mission_raw_server_result();
   public:
-  void unsafe_arena_set_allocated_mission_result(
-      ::mavsdk::rpc::mission_raw_server::MissionResult* mission_result);
-  ::mavsdk::rpc::mission_raw_server::MissionResult* unsafe_arena_release_mission_result();
+  void unsafe_arena_set_allocated_mission_raw_server_result(
+      ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* mission_raw_server_result);
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* unsafe_arena_release_mission_raw_server_result();
 
   // .mavsdk.rpc.mission_raw_server.MissionPlan mission_plan = 2;
   bool has_mission_plan() const;
@@ -439,7 +440,7 @@ class IncomingMissionResponse final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::mission_raw_server::MissionResult* mission_result_;
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* mission_raw_server_result_;
   ::mavsdk::rpc::mission_raw_server::MissionPlan* mission_plan_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto;
@@ -1806,24 +1807,24 @@ class MissionProgress final :
 };
 // -------------------------------------------------------------------
 
-class MissionResult final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw_server.MissionResult) */ {
+class MissionRawServerResult final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw_server.MissionRawServerResult) */ {
  public:
-  inline MissionResult() : MissionResult(nullptr) {}
-  ~MissionResult() override;
-  explicit constexpr MissionResult(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline MissionRawServerResult() : MissionRawServerResult(nullptr) {}
+  ~MissionRawServerResult() override;
+  explicit constexpr MissionRawServerResult(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  MissionResult(const MissionResult& from);
-  MissionResult(MissionResult&& from) noexcept
-    : MissionResult() {
+  MissionRawServerResult(const MissionRawServerResult& from);
+  MissionRawServerResult(MissionRawServerResult&& from) noexcept
+    : MissionRawServerResult() {
     *this = ::std::move(from);
   }
 
-  inline MissionResult& operator=(const MissionResult& from) {
+  inline MissionRawServerResult& operator=(const MissionRawServerResult& from) {
     CopyFrom(from);
     return *this;
   }
-  inline MissionResult& operator=(MissionResult&& from) noexcept {
+  inline MissionRawServerResult& operator=(MissionRawServerResult&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()) {
       InternalSwap(&from);
@@ -1842,20 +1843,20 @@ class MissionResult final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const MissionResult& default_instance() {
+  static const MissionRawServerResult& default_instance() {
     return *internal_default_instance();
   }
-  static inline const MissionResult* internal_default_instance() {
-    return reinterpret_cast<const MissionResult*>(
-               &_MissionResult_default_instance_);
+  static inline const MissionRawServerResult* internal_default_instance() {
+    return reinterpret_cast<const MissionRawServerResult*>(
+               &_MissionRawServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     11;
 
-  friend void swap(MissionResult& a, MissionResult& b) {
+  friend void swap(MissionRawServerResult& a, MissionRawServerResult& b) {
     a.Swap(&b);
   }
-  inline void Swap(MissionResult* other) {
+  inline void Swap(MissionRawServerResult* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -1863,7 +1864,7 @@ class MissionResult final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(MissionResult* other) {
+  void UnsafeArenaSwap(MissionRawServerResult* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1871,17 +1872,17 @@ class MissionResult final :
 
   // implements Message ----------------------------------------------
 
-  inline MissionResult* New() const final {
-    return new MissionResult();
+  inline MissionRawServerResult* New() const final {
+    return new MissionRawServerResult();
   }
 
-  MissionResult* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<MissionResult>(arena);
+  MissionRawServerResult* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<MissionRawServerResult>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const MissionResult& from);
+  void CopyFrom(const MissionRawServerResult& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const MissionResult& from);
+  void MergeFrom(const MissionRawServerResult& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
   public:
@@ -1898,13 +1899,13 @@ class MissionResult final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(MissionResult* other);
+  void InternalSwap(MissionRawServerResult* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.mission_raw_server.MissionResult";
+    return "mavsdk.rpc.mission_raw_server.MissionRawServerResult";
   }
   protected:
-  explicit MissionResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit MissionRawServerResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -1918,54 +1919,56 @@ class MissionResult final :
 
   // nested types ----------------------------------------------------
 
-  typedef MissionResult_Result Result;
+  typedef MissionRawServerResult_Result Result;
   static constexpr Result RESULT_UNKNOWN =
-    MissionResult_Result_RESULT_UNKNOWN;
+    MissionRawServerResult_Result_RESULT_UNKNOWN;
   static constexpr Result RESULT_SUCCESS =
-    MissionResult_Result_RESULT_SUCCESS;
+    MissionRawServerResult_Result_RESULT_SUCCESS;
   static constexpr Result RESULT_ERROR =
-    MissionResult_Result_RESULT_ERROR;
+    MissionRawServerResult_Result_RESULT_ERROR;
   static constexpr Result RESULT_TOO_MANY_MISSION_ITEMS =
-    MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS;
+    MissionRawServerResult_Result_RESULT_TOO_MANY_MISSION_ITEMS;
   static constexpr Result RESULT_BUSY =
-    MissionResult_Result_RESULT_BUSY;
+    MissionRawServerResult_Result_RESULT_BUSY;
   static constexpr Result RESULT_TIMEOUT =
-    MissionResult_Result_RESULT_TIMEOUT;
+    MissionRawServerResult_Result_RESULT_TIMEOUT;
   static constexpr Result RESULT_INVALID_ARGUMENT =
-    MissionResult_Result_RESULT_INVALID_ARGUMENT;
+    MissionRawServerResult_Result_RESULT_INVALID_ARGUMENT;
   static constexpr Result RESULT_UNSUPPORTED =
-    MissionResult_Result_RESULT_UNSUPPORTED;
+    MissionRawServerResult_Result_RESULT_UNSUPPORTED;
   static constexpr Result RESULT_NO_MISSION_AVAILABLE =
-    MissionResult_Result_RESULT_NO_MISSION_AVAILABLE;
+    MissionRawServerResult_Result_RESULT_NO_MISSION_AVAILABLE;
   static constexpr Result RESULT_UNSUPPORTED_MISSION_CMD =
-    MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
+    MissionRawServerResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
   static constexpr Result RESULT_TRANSFER_CANCELLED =
-    MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+    MissionRawServerResult_Result_RESULT_TRANSFER_CANCELLED;
   static constexpr Result RESULT_NO_SYSTEM =
-    MissionResult_Result_RESULT_NO_SYSTEM;
+    MissionRawServerResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_NEXT =
+    MissionRawServerResult_Result_RESULT_NEXT;
   static inline bool Result_IsValid(int value) {
-    return MissionResult_Result_IsValid(value);
+    return MissionRawServerResult_Result_IsValid(value);
   }
   static constexpr Result Result_MIN =
-    MissionResult_Result_Result_MIN;
+    MissionRawServerResult_Result_Result_MIN;
   static constexpr Result Result_MAX =
-    MissionResult_Result_Result_MAX;
+    MissionRawServerResult_Result_Result_MAX;
   static constexpr int Result_ARRAYSIZE =
-    MissionResult_Result_Result_ARRAYSIZE;
+    MissionRawServerResult_Result_Result_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
   Result_descriptor() {
-    return MissionResult_Result_descriptor();
+    return MissionRawServerResult_Result_descriptor();
   }
   template<typename T>
   static inline const std::string& Result_Name(T enum_t_value) {
     static_assert(::std::is_same<T, Result>::value ||
       ::std::is_integral<T>::value,
       "Incorrect type passed to function Result_Name.");
-    return MissionResult_Result_Name(enum_t_value);
+    return MissionRawServerResult_Result_Name(enum_t_value);
   }
   static inline bool Result_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
       Result* value) {
-    return MissionResult_Result_Parse(name, value);
+    return MissionRawServerResult_Result_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -1988,16 +1991,16 @@ class MissionResult final :
   std::string* _internal_mutable_result_str();
   public:
 
-  // .mavsdk.rpc.mission_raw_server.MissionResult.Result result = 1;
+  // .mavsdk.rpc.mission_raw_server.MissionRawServerResult.Result result = 1;
   void clear_result();
-  ::mavsdk::rpc::mission_raw_server::MissionResult_Result result() const;
-  void set_result(::mavsdk::rpc::mission_raw_server::MissionResult_Result value);
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result result() const;
+  void set_result(::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result value);
   private:
-  ::mavsdk::rpc::mission_raw_server::MissionResult_Result _internal_result() const;
-  void _internal_set_result(::mavsdk::rpc::mission_raw_server::MissionResult_Result value);
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result _internal_result() const;
+  void _internal_set_result(::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result value);
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw_server.MissionResult)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw_server.MissionRawServerResult)
  private:
   class _Internal;
 
@@ -2024,45 +2027,45 @@ class MissionResult final :
 
 // IncomingMissionResponse
 
-// .mavsdk.rpc.mission_raw_server.MissionResult mission_result = 1;
-inline bool IncomingMissionResponse::_internal_has_mission_result() const {
-  return this != internal_default_instance() && mission_result_ != nullptr;
+// .mavsdk.rpc.mission_raw_server.MissionRawServerResult mission_raw_server_result = 1;
+inline bool IncomingMissionResponse::_internal_has_mission_raw_server_result() const {
+  return this != internal_default_instance() && mission_raw_server_result_ != nullptr;
 }
-inline bool IncomingMissionResponse::has_mission_result() const {
-  return _internal_has_mission_result();
+inline bool IncomingMissionResponse::has_mission_raw_server_result() const {
+  return _internal_has_mission_raw_server_result();
 }
-inline void IncomingMissionResponse::clear_mission_result() {
-  if (GetArenaForAllocation() == nullptr && mission_result_ != nullptr) {
-    delete mission_result_;
+inline void IncomingMissionResponse::clear_mission_raw_server_result() {
+  if (GetArenaForAllocation() == nullptr && mission_raw_server_result_ != nullptr) {
+    delete mission_raw_server_result_;
   }
-  mission_result_ = nullptr;
+  mission_raw_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::mission_raw_server::MissionResult& IncomingMissionResponse::_internal_mission_result() const {
-  const ::mavsdk::rpc::mission_raw_server::MissionResult* p = mission_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw_server::MissionResult&>(
-      ::mavsdk::rpc::mission_raw_server::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission_raw_server::MissionRawServerResult& IncomingMissionResponse::_internal_mission_raw_server_result() const {
+  const ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* p = mission_raw_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw_server::MissionRawServerResult&>(
+      ::mavsdk::rpc::mission_raw_server::_MissionRawServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission_raw_server::MissionResult& IncomingMissionResponse::mission_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_result)
-  return _internal_mission_result();
+inline const ::mavsdk::rpc::mission_raw_server::MissionRawServerResult& IncomingMissionResponse::mission_raw_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_raw_server_result)
+  return _internal_mission_raw_server_result();
 }
-inline void IncomingMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission_raw_server::MissionResult* mission_result) {
+inline void IncomingMissionResponse::unsafe_arena_set_allocated_mission_raw_server_result(
+    ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* mission_raw_server_result) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(mission_result_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(mission_raw_server_result_);
   }
-  mission_result_ = mission_result;
-  if (mission_result) {
+  mission_raw_server_result_ = mission_raw_server_result;
+  if (mission_raw_server_result) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_raw_server_result)
 }
-inline ::mavsdk::rpc::mission_raw_server::MissionResult* IncomingMissionResponse::release_mission_result() {
+inline ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* IncomingMissionResponse::release_mission_raw_server_result() {
   
-  ::mavsdk::rpc::mission_raw_server::MissionResult* temp = mission_result_;
-  mission_result_ = nullptr;
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* temp = mission_raw_server_result_;
+  mission_raw_server_result_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2074,44 +2077,44 @@ inline ::mavsdk::rpc::mission_raw_server::MissionResult* IncomingMissionResponse
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::mavsdk::rpc::mission_raw_server::MissionResult* IncomingMissionResponse::unsafe_arena_release_mission_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_result)
+inline ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* IncomingMissionResponse::unsafe_arena_release_mission_raw_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_raw_server_result)
   
-  ::mavsdk::rpc::mission_raw_server::MissionResult* temp = mission_result_;
-  mission_result_ = nullptr;
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* temp = mission_raw_server_result_;
+  mission_raw_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::mission_raw_server::MissionResult* IncomingMissionResponse::_internal_mutable_mission_result() {
+inline ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* IncomingMissionResponse::_internal_mutable_mission_raw_server_result() {
   
-  if (mission_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::MissionResult>(GetArenaForAllocation());
-    mission_result_ = p;
+  if (mission_raw_server_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission_raw_server::MissionRawServerResult>(GetArenaForAllocation());
+    mission_raw_server_result_ = p;
   }
-  return mission_result_;
+  return mission_raw_server_result_;
 }
-inline ::mavsdk::rpc::mission_raw_server::MissionResult* IncomingMissionResponse::mutable_mission_result() {
-  ::mavsdk::rpc::mission_raw_server::MissionResult* _msg = _internal_mutable_mission_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_result)
+inline ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* IncomingMissionResponse::mutable_mission_raw_server_result() {
+  ::mavsdk::rpc::mission_raw_server::MissionRawServerResult* _msg = _internal_mutable_mission_raw_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_raw_server_result)
   return _msg;
 }
-inline void IncomingMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission_raw_server::MissionResult* mission_result) {
+inline void IncomingMissionResponse::set_allocated_mission_raw_server_result(::mavsdk::rpc::mission_raw_server::MissionRawServerResult* mission_raw_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete mission_result_;
+    delete mission_raw_server_result_;
   }
-  if (mission_result) {
+  if (mission_raw_server_result) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::mission_raw_server::MissionResult>::GetOwningArena(mission_result);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::mission_raw_server::MissionRawServerResult>::GetOwningArena(mission_raw_server_result);
     if (message_arena != submessage_arena) {
-      mission_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, mission_result, submessage_arena);
+      mission_raw_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_raw_server_result, submessage_arena);
     }
     
   } else {
     
   }
-  mission_result_ = mission_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_result)
+  mission_raw_server_result_ = mission_raw_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw_server.IncomingMissionResponse.mission_raw_server_result)
 }
 
 // .mavsdk.rpc.mission_raw_server.MissionPlan mission_plan = 2;
@@ -2692,64 +2695,64 @@ inline void MissionProgress::set_total(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // -------------------------------------------------------------------
 
-// MissionResult
+// MissionRawServerResult
 
-// .mavsdk.rpc.mission_raw_server.MissionResult.Result result = 1;
-inline void MissionResult::clear_result() {
+// .mavsdk.rpc.mission_raw_server.MissionRawServerResult.Result result = 1;
+inline void MissionRawServerResult::clear_result() {
   result_ = 0;
 }
-inline ::mavsdk::rpc::mission_raw_server::MissionResult_Result MissionResult::_internal_result() const {
-  return static_cast< ::mavsdk::rpc::mission_raw_server::MissionResult_Result >(result_);
+inline ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result MissionRawServerResult::_internal_result() const {
+  return static_cast< ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result >(result_);
 }
-inline ::mavsdk::rpc::mission_raw_server::MissionResult_Result MissionResult::result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw_server.MissionResult.result)
+inline ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result MissionRawServerResult::result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw_server.MissionRawServerResult.result)
   return _internal_result();
 }
-inline void MissionResult::_internal_set_result(::mavsdk::rpc::mission_raw_server::MissionResult_Result value) {
+inline void MissionRawServerResult::_internal_set_result(::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result value) {
   
   result_ = value;
 }
-inline void MissionResult::set_result(::mavsdk::rpc::mission_raw_server::MissionResult_Result value) {
+inline void MissionRawServerResult::set_result(::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result value) {
   _internal_set_result(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw_server.MissionResult.result)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw_server.MissionRawServerResult.result)
 }
 
 // string result_str = 2;
-inline void MissionResult::clear_result_str() {
+inline void MissionRawServerResult::clear_result_str() {
   result_str_.ClearToEmpty();
 }
-inline const std::string& MissionResult::result_str() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw_server.MissionResult.result_str)
+inline const std::string& MissionRawServerResult::result_str() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw_server.MissionRawServerResult.result_str)
   return _internal_result_str();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void MissionResult::set_result_str(ArgT0&& arg0, ArgT... args) {
+void MissionRawServerResult::set_result_str(ArgT0&& arg0, ArgT... args) {
  
  result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw_server.MissionResult.result_str)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw_server.MissionRawServerResult.result_str)
 }
-inline std::string* MissionResult::mutable_result_str() {
+inline std::string* MissionRawServerResult::mutable_result_str() {
   std::string* _s = _internal_mutable_result_str();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw_server.MissionResult.result_str)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw_server.MissionRawServerResult.result_str)
   return _s;
 }
-inline const std::string& MissionResult::_internal_result_str() const {
+inline const std::string& MissionRawServerResult::_internal_result_str() const {
   return result_str_.Get();
 }
-inline void MissionResult::_internal_set_result_str(const std::string& value) {
+inline void MissionRawServerResult::_internal_set_result_str(const std::string& value) {
   
   result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* MissionResult::_internal_mutable_result_str() {
+inline std::string* MissionRawServerResult::_internal_mutable_result_str() {
   
   return result_str_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* MissionResult::release_result_str() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw_server.MissionResult.result_str)
+inline std::string* MissionRawServerResult::release_result_str() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw_server.MissionRawServerResult.result_str)
   return result_str_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void MissionResult::set_allocated_result_str(std::string* result_str) {
+inline void MissionRawServerResult::set_allocated_result_str(std::string* result_str) {
   if (result_str != nullptr) {
     
   } else {
@@ -2757,7 +2760,7 @@ inline void MissionResult::set_allocated_result_str(std::string* result_str) {
   }
   result_str_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), result_str,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw_server.MissionResult.result_str)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw_server.MissionRawServerResult.result_str)
 }
 
 #ifdef __GNUC__
@@ -2794,10 +2797,10 @@ inline void MissionResult::set_allocated_result_str(std::string* result_str) {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::mavsdk::rpc::mission_raw_server::MissionResult_Result> : ::std::true_type {};
+template <> struct is_proto_enum< ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::mission_raw_server::MissionResult_Result>() {
-  return ::mavsdk::rpc::mission_raw_server::MissionResult_Result_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result>() {
+  return ::mavsdk::rpc::mission_raw_server::MissionRawServerResult_Result_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
