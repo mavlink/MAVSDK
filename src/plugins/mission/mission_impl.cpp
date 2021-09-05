@@ -569,6 +569,10 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 new_mission_item.gimbal_pitch_deg = int_item.param1;
                 new_mission_item.gimbal_yaw_deg = int_item.param2;
 
+            } else if (int_item.command == MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE) {
+                // We need to ignore it in order to not throw an "Unsupported" error
+                continue;
+
             } else if (int_item.command == MAV_CMD_DO_MOUNT_CONFIGURE) {
                 if (int(int_item.param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
                     LogErr() << "Gimbal mount configure mode unsupported";
