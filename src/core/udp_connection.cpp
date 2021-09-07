@@ -188,8 +188,12 @@ void UdpConnection::add_remote_with_remote_sysid(
         });
 
     if (existing_remote == _remotes.end()) {
-        LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number
-                  << " (with sysid: " << (int)remote_sysid << ")";
+        // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
+        // by MAVSDK. As such, it should not be advertised as a newly discovered system.
+        if (static_cast<int>(remote_sysid) != 0) {
+            LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number
+                      << " (with sysid: " << static_cast<int>(remote_sysid) << ")";
+        }
         _remotes.push_back(new_remote);
     }
 }
