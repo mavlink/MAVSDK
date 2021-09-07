@@ -509,7 +509,9 @@ void SystemImpl::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected) {
-            LogDebug() << "Discovered " << _components.size() << " component(s)";
+            if (_components.size() > 0) {
+                LogDebug() << "Discovered " << _components.size() << " component(s)";
+            }
 
             _connected = true;
             _parent.notify_on_discover();
