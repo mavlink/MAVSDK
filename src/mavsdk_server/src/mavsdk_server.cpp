@@ -16,6 +16,7 @@ public:
     void connect(const std::string& connection_url)
     {
         _connection_initiator.start(_mavsdk, connection_url);
+        _connection_initiator.wait();
     }
 
     int startGrpcServer(const int port)
