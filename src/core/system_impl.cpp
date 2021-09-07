@@ -509,10 +509,17 @@ void SystemImpl::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected) {
-            LogDebug() << "Discovered " << _components.size() << " component(s)";
+            if (_components.size() > 0) {
+                LogDebug() << "Discovered " << _components.size() << " component(s)";
+            }
 
             _connected = true;
-            _parent.notify_on_discover();
+
+            // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
+            // by MAVSDK. As such, it should not be advertised as a newly discovered system.
+            if (static_cast<int>(get_system_id()) != 0) {
+                _parent.notify_on_discover();
+            }
 
             // Send a heartbeat back immediately.
             _parent.start_sending_heartbeats();

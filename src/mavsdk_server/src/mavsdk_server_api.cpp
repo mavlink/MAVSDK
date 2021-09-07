@@ -6,13 +6,13 @@ MavsdkServer* mavsdk_server_run(const char* system_address, const int mavsdk_ser
 {
     auto mavsdk_server = new MavsdkServer();
 
+    mavsdk_server->connect(std::string(system_address));
+
     auto grpc_port = mavsdk_server->startGrpcServer(mavsdk_server_port);
     if (grpc_port == 0) {
         // Server failed to start
         return nullptr;
     }
-
-    mavsdk_server->connect(std::string(system_address));
 
     return mavsdk_server;
 }
