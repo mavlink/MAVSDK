@@ -39,33 +39,33 @@ static const char* MissionRawService_method_names[] = {
 
 std::unique_ptr< MissionRawService::Stub> MissionRawService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< MissionRawService::Stub> stub(new MissionRawService::Stub(channel));
+  std::unique_ptr< MissionRawService::Stub> stub(new MissionRawService::Stub(channel, options));
   return stub;
 }
 
-MissionRawService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_UploadMission_(MissionRawService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_CancelMissionUpload_(MissionRawService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DownloadMission_(MissionRawService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_CancelMissionDownload_(MissionRawService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_StartMission_(MissionRawService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PauseMission_(MissionRawService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ClearMission_(MissionRawService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetCurrentMissionItem_(MissionRawService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeMissionProgress_(MissionRawService_method_names[8], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeMissionChanged_(MissionRawService_method_names[9], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_ImportQgroundcontrolMission_(MissionRawService_method_names[10], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+MissionRawService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_UploadMission_(MissionRawService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CancelMissionUpload_(MissionRawService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DownloadMission_(MissionRawService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CancelMissionDownload_(MissionRawService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_StartMission_(MissionRawService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PauseMission_(MissionRawService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ClearMission_(MissionRawService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetCurrentMissionItem_(MissionRawService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeMissionProgress_(MissionRawService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeMissionChanged_(MissionRawService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_ImportQgroundcontrolMission_(MissionRawService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MissionRawService::Stub::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest& request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::UploadMissionRequest, ::mavsdk::rpc::mission_raw::UploadMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_UploadMission_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest* request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest* request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::UploadMissionRequest, ::mavsdk::rpc::mission_raw::UploadMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadMission_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest* request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest* request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadMission_, context, request, response, reactor);
 }
 
@@ -84,11 +84,11 @@ void MissionRawService::Stub::experimental_async::UploadMission(::grpc::ClientCo
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CancelMissionUpload_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CancelMissionUpload_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CancelMissionUpload_, context, request, response, reactor);
 }
 
@@ -107,11 +107,11 @@ void MissionRawService::Stub::experimental_async::CancelMissionUpload(::grpc::Cl
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::DownloadMissionRequest, ::mavsdk::rpc::mission_raw::DownloadMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DownloadMission_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::DownloadMissionRequest, ::mavsdk::rpc::mission_raw::DownloadMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DownloadMission_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DownloadMission_, context, request, response, reactor);
 }
 
@@ -130,11 +130,11 @@ void MissionRawService::Stub::experimental_async::DownloadMission(::grpc::Client
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CancelMissionDownload_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CancelMissionDownload_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CancelMissionDownload_, context, request, response, reactor);
 }
 
@@ -153,11 +153,11 @@ void MissionRawService::Stub::experimental_async::CancelMissionDownload(::grpc::
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::StartMissionRequest, ::mavsdk::rpc::mission_raw::StartMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_StartMission_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest* request, ::mavsdk::rpc::mission_raw::StartMissionResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest* request, ::mavsdk::rpc::mission_raw::StartMissionResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::StartMissionRequest, ::mavsdk::rpc::mission_raw::StartMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_StartMission_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest* request, ::mavsdk::rpc::mission_raw::StartMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest* request, ::mavsdk::rpc::mission_raw::StartMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_StartMission_, context, request, response, reactor);
 }
 
@@ -176,11 +176,11 @@ void MissionRawService::Stub::experimental_async::StartMission(::grpc::ClientCon
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::PauseMissionRequest, ::mavsdk::rpc::mission_raw::PauseMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PauseMission_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::PauseMissionRequest* request, ::mavsdk::rpc::mission_raw::PauseMissionResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::PauseMissionRequest* request, ::mavsdk::rpc::mission_raw::PauseMissionResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::PauseMissionRequest, ::mavsdk::rpc::mission_raw::PauseMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PauseMission_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::PauseMissionRequest* request, ::mavsdk::rpc::mission_raw::PauseMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::PauseMissionRequest* request, ::mavsdk::rpc::mission_raw::PauseMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PauseMission_, context, request, response, reactor);
 }
 
@@ -199,11 +199,11 @@ void MissionRawService::Stub::experimental_async::PauseMission(::grpc::ClientCon
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::ClearMissionRequest, ::mavsdk::rpc::mission_raw::ClearMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ClearMission_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::ClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ClearMissionRequest* request, ::mavsdk::rpc::mission_raw::ClearMissionResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::ClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ClearMissionRequest* request, ::mavsdk::rpc::mission_raw::ClearMissionResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::ClearMissionRequest, ::mavsdk::rpc::mission_raw::ClearMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ClearMission_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::ClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ClearMissionRequest* request, ::mavsdk::rpc::mission_raw::ClearMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::ClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ClearMissionRequest* request, ::mavsdk::rpc::mission_raw::ClearMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ClearMission_, context, request, response, reactor);
 }
 
@@ -222,11 +222,11 @@ void MissionRawService::Stub::experimental_async::ClearMission(::grpc::ClientCon
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetCurrentMissionItem_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItem_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::SetCurrentMissionItem(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMissionItem_, context, request, response, reactor);
 }
 
@@ -245,7 +245,7 @@ void MissionRawService::Stub::experimental_async::SetCurrentMissionItem(::grpc::
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::mission_raw::MissionProgressResponse>::Create(channel_.get(), rpcmethod_SubscribeMissionProgress_, context, request);
 }
 
-void MissionRawService::Stub::experimental_async::SubscribeMissionProgress(::grpc::ClientContext* context, ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_raw::MissionProgressResponse>* reactor) {
+void MissionRawService::Stub::async::SubscribeMissionProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_raw::MissionProgressResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::mission_raw::MissionProgressResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeMissionProgress_, context, request, reactor);
 }
 
@@ -261,7 +261,7 @@ void MissionRawService::Stub::experimental_async::SubscribeMissionProgress(::grp
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::mission_raw::MissionChangedResponse>::Create(channel_.get(), rpcmethod_SubscribeMissionChanged_, context, request);
 }
 
-void MissionRawService::Stub::experimental_async::SubscribeMissionChanged(::grpc::ClientContext* context, ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission_raw::MissionChangedResponse>* reactor) {
+void MissionRawService::Stub::async::SubscribeMissionChanged(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_raw::MissionChangedResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::mission_raw::MissionChangedResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeMissionChanged_, context, request, reactor);
 }
 
@@ -277,11 +277,11 @@ void MissionRawService::Stub::experimental_async::SubscribeMissionChanged(::grpc
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ImportQgroundcontrolMission_, context, request, response);
 }
 
-void MissionRawService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response, std::function<void(::grpc::Status)> f) {
+void MissionRawService::Stub::async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, std::move(f));
 }
 
-void MissionRawService::Stub::experimental_async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void MissionRawService::Stub::async::ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ImportQgroundcontrolMission_, context, request, response, reactor);
 }
 

@@ -7,7 +7,6 @@
 #include "info/info.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -79,52 +78,28 @@ class InfoService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>> PrepareAsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(PrepareAsyncGetSpeedFactorRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       // Get flight information of the system.
       virtual void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Get the identification of the system.
       virtual void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Get product information of the system.
       virtual void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Get the version information of the system.
       virtual void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
       virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>* AsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>* PrepareAsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -139,7 +114,7 @@ class InfoService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     ::grpc::Status GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::mavsdk::rpc::info::GetFlightInformationResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>> AsyncGetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>>(AsyncGetFlightInformationRaw(context, request, cq));
@@ -175,50 +150,30 @@ class InfoService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>> PrepareAsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(PrepareAsyncGetSpeedFactorRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
       void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>* AsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>* PrepareAsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>* AsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -354,36 +309,22 @@ class InfoService final {
   };
   typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<WithAsyncMethod_GetSpeedFactor<Service > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetFlightInformation : public BaseClass {
+  class WithCallbackMethod_GetFlightInformation : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetFlightInformation() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_GetFlightInformation() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response) { return this->GetFlightInformation(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response) { return this->GetFlightInformation(context, request, response); }));}
     void SetMessageAllocatorFor_GetFlightInformation(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetFlightInformationRequest, ::mavsdk::rpc::info::GetFlightInformationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetFlightInformation() override {
+    ~WithCallbackMethod_GetFlightInformation() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -391,46 +332,26 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetFlightInformation(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetFlightInformation(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetFlightInformationRequest* /*request*/, ::mavsdk::rpc::info::GetFlightInformationResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetIdentification : public BaseClass {
+  class WithCallbackMethod_GetIdentification : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetIdentification() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_GetIdentification() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response) { return this->GetIdentification(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response) { return this->GetIdentification(context, request, response); }));}
     void SetMessageAllocatorFor_GetIdentification(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetIdentificationRequest, ::mavsdk::rpc::info::GetIdentificationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetIdentification() override {
+    ~WithCallbackMethod_GetIdentification() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -438,46 +359,26 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetIdentification(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetIdentification(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetProduct : public BaseClass {
+  class WithCallbackMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetProduct() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(2,
+    WithCallbackMethod_GetProduct() {
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response) { return this->GetProduct(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response) { return this->GetProduct(context, request, response); }));}
     void SetMessageAllocatorFor_GetProduct(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetProduct() override {
+    ~WithCallbackMethod_GetProduct() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -485,46 +386,26 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetProduct(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetProduct(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetProductRequest* /*request*/, ::mavsdk::rpc::info::GetProductResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetVersion : public BaseClass {
+  class WithCallbackMethod_GetVersion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetVersion() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(3,
+    WithCallbackMethod_GetVersion() {
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) { return this->GetVersion(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) { return this->GetVersion(context, request, response); }));}
     void SetMessageAllocatorFor_GetVersion(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(3);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetVersion() override {
+    ~WithCallbackMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -532,46 +413,26 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetVersion(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetVersion(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetSpeedFactor : public BaseClass {
+  class WithCallbackMethod_GetSpeedFactor : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetSpeedFactor() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(4,
+    WithCallbackMethod_GetSpeedFactor() {
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response) { return this->GetSpeedFactor(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response) { return this->GetSpeedFactor(context, request, response); }));}
     void SetMessageAllocatorFor_GetSpeedFactor(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(4);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetSpeedFactor() override {
+    ~WithCallbackMethod_GetSpeedFactor() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -579,20 +440,11 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetSpeedFactor(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetSpeedFactor(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_GetFlightInformation<ExperimentalWithCallbackMethod_GetIdentification<ExperimentalWithCallbackMethod_GetProduct<ExperimentalWithCallbackMethod_GetVersion<ExperimentalWithCallbackMethod_GetSpeedFactor<Service > > > > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_GetFlightInformation<ExperimentalWithCallbackMethod_GetIdentification<ExperimentalWithCallbackMethod_GetProduct<ExperimentalWithCallbackMethod_GetVersion<ExperimentalWithCallbackMethod_GetSpeedFactor<Service > > > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_GetFlightInformation<WithCallbackMethod_GetIdentification<WithCallbackMethod_GetProduct<WithCallbackMethod_GetVersion<WithCallbackMethod_GetSpeedFactor<Service > > > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetFlightInformation : public BaseClass {
    private:
@@ -779,27 +631,17 @@ class InfoService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetFlightInformation : public BaseClass {
+  class WithRawCallbackMethod_GetFlightInformation : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetFlightInformation() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_GetFlightInformation() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetFlightInformation(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetFlightInformation(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetFlightInformation() override {
+    ~WithRawCallbackMethod_GetFlightInformation() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -807,37 +649,21 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetFlightInformation(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetFlightInformation(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetIdentification : public BaseClass {
+  class WithRawCallbackMethod_GetIdentification : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetIdentification() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_GetIdentification() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetIdentification(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetIdentification(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetIdentification() override {
+    ~WithRawCallbackMethod_GetIdentification() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -845,37 +671,21 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetIdentification(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetIdentification(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetProduct : public BaseClass {
+  class WithRawCallbackMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetProduct() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(2,
+    WithRawCallbackMethod_GetProduct() {
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetProduct(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetProduct(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetProduct() override {
+    ~WithRawCallbackMethod_GetProduct() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -883,37 +693,21 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetProduct(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetProduct(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetVersion : public BaseClass {
+  class WithRawCallbackMethod_GetVersion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetVersion() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(3,
+    WithRawCallbackMethod_GetVersion() {
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetVersion(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetVersion(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetVersion() override {
+    ~WithRawCallbackMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -921,37 +715,21 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetVersion(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetVersion(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetSpeedFactor : public BaseClass {
+  class WithRawCallbackMethod_GetSpeedFactor : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetSpeedFactor() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(4,
+    WithRawCallbackMethod_GetSpeedFactor() {
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetSpeedFactor(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetSpeedFactor(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetSpeedFactor() override {
+    ~WithRawCallbackMethod_GetSpeedFactor() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -959,14 +737,8 @@ class InfoService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetSpeedFactor(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetSpeedFactor(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetFlightInformation : public BaseClass {

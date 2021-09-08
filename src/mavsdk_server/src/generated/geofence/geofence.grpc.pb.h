@@ -7,7 +7,6 @@
 #include "geofence/geofence.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -60,36 +59,24 @@ class GeofenceService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::ClearGeofenceResponse>> PrepareAsyncClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::ClearGeofenceResponse>>(PrepareAsyncClearGeofenceRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       //
       // Upload a geofence.
       //
       // Polygons are uploaded to a drone. Once uploaded, the geofence will remain
       // on the drone even if a connection is lost.
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       //
       // Clear all geofences saved on the vehicle.
       virtual void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* PrepareAsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -98,7 +85,7 @@ class GeofenceService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     ::grpc::Status UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>> AsyncUploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>>(AsyncUploadGeofenceRaw(context, request, cq));
@@ -113,32 +100,24 @@ class GeofenceService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>> PrepareAsyncClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>>(PrepareAsyncClearGeofenceRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
       void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* PrepareAsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* AsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -204,36 +183,22 @@ class GeofenceService final {
   };
   typedef WithAsyncMethod_UploadGeofence<WithAsyncMethod_ClearGeofence<Service > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_UploadGeofence : public BaseClass {
+  class WithCallbackMethod_UploadGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_UploadGeofence() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_UploadGeofence() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response) { return this->UploadGeofence(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response) { return this->UploadGeofence(context, request, response); }));}
     void SetMessageAllocatorFor_UploadGeofence(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::UploadGeofenceRequest, ::mavsdk::rpc::geofence::UploadGeofenceResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_UploadGeofence() override {
+    ~WithCallbackMethod_UploadGeofence() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -241,46 +206,26 @@ class GeofenceService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* UploadGeofence(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::UploadGeofenceResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* UploadGeofence(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::UploadGeofenceResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::UploadGeofenceResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_ClearGeofence : public BaseClass {
+  class WithCallbackMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_ClearGeofence() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_ClearGeofence() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response) { return this->ClearGeofence(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response) { return this->ClearGeofence(context, request, response); }));}
     void SetMessageAllocatorFor_ClearGeofence(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_ClearGeofence() override {
+    ~WithCallbackMethod_ClearGeofence() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -288,20 +233,11 @@ class GeofenceService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* ClearGeofence(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::ClearGeofenceResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* ClearGeofence(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::ClearGeofenceResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::ClearGeofenceResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_UploadGeofence<ExperimentalWithCallbackMethod_ClearGeofence<Service > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_UploadGeofence<ExperimentalWithCallbackMethod_ClearGeofence<Service > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_UploadGeofence<WithCallbackMethod_ClearGeofence<Service > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_UploadGeofence : public BaseClass {
    private:
@@ -377,27 +313,17 @@ class GeofenceService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_UploadGeofence : public BaseClass {
+  class WithRawCallbackMethod_UploadGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_UploadGeofence() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_UploadGeofence() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->UploadGeofence(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->UploadGeofence(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_UploadGeofence() override {
+    ~WithRawCallbackMethod_UploadGeofence() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -405,37 +331,21 @@ class GeofenceService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* UploadGeofence(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* UploadGeofence(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_ClearGeofence : public BaseClass {
+  class WithRawCallbackMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_ClearGeofence() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_ClearGeofence() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ClearGeofence(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ClearGeofence(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_ClearGeofence() override {
+    ~WithRawCallbackMethod_ClearGeofence() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -443,14 +353,8 @@ class GeofenceService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* ClearGeofence(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* ClearGeofence(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_UploadGeofence : public BaseClass {

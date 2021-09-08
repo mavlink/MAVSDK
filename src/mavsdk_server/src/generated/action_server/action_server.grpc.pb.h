@@ -7,7 +7,6 @@
 #include "action_server/action_server.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -134,109 +133,57 @@ class ActionServerService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetDisarmableResponse>>(PrepareAsyncSetDisarmableRaw(context, request, cq));
     }
     // Set which modes the vehicle can transition to (Manual always allowed)
-    virtual ::grpc::Status SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>> AsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>>(AsyncSetAllowableFlightModesRaw(context, request, cq));
+    virtual ::grpc::Status SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>> AsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>>(AsyncSetAllowableFlightModesRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>> PrepareAsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>>(PrepareAsyncSetAllowableFlightModesRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>> PrepareAsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>>(PrepareAsyncSetAllowableFlightModesRaw(context, request, cq));
     }
     // Get which modes the vehicle can transition to (Manual always allowed)
-    virtual ::grpc::Status GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>> AsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>>(AsyncGetAllowableFlightModesRaw(context, request, cq));
+    virtual ::grpc::Status GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>> AsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>>(AsyncGetAllowableFlightModesRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>> PrepareAsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>>(PrepareAsyncGetAllowableFlightModesRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>> PrepareAsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>>(PrepareAsyncGetAllowableFlightModesRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       // Subscribe to ARM/DISARM commands
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeArmDisarm(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeArmDisarm(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeArmDisarm(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) = 0;
       // Subscribe to DO_SET_MODE
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeFlightModeChange(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeFlightModeChange(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeFlightModeChange(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) = 0;
       // Subscribe to takeoff command
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeTakeoff(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeTakeoff(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) = 0;
       // Subscribe to land command
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeLand(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeLand(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeLand(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) = 0;
       // Subscribe to reboot command
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeReboot(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeReboot(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeReboot(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) = 0;
       // Subscribe to shutdown command
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeShutdown(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeShutdown(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeShutdown(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) = 0;
       // Subscribe to terminate command
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeTerminate(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeTerminate(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeTerminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) = 0;
       // Can the vehicle takeoff
       virtual void SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Can the vehicle arm when requested
       virtual void SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Can the vehicle disarm when requested
       virtual void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
       // Set which modes the vehicle can transition to (Manual always allowed)
-      virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
+      virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Get which modes the vehicle can transition to (Manual always allowed)
-      virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
+      virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::action_server::ArmDisarmResponse>* SubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::action_server::ArmDisarmResponse>* AsyncSubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
@@ -265,14 +212,14 @@ class ActionServerService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmableResponse>* PrepareAsyncSetArmableRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetDisarmableResponse>* AsyncSetDisarmableRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetDisarmableResponse>* PrepareAsyncSetDisarmableRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::action_server::ArmDisarmResponse>> SubscribeArmDisarm(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::action_server::ArmDisarmResponse>>(SubscribeArmDisarmRaw(context, request));
     }
@@ -357,99 +304,51 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetDisarmableResponse>> PrepareAsyncSetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetDisarmableResponse>>(PrepareAsyncSetDisarmableRaw(context, request, cq));
     }
-    ::grpc::Status SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>> AsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>>(AsyncSetAllowableFlightModesRaw(context, request, cq));
+    ::grpc::Status SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>> AsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>>(AsyncSetAllowableFlightModesRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>> PrepareAsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>>(PrepareAsyncSetAllowableFlightModesRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>> PrepareAsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>>(PrepareAsyncSetAllowableFlightModesRaw(context, request, cq));
     }
-    ::grpc::Status GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>> AsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>>(AsyncGetAllowableFlightModesRaw(context, request, cq));
+    ::grpc::Status GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>> AsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>>(AsyncGetAllowableFlightModesRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>> PrepareAsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>>(PrepareAsyncGetAllowableFlightModesRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>> PrepareAsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>>(PrepareAsyncGetAllowableFlightModesRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeArmDisarm(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) override;
-      #else
-      void SubscribeArmDisarm(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeFlightModeChange(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) override;
-      #else
-      void SubscribeFlightModeChange(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeTakeoff(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) override;
-      #else
-      void SubscribeTakeoff(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeLand(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) override;
-      #else
-      void SubscribeLand(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeReboot(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) override;
-      #else
-      void SubscribeReboot(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeShutdown(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) override;
-      #else
-      void SubscribeShutdown(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) override;
-      #endif
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeTerminate(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) override;
-      #else
-      void SubscribeTerminate(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) override;
-      #endif
+      void SubscribeArmDisarm(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) override;
+      void SubscribeFlightModeChange(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) override;
+      void SubscribeTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) override;
+      void SubscribeLand(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) override;
+      void SubscribeReboot(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) override;
+      void SubscribeShutdown(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) override;
+      void SubscribeTerminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) override;
       void SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
       void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
-      void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
+      void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientReader< ::mavsdk::rpc::action_server::ArmDisarmResponse>* SubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::action_server::ArmDisarmResponse>* AsyncSubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::action_server::ArmDisarmResponse>* PrepareAsyncSubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -477,10 +376,10 @@ class ActionServerService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetArmableResponse>* PrepareAsyncSetArmableRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetDisarmableResponse>* AsyncSetDisarmableRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetDisarmableResponse>* PrepareAsyncSetDisarmableRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeArmDisarm_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeFlightModeChange_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeTakeoff_;
@@ -521,9 +420,9 @@ class ActionServerService final {
     // Can the vehicle disarm when requested
     virtual ::grpc::Status SetDisarmable(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response);
     // Set which modes the vehicle can transition to (Manual always allowed)
-    virtual ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response);
+    virtual ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response);
     // Get which modes the vehicle can transition to (Manual always allowed)
-    virtual ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response);
+    virtual ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SubscribeArmDisarm : public BaseClass {
@@ -737,11 +636,11 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSetAllowableFlightModes(::grpc::ServerContext* context, ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSetAllowableFlightModes(::grpc::ServerContext* context, ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -757,37 +656,27 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetAllowableFlightModes(::grpc::ServerContext* context, ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetAllowableFlightModes(::grpc::ServerContext* context, ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   typedef WithAsyncMethod_SubscribeArmDisarm<WithAsyncMethod_SubscribeFlightModeChange<WithAsyncMethod_SubscribeTakeoff<WithAsyncMethod_SubscribeLand<WithAsyncMethod_SubscribeReboot<WithAsyncMethod_SubscribeShutdown<WithAsyncMethod_SubscribeTerminate<WithAsyncMethod_SetAllowTakeoff<WithAsyncMethod_SetArmable<WithAsyncMethod_SetDisarmable<WithAsyncMethod_SetAllowableFlightModes<WithAsyncMethod_GetAllowableFlightModes<Service > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeArmDisarm : public BaseClass {
+  class WithCallbackMethod_SubscribeArmDisarm : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeArmDisarm() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_SubscribeArmDisarm() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest, ::mavsdk::rpc::action_server::ArmDisarmResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request) { return this->SubscribeArmDisarm(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request) { return this->SubscribeArmDisarm(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeArmDisarm() override {
+    ~WithCallbackMethod_SubscribeArmDisarm() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -795,37 +684,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* SubscribeArmDisarm(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* SubscribeArmDisarm(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeFlightModeChange : public BaseClass {
+  class WithCallbackMethod_SubscribeFlightModeChange : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeFlightModeChange() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_SubscribeFlightModeChange() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest, ::mavsdk::rpc::action_server::FlightModeChangeResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request) { return this->SubscribeFlightModeChange(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request) { return this->SubscribeFlightModeChange(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeFlightModeChange() override {
+    ~WithCallbackMethod_SubscribeFlightModeChange() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -833,37 +706,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* SubscribeFlightModeChange(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* SubscribeFlightModeChange(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeTakeoff : public BaseClass {
+  class WithCallbackMethod_SubscribeTakeoff : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeTakeoff() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(2,
+    WithCallbackMethod_SubscribeTakeoff() {
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::action_server::SubscribeTakeoffRequest, ::mavsdk::rpc::action_server::TakeoffResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request) { return this->SubscribeTakeoff(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request) { return this->SubscribeTakeoff(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeTakeoff() override {
+    ~WithCallbackMethod_SubscribeTakeoff() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -871,37 +728,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* SubscribeTakeoff(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* SubscribeTakeoff(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeLand : public BaseClass {
+  class WithCallbackMethod_SubscribeLand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeLand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(3,
+    WithCallbackMethod_SubscribeLand() {
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::action_server::SubscribeLandRequest, ::mavsdk::rpc::action_server::LandResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SubscribeLandRequest* request) { return this->SubscribeLand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SubscribeLandRequest* request) { return this->SubscribeLand(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeLand() override {
+    ~WithCallbackMethod_SubscribeLand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -909,37 +750,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::action_server::LandResponse>* SubscribeLand(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeLandRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::action_server::LandResponse>* SubscribeLand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeLandRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeLandRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeReboot : public BaseClass {
+  class WithCallbackMethod_SubscribeReboot : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeReboot() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(4,
+    WithCallbackMethod_SubscribeReboot() {
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::action_server::SubscribeRebootRequest, ::mavsdk::rpc::action_server::RebootResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* request) { return this->SubscribeReboot(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* request) { return this->SubscribeReboot(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeReboot() override {
+    ~WithCallbackMethod_SubscribeReboot() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -947,37 +772,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::action_server::RebootResponse>* SubscribeReboot(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::action_server::RebootResponse>* SubscribeReboot(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeShutdown : public BaseClass {
+  class WithCallbackMethod_SubscribeShutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeShutdown() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(5,
+    WithCallbackMethod_SubscribeShutdown() {
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::action_server::SubscribeShutdownRequest, ::mavsdk::rpc::action_server::ShutdownResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request) { return this->SubscribeShutdown(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request) { return this->SubscribeShutdown(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeShutdown() override {
+    ~WithCallbackMethod_SubscribeShutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -985,37 +794,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* SubscribeShutdown(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* SubscribeShutdown(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeTerminate : public BaseClass {
+  class WithCallbackMethod_SubscribeTerminate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeTerminate() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(6,
+    WithCallbackMethod_SubscribeTerminate() {
+      ::grpc::Service::MarkMethodCallback(6,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::action_server::SubscribeTerminateRequest, ::mavsdk::rpc::action_server::TerminateResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request) { return this->SubscribeTerminate(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request) { return this->SubscribeTerminate(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeTerminate() override {
+    ~WithCallbackMethod_SubscribeTerminate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1023,46 +816,26 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::action_server::TerminateResponse>* SubscribeTerminate(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::action_server::TerminateResponse>* SubscribeTerminate(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetAllowTakeoff : public BaseClass {
+  class WithCallbackMethod_SetAllowTakeoff : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetAllowTakeoff() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(7,
+    WithCallbackMethod_SetAllowTakeoff() {
+      ::grpc::Service::MarkMethodCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetAllowTakeoffRequest, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response) { return this->SetAllowTakeoff(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response) { return this->SetAllowTakeoff(context, request, response); }));}
     void SetMessageAllocatorFor_SetAllowTakeoff(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action_server::SetAllowTakeoffRequest, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action_server::SetAllowTakeoffRequest, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(7);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetAllowTakeoffRequest, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetAllowTakeoff() override {
+    ~WithCallbackMethod_SetAllowTakeoff() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1070,46 +843,26 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetAllowTakeoff(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetAllowTakeoff(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetArmable : public BaseClass {
+  class WithCallbackMethod_SetArmable : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetArmable() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(8,
+    WithCallbackMethod_SetArmable() {
+      ::grpc::Service::MarkMethodCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetArmableRequest, ::mavsdk::rpc::action_server::SetArmableResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response) { return this->SetArmable(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response) { return this->SetArmable(context, request, response); }));}
     void SetMessageAllocatorFor_SetArmable(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action_server::SetArmableRequest, ::mavsdk::rpc::action_server::SetArmableResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action_server::SetArmableRequest, ::mavsdk::rpc::action_server::SetArmableResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(8);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetArmableRequest, ::mavsdk::rpc::action_server::SetArmableResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetArmable() override {
+    ~WithCallbackMethod_SetArmable() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1117,46 +870,26 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetArmable(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmableRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmableResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetArmable(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmableRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmableResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmableRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmableResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetDisarmable : public BaseClass {
+  class WithCallbackMethod_SetDisarmable : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetDisarmable() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(9,
+    WithCallbackMethod_SetDisarmable() {
+      ::grpc::Service::MarkMethodCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetDisarmableRequest, ::mavsdk::rpc::action_server::SetDisarmableResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response) { return this->SetDisarmable(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response) { return this->SetDisarmable(context, request, response); }));}
     void SetMessageAllocatorFor_SetDisarmable(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action_server::SetDisarmableRequest, ::mavsdk::rpc::action_server::SetDisarmableResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action_server::SetDisarmableRequest, ::mavsdk::rpc::action_server::SetDisarmableResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(9);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetDisarmableRequest, ::mavsdk::rpc::action_server::SetDisarmableResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetDisarmable() override {
+    ~WithCallbackMethod_SetDisarmable() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1164,114 +897,65 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetDisarmable(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetDisarmableRequest* /*request*/, ::mavsdk::rpc::action_server::SetDisarmableResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetDisarmable(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetDisarmableRequest* /*request*/, ::mavsdk::rpc::action_server::SetDisarmableResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetDisarmableRequest* /*request*/, ::mavsdk::rpc::action_server::SetDisarmableResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetAllowableFlightModes : public BaseClass {
+  class WithCallbackMethod_SetAllowableFlightModes : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetAllowableFlightModes() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(10,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>(
+    WithCallbackMethod_SetAllowableFlightModes() {
+      ::grpc::Service::MarkMethodCallback(10,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response) { return this->SetAllowableFlightModes(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) { return this->SetAllowableFlightModes(context, request, response); }));}
     void SetMessageAllocatorFor_SetAllowableFlightModes(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(10);
-    #endif
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetAllowableFlightModes() override {
+    ~WithCallbackMethod_SetAllowableFlightModes() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetAllowableFlightModes(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetAllowableFlightModes(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetAllowableFlightModes : public BaseClass {
+  class WithCallbackMethod_GetAllowableFlightModes : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetAllowableFlightModes() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(11,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>(
+    WithCallbackMethod_GetAllowableFlightModes() {
+      ::grpc::Service::MarkMethodCallback(11,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response) { return this->GetAllowableFlightModes(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) { return this->GetAllowableFlightModes(context, request, response); }));}
     void SetMessageAllocatorFor_GetAllowableFlightModes(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(11);
-    #endif
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetAllowableFlightModes() override {
+    ~WithCallbackMethod_GetAllowableFlightModes() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetAllowableFlightModes(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetAllowableFlightModes(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SubscribeArmDisarm<ExperimentalWithCallbackMethod_SubscribeFlightModeChange<ExperimentalWithCallbackMethod_SubscribeTakeoff<ExperimentalWithCallbackMethod_SubscribeLand<ExperimentalWithCallbackMethod_SubscribeReboot<ExperimentalWithCallbackMethod_SubscribeShutdown<ExperimentalWithCallbackMethod_SubscribeTerminate<ExperimentalWithCallbackMethod_SetAllowTakeoff<ExperimentalWithCallbackMethod_SetArmable<ExperimentalWithCallbackMethod_SetDisarmable<ExperimentalWithCallbackMethod_SetAllowableFlightModes<ExperimentalWithCallbackMethod_GetAllowableFlightModes<Service > > > > > > > > > > > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_SubscribeArmDisarm<ExperimentalWithCallbackMethod_SubscribeFlightModeChange<ExperimentalWithCallbackMethod_SubscribeTakeoff<ExperimentalWithCallbackMethod_SubscribeLand<ExperimentalWithCallbackMethod_SubscribeReboot<ExperimentalWithCallbackMethod_SubscribeShutdown<ExperimentalWithCallbackMethod_SubscribeTerminate<ExperimentalWithCallbackMethod_SetAllowTakeoff<ExperimentalWithCallbackMethod_SetArmable<ExperimentalWithCallbackMethod_SetDisarmable<ExperimentalWithCallbackMethod_SetAllowableFlightModes<ExperimentalWithCallbackMethod_GetAllowableFlightModes<Service > > > > > > > > > > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_SubscribeArmDisarm<WithCallbackMethod_SubscribeFlightModeChange<WithCallbackMethod_SubscribeTakeoff<WithCallbackMethod_SubscribeLand<WithCallbackMethod_SubscribeReboot<WithCallbackMethod_SubscribeShutdown<WithCallbackMethod_SubscribeTerminate<WithCallbackMethod_SetAllowTakeoff<WithCallbackMethod_SetArmable<WithCallbackMethod_SetDisarmable<WithCallbackMethod_SetAllowableFlightModes<WithCallbackMethod_GetAllowableFlightModes<Service > > > > > > > > > > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeArmDisarm : public BaseClass {
    private:
@@ -1454,7 +1138,7 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1471,7 +1155,7 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1688,7 +1372,7 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1708,7 +1392,7 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1717,27 +1401,17 @@ class ActionServerService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeArmDisarm : public BaseClass {
+  class WithRawCallbackMethod_SubscribeArmDisarm : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeArmDisarm() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_SubscribeArmDisarm() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeArmDisarm(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeArmDisarm(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeArmDisarm() override {
+    ~WithRawCallbackMethod_SubscribeArmDisarm() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1745,37 +1419,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeArmDisarm(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeArmDisarm(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeFlightModeChange : public BaseClass {
+  class WithRawCallbackMethod_SubscribeFlightModeChange : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeFlightModeChange() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_SubscribeFlightModeChange() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeFlightModeChange(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeFlightModeChange(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeFlightModeChange() override {
+    ~WithRawCallbackMethod_SubscribeFlightModeChange() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1783,37 +1441,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFlightModeChange(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFlightModeChange(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeTakeoff : public BaseClass {
+  class WithRawCallbackMethod_SubscribeTakeoff : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeTakeoff() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(2,
+    WithRawCallbackMethod_SubscribeTakeoff() {
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeTakeoff(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTakeoff(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeTakeoff() override {
+    ~WithRawCallbackMethod_SubscribeTakeoff() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1821,37 +1463,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTakeoff(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTakeoff(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeLand : public BaseClass {
+  class WithRawCallbackMethod_SubscribeLand : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeLand() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(3,
+    WithRawCallbackMethod_SubscribeLand() {
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeLand(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeLand(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeLand() override {
+    ~WithRawCallbackMethod_SubscribeLand() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1859,37 +1485,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeLand(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeLand(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeReboot : public BaseClass {
+  class WithRawCallbackMethod_SubscribeReboot : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeReboot() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(4,
+    WithRawCallbackMethod_SubscribeReboot() {
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeReboot(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeReboot(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeReboot() override {
+    ~WithRawCallbackMethod_SubscribeReboot() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1897,37 +1507,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeReboot(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeReboot(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeShutdown : public BaseClass {
+  class WithRawCallbackMethod_SubscribeShutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeShutdown() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(5,
+    WithRawCallbackMethod_SubscribeShutdown() {
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeShutdown(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeShutdown(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeShutdown() override {
+    ~WithRawCallbackMethod_SubscribeShutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1935,37 +1529,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeShutdown(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeShutdown(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeTerminate : public BaseClass {
+  class WithRawCallbackMethod_SubscribeTerminate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeTerminate() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(6,
+    WithRawCallbackMethod_SubscribeTerminate() {
+      ::grpc::Service::MarkMethodRawCallback(6,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeTerminate(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTerminate(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeTerminate() override {
+    ~WithRawCallbackMethod_SubscribeTerminate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1973,37 +1551,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTerminate(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTerminate(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetAllowTakeoff : public BaseClass {
+  class WithRawCallbackMethod_SetAllowTakeoff : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetAllowTakeoff() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(7,
+    WithRawCallbackMethod_SetAllowTakeoff() {
+      ::grpc::Service::MarkMethodRawCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetAllowTakeoff(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetAllowTakeoff(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetAllowTakeoff() override {
+    ~WithRawCallbackMethod_SetAllowTakeoff() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2011,37 +1573,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetAllowTakeoff(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetAllowTakeoff(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetArmable : public BaseClass {
+  class WithRawCallbackMethod_SetArmable : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetArmable() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(8,
+    WithRawCallbackMethod_SetArmable() {
+      ::grpc::Service::MarkMethodRawCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetArmable(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetArmable(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetArmable() override {
+    ~WithRawCallbackMethod_SetArmable() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2049,37 +1595,21 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetArmable(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetArmable(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetDisarmable : public BaseClass {
+  class WithRawCallbackMethod_SetDisarmable : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetDisarmable() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(9,
+    WithRawCallbackMethod_SetDisarmable() {
+      ::grpc::Service::MarkMethodRawCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetDisarmable(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetDisarmable(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetDisarmable() override {
+    ~WithRawCallbackMethod_SetDisarmable() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2087,90 +1617,52 @@ class ActionServerService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetDisarmable(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetDisarmable(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetAllowableFlightModes : public BaseClass {
+  class WithRawCallbackMethod_SetAllowableFlightModes : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetAllowableFlightModes() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(10,
+    WithRawCallbackMethod_SetAllowableFlightModes() {
+      ::grpc::Service::MarkMethodRawCallback(10,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetAllowableFlightModes(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetAllowableFlightModes(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetAllowableFlightModes() override {
+    ~WithRawCallbackMethod_SetAllowableFlightModes() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetAllowableFlightModes(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetAllowableFlightModes(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetAllowableFlightModes : public BaseClass {
+  class WithRawCallbackMethod_GetAllowableFlightModes : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetAllowableFlightModes() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(11,
+    WithRawCallbackMethod_GetAllowableFlightModes() {
+      ::grpc::Service::MarkMethodRawCallback(11,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetAllowableFlightModes(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetAllowableFlightModes(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetAllowableFlightModes() override {
+    ~WithRawCallbackMethod_GetAllowableFlightModes() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* GetAllowableFlightModes(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* GetAllowableFlightModes(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetAllowTakeoff : public BaseClass {
@@ -2261,10 +1753,10 @@ class ActionServerService final {
     WithStreamedUnaryMethod_SetAllowableFlightModes() {
       ::grpc::Service::MarkMethodStreamed(10,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>(
+          ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* streamer) {
+                     ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* streamer) {
                        return this->StreamedSetAllowableFlightModes(context,
                          streamer);
                   }));
@@ -2273,12 +1765,12 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSetAllowableFlightModes(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest,::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedSetAllowableFlightModes(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest,::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetAllowableFlightModes : public BaseClass {
@@ -2288,10 +1780,10 @@ class ActionServerService final {
     WithStreamedUnaryMethod_GetAllowableFlightModes() {
       ::grpc::Service::MarkMethodStreamed(11,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>(
+          ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* streamer) {
+                     ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* streamer) {
                        return this->StreamedGetAllowableFlightModes(context,
                          streamer);
                   }));
@@ -2300,12 +1792,12 @@ class ActionServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* /*response*/) override {
+    ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetAllowableFlightModes(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest,::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetAllowableFlightModes(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest,::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_SetAllowTakeoff<WithStreamedUnaryMethod_SetArmable<WithStreamedUnaryMethod_SetDisarmable<WithStreamedUnaryMethod_SetAllowableFlightModes<WithStreamedUnaryMethod_GetAllowableFlightModes<Service > > > > > StreamedUnaryService;
   template <class BaseClass>

@@ -30,24 +30,24 @@ static const char* LogFilesService_method_names[] = {
 
 std::unique_ptr< LogFilesService::Stub> LogFilesService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< LogFilesService::Stub> stub(new LogFilesService::Stub(channel));
+  std::unique_ptr< LogFilesService::Stub> stub(new LogFilesService::Stub(channel, options));
   return stub;
 }
 
-LogFilesService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_GetEntries_(LogFilesService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeDownloadLogFile_(LogFilesService_method_names[1], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+LogFilesService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_GetEntries_(LogFilesService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeDownloadLogFile_(LogFilesService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
 ::grpc::Status LogFilesService::Stub::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::mavsdk::rpc::log_files::GetEntriesResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::log_files::GetEntriesRequest, ::mavsdk::rpc::log_files::GetEntriesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetEntries_, context, request, response);
 }
 
-void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, std::function<void(::grpc::Status)> f) {
+void LogFilesService::Stub::async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::log_files::GetEntriesRequest, ::mavsdk::rpc::log_files::GetEntriesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, std::move(f));
 }
 
-void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void LogFilesService::Stub::async::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetEntries_, context, request, response, reactor);
 }
 
@@ -66,7 +66,7 @@ void LogFilesService::Stub::experimental_async::GetEntries(::grpc::ClientContext
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), rpcmethod_SubscribeDownloadLogFile_, context, request);
 }
 
-void LogFilesService::Stub::experimental_async::SubscribeDownloadLogFile(::grpc::ClientContext* context, ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* reactor) {
+void LogFilesService::Stub::async::SubscribeDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeDownloadLogFile_, context, request, reactor);
 }
 

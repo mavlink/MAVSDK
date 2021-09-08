@@ -40,30 +40,30 @@ static const char* ActionServerService_method_names[] = {
 
 std::unique_ptr< ActionServerService::Stub> ActionServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< ActionServerService::Stub> stub(new ActionServerService::Stub(channel));
+  std::unique_ptr< ActionServerService::Stub> stub(new ActionServerService::Stub(channel, options));
   return stub;
 }
 
-ActionServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_SubscribeArmDisarm_(ActionServerService_method_names[0], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeFlightModeChange_(ActionServerService_method_names[1], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTakeoff_(ActionServerService_method_names[2], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeLand_(ActionServerService_method_names[3], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeReboot_(ActionServerService_method_names[4], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeShutdown_(ActionServerService_method_names[5], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTerminate_(ActionServerService_method_names[6], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SetAllowTakeoff_(ActionServerService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetArmable_(ActionServerService_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetDisarmable_(ActionServerService_method_names[9], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetAllowableFlightModes_(ActionServerService_method_names[10], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetAllowableFlightModes_(ActionServerService_method_names[11], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+ActionServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_SubscribeArmDisarm_(ActionServerService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeFlightModeChange_(ActionServerService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTakeoff_(ActionServerService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeLand_(ActionServerService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeReboot_(ActionServerService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeShutdown_(ActionServerService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTerminate_(ActionServerService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SetAllowTakeoff_(ActionServerService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetArmable_(ActionServerService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetDisarmable_(ActionServerService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetAllowableFlightModes_(ActionServerService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetAllowableFlightModes_(ActionServerService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::action_server::ArmDisarmResponse>* ActionServerService::Stub::SubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request) {
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::action_server::ArmDisarmResponse>::Create(channel_.get(), rpcmethod_SubscribeArmDisarm_, context, request);
 }
 
-void ActionServerService::Stub::experimental_async::SubscribeArmDisarm(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) {
+void ActionServerService::Stub::async::SubscribeArmDisarm(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::action_server::ArmDisarmResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeArmDisarm_, context, request, reactor);
 }
 
@@ -79,7 +79,7 @@ void ActionServerService::Stub::experimental_async::SubscribeArmDisarm(::grpc::C
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::action_server::FlightModeChangeResponse>::Create(channel_.get(), rpcmethod_SubscribeFlightModeChange_, context, request);
 }
 
-void ActionServerService::Stub::experimental_async::SubscribeFlightModeChange(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) {
+void ActionServerService::Stub::async::SubscribeFlightModeChange(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::action_server::FlightModeChangeResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFlightModeChange_, context, request, reactor);
 }
 
@@ -95,7 +95,7 @@ void ActionServerService::Stub::experimental_async::SubscribeFlightModeChange(::
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::action_server::TakeoffResponse>::Create(channel_.get(), rpcmethod_SubscribeTakeoff_, context, request);
 }
 
-void ActionServerService::Stub::experimental_async::SubscribeTakeoff(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) {
+void ActionServerService::Stub::async::SubscribeTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::action_server::TakeoffResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTakeoff_, context, request, reactor);
 }
 
@@ -111,7 +111,7 @@ void ActionServerService::Stub::experimental_async::SubscribeTakeoff(::grpc::Cli
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::action_server::LandResponse>::Create(channel_.get(), rpcmethod_SubscribeLand_, context, request);
 }
 
-void ActionServerService::Stub::experimental_async::SubscribeLand(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) {
+void ActionServerService::Stub::async::SubscribeLand(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeLandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::LandResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::action_server::LandResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeLand_, context, request, reactor);
 }
 
@@ -127,7 +127,7 @@ void ActionServerService::Stub::experimental_async::SubscribeLand(::grpc::Client
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::action_server::RebootResponse>::Create(channel_.get(), rpcmethod_SubscribeReboot_, context, request);
 }
 
-void ActionServerService::Stub::experimental_async::SubscribeReboot(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) {
+void ActionServerService::Stub::async::SubscribeReboot(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeRebootRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::RebootResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::action_server::RebootResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeReboot_, context, request, reactor);
 }
 
@@ -143,7 +143,7 @@ void ActionServerService::Stub::experimental_async::SubscribeReboot(::grpc::Clie
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::action_server::ShutdownResponse>::Create(channel_.get(), rpcmethod_SubscribeShutdown_, context, request);
 }
 
-void ActionServerService::Stub::experimental_async::SubscribeShutdown(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) {
+void ActionServerService::Stub::async::SubscribeShutdown(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeShutdownRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ShutdownResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::action_server::ShutdownResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeShutdown_, context, request, reactor);
 }
 
@@ -159,7 +159,7 @@ void ActionServerService::Stub::experimental_async::SubscribeShutdown(::grpc::Cl
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::action_server::TerminateResponse>::Create(channel_.get(), rpcmethod_SubscribeTerminate_, context, request);
 }
 
-void ActionServerService::Stub::experimental_async::SubscribeTerminate(::grpc::ClientContext* context, ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) {
+void ActionServerService::Stub::async::SubscribeTerminate(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeTerminateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TerminateResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::action_server::TerminateResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTerminate_, context, request, reactor);
 }
 
@@ -175,11 +175,11 @@ void ActionServerService::Stub::experimental_async::SubscribeTerminate(::grpc::C
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetAllowTakeoffRequest, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAllowTakeoff_, context, request, response);
 }
 
-void ActionServerService::Stub::experimental_async::SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, std::function<void(::grpc::Status)> f) {
+void ActionServerService::Stub::async::SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetAllowTakeoffRequest, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowTakeoff_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::experimental_async::SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::SetAllowTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowTakeoffRequest* request, ::mavsdk::rpc::action_server::SetAllowTakeoffResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowTakeoff_, context, request, response, reactor);
 }
 
@@ -198,11 +198,11 @@ void ActionServerService::Stub::experimental_async::SetAllowTakeoff(::grpc::Clie
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetArmableRequest, ::mavsdk::rpc::action_server::SetArmableResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetArmable_, context, request, response);
 }
 
-void ActionServerService::Stub::experimental_async::SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, std::function<void(::grpc::Status)> f) {
+void ActionServerService::Stub::async::SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetArmableRequest, ::mavsdk::rpc::action_server::SetArmableResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetArmable_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::experimental_async::SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::SetArmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetArmable_, context, request, response, reactor);
 }
 
@@ -221,11 +221,11 @@ void ActionServerService::Stub::experimental_async::SetArmable(::grpc::ClientCon
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetDisarmableRequest, ::mavsdk::rpc::action_server::SetDisarmableResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetDisarmable_, context, request, response);
 }
 
-void ActionServerService::Stub::experimental_async::SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, std::function<void(::grpc::Status)> f) {
+void ActionServerService::Stub::async::SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetDisarmableRequest, ::mavsdk::rpc::action_server::SetDisarmableResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetDisarmable_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::experimental_async::SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetDisarmable_, context, request, response, reactor);
 }
 
@@ -240,46 +240,46 @@ void ActionServerService::Stub::experimental_async::SetDisarmable(::grpc::Client
   return result;
 }
 
-::grpc::Status ActionServerService::Stub::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAllowableFlightModes_, context, request, response);
+::grpc::Status ActionServerService::Stub::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAllowableFlightModes_, context, request, response);
 }
 
-void ActionServerService::Stub::experimental_async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowableFlightModes_, context, request, response, std::move(f));
+void ActionServerService::Stub::async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowableFlightModes_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::experimental_async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAllowableFlightModes_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* ActionServerService::Stub::PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAllowableFlightModes_, context, request);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* ActionServerService::Stub::PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAllowableFlightModes_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse>* ActionServerService::Stub::AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* ActionServerService::Stub::AsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncSetAllowableFlightModesRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status ActionServerService::Stub::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetAllowableFlightModes_, context, request, response);
+::grpc::Status ActionServerService::Stub::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetAllowableFlightModes_, context, request, response);
 }
 
-void ActionServerService::Stub::experimental_async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllowableFlightModes_, context, request, response, std::move(f));
+void ActionServerService::Stub::async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllowableFlightModes_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::experimental_async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllowableFlightModes_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* ActionServerService::Stub::PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetAllowableFlightModes_, context, request);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* ActionServerService::Stub::PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetAllowableFlightModes_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse>* ActionServerService::Stub::AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* ActionServerService::Stub::AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncGetAllowableFlightModesRaw(context, request, cq);
   result->StartCall();
@@ -390,21 +390,21 @@ ActionServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionServerService_method_names[10],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionServerService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* req,
-             ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* resp) {
+             const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* req,
+             ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* resp) {
                return service->SetAllowableFlightModes(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionServerService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionServerService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* req,
-             ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* resp) {
+             const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* req,
+             ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* resp) {
                return service->GetAllowableFlightModes(ctx, req, resp);
              }, this)));
 }
@@ -482,14 +482,14 @@ ActionServerService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status ActionServerService::Service::SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModeResponse* response) {
+::grpc::Status ActionServerService::Service::SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status ActionServerService::Service::GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModeRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModeResponse* response) {
+::grpc::Status ActionServerService::Service::GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) {
   (void) context;
   (void) request;
   (void) response;

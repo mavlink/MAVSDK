@@ -7,7 +7,6 @@
 #include "core/core.pb.h"
 
 #include <functional>
-#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -64,16 +63,12 @@ class CoreService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>> PrepareAsyncSetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>>(PrepareAsyncSetMavlinkTimeoutRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       //
       // Subscribe to 'connection state' updates.
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void SubscribeConnectionState(::grpc::ClientContext* context, ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) = 0;
-      #else
-      virtual void SubscribeConnectionState(::grpc::ClientContext* context, ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) = 0;
-      #endif
+      virtual void SubscribeConnectionState(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) = 0;
       //
       // Set timeout of MAVLink transfers.
       //
@@ -82,19 +77,11 @@ class CoreService final {
       // if MAVSDK has to communicate over links with high latency it might
       // need to be increased to prevent timeouts.
       virtual void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, std::function<void(::grpc::Status)>) = 0;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      #else
-      virtual void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      #endif
     };
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    typedef class experimental_async_interface async_interface;
-    #endif
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    async_interface* async() { return experimental_async(); }
-    #endif
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::core::ConnectionStateResponse>* SubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::core::ConnectionStateResponse>* AsyncSubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
@@ -104,7 +91,7 @@ class CoreService final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::core::ConnectionStateResponse>> SubscribeConnectionState(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::core::ConnectionStateResponse>>(SubscribeConnectionStateRaw(context, request));
     }
@@ -121,31 +108,23 @@ class CoreService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>> PrepareAsyncSetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>>(PrepareAsyncSetMavlinkTimeoutRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void SubscribeConnectionState(::grpc::ClientContext* context, ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) override;
-      #else
-      void SubscribeConnectionState(::grpc::ClientContext* context, ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) override;
-      #endif
+      void SubscribeConnectionState(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) override;
       void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, std::function<void(::grpc::Status)>) override;
-      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      #else
-      void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      #endif
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientReader< ::mavsdk::rpc::core::ConnectionStateResponse>* SubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::core::ConnectionStateResponse>* AsyncSubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::core::ConnectionStateResponse>* PrepareAsyncSubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -214,27 +193,17 @@ class CoreService final {
   };
   typedef WithAsyncMethod_SubscribeConnectionState<WithAsyncMethod_SetMavlinkTimeout<Service > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SubscribeConnectionState : public BaseClass {
+  class WithCallbackMethod_SubscribeConnectionState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SubscribeConnectionState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(0,
+    WithCallbackMethod_SubscribeConnectionState() {
+      ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::core::SubscribeConnectionStateRequest, ::mavsdk::rpc::core::ConnectionStateResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request) { return this->SubscribeConnectionState(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request) { return this->SubscribeConnectionState(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_SubscribeConnectionState() override {
+    ~WithCallbackMethod_SubscribeConnectionState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -242,46 +211,26 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* SubscribeConnectionState(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* SubscribeConnectionState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SetMavlinkTimeout : public BaseClass {
+  class WithCallbackMethod_SetMavlinkTimeout : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SetMavlinkTimeout() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodCallback(1,
+    WithCallbackMethod_SetMavlinkTimeout() {
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response) { return this->SetMavlinkTimeout(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response) { return this->SetMavlinkTimeout(context, request, response); }));}
     void SetMessageAllocatorFor_SetMavlinkTimeout(
-        ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* allocator) {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+        ::grpc::MessageAllocator< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-    #else
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
-    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SetMavlinkTimeout() override {
+    ~WithCallbackMethod_SetMavlinkTimeout() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -289,20 +238,11 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetMavlinkTimeout(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetMavlinkTimeout(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* /*response*/)  { return nullptr; }
   };
-  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_SubscribeConnectionState<ExperimentalWithCallbackMethod_SetMavlinkTimeout<Service > > CallbackService;
-  #endif
-
-  typedef ExperimentalWithCallbackMethod_SubscribeConnectionState<ExperimentalWithCallbackMethod_SetMavlinkTimeout<Service > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_SubscribeConnectionState<WithCallbackMethod_SetMavlinkTimeout<Service > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeConnectionState : public BaseClass {
    private:
@@ -378,27 +318,17 @@ class CoreService final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SubscribeConnectionState : public BaseClass {
+  class WithRawCallbackMethod_SubscribeConnectionState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SubscribeConnectionState() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(0,
+    WithRawCallbackMethod_SubscribeConnectionState() {
+      ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const::grpc::ByteBuffer* request) { return this->SubscribeConnectionState(context, request); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeConnectionState(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SubscribeConnectionState() override {
+    ~WithRawCallbackMethod_SubscribeConnectionState() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -406,37 +336,21 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeConnectionState(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeConnectionState(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SetMavlinkTimeout : public BaseClass {
+  class WithRawCallbackMethod_SetMavlinkTimeout : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SetMavlinkTimeout() {
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      ::grpc::Service::
-    #else
-      ::grpc::Service::experimental().
-    #endif
-        MarkMethodRawCallback(1,
+    WithRawCallbackMethod_SetMavlinkTimeout() {
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-                   ::grpc::CallbackServerContext*
-    #else
-                   ::grpc::experimental::CallbackServerContext*
-    #endif
-                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMavlinkTimeout(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMavlinkTimeout(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SetMavlinkTimeout() override {
+    ~WithRawCallbackMethod_SetMavlinkTimeout() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -444,14 +358,8 @@ class CoreService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* SetMavlinkTimeout(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #else
-    virtual ::grpc::experimental::ServerUnaryReactor* SetMavlinkTimeout(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
-    #endif
-      { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetMavlinkTimeout : public BaseClass {

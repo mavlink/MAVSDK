@@ -39,7 +39,7 @@ endforeach()
 ExternalProject_add(
     curl
     GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG curl-7_75_0
+    GIT_TAG curl-7_78_0
     GIT_SHALLOW ON
     PREFIX curl
     PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/curl.patch

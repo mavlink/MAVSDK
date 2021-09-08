@@ -216,7 +216,11 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
+    // The only situation where we create a system with sysid 0 is when we initialize the connection
+    // to the remote.
     if (_systems.size() == 1 && _systems[0].first == 0) {
+        LogDebug() << "New: System ID: " << static_cast<int>(message.sysid)
+                   << " Comp ID: " << static_cast<int>(message.compid);
         _systems[0].first = message.sysid;
         _systems[0].second->system_impl()->set_system_id(message.sysid);
     }
@@ -465,7 +469,13 @@ void MavsdkImpl::make_system_with_component(
         return;
     }
 
-    LogDebug() << "New: System ID: " << int(system_id) << " Comp ID: " << int(comp_id);
+    if (static_cast<int>(system_id) == 0 && static_cast<int>(comp_id) == 0) {
+        LogDebug() << "Initializing connection to remote system...";
+    } else {
+        LogDebug() << "New: System ID: " << static_cast<int>(system_id)
+                   << " Comp ID: " << static_cast<int>(comp_id);
+    }
+
     // Make a system with its first component
     auto new_system = std::make_shared<System>(*this);
     new_system->init(system_id, comp_id, always_connected);

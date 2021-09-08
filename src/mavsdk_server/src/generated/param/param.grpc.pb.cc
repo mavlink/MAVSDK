@@ -33,27 +33,27 @@ static const char* ParamService_method_names[] = {
 
 std::unique_ptr< ParamService::Stub> ParamService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< ParamService::Stub> stub(new ParamService::Stub(channel));
+  std::unique_ptr< ParamService::Stub> stub(new ParamService::Stub(channel, options));
   return stub;
 }
 
-ParamService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_GetParamInt_(ParamService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetParamInt_(ParamService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetParamFloat_(ParamService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetParamFloat_(ParamService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetAllParams_(ParamService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+ParamService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_GetParamInt_(ParamService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetParamInt_(ParamService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetParamFloat_(ParamService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetParamFloat_(ParamService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetAllParams_(ParamService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ParamService::Stub::GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest& request, ::mavsdk::rpc::param::GetParamIntResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetParamInt_, context, request, response);
 }
 
-void ParamService::Stub::experimental_async::GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, std::function<void(::grpc::Status)> f) {
+void ParamService::Stub::async::GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::GetParamIntRequest, ::mavsdk::rpc::param::GetParamIntResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetParamInt_, context, request, response, std::move(f));
 }
 
-void ParamService::Stub::experimental_async::GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ParamService::Stub::async::GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest* request, ::mavsdk::rpc::param::GetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetParamInt_, context, request, response, reactor);
 }
 
@@ -72,11 +72,11 @@ void ParamService::Stub::experimental_async::GetParamInt(::grpc::ClientContext* 
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetParamInt_, context, request, response);
 }
 
-void ParamService::Stub::experimental_async::SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, std::function<void(::grpc::Status)> f) {
+void ParamService::Stub::async::SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::SetParamIntRequest, ::mavsdk::rpc::param::SetParamIntResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetParamInt_, context, request, response, std::move(f));
 }
 
-void ParamService::Stub::experimental_async::SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ParamService::Stub::async::SetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest* request, ::mavsdk::rpc::param::SetParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetParamInt_, context, request, response, reactor);
 }
 
@@ -95,11 +95,11 @@ void ParamService::Stub::experimental_async::SetParamInt(::grpc::ClientContext* 
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetParamFloat_, context, request, response);
 }
 
-void ParamService::Stub::experimental_async::GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, std::function<void(::grpc::Status)> f) {
+void ParamService::Stub::async::GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::GetParamFloatRequest, ::mavsdk::rpc::param::GetParamFloatResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetParamFloat_, context, request, response, std::move(f));
 }
 
-void ParamService::Stub::experimental_async::GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ParamService::Stub::async::GetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamFloatRequest* request, ::mavsdk::rpc::param::GetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetParamFloat_, context, request, response, reactor);
 }
 
@@ -118,11 +118,11 @@ void ParamService::Stub::experimental_async::GetParamFloat(::grpc::ClientContext
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetParamFloat_, context, request, response);
 }
 
-void ParamService::Stub::experimental_async::SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, std::function<void(::grpc::Status)> f) {
+void ParamService::Stub::async::SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::SetParamFloatRequest, ::mavsdk::rpc::param::SetParamFloatResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetParamFloat_, context, request, response, std::move(f));
 }
 
-void ParamService::Stub::experimental_async::SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ParamService::Stub::async::SetParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetParamFloat_, context, request, response, reactor);
 }
 
@@ -141,11 +141,11 @@ void ParamService::Stub::experimental_async::SetParamFloat(::grpc::ClientContext
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetAllParams_, context, request, response);
 }
 
-void ParamService::Stub::experimental_async::GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)> f) {
+void ParamService::Stub::async::GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllParams_, context, request, response, std::move(f));
 }
 
-void ParamService::Stub::experimental_async::GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void ParamService::Stub::async::GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetAllParams_, context, request, response, reactor);
 }
 

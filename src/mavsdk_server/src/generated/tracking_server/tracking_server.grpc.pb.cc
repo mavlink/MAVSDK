@@ -37,31 +37,31 @@ static const char* TrackingServerService_method_names[] = {
 
 std::unique_ptr< TrackingServerService::Stub> TrackingServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< TrackingServerService::Stub> stub(new TrackingServerService::Stub(channel));
+  std::unique_ptr< TrackingServerService::Stub> stub(new TrackingServerService::Stub(channel, options));
   return stub;
 }
 
-TrackingServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_SetTrackingPointStatus_(TrackingServerService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTrackingRectangleStatus_(TrackingServerService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTrackingOffStatus_(TrackingServerService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeTrackingPointCommand_(TrackingServerService_method_names[3], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTrackingRectangleCommand_(TrackingServerService_method_names[4], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTrackingOffCommand_(TrackingServerService_method_names[5], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondTrackingPointCommand_(TrackingServerService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_RespondTrackingRectangleCommand_(TrackingServerService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_RespondTrackingOffCommand_(TrackingServerService_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+TrackingServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_SetTrackingPointStatus_(TrackingServerService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingRectangleStatus_(TrackingServerService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingOffStatus_(TrackingServerService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeTrackingPointCommand_(TrackingServerService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingRectangleCommand_(TrackingServerService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingOffCommand_(TrackingServerService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondTrackingPointCommand_(TrackingServerService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingRectangleCommand_(TrackingServerService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingOffCommand_(TrackingServerService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status TrackingServerService::Stub::SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetTrackingPointStatus_, context, request, response);
 }
 
-void TrackingServerService::Stub::experimental_async::SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, std::function<void(::grpc::Status)> f) {
+void TrackingServerService::Stub::async::SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingPointStatus_, context, request, response, std::move(f));
 }
 
-void TrackingServerService::Stub::experimental_async::SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void TrackingServerService::Stub::async::SetTrackingPointStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingPointStatus_, context, request, response, reactor);
 }
 
@@ -80,11 +80,11 @@ void TrackingServerService::Stub::experimental_async::SetTrackingPointStatus(::g
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetTrackingRectangleStatus_, context, request, response);
 }
 
-void TrackingServerService::Stub::experimental_async::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, std::function<void(::grpc::Status)> f) {
+void TrackingServerService::Stub::async::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingRectangleStatus_, context, request, response, std::move(f));
 }
 
-void TrackingServerService::Stub::experimental_async::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void TrackingServerService::Stub::async::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingRectangleStatus_, context, request, response, reactor);
 }
 
@@ -103,11 +103,11 @@ void TrackingServerService::Stub::experimental_async::SetTrackingRectangleStatus
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetTrackingOffStatus_, context, request, response);
 }
 
-void TrackingServerService::Stub::experimental_async::SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, std::function<void(::grpc::Status)> f) {
+void TrackingServerService::Stub::async::SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingOffStatus_, context, request, response, std::move(f));
 }
 
-void TrackingServerService::Stub::experimental_async::SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void TrackingServerService::Stub::async::SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::tracking_server::SetTrackingOffStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingOffStatus_, context, request, response, reactor);
 }
 
@@ -126,7 +126,7 @@ void TrackingServerService::Stub::experimental_async::SetTrackingOffStatus(::grp
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>::Create(channel_.get(), rpcmethod_SubscribeTrackingPointCommand_, context, request);
 }
 
-void TrackingServerService::Stub::experimental_async::SubscribeTrackingPointCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) {
+void TrackingServerService::Stub::async::SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::tracking_server::TrackingPointCommandResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTrackingPointCommand_, context, request, reactor);
 }
 
@@ -142,7 +142,7 @@ void TrackingServerService::Stub::experimental_async::SubscribeTrackingPointComm
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>::Create(channel_.get(), rpcmethod_SubscribeTrackingRectangleCommand_, context, request);
 }
 
-void TrackingServerService::Stub::experimental_async::SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) {
+void TrackingServerService::Stub::async::SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::tracking_server::TrackingRectangleCommandResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTrackingRectangleCommand_, context, request, reactor);
 }
 
@@ -158,7 +158,7 @@ void TrackingServerService::Stub::experimental_async::SubscribeTrackingRectangle
   return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>::Create(channel_.get(), rpcmethod_SubscribeTrackingOffCommand_, context, request);
 }
 
-void TrackingServerService::Stub::experimental_async::SubscribeTrackingOffCommand(::grpc::ClientContext* context, ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) {
+void TrackingServerService::Stub::async::SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>* reactor) {
   ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::tracking_server::TrackingOffCommandResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTrackingOffCommand_, context, request, reactor);
 }
 
@@ -174,11 +174,11 @@ void TrackingServerService::Stub::experimental_async::SubscribeTrackingOffComman
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondTrackingPointCommand_, context, request, response);
 }
 
-void TrackingServerService::Stub::experimental_async::RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, std::function<void(::grpc::Status)> f) {
+void TrackingServerService::Stub::async::RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingPointCommand_, context, request, response, std::move(f));
 }
 
-void TrackingServerService::Stub::experimental_async::RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void TrackingServerService::Stub::async::RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingPointCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingPointCommand_, context, request, response, reactor);
 }
 
@@ -197,11 +197,11 @@ void TrackingServerService::Stub::experimental_async::RespondTrackingPointComman
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondTrackingRectangleCommand_, context, request, response);
 }
 
-void TrackingServerService::Stub::experimental_async::RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, std::function<void(::grpc::Status)> f) {
+void TrackingServerService::Stub::async::RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingRectangleCommand_, context, request, response, std::move(f));
 }
 
-void TrackingServerService::Stub::experimental_async::RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void TrackingServerService::Stub::async::RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingRectangleCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingRectangleCommand_, context, request, response, reactor);
 }
 
@@ -220,11 +220,11 @@ void TrackingServerService::Stub::experimental_async::RespondTrackingRectangleCo
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondTrackingOffCommand_, context, request, response);
 }
 
-void TrackingServerService::Stub::experimental_async::RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)> f) {
+void TrackingServerService::Stub::async::RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)> f) {
   ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingOffCommand_, context, request, response, std::move(f));
 }
 
-void TrackingServerService::Stub::experimental_async::RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+void TrackingServerService::Stub::async::RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::tracking_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingOffCommand_, context, request, response, reactor);
 }
 
