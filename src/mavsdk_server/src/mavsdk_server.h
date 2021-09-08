@@ -12,7 +12,7 @@ public:
     MavsdkServer& operator=(MavsdkServer&&) = delete;
 
     int startGrpcServer(int port);
-    void connect(const std::string& connection_url = "udp://:14540");
+    bool connect(const std::string& connection_url = "udp://:14540");
     void wait();
     void stop();
     int getPort();
