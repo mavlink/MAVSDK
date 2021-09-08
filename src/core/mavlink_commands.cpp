@@ -127,7 +127,9 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
 
         if (_sent_commands.find(command_ack.command) == _sent_commands.end()) {
             LogWarn() << "Received ack for unexisting command: "
-                      << static_cast<int>(command_ack.command) << "! Ignoring...";
+                      << static_cast<int>(command_ack.command) << " from "
+                      << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid)
+                      << "! Ignoring...";
             return;
         }
 
@@ -149,21 +151,27 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                 break;
 
             case MAV_RESULT_DENIED:
-                LogWarn() << "command denied (" << work->mavlink_command << ").";
+                LogWarn() << "command denied (" << work->mavlink_command << ") from "
+                          << static_cast<int>(message.sysid) << "/"
+                          << static_cast<int>(message.compid);
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
                 _sent_commands.erase(work->mavlink_command);
                 break;
 
             case MAV_RESULT_UNSUPPORTED:
-                LogWarn() << "command unsupported (" << work->mavlink_command << ").";
+                LogWarn() << "command unsupported (" << work->mavlink_command << ") from "
+                          << static_cast<int>(message.sysid) << "/"
+                          << static_cast<int>(message.compid);
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Unsupported, NAN};
                 _sent_commands.erase(work->mavlink_command);
                 break;
 
             case MAV_RESULT_TEMPORARILY_REJECTED:
-                LogWarn() << "command temporarily rejected (" << work->mavlink_command << ").";
+                LogWarn() << "command temporarily rejected (" << work->mavlink_command << " from "
+                          << static_cast<int>(message.sysid) << "/"
+                          << static_cast<int>(message.compid);
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
                 _sent_commands.erase(work->mavlink_command);
