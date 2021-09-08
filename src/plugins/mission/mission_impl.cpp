@@ -9,6 +9,7 @@ namespace mavsdk {
 using namespace std::placeholders; // for `_1`
 using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
+using VehicleAction = Mission::MissionItem::VehicleAction;
 
 MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
 {
@@ -467,6 +468,73 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             int_items.push_back(next_item);
         }
 
+        if (item.vehicle_action != VehicleAction::None) {
+            // There is a vehicle action that we need to send.
+
+            // Current is the 0th waypoint
+            uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+            uint8_t autocontinue = 1;
+
+            uint16_t command = 0;
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            switch (item.vehicle_action) {
+                case VehicleAction::Takeoff:
+                    command = MAV_CMD_NAV_TAKEOFF; // Takeoff at current position with same heading
+                    break;
+                case VehicleAction::Land:
+                    command = MAV_CMD_NAV_LAND; // Land at current position with same heading
+                    break;
+                case VehicleAction::TransitionToFw:
+                    command = MAV_CMD_DO_VTOL_TRANSITION; // Do transition
+                    param1 = MAV_VTOL_STATE_FW; // Target state is Fixed-Wing
+                    param2 = 0; // Normal transition
+                    break;
+                case VehicleAction::TransitionToMc:
+                    command = MAV_CMD_DO_VTOL_TRANSITION;
+                    param1 = MAV_VTOL_STATE_MC; // Target state is Multi-Copter
+                    param2 = 0; // Normal transition
+                    break;
+                default:
+                    LogErr() << "Error: vehicle action not supported";
+                    break;
+            }
+
+            const int32_t x = int32_t(std::round(item.latitude_deg * 1e7));
+            const int32_t y = int32_t(std::round(item.longitude_deg * 1e7));
+            float z = item.relative_altitude_m;
+            MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT; 
+
+            if (command == MAV_CMD_NAV_LAND){
+                    z = 0;
+            }
+
+            if (command == MAV_CMD_DO_VTOL_TRANSITION){
+                frame = MAV_FRAME_MISSION;
+            }
+               
+
+            MAVLinkMissionTransfer::ItemInt next_item{
+                        static_cast<uint16_t>(int_items.size()),
+                        frame,
+                        command,
+                        current,
+                        autocontinue,
+                        param1,
+                        param2,
+                        param3,
+                        NAN,
+                        x,
+                        y,
+                        z,
+                        MAV_MISSION_TYPE_MISSION};
+
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+            int_items.push_back(next_item);
+        }
+
         ++item_i;
     }
 
@@ -608,6 +676,17 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
                 new_mission_item.camera_action = CameraAction::StopVideo;
+
+            } else if (int_item.command == MAV_CMD_NAV_TAKEOFF) {
+                new_mission_item.vehicle_action = VehicleAction::Takeoff;
+            } else if (int_item.command == MAV_CMD_NAV_LAND) {
+                new_mission_item.vehicle_action = VehicleAction::Land;
+            } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION) {
+                if (int_item.param1 == MAV_VTOL_STATE_FW) {
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToFw;
+                } else {
+                    new_mission_item.vehicle_action = VehicleAction::TransitionToMc;
+                }
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
                 if (int(int_item.param1) == 1 && int_item.param3 < 0 && int(int_item.param4) == 0) {
