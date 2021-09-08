@@ -57,7 +57,6 @@ namespace mavsdk_server {
 class GrpcServer {
 public:
     GrpcServer(Mavsdk& mavsdk) :
-        _mavsdk(mavsdk),
         _core(mavsdk),
         _action_lazy_plugin(mavsdk),
         _action_service(_action_lazy_plugin),
@@ -113,7 +112,6 @@ public:
 private:
     void setup_port(grpc::ServerBuilder& builder);
 
-    Mavsdk& _mavsdk;
     CoreServiceImpl<> _core;
     LazyPlugin<Action> _action_lazy_plugin;
     ActionServiceImpl<> _action_service;
