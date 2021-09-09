@@ -45,7 +45,8 @@ void MissionImpl::init()
 
 void MissionImpl::enable()
 {
-    request_gimbal_protocol();
+    _gimbal_protocol = GimbalProtocol::V2;
+    //request_gimbal_protocol();
 }
 
 void MissionImpl::request_gimbal_protocol()
