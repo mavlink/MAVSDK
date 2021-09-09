@@ -109,6 +109,7 @@ void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& me
     if (_gimbal_protocol_cookie != nullptr) {
         LogDebug() << "Using gimbal protocol v2";
         _gimbal_protocol = GimbalProtocol::V2;
+        _gimbal_protocol_cookie = nullptr;
         _parent->unregister_timeout_handler(_gimbal_protocol_cookie);
     }
 }
