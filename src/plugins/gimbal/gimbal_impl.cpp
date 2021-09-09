@@ -66,7 +66,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
     mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
 
     if (_protocol_cookie != nullptr) {
-        LogDebug() << "Using Gimbal Version 2 as gimbal manager information for gimbal device "
+        LogDebug() << "Using gimbal protocol v2 as gimbal manager information for gimbal device "
                    << static_cast<int>(gimbal_manager_information.gimbal_device_id)
                    << " was discovered";
 
