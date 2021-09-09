@@ -45,13 +45,14 @@ void MissionImpl::init()
 
 void MissionImpl::enable()
 {
+    _gimbal_protocol_retries = 0;
     request_gimbal_protocol();
 }
 
 void MissionImpl::request_gimbal_protocol()
 {
     _parent->register_timeout_handler(
-        [this]() { receive_protocol_timeout(); }, 1.0, &_gimbal_protocol_cookie);
+        [this]() { receive_protocol_timeout(); }, 2.0, &_gimbal_protocol_cookie);
 
     MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_REQUEST_MESSAGE;
@@ -134,9 +135,15 @@ void MissionImpl::wait_for_protocol_async(std::function<void()> callback)
 
 void MissionImpl::receive_protocol_timeout()
 {
-    LogDebug() << "Falling back to gimbal protocol v1";
-    _gimbal_protocol = GimbalProtocol::V1;
     _gimbal_protocol_cookie = nullptr;
+
+    if (_gimbal_protocol_retries < 10) {
+        _gimbal_protocol_retries++;
+        request_gimbal_protocol();
+    } else {
+        LogDebug() << "Falling back to gimbal protocol v1";
+        _gimbal_protocol = GimbalProtocol::V1;
+    }
 }
 
 Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_plan)

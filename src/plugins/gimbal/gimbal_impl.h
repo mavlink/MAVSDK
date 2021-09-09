@@ -58,11 +58,13 @@ public:
 
 private:
     std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
+    std::atomic<size_t> _gimbal_protocol_retries{0};
 
     void* _protocol_cookie{nullptr};
 
     void wait_for_protocol();
     void wait_for_protocol_async(std::function<void()> callback);
+    void request_gimbal_protocol();
     void receive_protocol_timeout();
     void process_gimbal_manager_information(const mavlink_message_t& message);
 };

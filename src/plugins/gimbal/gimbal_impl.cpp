@@ -36,8 +36,14 @@ void GimbalImpl::deinit() {}
 
 void GimbalImpl::enable()
 {
+    _gimbal_protocol_retries = 0;
+    request_gimbal_protocol();
+}
+
+void GimbalImpl::request_gimbal_protocol()
+{
     _parent->register_timeout_handler(
-        [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
+        [this]() { receive_protocol_timeout(); }, 2.0, &_protocol_cookie);
 
     MavlinkCommandSender::CommandLong command{*_parent};
     command.command = MAV_CMD_REQUEST_MESSAGE;
@@ -53,11 +59,17 @@ void GimbalImpl::disable()
 
 void GimbalImpl::receive_protocol_timeout()
 {
-    // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
-    // assume Version2 is not available.
-    LogDebug() << "Falling back to Gimbal Version 1";
-    _gimbal_protocol.reset(new GimbalProtocolV1(*_parent));
     _protocol_cookie = nullptr;
+
+    if (_gimbal_protocol_retries < 10) {
+        _gimbal_protocol_retries++;
+        request_gimbal_protocol();
+    } else {
+        // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
+        // assume Version2 is not available.
+        LogDebug() << "Falling back to gimbal protocol v1";
+        _gimbal_protocol.reset(new GimbalProtocolV1(*_parent));
+    }
 }
 
 void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& message)

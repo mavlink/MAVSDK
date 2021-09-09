@@ -171,6 +171,7 @@ private:
     void* _gimbal_protocol_cookie{nullptr};
     enum class GimbalProtocol { Unknown, V1, V2 };
     std::atomic<GimbalProtocol> _gimbal_protocol{GimbalProtocol::Unknown};
+    std::atomic<size_t> _gimbal_protocol_retries{0};
 };
 
 } // namespace mavsdk
