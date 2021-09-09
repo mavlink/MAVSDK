@@ -13,10 +13,10 @@ public:
     Impl() {}
     ~Impl() {}
 
-    void connect(const std::string& connection_url)
+    bool connect(const std::string& connection_url)
     {
         _connection_initiator.start(_mavsdk, connection_url);
-        _connection_initiator.wait();
+        return _connection_initiator.wait();
     }
 
     int startGrpcServer(const int port)
@@ -29,7 +29,14 @@ public:
 
     void wait() { _server->wait(); }
 
-    void stop() { _server->stop(); }
+    void stop()
+    {
+        _connection_initiator.cancel();
+
+        if (_server != nullptr) {
+            _server->stop();
+        }
+    }
 
     int getPort() { return _grpc_port; }
 
@@ -47,14 +54,17 @@ int MavsdkServer::startGrpcServer(const int port)
 {
     return _impl->startGrpcServer(port);
 }
-void MavsdkServer::connect(const std::string& connection_url)
+
+bool MavsdkServer::connect(const std::string& connection_url)
 {
     return _impl->connect(connection_url);
 }
+
 void MavsdkServer::wait()
 {
     _impl->wait();
 }
+
 void MavsdkServer::stop()
 {
     _impl->stop();

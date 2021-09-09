@@ -1,6 +1,7 @@
 #pragma once
 
 #include <future>
+#include <mutex>
 #include <string>
 
 #include "connection_result.h"
@@ -16,8 +17,6 @@ public:
 
     bool start(Mavsdk& mavsdk, const std::string& connection_url)
     {
-        init_mutex();
-
         LogInfo() << "Waiting to discover system on " << connection_url << "...";
         _discovery_future = wrapped_subscribe_on_new_system(mavsdk);
 
@@ -28,11 +27,18 @@ public:
         return true;
     }
 
-    void wait() { _discovery_future.wait(); }
+    bool wait() { return _discovery_future.get(); }
+
+    void cancel()
+    {
+        std::lock_guard<std::mutex> guard(_mutex);
+        if (!_is_discovery_finished) {
+            _is_discovery_finished = true;
+            _discovery_promise->set_value(false);
+        }
+    }
 
 private:
-    void init_mutex() { _discovery_promise = std::make_shared<std::promise<void>>(); }
-
     bool add_any_connection(Mavsdk& mavsdk, const std::string& connection_url)
     {
         mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
@@ -45,29 +51,29 @@ private:
         return true;
     }
 
-    std::future<void> wrapped_subscribe_on_new_system(Mavsdk& mavsdk)
+    std::future<bool> wrapped_subscribe_on_new_system(Mavsdk& mavsdk)
     {
         auto future = _discovery_promise->get_future();
 
         mavsdk.subscribe_on_new_system([this, &mavsdk]() {
+            std::lock_guard<std::mutex> guard(_mutex);
             const auto system = mavsdk.systems().at(0);
 
-            if (system->is_connected()) {
-                std::call_once(_discovery_flag, [this]() {
-                    LogInfo() << "System discovered";
-                    _discovery_promise->set_value();
-                });
-            } else {
-                LogInfo() << "System timed out";
+            if (!_is_discovery_finished && system->is_connected()) {
+                LogInfo() << "System discovered";
+
+                _is_discovery_finished = true;
+                _discovery_promise->set_value(true);
             }
         });
 
         return future;
     }
 
-    std::once_flag _discovery_flag{};
-    std::shared_ptr<std::promise<void>> _discovery_promise{};
-    std::future<void> _discovery_future{};
+    std::mutex _mutex;
+    std::atomic<bool> _is_discovery_finished = false;
+    std::shared_ptr<std::promise<bool>> _discovery_promise = std::make_shared<std::promise<bool>>();
+    std::future<bool> _discovery_future{};
 };
 
 } // namespace mavsdk_server

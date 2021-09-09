@@ -41,8 +41,20 @@ int main(int argc, char** argv)
         }
     }
 
-    auto mavsdk_server = mavsdk_server_run(connection_url.c_str(), mavsdk_server_port);
+    MavsdkServer* mavsdk_server;
+    mavsdk_server_init(&mavsdk_server);
+    auto is_started = mavsdk_server_run(mavsdk_server, connection_url.c_str(), mavsdk_server_port);
+
+    if (!is_started) {
+        std::cout << "Failed to start, exiting...\n";
+        mavsdk_server_destroy(mavsdk_server);
+        return 1;
+    }
+
     mavsdk_server_attach(mavsdk_server);
+
+    mavsdk_server_destroy(mavsdk_server);
+    return 0;
 }
 
 void usage(const char* bin_name)
