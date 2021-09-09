@@ -45,6 +45,11 @@ void MissionImpl::init()
 
 void MissionImpl::enable()
 {
+    request_gimbal_protocol();
+}
+
+void MissionImpl::request_gimbal_protocol()
+{
     _parent->register_timeout_handler(
         [this]() { receive_protocol_timeout(); }, 1.0, &_gimbal_protocol_cookie);
 

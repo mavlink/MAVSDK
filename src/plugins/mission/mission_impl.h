@@ -74,6 +74,7 @@ private:
     void process_gimbal_information(const mavlink_message_t& message);
     void process_gimbal_manager_information(const mavlink_message_t& message);
     void receive_protocol_timeout();
+    void request_gimbal_protocol();
     void wait_for_protocol();
     void wait_for_protocol_async(std::function<void()> callback);
 
