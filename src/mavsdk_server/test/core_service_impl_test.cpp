@@ -20,9 +20,6 @@ using CoreService = mavsdk::rpc::core::CoreService;
 
 using ConnectionStateResponse = mavsdk::rpc::core::ConnectionStateResponse;
 
-static constexpr auto DEFAULT_MAVSDK_SERVER_PORT = 50051;
-static constexpr auto DEFAULT_MAVSDK_SERVER_ADDRESS = "localhost";
-
 class CoreServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()

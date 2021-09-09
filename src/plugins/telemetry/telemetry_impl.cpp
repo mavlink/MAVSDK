@@ -589,7 +589,9 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
 
     {
         Telemetry::Heading heading;
-        heading.heading_deg = global_position_int.hdg * 1e-2f;
+        heading.heading_deg = (global_position_int.hdg != UINT16_MAX) ?
+                                  static_cast<double>(global_position_int.hdg) * 1e-2 :
+                                  static_cast<double>(NAN);
         set_heading(heading);
     }
 

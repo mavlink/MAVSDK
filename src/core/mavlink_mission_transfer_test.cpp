@@ -617,7 +617,7 @@ TEST_P(MAVLinkMissionTransferNackTests, UploadMissionNackAreHandled)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     MAVLinkMissionTransferTests,
     MAVLinkMissionTransferNackTests,
     ::testing::Values(
