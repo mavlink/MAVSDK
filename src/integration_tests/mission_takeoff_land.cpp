@@ -21,11 +21,6 @@ TEST_F(SitlTest, MissionTakeoffAndLandHigh)
     do_mission_with_takeoff_and_land(20);
 }
 
-TEST_F(SitlTest, MissionTakeoffAndLandLow)
-{
-    do_mission_with_takeoff_and_land(5);
-}
-
 void do_mission_with_takeoff_and_land(float mission_altitude_m)
 {
     Mavsdk mavsdk;
@@ -169,7 +164,8 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m)
         // Wait until we're done.
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-    for (int i = 0; i < 8; i++) {
+    
+    for (int i = 0; i < 9; i++) {
         ASSERT_EQ(landed_states_template.at(i), landed_states.at(i));
     }
 

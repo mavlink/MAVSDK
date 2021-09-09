@@ -18,7 +18,7 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m);
 
 TEST_F(SitlTest, MissionTakeoffTransitionAndLandHigh)
 {
-    do_mission_takeoff_transitions_land(20);
+    do_mission_takeoff_transitions_land(40);
 }
 
 void do_mission_takeoff_transitions_land(float mission_altitude_m)
@@ -59,6 +59,26 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m)
     telemetry->subscribe_position([&pc](Telemetry::Position position) {
         pc.check_current_alitude(position.relative_altitude_m);
     });
+
+    std::vector<Telemetry::VtolState> vtol_states_template = {
+        Telemetry::VtolState::Mc,
+        Telemetry::VtolState::TransitionToFw,
+        Telemetry::VtolState::Fw,
+        Telemetry::VtolState::TransitionToMc,
+        Telemetry::VtolState::Mc
+    };
+
+    std::vector<Telemetry::VtolState> vtol_states;
+    Telemetry::VtolState vtol_state_previous = Telemetry::VtolState::Undefined;
+
+    telemetry->subscribe_vtol_state([&vtol_states, &vtol_state_previous](Telemetry::VtolState vtol_state) {
+        if(vtol_state_previous != vtol_state){
+            LogInfo() << vtol_state;
+            vtol_state_previous = vtol_state;
+            vtol_states.push_back(vtol_state);
+        }
+    });
+
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
@@ -148,5 +168,11 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m)
         // Wait until we're done.
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+
+    for (int i = 0; i < 5; i++) {
+        ASSERT_EQ(vtol_states_template.at(i), vtol_states.at(i));
+    }
+
+
     LogInfo() << "Disarmed, exiting.";
 }
