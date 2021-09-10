@@ -810,6 +810,11 @@ void MissionImpl::report_progress()
     int current = current_mission_item();
     int total = total_mission_items();
 
+    // Do not report -1 as a current mission item
+    if (current == -1) {
+        return;
+    }
+
     bool should_report = false;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
