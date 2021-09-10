@@ -249,7 +249,7 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position>& 
     std::vector<Position> received_positions;
     auto position_stream_future = subscribePositionAsync(received_positions);
     subscription_future.wait();
-    for (const auto position : positions) {
+    for (const auto& position : positions) {
         position_callback(position);
     }
     _telemetry_service->stop();
@@ -359,7 +359,7 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health>& heal
     std::vector<Health> received_healths;
     auto health_stream_future = subscribeHealthAsync(received_healths);
     subscription_future.wait();
-    for (const auto health : healths) {
+    for (const auto& health : healths) {
         health_callback(health);
     }
     _telemetry_service->stop();
@@ -463,7 +463,7 @@ void TelemetryServiceImplTest::checkSendsHomePositions(
     std::vector<Position> received_home_positions;
     auto home_stream_future = subscribeHomeAsync(received_home_positions);
     subscription_future.wait();
-    for (const auto home_position : home_positions) {
+    for (const auto& home_position : home_positions) {
         home_callback(home_position);
     }
     _telemetry_service->stop();
@@ -545,7 +545,7 @@ void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool>& in
     std::vector<bool> received_in_air_events;
     auto in_air_stream_future = subscribeInAirAsync(received_in_air_events);
     subscription_future.wait();
-    for (const auto is_in_air : in_air_events) {
+    for (const auto& is_in_air : in_air_events) {
         in_air_callback(is_in_air);
     }
     _telemetry_service->stop();
@@ -627,7 +627,7 @@ void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool>& ar
     std::vector<bool> received_armed_events;
     auto armed_stream_future = subscribeArmedAsync(received_armed_events);
     subscription_future.wait();
-    for (const auto is_armed : armed_events) {
+    for (const auto& is_armed : armed_events) {
         armed_callback(is_armed);
     }
     _telemetry_service->stop();
@@ -737,7 +737,7 @@ void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
     std::vector<GpsInfo> received_gps_info_events;
     auto gps_info_stream_future = subscribeGpsInfoAsync(received_gps_info_events);
     subscription_future.wait();
-    for (const auto gps_info : gps_info_events) {
+    for (const auto& gps_info : gps_info_events) {
         gps_info_callback(gps_info);
     }
     _telemetry_service->stop();
@@ -851,7 +851,7 @@ void TelemetryServiceImplTest::checkSendsBatteryEvents(
     std::vector<Battery> received_battery_events;
     auto battery_stream_future = subscribeBatteryAsync(received_battery_events);
     subscription_future.wait();
-    for (const auto battery : battery_events) {
+    for (const auto& battery : battery_events) {
         battery_callback(battery);
     }
     _telemetry_service->stop();
@@ -961,7 +961,7 @@ void TelemetryServiceImplTest::checkSendsFlightModeEvents(
     std::vector<FlightMode> received_flight_mode_events;
     auto flight_mode_stream_future = subscribeFlightModeAsync(received_flight_mode_events);
     subscription_future.wait();
-    for (const auto flight_mode : flight_mode_events) {
+    for (const auto& flight_mode : flight_mode_events) {
         flight_mode_callback(flight_mode);
     }
     _telemetry_service->stop();
@@ -1137,7 +1137,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
     std::vector<Quaternion> received_quaternions;
     auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(received_quaternions);
     subscription_future.wait();
-    for (const auto quaternion : quaternions) {
+    for (const auto& quaternion : quaternions) {
         attitude_quaternion_callback(quaternion);
     }
     _telemetry_service->stop();
@@ -1162,7 +1162,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeAngularVelocitiesBody(
     auto angular_velocity_body_stream_future =
         subscribeAttitudeAngularVelocityBodyAsync(received_angular_velocities_body);
     subscription_future.wait();
-    for (const auto angular_velocity_body : angular_velocities_body) {
+    for (const auto& angular_velocity_body : angular_velocities_body) {
         attitude_angular_velocity_body_callback(angular_velocity_body);
     }
     _telemetry_service->stop();
@@ -1271,7 +1271,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(
     std::vector<EulerAngle> received_euler_angles;
     auto euler_angle_stream_future = subscribeAttitudeEulerAsync(received_euler_angles);
     subscription_future.wait();
-    for (const auto euler_angle : euler_angles) {
+    for (const auto& euler_angle : euler_angles) {
         attitude_euler_angle_callback(euler_angle);
     }
     _telemetry_service->stop();
@@ -1360,7 +1360,7 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(
     std::vector<Quaternion> received_quaternions;
     auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(received_quaternions);
     subscription_future.wait();
-    for (const auto quaternion : quaternions) {
+    for (const auto& quaternion : quaternions) {
         attitude_quaternion_callback(quaternion);
     }
     _telemetry_service->stop();
@@ -1448,7 +1448,7 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(
     std::vector<EulerAngle> received_euler_angles;
     auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(received_euler_angles);
     subscription_future.wait();
-    for (const auto euler_angle : euler_angles) {
+    for (const auto& euler_angle : euler_angles) {
         attitude_euler_angle_callback(euler_angle);
     }
     _telemetry_service->stop();
@@ -1548,7 +1548,7 @@ void TelemetryServiceImplTest::checkSendsVelocityEvents(
     std::vector<VelocityNed> received_velocity_events;
     auto velocity_stream_future = subscribeVelocityNedAsync(received_velocity_events);
     subscription_future.wait();
-    for (const auto velocity : velocity_events) {
+    for (const auto& velocity : velocity_events) {
         velocity_ned_callback(velocity);
     }
     _telemetry_service->stop();
@@ -1650,7 +1650,7 @@ void TelemetryServiceImplTest::checkSendsRcStatusEvents(
     std::vector<RcStatus> received_rc_status_events;
     auto rc_status_stream_future = subscribeRcStatusAsync(received_rc_status_events);
     subscription_future.wait();
-    for (const auto rc_status : rc_status_events) {
+    for (const auto& rc_status : rc_status_events) {
         rc_status_callback(rc_status);
     }
     _telemetry_service->stop();
