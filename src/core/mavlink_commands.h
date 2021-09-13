@@ -139,6 +139,8 @@ private:
     LockedQueue<Work> _work_queue{};
     std::unordered_map<uint16_t, std::shared_ptr<Work>> _sent_commands{};
     std::mutex _sent_commands_mutex{};
+
+    bool _command_debugging{false};
 };
 
 class MavlinkCommandReceiver {
