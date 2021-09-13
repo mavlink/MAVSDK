@@ -118,7 +118,7 @@ private:
     using Command = std::variant<std::monostate, CommandLong, CommandInt>;
 
     struct CommandIdentification {
-        uint32_t maybe_param1{0}; // only for commands where this matters
+        float maybe_param1{0}; // only for commands where this matters
         uint16_t command{0};
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
