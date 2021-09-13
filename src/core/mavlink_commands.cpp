@@ -94,10 +94,22 @@ void MavlinkCommandSender::queue_command_async(
                    << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
     }
 
+    CommandIdentification identification = identification_from_command(command);
+
+    for (auto work : _work_queue) {
+        if (work->identification == identification) {
+            LogWarn() << "Dropping command " << static_cast<int>(identification.command)
+                      << " that is already being sent";
+            auto temp_callback = callback;
+            call_callback(callback, Result::CommandDenied, NAN);
+            return;
+        }
+    }
+
     auto new_work = std::make_shared<Work>();
     new_work->timeout_s = _parent.timeout_s();
     new_work->command = command;
-    new_work->mavlink_command = command.command;
+    new_work->identification = identification;
     new_work->callback = callback;
     _work_queue.push_back(new_work);
 }
@@ -110,10 +122,22 @@ void MavlinkCommandSender::queue_command_async(
                    << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
     }
 
+    CommandIdentification identification = identification_from_command(command);
+
+    for (auto work : _work_queue) {
+        if (work->identification == identification) {
+            LogWarn() << "Dropping command " << static_cast<int>(identification.command)
+                      << " that is already being sent";
+            auto temp_callback = callback;
+            call_callback(callback, Result::CommandDenied, NAN);
+            return;
+        }
+    }
+
     auto new_work = std::make_shared<Work>();
     new_work->timeout_s = _parent.timeout_s();
     new_work->command = command;
-    new_work->mavlink_command = command.command;
+    new_work->identification = identification;
     new_work->callback = callback;
     new_work->time_started = _parent.get_time().steady_time();
     _work_queue.push_back(new_work);
@@ -136,29 +160,22 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
         return;
     }
 
-    CommandResultCallback temp_callback = nullptr;
-    std::pair<Result, float> temp_result{Result::UnknownError, NAN};
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
-    {
-        std::lock_guard<std::mutex> lock(_sent_commands_mutex);
+    for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
+        auto work = *it;
 
-        if (_sent_commands.find(command_ack.command) == _sent_commands.end()) {
-            if (_command_debugging) {
-                LogDebug() << "Received ack from " << static_cast<int>(message.sysid) << '/'
-                           << static_cast<int>(message.compid)
-                           << " for unexisting command: " << static_cast<int>(command_ack.command)
-                           << "! Ignoring...";
-            } else {
-                LogWarn() << "Received ack for unexisting command: "
-                          << static_cast<int>(command_ack.command) << "! Ignoring...";
-            }
+        if (!work) {
+            LogErr() << "no work!";
             return;
         }
 
-        auto work = _sent_commands.at(command_ack.command);
-
-        if (!work) {
-            return;
+        if (work->identification.command != command_ack.command ||
+            (work->identification.target_system_id != 0 &&
+             work->identification.target_system_id != message.sysid) ||
+            (work->identification.target_component_id != 0 &&
+             work->identification.target_component_id != message.compid)) {
+            continue;
         }
 
         if (_command_debugging) {
@@ -167,46 +184,48 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                        << _parent.get_time().elapsed_since_s(work->time_started) << " s";
         }
 
-        temp_callback = work->callback;
+        CommandResultCallback temp_callback = work->callback;
+        std::pair<Result, float> temp_result{Result::UnknownError, NAN};
 
         switch (command_ack.result) {
             case MAV_RESULT_ACCEPTED:
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Success, 1.0f};
-                _sent_commands.erase(work->mavlink_command);
+                _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_DENIED:
-                LogWarn() << "command denied (" << work->mavlink_command << ").";
+                LogWarn() << "command denied (" << work->identification.command << ").";
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
-                _sent_commands.erase(work->mavlink_command);
+                _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_UNSUPPORTED:
-                LogWarn() << "command unsupported (" << work->mavlink_command << ").";
+                LogWarn() << "command unsupported (" << work->identification.command << ").";
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Unsupported, NAN};
-                _sent_commands.erase(work->mavlink_command);
+                _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_TEMPORARILY_REJECTED:
-                LogWarn() << "command temporarily rejected (" << work->mavlink_command << ").";
+                LogWarn() << "command temporarily rejected (" << work->identification.command
+                          << ").";
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
-                _sent_commands.erase(work->mavlink_command);
+                _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_FAILED:
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
-                _sent_commands.erase(work->mavlink_command);
+                _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_IN_PROGRESS:
                 if (static_cast<int>(command_ack.progress) != 255) {
                     LogInfo() << "progress: " << static_cast<int>(command_ack.progress) << " % ("
-                              << work->mavlink_command << ").";
+                              << work->identification.command << ").";
                 }
                 // If we get a progress update, we can raise the timeout
                 // to something higher because we know the initial command
@@ -215,7 +234,7 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                 // case where there is no progress update and we keep trying.
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 _parent.register_timeout_handler(
-                    std::bind(&MavlinkCommandSender::receive_timeout, this, work->mavlink_command),
+                    std::bind(&MavlinkCommandSender::receive_timeout, this, work->identification),
                     work->retries_to_do * work->timeout_s,
                     &work->timeout_cookie);
 
@@ -226,32 +245,37 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                 LogWarn() << "Received unknown ack.";
                 break;
         }
+
+        if (temp_callback != nullptr) {
+            call_callback(temp_callback, temp_result.first, temp_result.second);
+        }
+
+        return;
     }
 
-    if (temp_callback != nullptr) {
-        call_callback(temp_callback, temp_result.first, temp_result.second);
+    if (_command_debugging) {
+        LogDebug() << "Received ack from " << static_cast<int>(message.sysid) << '/'
+                   << static_cast<int>(message.compid)
+                   << " for unexisting command: " << static_cast<int>(command_ack.command)
+                   << "! Ignoring...";
+    } else {
+        LogWarn() << "Received ack for unexisting command: "
+                  << static_cast<int>(command_ack.command) << "! Ignoring...";
     }
 }
 
-void MavlinkCommandSender::receive_timeout(const uint16_t command)
+void MavlinkCommandSender::receive_timeout(const CommandIdentification& identification)
 {
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
 
-    {
-        std::lock_guard<std::mutex> lock(_sent_commands_mutex);
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
-        if (_sent_commands.find(command) == _sent_commands.end()) {
-            LogWarn() << "Timeout for unexisting command: " << static_cast<int>(command)
-                      << "! Ignoring...";
-            return;
-        }
+    for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
+        auto work = *it;
 
-        auto work = _sent_commands.at(command);
-
-        if (!work) {
-            LogErr() << "Received timeout without item in queue.";
-            return;
+        if (work->identification != identification) {
+            continue;
         }
 
         if (work->retries_to_do > 0) {
@@ -259,108 +283,93 @@ void MavlinkCommandSender::receive_timeout(const uint16_t command)
             LogWarn() << "sending again after "
                       << _parent.get_time().elapsed_since_s(work->time_started)
                       << " s, retries to do: " << work->retries_to_do << "  ("
-                      << work->mavlink_command << ").";
+                      << work->identification.command << ").";
 
             mavlink_message_t message = create_mavlink_message(work->command);
             if (!_parent.send_message(message)) {
-                LogErr() << "connection send error in retransmit (" << work->mavlink_command
+                LogErr() << "connection send error in retransmit (" << work->identification.command
                          << ").";
                 temp_callback = work->callback;
                 temp_result = {Result::ConnectionError, NAN};
-                _sent_commands.erase(work->mavlink_command);
-            } else {
-                --work->retries_to_do;
-                _parent.register_timeout_handler(
-                    std::bind(&MavlinkCommandSender::receive_timeout, this, work->mavlink_command),
-                    work->timeout_s,
-                    &work->timeout_cookie);
             }
+            --work->retries_to_do;
+            _parent.register_timeout_handler(
+                std::bind(&MavlinkCommandSender::receive_timeout, this, work->identification),
+                work->timeout_s,
+                &work->timeout_cookie);
 
         } else {
             // We have tried retransmitting, giving up now.
-            LogErr() << "Retrying failed (" << work->mavlink_command << ")";
+            LogErr() << "Retrying failed (" << work->identification.command << ")";
 
             temp_callback = work->callback;
             temp_result = {Result::ConnectionError, NAN};
-            _sent_commands.erase(work->mavlink_command);
+            _work_queue.erase(it);
         }
     }
 
     if (temp_callback != nullptr) {
         call_callback(temp_callback, temp_result.first, temp_result.second);
+
+    } else {
+        LogWarn() << "Timeout for unexisting command: " << static_cast<int>(identification.command)
+                  << "! Ignoring...";
     }
 }
 
 void MavlinkCommandSender::do_work()
 {
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
 
-    if (!work) {
-        // Nothing to do.
-        return;
-    }
-
-    if (work->already_sent) {
-        return;
-    }
-
-    // LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
-    work->time_started = _parent.get_time().steady_time();
-
-    {
-        std::lock_guard<std::mutex> lock(_sent_commands_mutex);
-
-        const auto was_inserted =
-            _sent_commands.insert(std::make_pair(work->mavlink_command, work)).second;
-
-        // The command is inserted in the list only if another command with the same id does
-        // not exist. If such an element exists, we refuse to send the new command.
-        if (!was_inserted) {
-            if (_command_debugging) {
-                LogDebug()
-                    << "Another command with the same command_id is still processing! Ignoring command "
-                    << static_cast<int>(work->mavlink_command);
-            }
-
-            work_queue_guard.pop_front();
-
-            auto temp_callback = work->callback;
-            auto temp_result = std::make_pair<Result, float>(Result::CommandDenied, NAN);
-
-            if (temp_callback != nullptr) {
-                call_callback(temp_callback, temp_result.first, temp_result.second);
-            }
-
-            return;
+    for (auto work : _work_queue) {
+        if (work->already_sent) {
+            continue;
         }
 
-        mavlink_message_t message = create_mavlink_message(work->command);
-        if (!_parent.send_message(message)) {
-            LogErr() << "connection send error (" << work->mavlink_command << ")";
-            auto temp_callback = work->callback;
-            auto temp_result = std::make_pair<Result, float>(Result::ConnectionError, NAN);
-
-            if (temp_callback != nullptr) {
-                call_callback(temp_callback, temp_result.first, temp_result.second);
+        bool already_being_sent = false;
+        for (auto other_work : _work_queue) {
+            // Ignore itself:
+            if (other_work == work) {
+                continue;
             }
 
-            _sent_commands.erase(work->mavlink_command);
+            // Check if command with same command ID is already being sent.
+            if (other_work->already_sent &&
+                other_work->identification.command == work->identification.command) {
+                if (_command_debugging) {
+                    LogDebug() << "Command " << static_cast<int>(work->identification.command)
+                               << " is already being sent, waiting...";
+                }
+                already_being_sent = true;
+                break;
+            }
+        }
 
-            return;
+        if (already_being_sent) {
+            continue;
         }
-        if (_command_debugging) {
-            LogDebug() << "Sent command " << static_cast<int>(work->mavlink_command);
+
+        // LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
+        work->time_started = _parent.get_time().steady_time();
+
+        {
+            mavlink_message_t message = create_mavlink_message(work->command);
+            if (!_parent.send_message(message)) {
+                LogErr() << "connection send error (" << work->identification.command << ")";
+            } else {
+                if (_command_debugging) {
+                    LogDebug() << "Sent command " << static_cast<int>(work->identification.command);
+                }
+            }
         }
+
+        work->already_sent = true;
+
+        _parent.register_timeout_handler(
+            std::bind(&MavlinkCommandSender::receive_timeout, this, work->identification),
+            work->timeout_s,
+            &work->timeout_cookie);
     }
-
-    work->already_sent = true;
-    _parent.register_timeout_handler(
-        std::bind(&MavlinkCommandSender::receive_timeout, this, work->mavlink_command),
-        work->timeout_s,
-        &work->timeout_cookie);
-
-    work_queue_guard.pop_front();
 }
 
 void MavlinkCommandSender::call_callback(

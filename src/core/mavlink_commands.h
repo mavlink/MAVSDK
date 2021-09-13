@@ -117,19 +117,51 @@ private:
     // the default ctor of CommandLong and CommandInt is ill-defined.
     using Command = std::variant<std::monostate, CommandLong, CommandInt>;
 
+    struct CommandIdentification {
+        uint32_t maybe_param1{0}; // only for commands where this matters
+        uint16_t command{0};
+        uint8_t target_system_id{0};
+        uint8_t target_component_id{0};
+
+        bool operator==(const CommandIdentification& other)
+        {
+            return maybe_param1 == other.maybe_param1 && command == other.command &&
+                   target_system_id == other.target_system_id &&
+                   target_component_id == other.target_component_id;
+        }
+
+        bool operator!=(const CommandIdentification& other) { return !(*this == other); }
+    };
+
     struct Work {
-        int retries_to_do{3};
-        double timeout_s{0.5};
-        bool already_sent{false};
         Command command;
-        uint16_t mavlink_command{};
+        CommandIdentification identification{};
         CommandResultCallback callback{};
         dl_time_t time_started{};
         void* timeout_cookie = nullptr;
+        double timeout_s{0.5};
+        int retries_to_do{3};
+        bool already_sent{false};
     };
 
+    template<typename CommandType>
+    CommandIdentification identification_from_command(const CommandType& command)
+    {
+        CommandIdentification identification{};
+
+        identification.command = command.command;
+        if (command.command == MAV_CMD_REQUEST_MESSAGE ||
+            command.command == MAV_CMD_SET_MESSAGE_INTERVAL) {
+            identification.maybe_param1 = command.params.param1;
+        }
+        identification.target_system_id = command.target_system_id;
+        identification.target_component_id = command.target_component_id;
+
+        return identification;
+    }
+
     void receive_command_ack(mavlink_message_t message);
-    void receive_timeout(const uint16_t command);
+    void receive_timeout(const CommandIdentification& identification);
 
     void call_callback(const CommandResultCallback& callback, Result result, float progress);
 
@@ -137,8 +169,6 @@ private:
 
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};
-    std::unordered_map<uint16_t, std::shared_ptr<Work>> _sent_commands{};
-    std::mutex _sent_commands_mutex{};
 
     bool _command_debugging{false};
 };
