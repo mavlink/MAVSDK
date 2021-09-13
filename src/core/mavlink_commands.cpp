@@ -323,6 +323,8 @@ void MavlinkCommandSender::do_work()
                     << static_cast<int>(work->mavlink_command);
             }
 
+            work_queue_guard.pop_front();
+
             auto temp_callback = work->callback;
             auto temp_result = std::make_pair<Result, float>(Result::CommandDenied, NAN);
 
