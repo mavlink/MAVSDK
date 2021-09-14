@@ -27,6 +27,13 @@ MavlinkCommandSender::CommandLong::CommandLong(const SystemImpl& system_impl)
 
 MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _parent(system_impl)
 {
+    if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
+        if (env_p && std::string("1").compare(env_p) == 0) {
+            LogDebug() << "Command debugging is on.";
+            _command_debugging = true;
+        }
+    }
+
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
         std::bind(&MavlinkCommandSender::receive_command_ack, this, std::placeholders::_1),
@@ -82,8 +89,10 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& comm
 void MavlinkCommandSender::queue_command_async(
     const CommandInt& command, CommandResultCallback callback)
 {
-    // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
+    if (_command_debugging) {
+        LogDebug() << "COMMAND_INT " << (int)(command.command) << " to send to "
+                   << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
+    }
 
     auto new_work = std::make_shared<Work>();
     new_work->timeout_s = _parent.timeout_s();
@@ -96,8 +105,10 @@ void MavlinkCommandSender::queue_command_async(
 void MavlinkCommandSender::queue_command_async(
     const CommandLong& command, CommandResultCallback callback)
 {
-    // LogDebug() << "Command " << (int)(command.command) << " to send to "
-    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id);
+    if (_command_debugging) {
+        LogDebug() << "COMMAND_LONG " << (int)(command.command) << " to send to "
+                   << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
+    }
 
     auto new_work = std::make_shared<Work>();
     new_work->timeout_s = _parent.timeout_s();
@@ -116,6 +127,12 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
     if ((command_ack.target_system && command_ack.target_system != _parent.get_own_system_id()) ||
         (command_ack.target_component &&
          command_ack.target_component != _parent.get_own_component_id())) {
+        if (_command_debugging) {
+            LogDebug() << "Ignoring command ack from " << static_cast<int>(message.sysid) << '/'
+                       << static_cast<int>(message.compid) << " to "
+                       << static_cast<int>(command_ack.target_system) << '/'
+                       << static_cast<int>(command_ack.target_component);
+        }
         return;
     }
 
@@ -126,8 +143,15 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
         std::lock_guard<std::mutex> lock(_sent_commands_mutex);
 
         if (_sent_commands.find(command_ack.command) == _sent_commands.end()) {
-            LogWarn() << "Received ack for unexisting command: "
-                      << static_cast<int>(command_ack.command) << "! Ignoring...";
+            if (_command_debugging) {
+                LogDebug() << "Received ack from " << static_cast<int>(message.sysid) << '/'
+                           << static_cast<int>(message.compid)
+                           << " for unexisting command: " << static_cast<int>(command_ack.command)
+                           << "! Ignoring...";
+            } else {
+                LogWarn() << "Received ack for unexisting command: "
+                          << static_cast<int>(command_ack.command) << "! Ignoring...";
+            }
             return;
         }
 
@@ -137,8 +161,12 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             return;
         }
 
-        // LogDebug() << "We got an ack: " << command_ack.command << " after: "
-        //     << _parent.get_time().elapsed_since_s(work->time_started) << " s";
+        if (_command_debugging) {
+            LogDebug() << "Received command ack for " << command_ack.command << " with result "
+                       << static_cast<int>(command_ack.result) << " after "
+                       << _parent.get_time().elapsed_since_s(work->time_started) << " s";
+        }
+
         temp_callback = work->callback;
 
         switch (command_ack.result) {
@@ -282,16 +310,21 @@ void MavlinkCommandSender::do_work()
 
     {
         std::lock_guard<std::mutex> lock(_sent_commands_mutex);
+
         const auto was_inserted =
             _sent_commands.insert(std::make_pair(work->mavlink_command, work)).second;
 
         // The command is inserted in the list only if another command with the same id does
         // not exist. If such an element exists, we refuse to send the new command.
         if (!was_inserted) {
-            // LogWarn()
-            //     << "A command cannot be sent if another command with the same command_id is still
-            //     processing! Ignoring command "
-            //     << static_cast<int>(work->mavlink_command);
+            if (_command_debugging) {
+                LogDebug()
+                    << "Another command with the same command_id is still processing! Ignoring command "
+                    << static_cast<int>(work->mavlink_command);
+            }
+
+            work_queue_guard.pop_front();
+
             auto temp_callback = work->callback;
             auto temp_result = std::make_pair<Result, float>(Result::CommandDenied, NAN);
 
@@ -315,6 +348,9 @@ void MavlinkCommandSender::do_work()
             _sent_commands.erase(work->mavlink_command);
 
             return;
+        }
+        if (_command_debugging) {
+            LogDebug() << "Sent command " << static_cast<int>(work->mavlink_command);
         }
     }
 
