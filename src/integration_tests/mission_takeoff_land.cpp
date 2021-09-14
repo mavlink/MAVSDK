@@ -12,11 +12,10 @@
 #include "plugins/mission/mission.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
 
 void do_mission_with_takeoff_and_land(float mission_altitude_m);
 
-TEST_F(SitlTest, MissionTakeoffAndLandHigh)
+TEST_F(SitlTest, MissionTakeoffAndLand)
 {
     do_mission_with_takeoff_and_land(20);
 }

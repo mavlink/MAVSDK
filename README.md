@@ -22,7 +22,6 @@ The MAVSDK C++ part consists of:
 - The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk_server) implementing the gRPC server for the language clients.
 
 ## Repos
-UPDATE
 
 - [MAVSDK](https://github.com/mavlink/MAVSDK) - this repo containing the source code for the C++ core.
 - [MAVSDK-Proto](https://github.com/mavlink/MAVSDK-Proto) - Common interface definitions for API specified as proto files used by gRPC between language clients and mavsdk_server.
