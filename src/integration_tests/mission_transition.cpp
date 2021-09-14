@@ -13,8 +13,6 @@
 
 using namespace mavsdk;
 
-void do_mission_takeoff_transitions_land(float mission_altitude_m);
-
 TEST_F(SitlTest, MissionTakeoffTransitionAndLand_standard_vtol)
 {
     Mavsdk mavsdk;
