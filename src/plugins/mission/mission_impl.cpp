@@ -290,7 +290,6 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     _mission_data.gimbal_v2_in_control = false;
 
     for (const auto& item : mission_items) {
-
         if (item.vehicle_action == VehicleAction::Takeoff) {
             // There is a vehicle action that we need to send.
 
@@ -501,7 +500,8 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             int_items.push_back(next_item);
         }
 
-        if (item.vehicle_action != VehicleAction::None && item.vehicle_action != VehicleAction::Takeoff) {
+        if (item.vehicle_action != VehicleAction::None &&
+            item.vehicle_action != VehicleAction::Takeoff) {
             // There is a vehicle action that we need to send.
 
             // Current is the 0th waypoint
