@@ -113,22 +113,22 @@ bool CameraDefinition::parse_xml()
 
         const char* type_str = e_parameter->Attribute("type");
         if (!type_str) {
-            LogErr() << "type attribute missing";
+            LogErr() << "type attribute missing for " << param_name;
             return false;
         }
 
         if (strcmp(type_str, "string") == 0) {
-            LogDebug() << "Ignoring string params.";
+            LogDebug() << "Ignoring string params: " << param_name;
             continue;
         }
 
         if (strcmp(type_str, "custom") == 0) {
-            LogDebug() << "Ignoring custom params.";
+            LogDebug() << "Ignoring custom params: " << param_name;
             continue;
         }
 
         if (!new_parameter->type.set_empty_type_from_xml(type_str)) {
-            LogErr() << "unknown type attribute";
+            LogErr() << "Unknown type attribute: " << type_str;
             return false;
         }
 
