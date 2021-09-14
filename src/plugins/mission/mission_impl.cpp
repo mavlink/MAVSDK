@@ -305,7 +305,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
 
             MAVLinkMissionTransfer::ItemInt next_item{
                 static_cast<uint16_t>(int_items.size()),
-                frame,
+                (uint8_t)frame,
                 MAV_CMD_NAV_TAKEOFF,
                 current,
                 autocontinue,
@@ -547,7 +547,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
 
             MAVLinkMissionTransfer::ItemInt next_item{
                 static_cast<uint16_t>(int_items.size()),
-                frame,
+                (uint8_t)frame,
                 command,
                 current,
                 autocontinue,
