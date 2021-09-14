@@ -18,7 +18,7 @@ void do_mission_with_takeoff_and_land(float mission_altitude_m);
 TEST_F(SitlTest, MissionTakeoffAndLand)
 {
     Mavsdk mavsdk;
-    float mission_altitude_m = 20
+    float mission_altitude_m = 20;
 
     {
         auto prom = std::make_shared<std::promise<void>>();

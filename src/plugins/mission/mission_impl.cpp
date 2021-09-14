@@ -290,6 +290,39 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     _mission_data.gimbal_v2_in_control = false;
 
     for (const auto& item : mission_items) {
+
+        if (item.vehicle_action == VehicleAction::Takeoff) {
+            // There is a vehicle action that we need to send.
+
+            // Current is the 0th waypoint
+            uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+
+            uint8_t autocontinue = 1;
+
+            const int32_t x = int32_t(std::round(item.latitude_deg * 1e7));
+            const int32_t y = int32_t(std::round(item.longitude_deg * 1e7));
+            float z = item.relative_altitude_m;
+            MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+
+            MAVLinkMissionTransfer::ItemInt next_item{
+                static_cast<uint16_t>(int_items.size()),
+                frame,
+                MAV_CMD_NAV_TAKEOFF,
+                current,
+                autocontinue,
+                NAN,
+                NAN,
+                NAN,
+                NAN,
+                x,
+                y,
+                z,
+                MAV_MISSION_TYPE_MISSION};
+
+            _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+            int_items.push_back(next_item);
+        }
+
         if (has_valid_position(item)) {
             // Current is the 0th waypoint
             const uint8_t current = ((int_items.size() == 0) ? 1 : 0);
@@ -468,7 +501,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             int_items.push_back(next_item);
         }
 
-        if (item.vehicle_action != VehicleAction::None) {
+        if (item.vehicle_action != VehicleAction::None && item.vehicle_action != VehicleAction::Takeoff) {
             // There is a vehicle action that we need to send.
 
             // Current is the 0th waypoint
@@ -481,9 +514,6 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             float param2 = NAN;
             float param3 = NAN;
             switch (item.vehicle_action) {
-                case VehicleAction::Takeoff:
-                    command = MAV_CMD_NAV_TAKEOFF; // Takeoff at current position with same heading
-                    break;
                 case VehicleAction::Land:
                     command = MAV_CMD_NAV_LAND; // Land at current position with same heading
                     break;
