@@ -64,20 +64,19 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m)
         Telemetry::VtolState::TransitionToFw,
         Telemetry::VtolState::Fw,
         Telemetry::VtolState::TransitionToMc,
-        Telemetry::VtolState::Mc
-    };
+        Telemetry::VtolState::Mc};
 
     std::vector<Telemetry::VtolState> vtol_states;
     Telemetry::VtolState vtol_state_previous = Telemetry::VtolState::Undefined;
 
-    telemetry->subscribe_vtol_state([&vtol_states, &vtol_state_previous](Telemetry::VtolState vtol_state) {
-        if(vtol_state_previous != vtol_state){
-            LogInfo() << vtol_state;
-            vtol_state_previous = vtol_state;
-            vtol_states.push_back(vtol_state);
-        }
-    });
-
+    telemetry->subscribe_vtol_state(
+        [&vtol_states, &vtol_state_previous](Telemetry::VtolState vtol_state) {
+            if (vtol_state_previous != vtol_state) {
+                LogInfo() << vtol_state;
+                vtol_state_previous = vtol_state;
+                vtol_states.push_back(vtol_state);
+            }
+        });
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
@@ -171,7 +170,6 @@ void do_mission_takeoff_transitions_land(float mission_altitude_m)
     for (int i = 0; i < 5; i++) {
         ASSERT_EQ(vtol_states_template.at(i), vtol_states.at(i));
     }
-
 
     LogInfo() << "Disarmed, exiting.";
 }
