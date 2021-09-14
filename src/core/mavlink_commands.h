@@ -3,6 +3,7 @@
 #include "mavlink_include.h"
 #include "locked_queue.h"
 #include "global_include.h"
+#include <cmath>
 #include <cstdint>
 #include <string>
 #include <functional>
@@ -118,7 +119,7 @@ private:
     using Command = std::variant<std::monostate, CommandLong, CommandInt>;
 
     struct CommandIdentification {
-        float maybe_param1{0}; // only for commands where this matters
+        uint32_t maybe_param1{0}; // only for commands where this matters
         uint16_t command{0};
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
@@ -152,7 +153,7 @@ private:
         identification.command = command.command;
         if (command.command == MAV_CMD_REQUEST_MESSAGE ||
             command.command == MAV_CMD_SET_MESSAGE_INTERVAL) {
-            identification.maybe_param1 = command.params.param1;
+            identification.maybe_param1 = static_cast<uint32_t>(std::lround(command.params.param1));
         }
         identification.target_system_id = command.target_system_id;
         identification.target_component_id = command.target_component_id;
