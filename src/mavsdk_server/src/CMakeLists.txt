@@ -73,6 +73,8 @@ target_link_libraries(mavsdk_server
 
 set_target_properties(mavsdk_server
     PROPERTIES COMPILE_FLAGS ${warnings}
+    VERSION ${MAVSDK_VERSION_STRING}
+    SOVERSION ${MAVSDK_SOVERSION_STRING}
     )
 
 if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
