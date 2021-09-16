@@ -74,7 +74,6 @@ public:
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
 
     void get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback);
-    void request_home_position_async();
     std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin();
 
     Telemetry::PositionVelocityNed position_velocity_ned() const;
@@ -234,6 +233,7 @@ private:
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
+    void request_home_position_async();
     void check_calibration();
 
     static Telemetry::Result
