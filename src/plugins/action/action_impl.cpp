@@ -389,18 +389,34 @@ void ActionImpl::goto_location_async(
     const float yaw_deg,
     const Action::ResultCallback& callback)
 {
-    MavlinkCommandSender::CommandInt command{};
+    // Change to Hold mode first
+    _parent->set_flight_mode_async(
+        SystemImpl::FlightMode::Hold,
+        [this, yaw_deg, latitude_deg, longitude_deg, altitude_amsl_m, callback](
+            MavlinkCommandSender::Result mode_change_result, float) {
+            Action::Result action_result = action_result_from_command_result(mode_change_result);
 
-    command.command = MAV_CMD_DO_REPOSITION;
-    command.target_component_id = _parent->get_autopilot_id();
-    command.params.param4 = to_rad_from_deg(yaw_deg);
-    command.params.x = int32_t(std::round(latitude_deg * 1e7));
-    command.params.y = int32_t(std::round(longitude_deg * 1e7));
-    command.params.z = altitude_amsl_m;
+            // If successfully changed to Hold, then send the DO_REPOSITION command
+            if (action_result == Action::Result::Success) {
+                MavlinkCommandSender::CommandInt command{};
 
-    _parent->send_command_async(
-        command, [this, callback](MavlinkCommandSender::Result result, float) {
-            command_result_callback(result, callback);
+                command.command = MAV_CMD_DO_REPOSITION;
+                command.target_component_id = _parent->get_autopilot_id();
+                command.params.param4 = to_rad_from_deg(yaw_deg);
+                command.params.x = int32_t(std::round(latitude_deg * 1e7));
+                command.params.y = int32_t(std::round(longitude_deg * 1e7));
+                command.params.z = altitude_amsl_m;
+
+                _parent->send_command_async(
+                    command,
+                    [this, callback](MavlinkCommandSender::Result do_reposition_result, float) {
+                        command_result_callback(do_reposition_result, callback);
+                    });
+            } else {
+                if (callback) {
+                    callback(mode_change_result);
+                }
+            }
         });
 }
 
