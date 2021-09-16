@@ -111,7 +111,7 @@ TEST(CameraDefinition, E90ChangeSettings)
     {
         // Check default
         MAVLinkParameters::ParamValue value;
-        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 0);
     }
 
@@ -119,7 +119,7 @@ TEST(CameraDefinition, E90ChangeSettings)
         // We can only set CAM_COLORMODE in photo mode
         MAVLinkParameters::ParamValue value;
         value.set<uint32_t>(0);
-        EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
+        ASSERT_TRUE(cd.set_setting("CAM_MODE", value));
     }
 
     {
@@ -132,14 +132,14 @@ TEST(CameraDefinition, E90ChangeSettings)
     {
         // Check if WBMODE was correctly set
         MAVLinkParameters::ParamValue value;
-        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 1);
     }
 
     {
         // Interleave COLORMODE, first check default
         MAVLinkParameters::ParamValue value;
-        EXPECT_TRUE(cd.get_setting("CAM_COLORMODE", value));
+        ASSERT_TRUE(cd.get_setting("CAM_COLORMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 1);
     }
 
@@ -147,20 +147,20 @@ TEST(CameraDefinition, E90ChangeSettings)
         // Then set COLORMODE to 5
         MAVLinkParameters::ParamValue value;
         value.set<uint32_t>(5);
-        EXPECT_TRUE(cd.set_setting("CAM_COLORMODE", value));
+        ASSERT_TRUE(cd.set_setting("CAM_COLORMODE", value));
     }
 
     {
         // COLORMODE should now be 5
         MAVLinkParameters::ParamValue value;
-        EXPECT_TRUE(cd.get_setting("CAM_COLORMODE", value));
+        ASSERT_TRUE(cd.get_setting("CAM_COLORMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 5);
     }
 
     {
         // WBMODE should still be 1
         MAVLinkParameters::ParamValue value;
-        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 1);
     }
 
@@ -168,13 +168,13 @@ TEST(CameraDefinition, E90ChangeSettings)
         // Change WBMODE to 7
         MAVLinkParameters::ParamValue value;
         value.set<uint32_t>(7);
-        EXPECT_TRUE(cd.set_setting("CAM_WBMODE", value));
+        ASSERT_TRUE(cd.set_setting("CAM_WBMODE", value));
     }
 
     {
         // And check WBMODE again
         MAVLinkParameters::ParamValue value;
-        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 7);
     }
 }
