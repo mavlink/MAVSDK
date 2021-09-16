@@ -1057,7 +1057,6 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
-
     const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
 
     set_health_armable(armable);
@@ -1474,6 +1473,132 @@ void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int 
     bool ok = (value != 0);
     set_health_magnetometer_calibration(ok);
     _has_received_mag_calibration = true;
+}
+
+void TelemetryImpl::receive_param_cal_mag_offset_x(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for mag offset_x failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_mag_offset_mutex);
+    _ap_mag_offset.x = value;
+    auto calibration_complete = _ap_mag_offset.calibrated();
+    set_health_magnetometer_calibration(calibration_complete);
+    _has_received_mag_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_mag_offset_y(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for mag offset_y failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_mag_offset_mutex);
+    _ap_mag_offset.y = value;
+    auto calibration_complete = _ap_mag_offset.calibrated();
+    set_health_magnetometer_calibration(calibration_complete);
+    _has_received_mag_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_mag_offset_z(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for mag offset_z failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_mag_offset_mutex);
+    _ap_mag_offset.z = value;
+    auto calibration_complete = _ap_mag_offset.calibrated();
+    set_health_magnetometer_calibration(calibration_complete);
+    _has_received_mag_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_accel_offset_x(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for accel offset_x failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_accel_offset_mutex);
+    _ap_accel_offset.x = value;
+    auto calibration_complete = _ap_accel_offset.calibrated();
+    set_health_accelerometer_calibration(calibration_complete);
+    _has_received_accel_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_accel_offset_y(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for accel offset_y failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_accel_offset_mutex);
+    _ap_accel_offset.y = value;
+    auto calibration_complete = _ap_accel_offset.calibrated();
+    set_health_accelerometer_calibration(calibration_complete);
+    _has_received_accel_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_accel_offset_z(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for accel offset_z failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_accel_offset_mutex);
+    _ap_accel_offset.z = value;
+    auto calibration_complete = _ap_accel_offset.calibrated();
+    set_health_accelerometer_calibration(calibration_complete);
+    _has_received_accel_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_gyro_offset_x(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for gyro offset_x failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_gyro_offset_mutex);
+    _ap_gyro_offset.x = value;
+    auto calibration_complete = _ap_gyro_offset.calibrated();
+    set_health_gyrometer_calibration(calibration_complete);
+    _has_received_gyro_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_gyro_offset_y(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for gyro offset_y failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_gyro_offset_mutex);
+    _ap_gyro_offset.y = value;
+    auto calibration_complete = _ap_gyro_offset.calibrated();
+    set_health_gyrometer_calibration(calibration_complete);
+    _has_received_gyro_calibration = (calibration_complete);
+}
+
+void TelemetryImpl::receive_param_cal_gyro_offset_z(MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogErr() << "Error: Param for gyro offset_z failed.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_ap_gyro_offset_mutex);
+    _ap_gyro_offset.z = value;
+    auto calibration_complete = _ap_gyro_offset.calibrated();
+    set_health_gyrometer_calibration(calibration_complete);
+    _has_received_gyro_calibration = (calibration_complete);
 }
 
 void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int value)
@@ -2138,6 +2263,14 @@ void TelemetryImpl::subscribe_heading(Telemetry::HeadingCallback& callback)
     _heading_subscription = callback;
 }
 
+void TelemetryImpl::request_home_position_async()
+{
+    MavlinkCommandSender::CommandLong command_request_message{*_parent};
+    command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
+    command_request_message.params.param1 = MAVLINK_MSG_ID_HOME_POSITION;
+    _parent->send_command_async(command_request_message, nullptr);
+}
+
 void TelemetryImpl::get_gps_global_origin_async(
     const Telemetry::GetGpsGlobalOriginCallback callback)
 {
@@ -2201,7 +2334,6 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_
         [&prom](Telemetry::Result result, Telemetry::GpsGlobalOrigin gps_global_origin) {
             prom.set_value(std::make_pair(result, gps_global_origin));
         });
-
     return fut.get();
 }
 
@@ -2216,9 +2348,95 @@ void TelemetryImpl::check_calibration()
             return;
         }
     }
+    if (_parent->has_autopilot()) {
+        if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+            // We need to ask for the home position from ArduPilot
+            request_home_position_async();
 
-    if (_parent->autopilot() != SystemImpl::Autopilot::ArduPilot) {
-        if (_parent->has_autopilot()) {
+            // ArduPilot calibration sets the offsets,
+            // if any offset is 0 the calibration is not complete/unhealthy.
+            _parent->get_param_float_async(
+                std::string("INS_GYROFFS_X"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro_offset_x,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("INS_GYROFFS_Y"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro_offset_y,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("INS_GYROFFS_Z"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro_offset_z,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("INS_ACCOFFS_X"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel_offset_x,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("INS_ACCOFFS_Y"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel_offset_y,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("INS_ACCOFFS_Z"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel_offset_z,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("COMPASS_OFS_X"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag_offset_x,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("COMPASS_OFS_Y"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag_offset_y,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+            _parent->get_param_float_async(
+                std::string("COMPASS_OFS_Z"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag_offset_z,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+
+        } else {
             _parent->get_param_int_async(
                 std::string("CAL_GYRO0_ID"),
                 std::bind(
@@ -2255,52 +2473,134 @@ void TelemetryImpl::check_calibration()
                     std::placeholders::_2),
                 this);
         }
-    } else {
-        _parent->remove_call_every(_calibration_cookie);
     }
 }
 
 void TelemetryImpl::process_parameter_update(const std::string& name)
 {
-    if (name.compare("CAL_GYRO0_ID") == 0) {
-        _parent->get_param_int_async(
-            std::string("CAL_GYRO0_ID"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_gyro,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
+    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        if (name.compare("INS_GYROFFS_X") == 0) {
+            _parent->get_param_float_async(
+                std::string("INS_GYROFFS_X"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro_offset_x,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("INS_GYROFFS_Y") == 0) {
+            _parent->get_param_float_async(
+                std::string("INS_GYROFFS_Y"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro_offset_y,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("INS_GYROFFS_Z") == 0) {
+            _parent->get_param_float_async(
+                std::string("INS_GYROFFS_Z"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro_offset_z,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("INS_ACCOFFS_X") == 0) {
+            _parent->get_param_float_async(
+                std::string("INS_ACCOFFS_X"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel_offset_x,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("INS_ACCOFFS_Y") == 0) {
+            _parent->get_param_float_async(
+                std::string("INS_ACCOFFS_Y"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel_offset_y,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("INS_ACCOFFS_Z") == 0) {
+            _parent->get_param_float_async(
+                std::string("INS_ACCOFFS_Z"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel_offset_z,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("COMPASS_OFS_X") == 0) {
+            _parent->get_param_float_async(
+                std::string("COMPASS_OFS_X"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag_offset_x,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("COMPASS_OFS_Y") == 0) {
+            _parent->get_param_float_async(
+                std::string("COMPASS_OFS_Y"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag_offset_y,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("COMPASS_OFS_Z") == 0) {
+            _parent->get_param_float_async(
+                std::string("COMPASS_OFS_Z"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag_offset_z,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        }
+    } else {
+        if (name.compare("CAL_GYRO0_ID") == 0) {
+            _parent->get_param_int_async(
+                std::string("CAL_GYRO0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_gyro,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
 
-    } else if (name.compare("CAL_ACC0_ID") == 0) {
-        _parent->get_param_int_async(
-            std::string("CAL_ACC0_ID"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_accel,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
+        } else if (name.compare("CAL_ACC0_ID") == 0) {
+            _parent->get_param_int_async(
+                std::string("CAL_ACC0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_accel,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        } else if (name.compare("CAL_MAG0_ID") == 0) {
+            _parent->get_param_int_async(
+                std::string("CAL_MAG0_ID"),
+                std::bind(
+                    &TelemetryImpl::receive_param_cal_mag,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
 
-    } else if (name.compare("CAL_MAG0_ID") == 0) {
-        _parent->get_param_int_async(
-            std::string("CAL_MAG0_ID"),
-            std::bind(
-                &TelemetryImpl::receive_param_cal_mag,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
-
-    } else if (name.compare("SYS_HITL") == 0) {
-        _parent->get_param_int_async(
-            std::string("SYS_HITL"),
-            std::bind(
-                &TelemetryImpl::receive_param_hitl,
-                this,
-                std::placeholders::_1,
-                std::placeholders::_2),
-            this);
+        } else if (name.compare("SYS_HITL") == 0) {
+            _parent->get_param_int_async(
+                std::string("SYS_HITL"),
+                std::bind(
+                    &TelemetryImpl::receive_param_hitl,
+                    this,
+                    std::placeholders::_1,
+                    std::placeholders::_2),
+                this);
+        }
     }
 }
 

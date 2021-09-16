@@ -213,6 +213,17 @@ private:
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
 
+    // Ardupilot sensor offset callbacks.
+    void receive_param_cal_gyro_offset_x(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_gyro_offset_y(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_gyro_offset_z(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_accel_offset_x(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_accel_offset_y(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_accel_offset_z(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_mag_offset_x(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_mag_offset_y(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_mag_offset_z(MAVLinkParameters::Result result, float value);
+
     void process_parameter_update(const std::string& name);
     void receive_param_hitl(MAVLinkParameters::Result result, int value);
 
@@ -222,6 +233,7 @@ private:
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
+    void request_home_position_async();
     void check_calibration();
 
     static Telemetry::Result
@@ -381,5 +393,24 @@ private:
     bool _has_received_gyro_calibration{false};
     bool _has_received_accel_calibration{false};
     bool _has_received_mag_calibration{false};
+
+    // Ardupilot calibration status values
+
+    struct ap_calibration_offset {
+        float x{0};
+        float y{0};
+        float z{0};
+
+        [[nodiscard]] bool calibrated() const { return ((x != 0) && (y != 0) && (z != 0)); }
+    };
+
+    mutable std::mutex _ap_mag_offset_mutex{};
+    ap_calibration_offset _ap_mag_offset;
+
+    mutable std::mutex _ap_accel_offset_mutex{};
+    ap_calibration_offset _ap_accel_offset;
+
+    mutable std::mutex _ap_gyro_offset_mutex{};
+    ap_calibration_offset _ap_gyro_offset;
 };
 } // namespace mavsdk
