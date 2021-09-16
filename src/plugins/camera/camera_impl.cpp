@@ -1589,7 +1589,7 @@ void CameraImpl::notify_possible_setting_options()
 
     const auto temp_callback = _subscribe_possible_setting_options.callback;
 
-    // We create a function object in order to move be able to move the settings into it.
+    // We create a function object in order to be able to move the settings into it.
     // FIXME: Use C++14 where this is not necessary anymore.
     _parent->call_user_callback(std::bind(
         [temp_callback](const std::vector<Camera::SettingOptions>& options) {
@@ -1633,6 +1633,7 @@ void CameraImpl::refresh_params()
         // any other possible settings to change. However, we still would
         // like to notify the current settings with this one change.
         notify_current_settings();
+        notify_possible_setting_options();
         return;
     }
 
@@ -1640,7 +1641,7 @@ void CameraImpl::refresh_params()
     for (const auto& param : params) {
         const std::string& param_name = param.first;
         const MAVLinkParameters::ParamValue& param_value_type = param.second;
-        const bool is_last = (count + 1 == params.size());
+        const bool is_last = (count == params.size() - 1);
         _parent->get_param_async(
             param_name,
             param_value_type,
