@@ -486,9 +486,6 @@ bool CameraDefinition::get_possible_settings(
 
     for (const auto& parameter : _parameter_map) {
         for (const auto& option : parameter.second->options) {
-            if (_current_settings[parameter.first].needs_updating) {
-                continue;
-            }
             if (_current_settings[parameter.first].value == option->value) {
                 for (const auto& exclusion : option->exclusions) {
                     // LogDebug() << "found exclusion for " << parameter.first

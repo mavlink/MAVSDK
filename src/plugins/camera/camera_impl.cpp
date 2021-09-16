@@ -1633,6 +1633,7 @@ void CameraImpl::refresh_params()
         // any other possible settings to change. However, we still would
         // like to notify the current settings with this one change.
         notify_current_settings();
+        notify_possible_setting_options();
         return;
     }
 

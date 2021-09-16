@@ -75,7 +75,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     {
         std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
         EXPECT_TRUE(cd.get_possible_settings(settings));
-        EXPECT_EQ(settings.size(), 7);
+        EXPECT_EQ(settings.size(), 6);
         // LogDebug() << "Found settings:";
         // for (const auto &setting : settings) {
         //     LogDebug() << " - " << setting.first;
