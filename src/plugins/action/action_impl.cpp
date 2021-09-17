@@ -389,19 +389,39 @@ void ActionImpl::goto_location_async(
     const float yaw_deg,
     const Action::ResultCallback& callback)
 {
-    MavlinkCommandSender::CommandInt command{};
+    auto send_do_reposition =
+        [this, callback, yaw_deg, latitude_deg, longitude_deg, altitude_amsl_m]() {
+            MavlinkCommandSender::CommandInt command{};
 
-    command.command = MAV_CMD_DO_REPOSITION;
-    command.target_component_id = _parent->get_autopilot_id();
-    command.params.param4 = to_rad_from_deg(yaw_deg);
-    command.params.x = int32_t(std::round(latitude_deg * 1e7));
-    command.params.y = int32_t(std::round(longitude_deg * 1e7));
-    command.params.z = altitude_amsl_m;
+            command.command = MAV_CMD_DO_REPOSITION;
+            command.target_component_id = _parent->get_autopilot_id();
+            command.params.param4 = to_rad_from_deg(yaw_deg);
+            command.params.x = int32_t(std::round(latitude_deg * 1e7));
+            command.params.y = int32_t(std::round(longitude_deg * 1e7));
+            command.params.z = altitude_amsl_m;
 
-    _parent->send_command_async(
-        command, [this, callback](MavlinkCommandSender::Result result, float) {
-            command_result_callback(result, callback);
-        });
+            _parent->send_command_async(
+                command, [this, callback](MavlinkCommandSender::Result result, float) {
+                    command_result_callback(result, callback);
+                });
+        };
+
+    // Change to Hold mode first
+    if (_parent->get_flight_mode() != SystemImpl::FlightMode::Hold) {
+        _parent->set_flight_mode_async(
+            SystemImpl::FlightMode::Hold,
+            [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
+                Action::Result action_result = action_result_from_command_result(result);
+                if (action_result != Action::Result::Success) {
+                    command_result_callback(result, callback);
+                    return;
+                }
+                send_do_reposition();
+            });
+        return;
+    }
+
+    send_do_reposition();
 }
 
 void ActionImpl::do_orbit_async(
