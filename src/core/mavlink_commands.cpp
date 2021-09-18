@@ -191,21 +191,21 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             case MAV_RESULT_ACCEPTED:
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Success, 1.0f};
-                _work_queue.erase(it);
+                it = _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_DENIED:
                 LogWarn() << "command denied (" << work->identification.command << ").";
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
-                _work_queue.erase(it);
+                it = _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_UNSUPPORTED:
                 LogWarn() << "command unsupported (" << work->identification.command << ").";
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Unsupported, NAN};
-                _work_queue.erase(it);
+                it = _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_TEMPORARILY_REJECTED:
@@ -213,13 +213,13 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                           << ").";
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
-                _work_queue.erase(it);
+                it = _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_FAILED:
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::CommandDenied, NAN};
-                _work_queue.erase(it);
+                it = _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_IN_PROGRESS:
@@ -304,7 +304,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
 
             temp_callback = work->callback;
             temp_result = {Result::ConnectionError, NAN};
-            _work_queue.erase(it);
+            it = _work_queue.erase(it);
         }
     }
 
