@@ -8,8 +8,8 @@
 #include "ardupilot_custom_mode.h"
 #include <cstdlib>
 #include <functional>
-#include <algorithm>
 #include <future>
+#include <utility>
 
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
@@ -60,19 +60,25 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
     }
 
     _message_handler.register_one(
-        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&SystemImpl::process_heartbeat, this, _1), this);
+        MAVLINK_MSG_ID_HEARTBEAT,
+        [this](const mavlink_message_t& message) { process_heartbeat(message); },
+        this);
 
     _message_handler.register_one(
-        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&SystemImpl::process_statustext, this, _1), this);
+        MAVLINK_MSG_ID_STATUSTEXT,
+        [this](const mavlink_message_t& message) { process_statustext(message); },
+        this);
 
     _message_handler.register_one(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&SystemImpl::process_autopilot_version, this, _1),
+        [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
 
     register_mavlink_command_handler(
         MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-        std::bind(&SystemImpl::process_autopilot_version_request, this, std::placeholders::_1),
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_autopilot_version_request(command);
+        },
         this);
 
     // TO-DO!
@@ -103,7 +109,7 @@ bool SystemImpl::is_connected() const
 }
 
 void SystemImpl::register_mavlink_message_handler(
-    uint16_t msg_id, mavlink_message_handler_t callback, const void* cookie)
+    uint16_t msg_id, const mavlink_message_handler_t& callback, const void* cookie)
 {
     _message_handler.register_one(msg_id, callback, cookie);
 }
@@ -147,7 +153,7 @@ void SystemImpl::enable_timesync()
 void SystemImpl::subscribe_is_connected(System::IsConnectedCallback callback)
 {
     std::lock_guard<std::mutex> lock(_connection_mutex);
-    _is_connected_callback = callback;
+    _is_connected_callback = std::move(callback);
 }
 
 void SystemImpl::process_mavlink_message(mavlink_message_t& message)
@@ -167,7 +173,7 @@ void SystemImpl::process_mavlink_message(mavlink_message_t& message)
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
 {
-    _parent.call_every_handler.add(callback, static_cast<double>(interval_s), cookie);
+    _parent.call_every_handler.add(std::move(callback), static_cast<double>(interval_s), cookie);
 }
 
 void SystemImpl::change_call_every(float interval_s, const void* cookie)
@@ -189,7 +195,7 @@ void SystemImpl::register_statustext_handler(
     std::function<void(const MavlinkStatustextHandler::Statustext&)> callback, void* cookie)
 {
     std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
-    _statustext_handler_callbacks.push_back(StatustextCallback{callback, cookie});
+    _statustext_handler_callbacks.push_back(StatustextCallback{std::move(callback), cookie});
 }
 
 void SystemImpl::unregister_statustext_handler(void* cookie)
@@ -220,8 +226,8 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     }
 
     if (message.compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
-        _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
-        _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false);
+        _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false) != 0;
+        _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false) != 0;
     }
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
         _flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
@@ -382,7 +388,7 @@ size_t SystemImpl::total_components() const
 void SystemImpl::register_component_discovered_callback(System::DiscoverCallback callback)
 {
     std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
-    _component_discovered_callback = callback;
+    _component_discovered_callback = std::move(callback);
 
     if (total_components() > 0) {
         for (const auto& elem : _components) {
@@ -446,7 +452,7 @@ bool SystemImpl::send_message(mavlink_message_t& message)
         const bool keep = _outgoing_messages_intercept_callback(message);
         if (!keep) {
             // We fake that everything was sent as instructed because
-            // a potential loss would happen later and we would not be informed
+            // a potential loss would happen later, and we would not be informed
             // about it.
             LogDebug() << "Dropped outgoing message: " << int(message.msgid);
             return true;
@@ -516,7 +522,7 @@ void SystemImpl::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected) {
-            if (_components.size() > 0) {
+            if (!_components.empty()) {
                 LogDebug() << "Discovered " << _components.size() << " component(s)";
             }
 
@@ -533,8 +539,8 @@ void SystemImpl::set_connected()
 
             if (!_always_connected) {
                 register_timeout_handler(
-                    std::bind(&SystemImpl::heartbeats_timed_out, this),
-                    _HEARTBEAT_TIMEOUT_S,
+                    [this] { heartbeats_timed_out(); },
+                    HEARTBEAT_TIMEOUT_S,
                     &_heartbeat_timeout_cookie);
             }
             enable_needed = true;
@@ -565,7 +571,7 @@ void SystemImpl::set_disconnected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         // This might not be needed because this is probably called from the triggered
-        // timeout anyway but it should also do no harm.
+        // timeout anyway, but it should also do no harm.
         // unregister_timeout_handler(_heartbeat_timeout_cookie);
         //_heartbeat_timeout_cookie = nullptr;
 
@@ -660,7 +666,7 @@ MAVLinkParameters::Result SystemImpl::set_param_ext_int(const std::string& name,
 }
 
 void SystemImpl::set_param_float_async(
-    const std::string& name, float value, success_t callback, const void* cookie)
+    const std::string& name, float value, const success_t& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<float>(value);
@@ -682,7 +688,7 @@ void SystemImpl::provide_server_param_float(const std::string& name, float value
 }
 
 void SystemImpl::set_param_int_async(
-    const std::string& name, int32_t value, success_t callback, const void* cookie)
+    const std::string& name, int32_t value, const success_t& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<int32_t>(value);
@@ -690,7 +696,7 @@ void SystemImpl::set_param_int_async(
 }
 
 void SystemImpl::set_param_ext_float_async(
-    const std::string& name, float value, success_t callback, const void* cookie)
+    const std::string& name, float value, const success_t& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<float>(value);
@@ -698,7 +704,7 @@ void SystemImpl::set_param_ext_float_async(
 }
 
 void SystemImpl::set_param_ext_int_async(
-    const std::string& name, int32_t value, success_t callback, const void* cookie)
+    const std::string& name, int32_t value, const success_t& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set<int32_t>(value);
@@ -823,27 +829,7 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_ext_int(const st
 }
 
 void SystemImpl::get_param_float_async(
-    const std::string& name, get_param_float_callback_t callback, const void* cookie)
-{
-    MAVLinkParameters::ParamValue value_type;
-    value_type.set<float>(0.0f);
-
-    _params.get_param_async(
-        name, value_type, std::bind(&SystemImpl::receive_float_param, _1, _2, callback), cookie);
-}
-
-void SystemImpl::get_param_int_async(
-    const std::string& name, get_param_int_callback_t callback, const void* cookie)
-{
-    MAVLinkParameters::ParamValue value_type;
-    value_type.set<int32_t>(0);
-
-    _params.get_param_async(
-        name, value_type, std::bind(&SystemImpl::receive_int_param, _1, _2, callback), cookie);
-}
-
-void SystemImpl::get_param_ext_float_async(
-    const std::string& name, get_param_float_callback_t callback, const void* cookie)
+    const std::string& name, const get_param_float_callback_t& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set<float>(0.0f);
@@ -851,13 +837,45 @@ void SystemImpl::get_param_ext_float_async(
     _params.get_param_async(
         name,
         value_type,
-        std::bind(&SystemImpl::receive_float_param, _1, _2, callback),
+        [callback](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value) {
+            return SystemImpl::receive_float_param(result, value, callback);
+        },
+        cookie);
+}
+
+void SystemImpl::get_param_int_async(
+    const std::string& name, const get_param_int_callback_t& callback, const void* cookie)
+{
+    MAVLinkParameters::ParamValue value_type;
+    value_type.set<int32_t>(0);
+
+    _params.get_param_async(
+        name,
+        value_type,
+        [callback](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value) {
+            return SystemImpl::receive_int_param(result, value, callback);
+        },
+        cookie);
+}
+
+void SystemImpl::get_param_ext_float_async(
+    const std::string& name, const get_param_float_callback_t& callback, const void* cookie)
+{
+    MAVLinkParameters::ParamValue value_type;
+    value_type.set<float>(0.0f);
+
+    _params.get_param_async(
+        name,
+        value_type,
+        [callback](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value) {
+            return SystemImpl::receive_float_param(result, value, callback);
+        },
         cookie,
         true);
 }
 
 void SystemImpl::get_param_ext_int_async(
-    const std::string& name, get_param_int_callback_t callback, const void* cookie)
+    const std::string& name, const get_param_int_callback_t& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set<int32_t>(0);
@@ -865,7 +883,9 @@ void SystemImpl::get_param_ext_int_async(
     _params.get_param_async(
         name,
         value_type,
-        std::bind(&SystemImpl::receive_int_param, _1, _2, callback),
+        [callback](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value) {
+            return SystemImpl::receive_int_param(result, value, callback);
+        },
         cookie,
         true);
 }
@@ -873,7 +893,7 @@ void SystemImpl::get_param_ext_int_async(
 void SystemImpl::set_param_async(
     const std::string& name,
     MAVLinkParameters::ParamValue value,
-    success_t callback,
+    const success_t& callback,
     const void* cookie,
     bool extended)
 {
@@ -889,7 +909,7 @@ SystemImpl::set_param(const std::string& name, MAVLinkParameters::ParamValue val
 void SystemImpl::get_param_async(
     const std::string& name,
     MAVLinkParameters::ParamValue value_type,
-    get_param_callback_t callback,
+    const get_param_callback_t& callback,
     const void* cookie,
     bool extended)
 {
@@ -902,7 +922,7 @@ void SystemImpl::cancel_all_param(const void* cookie)
 }
 
 void SystemImpl::subscribe_param_int(
-    const std::string& name, SubscribeParamIntCallback callback, const void* cookie)
+    const std::string& name, const SubscribeParamIntCallback& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set<int32_t>(0);
@@ -915,7 +935,7 @@ void SystemImpl::subscribe_param_int(
 }
 
 void SystemImpl::subscribe_param_float(
-    const std::string& name, SubscribeParamFloatCallback callback, const void* cookie)
+    const std::string& name, const SubscribeParamFloatCallback& callback, const void* cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set<float>(0.0f);
@@ -1217,7 +1237,7 @@ SystemImpl::set_flight_mode(FlightMode system_mode, uint8_t component_id)
 }
 
 void SystemImpl::set_flight_mode_async(
-    FlightMode system_mode, CommandResultCallback callback, uint8_t component_id)
+    FlightMode system_mode, const CommandResultCallback& callback, uint8_t component_id)
 {
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong> result =
         make_command_flight_mode(system_mode, component_id);
@@ -1235,7 +1255,7 @@ void SystemImpl::set_flight_mode_async(
 void SystemImpl::receive_float_param(
     MAVLinkParameters::Result result,
     MAVLinkParameters::ParamValue value,
-    get_param_float_callback_t callback)
+    const get_param_float_callback_t& callback)
 {
     if (callback) {
         if (result == MAVLinkParameters::Result::Success) {
@@ -1249,7 +1269,7 @@ void SystemImpl::receive_float_param(
 void SystemImpl::receive_int_param(
     MAVLinkParameters::Result result,
     MAVLinkParameters::ParamValue value,
-    get_param_int_callback_t callback)
+    const get_param_int_callback_t& callback)
 {
     if (callback) {
         if (result == MAVLinkParameters::Result::Success) {
@@ -1355,7 +1375,7 @@ uint8_t SystemImpl::get_gimbal_id() const
 
 MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::CommandLong& command)
 {
-    if (_target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.empty()) {
         return MavlinkCommandSender::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
@@ -1364,7 +1384,7 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 
 MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::CommandInt& command)
 {
-    if (_target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.empty()) {
         return MavlinkCommandSender::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
@@ -1372,9 +1392,9 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 }
 
 void SystemImpl::send_command_async(
-    MavlinkCommandSender::CommandLong command, const CommandResultCallback callback)
+    MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback)
 {
-    if (_target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.empty()) {
         if (callback) {
             callback(MavlinkCommandSender::Result::NoSystem, NAN);
         }
@@ -1386,9 +1406,9 @@ void SystemImpl::send_command_async(
 }
 
 void SystemImpl::send_command_async(
-    MavlinkCommandSender::CommandInt command, const CommandResultCallback callback)
+    MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback)
 {
-    if (_target_address.system_id == 0 && _components.size() == 0) {
+    if (_target_address.system_id == 0 && _components.empty()) {
         if (callback) {
             callback(MavlinkCommandSender::Result::NoSystem, NAN);
         }
@@ -1408,7 +1428,10 @@ SystemImpl::set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_
 }
 
 void SystemImpl::set_msg_rate_async(
-    uint16_t message_id, double rate_hz, CommandResultCallback callback, uint8_t component_id)
+    uint16_t message_id,
+    double rate_hz,
+    const CommandResultCallback& callback,
+    uint8_t component_id)
 {
     MavlinkCommandSender::CommandLong command =
         make_command_msg_rate(message_id, rate_hz, component_id);
@@ -1488,7 +1511,7 @@ void SystemImpl::param_changed(const std::string& name)
 }
 
 void SystemImpl::register_param_changed_handler(
-    const param_changed_callback_t callback, const void* cookie)
+    const param_changed_callback_t& callback, const void* cookie)
 {
     if (!callback) {
         LogErr() << "No callback for param_changed_handler supplied.";
@@ -1519,22 +1542,26 @@ void SystemImpl::unregister_param_changed_handler(const void* cookie)
 
 void SystemImpl::intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback)
 {
-    _incoming_messages_intercept_callback = callback;
+    _incoming_messages_intercept_callback = std::move(callback);
 }
 
 void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback)
 {
-    _outgoing_messages_intercept_callback = callback;
+    _outgoing_messages_intercept_callback = std::move(callback);
 }
 
 void SystemImpl::register_mavlink_command_handler(
-    uint16_t cmd_id, MavlinkCommandReceiver::MavlinkCommandIntHandler callback, const void* cookie)
+    uint16_t cmd_id,
+    const MavlinkCommandReceiver::MavlinkCommandIntHandler& callback,
+    const void* cookie)
 {
     _receive_commands.register_mavlink_command_handler(cmd_id, callback, cookie);
 }
 
 void SystemImpl::register_mavlink_command_handler(
-    uint16_t cmd_id, MavlinkCommandReceiver::MavlinkCommandLongHandler callback, const void* cookie)
+    uint16_t cmd_id,
+    const MavlinkCommandReceiver::MavlinkCommandLongHandler& callback,
+    const void* cookie)
 {
     _receive_commands.register_mavlink_command_handler(cmd_id, callback, cookie);
 }

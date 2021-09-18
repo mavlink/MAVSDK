@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mutex>
+#include <utility>
 #include <vector>
 #include <atomic>
 
@@ -35,7 +36,7 @@ public:
     MavsdkImpl(const MavsdkImpl&) = delete;
     void operator=(const MavsdkImpl&) = delete;
 
-    std::string version() const;
+    static std::string version();
 
     void forward_message(mavlink_message_t& message, Connection* connection);
     void receive_message(mavlink_message_t& message, Connection* connection);
@@ -43,8 +44,6 @@ public:
 
     ConnectionResult
     add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
-    ConnectionResult
-    add_link_connection(const std::string& protocol, const std::string& ip, int port);
     ConnectionResult add_udp_connection(
         const std::string& local_ip, int local_port_number, ForwardingOption forwarding_option);
     ConnectionResult add_tcp_connection(
@@ -65,7 +64,7 @@ public:
     uint8_t get_own_component_id() const;
     uint8_t get_mav_type() const;
 
-    void subscribe_on_new_system(Mavsdk::NewSystemCallback callback);
+    void subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback);
 
     void notify_on_discover();
     void notify_on_timeout();
@@ -77,13 +76,11 @@ public:
     CallEveryHandler call_every_handler;
 
     void call_user_callback_located(
-        const std::string& filename, const int linenumber, const std::function<void()>& func);
+        const std::string& filename, int linenumber, const std::function<void()>& func);
 
     void set_timeout_s(double timeout_s) { _timeout_s = timeout_s; }
 
     double timeout_s() const { return _timeout_s; };
-
-    MAVLinkAddress own_address{};
 
     void set_base_mode(uint8_t base_mode);
     uint8_t get_base_mode() const;
@@ -91,7 +88,7 @@ public:
     uint32_t get_custom_mode() const;
 
 private:
-    void add_connection(std::shared_ptr<Connection>);
+    void add_connection(const std::shared_ptr<Connection>&);
     void make_system_with_component(
         uint8_t system_id, uint8_t component_id, bool always_connected = false);
 
@@ -99,7 +96,7 @@ private:
     void process_user_callbacks_thread();
 
     void send_heartbeat();
-    bool is_any_system_connected();
+    bool is_any_system_connected() const;
 
     static uint8_t get_target_system_id(const mavlink_message_t& message);
     static uint8_t get_target_component_id(const mavlink_message_t& message);
@@ -119,14 +116,11 @@ private:
     Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
 
     struct UserCallback {
-        UserCallback() {}
-        UserCallback(const std::function<void()>& func_) : func(func_) {}
-        UserCallback(
-            const std::function<void()>& func_,
-            const std::string& filename_,
-            const int linenumber_) :
-            func(func_),
-            filename(filename_),
+        UserCallback() = default;
+        explicit UserCallback(std::function<void()> func_) : func(std::move(func_)) {}
+        UserCallback(std::function<void()> func_, std::string filename_, const int linenumber_) :
+            func(std::move(func_)),
+            filename(std::move(filename_)),
             linenumber(linenumber_)
         {}
 
@@ -144,7 +138,7 @@ private:
 
     std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
 
-    static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
+    static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     void* _heartbeat_send_cookie{nullptr};
 
     std::atomic<bool> _should_exit = {false};

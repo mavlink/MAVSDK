@@ -4,8 +4,6 @@ namespace mavsdk {
 
 TimeoutHandler::TimeoutHandler(Time& time) : _time(time) {}
 
-TimeoutHandler::~TimeoutHandler() {}
-
 void TimeoutHandler::add(std::function<void()> callback, double duration_s, void** cookie)
 {
     auto new_timeout = std::make_shared<Timeout>();

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace mavsdk {
-namespace geometry {
+namespace mavsdk::geometry {
 
 /**
  * @brief This is a utility class for coordinate transformations.
@@ -47,14 +46,14 @@ public:
      *
      * @param global_coordinate The global coordinate to project from.
      */
-    LocalCoordinate local_from_global(GlobalCoordinate global_coordinate) const;
+    [[nodiscard]] LocalCoordinate local_from_global(GlobalCoordinate global_coordinate) const;
 
     /**
      * @brief Calculate global coordinates from local coordinates.
      *
      * @param local_coordinate The local coordinate to project from.
      */
-    GlobalCoordinate global_from_local(LocalCoordinate local_coordinate) const;
+    [[nodiscard]] GlobalCoordinate global_from_local(LocalCoordinate local_coordinate) const;
 
     /**
      * @brief Destructor.
@@ -71,5 +70,4 @@ private:
     static constexpr double world_radius_m{6371000.0};
 };
 
-} // namespace geometry
-} // namespace mavsdk
+} // namespace mavsdk::geometry

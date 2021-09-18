@@ -4,8 +4,7 @@
 
 #include <mavsdk.h>
 
-namespace mavsdk {
-namespace mavsdk_server {
+namespace mavsdk::mavsdk_server {
 
 template<typename Plugin> class LazyPlugin {
 public:
@@ -14,7 +13,7 @@ public:
     Plugin* maybe_plugin()
     {
         if (_action == nullptr) {
-            if (_mavsdk.systems().size() == 0) {
+            if (_mavsdk.systems().empty()) {
                 return nullptr;
             }
             _action = std::make_unique<Plugin>(_mavsdk.systems()[0]);
@@ -27,5 +26,4 @@ private:
     std::unique_ptr<Plugin> _action{};
 };
 
-} // namespace mavsdk_server
-} // namespace mavsdk
+} // namespace mavsdk::mavsdk_server

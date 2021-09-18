@@ -39,7 +39,7 @@ bool MAVLinkReceiver::parse_message()
             debug_drop_rate();
 #endif
 
-            // We have parsed one message, let's return so it can be handled.
+            // We have parsed one message, let's return, so it can be handled.
             return true;
         }
     }

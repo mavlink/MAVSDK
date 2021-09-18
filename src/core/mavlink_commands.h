@@ -40,7 +40,7 @@ public:
         uint8_t target_component_id{0};
         MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         uint16_t command{0};
-        bool current = 0;
+        bool current = false;
         bool autocontinue = false;
         // Most of the "Reserved" values in MAVLink spec are NAN.
         struct Params {
@@ -52,20 +52,6 @@ public:
             int32_t y = 0;
             float z = NAN;
         } params{};
-
-        // In some cases "Reserved" value could be "0".
-        // This utility method can be used in such case.
-        // TODO: rename to set_all
-        static void set_as_reserved(Params& params, float reserved_value = NAN)
-        {
-            params.param1 = reserved_value;
-            params.param2 = reserved_value;
-            params.param3 = reserved_value;
-            params.param4 = reserved_value;
-            params.x = 0;
-            params.y = 0;
-            params.z = reserved_value;
-        }
     };
 
     struct CommandLong {
@@ -84,7 +70,7 @@ public:
             float param5;
             float param6;
             float param7;
-        } params;
+        } params{};
 
         // TODO: rename to set_all
         static void set_as_reserved(Params& params, float reserved_value = NAN)
@@ -102,8 +88,8 @@ public:
     Result send_command(const CommandInt& command);
     Result send_command(const CommandLong& command);
 
-    void queue_command_async(const CommandInt& command, CommandResultCallback callback);
-    void queue_command_async(const CommandLong& command, CommandResultCallback callback);
+    void queue_command_async(const CommandInt& command, const CommandResultCallback& callback);
+    void queue_command_async(const CommandLong& command, const CommandResultCallback& callback);
 
     void do_work();
 
@@ -124,14 +110,14 @@ private:
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
 
-        bool operator==(const CommandIdentification& other)
+        bool operator==(const CommandIdentification& other) const
         {
             return maybe_param1 == other.maybe_param1 && command == other.command &&
                    target_system_id == other.target_system_id &&
                    target_component_id == other.target_component_id;
         }
 
-        bool operator!=(const CommandIdentification& other) { return !(*this == other); }
+        bool operator!=(const CommandIdentification& other) const { return !(*this == other); }
     };
 
     struct Work {
@@ -186,7 +172,7 @@ public:
         uint8_t origin_component_id{0};
         MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         uint16_t command{0};
-        bool current{0};
+        bool current{false};
         bool autocontinue{false};
         // Most of the "Reserved" values in MAVLink spec are NAN.
         struct Params {
@@ -199,7 +185,7 @@ public:
             float z = NAN;
         } params{};
 
-        CommandInt(const mavlink_message_t& message)
+        explicit CommandInt(const mavlink_message_t& message)
         {
             mavlink_command_int_t command_int;
             mavlink_msg_command_int_decode(&message, &command_int);
@@ -239,7 +225,7 @@ public:
             float param7 = NAN;
         } params{};
 
-        CommandLong(const mavlink_message_t& message)
+        explicit CommandLong(const mavlink_message_t& message)
         {
             mavlink_command_long_t command_long;
             mavlink_msg_command_long_decode(&message, &command_long);
@@ -266,9 +252,9 @@ public:
         std::function<std::optional<mavlink_message_t>(const CommandLong&)>;
 
     void register_mavlink_command_handler(
-        uint16_t cmd_id, MavlinkCommandIntHandler callback, const void* cookie);
+        uint16_t cmd_id, const MavlinkCommandIntHandler& callback, const void* cookie);
     void register_mavlink_command_handler(
-        uint16_t cmd_id, MavlinkCommandLongHandler callback, const void* cookie);
+        uint16_t cmd_id, const MavlinkCommandLongHandler& callback, const void* cookie);
 
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);

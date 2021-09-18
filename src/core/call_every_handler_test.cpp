@@ -1,7 +1,5 @@
 #include "call_every_handler.h"
 #include <gtest/gtest.h>
-#include <atomic>
-#include "log.h"
 
 #ifdef FAKE_TIME
 #define Time FakeTime

@@ -4,6 +4,7 @@
 #include <atomic>
 #include <memory>
 #include <string>
+#include <utility>
 #include "safe_queue.h"
 #include "curl_wrapper.h"
 
@@ -43,8 +44,8 @@ public:
 private:
     class WorkItem {
     public:
-        WorkItem() {}
-        virtual ~WorkItem() {}
+        WorkItem() = default;
+        virtual ~WorkItem() = default;
 
         WorkItem(WorkItem&) = delete;
         WorkItem operator=(WorkItem&) = delete;
@@ -52,9 +53,9 @@ private:
 
     class DownloadTextItem : public WorkItem {
     public:
-        DownloadTextItem(const std::string& url) : _url(url) {}
+        explicit DownloadTextItem(std::string url) : _url(std::move(url)) {}
 
-        std::string get_url() const { return _url; }
+        [[nodiscard]] std::string get_url() const { return _url; }
 
         DownloadTextItem(DownloadTextItem&) = delete;
         DownloadTextItem operator=(DownloadTextItem&) = delete;
@@ -66,19 +67,20 @@ private:
     class DownloadItem : public WorkItem {
     public:
         DownloadItem(
-            const std::string& url,
-            const std::string& local_path,
-            const progress_callback_t& progress_callback) :
-            _url(url),
-            _local_path(local_path),
-            _progress_callback(progress_callback)
+            std::string url, std::string local_path, progress_callback_t progress_callback) :
+            _url(std::move(url)),
+            _local_path(std::move(local_path)),
+            _progress_callback(std::move(progress_callback))
         {}
 
-        std::string get_local_path() const { return _local_path; }
+        [[nodiscard]] std::string get_local_path() const { return _local_path; }
 
-        std::string get_url() const { return _url; }
+        [[nodiscard]] std::string get_url() const { return _url; }
 
-        progress_callback_t get_progress_callback() const { return _progress_callback; }
+        [[nodiscard]] progress_callback_t get_progress_callback() const
+        {
+            return _progress_callback;
+        }
 
         DownloadItem(DownloadItem&) = delete;
         DownloadItem operator=(DownloadItem&) = delete;
@@ -92,19 +94,20 @@ private:
     class UploadItem : public WorkItem {
     public:
         UploadItem(
-            const std::string& target_url,
-            const std::string& local_path,
-            const progress_callback_t& progress_callback) :
-            _target_url(target_url),
-            _local_path(local_path),
-            _progress_callback(progress_callback)
+            std::string target_url, std::string local_path, progress_callback_t progress_callback) :
+            _target_url(std::move(target_url)),
+            _local_path(std::move(local_path)),
+            _progress_callback(std::move(progress_callback))
         {}
 
-        std::string get_local_path() const { return _local_path; }
+        [[nodiscard]] std::string get_local_path() const { return _local_path; }
 
-        std::string get_target_url() const { return _target_url; }
+        [[nodiscard]] std::string get_target_url() const { return _target_url; }
 
-        progress_callback_t get_progress_callback() const { return _progress_callback; }
+        [[nodiscard]] progress_callback_t get_progress_callback() const
+        {
+            return _progress_callback;
+        }
 
         UploadItem(UploadItem&) = delete;
         UploadItem operator=(UploadItem&) = delete;

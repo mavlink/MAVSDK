@@ -14,13 +14,13 @@ class SerialConnection : public Connection {
 public:
     explicit SerialConnection(
         Connection::receiver_callback_t receiver_callback,
-        const std::string& path,
+        std::string path,
         int baudrate,
         bool flow_control,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     ConnectionResult start() override;
     ConnectionResult stop() override;
-    ~SerialConnection();
+    ~SerialConnection() override;
 
     bool send_message(const mavlink_message_t& message) override;
 

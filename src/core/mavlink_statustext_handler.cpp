@@ -8,7 +8,7 @@ MavlinkStatustextHandler::process(const mavlink_statustext_t& statustext)
 {
     char text_with_null[sizeof(statustext.text) + 1]{};
     strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
-    MAV_SEVERITY severity = static_cast<MAV_SEVERITY>(statustext.severity);
+    auto severity = static_cast<MAV_SEVERITY>(statustext.severity);
 
     if (statustext.id > 0) {
         if (statustext.id != _last_id) {

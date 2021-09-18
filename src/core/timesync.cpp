@@ -18,7 +18,7 @@ void Timesync::enable()
     _is_enabled = true;
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_TIMESYNC,
-        std::bind(&Timesync::process_timesync, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_timesync(message); },
         this);
 }
 
@@ -28,7 +28,7 @@ void Timesync::do_work()
         return;
     }
 
-    if (_parent.get_time().elapsed_since_s(_last_time) >= _TIMESYNC_SEND_INTERVAL_S) {
+    if (_parent.get_time().elapsed_since_s(_last_time) >= TIMESYNC_SEND_INTERVAL_S) {
         if (_parent.is_connected()) {
             uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
                                   _parent.get_autopilot_time().now().time_since_epoch())
@@ -66,7 +66,11 @@ void Timesync::send_timesync(uint64_t tc1, uint64_t ts1)
     mavlink_message_t message;
 
     mavlink_msg_timesync_pack(
-        _parent.get_own_system_id(), _parent.get_own_component_id(), &message, tc1, ts1);
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &message,
+        static_cast<int64_t>(tc1),
+        static_cast<int64_t>(ts1));
     _parent.send_message(message);
 }
 
@@ -80,7 +84,7 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_lo
     // remote system
     uint64_t rtt_ns = now_ns - start_transfer_local_time_ns;
 
-    if (rtt_ns < _MAX_RTT_SAMPLE_MS * 1000000ULL) { // Only use samples with low RTT
+    if (rtt_ns < MAX_RTT_SAMPLE_MS * 1000000ULL) { // Only use samples with low RTT
 
         // Save time offset for other components to use
         _parent.get_autopilot_time().shift_time_by(std::chrono::nanoseconds(offset_ns));
@@ -92,9 +96,10 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_lo
         // Increment counter if round trip time is too high for accurate timesync
         _high_rtt_count++;
 
-        if (_high_rtt_count > _MAX_CONS_HIGH_RTT) {
+        if (_high_rtt_count > MAX_CONS_HIGH_RTT) {
             // Issue a warning to the user if the RTT is constantly high
-            LogWarn() << "RTT too high for timesync: " << rtt_ns / 1000000.0 << " ms.";
+            LogWarn() << "RTT too high for timesync: " << static_cast<double>(rtt_ns) / 1000000.0
+                      << " ms.";
 
             // Reset counter
             _high_rtt_count = 0;

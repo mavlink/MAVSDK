@@ -25,10 +25,10 @@ public:
     Sender() = default;
     virtual ~Sender() = default;
     virtual bool send_message(mavlink_message_t& message) = 0;
-    virtual uint8_t get_own_system_id() const = 0;
-    virtual uint8_t get_own_component_id() const = 0;
-    virtual uint8_t get_system_id() const = 0;
-    virtual Autopilot autopilot() const = 0;
+    [[nodiscard]] virtual uint8_t get_own_system_id() const = 0;
+    [[nodiscard]] virtual uint8_t get_own_component_id() const = 0;
+    [[nodiscard]] virtual uint8_t get_system_id() const = 0;
+    [[nodiscard]] virtual Autopilot autopilot() const = 0;
 };
 
 class MAVLinkMissionTransfer {
@@ -121,7 +121,7 @@ public:
             double timeout_s,
             ResultCallback callback);
 
-        virtual ~UploadWorkItem();
+        ~UploadWorkItem() override;
         void start() override;
         void cancel() override;
 
@@ -164,7 +164,7 @@ public:
             ResultAndItemsCallback callback,
             uint32_t mission_count,
             uint8_t target_component);
-        virtual ~ReceiveIncomingMission();
+        ~ReceiveIncomingMission() override;
 
         void start() override;
         void cancel() override;
@@ -208,7 +208,7 @@ public:
             double timeout_s,
             ResultAndItemsCallback callback);
 
-        virtual ~DownloadWorkItem();
+        ~DownloadWorkItem() override;
         void start() override;
         void cancel() override;
 
@@ -250,7 +250,7 @@ public:
             double timeout_s,
             ResultCallback callback);
 
-        virtual ~ClearWorkItem();
+        ~ClearWorkItem() override;
         void start() override;
         void cancel() override;
 
@@ -280,7 +280,7 @@ public:
             double timeout_s,
             ResultCallback callback);
 
-        virtual ~SetCurrentWorkItem();
+        ~SetCurrentWorkItem() override;
         void start() override;
         void cancel() override;
 
@@ -312,7 +312,7 @@ public:
         TimeoutHandler& timeout_handler,
         TimeoutSCallback get_timeout_s_callback);
 
-    ~MAVLinkMissionTransfer();
+    ~MAVLinkMissionTransfer() = default;
 
     std::weak_ptr<WorkItem>
     upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);

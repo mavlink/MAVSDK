@@ -15,6 +15,7 @@
 #endif
 
 #include <cassert>
+#include <utility>
 
 #ifndef WINDOWS
 #define GET_ERROR(_x) strerror(_x)
@@ -27,11 +28,11 @@ namespace mavsdk {
 /* change to remote_ip and remote_port */
 TcpConnection::TcpConnection(
     Connection::receiver_callback_t receiver_callback,
-    const std::string& remote_ip,
+    std::string remote_ip,
     int remote_port,
     ForwardingOption forwarding_option) :
-    Connection(receiver_callback, forwarding_option),
-    _remote_ip(remote_ip),
+    Connection(std::move(receiver_callback), forwarding_option),
+    _remote_ip(std::move(remote_ip)),
     _remote_port_number(remote_port),
     _should_exit(false)
 {}

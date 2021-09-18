@@ -1,14 +1,16 @@
 #include "connection.h"
+
+#include <memory>
+#include <utility>
 #include "mavsdk_impl.h"
 #include "mavlink_channels.h"
-#include "global_include.h"
 
 namespace mavsdk {
 
 std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
 
 Connection::Connection(receiver_callback_t receiver_callback, ForwardingOption forwarding_option) :
-    _receiver_callback(receiver_callback),
+    _receiver_callback(std::move(receiver_callback)),
     _mavlink_receiver(),
     _forwarding_option(forwarding_option)
 {
@@ -34,7 +36,7 @@ bool Connection::start_mavlink_receiver()
         return false;
     }
 
-    _mavlink_receiver.reset(new MAVLinkReceiver(channel));
+    _mavlink_receiver = std::make_unique<MAVLinkReceiver>(channel);
     return true;
 }
 
@@ -62,7 +64,7 @@ bool Connection::should_forward_messages() const
     return _forwarding_option == ForwardingOption::ForwardingOn;
 }
 
-unsigned Connection::forwarding_connections_count() const
+unsigned Connection::forwarding_connections_count()
 {
     return _forwarding_connections_count;
 }

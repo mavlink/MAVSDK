@@ -10,7 +10,7 @@ class MAVLinkReceiver {
 public:
     explicit MAVLinkReceiver(uint8_t channel);
 
-    uint8_t get_channel() { return _channel; }
+    [[nodiscard]] uint8_t get_channel() const { return _channel; }
 
     mavlink_message_t& get_last_message() { return _last_message; }
 

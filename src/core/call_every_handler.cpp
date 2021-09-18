@@ -1,17 +1,17 @@
 #include "call_every_handler.h"
 
+#include <utility>
+
 namespace mavsdk {
 
 CallEveryHandler::CallEveryHandler(Time& time) : _time(time) {}
 
-CallEveryHandler::~CallEveryHandler() {}
-
 void CallEveryHandler::add(std::function<void()> callback, double interval_s, void** cookie)
 {
     auto new_entry = std::make_shared<Entry>();
-    new_entry->callback = callback;
+    new_entry->callback = std::move(callback);
     auto before = _time.steady_time();
-    // Make sure it gets run straightaway. The epsilon seemed not enough so
+    // Make sure it gets run straightaway. The epsilon seemed not enough, so
     // we use the arbitrary value of 1 ms.
     _time.shift_steady_time_by(before, -interval_s - 0.001);
     new_entry->last_time = before;
@@ -56,7 +56,6 @@ void CallEveryHandler::remove(const void* cookie)
     auto it = _entries.find(const_cast<void*>(cookie));
     if (it != _entries.end()) {
         _entries.erase(const_cast<void*>(cookie));
-        cookie = nullptr;
         _iterator_invalidated = true;
     }
 }
@@ -65,15 +64,15 @@ void CallEveryHandler::run_once()
 {
     _entries_mutex.lock();
 
-    for (auto it = _entries.begin(); it != _entries.end(); ++it) {
-        if (_time.elapsed_since_s(it->second->last_time) > double(it->second->interval_s)) {
-            _time.shift_steady_time_by(it->second->last_time, double(it->second->interval_s));
+    for (auto& entry : _entries) {
+        if (_time.elapsed_since_s(entry.second->last_time) > double(entry.second->interval_s)) {
+            _time.shift_steady_time_by(entry.second->last_time, double(entry.second->interval_s));
 
-            if (it->second->callback) {
+            if (entry.second->callback) {
                 // Get a copy for the callback because we unlock.
-                std::function<void()> callback = it->second->callback;
+                std::function<void()> callback = entry.second->callback;
 
-                // Unlock while we callback because it might in turn want to add timeouts.
+                // Unlock while we call back because it might in turn want to add timeouts.
                 _entries_mutex.unlock();
                 callback();
                 _entries_mutex.lock();

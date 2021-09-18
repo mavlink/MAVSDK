@@ -1,5 +1,4 @@
 #include "log.h"
-#include "global_include.h"
 
 #if defined(WINDOWS)
 #include "Windows.h"

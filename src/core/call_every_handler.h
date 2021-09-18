@@ -11,7 +11,7 @@ namespace mavsdk {
 class CallEveryHandler {
 public:
     explicit CallEveryHandler(Time& time);
-    ~CallEveryHandler();
+    ~CallEveryHandler() = default;
 
     // delete copy and move constructors and assign operators
     CallEveryHandler(CallEveryHandler const&) = delete; // Copy construct

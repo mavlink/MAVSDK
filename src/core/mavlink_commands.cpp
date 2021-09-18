@@ -28,7 +28,7 @@ MavlinkCommandSender::CommandLong::CommandLong(const SystemImpl& system_impl)
 MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _parent(system_impl)
 {
     if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
-        if (env_p && std::string("1").compare(env_p) == 0) {
+        if (std::string(env_p) == "1") {
             LogDebug() << "Command debugging is on.";
             _command_debugging = true;
         }
@@ -36,7 +36,7 @@ MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _parent(sy
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
-        std::bind(&MavlinkCommandSender::receive_command_ack, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { receive_command_ack(message); },
         this);
 }
 
@@ -55,7 +55,7 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& comma
     queue_command_async(command, [prom](Result result, float progress) {
         UNUSED(progress);
         // We can only fulfill the promise once in C++11.
-        // Therefore we have to ignore the IN_PROGRESS state and wait
+        // Therefore, we have to ignore the IN_PROGRESS state and wait
         // for the final result.
         if (result != Result::InProgress) {
             prom->set_value(result);
@@ -76,7 +76,7 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& comm
     queue_command_async(command, [prom](Result result, float progress) {
         UNUSED(progress);
         // We can only fulfill the promise once in C++11.
-        // Therefore we have to ignore the IN_PROGRESS state and wait
+        // Therefore, we have to ignore the IN_PROGRESS state and wait
         // for the final result.
         if (result != Result::InProgress) {
             prom->set_value(result);
@@ -87,7 +87,7 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& comm
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandInt& command, CommandResultCallback callback)
+    const CommandInt& command, const CommandResultCallback& callback)
 {
     if (_command_debugging) {
         LogDebug() << "COMMAND_INT " << (int)(command.command) << " to send to "
@@ -96,7 +96,7 @@ void MavlinkCommandSender::queue_command_async(
 
     CommandIdentification identification = identification_from_command(command);
 
-    for (auto work : _work_queue) {
+    for (const auto& work : _work_queue) {
         if (work->identification == identification) {
             LogWarn() << "Dropping command " << static_cast<int>(identification.command)
                       << " that is already being sent";
@@ -115,7 +115,7 @@ void MavlinkCommandSender::queue_command_async(
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandLong& command, CommandResultCallback callback)
+    const CommandLong& command, const CommandResultCallback& callback)
 {
     if (_command_debugging) {
         LogDebug() << "COMMAND_LONG " << (int)(command.command) << " to send to "
@@ -124,7 +124,7 @@ void MavlinkCommandSender::queue_command_async(
 
     CommandIdentification identification = identification_from_command(command);
 
-    for (auto work : _work_queue) {
+    for (const auto& work : _work_queue) {
         if (work->identification == identification) {
             LogWarn() << "Dropping command " << static_cast<int>(identification.command)
                       << " that is already being sent";
@@ -231,14 +231,17 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                 // to something higher because we know the initial command
                 // has arrived. A possible timeout for this case is the initial
                 // timeout * the possible retries because this should match the
-                // case where there is no progress update and we keep trying.
+                // case where there is no progress update, and we keep trying.
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 _parent.register_timeout_handler(
-                    std::bind(&MavlinkCommandSender::receive_timeout, this, work->identification),
+                    [this, identification = work->identification] {
+                        receive_timeout(identification);
+                    },
                     work->retries_to_do * work->timeout_s,
                     &work->timeout_cookie);
 
-                temp_result = {Result::InProgress, command_ack.progress / 100.0f};
+                temp_result = {
+                    Result::InProgress, static_cast<float>(command_ack.progress) / 100.0f};
                 break;
 
             default:
@@ -256,10 +259,10 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
     if (_command_debugging) {
         LogDebug() << "Received ack from " << static_cast<int>(message.sysid) << '/'
                    << static_cast<int>(message.compid)
-                   << " for unexisting command: " << static_cast<int>(command_ack.command)
+                   << " for not-existing command: " << static_cast<int>(command_ack.command)
                    << "! Ignoring...";
     } else {
-        LogWarn() << "Received ack for unexisting command: "
+        LogWarn() << "Received ack for not-existing command: "
                   << static_cast<int>(command_ack.command) << "! Ignoring...";
     }
 }
@@ -302,7 +305,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
             }
             --work->retries_to_do;
             _parent.register_timeout_handler(
-                std::bind(&MavlinkCommandSender::receive_timeout, this, work->identification),
+                [this, identification = work->identification] { receive_timeout(identification); },
                 work->timeout_s,
                 &work->timeout_cookie);
 
@@ -322,8 +325,8 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
     }
 
     if (!found_command) {
-        LogWarn() << "Timeout for unexisting command: " << static_cast<int>(identification.command)
-                  << "! Ignoring...";
+        LogWarn() << "Timeout for not-existing command: "
+                  << static_cast<int>(identification.command) << "! Ignoring...";
     }
 }
 
@@ -331,13 +334,13 @@ void MavlinkCommandSender::do_work()
 {
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
-    for (auto work : _work_queue) {
+    for (const auto& work : _work_queue) {
         if (work->already_sent) {
             continue;
         }
 
         bool already_being_sent = false;
-        for (auto other_work : _work_queue) {
+        for (const auto& other_work : _work_queue) {
             // Ignore itself:
             if (other_work == work) {
                 continue;
@@ -376,7 +379,7 @@ void MavlinkCommandSender::do_work()
         work->already_sent = true;
 
         _parent.register_timeout_handler(
-            std::bind(&MavlinkCommandSender::receive_timeout, this, work->identification),
+            [this, identification = work->identification] { receive_timeout(identification); },
             work->timeout_s,
             &work->timeout_cookie);
     }
@@ -443,12 +446,12 @@ MavlinkCommandReceiver::MavlinkCommandReceiver(SystemImpl& system_impl) : _paren
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_LONG,
-        std::bind(&MavlinkCommandReceiver::receive_command_long, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { receive_command_long(message); },
         this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_INT,
-        std::bind(&MavlinkCommandReceiver::receive_command_int, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { receive_command_int(message); },
         this);
 }
 
@@ -465,12 +468,10 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
 
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_int_handler_table.begin();
-         it != _mavlink_command_int_handler_table.end();
-         ++it) {
-        if (it->cmd_id == cmd.command) {
+    for (auto& handler : _mavlink_command_int_handler_table) {
+        if (handler.cmd_id == cmd.command) {
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
-            auto maybe_message = it->callback(cmd);
+            auto maybe_message = handler.callback(cmd);
             if (maybe_message) {
                 _parent.send_message(maybe_message.value());
             }
@@ -484,12 +485,10 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
 
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
-    for (auto it = _mavlink_command_long_handler_table.begin();
-         it != _mavlink_command_long_handler_table.end();
-         ++it) {
-        if (it->cmd_id == cmd.command) {
+    for (auto& handler : _mavlink_command_long_handler_table) {
+        if (handler.cmd_id == cmd.command) {
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
-            auto maybe_message = it->callback(cmd);
+            auto maybe_message = handler.callback(cmd);
             if (maybe_message) {
                 _parent.send_message(maybe_message.value());
             }
@@ -498,7 +497,7 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
 }
 
 void MavlinkCommandReceiver::register_mavlink_command_handler(
-    uint16_t cmd_id, MavlinkCommandIntHandler callback, const void* cookie)
+    uint16_t cmd_id, const MavlinkCommandIntHandler& callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
@@ -507,7 +506,7 @@ void MavlinkCommandReceiver::register_mavlink_command_handler(
 }
 
 void MavlinkCommandReceiver::register_mavlink_command_handler(
-    uint16_t cmd_id, MavlinkCommandLongHandler callback, const void* cookie)
+    uint16_t cmd_id, const MavlinkCommandLongHandler& callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 

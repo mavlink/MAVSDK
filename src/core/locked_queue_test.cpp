@@ -52,7 +52,7 @@ TEST(LockedQueue, FillAndIterateAndErase)
     EXPECT_EQ(locked_queue.size(), 3);
 
     unsigned counter = 0;
-    for (auto item : locked_queue) {
+    for (const auto& item : locked_queue) {
         ++counter;
         EXPECT_EQ(*item, counter);
     }
@@ -60,7 +60,7 @@ TEST(LockedQueue, FillAndIterateAndErase)
 
     for (auto item = locked_queue.begin(); item != locked_queue.end();
          /* manual incrementation */) {
-        if (*item->get() == 2) {
+        if (**item == 2) {
             item = locked_queue.erase(item);
         } else {
             ++item;
@@ -70,7 +70,7 @@ TEST(LockedQueue, FillAndIterateAndErase)
     EXPECT_EQ(locked_queue.size(), 2);
 
     counter = 0;
-    for (auto item : locked_queue) {
+    for (const auto& item : locked_queue) {
         ++counter;
         if (counter == 1) {
             EXPECT_EQ(*item, 1);
@@ -131,7 +131,7 @@ TEST(LockedQueue, ConcurrantAccess)
     auto fut = prom.get_future();
 
     {
-        LockedQueue<int>::Guard* guard_ptr = new LockedQueue<int>::Guard(locked_queue);
+        auto* guard_ptr = new LockedQueue<int>::Guard(locked_queue);
 
         EXPECT_EQ(*guard_ptr->get_front(), 1);
 

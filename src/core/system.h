@@ -243,7 +243,7 @@ private:
 
     /*
      * MavsdkImpl and PluginImplBase need access to SystemImpl class.
-     * This is not pretty but it's not easy to hide the methods from library
+     * This is not pretty, but it's not easy to hide the methods from library
      * users if not like that (or with an ugly reinterpret_cast).
      */
     friend MavsdkImpl;

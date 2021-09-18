@@ -7,7 +7,7 @@
 #include <curl/curl.h>
 #include <curl/easy.h>
 
-// On Windows the build fails if a define for ERROR is leaked after
+// On Windows the build fails if the definition for ERROR is leaked after
 // above includes.
 //
 // The compile error is:

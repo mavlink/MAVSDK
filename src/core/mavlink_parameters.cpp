@@ -9,38 +9,38 @@ MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
-        std::bind(&MAVLinkParameters::process_param_value, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_param_value(message); },
         this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_SET,
-        std::bind(&MAVLinkParameters::process_param_set, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_param_set(message); },
         this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_VALUE,
-        std::bind(&MAVLinkParameters::process_param_ext_value, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_param_ext_value(message); },
         this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_ACK,
-        std::bind(&MAVLinkParameters::process_param_ext_ack, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
         this);
 
     // Parameter Server Callbacks
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_REQUEST_READ,
-        std::bind(&MAVLinkParameters::process_param_request_read, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_param_request_read(message); },
         this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_REQUEST_LIST,
-        std::bind(&MAVLinkParameters::process_param_request_list, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_param_request_list(message); },
         this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_REQUEST_READ,
-        std::bind(&MAVLinkParameters::process_param_ext_request_read, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_param_ext_request_read(message); },
         this);
 }
 
@@ -57,7 +57,7 @@ void MAVLinkParameters::provide_server_param(const std::string& name, const Para
 void MAVLinkParameters::set_param_async(
     const std::string& name,
     const ParamValue& value,
-    set_param_callback_t callback,
+    const set_param_callback_t& callback,
     const void* cookie,
     bool extended)
 {
@@ -101,7 +101,7 @@ MAVLinkParameters::set_param(const std::string& name, const ParamValue& value, b
 void MAVLinkParameters::get_param_async(
     const std::string& name,
     ParamValue value_type,
-    get_param_callback_t callback,
+    const get_param_callback_t& callback,
     const void* cookie,
     bool extended)
 {
@@ -116,7 +116,7 @@ void MAVLinkParameters::get_param_async(
         return;
     }
 
-    // Otherwise push work onto queue.
+    // Otherwise, push work onto queue.
     auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
     new_work->type = WorkItem::Type::Get;
     new_work->get_param_callback = callback;
@@ -164,7 +164,7 @@ MAVLinkParameters::get_param(const std::string& name, ParamValue value_type, boo
     return res.get();
 }
 
-void MAVLinkParameters::get_all_params_async(get_all_params_callback_t callback)
+void MAVLinkParameters::get_all_params_async(const get_all_params_callback_t& callback)
 {
     _all_param_store = std::make_shared<AllParameters>();
 
@@ -186,9 +186,7 @@ void MAVLinkParameters::get_all_params_async(get_all_params_callback_t callback)
     }
 
     _parent.register_timeout_handler(
-        std::bind(&MAVLinkParameters::receive_timeout, this),
-        1.0,
-        &_all_param_store->timeout_cookie);
+        [this] { receive_timeout(); }, 1.0, &_all_param_store->timeout_cookie);
 }
 
 std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_params()
@@ -196,9 +194,10 @@ std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_
     std::promise<std::map<std::string, ParamValue>> prom;
     auto res = prom.get_future();
 
-    get_all_params_async([&prom](std::map<std::string, MAVLinkParameters::ParamValue> all_params) {
-        prom.set_value(all_params);
-    });
+    get_all_params_async(
+        [&prom](const std::map<std::string, MAVLinkParameters::ParamValue>& all_params) {
+            prom.set_value(all_params);
+        });
 
     return res.get();
 }
@@ -219,7 +218,7 @@ void MAVLinkParameters::cancel_all_param(const void* cookie)
 void MAVLinkParameters::subscribe_param_changed(
     const std::string& name,
     ParamValue value_type,
-    MAVLinkParameters::ParamChangedCallback callback,
+    const MAVLinkParameters::ParamChangedCallback& callback,
     const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
@@ -236,7 +235,7 @@ void MAVLinkParameters::subscribe_param_changed(
         for (auto it = _param_changed_subscriptions.begin();
              it != _param_changed_subscriptions.end();
              /* ++it */) {
-            if (it->param_name.compare(name) == 0 && it->cookie == cookie) {
+            if (it->param_name == name && it->cookie == cookie) {
                 it = _param_changed_subscriptions.erase(it);
             } else {
                 ++it;
@@ -304,9 +303,7 @@ void MAVLinkParameters::do_work()
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
-                std::bind(&MAVLinkParameters::receive_timeout, this),
-                work->timeout_s,
-                &_timeout_cookie);
+                [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
 
         } break;
 
@@ -357,9 +354,7 @@ void MAVLinkParameters::do_work()
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
-                std::bind(&MAVLinkParameters::receive_timeout, this),
-                work->timeout_s,
-                &_timeout_cookie);
+                [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
 
         } break;
 
@@ -423,9 +418,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             _parent.unregister_timeout_handler(_all_param_store->timeout_cookie);
 
             _parent.register_timeout_handler(
-                std::bind(&MAVLinkParameters::receive_timeout, this),
-                1.0,
-                &_all_param_store->timeout_cookie);
+                [this] { receive_timeout(); }, 1.0, &_all_param_store->timeout_cookie);
         }
 
         return;
@@ -444,7 +437,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
         return;
     }
 
-    if (work->param_name.compare(extract_safe_param_id(param_value.param_id)) != 0) {
+    if (work->param_name != extract_safe_param_id(param_value.param_id)) {
         // No match, let's just return the borrowed work item.
         return;
     }
@@ -490,7 +483,7 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
 
     for (const auto& subscription : _param_changed_subscriptions) {
-        if (subscription.param_name.compare(extract_safe_param_id(param_value.param_id)) != 0) {
+        if (subscription.param_name != extract_safe_param_id(param_value.param_id)) {
             continue;
         }
 
@@ -523,7 +516,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
         return;
     }
 
-    if (work->param_name.compare(extract_safe_param_id(param_ext_value.param_id)) != 0) {
+    if (work->param_name != extract_safe_param_id(param_ext_value.param_id)) {
         return;
     }
 
@@ -577,7 +570,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
     }
 
     // Now it still needs to match the param name
-    if (work->param_name.compare(extract_safe_param_id(param_ext_ack.param_id)) != 0) {
+    if (work->param_name != extract_safe_param_id(param_ext_ack.param_id)) {
         return;
     }
 
@@ -657,9 +650,7 @@ void MAVLinkParameters::receive_timeout()
                 } else {
                     --work->retries_to_do;
                     _parent.register_timeout_handler(
-                        std::bind(&MAVLinkParameters::receive_timeout, this),
-                        work->timeout_s,
-                        &_timeout_cookie);
+                        [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
                 }
             } else {
                 // We have tried retransmitting, giving up now.
@@ -682,9 +673,7 @@ void MAVLinkParameters::receive_timeout()
                 } else {
                     --work->retries_to_do;
                     _parent.register_timeout_handler(
-                        std::bind(&MAVLinkParameters::receive_timeout, this),
-                        work->timeout_s,
-                        &_timeout_cookie);
+                        [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
                 }
             } else {
                 // We have tried retransmitting, giving up now.
@@ -705,7 +694,7 @@ std::string MAVLinkParameters::extract_safe_param_id(const char param_id[])
     // Therefore, we make a 0 terminated copy first.
     char param_id_long_enough[PARAM_ID_LEN + 1] = {};
     std::memcpy(param_id_long_enough, param_id, PARAM_ID_LEN);
-    return std::string(param_id_long_enough);
+    return {param_id_long_enough};
 }
 
 std::ostream& operator<<(std::ostream& strm, const MAVLinkParameters::ParamValue& obj)
@@ -720,7 +709,7 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
     mavlink_msg_param_set_decode(&message, &set_request);
 
     std::string safe_param_id = extract_safe_param_id(set_request.param_id);
-    if (safe_param_id != "") {
+    if (!safe_param_id.empty()) {
         LogDebug() << "Set Param Request: " << safe_param_id;
         // Use the ID
         if (_param_server_store.find(safe_param_id) != _param_server_store.end()) {
@@ -774,13 +763,13 @@ void MAVLinkParameters::process_param_request_list(const mavlink_message_t& mess
     mavlink_msg_param_request_list_decode(&message, &list_request);
 
     auto idx = 0;
-    for (auto pair : _param_server_store) {
+    for (const auto& pair : _param_server_store) {
         auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
         new_work->type = WorkItem::Type::Value;
         new_work->param_name = pair.first;
         new_work->param_value = pair.second;
         new_work->extended = false;
-        new_work->param_count = _param_server_store.size();
+        new_work->param_count = static_cast<int>(_param_server_store.size());
         new_work->param_index = idx++;
         _work_queue.push_back(new_work);
     }

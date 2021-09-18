@@ -1,11 +1,9 @@
 #include "system.h"
-#include "global_include.h"
 #include "mavsdk_impl.h"
-#include "mavlink_include.h"
 #include "system_impl.h"
 #include "plugin_impl_base.h"
 #include <functional>
-#include <algorithm>
+#include <utility>
 #include "px4_custom_mode.h"
 
 // Set to 1 to log incoming/outgoing mavlink messages.
@@ -17,7 +15,7 @@ using namespace std::placeholders; // for `_1`
 
 System::System(MavsdkImpl& parent) : _system_impl(std::make_shared<SystemImpl>(parent)) {}
 
-System::~System() {}
+System::~System() = default;
 
 void System::init(uint8_t system_id, uint8_t component_id, bool connected) const
 {
@@ -61,12 +59,12 @@ std::vector<uint8_t> System::component_ids() const
 
 void System::subscribe_is_connected(IsConnectedCallback callback)
 {
-    return _system_impl->subscribe_is_connected(callback);
+    return _system_impl->subscribe_is_connected(std::move(callback));
 }
 
 void System::register_component_discovered_callback(DiscoverCallback callback) const
 {
-    return _system_impl->register_component_discovered_callback(callback);
+    return _system_impl->register_component_discovered_callback(std::move(callback));
 }
 
 void System::enable_timesync()
@@ -111,7 +109,7 @@ void System::set_product_id(uint16_t product_id)
 
 bool System::set_uid2(std::string uid2)
 {
-    return _system_impl->set_uid2(uid2);
+    return _system_impl->set_uid2(std::move(uid2));
 }
 
 System::AutopilotVersion System::get_autopilot_version_data()

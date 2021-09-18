@@ -22,7 +22,7 @@ public:
     MAVLinkChannels& operator=(MAVLinkChannels&&) = delete; // Move assign
 
     MAVLinkChannels();
-    ~MAVLinkChannels();
+    ~MAVLinkChannels() = default;
 
     /**
      * Check out a free channel and mark it as used.

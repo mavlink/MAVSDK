@@ -21,7 +21,7 @@ void Ping::run_once()
 {
     mavlink_message_t message;
 
-    uint64_t now = static_cast<uint64_t>(_system_impl.get_time().elapsed_s() * 1e6);
+    auto now = static_cast<uint64_t>(_system_impl.get_time().elapsed_s() * 1e6);
 
     mavlink_msg_ping_pack(
         _system_impl.get_own_system_id(),
