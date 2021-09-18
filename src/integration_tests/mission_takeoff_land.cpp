@@ -105,19 +105,21 @@ TEST_F(SitlTest, MissionTakeoffAndLand)
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;
     mission_plan.mission_items.push_back(new_item);
 
-    {
-        LogInfo() << "Uploading mission...";
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_plan, [prom](Mission::Result result) {
-            ASSERT_EQ(result, Mission::Result::Success);
-            prom->set_value();
-            LogInfo() << "Mission uploaded.";
-        });
+    LogInfo() << "Uploading mission...";
+    ASSERT_EQ(mission->upload_mission(mission_plan), Mission::Result::Success);
 
-        auto status = future_result.wait_for(std::chrono::seconds(2));
-        ASSERT_EQ(status, std::future_status::ready);
-        future_result.get();
+    LogInfo() << "Downloading mission...";
+    const auto download_result = mission->download_mission();
+    ASSERT_EQ(download_result.first, Mission::Result::Success);
+
+    EXPECT_EQ(mission_plan.mission_items.size(), download_result.second.mission_items.size());
+
+    if (mission_plan.mission_items.size() == download_result.second.mission_items.size()) {
+        for (unsigned i = 0; i < mission_plan.mission_items.size(); ++i) {
+            const auto original = mission_plan.mission_items.at(i);
+            const auto downloaded = download_result.second.mission_items.at(i);
+            EXPECT_EQ(original, downloaded);
+        }
     }
 
     pc.set_min_altitude(0.0f);
