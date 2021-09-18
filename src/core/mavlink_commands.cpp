@@ -166,7 +166,7 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
         auto work = *it;
 
         if (!work) {
-            LogErr() << "no work!";
+            LogErr() << "No work available! (should not happen #1)";
             return;
         }
 
@@ -274,6 +274,11 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
 
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
         auto work = *it;
+
+        if (!work) {
+            LogErr() << "No work available! (should not happen #2)";
+            return;
+        }
 
         if (work->identification != identification) {
             continue;
