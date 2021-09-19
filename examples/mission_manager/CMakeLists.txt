@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(mission_manager)
 
+add_subdirectory(rounded_corners)
+
 add_executable(mission_manager
     mission_manager.cpp
 )
