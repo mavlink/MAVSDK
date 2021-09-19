@@ -1,5 +1,7 @@
 add_library(rounded_corners
     rounded_corners.cpp
+    segment.cpp
+    point.cpp
 )
 
 add_executable(rounded_corners_test

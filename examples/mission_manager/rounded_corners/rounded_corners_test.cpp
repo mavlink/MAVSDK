@@ -19,9 +19,21 @@ void sample_straight_line()
     assert(sampled.at(29) == Point(4.9, 0.0, 0.0));
 }
 
+void calculate_corner()
+{
+    auto rc = RoundedCorners{1.0};
+    const auto line = std::vector<Point>{{2.0, 0.0, 0.0}, {5.0, 0.0, 0.0}, {5.0, 3.0, 0.0}};
+    rc.set_points(line);
+    auto sampled = rc.sample(0.1);
+
+    //assert(sampled.size() == 31);
+    //assert(sampled.at(0) == line.at(0));
+}
+
 int main()
 {
     sample_straight_line();
+    calculate_corner();
 
 
     return 0;
