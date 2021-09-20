@@ -14,8 +14,13 @@ add_executable(mission_manager
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(mission_manager
+    MAVSDK::mavsdk_action
     MAVSDK::mavsdk_mission_raw_server
+    MAVSDK::mavsdk_telemetry
+    MAVSDK::mavsdk_offboard
+    MAVSDK::mavsdk_mavlink_passthrough
     MAVSDK::mavsdk
+    rounded_corners
 )
 
 if(NOT MSVC)
