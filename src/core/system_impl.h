@@ -50,6 +50,52 @@ public:
         Stabilized,
     };
 
+    // Enumeration representing the available modes for the Arudpilot rover autopilot.
+    enum class APRoverMode{
+        Manual = 0,
+        Acro = 1,
+        Steering = 3,
+        Hold = 4,
+        Loiter = 5,
+        Follow = 6,
+        Simple = 7,
+        Auto = 10,
+        RTL = 11,
+        Smart_RTL = 12,
+        Guided = 15,
+        Initializing = 16
+    };
+
+    // Enumeration representing the available modes for the Arudpilot copter autopilot.
+    enum class APCopterMode{
+        Stabilize = 0,
+        Acro = 1,
+        Alt_Hold = 2,
+        Auto = 3,
+        Guided = 4,
+        Loiter = 5,
+        RTL = 6,
+        Circle = 7,
+        Land = 9,
+        Drift = 11,
+        Sport = 13,
+        Flip = 14,
+        Auto_Tune = 15,
+        POS_HOLD = 16,
+        Break = 17,
+        Throw = 18,
+        Avoid_ADBS = 19,
+        Guided_No_GPS = 20,
+        Smart_RTL = 21,
+        Flow_Hold = 22,
+        Follow = 23,
+        Zigzag = 24,
+        System_ID = 25,
+        Auto_Rotate = 26,
+        Auto_RTL = 27,
+        Turtle = 28
+    };
+
     explicit SystemImpl(MavsdkImpl& parent);
     ~SystemImpl();
 
@@ -88,6 +134,9 @@ public:
     Autopilot autopilot() const override { return _autopilot; };
 
     static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
+
+    template<typename ap_mode>
+    static ap_mode to_ap_mode_from_custom_mode(uint32_t custom_mode) { return static_cast<ap_mode>(custom_mode); }
 
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
 
@@ -130,6 +179,8 @@ public:
     uint8_t get_own_system_id() const override;
     uint8_t get_own_component_id() const override;
     uint8_t get_own_mav_type() const;
+    MAV_TYPE get_vehicle_type() const;
+
 
     bool is_armed() const { return _armed; }
 
@@ -161,14 +212,20 @@ public:
         const std::string& name, SubscribeParamFloatCallback callback, const void* cookie);
 
     FlightMode get_flight_mode() const;
+    std::variant<APRoverMode, APCopterMode> get_ap_mode() const;
 
     MavlinkCommandSender::Result
     set_flight_mode(FlightMode mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
-
     void set_flight_mode_async(
         FlightMode mode,
         CommandResultCallback callback,
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+
+    MavlinkCommandSender::Result
+    set_ap_mode(std::variant<APCopterMode, APRoverMode> mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+    void set_ap_mode_async(std::variant<APCopterMode, APRoverMode> mode,
+                           CommandResultCallback callback,
+                           uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     typedef std::function<void(MAVLinkParameters::Result result, float value)>
         get_param_float_callback_t;
@@ -306,6 +363,9 @@ private:
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
 
+    std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
+    make_command_ap_mode(std::variant<APCopterMode,APRoverMode> mode, uint8_t component_id);
+
     MavlinkCommandSender::CommandLong
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
@@ -384,7 +444,12 @@ private:
     std::function<bool(mavlink_message_t&)> _incoming_messages_intercept_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
+    MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};
+
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+
+    std::variant<APRoverMode,APCopterMode> _ap_mode;
+
     std::mutex _autopilot_version_mutex{};
     System::AutopilotVersion _autopilot_version{
         MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};

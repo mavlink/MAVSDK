@@ -304,11 +304,34 @@ MissionRaw::Result MissionRawImpl::start_mission()
 
 void MissionRawImpl::start_mission_async(const MissionRaw::ResultCallback& callback)
 {
-    _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::Mission,
-        [this, callback](MavlinkCommandSender::Result result, float) {
-            report_flight_mode_change(callback, result);
-        });
+    if(_parent->autopilot() == Sender::Autopilot::ArduPilot)
+    {
+        switch(_parent->get_vehicle_type())
+        {
+            case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
+                _parent->set_ap_mode_async(
+                    SystemImpl::APRoverMode::Auto,
+                    [this, callback](MavlinkCommandSender::Result result, float) {
+                      report_flight_mode_change(callback, result);
+                    });
+                break;
+
+            default:
+                _parent->set_ap_mode_async(
+                    SystemImpl::APCopterMode::Auto,
+                    [this, callback](MavlinkCommandSender::Result result, float) {
+                      report_flight_mode_change(callback, result);
+                    });
+        }
+    }
+    else
+    {
+        _parent->set_flight_mode_async(
+            SystemImpl::FlightMode::Mission,
+            [this, callback](MavlinkCommandSender::Result result, float) {
+                report_flight_mode_change(callback, result);
+            });
+    }
 }
 
 MissionRaw::Result MissionRawImpl::pause_mission()
