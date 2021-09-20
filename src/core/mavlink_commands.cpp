@@ -166,7 +166,7 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
         auto work = *it;
 
         if (!work) {
-            LogErr() << "no work!";
+            LogErr() << "No work available! (should not happen #1)";
             return;
         }
 
@@ -266,6 +266,7 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
 
 void MavlinkCommandSender::receive_timeout(const CommandIdentification& identification)
 {
+    bool found_command = false;
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
 
@@ -274,9 +275,16 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
         auto work = *it;
 
+        if (!work) {
+            LogErr() << "No work available! (should not happen #2)";
+            return;
+        }
+
         if (work->identification != identification) {
             continue;
         }
+
+        found_command = true;
 
         if (work->retries_to_do > 0) {
             // We're not sure the command arrived, let's retransmit.
@@ -305,13 +313,15 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
             temp_callback = work->callback;
             temp_result = {Result::ConnectionError, NAN};
             _work_queue.erase(it);
+            break;
         }
     }
 
     if (temp_callback != nullptr) {
         call_callback(temp_callback, temp_result.first, temp_result.second);
+    }
 
-    } else {
+    if (!found_command) {
         LogWarn() << "Timeout for unexisting command: " << static_cast<int>(identification.command)
                   << "! Ignoring...";
     }
