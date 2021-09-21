@@ -865,7 +865,8 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         _captured_request_cv.notify_all();
 
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
-        if (_capture_info.last_advertised_image_index < capture_info.index &&
+        if (_capture_info.last_advertised_image_index != -1 &&
+            _capture_info.last_advertised_image_index < capture_info.index &&
             _capture_info.callback) {
             _capture_info.last_advertised_image_index = capture_info.index;
             const auto temp_callback = _capture_info.callback;
@@ -1772,7 +1773,7 @@ void CameraImpl::list_photos_async(
     }
 
     {
-        std::lock_guard<std::mutex> lock(_status.mutex);
+        std::lock_guard<std::mutex> status_lock(_status.mutex);
 
         if (_status.is_fetching_photos) {
             _parent->call_user_callback([callback]() {
@@ -1785,6 +1786,7 @@ void CameraImpl::list_photos_async(
 
         if (_status.image_count == -1) {
             LogErr() << "Cannot list photos: camera status has not been received yet!";
+            _status.is_fetching_photos = false;
             _parent->call_user_callback([callback]() {
                 callback(Camera::Result::Error, std::vector<Camera::CaptureInfo>{});
             });
@@ -1804,7 +1806,7 @@ void CameraImpl::list_photos_async(
     }();
 
     std::thread([this, start_index, callback]() {
-        std::unique_lock<std::mutex> lock(_captured_request_mutex);
+        std::unique_lock<std::mutex> capture_request_lock(_captured_request_mutex);
 
         for (int i = start_index; i < _status.image_count; i++) {
             // In case the vehicle sends capture info, but not those we are asking, we do not
@@ -1824,6 +1826,8 @@ void CameraImpl::list_photos_async(
                 while (cv_status == std::cv_status::timeout) {
                     request_try_number++;
                     if (request_try_number >= request_try_limit) {
+                        std::lock_guard<std::mutex> status_lock(_status.mutex);
+                        _status.is_fetching_photos = false;
                         _parent->call_user_callback([callback]() {
                             callback(Camera::Result::Timeout, std::vector<Camera::CaptureInfo>{});
                         });
@@ -1832,12 +1836,14 @@ void CameraImpl::list_photos_async(
 
                     _parent->send_command_async(
                         make_command_request_camera_image_captured(i), nullptr);
-                    cv_status =
-                        _captured_request_cv.wait_for(lock, std::chrono::duration<double>(1));
+                    cv_status = _captured_request_cv.wait_for(
+                        capture_request_lock, std::chrono::duration<double>(1));
                 }
             }
 
             if (safety_count == safety_count_boundary) {
+                std::lock_guard<std::mutex> status_lock(_status.mutex);
+                _status.is_fetching_photos = false;
                 _parent->call_user_callback([callback]() {
                     callback(Camera::Result::Error, std::vector<Camera::CaptureInfo>{});
                 });
