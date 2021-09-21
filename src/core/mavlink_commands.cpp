@@ -101,7 +101,7 @@ void MavlinkCommandSender::queue_command_async(
             LogWarn() << "Dropping command " << static_cast<int>(identification.command)
                       << " that is already being sent";
             auto temp_callback = callback;
-            call_callback(callback, Result::CommandDenied, NAN);
+            call_callback(temp_callback, Result::CommandDenied, NAN);
             return;
         }
     }
@@ -129,7 +129,7 @@ void MavlinkCommandSender::queue_command_async(
             LogWarn() << "Dropping command " << static_cast<int>(identification.command)
                       << " that is already being sent";
             auto temp_callback = callback;
-            call_callback(callback, Result::CommandDenied, NAN);
+            call_callback(temp_callback, Result::CommandDenied, NAN);
             return;
         }
     }
@@ -305,6 +305,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
             temp_callback = work->callback;
             temp_result = {Result::ConnectionError, NAN};
             _work_queue.erase(it);
+            break;
         }
     }
 
@@ -381,7 +382,9 @@ void MavlinkCommandSender::call_callback(
 
     // It seems that we need to queue the callback on the thread pool otherwise
     // we lock ourselves out when we send a command in the callback receiving a command result.
-    _parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
+    auto temp_callback = callback;
+    _parent.call_user_callback(
+        [temp_callback, result, progress]() { temp_callback(result, progress); });
 }
 
 mavlink_message_t MavlinkCommandSender::create_mavlink_message(const Command& command)
