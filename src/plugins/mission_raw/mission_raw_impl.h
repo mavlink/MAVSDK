@@ -64,8 +64,6 @@ public:
     const MissionRawImpl& operator=(const MissionRawImpl&) = delete;
 
 private:
-
-
     void reset_mission_progress();
 
     void process_mission_ack(const mavlink_message_t& message);

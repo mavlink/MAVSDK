@@ -212,12 +212,9 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     }
     // This check only works if the MAV_TYPE::MAV_TYPE_ENUM_END is actually the
     // last enumerator.
-    if(MAV_TYPE::MAV_TYPE_ENUM_END > heartbeat.type)
-    {
+    if (MAV_TYPE::MAV_TYPE_ENUM_END > heartbeat.type) {
         _vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
-    }
-    else
-    {
+    } else {
         LogErr() << "type received in HEARTBEAT was not recognized";
     }
 
@@ -226,20 +223,16 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
         _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false);
     }
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
-        if (_autopilot == Autopilot::ArduPilot)
-        {
+        if (_autopilot == Autopilot::ArduPilot) {
             // Currently, just ground rover and default (copter).
-            switch(_vehicle_type)
-            {
-                case MAV_TYPE::MAV_TYPE_GROUND_ROVER :
+            switch (_vehicle_type) {
+                case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
                     _ap_mode = to_ap_mode_from_custom_mode<APRoverMode>(heartbeat.custom_mode);
                     break;
                 default:
                     _ap_mode = to_ap_mode_from_custom_mode<APCopterMode>(heartbeat.custom_mode);
             }
-        }
-        else
-        {
+        } else {
             _flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
         }
     }
@@ -945,22 +938,23 @@ void SystemImpl::subscribe_param_float(
 }
 
 std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
-SystemImpl::make_command_ap_mode(std::variant<APCopterMode,APRoverMode> mode, uint8_t component_id)
+SystemImpl::make_command_ap_mode(std::variant<APCopterMode, APRoverMode> mode, uint8_t component_id)
 {
     const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
     const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
-    const uint8_t mode_type = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed | flag_hitl_enabled;
+    const uint8_t mode_type =
+        MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed | flag_hitl_enabled;
 
     MavlinkCommandSender::CommandLong command{*this};
 
     command.command = MAV_CMD_DO_SET_MODE;
     command.params.param1 = float(mode_type);
-    command.params.param2 = std::visit([](auto&& x) -> float {return static_cast<float>(x);}, mode);
+    command.params.param2 =
+        std::visit([](auto&& x) -> float { return static_cast<float>(x); }, mode);
     command.params.param3 = 0.0;
     command.target_component_id = component_id;
 
     return std::make_pair<>(MavlinkCommandSender::Result::Success, command);
-
 }
 
 std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
@@ -1038,8 +1032,7 @@ SystemImpl::FlightMode SystemImpl::get_flight_mode() const
     return _flight_mode;
 }
 
-std::variant<SystemImpl::APRoverMode, SystemImpl::APCopterMode>
-SystemImpl::get_ap_mode() const
+std::variant<SystemImpl::APRoverMode, SystemImpl::APCopterMode> SystemImpl::get_ap_mode() const
 {
     return _ap_mode;
 }
@@ -1088,7 +1081,7 @@ SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t cust
     }
 }
 MavlinkCommandSender::Result
-    SystemImpl::set_ap_mode(std::variant<APCopterMode, APRoverMode> mode, uint8_t component_id)
+SystemImpl::set_ap_mode(std::variant<APCopterMode, APRoverMode> mode, uint8_t component_id)
 {
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong> result =
         make_command_ap_mode(std::move(mode), component_id);
@@ -1100,7 +1093,10 @@ MavlinkCommandSender::Result
     return send_command(result.second);
 }
 
-void SystemImpl::set_ap_mode_async(std::variant<APCopterMode, APRoverMode> mode, CommandResultCallback callback, uint8_t component_id)
+void SystemImpl::set_ap_mode_async(
+    std::variant<APCopterMode, APRoverMode> mode,
+    CommandResultCallback callback,
+    uint8_t component_id)
 {
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong> result =
         make_command_ap_mode(std::move(mode), component_id);
@@ -1114,7 +1110,6 @@ void SystemImpl::set_ap_mode_async(std::variant<APCopterMode, APRoverMode> mode,
 
     send_command_async(result.second, callback);
 }
-
 
 MavlinkCommandSender::Result
 SystemImpl::set_flight_mode(FlightMode system_mode, uint8_t component_id)
