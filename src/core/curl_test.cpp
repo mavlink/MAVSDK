@@ -17,7 +17,7 @@ protected:
     {
         clean();
         _file_url_existing_http =
-            "https://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecode_sdk_test_file";
+            "http://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecode_sdk_test_file";
         _file_url_not_existing = "http://notexisting.file/does-really-not-exist";
         _local_path = "testfile.txt";
     }

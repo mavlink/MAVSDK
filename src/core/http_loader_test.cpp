@@ -12,9 +12,9 @@ using namespace mavsdk;
 
 class HttpLoaderTest : public testing::Test {
 protected:
-    const std::string _file_url_1 = "https://subdomain.domain.com/some_folder/some_file";
-    const std::string _file_url_2 = "https://subdomain.domain.com/some_folder/another_file.txt";
-    const std::string _file_url_3 = "https://subdomain.domain.com/some_folder/yet_another_file.mp4";
+    const std::string _file_url_1 = "http://subdomain.domain.com/some_folder/some_file";
+    const std::string _file_url_2 = "http://subdomain.domain.com/some_folder/another_file.txt";
+    const std::string _file_url_3 = "http://subdomain.domain.com/some_folder/yet_another_file.mp4";
     const std::string _file_local_path_1 = "some_file";
     const std::string _file_local_path_2 = "another_file.txt";
     const std::string _file_local_path_3 = "yet_another_file.mp4";
