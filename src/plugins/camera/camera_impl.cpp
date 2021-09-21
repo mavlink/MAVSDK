@@ -1734,6 +1734,7 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
     cmd_format.command = MAV_CMD_STORAGE_FORMAT;
     cmd_format.params.param1 = 1.0f; // storage ID
     cmd_format.params.param2 = 1.0f; // format
+    cmd_format.params.param3 = 1.0f; // clear
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     _parent->send_command_async(
@@ -1840,7 +1841,7 @@ void CameraImpl::list_photos_async(
                     _parent->send_command_async(
                         make_command_request_camera_image_captured(i), nullptr);
                     cv_status = _captured_request_cv.wait_for(
-                        capture_request_lock, std::chrono::duration<double>(1));
+                        capture_request_lock, std::chrono::seconds(1));
                 }
             }
 
