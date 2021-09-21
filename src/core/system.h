@@ -3,6 +3,7 @@
 #include <memory>
 #include <array>
 #include <functional>
+#include <vector>
 
 #include "deprecated.h"
 
@@ -116,6 +117,15 @@ public:
      * @return the system ID.
      */
     uint8_t get_system_id() const;
+
+    /**
+     * @brief MAVLink component IDs of connected system.
+     *
+     * @note: all components that have been seen at least once will be listed.
+     *
+     * @return a list of all component ids
+     */
+    std::vector<uint8_t> component_ids() const;
 
     /**
      * @brief type for is connected callback.

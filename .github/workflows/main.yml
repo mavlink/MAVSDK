@@ -194,8 +194,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: install packages
-        run: dnf install -y perl-FindBin
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -Bbuild/release -H.
       - name: build

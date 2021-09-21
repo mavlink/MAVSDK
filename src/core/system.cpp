@@ -54,6 +54,11 @@ uint8_t System::get_system_id() const
     return _system_impl->get_system_id();
 }
 
+std::vector<uint8_t> System::component_ids() const
+{
+    return _system_impl->component_ids();
+}
+
 void System::subscribe_is_connected(IsConnectedCallback callback)
 {
     return _system_impl->subscribe_is_connected(callback);

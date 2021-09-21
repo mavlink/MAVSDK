@@ -173,6 +173,7 @@ public:
     bool has_gimbal() const;
 
     uint8_t get_system_id() const override;
+    std::vector<uint8_t> component_ids() const;
 
     void set_system_id(uint8_t system_id);
 
