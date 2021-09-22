@@ -653,6 +653,29 @@ public:
         return obj;
     }
 
+    grpc::Status Prepare(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::PrepareRequest* /* request */,
+        rpc::camera::PrepareResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->prepare();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status TakePhoto(
         grpc::ServerContext* /* context */,
         const rpc::camera::TakePhotoRequest* /* request */,

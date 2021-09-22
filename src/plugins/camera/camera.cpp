@@ -30,6 +30,16 @@ Camera::Camera(std::shared_ptr<System> system) :
 
 Camera::~Camera() {}
 
+void Camera::prepare_async(const ResultCallback callback)
+{
+    _impl->prepare_async(callback);
+}
+
+Camera::Result Camera::prepare() const
+{
+    return _impl->prepare();
+}
+
 void Camera::take_photo_async(const ResultCallback callback)
 {
     _impl->take_photo_async(callback);

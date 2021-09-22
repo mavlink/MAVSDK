@@ -120,6 +120,42 @@ void CameraImpl::deinit()
     _camera_found = false;
 }
 
+Camera::Result CameraImpl::prepare()
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    prepare_async([&prom](Camera::Result result) { prom->set_value(result); });
+
+    return ret.get();
+}
+
+void CameraImpl::prepare_async(const Camera::ResultCallback& callback)
+{
+    auto temp_callback = callback;
+
+    std::lock_guard<std::mutex> lock(_information.mutex);
+
+    if (_camera_definition) {
+        _parent->call_user_callback([temp_callback]() { temp_callback(Camera::Result::Success); });
+    } else {
+        _camera_definition_callback = [this, temp_callback](bool has_succeeded) {
+            if (has_succeeded) {
+                temp_callback(Camera::Result::Success);
+            } else {
+                temp_callback(Camera::Result::Error);
+            }
+            _camera_definition_callback = nullptr;
+        };
+
+        if (_has_camera_definition_timed_out) {
+            // Try to download the camera_definition again
+            _has_camera_definition_timed_out = false;
+            request_camera_information();
+        }
+    }
+}
+
 void CameraImpl::check_connection_status()
 {
     // FIXME: This is a workaround because we don't want to be tied to the
@@ -952,6 +988,10 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
             if (has_succeeded) {
                 LogDebug() << "Successfully loaded camera definition";
 
+                if (_camera_definition_callback) {
+                    _parent->call_user_callback([this]() { _camera_definition_callback(true); });
+                }
+
                 _camera_definition.reset(new CameraDefinition());
                 _camera_definition->load_string(content);
                 refresh_params();
@@ -959,10 +999,15 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
                 LogDebug() << "Failed to fetch camera definition!";
 
                 if (++_camera_definition_fetch_count >= 3) {
-                    LogWarn() << "Failed to fetch camera definition 3 times, giving up";
+                    LogWarn() << "Giving up fetching the camera definition";
 
                     std::lock_guard<std::mutex> thread_lock(_information.mutex);
                     _has_camera_definition_timed_out = true;
+
+                    if (_camera_definition_callback) {
+                        _parent->call_user_callback(
+                            [this]() { _camera_definition_callback(false); });
+                    }
                 }
             }
 
