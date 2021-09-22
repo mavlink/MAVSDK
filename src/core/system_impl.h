@@ -88,7 +88,6 @@ public:
 
     Autopilot autopilot() const override { return _autopilot; };
 
-
     FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
     static FlightMode to_flight_mode_from_px4_mode(uint32_t custom_mode);
     static FlightMode to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode);
