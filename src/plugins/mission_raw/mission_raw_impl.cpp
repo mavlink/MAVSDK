@@ -307,30 +307,11 @@ MissionRaw::Result MissionRawImpl::start_mission()
 
 void MissionRawImpl::start_mission_async(const MissionRaw::ResultCallback& callback)
 {
-    if (_parent->autopilot() == Sender::Autopilot::ArduPilot) {
-        switch (_parent->get_vehicle_type()) {
-            case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
-                _parent->set_ap_mode_async(
-                    SystemImpl::APRoverMode::Auto,
-                    [this, callback](MavlinkCommandSender::Result result, float) {
-                        report_flight_mode_change(callback, result);
-                    });
-                break;
-
-            default:
-                _parent->set_ap_mode_async(
-                    SystemImpl::APCopterMode::Auto,
-                    [this, callback](MavlinkCommandSender::Result result, float) {
-                        report_flight_mode_change(callback, result);
-                    });
-        }
-    } else {
-        _parent->set_flight_mode_async(
-            SystemImpl::FlightMode::Mission,
-            [this, callback](MavlinkCommandSender::Result result, float) {
-                report_flight_mode_change(callback, result);
-            });
-    }
+    _parent->set_flight_mode_async(
+        SystemImpl::FlightMode::Mission,
+        [this, callback](MavlinkCommandSender::Result result, float) {
+            report_flight_mode_change(callback, result);
+        });
 }
 
 MissionRaw::Result MissionRawImpl::pause_mission()
@@ -402,9 +383,7 @@ void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callb
     // For ArduPilot to clear a mission we need to upload an empty mission.
     if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
         std::vector<MissionRaw::MissionItem> mission_items{empty_item};
-        if (upload_mission(mission_items) != MissionRaw::Result::Success) {
-            LogErr() << "Clearing the ArduPilot mission by uploading an empty mission failed";
-        }
+        upload_mission_async(mission_items, callback);
     } else {
         _parent->mission_transfer().clear_items_async(
             MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
