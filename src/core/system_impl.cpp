@@ -5,6 +5,7 @@
 #include "system_impl.h"
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
+#include "ardupilot_custom_mode.h"
 #include <cstdlib>
 #include <functional>
 #include <algorithm>
@@ -205,19 +206,25 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    if (message.compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
-        _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
-        _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false);
-
-        if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
-            _flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
-        }
-    }
-
     if (heartbeat.autopilot == MAV_AUTOPILOT_PX4) {
         _autopilot = Autopilot::Px4;
     } else if (heartbeat.autopilot == MAV_AUTOPILOT_ARDUPILOTMEGA) {
         _autopilot = Autopilot::ArduPilot;
+    }
+    // This check only works if the MAV_TYPE::MAV_TYPE_ENUM_END is actually the
+    // last enumerator.
+    if (MAV_TYPE::MAV_TYPE_ENUM_END > heartbeat.type) {
+        _vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
+    } else {
+        LogErr() << "type received in HEARTBEAT was not recognized";
+    }
+
+    if (message.compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
+        _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
+        _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false);
+    }
+    if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
+        _flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
     }
 
     set_connected();
@@ -605,6 +612,11 @@ uint8_t SystemImpl::get_own_component_id() const
     return _parent.get_own_component_id();
 }
 
+MAV_TYPE SystemImpl::get_vehicle_type() const
+{
+    return _vehicle_type;
+}
+
 uint8_t SystemImpl::get_own_mav_type() const
 {
     return _parent.get_mav_type();
@@ -918,6 +930,110 @@ void SystemImpl::subscribe_param_float(
 std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
 SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_id)
 {
+    if (_autopilot == Autopilot::ArduPilot) {
+        return make_command_ardupilot_mode(flight_mode, component_id);
+    } else {
+        return make_command_px4_mode(flight_mode, component_id);
+    }
+}
+
+std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
+SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t component_id)
+{
+    const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+    const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
+    const uint8_t mode_type =
+        MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed | flag_hitl_enabled;
+
+    MavlinkCommandSender::CommandLong command{*this};
+
+    command.command = MAV_CMD_DO_SET_MODE;
+    command.params.param1 = float(mode_type);
+
+    switch (_vehicle_type) {
+        case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
+            if (flight_mode_to_ardupilot_rover_mode(flight_mode) == ardupilot::RoverMode::Unknown) {
+                LogErr() << "Cannot translate flight mode to ardupilot rover mode.";
+                MavlinkCommandSender::CommandLong empty_command{*this};
+                return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
+            } else {
+                command.params.param2 = float(flight_mode_to_ardupilot_rover_mode(flight_mode));
+            }
+            break;
+        default:
+            if (flight_mode_to_ardupilot_copter_mode(flight_mode) ==
+                ardupilot::CopterMode::Unknown) {
+                LogErr() << "Cannot translate flight mode to ardupilot copter mode.";
+                MavlinkCommandSender::CommandLong empty_command{*this};
+                return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
+            } else {
+                command.params.param2 = float(flight_mode_to_ardupilot_copter_mode(flight_mode));
+            }
+            break;
+    }
+    command.target_component_id = component_id;
+
+    return std::make_pair<>(MavlinkCommandSender::Result::Success, command);
+}
+ardupilot::RoverMode SystemImpl::flight_mode_to_ardupilot_rover_mode(FlightMode flight_mode)
+{
+    switch (flight_mode) {
+        case FlightMode::Mission:
+            return ardupilot::RoverMode::Auto;
+        case FlightMode::Acro:
+            return ardupilot::RoverMode::Acro;
+        case FlightMode::Hold:
+            return ardupilot::RoverMode::Hold;
+        case FlightMode::ReturnToLaunch:
+            return ardupilot::RoverMode::RTL;
+        case FlightMode::Manual:
+            return ardupilot::RoverMode::Manual;
+        case FlightMode::FollowMe:
+            return ardupilot::RoverMode::Follow;
+        case FlightMode::Unknown:
+        case FlightMode::Ready:
+        case FlightMode::Takeoff:
+        case FlightMode::Land:
+        case FlightMode::Offboard:
+        case FlightMode::Altctl:
+        case FlightMode::Posctl:
+        case FlightMode::Rattitude:
+        case FlightMode::Stabilized:
+        default:
+            return ardupilot::RoverMode::Unknown;
+    }
+}
+ardupilot::CopterMode SystemImpl::flight_mode_to_ardupilot_copter_mode(FlightMode flight_mode)
+{
+    switch (flight_mode) {
+        case FlightMode::Mission:
+            return ardupilot::CopterMode::Auto;
+        case FlightMode::Acro:
+            return ardupilot::CopterMode::Acro;
+        case FlightMode::Hold:
+            return ardupilot::CopterMode::Alt_Hold;
+        case FlightMode::ReturnToLaunch:
+            return ardupilot::CopterMode::RTL;
+        case FlightMode::Land:
+            return ardupilot::CopterMode::Land;
+        case FlightMode::Manual:
+        case FlightMode::FollowMe:
+        case FlightMode::Unknown:
+        case FlightMode::Ready:
+        case FlightMode::Takeoff:
+        case FlightMode::Offboard:
+        case FlightMode::Altctl:
+        case FlightMode::Posctl:
+        case FlightMode::Rattitude:
+        case FlightMode::Stabilized:
+        default:
+            return ardupilot::CopterMode::Unknown;
+    }
+}
+
+std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
+SystemImpl::make_command_px4_mode(FlightMode flight_mode, uint8_t component_id)
+{
     const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
     const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
 
@@ -989,8 +1105,61 @@ SystemImpl::FlightMode SystemImpl::get_flight_mode() const
 {
     return _flight_mode;
 }
-
 SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
+{
+    if (_autopilot == Autopilot::ArduPilot) {
+        switch (_vehicle_type) {
+            case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
+                return to_flight_mode_from_ardupilot_rover_mode(custom_mode);
+            default:
+                return to_flight_mode_from_ardupilot_copter_mode(custom_mode);
+        }
+    } else {
+        return to_flight_mode_from_px4_mode(custom_mode);
+    }
+}
+
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode)
+{
+    switch (static_cast<ardupilot::RoverMode>(custom_mode)) {
+        case ardupilot::RoverMode::Auto:
+            return FlightMode::Mission;
+        case ardupilot::RoverMode::Acro:
+            return FlightMode::Acro;
+        case ardupilot::RoverMode::Hold:
+            return FlightMode::Hold;
+        case ardupilot::RoverMode::RTL:
+            return FlightMode::ReturnToLaunch;
+        case ardupilot::RoverMode::Manual:
+            return FlightMode::Manual;
+        case ardupilot::RoverMode::Follow:
+            return FlightMode::FollowMe;
+        default:
+            return FlightMode::Unknown;
+    }
+}
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode)
+{
+    switch (static_cast<ardupilot::CopterMode>(custom_mode)) {
+        case ardupilot::CopterMode::Auto:
+            return FlightMode::Mission;
+        case ardupilot::CopterMode::Acro:
+            return FlightMode::Acro;
+        case ardupilot::CopterMode::Alt_Hold:
+        case ardupilot::CopterMode::POS_HOLD:
+        case ardupilot::CopterMode::Flow_Hold:
+            return FlightMode::Hold;
+        case ardupilot::CopterMode::RTL:
+        case ardupilot::CopterMode::Auto_RTL:
+            return FlightMode::ReturnToLaunch;
+        case ardupilot::CopterMode::Land:
+            return FlightMode::Land;
+        default:
+            return FlightMode::Unknown;
+    }
+}
+
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_px4_mode(uint32_t custom_mode)
 {
     px4::px4_custom_mode px4_custom_mode;
     px4_custom_mode.data = custom_mode;

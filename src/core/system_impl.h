@@ -8,6 +8,7 @@
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"
 #include "mavlink_statustext_handler.h"
+#include "ardupilot_custom_mode.h"
 #include "ping.h"
 #include "timeout_handler.h"
 #include "safe_queue.h"
@@ -87,7 +88,10 @@ public:
 
     Autopilot autopilot() const override { return _autopilot; };
 
-    static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
+    FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
+    static FlightMode to_flight_mode_from_px4_mode(uint32_t custom_mode);
+    static FlightMode to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode);
+    static FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode);
 
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
 
@@ -131,6 +135,7 @@ public:
     uint8_t get_own_system_id() const override;
     uint8_t get_own_component_id() const override;
     uint8_t get_own_mav_type() const;
+    MAV_TYPE get_vehicle_type() const;
 
     bool is_armed() const { return _armed; }
 
@@ -165,7 +170,6 @@ public:
 
     MavlinkCommandSender::Result
     set_flight_mode(FlightMode mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
-
     void set_flight_mode_async(
         FlightMode mode,
         CommandResultCallback callback,
@@ -303,9 +307,18 @@ private:
 
     void system_thread();
 
-    // We use std::pair instead of a std::optional.
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
+
+    // We use std::pair instead of a std::optional.
+    std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
+    make_command_px4_mode(FlightMode mode, uint8_t component_id);
+
+    std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
+    make_command_ardupilot_mode(FlightMode flight_mode, uint8_t component_id);
+
+    static ardupilot::RoverMode flight_mode_to_ardupilot_rover_mode(FlightMode flight_mode);
+    static ardupilot::CopterMode flight_mode_to_ardupilot_copter_mode(FlightMode flight_mode);
 
     MavlinkCommandSender::CommandLong
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
@@ -385,7 +398,10 @@ private:
     std::function<bool(mavlink_message_t&)> _incoming_messages_intercept_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
 
+    MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};
+
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
+
     std::mutex _autopilot_version_mutex{};
     System::AutopilotVersion _autopilot_version{
         MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};

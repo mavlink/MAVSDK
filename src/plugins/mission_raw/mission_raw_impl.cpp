@@ -8,6 +8,9 @@
 
 namespace mavsdk {
 
+// This is an empty item that can be sent to ArduPilot to mimic clearing of mission.
+constexpr MissionRaw::MissionItem empty_item{0, 3, 16, 1};
+
 using namespace std::placeholders; // for `_1`
 
 MissionRawImpl::MissionRawImpl(System& system) : PluginImplBase(system)
@@ -377,15 +380,21 @@ void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callb
 {
     reset_mission_progress();
 
-    _parent->mission_transfer().clear_items_async(
-        MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
-            auto converted_result = convert_result(result);
-            _parent->call_user_callback([callback, converted_result]() {
-                if (callback) {
-                    callback(converted_result);
-                }
+    // For ArduPilot to clear a mission we need to upload an empty mission.
+    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        std::vector<MissionRaw::MissionItem> mission_items{empty_item};
+        upload_mission_async(mission_items, callback);
+    } else {
+        _parent->mission_transfer().clear_items_async(
+            MAV_MISSION_TYPE_MISSION, [this, callback](MAVLinkMissionTransfer::Result result) {
+                auto converted_result = convert_result(result);
+                _parent->call_user_callback([callback, converted_result]() {
+                    if (callback) {
+                        callback(converted_result);
+                    }
+                });
             });
-        });
+    }
 }
 
 MissionRaw::Result MissionRawImpl::set_current_mission_item(int index)
@@ -519,5 +528,4 @@ MissionRaw::Result MissionRawImpl::convert_result(MAVLinkMissionTransfer::Result
             return MissionRaw::Result::Unknown;
     }
 }
-
 } // namespace mavsdk
