@@ -45,12 +45,15 @@ public:
 private:
     ActionServer::ArmDisarmCallback _arm_disarm_callback{nullptr};
     ActionServer::FlightModeChangeCallback _flight_mode_change_callback{nullptr};
+    ActionServer::TakeoffCallback _takeoff_callback{nullptr};
+
     std::mutex _callback_mutex;
 
     std::atomic<bool> _armable = false;
     std::atomic<bool> _force_armable = false;
     std::atomic<bool> _disarmable = false;
     std::atomic<bool> _force_disarmable = false;
+    std::atomic<bool> _allow_takeoff = false;
 
     union px4_custom_mode {
         struct {

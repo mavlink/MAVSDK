@@ -102,6 +102,49 @@ void ActionServerImpl::init()
         },
         this);
 
+    _parent->register_mavlink_command_handler(
+        MAV_CMD_NAV_TAKEOFF,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            if (_allow_takeoff) {
+                if (_takeoff_callback) {
+                    _parent->call_user_callback(
+                        [this]() { _takeoff_callback(ActionServer::Result::Success, true); });
+                }
+
+                mavlink_message_t msg;
+                mavlink_msg_command_ack_pack(
+                    _parent->get_own_system_id(),
+                    _parent->get_own_component_id(),
+                    &msg,
+                    command.command,
+                    MAV_RESULT::MAV_RESULT_ACCEPTED,
+                    std::numeric_limits<uint8_t>::max(),
+                    0,
+                    command.origin_system_id,
+                    command.origin_component_id);
+                return msg;
+            } else {
+                if (_takeoff_callback) {
+                    _parent->call_user_callback([this]() {
+                        _takeoff_callback(ActionServer::Result::CommandDenied, false);
+                    });
+                }
+                mavlink_message_t msg;
+                mavlink_msg_command_ack_pack(
+                    _parent->get_own_system_id(),
+                    _parent->get_own_component_id(),
+                    &msg,
+                    command.command,
+                    MAV_RESULT::MAV_RESULT_UNSUPPORTED,
+                    std::numeric_limits<uint8_t>::max(),
+                    0,
+                    command.origin_system_id,
+                    command.origin_component_id);
+                return msg;
+            }
+        },
+        this);
+
     // Flight mode
     _parent->register_mavlink_command_handler(
         MAV_CMD_DO_SET_MODE,
@@ -218,7 +261,8 @@ void ActionServerImpl::subscribe_flight_mode_change(ActionServer::FlightModeChan
 
 void ActionServerImpl::subscribe_takeoff(ActionServer::TakeoffCallback callback)
 {
-    UNUSED(callback);
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _takeoff_callback = callback;
 }
 
 void ActionServerImpl::subscribe_land(ActionServer::LandCallback callback)
@@ -243,10 +287,8 @@ void ActionServerImpl::subscribe_terminate(ActionServer::TerminateCallback callb
 
 ActionServer::Result ActionServerImpl::set_allow_takeoff(bool allow_takeoff)
 {
-    UNUSED(allow_takeoff);
-
-    // TODO :)
-    return {};
+    _allow_takeoff = allow_takeoff;
+    return ActionServer::Result::Success;
 }
 
 ActionServer::Result ActionServerImpl::set_armable(bool armable, bool force_armable)
