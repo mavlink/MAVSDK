@@ -128,6 +128,7 @@ TEST_F(SitlTest, MissionTakeoffTransitionAndLand_standard_vtol)
     pc.set_min_altitude(0.0f);
     pc.set_next_reach_altitude(mission_altitude_m);
     pc.set_max_altitude(mission_altitude_m);
+    pc.set_margin(6);
 
     LogInfo() << "Arming...";
     const Action::Result arm_result = action->arm();
