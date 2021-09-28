@@ -30,8 +30,3 @@ install(FILES
     include/plugins/ftp/ftp.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/ftp
 )
-
-install(DIRECTORY
-    ../../third_party/mavlink/include/mavlink
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/ftp
-)
