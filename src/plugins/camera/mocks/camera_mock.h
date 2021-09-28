@@ -7,6 +7,7 @@ namespace testing {
 
 class MockCamera {
 public:
+    MOCK_CONST_METHOD0(prepare, Camera::Result()){};
     MOCK_CONST_METHOD0(take_photo, Camera::Result()){};
     MOCK_CONST_METHOD1(start_photo_interval, Camera::Result(const float)){};
     MOCK_CONST_METHOD0(stop_photo_interval, Camera::Result()){};

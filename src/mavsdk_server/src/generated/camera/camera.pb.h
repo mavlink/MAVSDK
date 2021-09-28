@@ -48,7 +48,7 @@ struct TableStruct_camera_2fcamera_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[50]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[52]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -109,6 +109,12 @@ extern PositionDefaultTypeInternal _Position_default_instance_;
 class PossibleSettingOptionsResponse;
 struct PossibleSettingOptionsResponseDefaultTypeInternal;
 extern PossibleSettingOptionsResponseDefaultTypeInternal _PossibleSettingOptionsResponse_default_instance_;
+class PrepareRequest;
+struct PrepareRequestDefaultTypeInternal;
+extern PrepareRequestDefaultTypeInternal _PrepareRequest_default_instance_;
+class PrepareResponse;
+struct PrepareResponseDefaultTypeInternal;
+extern PrepareResponseDefaultTypeInternal _PrepareResponse_default_instance_;
 class Quaternion;
 struct QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
@@ -229,6 +235,8 @@ template<> ::mavsdk::rpc::camera::ModeResponse* Arena::CreateMaybeMessage<::mavs
 template<> ::mavsdk::rpc::camera::Option* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::Option>(Arena*);
 template<> ::mavsdk::rpc::camera::Position* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::Position>(Arena*);
 template<> ::mavsdk::rpc::camera::PossibleSettingOptionsResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::PossibleSettingOptionsResponse>(Arena*);
+template<> ::mavsdk::rpc::camera::PrepareRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::PrepareRequest>(Arena*);
+template<> ::mavsdk::rpc::camera::PrepareResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::PrepareResponse>(Arena*);
 template<> ::mavsdk::rpc::camera::Quaternion* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::Quaternion>(Arena*);
 template<> ::mavsdk::rpc::camera::SetModeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::SetModeRequest>(Arena*);
 template<> ::mavsdk::rpc::camera::SetModeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::SetModeResponse>(Arena*);
@@ -430,6 +438,280 @@ inline bool PhotosRange_Parse(
 }
 // ===================================================================
 
+class PrepareRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.PrepareRequest) */ {
+ public:
+  inline PrepareRequest() : PrepareRequest(nullptr) {}
+  ~PrepareRequest() override;
+  explicit constexpr PrepareRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PrepareRequest(const PrepareRequest& from);
+  PrepareRequest(PrepareRequest&& from) noexcept
+    : PrepareRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline PrepareRequest& operator=(const PrepareRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PrepareRequest& operator=(PrepareRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PrepareRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PrepareRequest* internal_default_instance() {
+    return reinterpret_cast<const PrepareRequest*>(
+               &_PrepareRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(PrepareRequest& a, PrepareRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PrepareRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PrepareRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PrepareRequest* New() const final {
+    return new PrepareRequest();
+  }
+
+  PrepareRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PrepareRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PrepareRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PrepareRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PrepareRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.camera.PrepareRequest";
+  }
+  protected:
+  explicit PrepareRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.PrepareRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PrepareResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.PrepareResponse) */ {
+ public:
+  inline PrepareResponse() : PrepareResponse(nullptr) {}
+  ~PrepareResponse() override;
+  explicit constexpr PrepareResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PrepareResponse(const PrepareResponse& from);
+  PrepareResponse(PrepareResponse&& from) noexcept
+    : PrepareResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline PrepareResponse& operator=(const PrepareResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PrepareResponse& operator=(PrepareResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PrepareResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PrepareResponse* internal_default_instance() {
+    return reinterpret_cast<const PrepareResponse*>(
+               &_PrepareResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(PrepareResponse& a, PrepareResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PrepareResponse* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PrepareResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PrepareResponse* New() const final {
+    return new PrepareResponse();
+  }
+
+  PrepareResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PrepareResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PrepareResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PrepareResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PrepareResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.camera.PrepareResponse";
+  }
+  protected:
+  explicit PrepareResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCameraResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
+  bool has_camera_result() const;
+  private:
+  bool _internal_has_camera_result() const;
+  public:
+  void clear_camera_result();
+  const ::mavsdk::rpc::camera::CameraResult& camera_result() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::camera::CameraResult* release_camera_result();
+  ::mavsdk::rpc::camera::CameraResult* mutable_camera_result();
+  void set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* camera_result);
+  private:
+  const ::mavsdk::rpc::camera::CameraResult& _internal_camera_result() const;
+  ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
+  public:
+  void unsafe_arena_set_allocated_camera_result(
+      ::mavsdk::rpc::camera::CameraResult* camera_result);
+  ::mavsdk::rpc::camera::CameraResult* unsafe_arena_release_camera_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.PrepareResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::camera::CameraResult* camera_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};
+// -------------------------------------------------------------------
+
 class TakePhotoRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.TakePhotoRequest) */ {
  public:
@@ -474,7 +756,7 @@ class TakePhotoRequest final :
                &_TakePhotoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    2;
 
   friend void swap(TakePhotoRequest& a, TakePhotoRequest& b) {
     a.Swap(&b);
@@ -600,7 +882,7 @@ class TakePhotoResponse final :
                &_TakePhotoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    3;
 
   friend void swap(TakePhotoResponse& a, TakePhotoResponse& b) {
     a.Swap(&b);
@@ -748,7 +1030,7 @@ class StartPhotoIntervalRequest final :
                &_StartPhotoIntervalRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    4;
 
   friend void swap(StartPhotoIntervalRequest& a, StartPhotoIntervalRequest& b) {
     a.Swap(&b);
@@ -887,7 +1169,7 @@ class StartPhotoIntervalResponse final :
                &_StartPhotoIntervalResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    5;
 
   friend void swap(StartPhotoIntervalResponse& a, StartPhotoIntervalResponse& b) {
     a.Swap(&b);
@@ -1035,7 +1317,7 @@ class StopPhotoIntervalRequest final :
                &_StopPhotoIntervalRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    6;
 
   friend void swap(StopPhotoIntervalRequest& a, StopPhotoIntervalRequest& b) {
     a.Swap(&b);
@@ -1161,7 +1443,7 @@ class StopPhotoIntervalResponse final :
                &_StopPhotoIntervalResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   friend void swap(StopPhotoIntervalResponse& a, StopPhotoIntervalResponse& b) {
     a.Swap(&b);
@@ -1309,7 +1591,7 @@ class StartVideoRequest final :
                &_StartVideoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    8;
 
   friend void swap(StartVideoRequest& a, StartVideoRequest& b) {
     a.Swap(&b);
@@ -1435,7 +1717,7 @@ class StartVideoResponse final :
                &_StartVideoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    9;
 
   friend void swap(StartVideoResponse& a, StartVideoResponse& b) {
     a.Swap(&b);
@@ -1583,7 +1865,7 @@ class StopVideoRequest final :
                &_StopVideoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    10;
 
   friend void swap(StopVideoRequest& a, StopVideoRequest& b) {
     a.Swap(&b);
@@ -1709,7 +1991,7 @@ class StopVideoResponse final :
                &_StopVideoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    11;
 
   friend void swap(StopVideoResponse& a, StopVideoResponse& b) {
     a.Swap(&b);
@@ -1857,7 +2139,7 @@ class StartVideoStreamingRequest final :
                &_StartVideoStreamingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    12;
 
   friend void swap(StartVideoStreamingRequest& a, StartVideoStreamingRequest& b) {
     a.Swap(&b);
@@ -1983,7 +2265,7 @@ class StartVideoStreamingResponse final :
                &_StartVideoStreamingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    13;
 
   friend void swap(StartVideoStreamingResponse& a, StartVideoStreamingResponse& b) {
     a.Swap(&b);
@@ -2131,7 +2413,7 @@ class StopVideoStreamingRequest final :
                &_StopVideoStreamingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    14;
 
   friend void swap(StopVideoStreamingRequest& a, StopVideoStreamingRequest& b) {
     a.Swap(&b);
@@ -2257,7 +2539,7 @@ class StopVideoStreamingResponse final :
                &_StopVideoStreamingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    15;
 
   friend void swap(StopVideoStreamingResponse& a, StopVideoStreamingResponse& b) {
     a.Swap(&b);
@@ -2405,7 +2687,7 @@ class SetModeRequest final :
                &_SetModeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    16;
 
   friend void swap(SetModeRequest& a, SetModeRequest& b) {
     a.Swap(&b);
@@ -2544,7 +2826,7 @@ class SetModeResponse final :
                &_SetModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    17;
 
   friend void swap(SetModeResponse& a, SetModeResponse& b) {
     a.Swap(&b);
@@ -2692,7 +2974,7 @@ class ListPhotosRequest final :
                &_ListPhotosRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    18;
 
   friend void swap(ListPhotosRequest& a, ListPhotosRequest& b) {
     a.Swap(&b);
@@ -2831,7 +3113,7 @@ class ListPhotosResponse final :
                &_ListPhotosResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    19;
 
   friend void swap(ListPhotosResponse& a, ListPhotosResponse& b) {
     a.Swap(&b);
@@ -2999,7 +3281,7 @@ class SubscribeInformationRequest final :
                &_SubscribeInformationRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    20;
 
   friend void swap(SubscribeInformationRequest& a, SubscribeInformationRequest& b) {
     a.Swap(&b);
@@ -3125,7 +3407,7 @@ class InformationResponse final :
                &_InformationResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    21;
 
   friend void swap(InformationResponse& a, InformationResponse& b) {
     a.Swap(&b);
@@ -3273,7 +3555,7 @@ class SubscribeModeRequest final :
                &_SubscribeModeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    22;
 
   friend void swap(SubscribeModeRequest& a, SubscribeModeRequest& b) {
     a.Swap(&b);
@@ -3399,7 +3681,7 @@ class ModeResponse final :
                &_ModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    23;
 
   friend void swap(ModeResponse& a, ModeResponse& b) {
     a.Swap(&b);
@@ -3538,7 +3820,7 @@ class SubscribeVideoStreamInfoRequest final :
                &_SubscribeVideoStreamInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    24;
 
   friend void swap(SubscribeVideoStreamInfoRequest& a, SubscribeVideoStreamInfoRequest& b) {
     a.Swap(&b);
@@ -3664,7 +3946,7 @@ class VideoStreamInfoResponse final :
                &_VideoStreamInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
   friend void swap(VideoStreamInfoResponse& a, VideoStreamInfoResponse& b) {
     a.Swap(&b);
@@ -3812,7 +4094,7 @@ class SubscribeCaptureInfoRequest final :
                &_SubscribeCaptureInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    26;
 
   friend void swap(SubscribeCaptureInfoRequest& a, SubscribeCaptureInfoRequest& b) {
     a.Swap(&b);
@@ -3938,7 +4220,7 @@ class CaptureInfoResponse final :
                &_CaptureInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    27;
 
   friend void swap(CaptureInfoResponse& a, CaptureInfoResponse& b) {
     a.Swap(&b);
@@ -4086,7 +4368,7 @@ class SubscribeStatusRequest final :
                &_SubscribeStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    28;
 
   friend void swap(SubscribeStatusRequest& a, SubscribeStatusRequest& b) {
     a.Swap(&b);
@@ -4212,7 +4494,7 @@ class StatusResponse final :
                &_StatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    29;
 
   friend void swap(StatusResponse& a, StatusResponse& b) {
     a.Swap(&b);
@@ -4360,7 +4642,7 @@ class SubscribeCurrentSettingsRequest final :
                &_SubscribeCurrentSettingsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    30;
 
   friend void swap(SubscribeCurrentSettingsRequest& a, SubscribeCurrentSettingsRequest& b) {
     a.Swap(&b);
@@ -4486,7 +4768,7 @@ class CurrentSettingsResponse final :
                &_CurrentSettingsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    31;
 
   friend void swap(CurrentSettingsResponse& a, CurrentSettingsResponse& b) {
     a.Swap(&b);
@@ -4634,7 +4916,7 @@ class SubscribePossibleSettingOptionsRequest final :
                &_SubscribePossibleSettingOptionsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    32;
 
   friend void swap(SubscribePossibleSettingOptionsRequest& a, SubscribePossibleSettingOptionsRequest& b) {
     a.Swap(&b);
@@ -4760,7 +5042,7 @@ class PossibleSettingOptionsResponse final :
                &_PossibleSettingOptionsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    33;
 
   friend void swap(PossibleSettingOptionsResponse& a, PossibleSettingOptionsResponse& b) {
     a.Swap(&b);
@@ -4908,7 +5190,7 @@ class SetSettingRequest final :
                &_SetSettingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    34;
 
   friend void swap(SetSettingRequest& a, SetSettingRequest& b) {
     a.Swap(&b);
@@ -5056,7 +5338,7 @@ class SetSettingResponse final :
                &_SetSettingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    35;
 
   friend void swap(SetSettingResponse& a, SetSettingResponse& b) {
     a.Swap(&b);
@@ -5204,7 +5486,7 @@ class GetSettingRequest final :
                &_GetSettingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    36;
 
   friend void swap(GetSettingRequest& a, GetSettingRequest& b) {
     a.Swap(&b);
@@ -5352,7 +5634,7 @@ class GetSettingResponse final :
                &_GetSettingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    37;
 
   friend void swap(GetSettingResponse& a, GetSettingResponse& b) {
     a.Swap(&b);
@@ -5520,7 +5802,7 @@ class FormatStorageRequest final :
                &_FormatStorageRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    38;
 
   friend void swap(FormatStorageRequest& a, FormatStorageRequest& b) {
     a.Swap(&b);
@@ -5646,7 +5928,7 @@ class FormatStorageResponse final :
                &_FormatStorageResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    39;
 
   friend void swap(FormatStorageResponse& a, FormatStorageResponse& b) {
     a.Swap(&b);
@@ -5794,7 +6076,7 @@ class CameraResult final :
                &_CameraResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    40;
 
   friend void swap(CameraResult& a, CameraResult& b) {
     a.Swap(&b);
@@ -5993,7 +6275,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    41;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -6165,7 +6447,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    42;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -6337,7 +6619,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    43;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -6498,7 +6780,7 @@ class CaptureInfo final :
                &_CaptureInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    44;
 
   friend void swap(CaptureInfo& a, CaptureInfo& b) {
     a.Swap(&b);
@@ -6735,7 +7017,7 @@ class VideoStreamSettings final :
                &_VideoStreamSettings_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    45;
 
   friend void swap(VideoStreamSettings& a, VideoStreamSettings& b) {
     a.Swap(&b);
@@ -6945,7 +7227,7 @@ class VideoStreamInfo final :
                &_VideoStreamInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    46;
 
   friend void swap(VideoStreamInfo& a, VideoStreamInfo& b) {
     a.Swap(&b);
@@ -7177,7 +7459,7 @@ class Status final :
                &_Status_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    47;
 
   friend void swap(Status& a, Status& b) {
     a.Swap(&b);
@@ -7432,7 +7714,7 @@ class Option final :
                &_Option_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    48;
 
   friend void swap(Option& a, Option& b) {
     a.Swap(&b);
@@ -7592,7 +7874,7 @@ class Setting final :
                &_Setting_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    49;
 
   friend void swap(Setting& a, Setting& b) {
     a.Swap(&b);
@@ -7783,7 +8065,7 @@ class SettingOptions final :
                &_SettingOptions_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    50;
 
   friend void swap(SettingOptions& a, SettingOptions& b) {
     a.Swap(&b);
@@ -7974,7 +8256,7 @@ class Information final :
                &_Information_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    51;
 
   friend void swap(Information& a, Information& b) {
     a.Swap(&b);
@@ -8152,6 +8434,104 @@ class Information final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// PrepareRequest
+
+// -------------------------------------------------------------------
+
+// PrepareResponse
+
+// .mavsdk.rpc.camera.CameraResult camera_result = 1;
+inline bool PrepareResponse::_internal_has_camera_result() const {
+  return this != internal_default_instance() && camera_result_ != nullptr;
+}
+inline bool PrepareResponse::has_camera_result() const {
+  return _internal_has_camera_result();
+}
+inline void PrepareResponse::clear_camera_result() {
+  if (GetArenaForAllocation() == nullptr && camera_result_ != nullptr) {
+    delete camera_result_;
+  }
+  camera_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::camera::CameraResult& PrepareResponse::_internal_camera_result() const {
+  const ::mavsdk::rpc::camera::CameraResult* p = camera_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(
+      ::mavsdk::rpc::camera::_CameraResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::CameraResult& PrepareResponse::camera_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.PrepareResponse.camera_result)
+  return _internal_camera_result();
+}
+inline void PrepareResponse::unsafe_arena_set_allocated_camera_result(
+    ::mavsdk::rpc::camera::CameraResult* camera_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(camera_result_);
+  }
+  camera_result_ = camera_result;
+  if (camera_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.PrepareResponse.camera_result)
+}
+inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::release_camera_result() {
+  
+  ::mavsdk::rpc::camera::CameraResult* temp = camera_result_;
+  camera_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::unsafe_arena_release_camera_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.PrepareResponse.camera_result)
+  
+  ::mavsdk::rpc::camera::CameraResult* temp = camera_result_;
+  camera_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::_internal_mutable_camera_result() {
+  
+  if (camera_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArenaForAllocation());
+    camera_result_ = p;
+  }
+  return camera_result_;
+}
+inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::mutable_camera_result() {
+  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.PrepareResponse.camera_result)
+  return _msg;
+}
+inline void PrepareResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* camera_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete camera_result_;
+  }
+  if (camera_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::camera::CameraResult>::GetOwningArena(camera_result);
+    if (message_arena != submessage_arena) {
+      camera_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, camera_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  camera_result_ = camera_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.PrepareResponse.camera_result)
+}
+
+// -------------------------------------------------------------------
+
 // TakePhotoRequest
 
 // -------------------------------------------------------------------
@@ -12045,6 +12425,10 @@ inline void Information::set_vertical_resolution_px(::PROTOBUF_NAMESPACE_ID::uin
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

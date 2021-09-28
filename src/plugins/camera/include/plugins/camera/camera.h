@@ -472,6 +472,22 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
+     * @brief Prepare the camera plugin (e.g. download the camera definition, etc).
+     *
+     * This function is non-blocking. See 'prepare' for the blocking counterpart.
+     */
+    void prepare_async(const ResultCallback callback);
+
+    /**
+     * @brief Prepare the camera plugin (e.g. download the camera definition, etc).
+     *
+     * This function is blocking. See 'prepare_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result prepare() const;
+
+    /**
      * @brief Take one photo.
      *
      * This function is non-blocking. See 'take_photo' for the blocking counterpart.

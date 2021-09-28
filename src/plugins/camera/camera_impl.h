@@ -22,6 +22,7 @@ public:
     void enable() override;
     void disable() override;
 
+    Camera::Result prepare();
     Camera::Result select_camera(size_t id);
 
     Camera::Result take_photo();
@@ -32,6 +33,7 @@ public:
     Camera::Result start_video();
     Camera::Result stop_video();
 
+    void prepare_async(const Camera::ResultCallback& callback);
     void take_photo_async(const Camera::ResultCallback& callback);
     void start_photo_interval_async(float interval_s, const Camera::ResultCallback& callback);
     void stop_photo_interval_async(const Camera::ResultCallback& callback);
@@ -186,6 +188,8 @@ private:
     bool _is_fetching_camera_definition{false};
     bool _has_camera_definition_timed_out{false};
     size_t _camera_definition_fetch_count{0};
+    using CameraDefinitionCallback = std::function<void(bool)>;
+    CameraDefinitionCallback _camera_definition_callback{nullptr};
 
     std::atomic<size_t> _camera_id{0};
     std::atomic<bool> _camera_found{false};
