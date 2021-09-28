@@ -31,10 +31,6 @@ using std::chrono::seconds;
 using std::chrono::milliseconds;
 using std::this_thread::sleep_for;
 
-#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
-
 Mission::MissionItem make_mission_item(
     double latitude_deg,
     double longitude_deg,
@@ -77,23 +73,27 @@ int main(int argc, char** argv)
         mavsdkTester.subscribe_on_new_system([&mavsdkTester, &prom]() {
             std::cout << "Discovered MAVSDK GCS" << std::endl;
             auto system = mavsdkTester.systems().back();
-            prom.set_value(system);
             mavsdkTester.subscribe_on_new_system(nullptr);
+            prom.set_value(system);
         });
 
-        std::cout << "Sleeping thread " << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(5));
-
-        if (mavsdkTester.systems().size() == 0) {
-            std::cout << "No System Found from Autopilot" << std::endl;
-            return;
-        } else {
-            std::cout << "Setting System" << std::endl;
+        std::cout << "Sleeping AP thread... " << std::endl;
+        for(auto i = 0; i < 3; i++)
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            if (mavsdkTester.systems().size() == 0) {
+                std::cout << "No System Found from Autopilot, trying again in 5 secs..." << std::endl;
+                if(i == 2)
+                {
+                    std::cout << "No System found after three retries. Aborting..." << std::endl;
+                    return;
+                }
+            } else {
+                std::cout << "Setting System" << std::endl;
+                break;
+            }
         }
         auto system = mavsdkTester.systems().back();
-        if (system == nullptr) {
-            std::cout << "System is null??" << std::endl;
-        }
 
         // Create server plugins
         auto paramServer = mavsdk::ParamServer{system};
@@ -116,31 +116,32 @@ int main(int argc, char** argv)
 
         // Create a mission raw server
         // This will allow us to receive missions from a GCS
-        auto missionraw = mavsdk::MissionRawServer{system};
+        auto missionRawServer = mavsdk::MissionRawServer{system};
         std::cout << "MissionRawServer created" << std::endl;
 
         auto mission_prom = std::promise<MissionRawServer::MissionPlan>{};
-        missionraw.subscribe_incoming_mission(
-            [&mission_prom](MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
+        missionRawServer.subscribe_incoming_mission(
+            [&mission_prom, &missionRawServer](MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
                 std::cout << "Received Uploaded Mission!" << std::endl;
                 std::cout << plan << std::endl;
+                // Unsubscribe so we only recieve one mission
+                missionRawServer.subscribe_incoming_mission(nullptr);
                 mission_prom.set_value(plan);
             });
-        missionraw.subscribe_current_item_changed([](MissionRawServer::MissionItem item) {
-            std::cout << "Current Item Changed!" << std::endl;
+        missionRawServer.subscribe_current_item_changed([](MissionRawServer::MissionItem item) {
+            std::cout << "Current Mission Item Changed!" << std::endl;
             std::cout << "Current Item: " << item << std::endl;
         });
-        missionraw.subscribe_clear_all(
+        missionRawServer.subscribe_clear_all(
             [](uint32_t clear_all) { std::cout << "Clear All Mission!" << std::endl; });
         auto plan = mission_prom.get_future().get();
-        missionraw.set_current_item_complete();
-        missionraw.set_current_item_complete();
-        missionraw.set_current_item_complete();
-        missionraw.set_current_item_complete();
+
+        // Set current item to complete to progress the current item state
+        missionRawServer.set_current_item_complete();
 
         // Create vehicle telemetry info
         TelemetryServer::Position position{55.953251, -3.188267, 0, 0};
-        TelemetryServer::PositionVelocityNed position_velocity_ned{{0, 0, 0}, {0, 0, 0}};
+        TelemetryServer::PositionVelocityNed positionVelocityNed{{0, 0, 0}, {0, 0, 0}};
         TelemetryServer::VelocityNed velocity{};
         TelemetryServer::Heading heading{60};
         TelemetryServer::RawGps rawGps{
@@ -148,7 +149,7 @@ int main(int argc, char** argv)
         TelemetryServer::GpsInfo gpsInfo{11, TelemetryServer::FixType::Fix3D};
 
         // As we're acting as an autopilot, lets just make the vehicle jump to 10m altitude on
-        // takeoff
+        // successful takeoff
         actionServer.subscribe_takeoff([&position](ActionServer::Result result, bool takeoff) {
             if (result == ActionServer::Result::Success) {
                 position.relative_altitude_m = 10;
@@ -161,7 +162,7 @@ int main(int argc, char** argv)
             // Publish the telemetry
             telemServer.publish_position(position, velocity, heading);
             telemServer.publish_home(position);
-            telemServer.publish_position_velocity_ned(position_velocity_ned);
+            telemServer.publish_position_velocity_ned(positionVelocityNed);
             telemServer.publish_raw_gps(rawGps, gpsInfo);
         }
     });
@@ -238,7 +239,7 @@ int main(int argc, char** argv)
         auto future_result = prom->get_future();
         Mission::MissionPlan mission_plan{};
         mission_plan.mission_items = mission_items;
-        std::cout << "SystemID" << unsigned(system->get_system_id()) << std::endl;
+        std::cout << "SystemID " << system->get_system_id() << std::endl;
         mission.upload_mission_async(
             mission_plan, [prom](Mission::Result result) { prom->set_value(result); });
 
@@ -283,7 +284,7 @@ int main(int argc, char** argv)
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << arm_result << NORMAL_CONSOLE_TEXT
+        std::cout << "Arming failed:" << arm_result
                   << std::endl;
         return 1;
     }
@@ -296,8 +297,8 @@ int main(int argc, char** argv)
     while (true) {
         const Action::Result takeoff_result = action.takeoff();
         if (takeoff_result != Action::Result::Success) {
-            std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << takeoff_result
-                      << NORMAL_CONSOLE_TEXT << std::endl;
+            std::cout << "Takeoff failed!:" << takeoff_result
+                      << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
