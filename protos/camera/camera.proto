@@ -18,6 +18,10 @@ option java_outer_classname = "CameraProto";
  */
 service CameraService {
     /*
+     * Prepare the camera plugin (e.g. download the camera definition, etc).
+     */
+    rpc Prepare(PrepareRequest) returns(PrepareResponse) {}
+    /*
      * Take one photo.
      */
     rpc TakePhoto(TakePhotoRequest) returns(TakePhotoResponse) {}
@@ -99,6 +103,11 @@ service CameraService {
      * This will delete all content of the camera storage!
      */
      rpc FormatStorage(FormatStorageRequest) returns(FormatStorageResponse) {}
+}
+
+message PrepareRequest {}
+message PrepareResponse {
+    CameraResult camera_result = 1;
 }
 
 message TakePhotoRequest {}
