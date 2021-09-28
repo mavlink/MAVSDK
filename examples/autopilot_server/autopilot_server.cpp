@@ -78,13 +78,12 @@ int main(int argc, char** argv)
         });
 
         std::cout << "Sleeping AP thread... " << std::endl;
-        for(auto i = 0; i < 3; i++)
-        {
+        for (auto i = 0; i < 3; i++) {
             std::this_thread::sleep_for(std::chrono::seconds(5));
             if (mavsdkTester.systems().size() == 0) {
-                std::cout << "No System Found from Autopilot, trying again in 5 secs..." << std::endl;
-                if(i == 2)
-                {
+                std::cout << "No System Found from Autopilot, trying again in 5 secs..."
+                          << std::endl;
+                if (i == 2) {
                     std::cout << "No System found after three retries. Aborting..." << std::endl;
                     return;
                 }
@@ -121,7 +120,8 @@ int main(int argc, char** argv)
 
         auto mission_prom = std::promise<MissionRawServer::MissionPlan>{};
         missionRawServer.subscribe_incoming_mission(
-            [&mission_prom, &missionRawServer](MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
+            [&mission_prom,
+             &missionRawServer](MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
                 std::cout << "Received Uploaded Mission!" << std::endl;
                 std::cout << plan << std::endl;
                 // Unsubscribe so we only recieve one mission
@@ -284,8 +284,7 @@ int main(int argc, char** argv)
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cout << "Arming failed:" << arm_result
-                  << std::endl;
+        std::cout << "Arming failed:" << arm_result << std::endl;
         return 1;
     }
 
@@ -297,8 +296,7 @@ int main(int argc, char** argv)
     while (true) {
         const Action::Result takeoff_result = action.takeoff();
         if (takeoff_result != Action::Result::Success) {
-            std::cout << "Takeoff failed!:" << takeoff_result
-                      << std::endl;
+            std::cout << "Takeoff failed!:" << takeoff_result << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
