@@ -83,10 +83,10 @@ TEST_F(SitlTest, MissionTakeoffTransitionAndLand_standard_vtol)
 
     Mission::MissionItem new_item{};
 
-    new_item.latitude_deg = 47.398170327054473;
-    new_item.longitude_deg = 8.5456490218639658;
+    new_item.latitude_deg = 47.398170;
+    new_item.longitude_deg = 8.545649;
+    new_item.acceptance_radius_m = 1;
     new_item.relative_altitude_m = mission_altitude_m;
-
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::None;
 
     Mission::MissionPlan mission_plan{};
@@ -95,16 +95,16 @@ TEST_F(SitlTest, MissionTakeoffTransitionAndLand_standard_vtol)
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::TransitionToFw;
     mission_plan.mission_items.push_back(new_item);
 
-    new_item.latitude_deg = 47.398170327054473;
-    new_item.longitude_deg = 8.5501389;
+    new_item.latitude_deg = 47.398170;
+    new_item.longitude_deg = 8.550138;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::None;
     mission_plan.mission_items.push_back(new_item);
 
-    new_item.latitude_deg = 47.398570327054473;
+    new_item.latitude_deg = 47.398570;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::TransitionToMc;
     mission_plan.mission_items.push_back(new_item);
 
-    new_item.latitude_deg = 47.398770327054473;
+    new_item.latitude_deg = 47.398770;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;
     mission_plan.mission_items.push_back(new_item);
 

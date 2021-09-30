@@ -87,21 +87,22 @@ TEST_F(SitlTest, MissionTakeoffAndLand)
     Mission::MissionItem new_item{};
     Mission::MissionPlan mission_plan{};
 
-    new_item.latitude_deg = 47.398170327054473;
-    new_item.longitude_deg = 8.5456490218639658;
+    new_item.latitude_deg = 47.398100;
+    new_item.longitude_deg = 8.545649;
     new_item.relative_altitude_m = mission_altitude_m;
+    new_item.acceptance_radius_m = 1;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Takeoff;
     mission_plan.mission_items.push_back(new_item);
 
-    new_item.latitude_deg = 47.398370327054473;
+    new_item.latitude_deg = 47.398300;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;
     mission_plan.mission_items.push_back(new_item);
 
-    new_item.latitude_deg = 47.398570327054473;
-    new_item.vehicle_action = Mission::MissionItem::VehicleAction::Takeoff;
+    new_item.latitude_deg = 47.398500;
+    new_item.vehicle_action = Mission::MissionItem::VehicleAction::TransitionToFw;
     mission_plan.mission_items.push_back(new_item);
 
-    new_item.latitude_deg = 47.398770327054473;
+    new_item.latitude_deg = 47.398700;
     new_item.vehicle_action = Mission::MissionItem::VehicleAction::Land;
     mission_plan.mission_items.push_back(new_item);
 
@@ -119,6 +120,17 @@ TEST_F(SitlTest, MissionTakeoffAndLand)
             const auto original = mission_plan.mission_items.at(i);
             const auto downloaded = download_result.second.mission_items.at(i);
             EXPECT_EQ(original, downloaded);
+        }
+    }else{
+        for (unsigned i = 0; i < mission_plan.mission_items.size(); ++i) {
+            const auto original = mission_plan.mission_items.at(i);
+
+            LogInfo() << original.latitude_deg;
+        }
+        for (unsigned i = 0; i < download_result.second.mission_items.size(); ++i) {
+            const auto downloaded = download_result.second.mission_items.at(i);
+
+            LogInfo() << downloaded.latitude_deg;
         }
     }
 

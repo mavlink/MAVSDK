@@ -621,7 +621,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
         for (const auto& int_item : int_items) {
             LogDebug() << "Assembling Message: " << int(int_item.seq);
 
-            if (int_item.command == MAV_CMD_NAV_WAYPOINT) {
+            if (int_item.command == MAV_CMD_NAV_WAYPOINT || int_item.command == MAV_CMD_NAV_TAKEOFF) {
                 if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
                     LogErr() << "Waypoint frame not supported unsupported";
                     result_pair.first = Mission::Result::Unsupported;
@@ -640,8 +640,15 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 new_mission_item.relative_altitude_m = int_item.z;
                 new_mission_item.yaw_deg = int_item.param4;
 
+                
+                if (int_item.command == MAV_CMD_NAV_TAKEOFF){
+                    new_mission_item.acceptance_radius_m = 1;
+                    new_mission_item.is_fly_through = 0;
+                    new_mission_item.vehicle_action = VehicleAction::Takeoff;
+                }else{
+                    new_mission_item.acceptance_radius_m = int_item.param2;
                 new_mission_item.is_fly_through = !(int_item.param1 > 0);
-                new_mission_item.acceptance_radius_m = int_item.param2;
+                }
 
                 have_set_position = true;
 
@@ -705,9 +712,6 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
                 new_mission_item.camera_action = CameraAction::StopVideo;
-
-            } else if (int_item.command == MAV_CMD_NAV_TAKEOFF) {
-                new_mission_item.vehicle_action = VehicleAction::Takeoff;
             } else if (int_item.command == MAV_CMD_NAV_LAND) {
                 new_mission_item.vehicle_action = VehicleAction::Land;
             } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION) {
