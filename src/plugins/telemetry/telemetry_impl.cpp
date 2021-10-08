@@ -2267,6 +2267,7 @@ void TelemetryImpl::request_home_position_async()
 {
     MavlinkCommandSender::CommandLong command_request_message{*_parent};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
+    command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     command_request_message.params.param1 = MAVLINK_MSG_ID_HOME_POSITION;
     _parent->send_command_async(command_request_message, nullptr);
 }
@@ -2309,6 +2310,7 @@ void TelemetryImpl::get_gps_global_origin_async(
 
     MavlinkCommandSender::CommandLong command_request_message{*_parent};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
+    command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     command_request_message.params.param1 = MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN;
 
     _parent->send_command_async(command_request_message, nullptr);
