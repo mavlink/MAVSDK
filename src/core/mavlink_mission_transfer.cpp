@@ -12,10 +12,8 @@ MAVLinkMissionTransfer::MAVLinkMissionTransfer(
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
-    _timeout_s_callback(timeout_s_callback)
+    _timeout_s_callback(std::move(timeout_s_callback))
 {}
-
-MAVLinkMissionTransfer::~MAVLinkMissionTransfer() {}
 
 std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_items_async(
     uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback)

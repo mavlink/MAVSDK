@@ -19,10 +19,10 @@ class TcpConnection : public Connection {
 public:
     explicit TcpConnection(
         Connection::receiver_callback_t receiver_callback,
-        const std::string& remote_ip,
+        std::string remote_ip,
         int remote_port,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-    ~TcpConnection();
+    ~TcpConnection() override;
     ConnectionResult start() override;
     ConnectionResult stop() override;
 
@@ -35,7 +35,6 @@ public:
 private:
     ConnectionResult setup_port();
     void start_recv_thread();
-    int resolve_address(const std::string& ip_address, int port, struct sockaddr_in* addr);
     void receive();
 
     std::string _remote_ip = {};

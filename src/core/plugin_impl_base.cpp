@@ -1,5 +1,4 @@
 #include "system.h"
-#include "global_include.h"
 #include "plugin_impl_base.h"
 
 namespace mavsdk {

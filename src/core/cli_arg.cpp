@@ -2,9 +2,7 @@
 #include "cli_arg.h"
 #include "log.h"
 #include <cctype>
-#include <climits>
 #include <algorithm>
-#include <vector>
 
 namespace mavsdk {
 
@@ -88,7 +86,7 @@ bool CliArg::find_path(std::string& rest)
 
     const std::string delimiter = ":";
     size_t pos = rest.find(delimiter);
-    if (pos != rest.npos) {
+    if (pos != std::string::npos) {
         _path = rest.substr(0, pos);
         rest.erase(0, pos + delimiter.length());
     } else {
@@ -105,7 +103,7 @@ bool CliArg::find_path(std::string& rest)
     }
 
     if (_protocol == Protocol::Serial) {
-        if (_path.find("/") == 0) {
+        if (_path.find('/') == 0) {
             // A Linux/macOS path starting with '/' is ok.
             return true;
         } else if (_path.find("COM") == 0) {

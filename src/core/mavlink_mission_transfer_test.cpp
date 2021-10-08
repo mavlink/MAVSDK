@@ -26,7 +26,7 @@ static constexpr double timeout_s = 0.5;
 #define ONCE_ONLY \
     static bool called = false; \
     EXPECT_FALSE(called); \
-    called = true;
+    called = true
 
 class MAVLinkMissionTransferTest : public ::testing::Test {
 protected:
@@ -809,10 +809,10 @@ TEST_F(MAVLinkMissionTransferTest, UploadMissionCanBeCancelled)
                         MAV_MISSION_TYPE_MISSION, MAV_MISSION_OPERATION_CANCELLED, message);
                 })));
 
-    auto wptr = transfer.lock();
-    EXPECT_TRUE(wptr);
-    if (wptr) {
-        wptr->cancel();
+    auto ptr = transfer.lock();
+    EXPECT_TRUE(ptr);
+    if (ptr) {
+        ptr->cancel();
     }
 
     // We are finished and should have received the successful result.
@@ -902,7 +902,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionSendsRequestList)
                 })));
 
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [](Result result, const std::vector<ItemInt>& items) {
             UNUSED(result);
             UNUSED(items);
             EXPECT_TRUE(false);
@@ -936,7 +936,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionResendsRequestList)
         .Times(2);
 
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [](Result result, const std::vector<ItemInt>& items) {
             UNUSED(result);
             UNUSED(items);
             EXPECT_TRUE(false);
@@ -959,7 +959,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionResendsRequestListButGivesUpAf
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [&prom](Result result, const std::vector<ItemInt>& items) {
             UNUSED(items);
             EXPECT_EQ(result, Result::Timeout);
             ONCE_ONLY;
@@ -1031,7 +1031,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionSendsMissionRequests)
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
 
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [](Result result, const std::vector<ItemInt>& items) {
             UNUSED(items);
             UNUSED(result);
             EXPECT_TRUE(false);
@@ -1061,7 +1061,7 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionSendsMissionRequests)
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [](Result result, std::vector<ItemInt> output_items) {
+        [](Result result, const std::vector<ItemInt>& output_items) {
             UNUSED(output_items);
             UNUSED(result);
             EXPECT_TRUE(false);
@@ -1084,7 +1084,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionResendsMissionRequestsAndTimes
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [&prom](Result result, const std::vector<ItemInt>& items) {
             UNUSED(items);
             EXPECT_EQ(result, Result::Timeout);
             prom.set_value();
@@ -1131,7 +1131,7 @@ TEST_F(
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [&prom](Result result, std::vector<ItemInt> output_items) {
+        [&prom](Result result, const std::vector<ItemInt>& output_items) {
             UNUSED(output_items);
             EXPECT_EQ(result, Result::Timeout);
             prom.set_value();
@@ -1159,7 +1159,7 @@ TEST_F(
     EXPECT_TRUE(mmt.is_idle());
 }
 
-mavlink_message_t make_mission_item(const std::vector<ItemInt> item_ints, std::size_t index)
+mavlink_message_t make_mission_item(const std::vector<ItemInt>& item_ints, std::size_t index)
 {
     mavlink_message_t message;
     mavlink_msg_mission_item_int_pack(
@@ -1196,7 +1196,8 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionSendsAllMissionRequestsAndAck)
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom, &real_items](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION,
+        [&prom, &real_items](Result result, const std::vector<ItemInt>& items) {
             EXPECT_EQ(result, Result::Success);
             EXPECT_EQ(items, real_items);
             prom.set_value();
@@ -1249,7 +1250,7 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionSendsAllMissionRequests
         MAV_MISSION_TYPE_MISSION,
         real_items.size(),
         target_address.component_id,
-        [&prom, &real_items](Result result, std::vector<ItemInt> items) {
+        [&prom, &real_items](Result result, const std::vector<ItemInt>& items) {
             EXPECT_EQ(result, Result::Success);
             EXPECT_EQ(items, real_items);
             prom.set_value();
@@ -1299,7 +1300,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionResendsRequestItemAgainForSeco
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [&prom](Result result, const std::vector<ItemInt>& items) {
             UNUSED(items);
             EXPECT_EQ(result, Result::Timeout);
             prom.set_value();
@@ -1358,7 +1359,7 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionResendsRequestItemAgain
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [&prom](Result result, std::vector<ItemInt> output_items) {
+        [&prom](Result result, const std::vector<ItemInt>& output_items) {
             UNUSED(output_items);
             EXPECT_EQ(result, Result::Timeout);
             prom.set_value();
@@ -1405,7 +1406,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionEmptyList)
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [&prom](Result result, const std::vector<ItemInt>& items) {
             UNUSED(items);
             EXPECT_EQ(result, Result::Success);
             prom.set_value();
@@ -1439,7 +1440,7 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionEmptyList)
         MAV_MISSION_TYPE_MISSION,
         0,
         target_address.component_id,
-        [&prom](Result result, std::vector<ItemInt> items) {
+        [&prom](Result result, const std::vector<ItemInt>& items) {
             UNUSED(items);
             EXPECT_EQ(result, Result::Success);
             prom.set_value();
@@ -1477,7 +1478,8 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionTimeoutNotTriggeredDuringTrans
     std::promise<void> prom;
     auto fut = prom.get_future();
     mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&real_items, &prom](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION,
+        [&real_items, &prom](Result result, const std::vector<ItemInt>& items) {
             EXPECT_EQ(result, Result::Success);
             EXPECT_EQ(real_items, items);
             prom.set_value();
@@ -1522,7 +1524,7 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionCanBeCancelled)
     std::promise<void> prom;
     auto fut = prom.get_future();
     auto transfer = mmt.download_items_async(
-        MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
+        MAV_MISSION_TYPE_MISSION, [&prom](Result result, const std::vector<ItemInt>& items) {
             UNUSED(items);
             EXPECT_EQ(result, Result::Cancelled);
             prom.set_value();
@@ -1542,10 +1544,10 @@ TEST_F(MAVLinkMissionTransferTest, DownloadMissionCanBeCancelled)
                         MAV_MISSION_TYPE_MISSION, MAV_MISSION_OPERATION_CANCELLED, message);
                 })));
 
-    auto wptr = transfer.lock();
-    EXPECT_TRUE(wptr);
-    if (wptr) {
-        wptr->cancel();
+    auto ptr = transfer.lock();
+    EXPECT_TRUE(ptr);
+    if (ptr) {
+        ptr->cancel();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -1569,7 +1571,7 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionCanBeCancelled)
         MAV_MISSION_TYPE_MISSION,
         items.size(),
         target_address.component_id,
-        [&prom](Result result, std::vector<ItemInt> output_items) {
+        [&prom](Result result, const std::vector<ItemInt>& output_items) {
             UNUSED(output_items);
             EXPECT_EQ(result, Result::Cancelled);
             prom.set_value();
@@ -1586,10 +1588,10 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionCanBeCancelled)
                         message);
                 })));
 
-    auto wptr = transfer.lock();
-    EXPECT_TRUE(wptr);
-    if (wptr) {
-        wptr->cancel();
+    auto ptr = transfer.lock();
+    EXPECT_TRUE(ptr);
+    if (ptr) {
+        ptr->cancel();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -1824,7 +1826,7 @@ TEST_F(MAVLinkMissionTransferTest, IntMessagesNotSupported)
         auto fut = prom.get_future();
 
         mmt.download_items_async(
-            MAV_MISSION_TYPE_MISSION, [&prom](Result result, std::vector<ItemInt> items) {
+            MAV_MISSION_TYPE_MISSION, [&prom](Result result, const std::vector<ItemInt>& items) {
                 EXPECT_EQ(result, Result::IntMessagesNotSupported);
                 UNUSED(items);
                 ONCE_ONLY;

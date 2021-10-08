@@ -13,7 +13,10 @@ public:
     ~Ping();
 
     void run_once();
-    double last_ping_time_s() const { return static_cast<double>(_last_ping_time_us) * 1e-6; }
+    [[nodiscard]] double last_ping_time_s() const
+    {
+        return static_cast<double>(_last_ping_time_us) * 1e-6;
+    }
 
 private:
     void process_ping(const mavlink_message_t& message);

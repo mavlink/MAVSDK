@@ -11,7 +11,7 @@ namespace mavsdk {
 class TimeoutHandler {
 public:
     explicit TimeoutHandler(Time& time);
-    ~TimeoutHandler();
+    ~TimeoutHandler() = default;
 
     // delete copy and move constructors and assign operators
     TimeoutHandler(TimeoutHandler const&) = delete; // Copy construct

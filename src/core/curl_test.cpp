@@ -1,4 +1,3 @@
-#include "mavsdk.h"
 #include "curl_wrapper.h"
 #include <fstream>
 #include <iostream>
@@ -14,7 +13,7 @@ protected:
     std::string _file_url_not_existing{};
     std::string _local_path{};
 
-    virtual void SetUp()
+    void SetUp() override
     {
         clean();
         _file_url_existing_http =
@@ -23,11 +22,11 @@ protected:
         _local_path = "testfile.txt";
     }
 
-    virtual void TearDown() { clean(); }
+    void TearDown() override { clean(); }
 
     void clean() { remove(_local_path.c_str()); }
 
-    bool check_file_exists(const std::string& file_path)
+    static bool check_file_exists(const std::string& file_path)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         std::ifstream infile(file_path.c_str());

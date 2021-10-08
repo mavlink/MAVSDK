@@ -1,7 +1,6 @@
 #include "global_include.h"
 #include <gtest/gtest.h>
 #include <chrono>
-#include <ctime>
 #include <cmath>
 
 #ifdef FAKE_TIME

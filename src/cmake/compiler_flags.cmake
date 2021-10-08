@@ -3,7 +3,7 @@ if(MINGW)
 endif()
 
 if(MSVC)
-    add_definitions(-DWINDOWS)
+    add_definitions(-DWINDOWS -D_USE_MATH_DEFINES)
     set(warnings "-WX -W2")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 

@@ -12,7 +12,7 @@ public:
     typedef std::function<void(mavlink_message_t& message, Connection* connection)>
         receiver_callback_t;
 
-    Connection(
+    explicit Connection(
         receiver_callback_t receiver_callback,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     virtual ~Connection();
@@ -24,7 +24,7 @@ public:
 
     bool has_system_id(uint8_t system_id);
     bool should_forward_messages() const;
-    unsigned forwarding_connections_count() const;
+    static unsigned forwarding_connections_count();
 
     // Non-copyable
     Connection(const Connection&) = delete;

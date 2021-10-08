@@ -10,15 +10,15 @@ public:
 
     bool parse(const std::string& uri);
 
-    Protocol get_protocol() const { return _protocol; }
+    [[nodiscard]] Protocol get_protocol() const { return _protocol; }
 
-    int get_port() const { return _port; }
+    [[nodiscard]] int get_port() const { return _port; }
 
-    int get_baudrate() const { return _baudrate; }
+    [[nodiscard]] int get_baudrate() const { return _baudrate; }
 
-    bool get_flow_control() const { return _flow_control_enabled; }
+    [[nodiscard]] bool get_flow_control() const { return _flow_control_enabled; }
 
-    std::string get_path() const { return _path; }
+    [[nodiscard]] std::string get_path() const { return _path; }
 
 private:
     void reset();

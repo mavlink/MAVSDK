@@ -11,10 +11,10 @@
 #include <ctime>
 #endif
 
-#define LogDebug() LogDebugDetailed(__FILENAME__, __LINE__)
-#define LogInfo() LogInfoDetailed(__FILENAME__, __LINE__)
-#define LogWarn() LogWarnDetailed(__FILENAME__, __LINE__)
-#define LogErr() LogErrDetailed(__FILENAME__, __LINE__)
+#define LogDebug() LogDebugDetailed(FILENAME, __LINE__)
+#define LogInfo() LogInfoDetailed(FILENAME, __LINE__)
+#define LogWarn() LogWarnDetailed(FILENAME, __LINE__)
+#define LogErr() LogErrDetailed(FILENAME, __LINE__)
 
 namespace mavsdk {
 

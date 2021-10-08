@@ -5,8 +5,8 @@ using namespace mavsdk;
 
 TEST(MAVLinkChannels, MaxChannelsSanity)
 {
-    ASSERT_TRUE(MAVLinkChannels::Instance().get_max_channels() < UINT8_MAX);
-    ASSERT_TRUE(MAVLinkChannels::Instance().get_max_channels() > 0);
+    ASSERT_TRUE(MAVLinkChannels::get_max_channels() < UINT8_MAX);
+    ASSERT_TRUE(MAVLinkChannels::get_max_channels() > 0);
 }
 
 TEST(MAVLinkChannels, TryAll)
@@ -14,7 +14,7 @@ TEST(MAVLinkChannels, TryAll)
     // Checkout all first
     for (unsigned i = 0; i < UINT8_MAX; ++i) {
         uint8_t channel;
-        if (i < MAVLinkChannels::Instance().get_max_channels()) {
+        if (i < MAVLinkChannels::get_max_channels()) {
             ASSERT_TRUE(MAVLinkChannels::Instance().checkout_free_channel(channel));
             ASSERT_EQ(i, channel);
         } else {

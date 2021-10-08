@@ -1,9 +1,7 @@
 #include "geometry.h"
-#include "global_include.h"
 #include <cmath>
 
-namespace mavsdk {
-namespace geometry {
+namespace mavsdk::geometry {
 
 CoordinateTransformation::CoordinateTransformation(GlobalCoordinate reference) :
     _ref_lat_rad(rad(reference.latitude_deg)),
@@ -82,5 +80,4 @@ constexpr double CoordinateTransformation::constrain(double input, double min, d
     return (input > max) ? max : (input < min) ? min : input;
 }
 
-} // namespace geometry
-} // namespace mavsdk
+} // namespace mavsdk::geometry

@@ -4,6 +4,7 @@
 #include "global_include.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include <cstddef>
 #include <cstdint>
 #include <string>
 #include <functional>
@@ -28,7 +29,7 @@ public:
             union {
                 float float_value;
                 int32_t int32_value;
-            } temp;
+            } temp{};
 
             temp.float_value = mavlink_value.param_value;
             switch (mavlink_value.param_type) {
@@ -123,34 +124,34 @@ public:
         bool set_from_xml(const std::string& type_str, const std::string& value_str)
         {
             if (strcmp(type_str.c_str(), "uint8") == 0) {
-                uint8_t temp = std::stoi(value_str.c_str());
+                uint8_t temp = std::stoi(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int8") == 0) {
-                int8_t temp = std::stoi(value_str.c_str());
+                int8_t temp = std::stoi(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint16") == 0) {
-                uint16_t temp = std::stoi(value_str.c_str());
+                uint16_t temp = std::stoi(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int16") == 0) {
-                int16_t temp = std::stoi(value_str.c_str());
+                int16_t temp = std::stoi(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint32") == 0) {
-                uint32_t temp = std::stoi(value_str.c_str());
+                uint32_t temp = std::stoi(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int32") == 0) {
-                int32_t temp = std::stoi(value_str.c_str());
+                int32_t temp = std::stoi(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint64") == 0) {
-                uint64_t temp = std::stoll(value_str.c_str());
+                uint64_t temp = std::stoll(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int64") == 0) {
-                int64_t temp = std::stoll(value_str.c_str());
+                int64_t temp = std::stoll(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "float") == 0) {
-                float temp = std::stof(value_str.c_str());
+                float temp = std::stof(value_str);
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "double") == 0) {
-                double temp = std::stod(value_str.c_str());
+                double temp = std::stod(value_str);
                 _value = temp;
             } else {
                 LogErr() << "Unknown type: " << type_str;
@@ -188,7 +189,7 @@ public:
             return true;
         }
 
-        MAV_PARAM_TYPE get_mav_param_type() const
+        [[nodiscard]] MAV_PARAM_TYPE get_mav_param_type() const
         {
             if (std::get_if<float>(&_value)) {
                 return MAV_PARAM_TYPE_REAL32;
@@ -200,7 +201,7 @@ public:
             }
         }
 
-        MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const
+        [[nodiscard]] MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const
         {
             if (std::get_if<uint8_t>(&_value)) {
                 return MAV_PARAM_EXT_TYPE_UINT8;
@@ -232,25 +233,25 @@ public:
         bool set_as_same_type(const std::string& value_str)
         {
             if (std::get_if<uint8_t>(&_value)) {
-                _value = uint8_t(std::stoi(value_str.c_str()));
+                _value = uint8_t(std::stoi(value_str));
             } else if (std::get_if<int8_t>(&_value)) {
-                _value = int8_t(std::stoi(value_str.c_str()));
+                _value = int8_t(std::stoi(value_str));
             } else if (std::get_if<uint16_t>(&_value)) {
-                _value = uint16_t(std::stoi(value_str.c_str()));
+                _value = uint16_t(std::stoi(value_str));
             } else if (std::get_if<int16_t>(&_value)) {
-                _value = int16_t(std::stoi(value_str.c_str()));
+                _value = int16_t(std::stoi(value_str));
             } else if (std::get_if<uint32_t>(&_value)) {
-                _value = uint32_t(std::stoi(value_str.c_str()));
+                _value = uint32_t(std::stoi(value_str));
             } else if (std::get_if<int32_t>(&_value)) {
-                _value = int32_t(std::stoi(value_str.c_str()));
+                _value = int32_t(std::stoi(value_str));
             } else if (std::get_if<uint64_t>(&_value)) {
-                _value = uint64_t(std::stoll(value_str.c_str()));
+                _value = uint64_t(std::stoll(value_str));
             } else if (std::get_if<int64_t>(&_value)) {
-                _value = int64_t(std::stoll(value_str.c_str()));
+                _value = int64_t(std::stoll(value_str));
             } else if (std::get_if<float>(&_value)) {
-                _value = float(std::stof(value_str.c_str()));
+                _value = float(std::stof(value_str));
             } else if (std::get_if<double>(&_value)) {
-                _value = double(std::stod(value_str.c_str()));
+                _value = double(std::stod(value_str));
             } else {
                 LogErr() << "Unknown type";
                 return false;
@@ -258,7 +259,7 @@ public:
             return true;
         }
 
-        float get_4_float_bytes() const
+        [[nodiscard]] float get_4_float_bytes() const
         {
             if (std::get_if<float>(&_value)) {
                 return std::get<float>(_value);
@@ -299,7 +300,7 @@ public:
             }
         }
 
-        std::string get_string() const
+        [[nodiscard]] std::string get_string() const
         {
             if (std::get_if<uint8_t>(&_value)) {
                 return std::to_string(std::get<uint8_t>(_value));
@@ -324,17 +325,20 @@ public:
             } else {
                 LogErr() << "Unknown data type for param.";
                 assert(false);
-                return std::string("(unknown)");
+                return {"(unknown)"};
             }
         }
 
-        template<typename T> bool is() const { return (std::get_if<T>(&_value) != nullptr); }
+        template<typename T>[[nodiscard]] bool is() const
+        {
+            return (std::get_if<T>(&_value) != nullptr);
+        }
 
         template<typename T> T get() const { return std::get<T>(_value); }
 
         template<typename T> void set(T new_value) { _value = new_value; }
 
-        bool is_same_type(const ParamValue& rhs) const
+        [[nodiscard]] bool is_same_type(const ParamValue& rhs) const
         {
             if ((std::get_if<uint8_t>(&_value) && std::get_if<uint8_t>(&rhs._value)) ||
                 (std::get_if<int8_t>(&_value) && std::get_if<int8_t>(&rhs._value)) ||
@@ -386,34 +390,34 @@ public:
 
         bool operator==(const std::string& value_str) const
         {
-            // LogDebug() << "Compare " << typestr() << " and " << rhs.typestr();
+            // LogDebug() << "Compare " << value_str() << " and " << rhs.value_str();
             if (std::get_if<uint8_t>(&_value)) {
-                return std::get<uint8_t>(_value) == std::stoi(value_str.c_str());
+                return std::get<uint8_t>(_value) == std::stoi(value_str);
             } else if (std::get_if<int8_t>(&_value)) {
-                return std::get<int8_t>(_value) == std::stoi(value_str.c_str());
+                return std::get<int8_t>(_value) == std::stoi(value_str);
             } else if (std::get_if<uint16_t>(&_value)) {
-                return std::get<uint16_t>(_value) == std::stoi(value_str.c_str());
+                return std::get<uint16_t>(_value) == std::stoi(value_str);
             } else if (std::get_if<int16_t>(&_value)) {
-                return std::get<int16_t>(_value) == std::stoi(value_str.c_str());
+                return std::get<int16_t>(_value) == std::stoi(value_str);
             } else if (std::get_if<uint32_t>(&_value)) {
-                return std::get<uint32_t>(_value) == std::stoul(value_str.c_str());
+                return std::get<uint32_t>(_value) == std::stoul(value_str);
             } else if (std::get_if<int32_t>(&_value)) {
-                return std::get<int32_t>(_value) == std::stol(value_str.c_str());
+                return std::get<int32_t>(_value) == std::stol(value_str);
             } else if (std::get_if<uint64_t>(&_value)) {
-                return std::get<uint64_t>(_value) == std::stoull(value_str.c_str());
+                return std::get<uint64_t>(_value) == std::stoull(value_str);
             } else if (std::get_if<int64_t>(&_value)) {
-                return std::get<int64_t>(_value) == std::stoll(value_str.c_str());
+                return std::get<int64_t>(_value) == std::stoll(value_str);
             } else if (std::get_if<float>(&_value)) {
-                return std::get<float>(_value) == std::stof(value_str.c_str());
+                return std::get<float>(_value) == std::stof(value_str);
             } else if (std::get_if<double>(&_value)) {
-                return std::get<double>(_value) == std::stod(value_str.c_str());
+                return std::get<double>(_value) == std::stod(value_str);
             } else {
                 // This also covers custom_type_t
                 return false;
             }
         }
 
-        std::string typestr() const
+        [[nodiscard]] std::string typestr() const
         {
             if (std::get_if<uint8_t>(&_value)) {
                 return "uint8_t";
@@ -464,7 +468,7 @@ public:
     void set_param_async(
         const std::string& name,
         const ParamValue& value,
-        set_param_callback_t callback,
+        const set_param_callback_t& callback,
         const void* cookie = nullptr,
         bool extended = false);
 
@@ -479,20 +483,20 @@ public:
     void get_param_async(
         const std::string& name,
         ParamValue value_type,
-        get_param_callback_t callback,
+        const get_param_callback_t& callback,
         const void* cookie,
         bool extended = false);
 
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
     typedef std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>
         get_all_params_callback_t;
-    void get_all_params_async(get_all_params_callback_t callback);
+    void get_all_params_async(const get_all_params_callback_t& callback);
 
     using ParamChangedCallback = std::function<void(ParamValue value)>;
     void subscribe_param_changed(
         const std::string& name,
         ParamValue value_type,
-        ParamChangedCallback callback,
+        const ParamChangedCallback& callback,
         const void* cookie);
 
     void cancel_all_param(const void* cookie);

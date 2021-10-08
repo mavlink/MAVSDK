@@ -14,16 +14,16 @@ class UdpConnection : public Connection {
 public:
     explicit UdpConnection(
         Connection::receiver_callback_t receiver_callback,
-        const std::string& local_ip,
+        std::string local_ip,
         int local_port,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-    ~UdpConnection();
+    ~UdpConnection() override;
     ConnectionResult start() override;
     ConnectionResult stop() override;
 
     bool send_message(const mavlink_message_t& message) override;
 
-    void add_remote(const std::string& remote_ip, const int remote_port);
+    void add_remote(const std::string& remote_ip, int remote_port);
 
     // Non-copyable
     UdpConnection(const UdpConnection&) = delete;
@@ -36,7 +36,7 @@ private:
     void receive();
 
     void add_remote_with_remote_sysid(
-        const std::string& remote_ip, const int remote_port, const uint8_t remote_sysid);
+        const std::string& remote_ip, int remote_port, uint8_t remote_sysid);
 
     std::string _local_ip;
     int _local_port_number;
@@ -46,7 +46,7 @@ private:
         std::string ip{};
         int port_number{0};
 
-        bool operator==(const UdpConnection::Remote& other)
+        bool operator==(const UdpConnection::Remote& other) const
         {
             return ip == other.ip && port_number == other.port_number;
         }

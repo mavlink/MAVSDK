@@ -52,7 +52,7 @@ public:
     };
 
     explicit SystemImpl(MavsdkImpl& parent);
-    ~SystemImpl();
+    ~SystemImpl() override;
 
     void init(uint8_t system_id, uint8_t comp_id, bool connected);
 
@@ -65,7 +65,7 @@ public:
     typedef std::function<void(const mavlink_message_t&)> mavlink_message_handler_t;
 
     void register_mavlink_message_handler(
-        uint16_t msg_id, mavlink_message_handler_t callback, const void* cookie);
+        uint16_t msg_id, const mavlink_message_handler_t& callback, const void* cookie);
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
@@ -99,9 +99,9 @@ public:
     MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandInt& command);
 
     void send_command_async(
-        MavlinkCommandSender::CommandLong command, const CommandResultCallback callback);
+        MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback);
     void send_command_async(
-        MavlinkCommandSender::CommandInt command, const CommandResultCallback callback);
+        MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback);
 
     MavlinkCommandSender::Result set_msg_rate(
         uint16_t message_id, double rate_hz, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
@@ -109,7 +109,7 @@ public:
     void set_msg_rate_async(
         uint16_t message_id,
         double rate_hz,
-        CommandResultCallback callback,
+        const CommandResultCallback& callback,
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     // Adds unique component ids
@@ -147,13 +147,13 @@ public:
 
     typedef std::function<void(MAVLinkParameters::Result result)> success_t;
     void set_param_float_async(
-        const std::string& name, float value, success_t callback, const void* cookie);
+        const std::string& name, float value, const success_t& callback, const void* cookie);
     void set_param_int_async(
-        const std::string& name, int32_t value, success_t callback, const void* cookie);
+        const std::string& name, int32_t value, const success_t& callback, const void* cookie);
     void set_param_ext_float_async(
-        const std::string& name, float value, success_t callback, const void* cookie);
+        const std::string& name, float value, const success_t& callback, const void* cookie);
     void set_param_ext_int_async(
-        const std::string& name, int32_t value, success_t callback, const void* cookie);
+        const std::string& name, int32_t value, const success_t& callback, const void* cookie);
 
     void provide_server_param_float(const std::string& name, float value);
     void provide_server_param_int(const std::string& name, int32_t value);
@@ -161,10 +161,10 @@ public:
 
     using SubscribeParamIntCallback = std::function<void(int)>;
     void subscribe_param_int(
-        const std::string& name, SubscribeParamIntCallback callback, const void* cookie);
+        const std::string& name, const SubscribeParamIntCallback& callback, const void* cookie);
     using SubscribeParamFloatCallback = std::function<void(float)>;
     void subscribe_param_float(
-        const std::string& name, SubscribeParamFloatCallback callback, const void* cookie);
+        const std::string& name, const SubscribeParamFloatCallback& callback, const void* cookie);
 
     FlightMode get_flight_mode() const;
 
@@ -172,7 +172,7 @@ public:
     set_flight_mode(FlightMode mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
     void set_flight_mode_async(
         FlightMode mode,
-        CommandResultCallback callback,
+        const CommandResultCallback& callback,
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     typedef std::function<void(MAVLinkParameters::Result result, float value)>
@@ -192,13 +192,13 @@ public:
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.
     void get_param_float_async(
-        const std::string& name, get_param_float_callback_t callback, const void* cookie);
+        const std::string& name, const get_param_float_callback_t& callback, const void* cookie);
     void get_param_int_async(
-        const std::string& name, get_param_int_callback_t callback, const void* cookie);
+        const std::string& name, const get_param_int_callback_t& callback, const void* cookie);
     void get_param_ext_float_async(
-        const std::string& name, get_param_float_callback_t callback, const void* cookie);
+        const std::string& name, const get_param_float_callback_t& callback, const void* cookie);
     void get_param_ext_int_async(
-        const std::string& name, get_param_int_callback_t callback, const void* cookie);
+        const std::string& name, const get_param_int_callback_t& callback, const void* cookie);
 
     typedef std::function<void(
         MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value)>
@@ -207,7 +207,7 @@ public:
     void set_param_async(
         const std::string& name,
         MAVLinkParameters::ParamValue value,
-        success_t callback,
+        const success_t& callback,
         const void* cookie,
         bool extended = false);
 
@@ -217,7 +217,7 @@ public:
     void get_param_async(
         const std::string& name,
         MAVLinkParameters::ParamValue value_type,
-        get_param_callback_t callback,
+        const get_param_callback_t& callback,
         const void* cookie,
         bool extended);
 
@@ -227,7 +227,7 @@ public:
 
     typedef std::function<void(const std::string& name)> param_changed_callback_t;
     void
-    register_param_changed_handler(const param_changed_callback_t callback, const void* cookie);
+    register_param_changed_handler(const param_changed_callback_t& callback, const void* cookie);
     void unregister_param_changed_handler(const void* cookie);
 
     bool is_connected() const;
@@ -241,7 +241,7 @@ public:
     void unregister_plugin(PluginImplBase* plugin_impl);
 
     void call_user_callback_located(
-        const std::string& filename, const int linenumber, const std::function<void()>& func);
+        const std::string& filename, int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
     void send_autopilot_version();
@@ -258,11 +258,11 @@ public:
 
     void register_mavlink_command_handler(
         uint16_t cmd_id,
-        MavlinkCommandReceiver::MavlinkCommandIntHandler callback,
+        const MavlinkCommandReceiver::MavlinkCommandIntHandler& callback,
         const void* cookie);
     void register_mavlink_command_handler(
         uint16_t cmd_id,
-        MavlinkCommandReceiver::MavlinkCommandLongHandler callback,
+        const MavlinkCommandReceiver::MavlinkCommandLongHandler& callback,
         const void* cookie);
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
@@ -326,11 +326,11 @@ private:
     static void receive_float_param(
         MAVLinkParameters::Result result,
         MAVLinkParameters::ParamValue value,
-        get_param_float_callback_t callback);
+        const get_param_float_callback_t& callback);
     static void receive_int_param(
         MAVLinkParameters::Result result,
         MAVLinkParameters::ParamValue value,
-        get_param_int_callback_t callback);
+        const get_param_int_callback_t& callback);
 
     std::mutex _component_discovered_callback_mutex{};
     System::DiscoverCallback _component_discovered_callback{nullptr};
@@ -360,12 +360,10 @@ private:
 
     MavsdkImpl& _parent;
 
-    CommandResultCallback _command_result_callback{nullptr};
-
     std::thread* _system_thread{nullptr};
     std::atomic<bool> _should_exit{false};
 
-    static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
+    static constexpr double HEARTBEAT_TIMEOUT_S = 3.0;
 
     std::mutex _connection_mutex{};
     std::atomic<bool> _connected{false};
@@ -373,7 +371,6 @@ private:
     void* _heartbeat_timeout_cookie = nullptr;
 
     std::atomic<bool> _autopilot_version_pending{false};
-    void* _autopilot_version_timed_out_cookie = nullptr;
 
     static constexpr double _ping_interval_s = 5.0;
 
@@ -404,7 +401,7 @@ private:
 
     std::mutex _autopilot_version_mutex{};
     System::AutopilotVersion _autopilot_version{
-        MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, 0};
+        MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, {0}};
 };
 
 } // namespace mavsdk

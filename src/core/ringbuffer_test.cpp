@@ -71,14 +71,13 @@ TEST(Ringbuffer, PushAndMutate)
     EXPECT_EQ(buffer.size(), 3);
 
     std::vector<int> expected{14, 15, 16};
-    unsigned i = 0;
     for (auto& buf : buffer) {
         // Try to mutate the values.
         buf += 10;
     }
 
     // And check again
-    i = 0;
+    unsigned i = 0;
     for (const auto& buf : buffer) {
         EXPECT_EQ(buf, expected[i++]);
     }

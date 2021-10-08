@@ -132,17 +132,6 @@ public:
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
 
     /**
-     * @brief Adds a TCP connection with a specific port number on localhost.
-     *
-     * @param remote_port The TCP port to connect to (defaults to 5760).
-     * @param forwarding_option message forwarding option (when multiple interfaces are used).
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_tcp_connection(
-        int remote_port = DEFAULT_TCP_REMOTE_PORT,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    /**
      * @brief Adds a TCP connection with a specific IP address and port number.
      *
      * @param remote_ip Remote IP address to connect to.
@@ -298,7 +287,7 @@ public:
      *
      * @param callback Callback to subscribe.
      */
-    void subscribe_on_new_system(NewSystemCallback callback);
+    void subscribe_on_new_system(const NewSystemCallback& callback);
 
 private:
     /* @private. */

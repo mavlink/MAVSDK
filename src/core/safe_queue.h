@@ -32,7 +32,7 @@ public:
             if (_should_exit) {
                 return std::nullopt;
             }
-            // Release lock during the wait and re-aquire it afterwards.
+            // Release lock during the wait and re-acquire it afterwards.
             _condition_var.wait(lock);
         }
         if (_should_exit) {

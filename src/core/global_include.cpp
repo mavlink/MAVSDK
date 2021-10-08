@@ -1,6 +1,5 @@
 #include "global_include.h"
 
-#include <cfloat>
 #include <cstdint>
 #include <limits>
 #include <cmath>
@@ -10,9 +9,6 @@ namespace mavsdk {
 
 using std::chrono::steady_clock;
 using std::chrono::system_clock;
-
-Time::Time() {}
-Time::~Time() {}
 
 dl_time_t Time::steady_time()
 {
@@ -28,7 +24,7 @@ double Time::elapsed_s()
 {
     auto now = steady_time().time_since_epoch();
 
-    return (now.count()) * steady_clock::period::num /
+    return static_cast<double>((now.count()) * steady_clock::period::num) /
            static_cast<double>(steady_clock::period::den);
 }
 
@@ -36,7 +32,7 @@ double Time::elapsed_since_s(const dl_time_t& since)
 {
     auto now = steady_time();
 
-    return ((now - since).count()) * steady_clock::period::num /
+    return static_cast<double>(((now - since).count()) * steady_clock::period::num) /
            static_cast<double>(steady_clock::period::den);
 }
 
@@ -86,8 +82,6 @@ FakeTime::FakeTime() : Time()
     // Start with current time so we don't start from 0.
     _current = steady_clock::now();
 }
-
-FakeTime::~FakeTime() {}
 
 dl_time_t FakeTime::steady_time()
 {
@@ -164,9 +158,6 @@ bool are_equal(double one, double two)
 {
     return (std::fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
-
-AutopilotTime::AutopilotTime() {}
-AutopilotTime::~AutopilotTime() {}
 
 dl_system_time_t AutopilotTime::system_time()
 {

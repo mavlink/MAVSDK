@@ -1,6 +1,5 @@
 #include "timeout_handler.h"
 #include <gtest/gtest.h>
-#include <atomic>
 
 #ifdef FAKE_TIME
 #define Time FakeTime

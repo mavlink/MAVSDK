@@ -23,15 +23,10 @@ public:
         const std::string& url,
         const std::string& path,
         const progress_callback_t& progress_callback) = 0;
-
-    virtual ~ICurlWrapper() {}
 };
 
 class CurlWrapper : public ICurlWrapper {
 public:
-    CurlWrapper();
-    ~CurlWrapper();
-
     // ICurlWrapper
     bool download_text(const std::string& url, std::string& content) override;
     bool download_file_to_path(

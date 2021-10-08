@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <mutex>
-#include <utility>
 
 #include "connection.h"
 #include "global_include.h"
@@ -29,14 +28,14 @@ MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
     LogInfo() << "MAVSDK version: " << mavsdk_version;
 
     if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
-        if (env_p && std::string("1").compare(env_p) == 0) {
+        if (std::string(env_p) == "1") {
             LogDebug() << "Callback debugging is on.";
             _callback_debugging = true;
         }
     }
 
     if (const char* env_p = std::getenv("MAVSDK_MESSAGE_DEBUGGING")) {
-        if (env_p && std::string("1").compare(env_p) == 0) {
+        if (std::string(env_p) == "1") {
             LogDebug() << "Message debugging is on.";
             _message_logging_on = true;
         }
@@ -79,7 +78,7 @@ MavsdkImpl::~MavsdkImpl()
     }
 }
 
-std::string MavsdkImpl::version() const
+std::string MavsdkImpl::version()
 {
     static unsigned version_counter = 0;
 
@@ -146,13 +145,13 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
         std::lock_guard<std::mutex> lock(_connections_mutex);
 
         unsigned successful_emissions = 0;
-        for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+        for (auto& _connection : _connections) {
             // Check whether the connection is not the one from which we received the message.
             // And also check if the connection was set to forward messages.
-            if ((*it).get() == connection || !(**it).should_forward_messages()) {
+            if (_connection.get() == connection || !(*_connection).should_forward_messages()) {
                 continue;
             }
-            if ((**it).send_message(message)) {
+            if ((*_connection).send_message(message)) {
                 successful_emissions++;
             }
         }
@@ -179,8 +178,8 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
      * 2. At least 1 forwarding connection.
      * 3. At least 2 forwarding connections or current connection is not forwarding.
      */
-    if (_connections.size() > 1 && connection->forwarding_connections_count() > 0 &&
-        (connection->forwarding_connections_count() > 1 ||
+    if (_connections.size() > 1 && mavsdk::Connection::forwarding_connections_count() > 0 &&
+        (mavsdk::Connection::forwarding_connections_count() > 1 ||
          !connection->should_forward_messages())) {
         if (_message_logging_on) {
             LogDebug() << "Forwarding message " << message.msgid << " from "
@@ -262,14 +261,14 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
     uint8_t successful_emissions = 0;
-    for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+    for (auto& _connection : _connections) {
         const uint8_t target_system_id = get_target_system_id(message);
 
-        if (target_system_id != 0 && !(**it).has_system_id(target_system_id)) {
+        if (target_system_id != 0 && !(*_connection).has_system_id(target_system_id)) {
             continue;
         }
 
-        if ((**it).send_message(message)) {
+        if ((*_connection).send_message(message)) {
             successful_emissions++;
         }
     }
@@ -334,7 +333,9 @@ ConnectionResult MavsdkImpl::add_udp_connection(
     const std::string& local_ip, const int local_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<UdpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+        [this](mavlink_message_t& message, Connection* connection) {
+            receive_message(message, connection);
+        },
         local_ip,
         local_port,
         forwarding_option);
@@ -352,7 +353,9 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
     const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<UdpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+        [this](mavlink_message_t& message, Connection* connection) {
+            receive_message(message, connection);
+        },
         "0.0.0.0",
         0,
         forwarding_option);
@@ -372,7 +375,9 @@ ConnectionResult MavsdkImpl::add_tcp_connection(
     const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<TcpConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+        [this](mavlink_message_t& message, Connection* connection) {
+            receive_message(message, connection);
+        },
         remote_ip,
         remote_port,
         forwarding_option);
@@ -393,7 +398,9 @@ ConnectionResult MavsdkImpl::add_serial_connection(
     ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<SerialConnection>(
-        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1, std::placeholders::_2),
+        [this](mavlink_message_t& message, Connection* connection) {
+            receive_message(message, connection);
+        },
         dev_path,
         baudrate,
         flow_control,
@@ -408,7 +415,7 @@ ConnectionResult MavsdkImpl::add_serial_connection(
     return ret;
 }
 
-void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
+void MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
     _connections.push_back(new_connection);
@@ -480,7 +487,7 @@ void MavsdkImpl::make_system_with_component(
     auto new_system = std::make_shared<System>(*this);
     new_system->init(system_id, comp_id, always_connected);
 
-    _systems.push_back(std::pair<uint8_t, std::shared_ptr<System>>(system_id, new_system));
+    _systems.emplace_back(system_id, new_system);
 }
 
 void MavsdkImpl::notify_on_discover()
@@ -501,7 +508,7 @@ void MavsdkImpl::notify_on_timeout()
     }
 }
 
-void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
+void MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
     _new_system_callback = callback;
@@ -511,7 +518,7 @@ void MavsdkImpl::subscribe_on_new_system(Mavsdk::NewSystemCallback callback)
     }
 }
 
-bool MavsdkImpl::is_any_system_connected()
+bool MavsdkImpl::is_any_system_connected() const
 {
     std::vector<std::shared_ptr<System>> connected_systems = systems();
     return std::any_of(connected_systems.cbegin(), connected_systems.cend(), [](auto& system) {
@@ -590,7 +597,7 @@ void MavsdkImpl::start_sending_heartbeats()
 {
     if (_heartbeat_send_cookie == nullptr) {
         call_every_handler.add(
-            [this]() { send_heartbeat(); }, _HEARTBEAT_SEND_INTERVAL_S, &_heartbeat_send_cookie);
+            [this]() { send_heartbeat(); }, HEARTBEAT_SEND_INTERVAL_S, &_heartbeat_send_cookie);
     }
 }
 
@@ -627,7 +634,7 @@ uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
         return 0;
     }
 
-    // Don't look at the target system offset if it is outside of the payload length.
+    // Don't look at the target system offset if it is outside the payload length.
     // This can happen if the fields are trimmed.
     if (meta->target_system_ofs >= message.len) {
         return 0;
@@ -645,7 +652,7 @@ uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
         return 0;
     }
 
-    // Don't look at the target component offset if it is outside of the payload length.
+    // Don't look at the target component offset if it is outside the payload length.
     // This can happen if the fields are trimmed.
     if (meta->target_component_ofs >= message.len) {
         return 0;

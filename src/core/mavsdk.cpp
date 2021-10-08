@@ -10,7 +10,7 @@ Mavsdk::Mavsdk()
     _impl = std::make_shared<MavsdkImpl>();
 }
 
-Mavsdk::~Mavsdk() {}
+Mavsdk::~Mavsdk() = default;
 
 std::string Mavsdk::version() const
 {
@@ -70,7 +70,7 @@ void Mavsdk::set_timeout_s(double timeout_s)
     _impl->set_timeout_s(timeout_s);
 }
 
-void Mavsdk::subscribe_on_new_system(const NewSystemCallback callback)
+void Mavsdk::subscribe_on_new_system(const NewSystemCallback& callback)
 {
     _impl->subscribe_on_new_system(callback);
 }
@@ -96,7 +96,7 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
             _always_send_heartbeats = false;
             break;
         case Mavsdk::Configuration::UsageType::CompanionComputer:
-            // TODO implement autodetection of system ID - maybe from heartbeats?
+            // TODO implement auto-detection of system ID - maybe from heartbeats?
             _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CC;
             _always_send_heartbeats = true;

@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <poll.h>
+
+#include <utility>
 #endif
 
 namespace mavsdk {
@@ -46,12 +48,12 @@ std::string GetLastErrorStdStr()
 
 SerialConnection::SerialConnection(
     Connection::receiver_callback_t receiver_callback,
-    const std::string& path,
+    std::string path,
     int baudrate,
     bool flow_control,
     ForwardingOption forwarding_option) :
-    Connection(receiver_callback, forwarding_option),
-    _serial_node(path),
+    Connection(std::move(receiver_callback), forwarding_option),
+    _serial_node(std::move(path)),
     _baudrate(baudrate),
     _flow_control(flow_control)
 {}

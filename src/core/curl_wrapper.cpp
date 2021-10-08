@@ -1,17 +1,12 @@
 #include "global_include.h"
 #include "log.h"
 #include "curl_wrapper.h"
-#include <sstream>
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 #include <fstream>
 #include <string>
 
 namespace mavsdk {
-
-CurlWrapper::CurlWrapper() {}
-
-CurlWrapper::~CurlWrapper() {}
 
 // converts curl output to string
 // taken from
@@ -56,7 +51,7 @@ upload_progress_update(void* p, double dltotal, double dlnow, double ultotal, do
     UNUSED(dltotal);
     UNUSED(dlnow);
 
-    struct dl_up_progress* myp = reinterpret_cast<struct dl_up_progress*>(p);
+    auto* myp = reinterpret_cast<struct dl_up_progress*>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -79,11 +74,11 @@ upload_progress_update(void* p, double dltotal, double dlnow, double ultotal, do
 size_t get_file_size(const std::string& path)
 {
     std::streampos begin, end;
-    std::ifstream myfile(path.c_str(), std::ios::binary);
-    begin = myfile.tellg();
-    myfile.seekg(0, std::ios::end);
-    end = myfile.tellg();
-    myfile.close();
+    std::ifstream my_file(path.c_str(), std::ios::binary);
+    begin = my_file.tellg();
+    my_file.seekg(0, std::ios::end);
+    end = my_file.tellg();
+    my_file.close();
     return ((end - begin) > 0) ? (end - begin) : 0;
 }
 
@@ -101,13 +96,13 @@ bool CurlWrapper::upload_file(
     CURLcode res;
 
     if (nullptr != curl) {
-        struct dl_up_progress prog;
-        prog.progress_callback = progress_callback;
+        struct dl_up_progress progress;
+        progress.progress_callback = progress_callback;
 
-        curl_httppost* post = NULL;
-        curl_httppost* last = NULL;
+        curl_httppost* post = nullptr;
+        curl_httppost* last = nullptr;
 
-        struct curl_slist* chunk = NULL;
+        struct curl_slist* chunk = nullptr;
 
         // avoid sending 'Expect: 100-Continue' header, required by some server implementations
         chunk = curl_slist_append(chunk, "Expect:");
@@ -124,7 +119,7 @@ bool CurlWrapper::upload_file(
 
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, upload_progress_update);
-        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &progress);
         curl_easy_setopt(curl.get(), CURLOPT_VERBOSE, 1L);
         curl_easy_setopt(curl.get(), CURLOPT_HTTPHEADER, chunk);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
@@ -160,7 +155,7 @@ download_progress_update(void* p, double dltotal, double dlnow, double ultotal, 
     UNUSED(ultotal);
     UNUSED(ulnow);
 
-    struct dl_up_progress* myp = reinterpret_cast<struct dl_up_progress*>(p);
+    auto* myp = reinterpret_cast<struct dl_up_progress*>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -188,13 +183,13 @@ bool CurlWrapper::download_file_to_path(
 
     if (nullptr != curl) {
         CURLcode res;
-        struct dl_up_progress prog;
-        prog.progress_callback = progress_callback;
+        struct dl_up_progress progress;
+        progress.progress_callback = progress_callback;
 
         fp = fopen(path.c_str(), "wb");
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, download_progress_update);
-        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &progress);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, fp);
