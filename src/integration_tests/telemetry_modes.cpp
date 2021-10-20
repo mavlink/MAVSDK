@@ -23,7 +23,8 @@ TEST(SitlTestDisabled, TelemetryFlightModes)
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 
-    telemetry->subscribe_flight_mode(std::bind(&observe_mode, std::placeholders::_1));
+    telemetry->subscribe_flight_mode(
+        [](Telemetry::FlightMode flight_mode) { observe_mode(flight_mode); });
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for system to be ready" << '\n';

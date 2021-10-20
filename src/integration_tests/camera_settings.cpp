@@ -9,7 +9,6 @@
 #include "camera_test_helpers.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
 
 // To run specific tests for Yuneec cameras.
 const static bool is_e90 = false;
@@ -283,7 +282,9 @@ TEST(CameraTest, SubscribeCurrentSettings)
 
     bool subscription_called = false;
     camera->subscribe_current_settings(
-        std::bind(receive_current_settings, std::ref(subscription_called), _1));
+        [&subscription_called](const std::vector<Camera::Setting>& settings) {
+            receive_current_settings(subscription_called, settings);
+        });
 
     EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -346,7 +347,9 @@ TEST(CameraTest, SubscribePossibleSettings)
 
     bool subscription_called = false;
     camera->subscribe_possible_setting_options(
-        std::bind(receive_possible_setting_options, std::ref(subscription_called), _1));
+        [&subscription_called](const std::vector<Camera::SettingOptions>& possible_settings) {
+            receive_possible_setting_options(subscription_called, possible_settings);
+        });
 
     EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(1));

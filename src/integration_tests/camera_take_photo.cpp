@@ -10,14 +10,8 @@
 #include "camera_test_helpers.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
 
-static void receive_camera_result(Camera::Result result);
-
-static void receive_capture_info(Camera::CaptureInfo capture_info);
-
-static std::atomic<bool> _received_result{false};
-static std::atomic<bool> _received_capture_info{false};
+static void receive_capture_info(Camera::CaptureInfo capture_info, bool& received_capture_info);
 
 TEST(CameraTest, TakePhotoSingle)
 {
@@ -40,11 +34,15 @@ TEST(CameraTest, TakePhotoSingle)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    camera->subscribe_capture_info(std::bind(&receive_capture_info, _1));
+    bool received_capture_info = false;
+    camera->subscribe_capture_info([&received_capture_info](Camera::CaptureInfo capture_info) {
+        receive_capture_info(capture_info, received_capture_info);
+    });
 
-    camera->take_photo_async(std::bind(&receive_camera_result, _1));
+    const auto result = camera->take_photo();
+    EXPECT_EQ(result, Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(5));
-    EXPECT_TRUE(_received_capture_info);
+    EXPECT_TRUE(received_capture_info);
 }
 
 TEST(CameraTest, TakePhotosMultiple)
@@ -68,24 +66,22 @@ TEST(CameraTest, TakePhotosMultiple)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    camera->subscribe_capture_info(std::bind(&receive_capture_info, _1));
+    bool received_capture_info = false;
+    camera->subscribe_capture_info([&received_capture_info](Camera::CaptureInfo capture_info) {
+        receive_capture_info(capture_info, received_capture_info);
+    });
 
     for (unsigned i = 0; i < num_photos_to_take; ++i) {
-        camera->take_photo_async(std::bind(&receive_camera_result, _1));
+        const auto result = camera->take_photo();
+        EXPECT_EQ(result, Camera::Result::Success);
         LogDebug() << "taking picture: " << i;
         std::this_thread::sleep_for(std::chrono::seconds(5));
-        EXPECT_TRUE(_received_capture_info);
-        _received_capture_info = false;
+        EXPECT_TRUE(received_capture_info);
+        received_capture_info = false;
     }
 }
 
-void receive_camera_result(Camera::Result result)
-{
-    _received_result = true;
-    EXPECT_EQ(result, Camera::Result::Success);
-}
-
-void receive_capture_info(Camera::CaptureInfo capture_info)
+void receive_capture_info(Camera::CaptureInfo capture_info, bool& received_capture_info)
 {
     LogInfo() << "New capture at " << capture_info.position.latitude_deg << ", "
               << capture_info.position.longitude_deg << ", "
@@ -98,5 +94,5 @@ void receive_capture_info(Camera::CaptureInfo capture_info)
     LogInfo() << "Result: " << (capture_info.is_success ? "success" : "fail") << ".";
     LogInfo() << "Saved to " << capture_info.file_url << " (" << capture_info.index << ").";
 
-    _received_capture_info = true;
+    received_capture_info = true;
 }

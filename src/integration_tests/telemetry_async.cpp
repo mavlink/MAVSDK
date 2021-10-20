@@ -5,9 +5,8 @@
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 
-#define CAMERA_AVAILABLE 0 // Set to 1 if camera is available and should be tested.
+#define CAMERA_AVAILABLE 1 // Set to 1 if camera is available and should be tested.
 
-using namespace std::placeholders; // for `_1`
 using namespace mavsdk;
 
 static void receive_result(Telemetry::Result result);
@@ -74,81 +73,114 @@ TEST_F(SitlTest, TelemetryAsync)
 
     auto telemetry = std::make_shared<Telemetry>(system);
 
-    telemetry->set_rate_position_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_position_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_home_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_home_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_in_air_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_in_air_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_attitude_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_attitude_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_velocity_ned_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_velocity_ned_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_imu_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_imu_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_gps_info_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_gps_info_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_battery_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_battery_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_actuator_control_target_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_actuator_control_target_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_fixedwing_metrics_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_fixedwing_metrics_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_ground_truth_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_ground_truth_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->subscribe_position(std::bind(&print_position, _1));
+    telemetry->subscribe_position([](Telemetry::Position position) { print_position(position); });
 
-    telemetry->subscribe_home(std::bind(&print_home_position, _1));
+    telemetry->subscribe_home([](Telemetry::Position home) { print_home_position(home); });
 
-    telemetry->subscribe_in_air(std::bind(&print_in_air, _1));
+    telemetry->subscribe_in_air([](bool is_in_air) { print_in_air(is_in_air); });
 
-    telemetry->subscribe_armed(std::bind(&print_armed, _1));
+    telemetry->subscribe_armed([](bool is_armed) { print_armed(is_armed); });
 
-    telemetry->subscribe_attitude_quaternion(std::bind(&print_quaternion, _1));
+    telemetry->subscribe_attitude_quaternion(
+        [](Telemetry::Quaternion quaternion) { print_quaternion(quaternion); });
 
-    telemetry->subscribe_attitude_euler(std::bind(&print_euler_angle, _1));
+    telemetry->subscribe_attitude_euler(
+        [](Telemetry::EulerAngle euler_angle) { print_euler_angle(euler_angle); });
 
     telemetry->subscribe_attitude_angular_velocity_body(
-        std::bind(&print_angular_velocity_body, _1));
+        [](Telemetry::AngularVelocityBody angular_velocity_body) {
+            print_angular_velocity_body(angular_velocity_body);
+        });
 
-    telemetry->subscribe_fixedwing_metrics(std::bind(&print_fixedwing_metrics, _1));
+    telemetry->subscribe_fixedwing_metrics([](Telemetry::FixedwingMetrics fixed_wing_metrics) {
+        print_fixedwing_metrics(fixed_wing_metrics);
+    });
 
-    telemetry->subscribe_ground_truth(std::bind(&print_ground_truth, _1));
+    telemetry->subscribe_ground_truth(
+        [](Telemetry::GroundTruth ground_truth) { print_ground_truth(ground_truth); });
 
 #if CAMERA_AVAILABLE == 1
-    telemetry->subscribe_camera_attitude_quaternion(std::bind(&print_camera_quaternion, _1));
+    telemetry->subscribe_camera_attitude_quaternion(
+        [](Telemetry::Quaternion quaternion) { print_camera_quaternion(quaternion); });
 
-    telemetry->subscribe_camera_attitude_euler_angle(std::bind(&print_camera_euler_angle, _1));
+    telemetry->subscribe_camera_attitude_euler(
+        [](Telemetry::EulerAngle euler_angle) { print_camera_euler_angle(euler_angle); });
 #endif
 
-    telemetry->subscribe_velocity_ned(std::bind(&print_velocity_ned, _1));
+    telemetry->subscribe_velocity_ned(
+        [](Telemetry::VelocityNed velocity_ned) { print_velocity_ned(velocity_ned); });
 
-    telemetry->subscribe_imu(std::bind(&print_imu, _1));
+    telemetry->subscribe_imu([](Telemetry::Imu imu) { print_imu(imu); });
 
-    telemetry->subscribe_gps_info(std::bind(&print_gps_info, _1));
+    telemetry->subscribe_gps_info([](Telemetry::GpsInfo gps_info) { print_gps_info(gps_info); });
 
-    telemetry->subscribe_battery(std::bind(&print_battery, _1));
+    telemetry->subscribe_battery([](Telemetry::Battery battery) { print_battery(battery); });
 
-    telemetry->subscribe_rc_status(std::bind(&print_rc_status, _1));
+    telemetry->subscribe_rc_status(
+        [](Telemetry::RcStatus rc_status) { print_rc_status(rc_status); });
 
-    telemetry->subscribe_position_velocity_ned(std::bind(&print_position_velocity_ned, _1));
+    telemetry->subscribe_position_velocity_ned(
+        [](Telemetry::PositionVelocityNed position_velocity_ned) {
+            print_position_velocity_ned(position_velocity_ned);
+        });
 
-    telemetry->subscribe_unix_epoch_time(std::bind(&print_unix_epoch_time_us, _1));
+    // TODO: this should have a unit
+    telemetry->subscribe_unix_epoch_time(
+        [](uint64_t unit_epoch_time) { print_unix_epoch_time_us(unit_epoch_time); });
 
-    telemetry->subscribe_actuator_control_target(std::bind(&print_actuator_control_target, _1));
+    telemetry->subscribe_actuator_control_target(
+        [](Telemetry::ActuatorControlTarget actuator_control_target) {
+            print_actuator_control_target(actuator_control_target);
+        });
 
-    telemetry->subscribe_actuator_output_status(std::bind(&print_actuator_output_status, _1));
+    telemetry->subscribe_actuator_output_status(
+        [](Telemetry::ActuatorOutputStatus actuator_output_status) {
+            print_actuator_output_status(actuator_output_status);
+        });
 
     std::this_thread::sleep_for(std::chrono::seconds(10));
 

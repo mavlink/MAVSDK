@@ -12,7 +12,6 @@
 #include "plugins/mission/mission.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
 
 // TODO: add checks that verify the return altitude
 
