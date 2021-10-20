@@ -7,8 +7,6 @@
 
 namespace mavsdk {
 
-using namespace std::placeholders; // for `_1`
-
 ActionImpl::ActionImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -29,7 +27,7 @@ void ActionImpl::init()
     // We need the system state.
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-        std::bind(&ActionImpl::process_extended_sys_state, this, _1),
+        [this](const mavlink_message_t& message) { process_extended_sys_state(message); },
         this);
 }
 
