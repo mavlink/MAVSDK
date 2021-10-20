@@ -101,14 +101,14 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
         _parent->get_own_component_id(),
         &msg,
         get_boot_time_ms(),
-        static_cast<uint32_t>(position.latitude_deg * 1E7),
-        static_cast<uint32_t>(position.longitude_deg * 1E7),
-        static_cast<uint32_t>(static_cast<double>(position.absolute_altitude_m) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(position.relative_altitude_m) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(velocity_ned.north_m_s) * 1E2),
-        static_cast<uint32_t>(static_cast<double>(velocity_ned.east_m_s) * 1E2),
-        static_cast<uint32_t>(static_cast<double>(velocity_ned.down_m_s) * 1E2),
-        static_cast<uint32_t>(static_cast<double>(heading.heading_deg) * 1E2));
+        static_cast<int32_t>(position.latitude_deg * 1E7),
+        static_cast<int32_t>(position.longitude_deg * 1E7),
+        static_cast<int32_t>(static_cast<double>(position.absolute_altitude_m) * 1E3),
+        static_cast<int32_t>(static_cast<double>(position.relative_altitude_m) * 1E3),
+        static_cast<int16_t>(static_cast<double>(velocity_ned.north_m_s) * 1E2),
+        static_cast<int16_t>(static_cast<double>(velocity_ned.east_m_s) * 1E2),
+        static_cast<int16_t>(static_cast<double>(velocity_ned.down_m_s) * 1E2),
+        static_cast<uint16_t>(static_cast<double>(heading.heading_deg) * 1E2));
 
     add_msg_cache(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, msg);
 
@@ -124,9 +124,9 @@ TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Posit
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &msg,
-        static_cast<uint32_t>(home.latitude_deg * 1E7),
-        static_cast<uint32_t>(home.longitude_deg * 1E7),
-        static_cast<uint32_t>(static_cast<double>(home.absolute_altitude_m) * 1E-3),
+        static_cast<int32_t>(home.latitude_deg * 1E7),
+        static_cast<int32_t>(home.longitude_deg * 1E7),
+        static_cast<int32_t>(static_cast<double>(home.absolute_altitude_m) * 1E-3),
         0, // Local X
         0, // Local Y
         0, // Local Z
@@ -153,20 +153,20 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
         &msg,
         raw_gps.timestamp_us,
         static_cast<uint8_t>(gps_info.fix_type),
-        static_cast<uint32_t>(raw_gps.latitude_deg * 1E7),
-        static_cast<uint32_t>(raw_gps.longitude_deg * 1E7),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.absolute_altitude_m) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.hdop) * 1E2),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.vdop) * 1E2),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_m_s) * 1E2),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.cog_deg) * 1E2),
-        gps_info.num_satellites,
-        static_cast<uint32_t>(static_cast<double>(raw_gps.altitude_ellipsoid_m) * 1E3),
+        static_cast<int32_t>(raw_gps.latitude_deg * 1E7),
+        static_cast<int32_t>(raw_gps.longitude_deg * 1E7),
+        static_cast<int32_t>(static_cast<double>(raw_gps.absolute_altitude_m) * 1E3),
+        static_cast<uint16_t>(static_cast<double>(raw_gps.hdop) * 1E2),
+        static_cast<uint16_t>(static_cast<double>(raw_gps.vdop) * 1E2),
+        static_cast<uint16_t>(static_cast<double>(raw_gps.velocity_m_s) * 1E2),
+        static_cast<uint16_t>(static_cast<double>(raw_gps.cog_deg) * 1E2),
+        static_cast<uint8_t>(gps_info.num_satellites),
+        static_cast<int32_t>(static_cast<double>(raw_gps.altitude_ellipsoid_m) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.horizontal_uncertainty_m) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.vertical_uncertainty_m) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
+        static_cast<uint16_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
 
     add_msg_cache(MAVLINK_MSG_ID_GPS_RAW_INT, msg);
 
