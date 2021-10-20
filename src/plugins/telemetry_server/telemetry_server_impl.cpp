@@ -164,7 +164,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
         static_cast<int32_t>(static_cast<double>(raw_gps.altitude_ellipsoid_m) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.horizontal_uncertainty_m) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.vertical_uncertainty_m) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s)  * 1E3),
+        static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5),
         static_cast<uint16_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
 
