@@ -24,6 +24,17 @@ int mavsdk_server_run(
     return true;
 }
 
+int mavsdk_server_run_with_mavlink_ids(
+    MavsdkServer* mavsdk_server,
+    const char* system_address,
+    const int mavsdk_server_port,
+    const uint8_t system_id,
+    const uint8_t component_id)
+{
+    mavsdk_server->setMavlinkIds(system_id, component_id);
+    return mavsdk_server_run(mavsdk_server, system_address, mavsdk_server_port);
+}
+
 int mavsdk_server_get_port(MavsdkServer* mavsdk_server)
 {
     return mavsdk_server->getPort();
