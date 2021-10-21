@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10.2)
 
+# Disable hunter by default - use -DHUNTER_ENABLED=ON to build with hunter
+option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
 include("src/cmake/HunterGate.cmake")
 HunterGate(
     URL "https://github.com/cpp-pm/hunter/archive/v0.23.315.tar.gz"

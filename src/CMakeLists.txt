@@ -33,15 +33,15 @@ find_package(Threads REQUIRED)
 
 if(NOT HUNTER_ENABLED)
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-    find_package(CURL REQUIRED)
-    find_package(tinyxml2 REQUIRED)
-else()
-    hunter_add_package(jsoncpp)
-    hunter_add_package(tinyxml2)
-    hunter_add_package(CURL)
-    find_package(CURL REQUIRED CONFIG)
-    find_package(tinyxml2 REQUIRED CONFIG)
 endif()
+
+# This will noop if hunter is not enabled
+hunter_add_package(jsoncpp)
+hunter_add_package(tinyxml2)
+hunter_add_package(CURL)
+
+find_package(CURL REQUIRED)
+find_package(tinyxml2 REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
