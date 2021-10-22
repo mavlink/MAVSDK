@@ -11,8 +11,6 @@
 
 namespace mavsdk {
 
-using namespace std::placeholders; // for `_1`
-
 System::System(MavsdkImpl& parent) : _system_impl(std::make_shared<SystemImpl>(parent)) {}
 
 System::~System() = default;

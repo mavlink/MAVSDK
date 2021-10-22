@@ -24,20 +24,20 @@ InfoImpl::~InfoImpl()
 
 void InfoImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
-
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&InfoImpl::process_autopilot_version, this, _1),
+        [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
-        std::bind(&InfoImpl::process_flight_information, this, _1),
+        [this](const mavlink_message_t& message) { process_flight_information(message); },
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_ATTITUDE, std::bind(&InfoImpl::process_attitude, this, _1), this);
+        MAVLINK_MSG_ID_ATTITUDE,
+        [this](const mavlink_message_t& message) { process_attitude(message); },
+        this);
 }
 
 void InfoImpl::deinit()
@@ -53,14 +53,11 @@ void InfoImpl::enable()
     _parent->send_flight_information_request();
 
     // We're going to retry until we have the version.
-    _parent->add_call_every(
-        std::bind(&InfoImpl::request_version_again, this), 1.0f, &_call_every_cookie);
+    _parent->add_call_every([this]() { request_version_again(); }, 1.0f, &_call_every_cookie);
 
     // We're going to periodically ask for the flight information
     _parent->add_call_every(
-        std::bind(&InfoImpl::request_flight_information, this),
-        1.0f,
-        &_flight_info_call_every_cookie);
+        [this]() { request_flight_information(); }, 1.0f, &_flight_info_call_every_cookie);
 }
 
 void InfoImpl::disable()

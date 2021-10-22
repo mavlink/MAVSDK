@@ -20,8 +20,9 @@ TEST_F(SitlTest, TelemetryHealth)
 
     auto telemetry = std::make_shared<Telemetry>(system);
 
-    telemetry->subscribe_health(std::bind(&print_health, std::placeholders::_1));
-    telemetry->subscribe_rc_status(std::bind(&print_rc_status, std::placeholders::_1));
+    telemetry->subscribe_health([](Telemetry::Health health) { print_health(health); });
+    telemetry->subscribe_rc_status(
+        [](Telemetry::RcStatus rc_status) { print_rc_status(rc_status); });
     std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 

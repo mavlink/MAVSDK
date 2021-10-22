@@ -10,8 +10,6 @@
 
 namespace mavsdk {
 
-using namespace std::placeholders; // for `_1`
-
 CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -31,48 +29,46 @@ void CameraImpl::init()
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS,
-        std::bind(&CameraImpl::process_camera_capture_status, this, _1),
+        [this](const mavlink_message_t& message) { process_camera_capture_status(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_STORAGE_INFORMATION,
-        std::bind(&CameraImpl::process_storage_information, this, _1),
+        [this](const mavlink_message_t& message) { process_storage_information(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED,
-        std::bind(&CameraImpl::process_camera_image_captured, this, _1),
+        [this](const mavlink_message_t& message) { process_camera_image_captured(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_SETTINGS,
-        std::bind(&CameraImpl::process_camera_settings, this, _1),
+        [this](const mavlink_message_t& message) { process_camera_settings(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_INFORMATION,
-        std::bind(&CameraImpl::process_camera_information, this, _1),
+        [this](const mavlink_message_t& message) { process_camera_information(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION,
-        std::bind(&CameraImpl::process_video_information, this, _1),
+        [this](const mavlink_message_t& message) { process_video_information(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_STATUS,
-        std::bind(&CameraImpl::process_video_stream_status, this, _1),
+        [this](const mavlink_message_t& message) { process_video_stream_status(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
-        std::bind(&CameraImpl::process_flight_information, this, _1),
+        [this](const mavlink_message_t& message) { process_flight_information(message); },
         this);
 
     _parent->add_call_every(
-        std::bind(&CameraImpl::check_connection_status, this),
-        0.5,
-        &_check_connection_status_call_every_cookie);
+        [this]() { check_connection_status(); }, 0.5, &_check_connection_status_call_every_cookie);
 }
 
 void CameraImpl::deinit()
@@ -464,7 +460,9 @@ void CameraImpl::take_photo_async(const Camera::ResultCallback& callback)
     auto cmd_take_photo = make_command_take_photo(0.f, 1.0f);
 
     _parent->send_command_async(
-        cmd_take_photo, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
+        cmd_take_photo, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 void CameraImpl::start_photo_interval_async(
@@ -484,8 +482,9 @@ void CameraImpl::start_photo_interval_async(
     auto cmd_take_photo_time_lapse = make_command_take_photo(interval_s, 0.f);
 
     _parent->send_command_async(
-        cmd_take_photo_time_lapse,
-        std::bind(&CameraImpl::receive_command_result, this, _1, callback));
+        cmd_take_photo_time_lapse, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 void CameraImpl::stop_photo_interval_async(const Camera::ResultCallback& callback)
@@ -493,8 +492,9 @@ void CameraImpl::stop_photo_interval_async(const Camera::ResultCallback& callbac
     auto cmd_stop_photo_interval = make_command_stop_photo();
 
     _parent->send_command_async(
-        cmd_stop_photo_interval,
-        std::bind(&CameraImpl::receive_command_result, this, _1, callback));
+        cmd_stop_photo_interval, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 void CameraImpl::start_video_async(const Camera::ResultCallback& callback)
@@ -506,7 +506,9 @@ void CameraImpl::start_video_async(const Camera::ResultCallback& callback)
     auto cmd_start_video = make_command_start_video(0.f);
 
     _parent->send_command_async(
-        cmd_start_video, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
+        cmd_start_video, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 void CameraImpl::stop_video_async(const Camera::ResultCallback& callback)
@@ -514,7 +516,9 @@ void CameraImpl::stop_video_async(const Camera::ResultCallback& callback)
     auto cmd_stop_video = make_command_stop_video();
 
     _parent->send_command_async(
-        cmd_stop_video, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
+        cmd_stop_video, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
 }
 
 Camera::Information CameraImpl::information() const
@@ -1606,13 +1610,9 @@ void CameraImpl::notify_current_settings()
         }
     }
 
-    const auto temp_callback = _subscribe_current_settings.callback;
-
-    // We create a function object in order to move be able to move the settings into it.
-    // FIXME: Use C++14 where this is not necessary anymore.
-    _parent->call_user_callback(std::bind(
-        [temp_callback](const std::vector<Camera::Setting>& settings) { temp_callback(settings); },
-        std::move(current_settings)));
+    _parent->call_user_callback(
+        [temp_callback = _subscribe_current_settings.callback,
+         temp_settings = std::move(current_settings)]() { temp_callback(temp_settings); });
 }
 
 void CameraImpl::notify_possible_setting_options()

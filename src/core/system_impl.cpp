@@ -16,8 +16,6 @@
 
 namespace mavsdk {
 
-using namespace std::placeholders; // for `_1`
-
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
     Sender(),
     _parent(parent),

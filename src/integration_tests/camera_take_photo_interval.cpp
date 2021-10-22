@@ -10,8 +10,6 @@
 #include "camera_test_helpers.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
-
 static void receive_camera_result(Camera::Result result);
 
 static void check_interval_on(std::shared_ptr<Camera> camera, bool on);
@@ -40,7 +38,8 @@ TEST(CameraTest, TakePhotoInterval)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     _received_result = false;
-    camera->start_photo_interval_async(2.0f, std::bind(&receive_camera_result, _1));
+    camera->start_photo_interval_async(
+        2.0f, [](Camera::Result result) { return receive_camera_result(result); });
 
     // Wait for 3 photos
     std::this_thread::sleep_for(std::chrono::seconds(7));
@@ -51,7 +50,8 @@ TEST(CameraTest, TakePhotoInterval)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Then, stop it again.
-    camera->stop_photo_interval_async(std::bind(&receive_camera_result, _1));
+    camera->stop_photo_interval_async(
+        [](Camera::Result result) { return receive_camera_result(result); });
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
     check_interval_on(camera, false);

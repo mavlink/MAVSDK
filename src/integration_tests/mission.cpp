@@ -11,7 +11,6 @@
 #include "plugins/mission/mission.h"
 
 using namespace mavsdk;
-using namespace std::placeholders; // for `_1`
 
 static void test_mission(
     std::shared_ptr<Telemetry> telemetry,
