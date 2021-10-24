@@ -8,7 +8,7 @@
 * @brief Callback type for subscribe_{{ name.lower_snake_case }}.
 */
     {% endif %}
-using {{ name.upper_camel_case }}Callback = std::function<void({% if has_result %}{{ plugin_name.upper_camel_case }}::Result, {% endif %}{{ return_type.name }})>;
+using {{ name.upper_camel_case }}Callback = std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})>;
 
 /**
  * @brief {{ method_description | replace('\n', '\n *')}}

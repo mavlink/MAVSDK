@@ -180,7 +180,7 @@ public:
      * @brief Callback type for subscribe_incoming_mission.
      */
 
-    using IncomingMissionCallback = std::function<void(MissionRawServer::Result, MissionPlan)>;
+    using IncomingMissionCallback = std::function<void(Result, MissionPlan)>;
 
     /**
      * @brief Subscribe to when a new mission is uploaded (asynchronous).

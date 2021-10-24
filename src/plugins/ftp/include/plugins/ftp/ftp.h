@@ -120,7 +120,7 @@ public:
      * @brief Callback type for download_async.
      */
 
-    using DownloadCallback = std::function<void(Ftp::Result, ProgressData)>;
+    using DownloadCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Downloads a file to local directory.
@@ -132,7 +132,7 @@ public:
      * @brief Callback type for upload_async.
      */
 
-    using UploadCallback = std::function<void(Ftp::Result, ProgressData)>;
+    using UploadCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Uploads local file to remote directory.

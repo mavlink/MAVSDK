@@ -153,7 +153,7 @@ public:
      * @brief Callback type for download_log_file_async.
      */
 
-    using DownloadLogFileCallback = std::function<void(LogFiles::Result, ProgressData)>;
+    using DownloadLogFileCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Download log file.
