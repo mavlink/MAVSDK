@@ -40,6 +40,11 @@ public:
 
     int getPort() { return _grpc_port; }
 
+    void setMavlinkIds(uint8_t system_id, uint8_t component_id)
+    {
+        _mavsdk.set_configuration(mavsdk::Mavsdk::Configuration{system_id, component_id, false});
+    }
+
 private:
     mavsdk::Mavsdk _mavsdk;
     ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
@@ -73,4 +78,9 @@ void MavsdkServer::stop()
 int MavsdkServer::getPort()
 {
     return _impl->getPort();
+}
+
+void MavsdkServer::setMavlinkIds(uint8_t system_id, uint8_t component_id)
+{
+    _impl->setMavlinkIds(system_id, component_id);
 }

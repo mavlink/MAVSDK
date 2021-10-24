@@ -16,6 +16,7 @@ public:
     void wait();
     void stop();
     int getPort();
+    void setMavlinkIds(uint8_t system_id, uint8_t component_id);
 
 private:
     class Impl;
