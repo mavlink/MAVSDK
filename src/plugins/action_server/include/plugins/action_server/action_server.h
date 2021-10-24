@@ -172,7 +172,7 @@ public:
      * @brief Callback type for subscribe_arm_disarm.
      */
 
-    using ArmDisarmCallback = std::function<void(ActionServer::Result, ArmDisarm)>;
+    using ArmDisarmCallback = std::function<void(Result, ArmDisarm)>;
 
     /**
      * @brief Subscribe to ARM/DISARM commands
@@ -183,7 +183,7 @@ public:
      * @brief Callback type for subscribe_flight_mode_change.
      */
 
-    using FlightModeChangeCallback = std::function<void(ActionServer::Result, FlightMode)>;
+    using FlightModeChangeCallback = std::function<void(Result, FlightMode)>;
 
     /**
      * @brief Subscribe to DO_SET_MODE
@@ -194,7 +194,7 @@ public:
      * @brief Callback type for subscribe_takeoff.
      */
 
-    using TakeoffCallback = std::function<void(ActionServer::Result, bool)>;
+    using TakeoffCallback = std::function<void(Result, bool)>;
 
     /**
      * @brief Subscribe to takeoff command
@@ -205,7 +205,7 @@ public:
      * @brief Callback type for subscribe_land.
      */
 
-    using LandCallback = std::function<void(ActionServer::Result, bool)>;
+    using LandCallback = std::function<void(Result, bool)>;
 
     /**
      * @brief Subscribe to land command
@@ -216,7 +216,7 @@ public:
      * @brief Callback type for subscribe_reboot.
      */
 
-    using RebootCallback = std::function<void(ActionServer::Result, bool)>;
+    using RebootCallback = std::function<void(Result, bool)>;
 
     /**
      * @brief Subscribe to reboot command
@@ -227,7 +227,7 @@ public:
      * @brief Callback type for subscribe_shutdown.
      */
 
-    using ShutdownCallback = std::function<void(ActionServer::Result, bool)>;
+    using ShutdownCallback = std::function<void(Result, bool)>;
 
     /**
      * @brief Subscribe to shutdown command
@@ -238,7 +238,7 @@ public:
      * @brief Callback type for subscribe_terminate.
      */
 
-    using TerminateCallback = std::function<void(ActionServer::Result, bool)>;
+    using TerminateCallback = std::function<void(Result, bool)>;
 
     /**
      * @brief Subscribe to terminate command
