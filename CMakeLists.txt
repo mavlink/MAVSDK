@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-# Disable hunter by default - use -DHUNTER_ENABLED=ON to build with hunter
 option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
+option(SUPERBUILD "Build dependencies" ON)
+option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
+option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
+
+if(SUPERBUILD AND HUNTER_ENABLED)
+    message(FATAL_ERROR "Cannot SUPERBUILD while HUNTER_ENABLED. Set -DSUPERBUILD=OFF when using Hunter")
+endif()
+
 include("src/cmake/HunterGate.cmake")
 HunterGate(
     URL "https://github.com/cpp-pm/hunter/archive/v0.23.315.tar.gz"
@@ -32,10 +39,6 @@ project(mavsdk_superbuild)
 if (BUILD_BACKEND)
     message(FATAL_ERROR "The argument BUILD_BACKEND has been replaced by BUILD_MAVSDK_SERVER. To build mavsdk_server, use -DBUILD_MAVSDK_SERVER=ON.")
 endif()
-
-option(SUPERBUILD "Build dependencies" ON)
-option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
-option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 
 set(DEPS_BUILD_PATH "${PROJECT_BINARY_DIR}/third_party" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
 set(DEPS_INSTALL_PATH "${DEPS_BUILD_PATH}/install" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
