@@ -1,4 +1,6 @@
-find_package(jsoncpp REQUIRED)
+
+hunter_add_package(jsoncpp)
+find_package(jsoncpp CONFIG REQUIRED)
 
 add_library(mavsdk_mission
     mission.cpp

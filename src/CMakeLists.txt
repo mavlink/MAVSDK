@@ -29,9 +29,17 @@ option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
 include(cmake/compiler_flags.cmake)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-
 find_package(Threads REQUIRED)
+
+if(NOT HUNTER_ENABLED)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+endif()
+
+# This will noop if hunter is not enabled
+hunter_add_package(jsoncpp)
+hunter_add_package(tinyxml2)
+hunter_add_package(CURL)
+
 find_package(CURL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 
