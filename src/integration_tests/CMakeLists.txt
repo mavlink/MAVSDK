@@ -1,3 +1,6 @@
+# Required for custom_action plugin testing
+find_package(Python3 COMPONENTS Interpreter)
+
 # SYSTEM because we don't want warnings for gtest headers.
 include_directories(
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
@@ -38,6 +41,8 @@ add_executable(integration_tests_runner
     camera_format.cpp
     camera_test_helpers.cpp
     connection.cpp
+    custom_action.cpp
+    custom_action_mission.cpp
     follow_me.cpp
     geofence_inclusion.cpp
     gimbal.cpp
@@ -82,6 +87,7 @@ target_link_libraries(integration_tests_runner
     mavsdk
     mavsdk_telemetry
     mavsdk_action
+    mavsdk_custom_action
     mavsdk_mission
     mavsdk_mission_raw
     mavsdk_offboard

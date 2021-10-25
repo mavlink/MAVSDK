@@ -1,0 +1,112 @@
+{
+        "action_0": {
+                "name": "Integration test - land and takeoff action",
+                "description": "Example action of a land and takeoff procedure",
+                "global_script": "",
+                "global_timeout": null,
+                "action_complete_condition": "ON_LAST_STAGE_COMPLETE",
+                "stages": [{
+                                "cmd": {},
+                                "script": "",
+                                "parameter_set": {
+                                    "parameter_name": "COM_DISARM_LAND",
+                                    "parameter_value": "0.0",
+                                    "parameter_type": "FLOAT"
+                                },
+                                "state_transition_condition": "ON_RESULT_SUCCESS",
+                                "timeout": null
+                        },
+                        {
+                                "cmd": {
+                                        "type": "LONG",
+                                        "target_system": 0,
+                                        "target_component": 0,
+                                        "frame": 0,
+                                        "command": 21,
+                                        "param1": null,
+                                        "param2": null,
+                                        "param3": null,
+                                        "param4": null,
+                                        "param5": null,
+                                        "param6": null,
+                                        "param7": null,
+                                        "is_local": false
+                                },
+                                "script": "",
+                                "parameter_set": {},
+                                "state_transition_condition": "ON_RESULT_SUCCESS",
+                                "timeout": null
+                        },
+                        {
+                                "cmd": {},
+                                "script": "",
+                                "parameter_set": {
+                                    "parameter_name": "COM_DISARM_LAND",
+                                    "parameter_value": "2.0",
+                                    "parameter_type": "FLOAT"
+                                },
+                                "state_transition_condition": "ON_RESULT_SUCCESS",
+                                "timeout": null
+                        },
+                        {
+                                "cmd": {
+                                        "type": "LONG",
+                                        "target_system": 0,
+                                        "target_component": 0,
+                                        "frame": 0,
+                                        "command": 22,
+                                        "param1": null,
+                                        "param2": null,
+                                        "param3": null,
+                                        "param4": null,
+                                        "param5": null,
+                                        "param6": null,
+                                        "param7": null,
+                                        "is_local": false
+                                },
+                                "script": "",
+                                "parameter_set": {},
+                                "state_transition_condition": "ON_TAKEOFF_COMPLETE",
+                                "timeout": null
+                        }
+                ]
+        },
+        "action_1": {
+                "name": "Integration test - turn-on air quality sensor",
+                "description": "Example action to turn-on an onboard sensor",
+                "global_script": "./src/integration_tests/test_data/custom_action_scripts/dummy_air_quality_sensor.py on",
+                "global_timeout": 1.0,
+                "action_complete_condition": "ON_TIMEOUT",
+                "stages": [{}]
+        },
+        "action_2": {
+                "name": "Integration test - turn-off air quality sensor",
+                "description": "Example action to turn-off an onboard sensor",
+                "global_script": "./src/integration_tests/test_data/custom_action_scripts/dummy_air_quality_sensor.py off",
+                "global_timeout": null,
+                "action_complete_condition": "ON_RESULT_SUCCESS",
+                "stages": [{}]
+        },
+        "action_3": {
+                "name": "Integration test - interface with winch action",
+                "description": "Example action of an interface with a winch",
+                "global_script": "",
+                "global_timeout": null,
+                "action_complete_condition": "ON_LAST_STAGE_COMPLETE",
+                "stages": [{
+                                "cmd": {},
+                                "script": "./src/integration_tests/test_data/custom_action_scripts/dummy_winch.py descend",
+                                "parameter_set": {},
+                                "state_transition_condition": "ON_TIMEOUT",
+                                "timeout": 7.0
+                        },
+                        {
+                                "cmd": {},
+                                "script": "./src/integration_tests/test_data/custom_action_scripts/dummy_winch.py raise",
+                                "parameter_set": {},
+                                "state_transition_condition": "ON_TIMEOUT",
+                                "timeout": 7.0
+                        }
+                ]
+        }
+}
