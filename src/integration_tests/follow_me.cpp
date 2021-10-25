@@ -16,7 +16,10 @@ using namespace std::this_thread;
 
 void print(const FollowMe::Config& config);
 void send_location_updates(
-    std::shared_ptr<FollowMe> follow_me, size_t count = 25ul, float rate = 2.f);
+    std::shared_ptr<FollowMe> follow_me,
+    const Telemetry::Position& home,
+    size_t count = 25ul,
+    float rate = 2.f);
 
 const size_t N_LOCATIONS = 100ul;
 
@@ -41,6 +44,10 @@ TEST_F(SitlTest, FollowMeOneLocation)
         sleep_for(seconds(1));
     }
 
+    // Get the home position so the Follow-Me locations are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
@@ -62,8 +69,8 @@ TEST_F(SitlTest, FollowMeOneLocation)
 
     // Set just a single location before starting FollowMe (optional)
     FollowMe::TargetLocation some_location;
-    some_location.latitude_deg = 47.39768399;
-    some_location.longitude_deg = 8.54564155;
+    some_location.latitude_deg = home.latitude_deg + 0.00006671;
+    some_location.longitude_deg = home.longitude_deg - 0.00003415;
     some_location.absolute_altitude_m = 0.0;
     some_location.velocity_x_m_s = 0.f;
     some_location.velocity_y_m_s = 0.f;
@@ -128,6 +135,10 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         sleep_for(seconds(1));
     }
 
+    // Get the home position so the Follow-Me locations are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
@@ -161,7 +172,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     ASSERT_EQ(FollowMe::Result::Success, follow_me_result);
 
     // send location update every second
-    send_location_updates(follow_me);
+    send_location_updates(follow_me, home);
 
     // Stop following
     follow_me_result = follow_me->stop();
@@ -204,111 +215,112 @@ FollowMe::TargetLocation create_target_location(double latitude_deg, double long
     return location;
 }
 
-void send_location_updates(std::shared_ptr<FollowMe> follow_me, size_t count, float rate)
+void send_location_updates(
+    std::shared_ptr<FollowMe> follow_me, const Telemetry::Position& home, size_t count, float rate)
 {
     // TODO: Generate these co-ordinates from an algorithm
     // Altitude here is ignored by PX4, as we've set min altitude in configuration.
     std::array<FollowMe::TargetLocation, N_LOCATIONS> spiral_path = {
-        create_target_location(47.39768399, 8.54564155),
-        create_target_location(47.39769035, 8.54566569),
-        create_target_location(47.39770759, 8.54568983),
-        create_target_location(47.39772757, 8.54569922),
-        create_target_location(47.39774481, 8.54570727),
-        create_target_location(47.39776025, 8.54572202),
-        create_target_location(47.39778567, 8.54572336),
-        create_target_location(47.39780291, 8.54572202),
-        create_target_location(47.39782107, 8.54571263),
-        create_target_location(47.39783469, 8.54569788),
-        create_target_location(47.39783832, 8.54568179),
-        create_target_location(47.39784104, 8.54566569),
-        create_target_location(47.39784376, 8.54564424),
-        create_target_location(47.39772938, 8.54552488),
-        create_target_location(47.39782475, 8.54559193),
-        create_target_location(47.39780291, 8.54557048),
-        create_target_location(47.39771304, 8.54554231),
-        create_target_location(47.39780836, 8.54552756),
-        create_target_location(47.39973737, 8.54269845),
-        create_target_location(47.39973730, 8.54269780),
-        create_target_location(47.39779838, 8.54555174),
-        create_target_location(47.39778748, 8.54554499),
-        create_target_location(47.39777659, 8.54553561),
-        create_target_location(47.39776569, 8.54553292),
-        create_target_location(47.39774663, 8.54552622),
-        create_target_location(47.39772938, 8.54552488),
-        create_target_location(47.39771304, 8.54554231),
-        create_target_location(47.39770578, 8.54557445),
-        create_target_location(47.39770487, 8.54559596),
-        create_target_location(47.39770578, 8.54561741),
-        create_target_location(47.39770669, 8.54563887),
-        create_target_location(47.39771486, 8.54565765),
-        create_target_location(47.39773029, 8.54567642),
-        create_target_location(47.39775026, 8.54568447),
-        create_target_location(47.39776751, 8.54569118),
-        create_target_location(47.39778203, 8.54569118),
-        create_target_location(47.39779838, 8.54568447),
-        create_target_location(47.39781835, 8.54566972),
-        create_target_location(47.39782107, 8.54564692),
-        create_target_location(47.39782474, 8.54561876),
-        create_target_location(47.39782474, 8.54556511),
-        create_target_location(47.39782107, 8.54553427),
-        create_target_location(47.39779656, 8.54551549),
-        create_target_location(47.39777568, 8.54550342),
-        create_target_location(47.39775482, 8.54549671),
-        create_target_location(47.39773755, 8.54549671),
-        create_target_location(47.39771849, 8.54550208),
-        create_target_location(47.39770396, 8.54551415),
-        create_target_location(47.39769398, 8.54554097),
-        create_target_location(47.39768762, 8.54556243),
-        create_target_location(47.39768672, 8.54557852),
-        create_target_location(47.39768493, 8.54559998),
-        create_target_location(47.39768399, 8.54562278),
-        create_target_location(47.39768399, 8.54564155),
-        create_target_location(47.39769035, 8.54566569),
-        create_target_location(47.39770759, 8.54568983),
-        create_target_location(47.39772757, 8.54569922),
-        create_target_location(47.39774481, 8.54570727),
-        create_target_location(47.39776025, 8.54572202),
-        create_target_location(47.39778567, 8.54572336),
-        create_target_location(47.39780291, 8.54572202),
-        create_target_location(47.39782107, 8.54571263),
-        create_target_location(47.39783469, 8.54569788),
-        create_target_location(47.39783832, 8.54568179),
-        create_target_location(47.39784104, 8.54566569),
-        create_target_location(47.39784376, 8.54564424),
-        create_target_location(47.39784386, 8.54564435),
-        create_target_location(47.39784396, 8.54564444),
-        create_target_location(47.39784386, 8.54564454),
-        create_target_location(47.39784346, 8.54564464),
-        create_target_location(47.39784336, 8.54564424),
-        create_target_location(47.39772757, 8.54569922),
-        create_target_location(47.39774481, 8.54570727),
-        create_target_location(47.39776025, 8.54572202),
-        create_target_location(47.39778567, 8.54572336),
-        create_target_location(47.39770396, 8.54551415),
-        create_target_location(47.39769398, 8.54554097),
-        create_target_location(47.39768762, 8.54556243),
-        create_target_location(47.39768672, 8.54557852),
-        create_target_location(47.39768494, 8.54559998),
-        create_target_location(47.39779454, 8.54559464),
-        create_target_location(47.39780291, 8.54557048),
-        create_target_location(47.39779838, 8.54555173),
-        create_target_location(47.39778748, 8.54554499),
-        create_target_location(47.39777659, 8.54553561),
-        create_target_location(47.39776569, 8.54553292),
-        create_target_location(47.39774663, 8.54552622),
-        create_target_location(47.39771304, 8.54554231),
-        create_target_location(47.39772938, 8.54552488),
-        create_target_location(47.39771304, 8.54554231),
-        create_target_location(47.39770578, 8.54557445),
-        create_target_location(47.39770487, 8.54559596),
-        create_target_location(47.39770578, 8.54561741),
-        create_target_location(47.39770669, 8.54563887),
-        create_target_location(47.39771486, 8.54565765),
-        create_target_location(47.39773029, 8.54567642),
-        create_target_location(47.39775026, 8.54568447),
-        create_target_location(47.39776751, 8.54569118),
-        create_target_location(47.39784346, 8.54564464),
-        create_target_location(47.39776569, 8.54553292)};
+        create_target_location(home.latitude_deg - 0.00006671, home.longitude_deg + 0.00003415),
+        create_target_location(home.latitude_deg - 0.00006035, home.longitude_deg + 0.00005829),
+        create_target_location(home.latitude_deg - 0.00004311, home.longitude_deg + 0.00008243),
+        create_target_location(home.latitude_deg - 0.00002313, home.longitude_deg + 0.00009182),
+        create_target_location(home.latitude_deg - 0.00000589, home.longitude_deg + 0.00009987),
+        create_target_location(home.latitude_deg + 0.00000955, home.longitude_deg + 0.00011462),
+        create_target_location(home.latitude_deg + 0.00003497, home.longitude_deg + 0.00011596),
+        create_target_location(home.latitude_deg + 0.00005221, home.longitude_deg + 0.00011462),
+        create_target_location(home.latitude_deg + 0.00007037, home.longitude_deg + 0.00010523),
+        create_target_location(home.latitude_deg + 0.00008399, home.longitude_deg + 0.00009048),
+        create_target_location(home.latitude_deg + 0.00008762, home.longitude_deg + 0.00007439),
+        create_target_location(home.latitude_deg + 0.00009034, home.longitude_deg + 0.00005829),
+        create_target_location(home.latitude_deg + 0.00009306, home.longitude_deg + 0.00003684),
+        create_target_location(home.latitude_deg - 0.00002132, home.longitude_deg - 0.00008252),
+        create_target_location(home.latitude_deg + 0.00007405, home.longitude_deg - 0.00001547),
+        create_target_location(home.latitude_deg + 0.00005221, home.longitude_deg - 0.00003692),
+        create_target_location(home.latitude_deg - 0.00003766, home.longitude_deg - 0.00006509),
+        create_target_location(home.latitude_deg + 0.00005766, home.longitude_deg - 0.00007984),
+        create_target_location(home.latitude_deg + 0.00198667, home.longitude_deg - 0.00290895),
+        create_target_location(home.latitude_deg + 0.00198660, home.longitude_deg - 0.00290960),
+        create_target_location(home.latitude_deg + 0.00004768, home.longitude_deg - 0.00005566),
+        create_target_location(home.latitude_deg + 0.00003678, home.longitude_deg - 0.00006241),
+        create_target_location(home.latitude_deg + 0.00002589, home.longitude_deg - 0.00007179),
+        create_target_location(home.latitude_deg + 0.00001499, home.longitude_deg - 0.00007448),
+        create_target_location(home.latitude_deg - 0.00000407, home.longitude_deg - 0.00008118),
+        create_target_location(home.latitude_deg - 0.00002132, home.longitude_deg - 0.00008252),
+        create_target_location(home.latitude_deg - 0.00003766, home.longitude_deg - 0.00006509),
+        create_target_location(home.latitude_deg - 0.00004492, home.longitude_deg - 0.00003295),
+        create_target_location(home.latitude_deg - 0.00004583, home.longitude_deg - 0.00001144),
+        create_target_location(home.latitude_deg - 0.00004492, home.longitude_deg + 0.00001001),
+        create_target_location(home.latitude_deg - 0.00004401, home.longitude_deg + 0.00003147),
+        create_target_location(home.latitude_deg - 0.00003584, home.longitude_deg + 0.00005025),
+        create_target_location(home.latitude_deg - 0.00002041, home.longitude_deg + 0.00006902),
+        create_target_location(home.latitude_deg - 0.00000044, home.longitude_deg + 0.00007707),
+        create_target_location(home.latitude_deg + 0.00001681, home.longitude_deg + 0.00008378),
+        create_target_location(home.latitude_deg + 0.00003133, home.longitude_deg + 0.00008378),
+        create_target_location(home.latitude_deg + 0.00004768, home.longitude_deg + 0.00007707),
+        create_target_location(home.latitude_deg + 0.00006765, home.longitude_deg + 0.00006232),
+        create_target_location(home.latitude_deg + 0.00007037, home.longitude_deg + 0.00003952),
+        create_target_location(home.latitude_deg + 0.00007404, home.longitude_deg + 0.00001136),
+        create_target_location(home.latitude_deg + 0.00007404, home.longitude_deg - 0.00004229),
+        create_target_location(home.latitude_deg + 0.00007037, home.longitude_deg - 0.00007313),
+        create_target_location(home.latitude_deg + 0.00004586, home.longitude_deg - 0.00009191),
+        create_target_location(home.latitude_deg + 0.00002498, home.longitude_deg - 0.00010398),
+        create_target_location(home.latitude_deg + 0.00000412, home.longitude_deg - 0.00011069),
+        create_target_location(home.latitude_deg - 0.00001315, home.longitude_deg - 0.00011069),
+        create_target_location(home.latitude_deg - 0.00003221, home.longitude_deg - 0.00010532),
+        create_target_location(home.latitude_deg - 0.00004674, home.longitude_deg - 0.00009325),
+        create_target_location(home.latitude_deg - 0.00005672, home.longitude_deg - 0.00006643),
+        create_target_location(home.latitude_deg - 0.00006308, home.longitude_deg - 0.00004497),
+        create_target_location(home.latitude_deg - 0.00006398, home.longitude_deg - 0.00002888),
+        create_target_location(home.latitude_deg - 0.00006577, home.longitude_deg - 0.00000742),
+        create_target_location(home.latitude_deg - 0.00006671, home.longitude_deg + 0.00001538),
+        create_target_location(home.latitude_deg - 0.00006671, home.longitude_deg + 0.00003415),
+        create_target_location(home.latitude_deg - 0.00006035, home.longitude_deg + 0.00005829),
+        create_target_location(home.latitude_deg - 0.00004311, home.longitude_deg + 0.00008243),
+        create_target_location(home.latitude_deg - 0.00002313, home.longitude_deg + 0.00009182),
+        create_target_location(home.latitude_deg - 0.00000589, home.longitude_deg + 0.00009987),
+        create_target_location(home.latitude_deg + 0.00000955, home.longitude_deg + 0.00011462),
+        create_target_location(home.latitude_deg + 0.00003497, home.longitude_deg + 0.00011596),
+        create_target_location(home.latitude_deg + 0.00005221, home.longitude_deg + 0.00011462),
+        create_target_location(home.latitude_deg + 0.00007037, home.longitude_deg + 0.00010523),
+        create_target_location(home.latitude_deg + 0.00008399, home.longitude_deg + 0.00009048),
+        create_target_location(home.latitude_deg + 0.00008762, home.longitude_deg + 0.00007439),
+        create_target_location(home.latitude_deg + 0.00009034, home.longitude_deg + 0.00005829),
+        create_target_location(home.latitude_deg + 0.00009306, home.longitude_deg + 0.00003684),
+        create_target_location(home.latitude_deg + 0.00009316, home.longitude_deg + 0.00003695),
+        create_target_location(home.latitude_deg + 0.00009326, home.longitude_deg + 0.00003704),
+        create_target_location(home.latitude_deg + 0.00009316, home.longitude_deg + 0.00003714),
+        create_target_location(home.latitude_deg + 0.00009276, home.longitude_deg + 0.00003724),
+        create_target_location(home.latitude_deg + 0.00009266, home.longitude_deg + 0.00003684),
+        create_target_location(home.latitude_deg - 0.00002313, home.longitude_deg + 0.00009182),
+        create_target_location(home.latitude_deg - 0.00000589, home.longitude_deg + 0.00009987),
+        create_target_location(home.latitude_deg + 0.00000955, home.longitude_deg + 0.00011462),
+        create_target_location(home.latitude_deg + 0.00003497, home.longitude_deg + 0.00011596),
+        create_target_location(home.latitude_deg - 0.00004674, home.longitude_deg - 0.00009325),
+        create_target_location(home.latitude_deg - 0.00005672, home.longitude_deg - 0.00006643),
+        create_target_location(home.latitude_deg - 0.00006308, home.longitude_deg - 0.00004497),
+        create_target_location(home.latitude_deg - 0.00006398, home.longitude_deg - 0.00002888),
+        create_target_location(home.latitude_deg - 0.00006576, home.longitude_deg - 0.00000742),
+        create_target_location(home.latitude_deg + 0.00004384, home.longitude_deg - 0.00001276),
+        create_target_location(home.latitude_deg + 0.00005221, home.longitude_deg - 0.00003692),
+        create_target_location(home.latitude_deg + 0.00004768, home.longitude_deg - 0.00005567),
+        create_target_location(home.latitude_deg + 0.00003678, home.longitude_deg - 0.00006241),
+        create_target_location(home.latitude_deg + 0.00002589, home.longitude_deg - 0.00007179),
+        create_target_location(home.latitude_deg + 0.00001499, home.longitude_deg - 0.00007448),
+        create_target_location(home.latitude_deg - 0.00000407, home.longitude_deg - 0.00008118),
+        create_target_location(home.latitude_deg - 0.00003766, home.longitude_deg - 0.00006509),
+        create_target_location(home.latitude_deg - 0.00002132, home.longitude_deg - 0.00008252),
+        create_target_location(home.latitude_deg - 0.00003766, home.longitude_deg - 0.00006509),
+        create_target_location(home.latitude_deg - 0.00004492, home.longitude_deg - 0.00003295),
+        create_target_location(home.latitude_deg - 0.00004583, home.longitude_deg - 0.00001144),
+        create_target_location(home.latitude_deg - 0.00004492, home.longitude_deg + 0.00001001),
+        create_target_location(home.latitude_deg - 0.00004401, home.longitude_deg + 0.00003147),
+        create_target_location(home.latitude_deg - 0.00003584, home.longitude_deg + 0.00005025),
+        create_target_location(home.latitude_deg - 0.00002041, home.longitude_deg + 0.00006902),
+        create_target_location(home.latitude_deg - 0.00000044, home.longitude_deg + 0.00007707),
+        create_target_location(home.latitude_deg + 0.00001681, home.longitude_deg + 0.00008378),
+        create_target_location(home.latitude_deg + 0.00009276, home.longitude_deg + 0.00003724),
+        create_target_location(home.latitude_deg + 0.00001499, home.longitude_deg - 0.00007448)};
 
     // We're limiting to N_LOCATIONS for testing.
     count = (count > N_LOCATIONS) ? N_LOCATIONS : count;

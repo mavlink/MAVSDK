@@ -39,6 +39,10 @@ TEST_F(SitlTest, ActionGoto)
         ASSERT_LT(++iteration, 10);
     }
 
+    // Get the home position so the Go To items are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     auto action = std::make_shared<Action>(system);
     Action::Result action_ret = action->arm();
     EXPECT_EQ(action_ret, Action::Result::Success);
@@ -49,11 +53,11 @@ TEST_F(SitlTest, ActionGoto)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Go somewhere
-    action->goto_location(47.398000, 8.545592, NAN, NAN);
+    action->goto_location(home.latitude_deg + 0.0002493, home.longitude_deg - 0.0000154, NAN, NAN);
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     // And back
-    action->goto_location(47.3977233, 8.545592, NAN, NAN);
+    action->goto_location(home.latitude_deg, home.longitude_deg, NAN, NAN);
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     action_ret = action->land();

@@ -77,6 +77,10 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
+    // Get the home position so the waypoint mission items are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     LogInfo() << "Setting RTL return altitude to " << return_altitude_m;
     action->set_return_to_launch_altitude(return_altitude_m);
 
@@ -85,8 +89,8 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 
     Mission::MissionItem new_item{};
 
-    new_item.latitude_deg = 47.398170327054473;
-    new_item.longitude_deg = 8.5456490218639658;
+    new_item.latitude_deg = home.latitude_deg + 0.000419627;
+    new_item.longitude_deg = home.longitude_deg + 0.000041622;
     new_item.relative_altitude_m = mission_altitude_m;
 
     Mission::MissionPlan mission_plan{};
