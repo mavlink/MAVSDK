@@ -54,17 +54,21 @@ TEST_F(SitlTest, MissionChangeSpeed)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
+    // Get the home position so the waypoint mission items are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     LogInfo() << "System ready, let's start";
 
     Mission::MissionPlan mission_plan{};
 
     mission_plan.mission_items.push_back(only_set_speed(speeds[0]));
-    mission_plan.mission_items.push_back(
-        add_waypoint(47.398262509933957, 8.5456324815750122, 10, speeds[1]));
-    mission_plan.mission_items.push_back(
-        add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
-    mission_plan.mission_items.push_back(
-        add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
+    mission_plan.mission_items.push_back(add_waypoint(
+        home.latitude_deg + 0.00051181, home.longitude_deg + 0.000025082, 10, speeds[1]));
+    mission_plan.mission_items.push_back(add_waypoint(
+        home.latitude_deg + 0.000491311, home.longitude_deg - 0.000851228, 10, speeds[2]));
+    mission_plan.mission_items.push_back(add_waypoint(
+        home.latitude_deg - 0.000017057, home.longitude_deg - 0.000829769, 10, speeds[3]));
 
     Mission::Result mission_result = mission->upload_mission(mission_plan);
     ASSERT_EQ(mission_result, Mission::Result::Success);

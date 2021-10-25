@@ -31,11 +31,15 @@ TEST_F(SitlTest, GeofenceInclusion)
 
     LogInfo() << "System ready, let's start";
 
+    // Get the home position so the geofence points are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     std::vector<Geofence::Point> points;
-    points.push_back(add_point(47.39929240, 8.54296524));
-    points.push_back(add_point(47.39696482, 8.54161340));
-    points.push_back(add_point(47.39626761, 8.54527193));
-    points.push_back(add_point(47.39980072, 8.54736050));
+    points.push_back(add_point(home.latitude_deg + 0.00154170, home.longitude_deg - 0.00264216));
+    points.push_back(add_point(home.latitude_deg - 0.00078588, home.longitude_deg - 0.00399400));
+    points.push_back(add_point(home.latitude_deg - 0.00148309, home.longitude_deg - 0.00033547));
+    points.push_back(add_point(home.latitude_deg + 0.00205002, home.longitude_deg + 0.00175310));
 
     std::vector<Geofence::Polygon> polygons;
     Geofence::Polygon new_polygon{};

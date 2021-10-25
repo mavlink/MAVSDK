@@ -45,14 +45,31 @@ TEST_F(SitlTest, MissionUploadCancellation)
     auto system = mavsdk.systems().at(0);
     ASSERT_TRUE(system->has_autopilot());
 
+    auto telemetry = std::make_shared<Telemetry>(system);
+    while (!telemetry->health_all_ok()) {
+        LogInfo() << "waiting for system to be ready";
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    // Get the home position so the waypoint mission items are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     auto mission = std::make_shared<Mission>(system);
 
     Mission::MissionPlan mission_plan{};
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
-        mission_plan.mission_items.push_back(
-            add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
+        mission_plan.mission_items.push_back(add_waypoint(
+            home.latitude_deg + 0.000419627,
+            home.longitude_deg + 0.000041622,
+            20.0,
+            3.0,
+            true,
+            -90.0,
+            0.0,
+            false));
     }
 
     std::promise<Mission::Result> prom{};
@@ -101,14 +118,31 @@ TEST_F(SitlTest, MissionDownloadCancellation)
     auto system = mavsdk.systems().at(0);
     ASSERT_TRUE(system->has_autopilot());
 
+    auto telemetry = std::make_shared<Telemetry>(system);
+    while (!telemetry->health_all_ok()) {
+        LogInfo() << "waiting for system to be ready";
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    // Get the home position so the waypoint mission items are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     auto mission = std::make_shared<Mission>(system);
 
     Mission::MissionPlan mission_plan{};
 
     // We're going to try uploading 100 mission items.
     for (unsigned i = 0; i < 1000; ++i) {
-        mission_plan.mission_items.push_back(
-            add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
+        mission_plan.mission_items.push_back(add_waypoint(
+            home.latitude_deg + 0.000419627,
+            home.longitude_deg + 0.000041622,
+            20.0,
+            3.0,
+            true,
+            -90.0,
+            0.0,
+            false));
     }
 
     {

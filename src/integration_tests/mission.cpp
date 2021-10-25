@@ -90,12 +90,16 @@ void test_mission(
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
 
+    // Get the home position so the waypoint mission items are set with respect
+    // to the home position instead of being hardcoded.
+    auto home = telemetry->home();
+
     Mission::MissionPlan mission_plan{};
 
     while (mission_plan.mission_items.size() < NUM_MISSION_ITEMS) {
         mission_plan.mission_items.push_back(add_mission_item(
-            47.398170327054473,
-            8.5456490218639658,
+            home.latitude_deg + 0.000419627,
+            home.longitude_deg + 0.000041622,
             10.0f,
             5.0f,
             false,
@@ -107,8 +111,8 @@ void test_mission(
             NAN));
 
         mission_plan.mission_items.push_back(add_mission_item(
-            47.398241338125118,
-            8.5455360114574432,
+            home.latitude_deg + 0.000490638,
+            home.longitude_deg - 0.000071389,
             10.0f,
             2.0f,
             true,
@@ -120,8 +124,8 @@ void test_mission(
             NAN));
 
         mission_plan.mission_items.push_back(add_mission_item(
-            47.398139363821485,
-            8.5453846156597137,
+            home.latitude_deg + 0.000388664,
+            home.longitude_deg - 0.000222784,
             10.0f,
             5.0f,
             true,
@@ -133,8 +137,8 @@ void test_mission(
             0.0f));
 
         mission_plan.mission_items.push_back(add_mission_item(
-            47.398058617228855,
-            8.5454618036746979,
+            home.latitude_deg + 0.000307917,
+            home.longitude_deg - 0.000145596,
             10.0f,
             2.0f,
             false,
@@ -146,8 +150,8 @@ void test_mission(
             90.0f));
 
         mission_plan.mission_items.push_back(add_mission_item(
-            47.398100366082858,
-            8.5456969141960144,
+            home.latitude_deg + 0.000349666,
+            home.longitude_deg + 0.000089514,
             10.0f,
             5.0f,
             false,
@@ -159,8 +163,8 @@ void test_mission(
             0.0f));
 
         mission_plan.mission_items.push_back(add_mission_item(
-            47.398001890458097,
-            8.5455576181411743,
+            home.latitude_deg + 0.00025119,
+            home.longitude_deg - 0.000049782,
             10.0f,
             5.0f,
             false,
