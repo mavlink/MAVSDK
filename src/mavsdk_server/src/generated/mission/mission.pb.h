@@ -186,12 +186,14 @@ enum MissionItem_CameraAction : int {
   MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL = 3,
   MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO = 4,
   MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO = 5,
+  MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE = 6,
+  MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE = 7,
   MissionItem_CameraAction_MissionItem_CameraAction_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MissionItem_CameraAction_MissionItem_CameraAction_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MissionItem_CameraAction_IsValid(int value);
 constexpr MissionItem_CameraAction MissionItem_CameraAction_CameraAction_MIN = MissionItem_CameraAction_CAMERA_ACTION_NONE;
-constexpr MissionItem_CameraAction MissionItem_CameraAction_CameraAction_MAX = MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
+constexpr MissionItem_CameraAction MissionItem_CameraAction_CameraAction_MAX = MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE;
 constexpr int MissionItem_CameraAction_CameraAction_ARRAYSIZE = MissionItem_CameraAction_CameraAction_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionItem_CameraAction_descriptor();
@@ -3748,6 +3750,10 @@ class MissionItem final :
     MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO;
   static constexpr CameraAction CAMERA_ACTION_STOP_VIDEO =
     MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
+  static constexpr CameraAction CAMERA_ACTION_START_PHOTO_DISTANCE =
+    MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE;
+  static constexpr CameraAction CAMERA_ACTION_STOP_PHOTO_DISTANCE =
+    MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE;
   static inline bool CameraAction_IsValid(int value) {
     return MissionItem_CameraAction_IsValid(value);
   }

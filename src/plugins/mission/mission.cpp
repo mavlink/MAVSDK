@@ -132,6 +132,10 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionItem::CameraAction c
             return str << "Start Video";
         case Mission::MissionItem::CameraAction::StopVideo:
             return str << "Stop Video";
+        case Mission::MissionItem::CameraAction::StartPhotoDistance:
+            return str << "Start Photo Distance";
+        case Mission::MissionItem::CameraAction::StopPhotoDistance:
+            return str << "Stop Photo Distance";
         default:
             return str << "Unknown";
     }

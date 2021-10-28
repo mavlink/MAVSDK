@@ -84,7 +84,7 @@ void test_mission(
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
         LogDebug() << "Health: " << telemetry->health();
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(30));
     }
 
     LogInfo() << "System ready";
@@ -168,6 +168,32 @@ void test_mission(
             0.0f,
             NAN,
             Mission::MissionItem::CameraAction::StopPhotoInterval,
+            0.5f,
+            NAN));
+
+        mission_plan.mission_items.push_back(add_mission_item(
+            47.393,
+            8.544,
+            10.0f,
+            5.0f,
+            false,
+            -45.0f,
+            -30.0f,
+            NAN,
+            Mission::MissionItem::CameraAction::StartPhotoDistance,
+            0.5f,
+            0.0f));
+
+        mission_plan.mission_items.push_back(add_mission_item(
+            47.395,
+            8.542,
+            10.0f,
+            5.0f,
+            false,
+            0.0f,
+            0.0f,
+            NAN,
+            Mission::MissionItem::CameraAction::StopPhotoDistance,
             0.5f,
             NAN));
     }
