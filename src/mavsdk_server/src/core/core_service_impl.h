@@ -21,14 +21,11 @@ public:
         const rpc::core::SubscribeConnectionStateRequest* /* request */,
         grpc::ServerWriter<rpc::core::ConnectionStateResponse>* writer) override
     {
-        std::mutex connection_state_mutex{};
-
-        _mavsdk.subscribe_on_new_system([this, writer, &connection_state_mutex]() {
-            publish_system_state(writer, connection_state_mutex);
-        });
+        _mavsdk.subscribe_on_new_system(
+            [this, writer]() { publish_system_state(writer, _connection_state_mutex); });
 
         // Publish the current state on subscribe
-        publish_system_state(writer, connection_state_mutex);
+        publish_system_state(writer, _connection_state_mutex);
 
         _stop_future.wait();
         return grpc::Status::OK;
@@ -51,8 +48,8 @@ public:
 private:
     Mavsdk& _mavsdk;
     std::promise<void> _stop_promise;
-
     std::future<void> _stop_future;
+    std::mutex _connection_state_mutex{};
 
     static mavsdk::rpc::core::ConnectionStateResponse
     createRpcConnectionStateResponse(const bool is_connected)
