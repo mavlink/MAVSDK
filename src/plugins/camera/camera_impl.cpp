@@ -634,6 +634,27 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
     }
 }
 
+Camera::Result
+CameraImpl::camera_result_from_parameter_result(const MAVLinkParameters::Result parameter_result)
+{
+    switch (parameter_result) {
+        case MAVLinkParameters::Result::Success:
+            return Camera::Result::Success;
+        case MAVLinkParameters::Result::Timeout:
+            return Camera::Result::Timeout;
+        case MAVLinkParameters::Result::ConnectionError:
+            return Camera::Result::Error;
+        case MAVLinkParameters::Result::WrongType:
+            return Camera::Result::WrongArgument;
+        case MAVLinkParameters::Result::ParamNameTooLong:
+            return Camera::Result::WrongArgument;
+        case MAVLinkParameters::Result::NotFound:
+            return Camera::Result::WrongArgument;
+        default:
+            return Camera::Result::Unknown;
+    }
+}
+
 Camera::Result CameraImpl::set_mode(const Camera::Mode mode)
 {
     const float mavlink_mode = to_mavlink_camera_mode(mode);
@@ -1454,6 +1475,13 @@ void CameraImpl::set_option_async(
                 //        schedule the refresh_params() for later.
                 //        We (ab)use the thread pool for the user callbacks for this.
                 _parent->call_user_callback([this]() { refresh_params(); });
+            } else {
+                if (callback) {
+                    const auto temp_callback = callback;
+                    _parent->call_user_callback([temp_callback, result]() {
+                        temp_callback(camera_result_from_parameter_result(result));
+                    });
+                }
             }
         },
         this,
