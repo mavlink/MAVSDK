@@ -443,6 +443,18 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     command = MAV_CMD_VIDEO_STOP_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     break;
+                case CameraAction::StartPhotoDistance:
+                    command = MAV_CMD_DO_TRIGGER_CONTROL;
+                    param1 = 1.0f; // enable
+                    param2 = 0.0f; // don't reset
+                    param3 = -1.0f; // don't pause
+                    break;
+                case CameraAction::StopPhotoDistance:
+                    command = MAV_CMD_DO_TRIGGER_CONTROL;
+                    param1 = 0.0f; // disable
+                    param2 = 0.0f; // don't reset
+                    param3 = -1.0f; // don't pause
+                    break;
                 default:
                     LogErr() << "Error: camera action not supported";
                     break;
@@ -608,6 +620,17 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
                 new_mission_item.camera_action = CameraAction::StopVideo;
+
+            } else if (int_item.command == MAV_CMD_DO_TRIGGER_CONTROL) {
+                if (static_cast<int>(int_item.param1) == 1) {
+                    new_mission_item.camera_action = CameraAction::StartPhotoDistance;
+                } else if (static_cast<int>(int_item.param1) == 0) {
+                    new_mission_item.camera_action = CameraAction::StopPhotoDistance;
+                } else {
+                    LogWarn() << "Unknown trigger control mission item ignored";
+                    result_pair.first = Mission::Result::Unsupported;
+                    break;
+                }
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
                 if (int(int_item.param1) == 1 && int_item.param3 < 0 && int(int_item.param4) == 0) {

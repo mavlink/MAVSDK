@@ -75,6 +75,8 @@ public:
             StopPhotoInterval, /**< @brief Stop capturing photos at regular intervals. */
             StartVideo, /**< @brief Start capturing video. */
             StopVideo, /**< @brief Stop capturing video. */
+            StartPhotoDistance, /**< @brief Start capturing photos at regular distance. */
+            StopPhotoDistance, /**< @brief Stop capturing photos at regular distance. */
         };
 
         /**

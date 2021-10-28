@@ -57,6 +57,10 @@ public:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO;
             case mavsdk::Mission::MissionItem::CameraAction::StopVideo:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
+            case mavsdk::Mission::MissionItem::CameraAction::StartPhotoDistance:
+                return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE;
+            case mavsdk::Mission::MissionItem::CameraAction::StopPhotoDistance:
+                return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE;
         }
     }
 
@@ -79,6 +83,10 @@ public:
                 return mavsdk::Mission::MissionItem::CameraAction::StartVideo;
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO:
                 return mavsdk::Mission::MissionItem::CameraAction::StopVideo;
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE:
+                return mavsdk::Mission::MissionItem::CameraAction::StartPhotoDistance;
+            case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE:
+                return mavsdk::Mission::MissionItem::CameraAction::StopPhotoDistance;
         }
     }
 
