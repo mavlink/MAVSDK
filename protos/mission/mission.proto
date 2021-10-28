@@ -183,6 +183,8 @@ message MissionItem {
         CAMERA_ACTION_STOP_PHOTO_INTERVAL = 3; // Stop capturing photos at regular intervals
         CAMERA_ACTION_START_VIDEO = 4; // Start capturing video
         CAMERA_ACTION_STOP_VIDEO = 5; // Stop capturing video
+        CAMERA_ACTION_START_PHOTO_DISTANCE = 6; // Start capturing photos at regular distance
+        CAMERA_ACTION_STOP_PHOTO_DISTANCE = 7; // Stop capturing photos at regular distance
     }
 }
 
