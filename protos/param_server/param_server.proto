@@ -111,6 +111,7 @@ message ParamServerResult {
         RESULT_NOT_FOUND = 2; // Not Found
         RESULT_WRONG_TYPE = 3; // Wrong type
         RESULT_PARAM_NAME_TOO_LONG = 4; // Parameter name too long (> 16)
+        RESULT_NO_SYSTEM = 5; // No system available
     }
 
     Result result = 1; // Result enum value
