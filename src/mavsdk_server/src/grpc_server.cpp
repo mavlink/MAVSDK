@@ -20,6 +20,7 @@ int GrpcServer::run()
 
     builder.RegisterService(&_core);
     builder.RegisterService(&_action_service);
+    builder.RegisterService(&_action_server_service);
     builder.RegisterService(&_calibration_service);
     builder.RegisterService(&_camera_service);
     builder.RegisterService(&_failure_service);
@@ -32,15 +33,18 @@ int GrpcServer::run()
     builder.RegisterService(&_manual_control_service);
     builder.RegisterService(&_mission_service);
     builder.RegisterService(&_mission_raw_service);
+    builder.RegisterService(&_mission_raw_server_service);
     builder.RegisterService(&_mocap_service);
     builder.RegisterService(&_offboard_service);
     builder.RegisterService(&_param_service);
+    builder.RegisterService(&_param_server_service);
     builder.RegisterService(&_server_utility_service);
     builder.RegisterService(&_shell_service);
     builder.RegisterService(&_telemetry_service);
+    builder.RegisterService(&_telemetry_server_service);
     builder.RegisterService(&_tracking_server_service);
-    builder.RegisterService(&_tune_service);
     builder.RegisterService(&_transponder_service);
+    builder.RegisterService(&_tune_service);
 
     _server = builder.BuildAndStart();
 
@@ -68,6 +72,7 @@ void GrpcServer::stop()
     if (_server != nullptr) {
         _core.stop();
         _action_service.stop();
+        _action_server_service.stop();
         _calibration_service.stop();
         _camera_service.stop();
         _failure_service.stop();
@@ -80,12 +85,15 @@ void GrpcServer::stop()
         _manual_control_service.stop();
         _mission_service.stop();
         _mission_raw_service.stop();
+        _mission_raw_server_service.stop();
         _mocap_service.stop();
         _offboard_service.stop();
         _param_service.stop();
+        _param_server_service.stop();
         _server_utility_service.stop();
         _shell_service.stop();
         _telemetry_service.stop();
+        _telemetry_server_service.stop();
         _tracking_server_service.stop();
         _tune_service.stop();
         _transponder_service.stop();

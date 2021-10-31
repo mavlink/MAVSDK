@@ -139,6 +139,8 @@ public:
                 return rpc::param_server::ParamServerResult_Result_RESULT_WRONG_TYPE;
             case mavsdk::ParamServer::Result::ParamNameTooLong:
                 return rpc::param_server::ParamServerResult_Result_RESULT_PARAM_NAME_TOO_LONG;
+            case mavsdk::ParamServer::Result::NoSystem:
+                return rpc::param_server::ParamServerResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -159,6 +161,8 @@ public:
                 return mavsdk::ParamServer::Result::WrongType;
             case rpc::param_server::ParamServerResult_Result_RESULT_PARAM_NAME_TOO_LONG:
                 return mavsdk::ParamServer::Result::ParamNameTooLong;
+            case rpc::param_server::ParamServerResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::ParamServer::Result::NoSystem;
         }
     }
 

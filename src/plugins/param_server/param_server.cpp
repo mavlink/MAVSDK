@@ -117,6 +117,8 @@ std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
             return str << "Wrong Type";
         case ParamServer::Result::ParamNameTooLong:
             return str << "Param Name Too Long";
+        case ParamServer::Result::NoSystem:
+            return str << "No System";
         default:
             return str << "Unknown";
     }
