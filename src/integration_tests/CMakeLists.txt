@@ -31,6 +31,7 @@ add_executable(integration_tests_runner
     action_hold.cpp
     calibration.cpp
     camera_mode.cpp
+    camera_list_photos.cpp
     camera_settings.cpp
     camera_status.cpp
     camera_take_photo.cpp
