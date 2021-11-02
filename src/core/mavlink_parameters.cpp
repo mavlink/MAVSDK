@@ -186,7 +186,7 @@ void MAVLinkParameters::get_all_params_async(const get_all_params_callback_t& ca
     }
 
     _parent.register_timeout_handler(
-        [this] { receive_timeout(); }, 1.0, &_all_param_store->timeout_cookie);
+        [this] { receive_timeout(); }, _parent.timeout_s(), &_all_param_store->timeout_cookie);
 }
 
 std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_params()
@@ -418,7 +418,9 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             _parent.unregister_timeout_handler(_all_param_store->timeout_cookie);
 
             _parent.register_timeout_handler(
-                [this] { receive_timeout(); }, 1.0, &_all_param_store->timeout_cookie);
+                [this] { receive_timeout(); },
+                _parent.timeout_s(),
+                &_all_param_store->timeout_cookie);
         }
 
         return;
