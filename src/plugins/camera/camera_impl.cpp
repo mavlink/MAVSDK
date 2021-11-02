@@ -650,6 +650,12 @@ CameraImpl::camera_result_from_parameter_result(const MAVLinkParameters::Result 
             return Camera::Result::WrongArgument;
         case MAVLinkParameters::Result::NotFound:
             return Camera::Result::WrongArgument;
+        case MAVLinkParameters::Result::ValueUnsupported:
+            return Camera::Result::WrongArgument;
+        case MAVLinkParameters::Result::Failed:
+            return Camera::Result::Error;
+        case MAVLinkParameters::Result::UnknownError:
+            return Camera::Result::Error;
         default:
             return Camera::Result::Unknown;
     }

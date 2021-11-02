@@ -459,7 +459,17 @@ public:
             _value{};
     };
 
-    enum class Result { Success, Timeout, ConnectionError, WrongType, ParamNameTooLong, NotFound };
+    enum class Result {
+        Success,
+        Timeout,
+        ConnectionError,
+        WrongType,
+        ParamNameTooLong,
+        NotFound,
+        ValueUnsupported,
+        Failed,
+        UnknownError
+    };
 
     typedef std::function<void(Result result)> set_param_callback_t;
 
