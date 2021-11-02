@@ -1895,7 +1895,7 @@ void CameraImpl::list_photos_async(
             // In case the vehicle sends capture info, but not those we are asking, we do not
             // want to loop infinitely. The safety_count is here to abort if this happens.
             auto safety_count = 0;
-            const auto safety_count_boundary = 3;
+            const auto safety_count_boundary = 10;
 
             while (_status.photo_list.find(i) == _status.photo_list.end() &&
                    safety_count < safety_count_boundary) {
@@ -1903,7 +1903,7 @@ void CameraImpl::list_photos_async(
 
                 auto request_try_number = 0;
                 const auto request_try_limit =
-                    3; // Timeout if the request times out that many times
+                    10; // Timeout if the request times out that many times
                 auto cv_status = std::cv_status::timeout;
 
                 while (cv_status == std::cv_status::timeout) {

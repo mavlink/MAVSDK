@@ -106,14 +106,15 @@ private:
 
     struct CommandIdentification {
         uint32_t maybe_param1{0}; // only for commands where this matters
+        uint32_t maybe_param2{0}; // only for commands where this matters
         uint16_t command{0};
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
 
         bool operator==(const CommandIdentification& other) const
         {
-            return maybe_param1 == other.maybe_param1 && command == other.command &&
-                   target_system_id == other.target_system_id &&
+            return maybe_param1 == other.maybe_param1 && maybe_param2 == other.maybe_param2 &&
+                   command == other.command && target_system_id == other.target_system_id &&
                    target_component_id == other.target_component_id;
         }
 
@@ -139,7 +140,12 @@ private:
         identification.command = command.command;
         if (command.command == MAV_CMD_REQUEST_MESSAGE ||
             command.command == MAV_CMD_SET_MESSAGE_INTERVAL) {
-            identification.maybe_param1 = static_cast<uint32_t>(std::lround(command.params.param1));
+            const uint32_t param1 = static_cast<uint32_t>(std::lround(command.params.param1));
+            identification.maybe_param1 = param1;
+            if (param1 == MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED) {
+                identification.maybe_param2 =
+                    static_cast<uint32_t>(std::lround(command.params.param2));
+            }
         }
         identification.target_system_id = command.target_system_id;
         identification.target_component_id = command.target_component_id;
