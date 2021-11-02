@@ -409,9 +409,35 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
         if (item.camera_action != CameraAction::None) {
             // There is a camera action that we need to send.
 
+            // In case of distance triggering we need to set up the distance first.
+            if (item.camera_action == CameraAction::StartPhotoDistance &&
+                std::isfinite(item.camera_photo_distance_m)) {
+                // Current is the 0th waypoint
+                uint8_t current = ((int_items.size() == 0) ? 1 : 0);
+                uint8_t autocontinue = 1;
+
+                MAVLinkMissionTransfer::ItemInt next_item{
+                    static_cast<uint16_t>(int_items.size()),
+                    MAV_FRAME_MISSION,
+                    MAV_CMD_DO_SET_CAM_TRIGG_DIST,
+                    current,
+                    autocontinue,
+                    item.camera_photo_distance_m,
+                    -1.0f, // ignore shutter integration time
+                    1.0f, // trigger immediately
+                    NAN,
+                    0,
+                    0,
+                    NAN,
+                    MAV_MISSION_TYPE_MISSION};
+
+                int_items.push_back(next_item);
+
+                _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
+            }
+
             // Current is the 0th waypoint
             uint8_t current = ((int_items.size() == 0) ? 1 : 0);
-
             uint8_t autocontinue = 1;
 
             uint16_t command = 0;

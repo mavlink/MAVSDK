@@ -119,6 +119,8 @@ public:
 
         rpc_obj->set_yaw_deg(mission_item.yaw_deg);
 
+        rpc_obj->set_camera_photo_distance_m(mission_item.camera_photo_distance_m);
+
         return rpc_obj;
     }
 
@@ -150,6 +152,8 @@ public:
         obj.acceptance_radius_m = mission_item.acceptance_radius_m();
 
         obj.yaw_deg = mission_item.yaw_deg();
+
+        obj.camera_photo_distance_m = mission_item.camera_photo_distance_m();
 
         return obj;
     }
