@@ -105,6 +105,8 @@ public:
         float acceptance_radius_m{
             float(NAN)}; /**< @brief Radius for completing a mission item (in metres) */
         float yaw_deg{float(NAN)}; /**< @brief Absolute yaw angle (in degrees) */
+        float camera_photo_distance_m{
+            NAN}; /**< @brief Camera photo distance to use after this mission item (in meters) */
     };
 
     /**

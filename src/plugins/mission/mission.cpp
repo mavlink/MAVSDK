@@ -162,7 +162,9 @@ bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs
             rhs.camera_photo_interval_s == lhs.camera_photo_interval_s) &&
            ((std::isnan(rhs.acceptance_radius_m) && std::isnan(lhs.acceptance_radius_m)) ||
             rhs.acceptance_radius_m == lhs.acceptance_radius_m) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg) &&
+           ((std::isnan(rhs.camera_photo_distance_m) && std::isnan(lhs.camera_photo_distance_m)) ||
+            rhs.camera_photo_distance_m == lhs.camera_photo_distance_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item)
@@ -181,6 +183,7 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_
     str << "    camera_photo_interval_s: " << mission_item.camera_photo_interval_s << '\n';
     str << "    acceptance_radius_m: " << mission_item.acceptance_radius_m << '\n';
     str << "    yaw_deg: " << mission_item.yaw_deg << '\n';
+    str << "    camera_photo_distance_m: " << mission_item.camera_photo_distance_m << '\n';
     str << '}';
     return str;
 }

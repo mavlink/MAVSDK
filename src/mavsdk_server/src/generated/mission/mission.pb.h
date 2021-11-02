@@ -3794,6 +3794,7 @@ class MissionItem final :
     kLoiterTimeSFieldNumber = 9,
     kAcceptanceRadiusMFieldNumber = 11,
     kYawDegFieldNumber = 12,
+    kCameraPhotoDistanceMFieldNumber = 13,
   };
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
   void clear_latitude_deg();
@@ -3903,6 +3904,15 @@ class MissionItem final :
   void _internal_set_yaw_deg(float value);
   public:
 
+  // float camera_photo_distance_m = 13 [(.mavsdk.options.default_value) = "NAN"];
+  void clear_camera_photo_distance_m();
+  float camera_photo_distance_m() const;
+  void set_camera_photo_distance_m(float value);
+  private:
+  float _internal_camera_photo_distance_m() const;
+  void _internal_set_camera_photo_distance_m(float value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionItem)
  private:
   class _Internal;
@@ -3922,6 +3932,7 @@ class MissionItem final :
   float loiter_time_s_;
   float acceptance_radius_m_;
   float yaw_deg_;
+  float camera_photo_distance_m_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -6113,6 +6124,26 @@ inline void MissionItem::_internal_set_yaw_deg(float value) {
 inline void MissionItem::set_yaw_deg(float value) {
   _internal_set_yaw_deg(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.yaw_deg)
+}
+
+// float camera_photo_distance_m = 13 [(.mavsdk.options.default_value) = "NAN"];
+inline void MissionItem::clear_camera_photo_distance_m() {
+  camera_photo_distance_m_ = 0;
+}
+inline float MissionItem::_internal_camera_photo_distance_m() const {
+  return camera_photo_distance_m_;
+}
+inline float MissionItem::camera_photo_distance_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.camera_photo_distance_m)
+  return _internal_camera_photo_distance_m();
+}
+inline void MissionItem::_internal_set_camera_photo_distance_m(float value) {
+  
+  camera_photo_distance_m_ = value;
+}
+inline void MissionItem::set_camera_photo_distance_m(float value) {
+  _internal_set_camera_photo_distance_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_distance_m)
 }
 
 // -------------------------------------------------------------------
