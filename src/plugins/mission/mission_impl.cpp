@@ -487,7 +487,13 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     --item_i;
 
     if (_mission_data.gimbal_v2_in_control) {
+        // We reset gimbal to forward and horizontal before releasing control.
+        // Otherwise we still look down (or somewhere) at the end of the mission
+        // which does not look good (and can potentially break a camera.
+        add_gimbal_items_v2(int_items, item_i, 0.0f, 0.0f);
+
         release_gimbal_control_v2(int_items, item_i);
+
         _mission_data.gimbal_v2_in_control = false;
     }
 

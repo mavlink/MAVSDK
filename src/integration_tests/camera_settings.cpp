@@ -14,6 +14,7 @@ using namespace mavsdk;
 const static bool is_e90 = false;
 const static bool is_e50 = false;
 const static bool is_et = false;
+const static bool is_r4 = true;
 
 void contains_num_options(
     const std::vector<Camera::SettingOptions>& settings, std::string setting_id, unsigned num)
@@ -119,6 +120,31 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
         // The same should happen with a param that does not exist at all.
         contains_num_options(settings, "CAM_BLABLA", 0);
+    }
+
+    if (is_r4) {
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        std::string value_set;
+
+        EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::Success);
+        EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::Success);
+        EXPECT_STREQ("0", value_set.c_str());
+
+        EXPECT_EQ(set_setting(camera, "CAM_ISO", "3"), Camera::Result::Success);
+        EXPECT_EQ(get_setting(camera, "CAM_ISO", value_set), Camera::Result::Success);
+        EXPECT_STREQ("3", value_set.c_str());
+
+        EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "13"), Camera::Result::Success);
+        EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::Success);
+        EXPECT_STREQ("13", value_set.c_str());
+
+        EXPECT_EQ(set_setting(camera, "CAM_ISO", "0"), Camera::Result::Success);
+        EXPECT_EQ(get_setting(camera, "CAM_ISO", value_set), Camera::Result::Success);
+        EXPECT_STREQ("0", value_set.c_str());
+
+        // EXPECT_EQ(set_setting(camera, "CAM_ISO", "0"), Camera::Result::Success);
+        // EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::Success);
+        // EXPECT_STREQ("0", value_set.c_str());
     }
 }
 

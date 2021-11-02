@@ -459,7 +459,7 @@ public:
             _value{};
     };
 
-    enum class Result { Success, Timeout, ConnectionError, WrongType, ParamNameTooLong, NotFound };
+    enum class Result { Success, Timeout, ConnectionError, WrongType, ParamNameTooLong, NotFound, ValueUnsupported, Failed, UnknownError };
 
     typedef std::function<void(Result result)> set_param_callback_t;
 
@@ -536,7 +536,7 @@ private:
         int retries_done{0};
         bool already_requested{false};
         const void* cookie{nullptr};
-        int retries_to_do{3};
+        int retries_to_do{20};
         double timeout_s;
         int param_count{1};
         int param_index{0};
@@ -566,7 +566,7 @@ private:
     std::shared_ptr<AllParameters> _all_param_store{nullptr};
     std::mutex _all_param_mutex{};
 
-    // dl_time_t _last_request_time = {};
+    dl_time_t _last_request_time = {};
 
     std::map<std::string, ParamValue> _param_server_store;
     void process_param_request_read(const mavlink_message_t& message);

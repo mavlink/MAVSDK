@@ -61,11 +61,7 @@ void MAVLinkParameters::set_param_async(
     const void* cookie,
     bool extended)
 {
-    // if (value.is_float()) {
-    //     LogDebug() << "setting param " << name << " to " << value.get_float();
-    // } else {
-    //     LogDebug() << "setting param " << name << " to " << value.get_int();
-    // }
+    LogDebug() << "setting param " << name << " to " << value;
 
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
@@ -105,7 +101,7 @@ void MAVLinkParameters::get_param_async(
     const void* cookie,
     bool extended)
 {
-    // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
+    LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
 
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
@@ -186,7 +182,7 @@ void MAVLinkParameters::get_all_params_async(const get_all_params_callback_t& ca
     }
 
     _parent.register_timeout_handler(
-        [this] { receive_timeout(); }, 1.0, &_all_param_store->timeout_cookie);
+        [this] { receive_timeout(); }, _parent.timeout_s(), &_all_param_store->timeout_cookie);
 }
 
 std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_params()
@@ -299,7 +295,7 @@ void MAVLinkParameters::do_work()
             }
 
             work->already_requested = true;
-            // _last_request_time = _parent.get_time().steady_time();
+            _last_request_time = _parent.get_time().steady_time();
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
@@ -308,7 +304,7 @@ void MAVLinkParameters::do_work()
         } break;
 
         case WorkItem::Type::Get: {
-            // LogDebug() << "now getting: " << work->param_name;
+            LogDebug() << "now getting: " << work->param_name;
             if (work->extended) {
                 mavlink_msg_param_ext_request_read_pack(
                     _parent.get_own_system_id(),
@@ -320,12 +316,10 @@ void MAVLinkParameters::do_work()
                     -1);
 
             } else {
-                // LogDebug() << "request read: "
-                //    << (int)_parent.get_own_system_id() << ":"
-                //    << (int)_parent.get_own_component_id() <<
-                //    " to "
-                //    << (int)_parent.get_system_id() << ":"
-                //    << (int)_parent.get_autopilot_id();
+                LogDebug() << "request read: " << (int)_parent.get_own_system_id() << ":"
+                           << (int)_parent.get_own_component_id() << " to "
+                           << (int)_parent.get_system_id() << ":"
+                           << (int)_parent.get_autopilot_id();
 
                 mavlink_msg_param_request_read_pack(
                     _parent.get_own_system_id(),
@@ -350,7 +344,7 @@ void MAVLinkParameters::do_work()
 
             work->already_requested = true;
 
-            // _last_request_time = _parent.get_time().steady_time();
+            _last_request_time = _parent.get_time().steady_time();
 
             // We want to get notified if a timeout happens
             _parent.register_timeout_handler(
@@ -400,7 +394,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
 
-    // LogDebug() << "getting param value: " << extract_safe_param_id(param_value.param_id);
+    LogDebug() << "getting param value: " << extract_safe_param_id(param_value.param_id);
 
     // check if we are looking for param list
     if (_all_param_store) {
@@ -418,7 +412,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             _parent.unregister_timeout_handler(_all_param_store->timeout_cookie);
 
             _parent.register_timeout_handler(
-                [this] { receive_timeout(); }, 1.0, &_all_param_store->timeout_cookie);
+                [this] { receive_timeout(); }, _parent.timeout_s(), &_all_param_store->timeout_cookie);
         }
 
         return;
@@ -458,8 +452,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
                 }
             }
             _parent.unregister_timeout_handler(_timeout_cookie);
-            // LogDebug() << "time taken: " <<
-            // _parent.get_time().elapsed_since_s(_last_request_time);
+            LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
         case WorkItem::Type::Set: {
@@ -469,8 +462,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             }
 
             _parent.unregister_timeout_handler(_timeout_cookie);
-            // LogDebug() << "time taken: " <<
-            // _parent.get_time().elapsed_since_s(_last_request_time);
+            LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
         default:
@@ -500,10 +492,10 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
 
 void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message)
 {
-    // LogDebug() << "getting param ext value";
-
     mavlink_param_ext_value_t param_ext_value;
     mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
+
+    LogDebug() << "getting param ext value for " << extract_safe_param_id(param_ext_value.param_id);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -538,13 +530,12 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
             }
 
             _parent.unregister_timeout_handler(_timeout_cookie);
-            // LogDebug() << "time taken: " <<
-            // _parent.get_time().elapsed_since_s(_last_request_time);
+            LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
 
         case WorkItem::Type::Set:
-            LogWarn() << "Unexpected ParamExtValue response";
+            LogWarn() << "Unexpected ParamExtValue response for " << work->param_name;
             break;
         default:
             break;
@@ -553,10 +544,10 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
 
 void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
 {
-    // LogDebug() << "getting param ext ack";
-
     mavlink_param_ext_ack_t param_ext_ack;
     mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
+
+    LogDebug() << "getting param ext ack for " << extract_safe_param_id(param_ext_ack.param_id);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -576,7 +567,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
 
     switch (work->type) {
         case WorkItem::Type::Get: {
-            LogWarn() << "Unexpected ParamExtAck response.";
+            LogWarn() << "Unexpected ParamExtAck response for " << work->param_name;
         } break;
 
         case WorkItem::Type::Set: {
@@ -587,8 +578,8 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
                 }
 
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " <<
-                // _parent.get_time().elapsed_since_s(_last_request_time);
+                LogDebug() << "time taken: "
+                           << _parent.get_time().elapsed_since_s(_last_request_time);
                 work_queue_guard.pop_front();
 
             } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
@@ -600,12 +591,22 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
                          << int(param_ext_ack.param_result);
 
                 if (work->set_param_callback) {
-                    work->set_param_callback(MAVLinkParameters::Result::Timeout);
+                    auto result = [&]() {
+                        switch (param_ext_ack.param_result) {
+                            case PARAM_ACK_FAILED:
+                                return MAVLinkParameters::Result::Failed;
+                            case PARAM_ACK_VALUE_UNSUPPORTED:
+                                return MAVLinkParameters::Result::ValueUnsupported;
+                            default:
+                                return MAVLinkParameters::Result::UnknownError;
+                            }
+                    }();
+                    work->set_param_callback(result);
                 }
 
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " <<
-                // _parent.get_time().elapsed_since_s(_last_request_time);
+                LogDebug() << "time taken: "
+                           << _parent.get_time().elapsed_since_s(_last_request_time);
                 work_queue_guard.pop_front();
             }
         } break;
