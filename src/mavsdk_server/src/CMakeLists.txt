@@ -5,6 +5,7 @@ set(COMPONENTS_LIST
     action_server
     calibration
     camera
+    camera_trigger_server
     core
     failure
     follow_me
@@ -74,6 +75,7 @@ target_link_libraries(mavsdk_server
     mavsdk_action_server
     mavsdk_calibration
     mavsdk_camera
+    mavsdk_camera_trigger_server
     mavsdk_failure
     mavsdk_follow_me
     mavsdk_ftp
