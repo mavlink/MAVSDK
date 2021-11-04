@@ -69,10 +69,14 @@ void CameraImpl::init()
 
     _parent->add_call_every(
         [this]() { check_connection_status(); }, 0.5, &_check_connection_status_call_every_cookie);
+
+    _parent->add_call_every(
+        [this]() { request_missing_capture_info(); }, 0.5, &_request_missing_capture_info_cookie);
 }
 
 void CameraImpl::deinit()
 {
+    _parent->remove_call_every(_request_missing_capture_info_cookie);
     _parent->remove_call_every(_check_connection_status_call_every_cookie);
     _parent->remove_call_every(_status.call_every_cookie);
     _parent->unregister_all_mavlink_message_handlers(this);
@@ -932,14 +936,61 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         _captured_request_cv.notify_all();
 
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
-        if (_capture_info.last_advertised_image_index != -1 &&
-            _capture_info.last_advertised_image_index < capture_info.index &&
-            _capture_info.callback) {
-            _capture_info.last_advertised_image_index = capture_info.index;
-            const auto temp_callback = _capture_info.callback;
-            _parent->call_user_callback(
-                [temp_callback, capture_info]() { temp_callback(capture_info); });
+        if (_capture_info.last_advertised_image_index != -1) {
+            // Notify user if a new image has been captured.
+            if (_capture_info.last_advertised_image_index < capture_info.index) {
+                if (_capture_info.callback) {
+                    const auto temp_callback = _capture_info.callback;
+                    _parent->call_user_callback(
+                        [temp_callback, capture_info]() { temp_callback(capture_info); });
+                }
+
+                // Save captured indices that have been dropped
+                for (int i = _capture_info.last_advertised_image_index + 1; i < capture_info.index;
+                     ++i) {
+                    if (_capture_info.missing_image_retries.find(i) ==
+                        _capture_info.missing_image_retries.end()) {
+                        _capture_info.missing_image_retries[i] = 0;
+                    }
+                }
+
+                _capture_info.last_advertised_image_index = capture_info.index;
+            }
+
+            else if (auto it = _capture_info.missing_image_retries.find(capture_info.index);
+                     it != _capture_info.missing_image_retries.end()) {
+                if (_capture_info.callback) {
+                    const auto temp_callback = _capture_info.callback;
+                    _parent->call_user_callback(
+                        [temp_callback, capture_info]() { temp_callback(capture_info); });
+                }
+                _capture_info.missing_image_retries.erase(it);
+            }
         }
+    }
+}
+
+void CameraImpl::request_missing_capture_info()
+{
+    std::lock_guard<std::mutex> lock(_capture_info.mutex);
+
+    for (auto it = _capture_info.missing_image_retries.begin();
+         it != _capture_info.missing_image_retries.end();
+         /* ++it */) {
+        if (it->second > 3) {
+            it = _capture_info.missing_image_retries.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    if (!_capture_info.missing_image_retries.empty()) {
+        auto it_lowest_retries = std::min_element(
+            _capture_info.missing_image_retries.begin(), _capture_info.missing_image_retries.end());
+        _parent->send_command_async(
+            CameraImpl::make_command_request_camera_image_captured(it_lowest_retries->first),
+            nullptr);
+        it_lowest_retries->second += 1;
     }
 }
 
@@ -1831,6 +1882,7 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
                     {
                         std::lock_guard<std::mutex> lock(_capture_info.mutex);
                         _capture_info.last_advertised_image_index = -1;
+                        _capture_info.missing_image_retries.clear();
                     }
                 }
 

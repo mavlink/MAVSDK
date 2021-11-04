@@ -158,6 +158,7 @@ private:
     void* _camera_information_call_every_cookie{nullptr};
     void* _flight_information_call_every_cookie{nullptr};
     void* _check_connection_status_call_every_cookie{nullptr};
+    void* _request_missing_capture_info_cookie{nullptr};
 
     void request_camera_settings();
     void request_camera_information();
@@ -185,6 +186,8 @@ private:
 
     MavlinkCommandSender::CommandLong make_command_request_video_stream_info();
     MavlinkCommandSender::CommandLong make_command_request_video_stream_status();
+
+    void request_missing_capture_info();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
     bool _is_fetching_camera_definition{false};
@@ -228,6 +231,7 @@ private:
         std::mutex mutex{};
         Camera::CaptureInfoCallback callback{nullptr};
         int last_advertised_image_index{-1};
+        std::map<int, int> missing_image_retries{};
     } _capture_info{};
 
     struct {
