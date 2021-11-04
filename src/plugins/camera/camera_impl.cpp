@@ -1822,10 +1822,16 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
 
             receive_command_result(result, [this, callback](Camera::Result camera_result) {
                 if (camera_result == Camera::Result::Success) {
-                    std::lock_guard<std::mutex> status_lock(_status.mutex);
-                    _status.photo_list.clear();
-                    _status.image_count = 0;
-                    _status.image_count_at_connection = 0;
+                    {
+                        std::lock_guard<std::mutex> status_lock(_status.mutex);
+                        _status.photo_list.clear();
+                        _status.image_count = 0;
+                        _status.image_count_at_connection = 0;
+                    }
+                    {
+                        std::lock_guard<std::mutex> lock(_capture_info.mutex);
+                        _capture_info.last_advertised_image_index = -1;
+                    }
                 }
 
                 callback(camera_result);
