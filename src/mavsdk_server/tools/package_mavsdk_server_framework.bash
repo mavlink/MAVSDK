@@ -19,9 +19,9 @@ ln -sf Versions/Current/Modules ${MACOS_BACKEND_DIR}/mavsdk_server.framework
 echo "Creating xcframework..."
 xcodebuild -create-xcframework -framework ${IOS_BACKEND_DIR}/mavsdk_server.framework -framework ${IOS_SIM_BACKEND_DIR}/mavsdk_server.framework -framework ${MACOS_BACKEND_DIR}/mavsdk_server.framework -output ${BUILD_DIR}/mavsdk_server.xcframework
 
-chmod 755 ${BUILD_DIR}/mavsdk_server.xcframework/ios-arm64/mavsdk_server.framework/mavsdk_server
-chmod 755 ${BUILD_DIR}/mavsdk_server.xcframework/ios-x86_64-simulator/mavsdk_server.framework/mavsdk_server
-chmod 755 ${BUILD_DIR}/mavsdk_server.xcframework/macos-x86_64/mavsdk_server.framework/mavsdk_server
+chmod +x ${BUILD_DIR}/mavsdk_server.xcframework/ios-arm64/mavsdk_server.framework/mavsdk_server
+chmod +x ${BUILD_DIR}/mavsdk_server.xcframework/ios-x86_64-simulator/mavsdk_server.framework/mavsdk_server
+chmod +x ${BUILD_DIR}/mavsdk_server.xcframework/macos-x86_64/mavsdk_server.framework/mavsdk_server
 
 cd ${BUILD_DIR}
 zip -9 -r mavsdk_server.xcframework.zip mavsdk_server.xcframework
