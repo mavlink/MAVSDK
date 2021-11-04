@@ -475,13 +475,22 @@ jobs:
           name: mavsdk_server.xcframework
           path: ./build/mavsdk_server.xcframework
           retention-days: 2
-      - name: Publish artefacts
+      - name: Publish xcframework
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: 'build/mavsdk_server.xcframework.zip'
           asset_name: 'mavsdk_server.xcframework.zip'
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: Publish xcframework checksum
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/mavsdk_server.xcframework.zip.sha256'
+          asset_name: 'mavsdk_server.xcframework.zip.sha256'
           tag: ${{ github.ref }}
           overwrite: true
 
