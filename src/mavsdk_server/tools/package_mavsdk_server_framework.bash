@@ -26,4 +26,6 @@ chmod +x ${BUILD_DIR}/mavsdk_server.xcframework/macos-x86_64/mavsdk_server.frame
 cd ${BUILD_DIR}
 zip -9 -r mavsdk_server.xcframework.zip mavsdk_server.xcframework
 
+shasum -a 256 mavsdk_server.xcframework.zip | awk '{ print $1 }' > mavsdk_server.xcframework.zip.sha256
+
 echo "Success! You will find the xcframework in ${BUILD_DIR}!"
