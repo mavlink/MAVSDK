@@ -849,14 +849,6 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
         }
     }
 
-    {
-        std::lock_guard<std::mutex> lock(_capture_info.mutex);
-
-        if (_capture_info.last_advertised_image_index == -1) {
-            _capture_info.last_advertised_image_index = camera_capture_status.image_count - 1;
-        }
-    }
-
     check_status();
 }
 
@@ -936,16 +928,18 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         _captured_request_cv.notify_all();
 
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
-        if (_capture_info.last_advertised_image_index != -1) {
-            // Notify user if a new image has been captured.
-            if (_capture_info.last_advertised_image_index < capture_info.index) {
-                if (_capture_info.callback) {
-                    const auto temp_callback = _capture_info.callback;
-                    _parent->call_user_callback(
-                        [temp_callback, capture_info]() { temp_callback(capture_info); });
-                }
+        // Notify user if a new image has been captured.
+        if (_capture_info.last_advertised_image_index < capture_info.index) {
+            if (_capture_info.callback) {
+                const auto temp_callback = _capture_info.callback;
+                _parent->call_user_callback(
+                    [temp_callback, capture_info]() { temp_callback(capture_info); });
+            }
 
-                // Save captured indices that have been dropped
+            if (_capture_info.last_advertised_image_index != -1) {
+                // Save captured indices that have been dropped to request later, however, don't
+                // do it from the very beginning as there might be many photos from a previous
+                // time that we don't want to request.
                 for (int i = _capture_info.last_advertised_image_index + 1; i < capture_info.index;
                      ++i) {
                     if (_capture_info.missing_image_retries.find(i) ==
@@ -953,19 +947,19 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
                         _capture_info.missing_image_retries[i] = 0;
                     }
                 }
-
-                _capture_info.last_advertised_image_index = capture_info.index;
             }
 
-            else if (auto it = _capture_info.missing_image_retries.find(capture_info.index);
-                     it != _capture_info.missing_image_retries.end()) {
-                if (_capture_info.callback) {
-                    const auto temp_callback = _capture_info.callback;
-                    _parent->call_user_callback(
-                        [temp_callback, capture_info]() { temp_callback(capture_info); });
-                }
-                _capture_info.missing_image_retries.erase(it);
+            _capture_info.last_advertised_image_index = capture_info.index;
+        }
+
+        else if (auto it = _capture_info.missing_image_retries.find(capture_info.index);
+                 it != _capture_info.missing_image_retries.end()) {
+            if (_capture_info.callback) {
+                const auto temp_callback = _capture_info.callback;
+                _parent->call_user_callback(
+                    [temp_callback, capture_info]() { temp_callback(capture_info); });
             }
+            _capture_info.missing_image_retries.erase(it);
         }
     }
 }
