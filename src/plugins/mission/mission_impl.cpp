@@ -658,6 +658,16 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                     break;
                 }
 
+            } else if (int_item.command == MAV_CMD_DO_SET_CAM_TRIGG_DIST) {
+                if (static_cast<int>(int_item.param2) == -1 &&
+                    static_cast<int>(int_item.param3) == 1) {
+                    new_mission_item.camera_photo_distance_m = int_item.param1;
+                } else {
+                    LogWarn() << "Unknown SET_CAM_TRIGG_DIST params";
+                    result_pair.first = Mission::Result::Unsupported;
+                    break;
+                }
+
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
                 if (int(int_item.param1) == 1 && int_item.param3 < 0 && int(int_item.param4) == 0) {
                     new_mission_item.speed_m_s = int_item.param2;

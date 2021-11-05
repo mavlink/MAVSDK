@@ -339,6 +339,10 @@ Mission::MissionItem add_mission_item(
     if (camera_action == Mission::MissionItem::CameraAction::StartPhotoInterval) {
         new_item.camera_photo_interval_s = 1.5;
     }
+    // In order to test setting the interval, add it here.
+    else if (camera_action == Mission::MissionItem::CameraAction::StartPhotoDistance) {
+        new_item.camera_photo_distance_m = 5.5;
+    }
 
     return new_item;
 }
