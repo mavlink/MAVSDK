@@ -1054,7 +1054,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
             [temp_callback, temp_information]() { temp_callback(temp_information); });
     }
 
-    if (should_fetch_camera_definition()) {
+    if (should_fetch_camera_definition(camera_information.cam_definition_uri)) {
         _is_fetching_camera_definition = true;
 
         std::thread([this, camera_information]() {
@@ -1093,9 +1093,9 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     }
 }
 
-bool CameraImpl::should_fetch_camera_definition() const
+bool CameraImpl::should_fetch_camera_definition(const std::string& uri) const
 {
-    return !_camera_definition && !_is_fetching_camera_definition &&
+    return !uri.empty() && !_camera_definition && !_is_fetching_camera_definition &&
            !_has_camera_definition_timed_out;
 }
 
