@@ -106,6 +106,11 @@ Mavsdk::Configuration::Configuration(UsageType usage_type) :
             _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT;
             _always_send_heartbeats = true;
             break;
+        case Mavsdk::Configuration::UsageType::Camera:
+            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CAMERA;
+            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CAMERA;
+            _always_send_heartbeats = true;
+            break;
         default:
             break;
     }
