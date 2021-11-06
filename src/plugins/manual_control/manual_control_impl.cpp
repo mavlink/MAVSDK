@@ -99,8 +99,12 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
         _input = Input::Set;
     }
 
-    // No buttons supported yet.
+    // No buttons/extensions supported yet.
     const uint16_t buttons = 0;
+    const uint16_t buttons2 = 0;
+    const uint8_t enabled_extensions = 0;
+    const int16_t pitch_only_axis = 0;
+    const int16_t roll_only_axis = 0;
 
     mavlink_message_t message;
     mavlink_msg_manual_control_pack(
@@ -112,7 +116,11 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
         static_cast<int16_t>(y * 1000),
         static_cast<int16_t>(z * 1000),
         static_cast<int16_t>(r * 1000),
-        buttons);
+        buttons,
+        buttons2,
+        enabled_extensions,
+        pitch_only_axis,
+        roll_only_axis);
     return _parent->send_message(message) ? ManualControl::Result::Success :
                                             ManualControl::Result::ConnectionError;
 }
