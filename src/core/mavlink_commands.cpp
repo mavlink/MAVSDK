@@ -6,25 +6,6 @@
 
 namespace mavsdk {
 
-MavlinkCommandSender::CommandLong::CommandLong(const SystemImpl& system_impl)
-{
-    const float param_unset = [&]() {
-        if (system_impl.autopilot() == SystemImpl::Autopilot::ArduPilot) {
-            return 0.0f;
-        } else {
-            return NAN;
-        }
-    }();
-
-    params.param1 = param_unset;
-    params.param2 = param_unset;
-    params.param3 = param_unset;
-    params.param4 = param_unset;
-    params.param5 = param_unset;
-    params.param6 = param_unset;
-    params.param7 = param_unset;
-}
-
 MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _parent(system_impl)
 {
     if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
@@ -414,13 +395,13 @@ mavlink_message_t MavlinkCommandSender::create_mavlink_message(const Command& co
             command_int->command,
             command_int->current,
             command_int->autocontinue,
-            command_int->params.param1,
-            command_int->params.param2,
-            command_int->params.param3,
-            command_int->params.param4,
+            maybe_reserved(command_int->params.maybe_param1),
+            maybe_reserved(command_int->params.maybe_param2),
+            maybe_reserved(command_int->params.maybe_param3),
+            maybe_reserved(command_int->params.maybe_param4),
             command_int->params.x,
             command_int->params.y,
-            command_int->params.z);
+            maybe_reserved(command_int->params.maybe_z));
 
     } else if (auto command_long = std::get_if<CommandLong>(&command)) {
         mavlink_msg_command_long_pack(
@@ -431,15 +412,29 @@ mavlink_message_t MavlinkCommandSender::create_mavlink_message(const Command& co
             command_long->target_component_id,
             command_long->command,
             command_long->confirmation,
-            command_long->params.param1,
-            command_long->params.param2,
-            command_long->params.param3,
-            command_long->params.param4,
-            command_long->params.param5,
-            command_long->params.param6,
-            command_long->params.param7);
+            maybe_reserved(command_long->params.maybe_param1),
+            maybe_reserved(command_long->params.maybe_param2),
+            maybe_reserved(command_long->params.maybe_param3),
+            maybe_reserved(command_long->params.maybe_param4),
+            maybe_reserved(command_long->params.maybe_param5),
+            maybe_reserved(command_long->params.maybe_param6),
+            maybe_reserved(command_long->params.maybe_param7));
     }
     return message;
+}
+
+float MavlinkCommandSender::maybe_reserved(const std::optional<float>& maybe_param) const
+{
+    if (maybe_param) {
+        return maybe_param.value();
+
+    } else {
+        if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+            return 0.0f;
+        } else {
+            return NAN;
+        }
+    }
 }
 
 MavlinkCommandReceiver::MavlinkCommandReceiver(SystemImpl& system_impl) : _parent(system_impl)
