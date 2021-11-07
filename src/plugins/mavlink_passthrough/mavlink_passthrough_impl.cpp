@@ -45,17 +45,17 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong& command)
 {
-    MavlinkCommandSender::CommandLong command_internal{*_parent};
+    MavlinkCommandSender::CommandLong command_internal{};
     command_internal.target_system_id = command.target_sysid;
     command_internal.target_component_id = command.target_compid;
     command_internal.command = command.command;
-    command_internal.params.param1 = command.param1;
-    command_internal.params.param2 = command.param2;
-    command_internal.params.param3 = command.param3;
-    command_internal.params.param4 = command.param4;
-    command_internal.params.param5 = command.param5;
-    command_internal.params.param6 = command.param6;
-    command_internal.params.param7 = command.param7;
+    command_internal.params.maybe_param1 = command.param1;
+    command_internal.params.maybe_param2 = command.param2;
+    command_internal.params.maybe_param3 = command.param3;
+    command_internal.params.maybe_param4 = command.param4;
+    command_internal.params.maybe_param5 = command.param5;
+    command_internal.params.maybe_param6 = command.param6;
+    command_internal.params.maybe_param7 = command.param7;
 
     return to_mavlink_passthrough_result_from_mavlink_commands_result(
         _parent->send_command(command_internal));
@@ -69,13 +69,13 @@ MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& c
     command_internal.target_component_id = command.target_compid;
     command_internal.frame = command.frame;
     command_internal.command = command.command;
-    command_internal.params.param1 = command.param1;
-    command_internal.params.param2 = command.param2;
-    command_internal.params.param3 = command.param3;
-    command_internal.params.param4 = command.param4;
+    command_internal.params.maybe_param1 = command.param1;
+    command_internal.params.maybe_param2 = command.param2;
+    command_internal.params.maybe_param3 = command.param3;
+    command_internal.params.maybe_param4 = command.param4;
     command_internal.params.x = command.x;
     command_internal.params.y = command.y;
-    command_internal.params.z = command.z;
+    command_internal.params.maybe_z = command.z;
 
     return to_mavlink_passthrough_result_from_mavlink_commands_result(
         _parent->send_command(command_internal));

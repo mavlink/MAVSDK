@@ -156,7 +156,7 @@ GimbalProtocolV2::set_roi_location(double latitude_deg, double longitude_deg, fl
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
     command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
     command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
-    command.params.z = altitude_m;
+    command.params.maybe_z = altitude_m;
     command.target_system_id = _gimbal_manager_sysid;
     command.target_component_id = _gimbal_manager_compid;
 
@@ -171,7 +171,7 @@ void GimbalProtocolV2::set_roi_location_async(
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
     command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
     command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
-    command.params.z = altitude_m;
+    command.params.maybe_z = altitude_m;
     command.target_system_id = _gimbal_manager_sysid;
     command.target_component_id = _gimbal_manager_compid;
 
@@ -206,20 +206,20 @@ void GimbalProtocolV2::take_control_async(
     float own_sysid = _system_impl.get_own_system_id();
     float own_compid = _system_impl.get_own_component_id();
 
-    MavlinkCommandSender::CommandLong command{_system_impl};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE;
-    command.params.param1 =
+    command.params.maybe_param1 =
         control_mode == Gimbal::ControlMode::Primary ? own_sysid : -3.0f; // sysid primary control
-    command.params.param2 =
+    command.params.maybe_param2 =
         control_mode == Gimbal::ControlMode::Primary ? own_compid : -3.0f; // compid primary control
-    command.params.param3 =
+    command.params.maybe_param3 =
         control_mode == Gimbal::ControlMode::Primary ? own_sysid : -3.0f; // sysid secondary control
-    command.params.param4 = control_mode == Gimbal::ControlMode::Primary ?
-                                own_compid :
-                                -3.0f; // compid secondary control
+    command.params.maybe_param4 = control_mode == Gimbal::ControlMode::Primary ?
+                                      own_compid :
+                                      -3.0f; // compid secondary control
 
-    command.params.param7 = _gimbal_device_id;
+    command.params.maybe_param7 = _gimbal_device_id;
     command.target_system_id = _gimbal_manager_sysid;
     command.target_component_id = _gimbal_manager_compid;
 
@@ -241,14 +241,14 @@ Gimbal::Result GimbalProtocolV2::release_control()
 
 void GimbalProtocolV2::release_control_async(Gimbal::ResultCallback callback)
 {
-    MavlinkCommandSender::CommandLong command{_system_impl};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE;
-    command.params.param1 = -3.0f; // sysid primary control
-    command.params.param2 = -3.0f; // compid primary control
-    command.params.param3 = -3.0f; // sysid secondary control
-    command.params.param4 = -3.0f; // compid secondary control
-    command.params.param7 = _gimbal_device_id;
+    command.params.maybe_param1 = -3.0f; // sysid primary control
+    command.params.maybe_param2 = -3.0f; // compid primary control
+    command.params.maybe_param3 = -3.0f; // sysid secondary control
+    command.params.maybe_param4 = -3.0f; // compid secondary control
+    command.params.maybe_param7 = _gimbal_device_id;
     command.target_system_id = _gimbal_manager_sysid;
     command.target_component_id = _gimbal_manager_compid;
 

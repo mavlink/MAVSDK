@@ -73,12 +73,12 @@ Failure::Result FailureImpl::inject(
         return Failure::Result::Disabled;
     }
 
-    MavlinkCommandSender::CommandLong command{*_parent};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_INJECT_FAILURE;
-    command.params.param1 = static_cast<float>(failure_unit);
-    command.params.param2 = static_cast<float>(failure_type);
-    command.params.param3 = static_cast<float>(instance);
+    command.params.maybe_param1 = static_cast<float>(failure_unit);
+    command.params.maybe_param2 = static_cast<float>(failure_type);
+    command.params.maybe_param3 = static_cast<float>(instance);
     command.target_component_id = _parent->get_autopilot_id();
 
     return failure_result_from_command_result(_parent->send_command(command));
