@@ -8,6 +8,7 @@
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"
 #include "mavlink_statustext_handler.h"
+#include "request_message.h"
 #include "ardupilot_custom_mode.h"
 #include "ping.h"
 #include "timeout_handler.h"
@@ -249,6 +250,8 @@ public:
 
     MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };
 
+    RequestMessage& request_message() { return _request_message; };
+
     void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
 
@@ -382,6 +385,7 @@ private:
     Ping _ping;
 
     MAVLinkMissionTransfer _mission_transfer;
+    RequestMessage _request_message;
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase*> _plugin_impls{};

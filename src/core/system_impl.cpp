@@ -25,7 +25,8 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
     _timesync(*this),
     _ping(*this),
     _mission_transfer(
-        *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); })
+        *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); }),
+    _request_message(_send_commands, _message_handler, _parent.timeout_handler)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 }
