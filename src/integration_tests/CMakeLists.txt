@@ -63,6 +63,7 @@ add_executable(integration_tests_runner
     system_multi_components.cpp
     statustext.cpp
     telemetry_async.cpp
+    telemetry_gps_origin.cpp
     telemetry_health.cpp
     telemetry_modes.cpp
     telemetry_sync.cpp
