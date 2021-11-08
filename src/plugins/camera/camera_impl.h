@@ -141,7 +141,7 @@ private:
 
     void check_status();
 
-    bool should_fetch_camera_definition() const;
+    bool should_fetch_camera_definition(const std::string& uri) const;
     bool fetch_camera_definition(
         const mavlink_camera_information_t& camera_information, std::string& camera_definition_out);
     bool download_definition_file(const std::string& uri, std::string& camera_definition_out);
