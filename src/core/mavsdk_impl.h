@@ -30,6 +30,10 @@ public:
     static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
     /** @brief Default Component ID for Autopilot configuration type. */
     static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
+    /** @brief Default System ID for Camera configuration type. */
+    static constexpr int DEFAULT_SYSTEM_ID_CAMERA = 1;
+    /** @brief Default Component ID for Camera configuration type. */
+    static constexpr int DEFAULT_COMPONENT_ID_CAMERA = MAV_COMP_ID_CAMERA;
 
     MavsdkImpl();
     ~MavsdkImpl();

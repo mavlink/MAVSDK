@@ -180,6 +180,7 @@ public:
             Autopilot, /**< @brief SDK is used as an autopilot. */
             GroundStation, /**< @brief SDK is used as a ground station. */
             CompanionComputer, /**< @brief SDK is used as a companion computer on board the MAV. */
+            Camera, /** < @brief SDK is used as a camera. */
             Custom /**< @brief the SDK is used in a custom configuration, no automatic ID will be
                       provided */
         };
