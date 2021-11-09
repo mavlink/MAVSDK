@@ -29,6 +29,14 @@ public:
     void upload_mission_async(
         const std::vector<MissionRaw::MissionItem>& mission_raw,
         const MissionRaw::ResultCallback& callback);
+    MissionRaw::Result upload_geofence(std::vector<MissionRaw::MissionItem> mission_items);
+    void upload_geofence_async(
+        const std::vector<MissionRaw::MissionItem>& mission_raw,
+        const MissionRaw::ResultCallback& callback);
+    MissionRaw::Result upload_rally_points(std::vector<MissionRaw::MissionItem> mission_items);
+    void upload_rally_points_async(
+        const std::vector<MissionRaw::MissionItem>& mission_raw,
+        const MissionRaw::ResultCallback& callback);
     MissionRaw::Result cancel_mission_upload();
 
     void subscribe_mission_changed(MissionRaw::MissionChangedCallback callback);
@@ -87,6 +95,13 @@ private:
         const MAVLinkMissionTransfer::ItemInt& transfer_item);
     std::vector<MissionRaw::MissionItem>
     convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items);
+
+    MissionRaw::Result
+    upload_mission_items(std::vector<MissionRaw::MissionItem> mission_items, uint8_t type);
+    void upload_mission_items_async(
+        const std::vector<MissionRaw::MissionItem>& mission_raw,
+        uint8_t type,
+        const MissionRaw::ResultCallback& callback);
 
     // TODO: check if these need a mutex as well.
     std::weak_ptr<MAVLinkMissionTransfer::WorkItem> _last_upload{};

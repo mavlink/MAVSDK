@@ -43,6 +43,54 @@ struct UploadMissionResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadMissionResponseDefaultTypeInternal _UploadMissionResponse_default_instance_;
+constexpr UploadGeofenceRequest::UploadGeofenceRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : mission_items_(){}
+struct UploadGeofenceRequestDefaultTypeInternal {
+  constexpr UploadGeofenceRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UploadGeofenceRequestDefaultTypeInternal() {}
+  union {
+    UploadGeofenceRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadGeofenceRequestDefaultTypeInternal _UploadGeofenceRequest_default_instance_;
+constexpr UploadGeofenceResponse::UploadGeofenceResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : mission_raw_result_(nullptr){}
+struct UploadGeofenceResponseDefaultTypeInternal {
+  constexpr UploadGeofenceResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UploadGeofenceResponseDefaultTypeInternal() {}
+  union {
+    UploadGeofenceResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadGeofenceResponseDefaultTypeInternal _UploadGeofenceResponse_default_instance_;
+constexpr UploadRallyPointsRequest::UploadRallyPointsRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : mission_items_(){}
+struct UploadRallyPointsRequestDefaultTypeInternal {
+  constexpr UploadRallyPointsRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UploadRallyPointsRequestDefaultTypeInternal() {}
+  union {
+    UploadRallyPointsRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadRallyPointsRequestDefaultTypeInternal _UploadRallyPointsRequest_default_instance_;
+constexpr UploadRallyPointsResponse::UploadRallyPointsResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : mission_raw_result_(nullptr){}
+struct UploadRallyPointsResponseDefaultTypeInternal {
+  constexpr UploadRallyPointsResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UploadRallyPointsResponseDefaultTypeInternal() {}
+  union {
+    UploadRallyPointsResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadRallyPointsResponseDefaultTypeInternal _UploadRallyPointsResponse_default_instance_;
 constexpr CancelMissionUploadRequest::CancelMissionUploadRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
 struct CancelMissionUploadRequestDefaultTypeInternal {
@@ -345,7 +393,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT MissionRawResultDefaultTypeInte
 }  // namespace mission_raw
 }  // namespace rpc
 }  // namespace mavsdk
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[26];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[30];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_mission_5fraw_2fmission_5fraw_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_mission_5fraw_2fmission_5fraw_2eproto = nullptr;
 
@@ -362,6 +410,30 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_mission_5fraw_2fmission_5fraw_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadMissionResponse, mission_raw_result_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadGeofenceRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadGeofenceRequest, mission_items_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadGeofenceResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadGeofenceResponse, mission_raw_result_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadRallyPointsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadRallyPointsRequest, mission_items_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadRallyPointsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::UploadRallyPointsResponse, mission_raw_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::CancelMissionUploadRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -520,35 +592,43 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_mission_5fraw_2fmission_5fraw_
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::mavsdk::rpc::mission_raw::UploadMissionRequest)},
   { 6, -1, sizeof(::mavsdk::rpc::mission_raw::UploadMissionResponse)},
-  { 12, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionUploadRequest)},
-  { 17, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionUploadResponse)},
-  { 23, -1, sizeof(::mavsdk::rpc::mission_raw::DownloadMissionRequest)},
-  { 28, -1, sizeof(::mavsdk::rpc::mission_raw::DownloadMissionResponse)},
-  { 35, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest)},
-  { 40, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse)},
-  { 46, -1, sizeof(::mavsdk::rpc::mission_raw::StartMissionRequest)},
-  { 51, -1, sizeof(::mavsdk::rpc::mission_raw::StartMissionResponse)},
-  { 57, -1, sizeof(::mavsdk::rpc::mission_raw::PauseMissionRequest)},
-  { 62, -1, sizeof(::mavsdk::rpc::mission_raw::PauseMissionResponse)},
-  { 68, -1, sizeof(::mavsdk::rpc::mission_raw::ClearMissionRequest)},
-  { 73, -1, sizeof(::mavsdk::rpc::mission_raw::ClearMissionResponse)},
-  { 79, -1, sizeof(::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest)},
-  { 85, -1, sizeof(::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse)},
-  { 91, -1, sizeof(::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest)},
-  { 96, -1, sizeof(::mavsdk::rpc::mission_raw::MissionProgressResponse)},
-  { 102, -1, sizeof(::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest)},
-  { 107, -1, sizeof(::mavsdk::rpc::mission_raw::MissionChangedResponse)},
-  { 113, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest)},
-  { 119, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse)},
-  { 126, -1, sizeof(::mavsdk::rpc::mission_raw::MissionProgress)},
-  { 133, -1, sizeof(::mavsdk::rpc::mission_raw::MissionItem)},
-  { 151, -1, sizeof(::mavsdk::rpc::mission_raw::MissionImportData)},
-  { 159, -1, sizeof(::mavsdk::rpc::mission_raw::MissionRawResult)},
+  { 12, -1, sizeof(::mavsdk::rpc::mission_raw::UploadGeofenceRequest)},
+  { 18, -1, sizeof(::mavsdk::rpc::mission_raw::UploadGeofenceResponse)},
+  { 24, -1, sizeof(::mavsdk::rpc::mission_raw::UploadRallyPointsRequest)},
+  { 30, -1, sizeof(::mavsdk::rpc::mission_raw::UploadRallyPointsResponse)},
+  { 36, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionUploadRequest)},
+  { 41, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionUploadResponse)},
+  { 47, -1, sizeof(::mavsdk::rpc::mission_raw::DownloadMissionRequest)},
+  { 52, -1, sizeof(::mavsdk::rpc::mission_raw::DownloadMissionResponse)},
+  { 59, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest)},
+  { 64, -1, sizeof(::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse)},
+  { 70, -1, sizeof(::mavsdk::rpc::mission_raw::StartMissionRequest)},
+  { 75, -1, sizeof(::mavsdk::rpc::mission_raw::StartMissionResponse)},
+  { 81, -1, sizeof(::mavsdk::rpc::mission_raw::PauseMissionRequest)},
+  { 86, -1, sizeof(::mavsdk::rpc::mission_raw::PauseMissionResponse)},
+  { 92, -1, sizeof(::mavsdk::rpc::mission_raw::ClearMissionRequest)},
+  { 97, -1, sizeof(::mavsdk::rpc::mission_raw::ClearMissionResponse)},
+  { 103, -1, sizeof(::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest)},
+  { 109, -1, sizeof(::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse)},
+  { 115, -1, sizeof(::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest)},
+  { 120, -1, sizeof(::mavsdk::rpc::mission_raw::MissionProgressResponse)},
+  { 126, -1, sizeof(::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest)},
+  { 131, -1, sizeof(::mavsdk::rpc::mission_raw::MissionChangedResponse)},
+  { 137, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest)},
+  { 143, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse)},
+  { 150, -1, sizeof(::mavsdk::rpc::mission_raw::MissionProgress)},
+  { 157, -1, sizeof(::mavsdk::rpc::mission_raw::MissionItem)},
+  { 175, -1, sizeof(::mavsdk::rpc::mission_raw::MissionImportData)},
+  { 183, -1, sizeof(::mavsdk::rpc::mission_raw::MissionRawResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_UploadMissionRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_UploadMissionResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_UploadGeofenceRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_UploadGeofenceResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_UploadRallyPointsRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_UploadRallyPointsResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_CancelMissionUploadRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_CancelMissionUploadResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::mission_raw::_DownloadMissionRequest_default_instance_),
@@ -582,110 +662,126 @@ const char descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto[] PRO
   " \003(\0132#.mavsdk.rpc.mission_raw.MissionIte"
   "m\"]\n\025UploadMissionResponse\022D\n\022mission_ra"
   "w_result\030\001 \001(\0132(.mavsdk.rpc.mission_raw."
-  "MissionRawResult\"\034\n\032CancelMissionUploadR"
-  "equest\"c\n\033CancelMissionUploadResponse\022D\n"
-  "\022mission_raw_result\030\001 \001(\0132(.mavsdk.rpc.m"
-  "ission_raw.MissionRawResult\"\030\n\026DownloadM"
-  "issionRequest\"\233\001\n\027DownloadMissionRespons"
+  "MissionRawResult\"S\n\025UploadGeofenceReques"
+  "t\022:\n\rmission_items\030\001 \003(\0132#.mavsdk.rpc.mi"
+  "ssion_raw.MissionItem\"^\n\026UploadGeofenceR"
+  "esponse\022D\n\022mission_raw_result\030\001 \001(\0132(.ma"
+  "vsdk.rpc.mission_raw.MissionRawResult\"V\n"
+  "\030UploadRallyPointsRequest\022:\n\rmission_ite"
+  "ms\030\001 \003(\0132#.mavsdk.rpc.mission_raw.Missio"
+  "nItem\"a\n\031UploadRallyPointsResponse\022D\n\022mi"
+  "ssion_raw_result\030\001 \001(\0132(.mavsdk.rpc.miss"
+  "ion_raw.MissionRawResult\"\034\n\032CancelMissio"
+  "nUploadRequest\"c\n\033CancelMissionUploadRes"
+  "ponse\022D\n\022mission_raw_result\030\001 \001(\0132(.mavs"
+  "dk.rpc.mission_raw.MissionRawResult\"\030\n\026D"
+  "ownloadMissionRequest\"\233\001\n\027DownloadMissio"
+  "nResponse\022D\n\022mission_raw_result\030\001 \001(\0132(."
+  "mavsdk.rpc.mission_raw.MissionRawResult\022"
+  ":\n\rmission_items\030\002 \003(\0132#.mavsdk.rpc.miss"
+  "ion_raw.MissionItem\"\036\n\034CancelMissionDown"
+  "loadRequest\"e\n\035CancelMissionDownloadResp"
+  "onse\022D\n\022mission_raw_result\030\001 \001(\0132(.mavsd"
+  "k.rpc.mission_raw.MissionRawResult\"\025\n\023St"
+  "artMissionRequest\"\\\n\024StartMissionRespons"
   "e\022D\n\022mission_raw_result\030\001 \001(\0132(.mavsdk.r"
-  "pc.mission_raw.MissionRawResult\022:\n\rmissi"
-  "on_items\030\002 \003(\0132#.mavsdk.rpc.mission_raw."
-  "MissionItem\"\036\n\034CancelMissionDownloadRequ"
-  "est\"e\n\035CancelMissionDownloadResponse\022D\n\022"
-  "mission_raw_result\030\001 \001(\0132(.mavsdk.rpc.mi"
-  "ssion_raw.MissionRawResult\"\025\n\023StartMissi"
-  "onRequest\"\\\n\024StartMissionResponse\022D\n\022mis"
-  "sion_raw_result\030\001 \001(\0132(.mavsdk.rpc.missi"
-  "on_raw.MissionRawResult\"\025\n\023PauseMissionR"
-  "equest\"\\\n\024PauseMissionResponse\022D\n\022missio"
-  "n_raw_result\030\001 \001(\0132(.mavsdk.rpc.mission_"
-  "raw.MissionRawResult\"\025\n\023ClearMissionRequ"
-  "est\"\\\n\024ClearMissionResponse\022D\n\022mission_r"
-  "aw_result\030\001 \001(\0132(.mavsdk.rpc.mission_raw"
-  ".MissionRawResult\"-\n\034SetCurrentMissionIt"
-  "emRequest\022\r\n\005index\030\001 \001(\005\"e\n\035SetCurrentMi"
-  "ssionItemResponse\022D\n\022mission_raw_result\030"
-  "\001 \001(\0132(.mavsdk.rpc.mission_raw.MissionRa"
-  "wResult\"!\n\037SubscribeMissionProgressReque"
-  "st\"\\\n\027MissionProgressResponse\022A\n\020mission"
-  "_progress\030\001 \001(\0132\'.mavsdk.rpc.mission_raw"
-  ".MissionProgress\" \n\036SubscribeMissionChan"
-  "gedRequest\"1\n\026MissionChangedResponse\022\027\n\017"
-  "mission_changed\030\001 \001(\010\";\n\"ImportQgroundco"
-  "ntrolMissionRequest\022\025\n\rqgc_plan_path\030\001 \001"
-  "(\t\"\263\001\n#ImportQgroundcontrolMissionRespon"
-  "se\022D\n\022mission_raw_result\030\001 \001(\0132(.mavsdk."
-  "rpc.mission_raw.MissionRawResult\022F\n\023miss"
-  "ion_import_data\030\002 \001(\0132).mavsdk.rpc.missi"
-  "on_raw.MissionImportData\"1\n\017MissionProgr"
-  "ess\022\017\n\007current\030\001 \001(\005\022\r\n\005total\030\002 \001(\005\"\330\001\n\013"
-  "MissionItem\022\013\n\003seq\030\001 \001(\r\022\r\n\005frame\030\002 \001(\r\022"
-  "\017\n\007command\030\003 \001(\r\022\017\n\007current\030\004 \001(\r\022\024\n\014aut"
-  "ocontinue\030\005 \001(\r\022\016\n\006param1\030\006 \001(\002\022\016\n\006param"
-  "2\030\007 \001(\002\022\016\n\006param3\030\010 \001(\002\022\016\n\006param4\030\t \001(\002\022"
-  "\t\n\001x\030\n \001(\005\022\t\n\001y\030\013 \001(\005\022\t\n\001z\030\014 \001(\002\022\024\n\014miss"
-  "ion_type\030\r \001(\r\"\306\001\n\021MissionImportData\022:\n\r"
-  "mission_items\030\001 \003(\0132#.mavsdk.rpc.mission"
-  "_raw.MissionItem\022;\n\016geofence_items\030\002 \003(\013"
-  "2#.mavsdk.rpc.mission_raw.MissionItem\0228\n"
-  "\013rally_items\030\003 \003(\0132#.mavsdk.rpc.mission_"
-  "raw.MissionItem\"\310\003\n\020MissionRawResult\022\?\n\006"
-  "result\030\001 \001(\0162/.mavsdk.rpc.mission_raw.Mi"
-  "ssionRawResult.Result\022\022\n\nresult_str\030\002 \001("
-  "\t\"\336\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESU"
-  "LT_SUCCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022!\n\035RESULT"
-  "_TOO_MANY_MISSION_ITEMS\020\003\022\017\n\013RESULT_BUSY"
-  "\020\004\022\022\n\016RESULT_TIMEOUT\020\005\022\033\n\027RESULT_INVALID"
-  "_ARGUMENT\020\006\022\026\n\022RESULT_UNSUPPORTED\020\007\022\037\n\033R"
-  "ESULT_NO_MISSION_AVAILABLE\020\010\022\035\n\031RESULT_T"
-  "RANSFER_CANCELLED\020\t\022\"\n\036RESULT_FAILED_TO_"
-  "OPEN_QGC_PLAN\020\n\022#\n\037RESULT_FAILED_TO_PARS"
-  "E_QGC_PLAN\020\013\022\024\n\020RESULT_NO_SYSTEM\020\0142\223\013\n\021M"
-  "issionRawService\022n\n\rUploadMission\022,.mavs"
-  "dk.rpc.mission_raw.UploadMissionRequest\032"
-  "-.mavsdk.rpc.mission_raw.UploadMissionRe"
-  "sponse\"\000\022\204\001\n\023CancelMissionUpload\0222.mavsd"
-  "k.rpc.mission_raw.CancelMissionUploadReq"
-  "uest\0323.mavsdk.rpc.mission_raw.CancelMiss"
-  "ionUploadResponse\"\004\200\265\030\001\022t\n\017DownloadMissi"
-  "on\022..mavsdk.rpc.mission_raw.DownloadMiss"
-  "ionRequest\032/.mavsdk.rpc.mission_raw.Down"
-  "loadMissionResponse\"\000\022\212\001\n\025CancelMissionD"
-  "ownload\0224.mavsdk.rpc.mission_raw.CancelM"
-  "issionDownloadRequest\0325.mavsdk.rpc.missi"
-  "on_raw.CancelMissionDownloadResponse\"\004\200\265"
-  "\030\001\022k\n\014StartMission\022+.mavsdk.rpc.mission_"
-  "raw.StartMissionRequest\032,.mavsdk.rpc.mis"
-  "sion_raw.StartMissionResponse\"\000\022k\n\014Pause"
-  "Mission\022+.mavsdk.rpc.mission_raw.PauseMi"
-  "ssionRequest\032,.mavsdk.rpc.mission_raw.Pa"
-  "useMissionResponse\"\000\022k\n\014ClearMission\022+.m"
-  "avsdk.rpc.mission_raw.ClearMissionReques"
-  "t\032,.mavsdk.rpc.mission_raw.ClearMissionR"
-  "esponse\"\000\022\206\001\n\025SetCurrentMissionItem\0224.ma"
-  "vsdk.rpc.mission_raw.SetCurrentMissionIt"
-  "emRequest\0325.mavsdk.rpc.mission_raw.SetCu"
-  "rrentMissionItemResponse\"\000\022\210\001\n\030Subscribe"
-  "MissionProgress\0227.mavsdk.rpc.mission_raw"
-  ".SubscribeMissionProgressRequest\032/.mavsd"
-  "k.rpc.mission_raw.MissionProgressRespons"
-  "e\"\0000\001\022\211\001\n\027SubscribeMissionChanged\0226.mavs"
-  "dk.rpc.mission_raw.SubscribeMissionChang"
-  "edRequest\032..mavsdk.rpc.mission_raw.Missi"
-  "onChangedResponse\"\004\200\265\030\0000\001\022\234\001\n\033ImportQgro"
-  "undcontrolMission\022:.mavsdk.rpc.mission_r"
-  "aw.ImportQgroundcontrolMissionRequest\032;."
-  "mavsdk.rpc.mission_raw.ImportQgroundcont"
-  "rolMissionResponse\"\004\200\265\030\001B(\n\025io.mavsdk.mi"
-  "ssion_rawB\017MissionRawProtob\006proto3"
+  "pc.mission_raw.MissionRawResult\"\025\n\023Pause"
+  "MissionRequest\"\\\n\024PauseMissionResponse\022D"
+  "\n\022mission_raw_result\030\001 \001(\0132(.mavsdk.rpc."
+  "mission_raw.MissionRawResult\"\025\n\023ClearMis"
+  "sionRequest\"\\\n\024ClearMissionResponse\022D\n\022m"
+  "ission_raw_result\030\001 \001(\0132(.mavsdk.rpc.mis"
+  "sion_raw.MissionRawResult\"-\n\034SetCurrentM"
+  "issionItemRequest\022\r\n\005index\030\001 \001(\005\"e\n\035SetC"
+  "urrentMissionItemResponse\022D\n\022mission_raw"
+  "_result\030\001 \001(\0132(.mavsdk.rpc.mission_raw.M"
+  "issionRawResult\"!\n\037SubscribeMissionProgr"
+  "essRequest\"\\\n\027MissionProgressResponse\022A\n"
+  "\020mission_progress\030\001 \001(\0132\'.mavsdk.rpc.mis"
+  "sion_raw.MissionProgress\" \n\036SubscribeMis"
+  "sionChangedRequest\"1\n\026MissionChangedResp"
+  "onse\022\027\n\017mission_changed\030\001 \001(\010\";\n\"ImportQ"
+  "groundcontrolMissionRequest\022\025\n\rqgc_plan_"
+  "path\030\001 \001(\t\"\263\001\n#ImportQgroundcontrolMissi"
+  "onResponse\022D\n\022mission_raw_result\030\001 \001(\0132("
+  ".mavsdk.rpc.mission_raw.MissionRawResult"
+  "\022F\n\023mission_import_data\030\002 \001(\0132).mavsdk.r"
+  "pc.mission_raw.MissionImportData\"1\n\017Miss"
+  "ionProgress\022\017\n\007current\030\001 \001(\005\022\r\n\005total\030\002 "
+  "\001(\005\"\330\001\n\013MissionItem\022\013\n\003seq\030\001 \001(\r\022\r\n\005fram"
+  "e\030\002 \001(\r\022\017\n\007command\030\003 \001(\r\022\017\n\007current\030\004 \001("
+  "\r\022\024\n\014autocontinue\030\005 \001(\r\022\016\n\006param1\030\006 \001(\002\022"
+  "\016\n\006param2\030\007 \001(\002\022\016\n\006param3\030\010 \001(\002\022\016\n\006param"
+  "4\030\t \001(\002\022\t\n\001x\030\n \001(\005\022\t\n\001y\030\013 \001(\005\022\t\n\001z\030\014 \001(\002"
+  "\022\024\n\014mission_type\030\r \001(\r\"\306\001\n\021MissionImport"
+  "Data\022:\n\rmission_items\030\001 \003(\0132#.mavsdk.rpc"
+  ".mission_raw.MissionItem\022;\n\016geofence_ite"
+  "ms\030\002 \003(\0132#.mavsdk.rpc.mission_raw.Missio"
+  "nItem\0228\n\013rally_items\030\003 \003(\0132#.mavsdk.rpc."
+  "mission_raw.MissionItem\"\310\003\n\020MissionRawRe"
+  "sult\022\?\n\006result\030\001 \001(\0162/.mavsdk.rpc.missio"
+  "n_raw.MissionRawResult.Result\022\022\n\nresult_"
+  "str\030\002 \001(\t\"\336\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000"
+  "\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022!"
+  "\n\035RESULT_TOO_MANY_MISSION_ITEMS\020\003\022\017\n\013RES"
+  "ULT_BUSY\020\004\022\022\n\016RESULT_TIMEOUT\020\005\022\033\n\027RESULT"
+  "_INVALID_ARGUMENT\020\006\022\026\n\022RESULT_UNSUPPORTE"
+  "D\020\007\022\037\n\033RESULT_NO_MISSION_AVAILABLE\020\010\022\035\n\031"
+  "RESULT_TRANSFER_CANCELLED\020\t\022\"\n\036RESULT_FA"
+  "ILED_TO_OPEN_QGC_PLAN\020\n\022#\n\037RESULT_FAILED"
+  "_TO_PARSE_QGC_PLAN\020\013\022\024\n\020RESULT_NO_SYSTEM"
+  "\020\0142\202\r\n\021MissionRawService\022n\n\rUploadMissio"
+  "n\022,.mavsdk.rpc.mission_raw.UploadMission"
+  "Request\032-.mavsdk.rpc.mission_raw.UploadM"
+  "issionResponse\"\000\022q\n\016UploadGeofence\022-.mav"
+  "sdk.rpc.mission_raw.UploadGeofenceReques"
+  "t\032..mavsdk.rpc.mission_raw.UploadGeofenc"
+  "eResponse\"\000\022z\n\021UploadRallyPoints\0220.mavsd"
+  "k.rpc.mission_raw.UploadRallyPointsReque"
+  "st\0321.mavsdk.rpc.mission_raw.UploadRallyP"
+  "ointsResponse\"\000\022\204\001\n\023CancelMissionUpload\022"
+  "2.mavsdk.rpc.mission_raw.CancelMissionUp"
+  "loadRequest\0323.mavsdk.rpc.mission_raw.Can"
+  "celMissionUploadResponse\"\004\200\265\030\001\022t\n\017Downlo"
+  "adMission\022..mavsdk.rpc.mission_raw.Downl"
+  "oadMissionRequest\032/.mavsdk.rpc.mission_r"
+  "aw.DownloadMissionResponse\"\000\022\212\001\n\025CancelM"
+  "issionDownload\0224.mavsdk.rpc.mission_raw."
+  "CancelMissionDownloadRequest\0325.mavsdk.rp"
+  "c.mission_raw.CancelMissionDownloadRespo"
+  "nse\"\004\200\265\030\001\022k\n\014StartMission\022+.mavsdk.rpc.m"
+  "ission_raw.StartMissionRequest\032,.mavsdk."
+  "rpc.mission_raw.StartMissionResponse\"\000\022k"
+  "\n\014PauseMission\022+.mavsdk.rpc.mission_raw."
+  "PauseMissionRequest\032,.mavsdk.rpc.mission"
+  "_raw.PauseMissionResponse\"\000\022k\n\014ClearMiss"
+  "ion\022+.mavsdk.rpc.mission_raw.ClearMissio"
+  "nRequest\032,.mavsdk.rpc.mission_raw.ClearM"
+  "issionResponse\"\000\022\206\001\n\025SetCurrentMissionIt"
+  "em\0224.mavsdk.rpc.mission_raw.SetCurrentMi"
+  "ssionItemRequest\0325.mavsdk.rpc.mission_ra"
+  "w.SetCurrentMissionItemResponse\"\000\022\210\001\n\030Su"
+  "bscribeMissionProgress\0227.mavsdk.rpc.miss"
+  "ion_raw.SubscribeMissionProgressRequest\032"
+  "/.mavsdk.rpc.mission_raw.MissionProgress"
+  "Response\"\0000\001\022\211\001\n\027SubscribeMissionChanged"
+  "\0226.mavsdk.rpc.mission_raw.SubscribeMissi"
+  "onChangedRequest\032..mavsdk.rpc.mission_ra"
+  "w.MissionChangedResponse\"\004\200\265\030\0000\001\022\234\001\n\033Imp"
+  "ortQgroundcontrolMission\022:.mavsdk.rpc.mi"
+  "ssion_raw.ImportQgroundcontrolMissionReq"
+  "uest\032;.mavsdk.rpc.mission_raw.ImportQgro"
+  "undcontrolMissionResponse\"\004\200\265\030\001B(\n\025io.ma"
+  "vsdk.mission_rawB\017MissionRawProtob\006proto"
+  "3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mission_5fraw_2fmission_5fraw_2eproto = {
-  false, false, 4074, descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto, "mission_raw/mission_raw.proto", 
-  &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once, descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps, 1, 26,
+  false, false, 4681, descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto, "mission_raw/mission_raw.proto", 
+  &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once, descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps, 1, 30,
   schemas, file_default_instances, TableStruct_mission_5fraw_2fmission_5fraw_2eproto::offsets,
   file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto, file_level_enum_descriptors_mission_5fraw_2fmission_5fraw_2eproto, file_level_service_descriptors_mission_5fraw_2fmission_5fraw_2eproto,
 };
@@ -1134,6 +1230,786 @@ void UploadMissionResponse::InternalSwap(UploadMissionResponse* other) {
 
 // ===================================================================
 
+class UploadGeofenceRequest::_Internal {
+ public:
+};
+
+UploadGeofenceRequest::UploadGeofenceRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  mission_items_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+}
+UploadGeofenceRequest::UploadGeofenceRequest(const UploadGeofenceRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      mission_items_(from.mission_items_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+}
+
+inline void UploadGeofenceRequest::SharedCtor() {
+}
+
+UploadGeofenceRequest::~UploadGeofenceRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void UploadGeofenceRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void UploadGeofenceRequest::ArenaDtor(void* object) {
+  UploadGeofenceRequest* _this = reinterpret_cast< UploadGeofenceRequest* >(object);
+  (void)_this;
+}
+void UploadGeofenceRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void UploadGeofenceRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void UploadGeofenceRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  mission_items_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* UploadGeofenceRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_mission_items(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* UploadGeofenceRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_mission_items_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, this->_internal_mission_items(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+  return target;
+}
+
+size_t UploadGeofenceRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+  total_size += 1UL * this->_internal_mission_items_size();
+  for (const auto& msg : this->mission_items_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadGeofenceRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    UploadGeofenceRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UploadGeofenceRequest::GetClassData() const { return &_class_data_; }
+
+void UploadGeofenceRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<UploadGeofenceRequest *>(to)->MergeFrom(
+      static_cast<const UploadGeofenceRequest &>(from));
+}
+
+
+void UploadGeofenceRequest::MergeFrom(const UploadGeofenceRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  mission_items_.MergeFrom(from.mission_items_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UploadGeofenceRequest::CopyFrom(const UploadGeofenceRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UploadGeofenceRequest::IsInitialized() const {
+  return true;
+}
+
+void UploadGeofenceRequest::InternalSwap(UploadGeofenceRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  mission_items_.InternalSwap(&other->mission_items_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata UploadGeofenceRequest::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[2]);
+}
+
+// ===================================================================
+
+class UploadGeofenceResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result(const UploadGeofenceResponse* msg);
+};
+
+const ::mavsdk::rpc::mission_raw::MissionRawResult&
+UploadGeofenceResponse::_Internal::mission_raw_result(const UploadGeofenceResponse* msg) {
+  return *msg->mission_raw_result_;
+}
+UploadGeofenceResponse::UploadGeofenceResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+}
+UploadGeofenceResponse::UploadGeofenceResponse(const UploadGeofenceResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_mission_raw_result()) {
+    mission_raw_result_ = new ::mavsdk::rpc::mission_raw::MissionRawResult(*from.mission_raw_result_);
+  } else {
+    mission_raw_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+}
+
+inline void UploadGeofenceResponse::SharedCtor() {
+mission_raw_result_ = nullptr;
+}
+
+UploadGeofenceResponse::~UploadGeofenceResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void UploadGeofenceResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete mission_raw_result_;
+}
+
+void UploadGeofenceResponse::ArenaDtor(void* object) {
+  UploadGeofenceResponse* _this = reinterpret_cast< UploadGeofenceResponse* >(object);
+  (void)_this;
+}
+void UploadGeofenceResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void UploadGeofenceResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void UploadGeofenceResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && mission_raw_result_ != nullptr) {
+    delete mission_raw_result_;
+  }
+  mission_raw_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* UploadGeofenceResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_mission_raw_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* UploadGeofenceResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  if (this->_internal_has_mission_raw_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::mission_raw_result(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+  return target;
+}
+
+size_t UploadGeofenceResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  if (this->_internal_has_mission_raw_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *mission_raw_result_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadGeofenceResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    UploadGeofenceResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UploadGeofenceResponse::GetClassData() const { return &_class_data_; }
+
+void UploadGeofenceResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<UploadGeofenceResponse *>(to)->MergeFrom(
+      static_cast<const UploadGeofenceResponse &>(from));
+}
+
+
+void UploadGeofenceResponse::MergeFrom(const UploadGeofenceResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_mission_raw_result()) {
+    _internal_mutable_mission_raw_result()->::mavsdk::rpc::mission_raw::MissionRawResult::MergeFrom(from._internal_mission_raw_result());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UploadGeofenceResponse::CopyFrom(const UploadGeofenceResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UploadGeofenceResponse::IsInitialized() const {
+  return true;
+}
+
+void UploadGeofenceResponse::InternalSwap(UploadGeofenceResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(mission_raw_result_, other->mission_raw_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata UploadGeofenceResponse::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[3]);
+}
+
+// ===================================================================
+
+class UploadRallyPointsRequest::_Internal {
+ public:
+};
+
+UploadRallyPointsRequest::UploadRallyPointsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  mission_items_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+}
+UploadRallyPointsRequest::UploadRallyPointsRequest(const UploadRallyPointsRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      mission_items_(from.mission_items_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+}
+
+inline void UploadRallyPointsRequest::SharedCtor() {
+}
+
+UploadRallyPointsRequest::~UploadRallyPointsRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void UploadRallyPointsRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void UploadRallyPointsRequest::ArenaDtor(void* object) {
+  UploadRallyPointsRequest* _this = reinterpret_cast< UploadRallyPointsRequest* >(object);
+  (void)_this;
+}
+void UploadRallyPointsRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void UploadRallyPointsRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void UploadRallyPointsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  mission_items_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* UploadRallyPointsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_mission_items(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* UploadRallyPointsRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_mission_items_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, this->_internal_mission_items(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+  return target;
+}
+
+size_t UploadRallyPointsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+  total_size += 1UL * this->_internal_mission_items_size();
+  for (const auto& msg : this->mission_items_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadRallyPointsRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    UploadRallyPointsRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UploadRallyPointsRequest::GetClassData() const { return &_class_data_; }
+
+void UploadRallyPointsRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<UploadRallyPointsRequest *>(to)->MergeFrom(
+      static_cast<const UploadRallyPointsRequest &>(from));
+}
+
+
+void UploadRallyPointsRequest::MergeFrom(const UploadRallyPointsRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  mission_items_.MergeFrom(from.mission_items_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UploadRallyPointsRequest::CopyFrom(const UploadRallyPointsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UploadRallyPointsRequest::IsInitialized() const {
+  return true;
+}
+
+void UploadRallyPointsRequest::InternalSwap(UploadRallyPointsRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  mission_items_.InternalSwap(&other->mission_items_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata UploadRallyPointsRequest::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[4]);
+}
+
+// ===================================================================
+
+class UploadRallyPointsResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result(const UploadRallyPointsResponse* msg);
+};
+
+const ::mavsdk::rpc::mission_raw::MissionRawResult&
+UploadRallyPointsResponse::_Internal::mission_raw_result(const UploadRallyPointsResponse* msg) {
+  return *msg->mission_raw_result_;
+}
+UploadRallyPointsResponse::UploadRallyPointsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+}
+UploadRallyPointsResponse::UploadRallyPointsResponse(const UploadRallyPointsResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_mission_raw_result()) {
+    mission_raw_result_ = new ::mavsdk::rpc::mission_raw::MissionRawResult(*from.mission_raw_result_);
+  } else {
+    mission_raw_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+}
+
+inline void UploadRallyPointsResponse::SharedCtor() {
+mission_raw_result_ = nullptr;
+}
+
+UploadRallyPointsResponse::~UploadRallyPointsResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void UploadRallyPointsResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete mission_raw_result_;
+}
+
+void UploadRallyPointsResponse::ArenaDtor(void* object) {
+  UploadRallyPointsResponse* _this = reinterpret_cast< UploadRallyPointsResponse* >(object);
+  (void)_this;
+}
+void UploadRallyPointsResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void UploadRallyPointsResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void UploadRallyPointsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && mission_raw_result_ != nullptr) {
+    delete mission_raw_result_;
+  }
+  mission_raw_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* UploadRallyPointsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_mission_raw_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* UploadRallyPointsResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  if (this->_internal_has_mission_raw_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::mission_raw_result(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+  return target;
+}
+
+size_t UploadRallyPointsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  if (this->_internal_has_mission_raw_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *mission_raw_result_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadRallyPointsResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    UploadRallyPointsResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UploadRallyPointsResponse::GetClassData() const { return &_class_data_; }
+
+void UploadRallyPointsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<UploadRallyPointsResponse *>(to)->MergeFrom(
+      static_cast<const UploadRallyPointsResponse &>(from));
+}
+
+
+void UploadRallyPointsResponse::MergeFrom(const UploadRallyPointsResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_mission_raw_result()) {
+    _internal_mutable_mission_raw_result()->::mavsdk::rpc::mission_raw::MissionRawResult::MergeFrom(from._internal_mission_raw_result());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UploadRallyPointsResponse::CopyFrom(const UploadRallyPointsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UploadRallyPointsResponse::IsInitialized() const {
+  return true;
+}
+
+void UploadRallyPointsResponse::InternalSwap(UploadRallyPointsResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(mission_raw_result_, other->mission_raw_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata UploadRallyPointsResponse::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[5]);
+}
+
+// ===================================================================
+
 class CancelMissionUploadRequest::_Internal {
  public:
 };
@@ -1282,7 +2158,7 @@ void CancelMissionUploadRequest::InternalSwap(CancelMissionUploadRequest* other)
 ::PROTOBUF_NAMESPACE_ID::Metadata CancelMissionUploadRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[2]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[6]);
 }
 
 // ===================================================================
@@ -1482,7 +2358,7 @@ void CancelMissionUploadResponse::InternalSwap(CancelMissionUploadResponse* othe
 ::PROTOBUF_NAMESPACE_ID::Metadata CancelMissionUploadResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[3]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[7]);
 }
 
 // ===================================================================
@@ -1635,7 +2511,7 @@ void DownloadMissionRequest::InternalSwap(DownloadMissionRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DownloadMissionRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[4]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[8]);
 }
 
 // ===================================================================
@@ -1867,7 +2743,7 @@ void DownloadMissionResponse::InternalSwap(DownloadMissionResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DownloadMissionResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[5]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[9]);
 }
 
 // ===================================================================
@@ -2020,7 +2896,7 @@ void CancelMissionDownloadRequest::InternalSwap(CancelMissionDownloadRequest* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata CancelMissionDownloadRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[6]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[10]);
 }
 
 // ===================================================================
@@ -2220,7 +3096,7 @@ void CancelMissionDownloadResponse::InternalSwap(CancelMissionDownloadResponse* 
 ::PROTOBUF_NAMESPACE_ID::Metadata CancelMissionDownloadResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[7]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[11]);
 }
 
 // ===================================================================
@@ -2373,7 +3249,7 @@ void StartMissionRequest::InternalSwap(StartMissionRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata StartMissionRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[8]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[12]);
 }
 
 // ===================================================================
@@ -2573,7 +3449,7 @@ void StartMissionResponse::InternalSwap(StartMissionResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata StartMissionResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[9]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[13]);
 }
 
 // ===================================================================
@@ -2726,7 +3602,7 @@ void PauseMissionRequest::InternalSwap(PauseMissionRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PauseMissionRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[10]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[14]);
 }
 
 // ===================================================================
@@ -2926,7 +3802,7 @@ void PauseMissionResponse::InternalSwap(PauseMissionResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PauseMissionResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[11]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[15]);
 }
 
 // ===================================================================
@@ -3079,7 +3955,7 @@ void ClearMissionRequest::InternalSwap(ClearMissionRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ClearMissionRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[12]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[16]);
 }
 
 // ===================================================================
@@ -3279,7 +4155,7 @@ void ClearMissionResponse::InternalSwap(ClearMissionResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ClearMissionResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[13]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[17]);
 }
 
 // ===================================================================
@@ -3464,7 +4340,7 @@ void SetCurrentMissionItemRequest::InternalSwap(SetCurrentMissionItemRequest* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata SetCurrentMissionItemRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[14]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[18]);
 }
 
 // ===================================================================
@@ -3664,7 +4540,7 @@ void SetCurrentMissionItemResponse::InternalSwap(SetCurrentMissionItemResponse* 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetCurrentMissionItemResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[15]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[19]);
 }
 
 // ===================================================================
@@ -3817,7 +4693,7 @@ void SubscribeMissionProgressRequest::InternalSwap(SubscribeMissionProgressReque
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeMissionProgressRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[16]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[20]);
 }
 
 // ===================================================================
@@ -4017,7 +4893,7 @@ void MissionProgressResponse::InternalSwap(MissionProgressResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionProgressResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[17]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[21]);
 }
 
 // ===================================================================
@@ -4170,7 +5046,7 @@ void SubscribeMissionChangedRequest::InternalSwap(SubscribeMissionChangedRequest
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeMissionChangedRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[18]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[22]);
 }
 
 // ===================================================================
@@ -4353,7 +5229,7 @@ void MissionChangedResponse::InternalSwap(MissionChangedResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionChangedResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[19]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[23]);
 }
 
 // ===================================================================
@@ -4553,7 +5429,7 @@ void ImportQgroundcontrolMissionRequest::InternalSwap(ImportQgroundcontrolMissio
 ::PROTOBUF_NAMESPACE_ID::Metadata ImportQgroundcontrolMissionRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[20]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[24]);
 }
 
 // ===================================================================
@@ -4801,7 +5677,7 @@ void ImportQgroundcontrolMissionResponse::InternalSwap(ImportQgroundcontrolMissi
 ::PROTOBUF_NAMESPACE_ID::Metadata ImportQgroundcontrolMissionResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[21]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[25]);
 }
 
 // ===================================================================
@@ -5021,7 +5897,7 @@ void MissionProgress::InternalSwap(MissionProgress* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionProgress::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[22]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[26]);
 }
 
 // ===================================================================
@@ -5484,7 +6360,7 @@ void MissionItem::InternalSwap(MissionItem* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionItem::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[23]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[27]);
 }
 
 // ===================================================================
@@ -5738,7 +6614,7 @@ void MissionImportData::InternalSwap(MissionImportData* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionImportData::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[24]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[28]);
 }
 
 // ===================================================================
@@ -5966,7 +6842,7 @@ void MissionRawResult::InternalSwap(MissionRawResult* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionRawResult::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[25]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[29]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -5979,6 +6855,18 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::UploadMissionRequest* A
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::UploadMissionResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::UploadMissionResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::UploadMissionResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::UploadGeofenceRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::UploadGeofenceRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::UploadGeofenceRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::UploadGeofenceResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::UploadGeofenceResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::UploadGeofenceResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest >(arena);

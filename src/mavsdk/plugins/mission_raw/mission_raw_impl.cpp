@@ -116,19 +116,20 @@ void MissionRawImpl::process_mission_item_reached(const mavlink_message_t& messa
     report_progress_current();
 }
 
-MissionRaw::Result
-MissionRawImpl::upload_mission(std::vector<MissionRaw::MissionItem> mission_items)
+MissionRaw::Result MissionRawImpl::upload_mission_items(
+    std::vector<MissionRaw::MissionItem> mission_items, uint8_t type)
 {
     auto prom = std::promise<MissionRaw::Result>();
     auto fut = prom.get_future();
 
-    upload_mission_async(
-        mission_items, [&prom](MissionRaw::Result result) { prom.set_value(result); });
+    upload_mission_items_async(
+        mission_items, type, [&prom](MissionRaw::Result result) { prom.set_value(result); });
     return fut.get();
 }
 
-void MissionRawImpl::upload_mission_async(
+void MissionRawImpl::upload_mission_items_async(
     const std::vector<MissionRaw::MissionItem>& mission_raw,
+    uint8_t type,
     const MissionRaw::ResultCallback& callback)
 {
     if (_last_upload.lock()) {
@@ -145,9 +146,7 @@ void MissionRawImpl::upload_mission_async(
     const auto int_items = convert_to_int_items(mission_raw);
 
     _last_upload = _parent->mission_transfer().upload_items_async(
-        MAV_MISSION_TYPE_MISSION,
-        int_items,
-        [this, callback, int_items](MAVLinkMissionTransfer::Result result) {
+        type, int_items, [this, callback, int_items](MAVLinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(int_items);
             _parent->call_user_callback([callback, converted_result, converted_items]() {
@@ -156,6 +155,45 @@ void MissionRawImpl::upload_mission_async(
                 }
             });
         });
+}
+
+MissionRaw::Result
+MissionRawImpl::upload_mission(std::vector<MissionRaw::MissionItem> mission_items)
+{
+    return upload_mission_items(mission_items, MAV_MISSION_TYPE_MISSION);
+}
+
+void MissionRawImpl::upload_mission_async(
+    const std::vector<MissionRaw::MissionItem>& mission_raw,
+    const MissionRaw::ResultCallback& callback)
+{
+    upload_mission_items_async(mission_raw, MAV_MISSION_TYPE_MISSION, callback);
+}
+
+MissionRaw::Result
+MissionRawImpl::upload_geofence(std::vector<MissionRaw::MissionItem> mission_items)
+{
+    return upload_mission_items(mission_items, MAV_MISSION_TYPE_FENCE);
+}
+
+void MissionRawImpl::upload_geofence_async(
+    const std::vector<MissionRaw::MissionItem>& mission_raw,
+    const MissionRaw::ResultCallback& callback)
+{
+    upload_mission_items_async(mission_raw, MAV_MISSION_TYPE_FENCE, callback);
+}
+
+MissionRaw::Result
+MissionRawImpl::upload_rally_points(std::vector<MissionRaw::MissionItem> mission_items)
+{
+    return upload_mission_items(mission_items, MAV_MISSION_TYPE_RALLY);
+}
+
+void MissionRawImpl::upload_rally_points_async(
+    const std::vector<MissionRaw::MissionItem>& mission_raw,
+    const MissionRaw::ResultCallback& callback)
+{
+    upload_mission_items_async(mission_raw, MAV_MISSION_TYPE_RALLY, callback);
 }
 
 MissionRaw::Result MissionRawImpl::cancel_mission_upload()

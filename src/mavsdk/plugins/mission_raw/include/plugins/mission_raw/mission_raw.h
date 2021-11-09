@@ -197,6 +197,40 @@ public:
     Result upload_mission(std::vector<MissionItem> mission_items) const;
 
     /**
+     * @brief Upload a list of geofence mission items to the system.
+     *
+     * This function is non-blocking. See 'upload_geofence' for the blocking counterpart.
+     */
+    void
+    upload_geofence_async(std::vector<MissionItem> mission_items, const ResultCallback callback);
+
+    /**
+     * @brief Upload a list of geofence mission items to the system.
+     *
+     * This function is blocking. See 'upload_geofence_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result upload_geofence(std::vector<MissionItem> mission_items) const;
+
+    /**
+     * @brief Upload a list of rally point mission items to the system.
+     *
+     * This function is non-blocking. See 'upload_rally_points' for the blocking counterpart.
+     */
+    void upload_rally_points_async(
+        std::vector<MissionItem> mission_items, const ResultCallback callback);
+
+    /**
+     * @brief Upload a list of rally point mission items to the system.
+     *
+     * This function is blocking. See 'upload_rally_points_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result upload_rally_points(std::vector<MissionItem> mission_items) const;
+
+    /**
      * @brief Cancel an ongoing mission upload.
      *
      * This function is blocking.

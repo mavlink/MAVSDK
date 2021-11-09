@@ -281,6 +281,72 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status UploadGeofence(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::UploadGeofenceRequest* request,
+        rpc::mission_raw::UploadGeofenceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "UploadGeofence sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        std::vector<mavsdk::MissionRaw::MissionItem> mission_items_vec;
+        for (const auto& elem : request->mission_items()) {
+            mission_items_vec.push_back(translateFromRpcMissionItem(elem));
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->upload_geofence(mission_items_vec);
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status UploadRallyPoints(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::UploadRallyPointsRequest* request,
+        rpc::mission_raw::UploadRallyPointsResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "UploadRallyPoints sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        std::vector<mavsdk::MissionRaw::MissionItem> mission_items_vec;
+        for (const auto& elem : request->mission_items()) {
+            mission_items_vec.push_back(translateFromRpcMissionItem(elem));
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->upload_rally_points(mission_items_vec);
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status CancelMissionUpload(
         grpc::ServerContext* /* context */,
         const rpc::mission_raw::CancelMissionUploadRequest* /* request */,

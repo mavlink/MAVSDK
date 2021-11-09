@@ -25,6 +25,8 @@ namespace mission_raw {
 
 static const char* MissionRawService_method_names[] = {
   "/mavsdk.rpc.mission_raw.MissionRawService/UploadMission",
+  "/mavsdk.rpc.mission_raw.MissionRawService/UploadGeofence",
+  "/mavsdk.rpc.mission_raw.MissionRawService/UploadRallyPoints",
   "/mavsdk.rpc.mission_raw.MissionRawService/CancelMissionUpload",
   "/mavsdk.rpc.mission_raw.MissionRawService/DownloadMission",
   "/mavsdk.rpc.mission_raw.MissionRawService/CancelMissionDownload",
@@ -45,16 +47,18 @@ std::unique_ptr< MissionRawService::Stub> MissionRawService::NewStub(const std::
 
 MissionRawService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_UploadMission_(MissionRawService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_CancelMissionUpload_(MissionRawService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DownloadMission_(MissionRawService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_CancelMissionDownload_(MissionRawService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_StartMission_(MissionRawService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PauseMission_(MissionRawService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ClearMission_(MissionRawService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetCurrentMissionItem_(MissionRawService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeMissionProgress_(MissionRawService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeMissionChanged_(MissionRawService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_ImportQgroundcontrolMission_(MissionRawService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_UploadGeofence_(MissionRawService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_UploadRallyPoints_(MissionRawService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CancelMissionUpload_(MissionRawService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DownloadMission_(MissionRawService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CancelMissionDownload_(MissionRawService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_StartMission_(MissionRawService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PauseMission_(MissionRawService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ClearMission_(MissionRawService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetCurrentMissionItem_(MissionRawService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeMissionProgress_(MissionRawService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeMissionChanged_(MissionRawService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_ImportQgroundcontrolMission_(MissionRawService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MissionRawService::Stub::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest& request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response) {
@@ -76,6 +80,52 @@ void MissionRawService::Stub::async::UploadMission(::grpc::ClientContext* contex
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::UploadMissionResponse>* MissionRawService::Stub::AsyncUploadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncUploadMissionRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status MissionRawService::Stub::UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadGeofenceRequest& request, ::mavsdk::rpc::mission_raw::UploadGeofenceResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::UploadGeofenceRequest, ::mavsdk::rpc::mission_raw::UploadGeofenceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_UploadGeofence_, context, request, response);
+}
+
+void MissionRawService::Stub::async::UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::UploadGeofenceResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::UploadGeofenceRequest, ::mavsdk::rpc::mission_raw::UploadGeofenceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, std::move(f));
+}
+
+void MissionRawService::Stub::async::UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadGeofence_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::UploadGeofenceResponse>* MissionRawService::Stub::PrepareAsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::mission_raw::UploadGeofenceResponse, ::mavsdk::rpc::mission_raw::UploadGeofenceRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_UploadGeofence_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::UploadGeofenceResponse>* MissionRawService::Stub::AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncUploadGeofenceRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status MissionRawService::Stub::UploadRallyPoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest& request, ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest, ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_UploadRallyPoints_, context, request, response);
+}
+
+void MissionRawService::Stub::async::UploadRallyPoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest* request, ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest, ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadRallyPoints_, context, request, response, std::move(f));
+}
+
+void MissionRawService::Stub::async::UploadRallyPoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest* request, ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadRallyPoints_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse>* MissionRawService::Stub::PrepareAsyncUploadRallyPointsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse, ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_UploadRallyPoints_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse>* MissionRawService::Stub::AsyncUploadRallyPointsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncUploadRallyPointsRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -310,6 +360,26 @@ MissionRawService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionRawService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::UploadGeofenceRequest, ::mavsdk::rpc::mission_raw::UploadGeofenceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MissionRawService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mission_raw::UploadGeofenceRequest* req,
+             ::mavsdk::rpc::mission_raw::UploadGeofenceResponse* resp) {
+               return service->UploadGeofence(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MissionRawService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest, ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MissionRawService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest* req,
+             ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse* resp) {
+               return service->UploadRallyPoints(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MissionRawService_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -318,7 +388,7 @@ MissionRawService::Service::Service() {
                return service->CancelMissionUpload(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[2],
+      MissionRawService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::DownloadMissionRequest, ::mavsdk::rpc::mission_raw::DownloadMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
@@ -328,7 +398,7 @@ MissionRawService::Service::Service() {
                return service->DownloadMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[3],
+      MissionRawService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
@@ -338,7 +408,7 @@ MissionRawService::Service::Service() {
                return service->CancelMissionDownload(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[4],
+      MissionRawService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::StartMissionRequest, ::mavsdk::rpc::mission_raw::StartMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
@@ -348,7 +418,7 @@ MissionRawService::Service::Service() {
                return service->StartMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[5],
+      MissionRawService_method_names[7],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::PauseMissionRequest, ::mavsdk::rpc::mission_raw::PauseMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
@@ -358,7 +428,7 @@ MissionRawService::Service::Service() {
                return service->PauseMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[6],
+      MissionRawService_method_names[8],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::ClearMissionRequest, ::mavsdk::rpc::mission_raw::ClearMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
@@ -368,7 +438,7 @@ MissionRawService::Service::Service() {
                return service->ClearMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[7],
+      MissionRawService_method_names[9],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
@@ -378,7 +448,7 @@ MissionRawService::Service::Service() {
                return service->SetCurrentMissionItem(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[8],
+      MissionRawService_method_names[10],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission_raw::MissionProgressResponse>(
           [](MissionRawService::Service* service,
@@ -388,7 +458,7 @@ MissionRawService::Service::Service() {
                return service->SubscribeMissionProgress(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[9],
+      MissionRawService_method_names[11],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest, ::mavsdk::rpc::mission_raw::MissionChangedResponse>(
           [](MissionRawService::Service* service,
@@ -398,7 +468,7 @@ MissionRawService::Service::Service() {
                return service->SubscribeMissionChanged(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionRawService_method_names[10],
+      MissionRawService_method_names[12],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionRawService::Service* service,
@@ -413,6 +483,20 @@ MissionRawService::Service::~Service() {
 }
 
 ::grpc::Status MissionRawService::Service::UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest* request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MissionRawService::Service::UploadGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::UploadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::UploadGeofenceResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MissionRawService::Service::UploadRallyPoints(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest* request, ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse* response) {
   (void) context;
   (void) request;
   (void) response;
