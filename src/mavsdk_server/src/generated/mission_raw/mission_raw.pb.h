@@ -122,12 +122,24 @@ extern SubscribeMissionChangedRequestDefaultTypeInternal _SubscribeMissionChange
 class SubscribeMissionProgressRequest;
 struct SubscribeMissionProgressRequestDefaultTypeInternal;
 extern SubscribeMissionProgressRequestDefaultTypeInternal _SubscribeMissionProgressRequest_default_instance_;
+class UploadGeofenceRequest;
+struct UploadGeofenceRequestDefaultTypeInternal;
+extern UploadGeofenceRequestDefaultTypeInternal _UploadGeofenceRequest_default_instance_;
+class UploadGeofenceResponse;
+struct UploadGeofenceResponseDefaultTypeInternal;
+extern UploadGeofenceResponseDefaultTypeInternal _UploadGeofenceResponse_default_instance_;
 class UploadMissionRequest;
 struct UploadMissionRequestDefaultTypeInternal;
 extern UploadMissionRequestDefaultTypeInternal _UploadMissionRequest_default_instance_;
 class UploadMissionResponse;
 struct UploadMissionResponseDefaultTypeInternal;
 extern UploadMissionResponseDefaultTypeInternal _UploadMissionResponse_default_instance_;
+class UploadRallyPointsRequest;
+struct UploadRallyPointsRequestDefaultTypeInternal;
+extern UploadRallyPointsRequestDefaultTypeInternal _UploadRallyPointsRequest_default_instance_;
+class UploadRallyPointsResponse;
+struct UploadRallyPointsResponseDefaultTypeInternal;
+extern UploadRallyPointsResponseDefaultTypeInternal _UploadRallyPointsResponse_default_instance_;
 }  // namespace mission_raw
 }  // namespace rpc
 }  // namespace mavsdk
@@ -156,8 +168,12 @@ template<> ::mavsdk::rpc::mission_raw::StartMissionRequest* Arena::CreateMaybeMe
 template<> ::mavsdk::rpc::mission_raw::StartMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::StartMissionResponse>(Arena*);
 template<> ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest>(Arena*);
 template<> ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest>(Arena*);
+template<> ::mavsdk::rpc::mission_raw::UploadGeofenceRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::UploadGeofenceRequest>(Arena*);
+template<> ::mavsdk::rpc::mission_raw::UploadGeofenceResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::UploadGeofenceResponse>(Arena*);
 template<> ::mavsdk::rpc::mission_raw::UploadMissionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::UploadMissionRequest>(Arena*);
 template<> ::mavsdk::rpc::mission_raw::UploadMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::UploadMissionResponse>(Arena*);
+template<> ::mavsdk::rpc::mission_raw::UploadRallyPointsRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::UploadRallyPointsRequest>(Arena*);
+template<> ::mavsdk::rpc::mission_raw::UploadRallyPointsResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission_raw::UploadRallyPointsResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
 namespace rpc {
@@ -511,6 +527,614 @@ class UploadMissionResponse final :
 };
 // -------------------------------------------------------------------
 
+class UploadGeofenceRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.UploadGeofenceRequest) */ {
+ public:
+  inline UploadGeofenceRequest() : UploadGeofenceRequest(nullptr) {}
+  ~UploadGeofenceRequest() override;
+  explicit PROTOBUF_CONSTEXPR UploadGeofenceRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  UploadGeofenceRequest(const UploadGeofenceRequest& from);
+  UploadGeofenceRequest(UploadGeofenceRequest&& from) noexcept
+    : UploadGeofenceRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline UploadGeofenceRequest& operator=(const UploadGeofenceRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadGeofenceRequest& operator=(UploadGeofenceRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadGeofenceRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadGeofenceRequest* internal_default_instance() {
+    return reinterpret_cast<const UploadGeofenceRequest*>(
+               &_UploadGeofenceRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(UploadGeofenceRequest& a, UploadGeofenceRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UploadGeofenceRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadGeofenceRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UploadGeofenceRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UploadGeofenceRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const UploadGeofenceRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const UploadGeofenceRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UploadGeofenceRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission_raw.UploadGeofenceRequest";
+  }
+  protected:
+  explicit UploadGeofenceRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMissionItemsFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+  int mission_items_size() const;
+  private:
+  int _internal_mission_items_size() const;
+  public:
+  void clear_mission_items();
+  ::mavsdk::rpc::mission_raw::MissionItem* mutable_mission_items(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >*
+      mutable_mission_items();
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionItem& _internal_mission_items(int index) const;
+  ::mavsdk::rpc::mission_raw::MissionItem* _internal_add_mission_items();
+  public:
+  const ::mavsdk::rpc::mission_raw::MissionItem& mission_items(int index) const;
+  ::mavsdk::rpc::mission_raw::MissionItem* add_mission_items();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >&
+      mission_items() const;
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.UploadGeofenceRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > mission_items_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UploadGeofenceResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.UploadGeofenceResponse) */ {
+ public:
+  inline UploadGeofenceResponse() : UploadGeofenceResponse(nullptr) {}
+  ~UploadGeofenceResponse() override;
+  explicit PROTOBUF_CONSTEXPR UploadGeofenceResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  UploadGeofenceResponse(const UploadGeofenceResponse& from);
+  UploadGeofenceResponse(UploadGeofenceResponse&& from) noexcept
+    : UploadGeofenceResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline UploadGeofenceResponse& operator=(const UploadGeofenceResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadGeofenceResponse& operator=(UploadGeofenceResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadGeofenceResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadGeofenceResponse* internal_default_instance() {
+    return reinterpret_cast<const UploadGeofenceResponse*>(
+               &_UploadGeofenceResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(UploadGeofenceResponse& a, UploadGeofenceResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UploadGeofenceResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadGeofenceResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UploadGeofenceResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UploadGeofenceResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const UploadGeofenceResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const UploadGeofenceResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UploadGeofenceResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission_raw.UploadGeofenceResponse";
+  }
+  protected:
+  explicit UploadGeofenceResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMissionRawResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  bool has_mission_raw_result() const;
+  private:
+  bool _internal_has_mission_raw_result() const;
+  public:
+  void clear_mission_raw_result();
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionRawResult* release_mission_raw_result();
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mutable_mission_raw_result();
+  void set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result);
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& _internal_mission_raw_result() const;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _internal_mutable_mission_raw_result();
+  public:
+  void unsafe_arena_set_allocated_mission_raw_result(
+      ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result);
+  ::mavsdk::rpc::mission_raw::MissionRawResult* unsafe_arena_release_mission_raw_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.UploadGeofenceResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UploadRallyPointsRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.UploadRallyPointsRequest) */ {
+ public:
+  inline UploadRallyPointsRequest() : UploadRallyPointsRequest(nullptr) {}
+  ~UploadRallyPointsRequest() override;
+  explicit PROTOBUF_CONSTEXPR UploadRallyPointsRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  UploadRallyPointsRequest(const UploadRallyPointsRequest& from);
+  UploadRallyPointsRequest(UploadRallyPointsRequest&& from) noexcept
+    : UploadRallyPointsRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline UploadRallyPointsRequest& operator=(const UploadRallyPointsRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadRallyPointsRequest& operator=(UploadRallyPointsRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadRallyPointsRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadRallyPointsRequest* internal_default_instance() {
+    return reinterpret_cast<const UploadRallyPointsRequest*>(
+               &_UploadRallyPointsRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(UploadRallyPointsRequest& a, UploadRallyPointsRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UploadRallyPointsRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadRallyPointsRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UploadRallyPointsRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UploadRallyPointsRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const UploadRallyPointsRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const UploadRallyPointsRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UploadRallyPointsRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission_raw.UploadRallyPointsRequest";
+  }
+  protected:
+  explicit UploadRallyPointsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMissionItemsFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+  int mission_items_size() const;
+  private:
+  int _internal_mission_items_size() const;
+  public:
+  void clear_mission_items();
+  ::mavsdk::rpc::mission_raw::MissionItem* mutable_mission_items(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >*
+      mutable_mission_items();
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionItem& _internal_mission_items(int index) const;
+  ::mavsdk::rpc::mission_raw::MissionItem* _internal_add_mission_items();
+  public:
+  const ::mavsdk::rpc::mission_raw::MissionItem& mission_items(int index) const;
+  ::mavsdk::rpc::mission_raw::MissionItem* add_mission_items();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >&
+      mission_items() const;
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.UploadRallyPointsRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > mission_items_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UploadRallyPointsResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.UploadRallyPointsResponse) */ {
+ public:
+  inline UploadRallyPointsResponse() : UploadRallyPointsResponse(nullptr) {}
+  ~UploadRallyPointsResponse() override;
+  explicit PROTOBUF_CONSTEXPR UploadRallyPointsResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  UploadRallyPointsResponse(const UploadRallyPointsResponse& from);
+  UploadRallyPointsResponse(UploadRallyPointsResponse&& from) noexcept
+    : UploadRallyPointsResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline UploadRallyPointsResponse& operator=(const UploadRallyPointsResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadRallyPointsResponse& operator=(UploadRallyPointsResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadRallyPointsResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadRallyPointsResponse* internal_default_instance() {
+    return reinterpret_cast<const UploadRallyPointsResponse*>(
+               &_UploadRallyPointsResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(UploadRallyPointsResponse& a, UploadRallyPointsResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UploadRallyPointsResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadRallyPointsResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UploadRallyPointsResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UploadRallyPointsResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const UploadRallyPointsResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const UploadRallyPointsResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UploadRallyPointsResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission_raw.UploadRallyPointsResponse";
+  }
+  protected:
+  explicit UploadRallyPointsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMissionRawResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  bool has_mission_raw_result() const;
+  private:
+  bool _internal_has_mission_raw_result() const;
+  public:
+  void clear_mission_raw_result();
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionRawResult* release_mission_raw_result();
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mutable_mission_raw_result();
+  void set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result);
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& _internal_mission_raw_result() const;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _internal_mutable_mission_raw_result();
+  public:
+  void unsafe_arena_set_allocated_mission_raw_result(
+      ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result);
+  ::mavsdk::rpc::mission_raw::MissionRawResult* unsafe_arena_release_mission_raw_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.UploadRallyPointsResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
 class CancelMissionUploadRequest final :
     public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.CancelMissionUploadRequest) */ {
  public:
@@ -558,7 +1182,7 @@ class CancelMissionUploadRequest final :
                &_CancelMissionUploadRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    6;
 
   friend void swap(CancelMissionUploadRequest& a, CancelMissionUploadRequest& b) {
     a.Swap(&b);
@@ -675,7 +1299,7 @@ class CancelMissionUploadResponse final :
                &_CancelMissionUploadResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    7;
 
   friend void swap(CancelMissionUploadResponse& a, CancelMissionUploadResponse& b) {
     a.Swap(&b);
@@ -826,7 +1450,7 @@ class DownloadMissionRequest final :
                &_DownloadMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    8;
 
   friend void swap(DownloadMissionRequest& a, DownloadMissionRequest& b) {
     a.Swap(&b);
@@ -943,7 +1567,7 @@ class DownloadMissionResponse final :
                &_DownloadMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    9;
 
   friend void swap(DownloadMissionResponse& a, DownloadMissionResponse& b) {
     a.Swap(&b);
@@ -1114,7 +1738,7 @@ class CancelMissionDownloadRequest final :
                &_CancelMissionDownloadRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    10;
 
   friend void swap(CancelMissionDownloadRequest& a, CancelMissionDownloadRequest& b) {
     a.Swap(&b);
@@ -1231,7 +1855,7 @@ class CancelMissionDownloadResponse final :
                &_CancelMissionDownloadResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    11;
 
   friend void swap(CancelMissionDownloadResponse& a, CancelMissionDownloadResponse& b) {
     a.Swap(&b);
@@ -1382,7 +2006,7 @@ class StartMissionRequest final :
                &_StartMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    12;
 
   friend void swap(StartMissionRequest& a, StartMissionRequest& b) {
     a.Swap(&b);
@@ -1499,7 +2123,7 @@ class StartMissionResponse final :
                &_StartMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    13;
 
   friend void swap(StartMissionResponse& a, StartMissionResponse& b) {
     a.Swap(&b);
@@ -1650,7 +2274,7 @@ class PauseMissionRequest final :
                &_PauseMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    14;
 
   friend void swap(PauseMissionRequest& a, PauseMissionRequest& b) {
     a.Swap(&b);
@@ -1767,7 +2391,7 @@ class PauseMissionResponse final :
                &_PauseMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    15;
 
   friend void swap(PauseMissionResponse& a, PauseMissionResponse& b) {
     a.Swap(&b);
@@ -1918,7 +2542,7 @@ class ClearMissionRequest final :
                &_ClearMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    16;
 
   friend void swap(ClearMissionRequest& a, ClearMissionRequest& b) {
     a.Swap(&b);
@@ -2035,7 +2659,7 @@ class ClearMissionResponse final :
                &_ClearMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    17;
 
   friend void swap(ClearMissionResponse& a, ClearMissionResponse& b) {
     a.Swap(&b);
@@ -2187,7 +2811,7 @@ class SetCurrentMissionItemRequest final :
                &_SetCurrentMissionItemRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    18;
 
   friend void swap(SetCurrentMissionItemRequest& a, SetCurrentMissionItemRequest& b) {
     a.Swap(&b);
@@ -2330,7 +2954,7 @@ class SetCurrentMissionItemResponse final :
                &_SetCurrentMissionItemResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    19;
 
   friend void swap(SetCurrentMissionItemResponse& a, SetCurrentMissionItemResponse& b) {
     a.Swap(&b);
@@ -2481,7 +3105,7 @@ class SubscribeMissionProgressRequest final :
                &_SubscribeMissionProgressRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    20;
 
   friend void swap(SubscribeMissionProgressRequest& a, SubscribeMissionProgressRequest& b) {
     a.Swap(&b);
@@ -2598,7 +3222,7 @@ class MissionProgressResponse final :
                &_MissionProgressResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    21;
 
   friend void swap(MissionProgressResponse& a, MissionProgressResponse& b) {
     a.Swap(&b);
@@ -2749,7 +3373,7 @@ class SubscribeMissionChangedRequest final :
                &_SubscribeMissionChangedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    22;
 
   friend void swap(SubscribeMissionChangedRequest& a, SubscribeMissionChangedRequest& b) {
     a.Swap(&b);
@@ -2866,7 +3490,7 @@ class MissionChangedResponse final :
                &_MissionChangedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    23;
 
   friend void swap(MissionChangedResponse& a, MissionChangedResponse& b) {
     a.Swap(&b);
@@ -3009,7 +3633,7 @@ class ImportQgroundcontrolMissionRequest final :
                &_ImportQgroundcontrolMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    24;
 
   friend void swap(ImportQgroundcontrolMissionRequest& a, ImportQgroundcontrolMissionRequest& b) {
     a.Swap(&b);
@@ -3157,7 +3781,7 @@ class ImportQgroundcontrolMissionResponse final :
                &_ImportQgroundcontrolMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    25;
 
   friend void swap(ImportQgroundcontrolMissionResponse& a, ImportQgroundcontrolMissionResponse& b) {
     a.Swap(&b);
@@ -3329,7 +3953,7 @@ class MissionProgress final :
                &_MissionProgress_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    26;
 
   friend void swap(MissionProgress& a, MissionProgress& b) {
     a.Swap(&b);
@@ -3483,7 +4107,7 @@ class MissionItem final :
                &_MissionItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    27;
 
   friend void swap(MissionItem& a, MissionItem& b) {
     a.Swap(&b);
@@ -3758,7 +4382,7 @@ class MissionImportData final :
                &_MissionImportData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    28;
 
   friend void swap(MissionImportData& a, MissionImportData& b) {
     a.Swap(&b);
@@ -3950,7 +4574,7 @@ class MissionRawResult final :
                &_MissionRawResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    29;
 
   friend void swap(MissionRawResult& a, MissionRawResult& b) {
     a.Swap(&b);
@@ -4266,6 +4890,282 @@ inline void UploadMissionResponse::set_allocated_mission_raw_result(::mavsdk::rp
   }
   mission_raw_result_ = mission_raw_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.UploadMissionResponse.mission_raw_result)
+}
+
+// -------------------------------------------------------------------
+
+// UploadGeofenceRequest
+
+// repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+inline int UploadGeofenceRequest::_internal_mission_items_size() const {
+  return mission_items_.size();
+}
+inline int UploadGeofenceRequest::mission_items_size() const {
+  return _internal_mission_items_size();
+}
+inline void UploadGeofenceRequest::clear_mission_items() {
+  mission_items_.Clear();
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* UploadGeofenceRequest::mutable_mission_items(int index) {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.UploadGeofenceRequest.mission_items)
+  return mission_items_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >*
+UploadGeofenceRequest::mutable_mission_items() {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission_raw.UploadGeofenceRequest.mission_items)
+  return &mission_items_;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionItem& UploadGeofenceRequest::_internal_mission_items(int index) const {
+  return mission_items_.Get(index);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionItem& UploadGeofenceRequest::mission_items(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.UploadGeofenceRequest.mission_items)
+  return _internal_mission_items(index);
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* UploadGeofenceRequest::_internal_add_mission_items() {
+  return mission_items_.Add();
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* UploadGeofenceRequest::add_mission_items() {
+  ::mavsdk::rpc::mission_raw::MissionItem* _add = _internal_add_mission_items();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.mission_raw.UploadGeofenceRequest.mission_items)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >&
+UploadGeofenceRequest::mission_items() const {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.mission_raw.UploadGeofenceRequest.mission_items)
+  return mission_items_;
+}
+
+// -------------------------------------------------------------------
+
+// UploadGeofenceResponse
+
+// .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+inline bool UploadGeofenceResponse::_internal_has_mission_raw_result() const {
+  return this != internal_default_instance() && mission_raw_result_ != nullptr;
+}
+inline bool UploadGeofenceResponse::has_mission_raw_result() const {
+  return _internal_has_mission_raw_result();
+}
+inline void UploadGeofenceResponse::clear_mission_raw_result() {
+  if (GetArenaForAllocation() == nullptr && mission_raw_result_ != nullptr) {
+    delete mission_raw_result_;
+  }
+  mission_raw_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& UploadGeofenceResponse::_internal_mission_raw_result() const {
+  const ::mavsdk::rpc::mission_raw::MissionRawResult* p = mission_raw_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionRawResult&>(
+      ::mavsdk::rpc::mission_raw::_MissionRawResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& UploadGeofenceResponse::mission_raw_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.UploadGeofenceResponse.mission_raw_result)
+  return _internal_mission_raw_result();
+}
+inline void UploadGeofenceResponse::unsafe_arena_set_allocated_mission_raw_result(
+    ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(mission_raw_result_);
+  }
+  mission_raw_result_ = mission_raw_result;
+  if (mission_raw_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.UploadGeofenceResponse.mission_raw_result)
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadGeofenceResponse::release_mission_raw_result() {
+  
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = mission_raw_result_;
+  mission_raw_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadGeofenceResponse::unsafe_arena_release_mission_raw_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.UploadGeofenceResponse.mission_raw_result)
+  
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = mission_raw_result_;
+  mission_raw_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadGeofenceResponse::_internal_mutable_mission_raw_result() {
+  
+  if (mission_raw_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission_raw::MissionRawResult>(GetArenaForAllocation());
+    mission_raw_result_ = p;
+  }
+  return mission_raw_result_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadGeofenceResponse::mutable_mission_raw_result() {
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _msg = _internal_mutable_mission_raw_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.UploadGeofenceResponse.mission_raw_result)
+  return _msg;
+}
+inline void UploadGeofenceResponse::set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete mission_raw_result_;
+  }
+  if (mission_raw_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(mission_raw_result);
+    if (message_arena != submessage_arena) {
+      mission_raw_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_raw_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  mission_raw_result_ = mission_raw_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.UploadGeofenceResponse.mission_raw_result)
+}
+
+// -------------------------------------------------------------------
+
+// UploadRallyPointsRequest
+
+// repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+inline int UploadRallyPointsRequest::_internal_mission_items_size() const {
+  return mission_items_.size();
+}
+inline int UploadRallyPointsRequest::mission_items_size() const {
+  return _internal_mission_items_size();
+}
+inline void UploadRallyPointsRequest::clear_mission_items() {
+  mission_items_.Clear();
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* UploadRallyPointsRequest::mutable_mission_items(int index) {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.UploadRallyPointsRequest.mission_items)
+  return mission_items_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >*
+UploadRallyPointsRequest::mutable_mission_items() {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission_raw.UploadRallyPointsRequest.mission_items)
+  return &mission_items_;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionItem& UploadRallyPointsRequest::_internal_mission_items(int index) const {
+  return mission_items_.Get(index);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionItem& UploadRallyPointsRequest::mission_items(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.UploadRallyPointsRequest.mission_items)
+  return _internal_mission_items(index);
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* UploadRallyPointsRequest::_internal_add_mission_items() {
+  return mission_items_.Add();
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* UploadRallyPointsRequest::add_mission_items() {
+  ::mavsdk::rpc::mission_raw::MissionItem* _add = _internal_add_mission_items();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.mission_raw.UploadRallyPointsRequest.mission_items)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >&
+UploadRallyPointsRequest::mission_items() const {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.mission_raw.UploadRallyPointsRequest.mission_items)
+  return mission_items_;
+}
+
+// -------------------------------------------------------------------
+
+// UploadRallyPointsResponse
+
+// .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+inline bool UploadRallyPointsResponse::_internal_has_mission_raw_result() const {
+  return this != internal_default_instance() && mission_raw_result_ != nullptr;
+}
+inline bool UploadRallyPointsResponse::has_mission_raw_result() const {
+  return _internal_has_mission_raw_result();
+}
+inline void UploadRallyPointsResponse::clear_mission_raw_result() {
+  if (GetArenaForAllocation() == nullptr && mission_raw_result_ != nullptr) {
+    delete mission_raw_result_;
+  }
+  mission_raw_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& UploadRallyPointsResponse::_internal_mission_raw_result() const {
+  const ::mavsdk::rpc::mission_raw::MissionRawResult* p = mission_raw_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionRawResult&>(
+      ::mavsdk::rpc::mission_raw::_MissionRawResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& UploadRallyPointsResponse::mission_raw_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.UploadRallyPointsResponse.mission_raw_result)
+  return _internal_mission_raw_result();
+}
+inline void UploadRallyPointsResponse::unsafe_arena_set_allocated_mission_raw_result(
+    ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(mission_raw_result_);
+  }
+  mission_raw_result_ = mission_raw_result;
+  if (mission_raw_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.UploadRallyPointsResponse.mission_raw_result)
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadRallyPointsResponse::release_mission_raw_result() {
+  
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = mission_raw_result_;
+  mission_raw_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadRallyPointsResponse::unsafe_arena_release_mission_raw_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.UploadRallyPointsResponse.mission_raw_result)
+  
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = mission_raw_result_;
+  mission_raw_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadRallyPointsResponse::_internal_mutable_mission_raw_result() {
+  
+  if (mission_raw_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission_raw::MissionRawResult>(GetArenaForAllocation());
+    mission_raw_result_ = p;
+  }
+  return mission_raw_result_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* UploadRallyPointsResponse::mutable_mission_raw_result() {
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _msg = _internal_mutable_mission_raw_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.UploadRallyPointsResponse.mission_raw_result)
+  return _msg;
+}
+inline void UploadRallyPointsResponse::set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete mission_raw_result_;
+  }
+  if (mission_raw_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(mission_raw_result);
+    if (message_arena != submessage_arena) {
+      mission_raw_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, mission_raw_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  mission_raw_result_ = mission_raw_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.UploadRallyPointsResponse.mission_raw_result)
 }
 
 // -------------------------------------------------------------------
@@ -5887,6 +6787,14 @@ inline void MissionRawResult::set_allocated_result_str(std::string* result_str) 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
