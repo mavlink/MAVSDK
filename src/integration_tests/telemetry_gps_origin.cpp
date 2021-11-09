@@ -20,6 +20,8 @@ TEST_F(SitlTest, TelemetryGpsOrigin)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
     auto result = telemetry.get_gps_global_origin();
     ASSERT_EQ(result.first, Telemetry::Result::Success);
     LogInfo() << result.second;
