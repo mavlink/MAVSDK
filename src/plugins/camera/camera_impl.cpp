@@ -62,10 +62,12 @@ void CameraImpl::init()
         [this](const mavlink_message_t& message) { process_video_stream_status(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_FLIGHT_INFORMATION,
-        [this](const mavlink_message_t& message) { process_flight_information(message); },
-        this);
+    if (_parent->has_autopilot()) {
+        _parent->register_mavlink_message_handler(
+            MAVLINK_MSG_ID_FLIGHT_INFORMATION,
+            [this](const mavlink_message_t& message) { process_flight_information(message); },
+            this);
+    }
 
     _parent->add_call_every(
         [this]() { check_connection_status(); }, 0.5, &_check_connection_status_call_every_cookie);
@@ -182,12 +184,19 @@ void CameraImpl::manual_enable()
 
     request_status();
     request_camera_information();
-    request_flight_information();
 
     _parent->add_call_every(
         [this]() { request_camera_information(); }, 10.0, &_camera_information_call_every_cookie);
-    _parent->add_call_every(
-        [this]() { request_flight_information(); }, 10.0, &_flight_information_call_every_cookie);
+
+    // for backwards compatibility with Yuneec drones
+    if (_parent->has_autopilot()) {
+        request_flight_information();
+
+        _parent->add_call_every(
+            [this]() { request_flight_information(); },
+            10.0,
+            &_flight_information_call_every_cookie);
+    }
 }
 
 void CameraImpl::disable()
@@ -201,7 +210,10 @@ void CameraImpl::manual_disable()
 {
     invalidate_params();
     _parent->remove_call_every(_camera_information_call_every_cookie);
-    _parent->remove_call_every(_flight_information_call_every_cookie);
+
+    if (_flight_information_call_every_cookie) {
+        _parent->remove_call_every(_flight_information_call_every_cookie);
+    }
 
     _camera_found = false;
 }
