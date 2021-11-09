@@ -1,7 +1,3 @@
-
-hunter_add_package(jsoncpp)
-find_package(jsoncpp CONFIG REQUIRED)
-
 add_library(mavsdk_mission
     mission.cpp
     mission_impl.cpp
@@ -20,8 +16,6 @@ set_target_properties(mavsdk_mission
 target_link_libraries(mavsdk_mission
     PUBLIC
     mavsdk
-    PRIVATE
-    JsonCpp::JsonCpp
 )
 
 target_include_directories(mavsdk_mission PUBLIC
