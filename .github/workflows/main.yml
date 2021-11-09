@@ -95,6 +95,25 @@ jobs:
       - name: test FTP server
         run: ./build/release/src/integration_tests/integration_tests_runner --gtest_filter="FtpTest.TestServer"
 
+  ubuntu20-hunter:
+    name: ubuntu-20.04 (mavsdk, hunter)
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: ~/.hunter
+          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}
+      - name: configure
+        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -Bbuild -H.
+      - name: build
+        run: cmake --build build -j2
+      - name: run unit test
+        run: build/src/unit_tests_runner
+
   ubuntu20-proto-check:
     name: ubuntu-20.04 (proto check)
     runs-on: ubuntu-20.04
