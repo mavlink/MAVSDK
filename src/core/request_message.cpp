@@ -55,7 +55,7 @@ void RequestMessage::send_request(uint32_t message_id)
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.target_system_id = 1;
     command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    command_request_message.params.maybe_param1 = {message_id};
+    command_request_message.params.maybe_param1 = {static_cast<float>(message_id)};
     _command_sender.queue_command_async(
         command_request_message, [this, message_id](MavlinkCommandSender::Result result, float) {
             if (result != MavlinkCommandSender::Result::InProgress) {
