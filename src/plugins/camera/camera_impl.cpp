@@ -933,9 +933,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         capture_info.is_success = (image_captured.capture_result == 1);
         capture_info.index = image_captured.image_index;
 
-        if (capture_info.is_success) {
-            _status.photo_list.insert(std::make_pair(image_captured.image_index, capture_info));
-        }
+        _status.photo_list.insert(std::make_pair(image_captured.image_index, capture_info));
 
         _captured_request_cv.notify_all();
 
