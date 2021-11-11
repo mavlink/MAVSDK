@@ -23,6 +23,9 @@ TEST_F(SitlTest, TelemetryGpsOrigin)
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     auto result = telemetry.get_gps_global_origin();
-    ASSERT_EQ(result.first, Telemetry::Result::Success);
+    // Older PX4 versions don't support this request yet.
+    ASSERT_TRUE(
+        result.first == Telemetry::Result::Success ||
+        result.first == Telemetry::Result::Unsupported);
     LogInfo() << result.second;
 }
