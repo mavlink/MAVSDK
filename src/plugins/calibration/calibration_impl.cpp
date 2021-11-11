@@ -63,10 +63,13 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
     _state = State::GyroCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{*_parent};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
-    command.params.param1 = 1.0f; // Gyro
+    command.params.maybe_param1 = 1.0f; // Gyro
+    command.params.maybe_param2 = 0.0f;
+    command.params.maybe_param3 = 0.0f;
+    command.params.maybe_param4 = 0.0f;
+    command.params.maybe_param5 = 0.0f;
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
@@ -102,10 +105,13 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
     _state = State::AccelerometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{*_parent};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
-    command.params.param5 = 1.0f; // Accel
+    command.params.maybe_param1 = 0.0f;
+    command.params.maybe_param2 = 0.0f;
+    command.params.maybe_param3 = 0.0f;
+    command.params.maybe_param4 = 0.0f;
+    command.params.maybe_param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
@@ -130,10 +136,13 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
     _state = State::MagnetometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{*_parent};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
-    command.params.param2 = 1.0f; // Mag
+    command.params.maybe_param1 = 0.0f;
+    command.params.maybe_param2 = 1.0f; // Mag
+    command.params.maybe_param3 = 0.0f;
+    command.params.maybe_param4 = 0.0f;
+    command.params.maybe_param5 = 0.0f;
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
@@ -158,10 +167,13 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
     _state = State::AccelerometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{*_parent};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
-    command.params.param5 = 2.0f; // Board Level
+    command.params.maybe_param1 = 0.0f;
+    command.params.maybe_param2 = 0.0f;
+    command.params.maybe_param3 = 0.0f;
+    command.params.maybe_param4 = 0.0f;
+    command.params.maybe_param5 = 2.0f; // Board Level
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
@@ -186,10 +198,13 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
     _state = State::GimbalAccelerometerCalibration;
     _calibration_callback = callback;
 
-    MavlinkCommandSender::CommandLong command{*_parent};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
-    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
-    command.params.param5 = 1.0f; // Accel
+    command.params.maybe_param1 = 0.0f;
+    command.params.maybe_param2 = 0.0f;
+    command.params.maybe_param3 = 0.0f;
+    command.params.maybe_param4 = 0.0f;
+    command.params.maybe_param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_GIMBAL;
     _parent->send_command_async(
         command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
@@ -218,10 +233,16 @@ Calibration::Result CalibrationImpl::cancel()
             break;
     }
 
-    MavlinkCommandSender::CommandLong command{*_parent};
+    MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
     // All params 0 signal cancellation of a calibration.
-    MavlinkCommandSender::CommandLong::set_as_reserved(command.params, 0.0f);
+    command.params.maybe_param1 = 0.0f;
+    command.params.maybe_param2 = 0.0f;
+    command.params.maybe_param3 = 0.0f;
+    command.params.maybe_param4 = 0.0f;
+    command.params.maybe_param5 = 0.0f;
+    command.params.maybe_param6 = 0.0f;
+    command.params.maybe_param7 = 0.0f;
     command.target_component_id = target_component_id;
     _parent->send_command_async(command, nullptr);
 

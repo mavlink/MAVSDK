@@ -25,7 +25,8 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
     _timesync(*this),
     _ping(*this),
     _mission_transfer(
-        *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); })
+        *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); }),
+    _request_message(_send_commands, _message_handler, _parent.timeout_handler)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 }
@@ -466,10 +467,10 @@ bool SystemImpl::send_message(mavlink_message_t& message)
 void SystemImpl::send_autopilot_version_request()
 {
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    MavlinkCommandSender::CommandLong command{*this};
+    MavlinkCommandSender::CommandLong command;
 
     command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
-    command.params.param1 = 1.0f;
+    command.params.maybe_param1 = 1.0f;
     command.target_component_id = get_autopilot_id();
 
     send_command_async(command, nullptr);
@@ -504,10 +505,10 @@ void SystemImpl::send_autopilot_version()
 void SystemImpl::send_flight_information_request()
 {
     // We don't care about an answer, we mostly care about receiving FLIGHT_INFORMATION.
-    MavlinkCommandSender::CommandLong command{*this};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
-    command.params.param1 = 1.0f;
+    command.params.maybe_param1 = 1.0f;
     command.target_component_id = get_autopilot_id();
 
     send_command_async(command, nullptr);
@@ -963,29 +964,31 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
     const uint8_t mode_type =
         MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed | flag_hitl_enabled;
 
-    MavlinkCommandSender::CommandLong command{*this};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_SET_MODE;
-    command.params.param1 = float(mode_type);
+    command.params.maybe_param1 = static_cast<float>(mode_type);
 
     switch (_vehicle_type) {
         case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
             if (flight_mode_to_ardupilot_rover_mode(flight_mode) == ardupilot::RoverMode::Unknown) {
                 LogErr() << "Cannot translate flight mode to ardupilot rover mode.";
-                MavlinkCommandSender::CommandLong empty_command{*this};
+                MavlinkCommandSender::CommandLong empty_command{};
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
-                command.params.param2 = float(flight_mode_to_ardupilot_rover_mode(flight_mode));
+                command.params.maybe_param2 =
+                    static_cast<float>(flight_mode_to_ardupilot_rover_mode(flight_mode));
             }
             break;
         default:
             if (flight_mode_to_ardupilot_copter_mode(flight_mode) ==
                 ardupilot::CopterMode::Unknown) {
                 LogErr() << "Cannot translate flight mode to ardupilot copter mode.";
-                MavlinkCommandSender::CommandLong empty_command{*this};
+                MavlinkCommandSender::CommandLong empty_command{};
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
-                command.params.param2 = float(flight_mode_to_ardupilot_copter_mode(flight_mode));
+                command.params.maybe_param2 =
+                    static_cast<float>(flight_mode_to_ardupilot_copter_mode(flight_mode));
             }
             break;
     }
@@ -1104,16 +1107,16 @@ SystemImpl::make_command_px4_mode(FlightMode flight_mode, uint8_t component_id)
             break;
         default:
             LogErr() << "Unknown Flight mode.";
-            MavlinkCommandSender::CommandLong empty_command{*this};
+            MavlinkCommandSender::CommandLong empty_command{};
             return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
     }
 
-    MavlinkCommandSender::CommandLong command{*this};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_SET_MODE;
-    command.params.param1 = float(mode);
-    command.params.param2 = float(custom_mode);
-    command.params.param3 = float(custom_sub_mode);
+    command.params.maybe_param1 = static_cast<float>(mode);
+    command.params.maybe_param2 = static_cast<float>(custom_mode);
+    command.params.maybe_param3 = static_cast<float>(custom_sub_mode);
     command.target_component_id = component_id;
 
     return std::make_pair<>(MavlinkCommandSender::Result::Success, command);
@@ -1439,7 +1442,7 @@ void SystemImpl::set_msg_rate_async(
 MavlinkCommandSender::CommandLong
 SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
-    MavlinkCommandSender::CommandLong command{*this};
+    MavlinkCommandSender::CommandLong command{};
 
     // 0 to request default rate, -1 to stop stream
 
@@ -1452,8 +1455,8 @@ SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t c
     }
 
     command.command = MAV_CMD_SET_MESSAGE_INTERVAL;
-    command.params.param1 = float(message_id);
-    command.params.param2 = interval_us;
+    command.params.maybe_param1 = static_cast<float>(message_id);
+    command.params.maybe_param2 = interval_us;
     command.target_component_id = component_id;
 
     return command;

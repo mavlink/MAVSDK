@@ -34,8 +34,10 @@ add_library(mavsdk
     log.cpp
     cli_arg.cpp
     geometry.cpp
+    request_message.cpp
     timesync.cpp
 )
+
 
 target_link_libraries(mavsdk
     PRIVATE

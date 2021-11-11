@@ -44,45 +44,30 @@ public:
         bool autocontinue = false;
         // Most of the "Reserved" values in MAVLink spec are NAN.
         struct Params {
-            float param1 = NAN;
-            float param2 = NAN;
-            float param3 = NAN;
-            float param4 = NAN;
+            std::optional<float> maybe_param1{};
+            std::optional<float> maybe_param2{};
+            std::optional<float> maybe_param3{};
+            std::optional<float> maybe_param4{};
             int32_t x = 0;
             int32_t y = 0;
-            float z = NAN;
+            std::optional<float> maybe_z{};
         } params{};
     };
 
     struct CommandLong {
-        CommandLong() = delete;
-        explicit CommandLong(const SystemImpl& system_impl);
-
         uint8_t target_system_id{0};
         uint8_t target_component_id{0};
         uint16_t command{0};
         uint8_t confirmation = 0;
         struct Params {
-            float param1;
-            float param2;
-            float param3;
-            float param4;
-            float param5;
-            float param6;
-            float param7;
+            std::optional<float> maybe_param1{};
+            std::optional<float> maybe_param2{};
+            std::optional<float> maybe_param3{};
+            std::optional<float> maybe_param4{};
+            std::optional<float> maybe_param5{};
+            std::optional<float> maybe_param6{};
+            std::optional<float> maybe_param7{};
         } params{};
-
-        // TODO: rename to set_all
-        static void set_as_reserved(Params& params, float reserved_value = NAN)
-        {
-            params.param1 = reserved_value;
-            params.param2 = reserved_value;
-            params.param3 = reserved_value;
-            params.param4 = reserved_value;
-            params.param5 = reserved_value;
-            params.param6 = reserved_value;
-            params.param7 = reserved_value;
-        }
     };
 
     Result send_command(const CommandInt& command);
@@ -140,11 +125,16 @@ private:
         identification.command = command.command;
         if (command.command == MAV_CMD_REQUEST_MESSAGE ||
             command.command == MAV_CMD_SET_MESSAGE_INTERVAL) {
-            const uint32_t param1 = static_cast<uint32_t>(std::lround(command.params.param1));
-            identification.maybe_param1 = param1;
-            if (param1 == MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED) {
-                identification.maybe_param2 =
-                    static_cast<uint32_t>(std::lround(command.params.param2));
+            if (command.params.maybe_param1) {
+                const uint32_t param1 =
+                    static_cast<uint32_t>(std::lround(command.params.maybe_param1.value()));
+                identification.maybe_param1 = param1;
+                if (param1 == MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED) {
+                    if (command.params.maybe_param2) {
+                        identification.maybe_param2 =
+                            static_cast<uint32_t>(std::lround(command.params.maybe_param2.value()));
+                    }
+                }
             }
         }
         identification.target_system_id = command.target_system_id;
@@ -159,6 +149,8 @@ private:
     void call_callback(const CommandResultCallback& callback, Result result, float progress);
 
     mavlink_message_t create_mavlink_message(const Command& command);
+
+    float maybe_reserved(const std::optional<float>& maybe_param) const;
 
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};

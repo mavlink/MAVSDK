@@ -2265,66 +2265,37 @@ void TelemetryImpl::subscribe_heading(Telemetry::HeadingCallback& callback)
 
 void TelemetryImpl::request_home_position_async()
 {
-    MavlinkCommandSender::CommandLong command_request_message{*_parent};
+    MavlinkCommandSender::CommandLong command_request_message{};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    command_request_message.params.param1 = MAVLINK_MSG_ID_HOME_POSITION;
+    command_request_message.params.maybe_param1 = static_cast<float>(MAVLINK_MSG_ID_HOME_POSITION);
     _parent->send_command_async(command_request_message, nullptr);
 }
 
 void TelemetryImpl::get_gps_global_origin_async(
     const Telemetry::GetGpsGlobalOriginCallback callback)
 {
-    void* message_cookie{};
-    void* timeout_cookie{};
-    auto response_received = std::make_shared<bool>(false);
-
-    _parent->register_mavlink_message_handler(
+    _parent->request_message().request(
         MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
-        [this, callback, &message_cookie, &timeout_cookie, response_received](
-            const mavlink_message_t& mavlink_message) {
-            if (*response_received) {
-                return;
-            }
-            *response_received = true;
+        [this, callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
+            if (result == MavlinkCommandSender::Result::Success) {
+                mavlink_gps_global_origin_t mavlink_gps_global_origin;
+                mavlink_msg_gps_global_origin_decode(&message, &mavlink_gps_global_origin);
 
-            _parent->unregister_timeout_handler(timeout_cookie);
-            _parent->call_user_callback([this, &message_cookie]() {
-                _parent->unregister_mavlink_message_handler(
-                    MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN, &message_cookie);
-            });
+                Telemetry::GpsGlobalOrigin gps_global_origin;
+                gps_global_origin.latitude_deg = mavlink_gps_global_origin.latitude * 1e-7;
+                gps_global_origin.longitude_deg = mavlink_gps_global_origin.longitude * 1e-7;
+                gps_global_origin.altitude_m = mavlink_gps_global_origin.altitude * 1e-3f;
+                _parent->call_user_callback([callback, gps_global_origin]() {
+                    callback(Telemetry::Result::Success, gps_global_origin);
+                });
 
-            mavlink_gps_global_origin_t mavlink_gps_global_origin;
-            mavlink_msg_gps_global_origin_decode(&mavlink_message, &mavlink_gps_global_origin);
-
-            Telemetry::GpsGlobalOrigin gps_global_origin;
-            gps_global_origin.latitude_deg = mavlink_gps_global_origin.latitude * 1e-7;
-            gps_global_origin.longitude_deg = mavlink_gps_global_origin.longitude * 1e-7;
-            gps_global_origin.altitude_m = mavlink_gps_global_origin.altitude * 1e-3f;
-
-            _parent->call_user_callback([callback, gps_global_origin]() {
-                callback(Telemetry::Result::Success, gps_global_origin);
-            });
-        },
-        &message_cookie);
-
-    MavlinkCommandSender::CommandLong command_request_message{*_parent};
-    command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
-    command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    command_request_message.params.param1 = MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN;
-
-    _parent->send_command_async(command_request_message, nullptr);
-    _parent->register_timeout_handler(
-        [this, callback, response_received]() {
-            if (!*response_received) {
-                *response_received = true;
-                _parent->call_user_callback([callback]() {
-                    callback(Telemetry::Result::Timeout, Telemetry::GpsGlobalOrigin{});
+            } else {
+                _parent->call_user_callback([callback, result]() {
+                    callback(telemetry_result_from_command_result(result), {});
                 });
             }
-        },
-        5, // timeout of 5 seconds
-        &timeout_cookie);
+        });
 }
 
 std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_global_origin()

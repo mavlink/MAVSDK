@@ -11,13 +11,13 @@ GimbalProtocolV1::GimbalProtocolV1(SystemImpl& system_impl) : GimbalProtocolBase
 Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     const float roll_deg = 0.0f;
-    MavlinkCommandSender::CommandLong command{_system_impl};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_MOUNT_CONTROL;
-    command.params.param1 = pitch_deg;
-    command.params.param2 = roll_deg;
-    command.params.param3 = yaw_deg;
-    command.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
+    command.params.maybe_param1 = pitch_deg;
+    command.params.maybe_param2 = roll_deg;
+    command.params.maybe_param3 = yaw_deg;
+    command.params.maybe_param7 = static_cast<float>(MAV_MOUNT_MODE_MAVLINK_TARGETING);
     command.target_component_id = _system_impl.get_autopilot_id();
 
     return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
@@ -27,13 +27,13 @@ void GimbalProtocolV1::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     const float roll_deg = 0.0f;
-    MavlinkCommandSender::CommandLong command{_system_impl};
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_MOUNT_CONTROL;
-    command.params.param1 = pitch_deg;
-    command.params.param2 = roll_deg;
-    command.params.param3 = yaw_deg;
-    command.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
+    command.params.maybe_param1 = pitch_deg;
+    command.params.maybe_param2 = roll_deg;
+    command.params.maybe_param3 = yaw_deg;
+    command.params.maybe_param7 = static_cast<float>(MAV_MOUNT_MODE_MAVLINK_TARGETING);
     command.target_component_id = _system_impl.get_autopilot_id();
 
     _system_impl.send_command_async(
@@ -73,13 +73,15 @@ Gimbal::Result GimbalProtocolV1::set_mode(const Gimbal::GimbalMode gimbal_mode)
     // - set param7/paramz to 2.
     command.command =
         MAV_CMD_DO_MOUNT_CONFIGURE; // Mission command to configure a camera or antenna mount
-    command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); // Mount operation mode
-    command.params.param2 = 0.0f; // stabilize roll
-    command.params.param3 = 0.0f; // stabilize pitch
-    command.params.param4 = to_float_gimbal_mode(gimbal_mode); // stabilize yaw (1 = yes, 0 = no)
+    command.params.maybe_param1 =
+        static_cast<float>(MAV_MOUNT_MODE_MAVLINK_TARGETING); // Mount operation mode
+    command.params.maybe_param2 = 0.0f; // stabilize roll
+    command.params.maybe_param3 = 0.0f; // stabilize pitch
+    command.params.maybe_param4 =
+        to_float_gimbal_mode(gimbal_mode); // stabilize yaw (1 = yes, 0 = no)
     command.params.x = 0; // roll input
     command.params.y = 0; // pitch input
-    command.params.z =
+    command.params.maybe_z =
         2.0f; // yaw input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
     command.target_component_id = _system_impl.get_autopilot_id();
 
@@ -95,13 +97,15 @@ void GimbalProtocolV1::set_mode_async(
     // - set yaw stabilize / param4 to 0 as usual
     // - set param7/paramz to 2.
     command.command = MAV_CMD_DO_MOUNT_CONFIGURE;
-    command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); // Mount operation mode
-    command.params.param2 = 0.0f; // stabilize roll
-    command.params.param3 = 0.0f; // stabilize pitch
-    command.params.param4 = to_float_gimbal_mode(gimbal_mode); // stabilize yaw (1 = yes, 0 = no)
+    command.params.maybe_param1 =
+        static_cast<float>(MAV_MOUNT_MODE_MAVLINK_TARGETING); // Mount operation mode
+    command.params.maybe_param2 = 0.0f; // stabilize roll
+    command.params.maybe_param3 = 0.0f; // stabilize pitch
+    command.params.maybe_param4 =
+        to_float_gimbal_mode(gimbal_mode); // stabilize yaw (1 = yes, 0 = no)
     command.params.x = 0; // roll input
     command.params.y = 0; // pitch input
-    command.params.z =
+    command.params.maybe_z =
         2.0f; // yaw input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
     command.target_component_id = _system_impl.get_autopilot_id();
 
@@ -132,7 +136,7 @@ GimbalProtocolV1::set_roi_location(double latitude_deg, double longitude_deg, fl
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
     command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
     command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
-    command.params.z = altitude_m;
+    command.params.maybe_z = altitude_m;
     command.target_component_id = _system_impl.get_autopilot_id();
 
     return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
@@ -146,7 +150,7 @@ void GimbalProtocolV1::set_roi_location_async(
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
     command.params.x = static_cast<int32_t>(std::round(latitude_deg * 1e7));
     command.params.y = static_cast<int32_t>(std::round(longitude_deg * 1e7));
-    command.params.z = altitude_m;
+    command.params.maybe_z = altitude_m;
     command.target_component_id = _system_impl.get_autopilot_id();
 
     _system_impl.send_command_async(
