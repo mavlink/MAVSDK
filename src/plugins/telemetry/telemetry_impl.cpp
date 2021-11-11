@@ -2268,7 +2268,7 @@ void TelemetryImpl::request_home_position_async()
     MavlinkCommandSender::CommandLong command_request_message{};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    command_request_message.params.maybe_param1 = MAVLINK_MSG_ID_HOME_POSITION;
+    command_request_message.params.maybe_param1 = static_cast<float>(MAVLINK_MSG_ID_HOME_POSITION);
     _parent->send_command_async(command_request_message, nullptr);
 }
 
