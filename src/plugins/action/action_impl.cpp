@@ -282,7 +282,7 @@ void ActionImpl::terminate_async(const Action::ResultCallback& callback) const
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_FLIGHTTERMINATION;
-    command.params.maybe_param1 = 1;
+    command.params.maybe_param1 = 1.0f;
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(
