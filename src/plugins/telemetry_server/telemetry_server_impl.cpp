@@ -68,18 +68,7 @@ void TelemetryServerImpl::init()
                 }
             }
 
-            mavlink_message_t msg;
-            mavlink_msg_command_ack_pack(
-                _parent->get_own_system_id(),
-                _parent->get_own_component_id(),
-                &msg,
-                command.command,
-                MAV_RESULT::MAV_RESULT_ACCEPTED,
-                255,
-                0,
-                command.origin_system_id,
-                command.origin_component_id);
-            return msg;
+            return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
         },
         this);
 }

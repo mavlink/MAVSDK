@@ -85,6 +85,8 @@ public:
         std::function<void(const MavlinkStatustextHandler::Statustext&)>, void* cookie);
     void unregister_statustext_handler(void* cookie);
 
+    mavlink_message_t
+    make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);
     bool send_message(mavlink_message_t& message) override;
 
     Autopilot autopilot() const override { return _autopilot; };

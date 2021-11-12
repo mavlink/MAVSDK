@@ -84,18 +84,7 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
     register_mavlink_command_handler(
         MAV_CMD_REQUEST_MESSAGE,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
-            mavlink_message_t msg;
-            mavlink_msg_command_ack_pack(
-                _parent.get_own_system_id(),
-                _parent.get_own_component_id(),
-                &msg,
-                command.command,
-                MAV_RESULT::MAV_RESULT_UNSUPPORTED,
-                255,
-                0,
-                command.origin_system_id,
-                command.origin_component_id);
-            return msg;
+            return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
         },
         this);
 
@@ -303,18 +292,7 @@ SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::Comm
 
     send_autopilot_version();
 
-    mavlink_message_t msg{};
-    mavlink_msg_command_ack_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
-        &msg,
-        command.command,
-        MAV_RESULT::MAV_RESULT_ACCEPTED,
-        255,
-        0,
-        command.origin_system_id,
-        command.origin_component_id);
-    return msg;
+    return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)
@@ -441,6 +419,26 @@ bool SystemImpl::has_camera(int camera_id) const
 bool SystemImpl::has_gimbal() const
 {
     return get_gimbal_id() == MAV_COMP_ID_GIMBAL;
+}
+
+mavlink_message_t SystemImpl::make_command_ack_message(
+    const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result)
+{
+    const uint8_t progress = std::numeric_limits<uint8_t>::max();
+    const uint8_t result_param2 = 0;
+
+    mavlink_message_t msg{};
+    mavlink_msg_command_ack_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        command.command,
+        result,
+        progress,
+        result_param2,
+        command.origin_system_id,
+        command.origin_component_id);
+    return msg;
 }
 
 bool SystemImpl::send_message(mavlink_message_t& message)

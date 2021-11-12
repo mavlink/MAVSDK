@@ -61,7 +61,7 @@ void ActionServerImpl::init()
                 command.params.param1 == 1, command.params.param2 == 21196};
 
             // Check arm states - Ugly.
-            uint8_t request_ack = MAV_RESULT_UNSUPPORTED;
+            auto request_ack = MAV_RESULT_UNSUPPORTED;
             bool force = armDisarm.force;
             if (armDisarm.arm) {
                 request_ack = (_armable || (force && _force_armable)) ?
@@ -87,18 +87,7 @@ void ActionServerImpl::init()
                 }
             });
 
-            mavlink_message_t msg;
-            mavlink_msg_command_ack_pack(
-                _parent->get_own_system_id(),
-                _parent->get_own_component_id(),
-                &msg,
-                command.command,
-                request_ack,
-                std::numeric_limits<uint8_t>::max(),
-                0,
-                command.origin_system_id,
-                command.origin_component_id);
-            return msg;
+            return _parent->make_command_ack_message(command, request_ack);
         },
         this);
 
@@ -111,36 +100,16 @@ void ActionServerImpl::init()
                         [this]() { _takeoff_callback(ActionServer::Result::Success, true); });
                 }
 
-                mavlink_message_t msg;
-                mavlink_msg_command_ack_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    &msg,
-                    command.command,
-                    MAV_RESULT::MAV_RESULT_ACCEPTED,
-                    std::numeric_limits<uint8_t>::max(),
-                    0,
-                    command.origin_system_id,
-                    command.origin_component_id);
-                return msg;
+                return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
             } else {
                 if (_takeoff_callback) {
                     _parent->call_user_callback([this]() {
                         _takeoff_callback(ActionServer::Result::CommandDenied, false);
                     });
                 }
-                mavlink_message_t msg;
-                mavlink_msg_command_ack_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    &msg,
-                    command.command,
-                    MAV_RESULT::MAV_RESULT_UNSUPPORTED,
-                    std::numeric_limits<uint8_t>::max(),
-                    0,
-                    command.origin_system_id,
-                    command.origin_component_id);
-                return msg;
+
+                return _parent->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
             }
         },
         this);
@@ -173,18 +142,9 @@ void ActionServerImpl::init()
                             ActionServer::Result::ParameterError, request_flight_mode);
                     }
                 });
-                mavlink_message_t msg;
-                mavlink_msg_command_ack_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
-                    &msg,
-                    command.command,
-                    MAV_RESULT::MAV_RESULT_UNSUPPORTED,
-                    std::numeric_limits<uint8_t>::max(),
-                    0,
-                    command.origin_system_id,
-                    command.origin_component_id);
-                return msg;
+
+                return _parent->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
             }
 
             bool allow_mode = false;
@@ -225,18 +185,9 @@ void ActionServerImpl::init()
                 }
             });
 
-            mavlink_message_t msg;
-            mavlink_msg_command_ack_pack(
-                _parent->get_own_system_id(),
-                _parent->get_own_component_id(),
-                &msg,
-                command.command,
-                allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED,
-                255,
-                0,
-                command.origin_system_id,
-                command.origin_component_id);
-            return msg;
+            return _parent->make_command_ack_message(
+                command,
+                allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED);
         },
         this);
 }
