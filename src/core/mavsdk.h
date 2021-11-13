@@ -162,6 +162,16 @@ public:
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
 
     /**
+     * @brief Adds the first connection of antoher Mavsdk instance to this Mavsdk instance. Used to share
+     * the same connection between two or more components.
+     *
+     *
+     * @param mavsdk other mavsdk instance.
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_mavsdk_connection(Mavsdk *mavsdk);
+
+    /**
      * @brief Get a vector of systems which have been discovered or set-up.
      *
      * @return The vector of systems which are available.

@@ -57,6 +57,7 @@ public:
         int baudrate,
         bool flow_control,
         ForwardingOption forwarding_option);
+    ConnectionResult add_mavsdk_connection(MavsdkImpl *mavsdk);
     ConnectionResult setup_udp_remote(
         const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
 

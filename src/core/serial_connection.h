@@ -48,6 +48,7 @@ private:
     HANDLE _handle;
 #endif
 
+    std::mutex _send_mutex{};
     std::thread* _recv_thread = nullptr;
     std::atomic_bool _should_exit{false};
 };

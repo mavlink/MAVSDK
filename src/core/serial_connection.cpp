@@ -266,6 +266,8 @@ bool SerialConnection::send_message(const mavlink_message_t& message)
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
+    std::lock_guard<std::mutex> lock(_send_mutex);
+
     int send_len;
 #if defined(LINUX) || defined(APPLE)
     send_len = static_cast<int>(write(_fd, buffer, buffer_len));

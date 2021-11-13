@@ -415,6 +415,18 @@ ConnectionResult MavsdkImpl::add_serial_connection(
     return ret;
 }
 
+ConnectionResult MavsdkImpl::add_mavsdk_connection(MavsdkImpl *mavsdk) {
+    if(mavsdk->_connections.size() == 0) {
+        return ConnectionResult::ConnectionError;
+    }
+    auto shared_conn = mavsdk->_connections.front();
+    shared_conn->register_callback([this](mavlink_message_t& message, Connection* connection) {
+        receive_message(message, connection);
+    });
+    add_connection(shared_conn);
+    return ConnectionResult::Success;
+}
+
 void MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);

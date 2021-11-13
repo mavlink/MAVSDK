@@ -55,6 +55,10 @@ ConnectionResult Mavsdk::add_serial_connection(
     return _impl->add_serial_connection(dev_path, baudrate, flow_control, forwarding_option);
 }
 
+ConnectionResult Mavsdk::add_mavsdk_connection(Mavsdk *mavsdk) {
+    return _impl->add_mavsdk_connection(mavsdk->_impl.get());
+}
+
 std::vector<std::shared_ptr<System>> Mavsdk::systems() const
 {
     return _impl->systems();

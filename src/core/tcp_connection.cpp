@@ -165,6 +165,8 @@ bool TcpConnection::send_message(const mavlink_message_t& message)
     auto flags = MSG_NOSIGNAL;
 #endif
 
+    std::lock_guard<std::mutex> lock(_send_mutex);
+
     const auto send_len = sendto(
         _socket_fd,
         reinterpret_cast<char*>(buffer),

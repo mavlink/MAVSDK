@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 #include "mavsdk_impl.h"
 #include "mavlink_channels.h"
 
@@ -10,10 +11,10 @@ namespace mavsdk {
 std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
 
 Connection::Connection(receiver_callback_t receiver_callback, ForwardingOption forwarding_option) :
-    _receiver_callback(std::move(receiver_callback)),
     _mavlink_receiver(),
     _forwarding_option(forwarding_option)
 {
+    _receiver_callback[0] = std::move(receiver_callback);
     // Insert system ID 0 in all connections for broadcast.
     _system_ids.insert(0);
 
@@ -56,7 +57,7 @@ void Connection::receive_message(mavlink_message_t& message, Connection* connect
     if (_system_ids.find(message.sysid) == _system_ids.end()) {
         _system_ids.insert(message.sysid);
     }
-    _receiver_callback(message, connection);
+    for(auto _callback: _receiver_callback) _callback(message, connection);
 }
 
 bool Connection::should_forward_messages() const
@@ -67,6 +68,10 @@ bool Connection::should_forward_messages() const
 unsigned Connection::forwarding_connections_count()
 {
     return _forwarding_connections_count;
+}
+
+void Connection::register_callback(receiver_callback_t receiver_callback) {
+    _receiver_callback.push_back(std::move(receiver_callback));
 }
 
 bool Connection::has_system_id(uint8_t system_id)

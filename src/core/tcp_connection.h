@@ -43,6 +43,7 @@ private:
     std::mutex _mutex = {};
     int _socket_fd = -1;
 
+    std::mutex _send_mutex{};
     std::thread* _recv_thread = nullptr;
     std::atomic_bool _should_exit;
     std::atomic_bool _is_ok{false};
