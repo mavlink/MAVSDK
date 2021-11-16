@@ -76,12 +76,74 @@ Failure::Result FailureImpl::inject(
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_INJECT_FAILURE;
-    command.params.maybe_param1 = static_cast<float>(failure_unit);
-    command.params.maybe_param2 = static_cast<float>(failure_type);
+    command.params.maybe_param1 = failure_unit_to_mavlink_enum(failure_unit);
+    command.params.maybe_param2 = failure_type_to_mavlink_enum(failure_type);
     command.params.maybe_param3 = static_cast<float>(instance);
     command.target_component_id = _parent->get_autopilot_id();
 
     return failure_result_from_command_result(_parent->send_command(command));
+}
+
+float FailureImpl::failure_unit_to_mavlink_enum(const Failure::FailureUnit& failure_unit)
+{
+    switch (failure_unit) {
+        case Failure::FailureUnit::SensorGyro:
+            return FAILURE_UNIT_SENSOR_GYRO;
+        case Failure::FailureUnit::SensorAccel:
+            return FAILURE_UNIT_SENSOR_ACCEL;
+        case Failure::FailureUnit::SensorMag:
+            return FAILURE_UNIT_SENSOR_MAG;
+        case Failure::FailureUnit::SensorBaro:
+            return FAILURE_UNIT_SENSOR_BARO;
+        case Failure::FailureUnit::SensorGps:
+            return FAILURE_UNIT_SENSOR_GPS;
+        case Failure::FailureUnit::SensorOpticalFlow:
+            return FAILURE_UNIT_SENSOR_OPTICAL_FLOW;
+        case Failure::FailureUnit::SensorVio:
+            return FAILURE_UNIT_SENSOR_VIO;
+        case Failure::FailureUnit::SensorDistanceSensor:
+            return FAILURE_UNIT_SENSOR_DISTANCE_SENSOR;
+        case Failure::FailureUnit::SensorAirspeed:
+            return FAILURE_UNIT_SENSOR_AIRSPEED;
+        case Failure::FailureUnit::SystemBattery:
+            return FAILURE_UNIT_SYSTEM_BATTERY;
+        case Failure::FailureUnit::SystemMotor:
+            return FAILURE_UNIT_SYSTEM_MOTOR;
+        case Failure::FailureUnit::SystemServo:
+            return FAILURE_UNIT_SYSTEM_SERVO;
+        case Failure::FailureUnit::SystemAvoidance:
+            return FAILURE_UNIT_SYSTEM_AVOIDANCE;
+        case Failure::FailureUnit::SystemRcSignal:
+            return FAILURE_UNIT_SYSTEM_RC_SIGNAL;
+        case Failure::FailureUnit::SystemMavlinkSignal:
+            return FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL;
+        default:
+            return -1;
+    }
+}
+
+float FailureImpl::failure_type_to_mavlink_enum(const Failure::FailureType& failure_type)
+{
+    switch (failure_type) {
+        case Failure::FailureType::Ok:
+            return FAILURE_TYPE_OK;
+        case Failure::FailureType::Off:
+            return FAILURE_TYPE_OFF;
+        case Failure::FailureType::Stuck:
+            return FAILURE_TYPE_STUCK;
+        case Failure::FailureType::Garbage:
+            return FAILURE_TYPE_GARBAGE;
+        case Failure::FailureType::Wrong:
+            return FAILURE_TYPE_WRONG;
+        case Failure::FailureType::Slow:
+            return FAILURE_TYPE_SLOW;
+        case Failure::FailureType::Delayed:
+            return FAILURE_TYPE_DELAYED;
+        case Failure::FailureType::Intermittent:
+            return FAILURE_TYPE_INTERMITTENT;
+        default:
+            return -1;
+    }
 }
 
 Failure::Result

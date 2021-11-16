@@ -21,7 +21,8 @@ public:
     inject(Failure::FailureUnit failure_unit, Failure::FailureType failure_type, int32_t instance);
 
 private:
-    Failure::Result failure_result_from_command_result(MavlinkCommandSender::Result command_result);
+    static Failure::Result
+    failure_result_from_command_result(MavlinkCommandSender::Result command_result);
 
     enum class EnabledState {
         Init,
@@ -31,6 +32,8 @@ private:
     };
 
     std::atomic<EnabledState> _enabled{EnabledState::Unknown};
+    static float failure_unit_to_mavlink_enum(const Failure::FailureUnit& failure_unit);
+    static float failure_type_to_mavlink_enum(const Failure::FailureType& failure_type);
 };
 
 } // namespace mavsdk
