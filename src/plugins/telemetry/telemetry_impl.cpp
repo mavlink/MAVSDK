@@ -1077,8 +1077,7 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     Telemetry::Battery new_battery;
     new_battery.id = bat_status.id;
     new_battery.voltage_v = 0.0f;
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 255; i++) {
         if (bat_status.voltages[i] == UINT16_MAX)
             break;
         new_battery.voltage_v += static_cast<float>(bat_status.voltages[i]) * 1e-3f;
