@@ -54,6 +54,10 @@ service OffboardService {
      * Set the position in NED coordinates and yaw.
      */
     rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) { option (mavsdk.options.async_type) = SYNC; }
+     /*
+     * Set the position in Global coordinates and yaw.
+     */
+    rpc SetPositionGlobal(SetPositionGlobalRequest) returns(SetPositionGlobalResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.
      */
@@ -112,6 +116,13 @@ message SetPositionNedRequest {
     PositionNedYaw position_ned_yaw = 1; // Position and yaw
 }
 message SetPositionNedResponse {
+    OffboardResult offboard_result = 1;
+}
+
+message SetPositionGlobalRequest {
+    PositionGlobalYaw position_global_yaw = 1; // Position and yaw
+}
+message SetPositionGlobalResponse {
     OffboardResult offboard_result = 1;
 }
 
@@ -195,6 +206,14 @@ message PositionNedYaw {
     float east_m = 2; // Position East (in metres)
     float down_m = 3; // Position Down (in metres)
     float yaw_deg = 4; // Yaw in degrees (0 North, positive is clock-wise looking from above)
+}
+
+// Type for position commands in Global (Latitude, Longitude, Altitude) coordinates and yaw.
+message PositionGlobalYaw {
+    double lat_deg = 1; // Latitude (in degrees)
+    double lon_deg = 2; // Longitude (in degrees)
+    float alt_m = 3;    // altitude (in metres)
+    float yaw_deg = 4;  // Yaw in degrees (0 North, positive is clock-wise looking from above)
 }
 
 // Type for velocity commands in body coordinates.
