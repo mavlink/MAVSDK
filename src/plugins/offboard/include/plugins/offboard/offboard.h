@@ -205,6 +205,34 @@ public:
     operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw);
 
     /**
+     * @brief Type for position commands in Global (Latitude, Longitude, Altitude) coordinates and
+     * yaw.
+     */
+    struct PositionGlobalYaw {
+        double lat_deg{}; /**< @brief Latitude (in degrees) */
+        double lon_deg{}; /**< @brief Longitude (in degrees) */
+        float alt_m{}; /**< @brief altitude (in metres) */
+        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                            above) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Offboard::PositionGlobalYaw` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Offboard::PositionGlobalYaw`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw);
+
+    /**
      * @brief Type for velocity commands in body coordinates.
      */
     struct VelocityBodyYawspeed {
@@ -395,6 +423,15 @@ public:
      * @return Result of request.
      */
     Result set_position_ned(PositionNedYaw position_ned_yaw) const;
+
+    /**
+     * @brief Set the position in Global coordinates and yaw.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_position_global(PositionGlobalYaw position_global_yaw) const;
 
     /**
      * @brief Set the velocity in body coordinates and yaw angular rate. Not available for

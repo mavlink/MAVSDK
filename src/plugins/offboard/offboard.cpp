@@ -14,6 +14,7 @@ using ActuatorControlGroup = Offboard::ActuatorControlGroup;
 using ActuatorControl = Offboard::ActuatorControl;
 using AttitudeRate = Offboard::AttitudeRate;
 using PositionNedYaw = Offboard::PositionNedYaw;
+using PositionGlobalYaw = Offboard::PositionGlobalYaw;
 using VelocityBodyYawspeed = Offboard::VelocityBodyYawspeed;
 using VelocityNedYaw = Offboard::VelocityNedYaw;
 using AccelerationNed = Offboard::AccelerationNed;
@@ -70,6 +71,11 @@ Offboard::Result Offboard::set_attitude_rate(AttitudeRate attitude_rate) const
 Offboard::Result Offboard::set_position_ned(PositionNedYaw position_ned_yaw) const
 {
     return _impl->set_position_ned(position_ned_yaw);
+}
+
+Offboard::Result Offboard::set_position_global(PositionGlobalYaw position_global_yaw) const
+{
+    return _impl->set_position_global(position_global_yaw);
 }
 
 Offboard::Result Offboard::set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed) const
@@ -196,6 +202,26 @@ std::ostream& operator<<(std::ostream& str, Offboard::PositionNedYaw const& posi
     str << "    east_m: " << position_ned_yaw.east_m << '\n';
     str << "    down_m: " << position_ned_yaw.down_m << '\n';
     str << "    yaw_deg: " << position_ned_yaw.yaw_deg << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs)
+{
+    return ((std::isnan(rhs.lat_deg) && std::isnan(lhs.lat_deg)) || rhs.lat_deg == lhs.lat_deg) &&
+           ((std::isnan(rhs.lon_deg) && std::isnan(lhs.lon_deg)) || rhs.lon_deg == lhs.lon_deg) &&
+           ((std::isnan(rhs.alt_m) && std::isnan(lhs.alt_m)) || rhs.alt_m == lhs.alt_m) &&
+           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+}
+
+std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw)
+{
+    str << std::setprecision(15);
+    str << "position_global_yaw:" << '\n' << "{\n";
+    str << "    lat_deg: " << position_global_yaw.lat_deg << '\n';
+    str << "    lon_deg: " << position_global_yaw.lon_deg << '\n';
+    str << "    alt_m: " << position_global_yaw.alt_m << '\n';
+    str << "    yaw_deg: " << position_global_yaw.yaw_deg << '\n';
     str << '}';
     return str;
 }

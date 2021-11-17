@@ -13,6 +13,7 @@ public:
     MOCK_CONST_METHOD1(set_attitude, Offboard::Result(Offboard::Attitude)){};
     MOCK_CONST_METHOD1(set_attitude_rate, Offboard::Result(Offboard::AttitudeRate)){};
     MOCK_CONST_METHOD1(set_position_ned, Offboard::Result(Offboard::PositionNedYaw)){};
+    MOCK_CONST_METHOD1(set_position_global, Offboard::Result(Offboard::PositionGlobalYaw)){};
     MOCK_CONST_METHOD1(set_velocity_body, Offboard::Result(Offboard::VelocityBodyYawspeed)){};
     MOCK_CONST_METHOD1(set_velocity_ned, Offboard::Result(Offboard::VelocityNedYaw)){};
     MOCK_CONST_METHOD2(

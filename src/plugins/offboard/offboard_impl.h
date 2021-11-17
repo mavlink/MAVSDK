@@ -30,6 +30,7 @@ public:
     bool is_active();
 
     Offboard::Result set_position_ned(Offboard::PositionNedYaw position_ned_yaw);
+    Offboard::Result set_position_global(Offboard::PositionGlobalYaw position_global_yaw);
     Offboard::Result set_velocity_ned(Offboard::VelocityNedYaw velocity_ned_yaw);
     Offboard::Result set_position_velocity_ned(
         Offboard::PositionNedYaw position_ned_yaw, Offboard::VelocityNedYaw velocity_ned_yaw);
@@ -44,6 +45,7 @@ public:
 
 private:
     Offboard::Result send_position_ned();
+    Offboard::Result send_position_global();
     Offboard::Result send_velocity_ned();
     Offboard::Result send_position_velocity_ned();
     Offboard::Result send_acceleration_ned();
@@ -68,6 +70,8 @@ private:
     enum class Mode {
         NotActive,
         PositionNed,
+        // PositionGlobalAMSL,
+        PositionGlobalAltRel,
         VelocityNed,
         PositionVelocityNed,
         AccelerationNed,
@@ -77,6 +81,7 @@ private:
         ActuatorControl
     } _mode = Mode::NotActive;
     Offboard::PositionNedYaw _position_ned_yaw{};
+    Offboard::PositionGlobalYaw _position_global_yaw{};
     Offboard::VelocityNedYaw _velocity_ned_yaw{};
     Offboard::AccelerationNed _acceleration_ned{};
     Offboard::VelocityBodyYawspeed _velocity_body_yawspeed{};
