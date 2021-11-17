@@ -154,7 +154,8 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
 
     // Send it once before starting offboard, otherwise it will be rejected.
     // this is a step north about 10m, this uses altitude relative from home
-    const Offboard::PositionGlobalYaw north{origin.latitude_deg+0.0001, origin.longitude_deg, 20.0f,0.0f};
+    const Offboard::PositionGlobalYaw north{
+        origin.latitude_deg + 0.0001, origin.longitude_deg, 20.0f, 0.0f};
     offboard.set_position_global(north);
 
     Offboard::Result offboard_result = offboard.start();
@@ -167,12 +168,14 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
     std::cout << "Going North\n";
     sleep_for(seconds(10));
 
-    const Offboard::PositionGlobalYaw east{origin.latitude_deg+0.0001, origin.longitude_deg+0.0001, 15.0f,90.0f};
+    const Offboard::PositionGlobalYaw east{
+        origin.latitude_deg + 0.0001, origin.longitude_deg + 0.0001, 15.0f, 90.0f};
     offboard.set_position_global(east);
     std::cout << "Going East\n";
     sleep_for(seconds(10));
 
-    const Offboard::PositionGlobalYaw home{origin.latitude_deg, origin.longitude_deg, 10.0f,180.0f};
+    const Offboard::PositionGlobalYaw home{
+        origin.latitude_deg, origin.longitude_deg, 10.0f, 180.0f};
     offboard.set_position_global(home);
     std::cout << "Going Home facing south\n";
     sleep_for(seconds(10));
@@ -369,8 +372,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    // using global position 
-    if (!offb_ctrl_pos_global(offboard,telemetry)) {
+    // using global position
+    if (!offb_ctrl_pos_global(offboard, telemetry)) {
         return 1;
     }
 
