@@ -135,6 +135,59 @@ bool offb_ctrl_ned(mavsdk::Offboard& offboard)
 }
 
 //
+// Does Offboard control using Global (Latitude, Longitude, relative altitude) co-ordinates.
+//
+// returns true if everything went well in Offboard control
+//
+bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemetry)
+{
+    std::cout << "Reading home position in Global coordinates\n";
+
+    const auto res_and_gps_origin = telemetry.get_gps_global_origin();
+    if (res_and_gps_origin.first != Telemetry::Result::Success) {
+        std::cerr << "Telemetry failed: " << res_and_gps_origin.first << '\n';
+    }
+    Telemetry::GpsGlobalOrigin origin = res_and_gps_origin.second;
+    std::cerr << "Origin (lat, lon, alt amsl):\n " << origin << '\n';
+
+    std::cout << "Starting Offboard position control in Global coordinates\n";
+
+    // Send it once before starting offboard, otherwise it will be rejected.
+    // this is a step north about 10m, this uses altitude relative from home
+    const Offboard::PositionGlobalYaw north{origin.latitude_deg+0.0001, origin.longitude_deg, 20.0f,0.0f};
+    offboard.set_position_global(north);
+
+    Offboard::Result offboard_result = offboard.start();
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
+        return false;
+    }
+
+    std::cout << "Offboard started\n";
+    std::cout << "Going North\n";
+    sleep_for(seconds(10));
+
+    const Offboard::PositionGlobalYaw east{origin.latitude_deg+0.0001, origin.longitude_deg+0.0001, 15.0f,90.0f};
+    offboard.set_position_global(east);
+    std::cout << "Going East\n";
+    sleep_for(seconds(10));
+
+    const Offboard::PositionGlobalYaw home{origin.latitude_deg, origin.longitude_deg, 10.0f,180.0f};
+    offboard.set_position_global(home);
+    std::cout << "Going Home facing south\n";
+    sleep_for(seconds(10));
+
+    offboard_result = offboard.stop();
+    if (offboard_result != Offboard::Result::Success) {
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
+        return false;
+    }
+    std::cout << "Offboard stopped\n";
+
+    return true;
+}
+
+//
 // Does Offboard control using body co-ordinates.
 // Body coordinates really means world coordinates rotated by the yaw of the
 // vehicle, so if the vehicle pitches down, the forward axis does still point
@@ -313,6 +366,11 @@ int main(int argc, char** argv)
     in_air_future.wait_for(seconds(10));
     if (in_air_future.wait_for(seconds(3)) == std::future_status::timeout) {
         std::cerr << "Takeoff timed out.\n";
+        return 1;
+    }
+
+    // using global position 
+    if (!offb_ctrl_pos_global(offboard,telemetry)) {
         return 1;
     }
 
