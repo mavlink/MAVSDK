@@ -38,6 +38,9 @@ static constexpr float ARBITRARY_THRUST = 0.5f;
 static constexpr float ARBITRARY_NORTH_M = 10.54f;
 static constexpr float ARBITRARY_EAST_M = 5.62f;
 static constexpr float ARBITRARY_DOWN_M = 1.44f;
+static constexpr double ARBITRARY_LAT_DEG = 45.519545949868736;
+static constexpr double ARBITRARY_LON_DEG = -73.57443022882539;
+static constexpr float ARBITRARY_ALT_M = 60.0f;
 static constexpr float ARBITRARY_VELOCITY_LOW = 1.7f;
 static constexpr float ARBITRARY_VELOCITY_MID = 7.3f;
 static constexpr float ARBITRARY_VELOCITY_HIGH = 14.6f;
@@ -55,6 +58,8 @@ protected:
     std::unique_ptr<mavsdk::rpc::offboard::Attitude> createArbitraryRPCAttitude() const;
     std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate> createArbitraryRPCAttitudeRate() const;
     std::unique_ptr<mavsdk::rpc::offboard::PositionNedYaw> createArbitraryRPCPositionNedYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::PositionGlobalYaw>
+    createArbitraryRPCPositionGlobalYaw() const;
     std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
     createArbitraryRPCVelocityBodyYawspeed() const;
     std::unique_ptr<mavsdk::rpc::offboard::VelocityNedYaw> createArbitraryRPCVelocityNedYaw() const;
@@ -396,6 +401,60 @@ TEST_F(OffboardServiceImplTest, setsPositionNedYawCorrectly)
     request.set_allocated_position_ned_yaw(rpc_position_ned_yaw.release());
 
     offboardService.SetPositionNed(nullptr, &request, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setPositionGlobalYawDoesNotFailWithAllNullParams)
+{
+    MockLazyPlugin lazy_plugin;
+    MockOffboard offboard;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
+
+    offboardService.SetPositionGlobal(nullptr, nullptr, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setPositionGlobalYawDoesNotFailWithNullResponse)
+{
+    MockLazyPlugin lazy_plugin;
+    MockOffboard offboard;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
+    mavsdk::rpc::offboard::SetPositionGlobalRequest request;
+
+    auto rpc_position_global_yaw = createArbitraryRPCPositionGlobalYaw();
+    request.set_allocated_position_global_yaw(rpc_position_global_yaw.release());
+
+    offboardService.SetPositionGlobal(nullptr, &request, nullptr);
+}
+
+std::unique_ptr<mavsdk::rpc::offboard::PositionGlobalYaw>
+OffboardServiceImplTest::createArbitraryRPCPositionGlobalYaw() const
+{
+    auto rpc_position_global_yaw = std::make_unique<mavsdk::rpc::offboard::PositionGlobalYaw>();
+    rpc_position_global_yaw->set_lat_deg(ARBITRARY_LAT_DEG);
+    rpc_position_global_yaw->set_lon_deg(ARBITRARY_LON_DEG);
+    rpc_position_global_yaw->set_alt_m(ARBITRARY_ALT_M);
+    rpc_position_global_yaw->set_yaw_deg(ARBITRARY_YAW);
+
+    return rpc_position_global_yaw;
+}
+
+TEST_F(OffboardServiceImplTest, setsPositionGlobalYawCorrectly)
+{
+    MockLazyPlugin lazy_plugin;
+    MockOffboard offboard;
+    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&offboard));
+    OffboardServiceImpl offboardService(lazy_plugin);
+    mavsdk::rpc::offboard::SetPositionGlobalRequest request;
+
+    auto rpc_position_global_yaw = createArbitraryRPCPositionGlobalYaw();
+    const auto expected_position_global_yaw =
+        OffboardServiceImpl::translateFromRpcPositionGlobalYaw(*rpc_position_global_yaw);
+    EXPECT_CALL(offboard, set_position_global(expected_position_global_yaw)).Times(1);
+
+    request.set_allocated_position_global_yaw(rpc_position_global_yaw.release());
+
+    offboardService.SetPositionGlobal(nullptr, &request, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithAllNullParams)

@@ -150,6 +150,34 @@ Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw positio
     return send_position_ned();
 }
 
+Offboard::Result OffboardImpl::set_position_global(Offboard::PositionGlobalYaw position_global_yaw)
+{
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _position_global_yaw = position_global_yaw;
+
+        if (_mode != Mode::PositionGlobalAltRel) {
+            if (_call_every_cookie) {
+                // If we're already sending other setpoints, stop that now.
+                _parent->remove_call_every(_call_every_cookie);
+                _call_every_cookie = nullptr;
+            }
+            // We automatically send Global setpoints from now on.
+            _parent->add_call_every(
+                [this]() { send_position_global(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+            _mode = Mode::PositionGlobalAltRel;
+        } else {
+            // We're already sending these kind of setpoints. Since the setpoint change, let's
+            // reschedule the next call, so we don't send setpoints too often.
+            _parent->reset_call_every(_call_every_cookie);
+        }
+    }
+
+    // also send it right now to reduce latency
+    return send_position_global();
+}
+
 Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocity_ned_yaw)
 {
     {
@@ -383,6 +411,46 @@ Offboard::Result OffboardImpl::send_position_ned()
         0.0f, // afy
         0.0f, // afz
         to_rad_from_deg(position_ned_yaw.yaw_deg), // yaw
+        0.0f); // yaw_rate
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
+}
+
+Offboard::Result OffboardImpl::send_position_global()
+{
+    const static uint16_t IGNORE_VX = (1 << 3);
+    const static uint16_t IGNORE_VY = (1 << 4);
+    const static uint16_t IGNORE_VZ = (1 << 5);
+    const static uint16_t IGNORE_AX = (1 << 6);
+    const static uint16_t IGNORE_AY = (1 << 7);
+    const static uint16_t IGNORE_AZ = (1 << 8);
+    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    const auto position_global_yaw = [this]() {
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _position_global_yaw;
+    }();
+
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_global_int_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, // or MAV_FRAME_GLOBAL_INT
+        IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        (int32_t)(position_global_yaw.lat_deg * 1.0e7),
+        (int32_t)(position_global_yaw.lon_deg * 1.0e7),
+        position_global_yaw.alt_m,
+        0.0f, // vx
+        0.0f, // vy
+        0.0f, // vz
+        0.0f, // afx
+        0.0f, // afy
+        0.0f, // afz
+        to_rad_from_deg(position_global_yaw.yaw_deg), // yaw
         0.0f); // yaw_rate
     return _parent->send_message(message) ? Offboard::Result::Success :
                                             Offboard::Result::ConnectionError;
