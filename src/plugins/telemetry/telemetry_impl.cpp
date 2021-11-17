@@ -1076,7 +1076,13 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
 
     Telemetry::Battery new_battery;
     new_battery.id = bat_status.id;
-    new_battery.voltage_v = bat_status.voltages[0] * 1e-3f;
+    new_battery.voltage_v = 0.0f;
+    for (int i = 0; i < 10; i++)
+    {
+        if (bat_status.voltages[i] == UINT16_MAX)
+            break;
+        new_battery.voltage_v += static_cast<float>(bat_status.voltages[i]) * 1e-3f;
+    }
     // FIXME: it is strange calling it percent when the range goes from 0 to 1.
     new_battery.remaining_percent = bat_status.battery_remaining * 1e-2f;
 
