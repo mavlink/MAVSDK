@@ -5,14 +5,14 @@ using namespace mavsdk;
 
 TEST(MAVLinkChannels, MaxChannelsSanity)
 {
-    ASSERT_TRUE(MAVLinkChannels::get_max_channels() < UINT8_MAX);
+    ASSERT_TRUE(MAVLinkChannels::get_max_channels() < std::numeric_limits<uint8_t>::max());
     ASSERT_TRUE(MAVLinkChannels::get_max_channels() > 0);
 }
 
 TEST(MAVLinkChannels, TryAll)
 {
     // Checkout all first
-    for (unsigned i = 0; i < UINT8_MAX; ++i) {
+    for (unsigned i = 0; i < std::numeric_limits<uint8_t>::max(); ++i) {
         uint8_t channel;
         if (i < MAVLinkChannels::get_max_channels()) {
             ASSERT_TRUE(MAVLinkChannels::Instance().checkout_free_channel(channel));
@@ -23,7 +23,7 @@ TEST(MAVLinkChannels, TryAll)
     }
 
     // Give them all back, even the invalid ones
-    for (unsigned i = 0; i < UINT8_MAX; ++i) {
+    for (unsigned i = 0; i < std::numeric_limits<uint8_t>::max(); ++i) {
         MAVLinkChannels::Instance().checkin_used_channel(i);
     }
 }
