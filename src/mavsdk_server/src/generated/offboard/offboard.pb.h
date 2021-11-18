@@ -203,6 +203,32 @@ namespace mavsdk {
 namespace rpc {
 namespace offboard {
 
+enum PositionGlobalYaw_AltitudeType : int {
+  PositionGlobalYaw_AltitudeType_ALTITUDE_REL_HOME = 0,
+  PositionGlobalYaw_AltitudeType_ALTITUDE_AMSL = 1,
+  PositionGlobalYaw_AltitudeType_ALTITUDE_AGL = 2,
+  PositionGlobalYaw_AltitudeType_PositionGlobalYaw_AltitudeType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  PositionGlobalYaw_AltitudeType_PositionGlobalYaw_AltitudeType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool PositionGlobalYaw_AltitudeType_IsValid(int value);
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw_AltitudeType_AltitudeType_MIN = PositionGlobalYaw_AltitudeType_ALTITUDE_REL_HOME;
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw_AltitudeType_AltitudeType_MAX = PositionGlobalYaw_AltitudeType_ALTITUDE_AGL;
+constexpr int PositionGlobalYaw_AltitudeType_AltitudeType_ARRAYSIZE = PositionGlobalYaw_AltitudeType_AltitudeType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PositionGlobalYaw_AltitudeType_descriptor();
+template<typename T>
+inline const std::string& PositionGlobalYaw_AltitudeType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PositionGlobalYaw_AltitudeType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function PositionGlobalYaw_AltitudeType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    PositionGlobalYaw_AltitudeType_descriptor(), enum_t_value);
+}
+inline bool PositionGlobalYaw_AltitudeType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PositionGlobalYaw_AltitudeType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PositionGlobalYaw_AltitudeType>(
+    PositionGlobalYaw_AltitudeType_descriptor(), name, value);
+}
 enum OffboardResult_Result : int {
   OffboardResult_Result_RESULT_UNKNOWN = 0,
   OffboardResult_Result_RESULT_SUCCESS = 1,
@@ -4661,6 +4687,38 @@ class PositionGlobalYaw final :
 
   // nested types ----------------------------------------------------
 
+  typedef PositionGlobalYaw_AltitudeType AltitudeType;
+  static constexpr AltitudeType ALTITUDE_REL_HOME =
+    PositionGlobalYaw_AltitudeType_ALTITUDE_REL_HOME;
+  static constexpr AltitudeType ALTITUDE_AMSL =
+    PositionGlobalYaw_AltitudeType_ALTITUDE_AMSL;
+  static constexpr AltitudeType ALTITUDE_AGL =
+    PositionGlobalYaw_AltitudeType_ALTITUDE_AGL;
+  static inline bool AltitudeType_IsValid(int value) {
+    return PositionGlobalYaw_AltitudeType_IsValid(value);
+  }
+  static constexpr AltitudeType AltitudeType_MIN =
+    PositionGlobalYaw_AltitudeType_AltitudeType_MIN;
+  static constexpr AltitudeType AltitudeType_MAX =
+    PositionGlobalYaw_AltitudeType_AltitudeType_MAX;
+  static constexpr int AltitudeType_ARRAYSIZE =
+    PositionGlobalYaw_AltitudeType_AltitudeType_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  AltitudeType_descriptor() {
+    return PositionGlobalYaw_AltitudeType_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& AltitudeType_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, AltitudeType>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function AltitudeType_Name.");
+    return PositionGlobalYaw_AltitudeType_Name(enum_t_value);
+  }
+  static inline bool AltitudeType_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      AltitudeType* value) {
+    return PositionGlobalYaw_AltitudeType_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
@@ -4668,6 +4726,7 @@ class PositionGlobalYaw final :
     kLonDegFieldNumber = 2,
     kAltMFieldNumber = 3,
     kYawDegFieldNumber = 4,
+    kAltitudeTypeFieldNumber = 5,
   };
   // double lat_deg = 1;
   void clear_lat_deg();
@@ -4705,6 +4764,15 @@ class PositionGlobalYaw final :
   void _internal_set_yaw_deg(float value);
   public:
 
+  // .mavsdk.rpc.offboard.PositionGlobalYaw.AltitudeType altitude_type = 5;
+  void clear_altitude_type();
+  ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType altitude_type() const;
+  void set_altitude_type(::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType value);
+  private:
+  ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType _internal_altitude_type() const;
+  void _internal_set_altitude_type(::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.offboard.PositionGlobalYaw)
  private:
   class _Internal;
@@ -4716,6 +4784,7 @@ class PositionGlobalYaw final :
   double lon_deg_;
   float alt_m_;
   float yaw_deg_;
+  int altitude_type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_offboard_2foffboard_2eproto;
 };
@@ -7865,6 +7934,26 @@ inline void PositionGlobalYaw::set_yaw_deg(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.offboard.PositionGlobalYaw.yaw_deg)
 }
 
+// .mavsdk.rpc.offboard.PositionGlobalYaw.AltitudeType altitude_type = 5;
+inline void PositionGlobalYaw::clear_altitude_type() {
+  altitude_type_ = 0;
+}
+inline ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType PositionGlobalYaw::_internal_altitude_type() const {
+  return static_cast< ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType >(altitude_type_);
+}
+inline ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType PositionGlobalYaw::altitude_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.offboard.PositionGlobalYaw.altitude_type)
+  return _internal_altitude_type();
+}
+inline void PositionGlobalYaw::_internal_set_altitude_type(::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType value) {
+  
+  altitude_type_ = value;
+}
+inline void PositionGlobalYaw::set_altitude_type(::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType value) {
+  _internal_set_altitude_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.offboard.PositionGlobalYaw.altitude_type)
+}
+
 // -------------------------------------------------------------------
 
 // VelocityBodyYawspeed
@@ -8245,6 +8334,11 @@ inline void OffboardResult::set_allocated_result_str(std::string* result_str) {
 
 PROTOBUF_NAMESPACE_OPEN
 
+template <> struct is_proto_enum< ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType>() {
+  return ::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType_descriptor();
+}
 template <> struct is_proto_enum< ::mavsdk::rpc::offboard::OffboardResult_Result> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::offboard::OffboardResult_Result>() {

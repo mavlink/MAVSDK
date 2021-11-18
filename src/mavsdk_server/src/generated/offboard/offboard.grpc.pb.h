@@ -118,7 +118,7 @@ class OffboardService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetPositionNedResponse>>(PrepareAsyncSetPositionNedRaw(context, request, cq));
     }
     //
-    // Set the position in Global coordinates and yaw.
+    // Set the position in Global coordinates (latitude, longitude, altitude) and yaw
     virtual ::grpc::Status SetPositionGlobal(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionGlobalRequest& request, ::mavsdk::rpc::offboard::SetPositionGlobalResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetPositionGlobalResponse>> AsyncSetPositionGlobal(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionGlobalRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::SetPositionGlobalResponse>>(AsyncSetPositionGlobalRaw(context, request, cq));
@@ -202,7 +202,7 @@ class OffboardService final {
       virtual void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetPositionNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
-      // Set the position in Global coordinates and yaw.
+      // Set the position in Global coordinates (latitude, longitude, altitude) and yaw
       virtual void SetPositionGlobal(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionGlobalRequest* request, ::mavsdk::rpc::offboard::SetPositionGlobalResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetPositionGlobal(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionGlobalRequest* request, ::mavsdk::rpc::offboard::SetPositionGlobalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
@@ -449,7 +449,7 @@ class OffboardService final {
     // Set the position in NED coordinates and yaw.
     virtual ::grpc::Status SetPositionNed(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::SetPositionNedRequest* request, ::mavsdk::rpc::offboard::SetPositionNedResponse* response);
     //
-    // Set the position in Global coordinates and yaw.
+    // Set the position in Global coordinates (latitude, longitude, altitude) and yaw
     virtual ::grpc::Status SetPositionGlobal(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::SetPositionGlobalRequest* request, ::mavsdk::rpc::offboard::SetPositionGlobalResponse* response);
     //
     // Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.

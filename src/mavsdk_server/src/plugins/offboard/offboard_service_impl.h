@@ -184,6 +184,39 @@ public:
         return obj;
     }
 
+    static rpc::offboard::PositionGlobalYaw::AltitudeType translateToRpcAltitudeType(
+        const mavsdk::Offboard::PositionGlobalYaw::AltitudeType& altitude_type)
+    {
+        switch (altitude_type) {
+            default:
+                LogErr() << "Unknown altitude_type enum value: " << static_cast<int>(altitude_type);
+            // FALLTHROUGH
+            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome:
+                return rpc::offboard::
+                    PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_REL_HOME;
+            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl:
+                return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AMSL;
+            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAgl:
+                return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AGL;
+        }
+    }
+
+    static mavsdk::Offboard::PositionGlobalYaw::AltitudeType
+    translateFromRpcAltitudeType(const rpc::offboard::PositionGlobalYaw::AltitudeType altitude_type)
+    {
+        switch (altitude_type) {
+            default:
+                LogErr() << "Unknown altitude_type enum value: " << static_cast<int>(altitude_type);
+            // FALLTHROUGH
+            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_REL_HOME:
+                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome;
+            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AMSL:
+                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl;
+            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AGL:
+                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAgl;
+        }
+    }
+
     static std::unique_ptr<rpc::offboard::PositionGlobalYaw>
     translateToRpcPositionGlobalYaw(const mavsdk::Offboard::PositionGlobalYaw& position_global_yaw)
     {
@@ -196,6 +229,8 @@ public:
         rpc_obj->set_alt_m(position_global_yaw.alt_m);
 
         rpc_obj->set_yaw_deg(position_global_yaw.yaw_deg);
+
+        rpc_obj->set_altitude_type(translateToRpcAltitudeType(position_global_yaw.altitude_type));
 
         return rpc_obj;
     }
@@ -212,6 +247,8 @@ public:
         obj.alt_m = position_global_yaw.alt_m();
 
         obj.yaw_deg = position_global_yaw.yaw_deg();
+
+        obj.altitude_type = translateFromRpcAltitudeType(position_global_yaw.altitude_type());
 
         return obj;
     }

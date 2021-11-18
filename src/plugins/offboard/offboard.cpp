@@ -206,12 +206,27 @@ std::ostream& operator<<(std::ostream& str, Offboard::PositionNedYaw const& posi
     return str;
 }
 
+std::ostream&
+operator<<(std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type)
+{
+    switch (altitude_type) {
+        case Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome:
+            return str << "Altitude Rel Home";
+        case Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl:
+            return str << "Altitude Amsl";
+        case Offboard::PositionGlobalYaw::AltitudeType::AltitudeAgl:
+            return str << "Altitude Agl";
+        default:
+            return str << "Unknown";
+    }
+}
 bool operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs)
 {
     return ((std::isnan(rhs.lat_deg) && std::isnan(lhs.lat_deg)) || rhs.lat_deg == lhs.lat_deg) &&
            ((std::isnan(rhs.lon_deg) && std::isnan(lhs.lon_deg)) || rhs.lon_deg == lhs.lon_deg) &&
            ((std::isnan(rhs.alt_m) && std::isnan(lhs.alt_m)) || rhs.alt_m == lhs.alt_m) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg) &&
+           (rhs.altitude_type == lhs.altitude_type);
 }
 
 std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw)
@@ -222,6 +237,7 @@ std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& p
     str << "    lon_deg: " << position_global_yaw.lon_deg << '\n';
     str << "    alt_m: " << position_global_yaw.alt_m << '\n';
     str << "    yaw_deg: " << position_global_yaw.yaw_deg << '\n';
+    str << "    altitude_type: " << position_global_yaw.altitude_type << '\n';
     str << '}';
     return str;
 }
