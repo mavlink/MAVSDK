@@ -105,14 +105,14 @@ void send_battery_status(MavlinkPassthrough& mavlink_passthrough)
     const uint16_t voltages[10]{
         3700,
         3600,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX,
-        UINT16_MAX}; // mV
+        std::numeric_limits<uint16_t>::max(),
+        std::numeric_limits<uint16_t>::max(),
+        std::numeric_limits<uint16_t>::max(),
+        std::numeric_limits<uint16_t>::max(),
+        std::numeric_limits<uint16_t>::max(),
+        std::numeric_limits<uint16_t>::max(),
+        std::numeric_limits<uint16_t>::max(),
+        std::numeric_limits<uint16_t>::max()}; // mV
 
     const uint16_t voltages_ext[4]{0, 0, 0, 0};
 
