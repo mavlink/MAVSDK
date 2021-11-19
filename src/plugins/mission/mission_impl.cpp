@@ -36,18 +36,10 @@ void MissionImpl::init()
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
         std::bind(&MissionImpl::process_mission_item_reached, this, _1),
         this);
-
-    _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
-        [this](const mavlink_message_t& message) { process_gimbal_manager_information(message); },
-        this);
 }
 
 void MissionImpl::enable()
 {
-    _parent->register_timeout_handler(
-        [this]() { receive_protocol_timeout(); }, 1.0, &_gimbal_protocol_cookie);
-
     MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.params.maybe_param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
@@ -58,12 +50,10 @@ void MissionImpl::enable()
 void MissionImpl::disable()
 {
     reset_mission_progress();
-    _gimbal_protocol = GimbalProtocol::Unknown;
 }
 
 void MissionImpl::deinit()
 {
-    _parent->unregister_timeout_handler(_gimbal_protocol_cookie);
     _parent->unregister_timeout_handler(_timeout_cookie);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
@@ -103,36 +93,6 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
     report_progress();
 }
 
-void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& message)
-{
-    UNUSED(message);
-    if (_gimbal_protocol_cookie != nullptr) {
-        LogDebug() << "Using gimbal protocol v2";
-        _gimbal_protocol = GimbalProtocol::V2;
-        _parent->unregister_timeout_handler(_gimbal_protocol_cookie);
-    }
-}
-
-void MissionImpl::wait_for_protocol()
-{
-    while (_gimbal_protocol == GimbalProtocol::Unknown) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-}
-
-void MissionImpl::wait_for_protocol_async(std::function<void()> callback)
-{
-    wait_for_protocol();
-    callback();
-}
-
-void MissionImpl::receive_protocol_timeout()
-{
-    LogDebug() << "Falling back to gimbal protocol v1";
-    _gimbal_protocol = GimbalProtocol::V1;
-    _gimbal_protocol_cookie = nullptr;
-}
-
 Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_plan)
 {
     auto prom = std::promise<Mission::Result>();
@@ -156,21 +116,19 @@ void MissionImpl::upload_mission_async(
 
     reset_mission_progress();
 
-    wait_for_protocol_async([callback, mission_plan, this]() {
-        const auto int_items = convert_to_int_items(mission_plan.mission_items);
+    const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-        _mission_data.last_upload = _parent->mission_transfer().upload_items_async(
-            MAV_MISSION_TYPE_MISSION,
-            int_items,
-            [this, callback](MAVLinkMissionTransfer::Result result) {
-                auto converted_result = convert_result(result);
-                _parent->call_user_callback([callback, converted_result]() {
-                    if (callback) {
-                        callback(converted_result);
-                    }
-                });
+    _mission_data.last_upload = _parent->mission_transfer().upload_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        int_items,
+        [this, callback](MAVLinkMissionTransfer::Result result) {
+            auto converted_result = convert_result(result);
+            _parent->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
             });
-    });
+        });
 }
 
 Mission::Result MissionImpl::cancel_mission_upload()
