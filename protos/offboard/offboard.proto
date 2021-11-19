@@ -212,9 +212,9 @@ message PositionNedYaw {
 message PositionGlobalYaw {
     // Possible altitude options
     enum AltitudeType {
-        ALTITUDE_REL_HOME = 0; // Altitude realtive to the Home position
-        ALTITUDE_AMSL = 1; // Altitude above mean sea level (AMSL)
-        ALTITUDE_AGL = 2; // Altitude above ground level (AGL)
+        ALTITUDE_TYPE_REL_HOME = 0; // Altitude relative to the Home position
+        ALTITUDE_TYPE_AMSL = 1; // Altitude above mean sea level (AMSL)
+        ALTITUDE_TYPE_AGL = 2; // Altitude above ground level (AGL)
     }    
     double lat_deg = 1; // Latitude (in degrees)
     double lon_deg = 2; // Longitude (in degrees)
