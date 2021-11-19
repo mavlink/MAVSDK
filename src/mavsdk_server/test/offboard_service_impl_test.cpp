@@ -42,7 +42,8 @@ static constexpr float ARBITRARY_DOWN_M = 1.44f;
 static constexpr double ARBITRARY_LAT_DEG = 45.519545949868736;
 static constexpr double ARBITRARY_LON_DEG = -73.57443022882539;
 static constexpr float ARBITRARY_ALT_M = 60.0f;
-static constexpr AltitudeType ARBITRARY_ALT_TYPE = AltitudeType::RelHome;
+static constexpr auto ARBITRARY_ALT_TYPE =
+    mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME;
 static constexpr float ARBITRARY_VELOCITY_LOW = 1.7f;
 static constexpr float ARBITRARY_VELOCITY_MID = 7.3f;
 static constexpr float ARBITRARY_VELOCITY_HIGH = 14.6f;
