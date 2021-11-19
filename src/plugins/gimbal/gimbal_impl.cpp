@@ -40,29 +40,37 @@ Gimbal::Result GimbalImpl::prepare()
     return ret.get();
 }
 
-void GimbalImpl::prepare_async(const Gimbal::ResultCallback& callback) _parent->request_message()
-    .request(
-        MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
-        [this, callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
-            if (result == MavlinkCommandSender::Result::Success) {
-                mavlink_gimbal_manager_information_t gimbal_manager_information;
-                mavlink_msg_gimbal_manager_information_decode(
-                    &message, &gimbal_manager_information);
+void GimbalImpl::prepare_async(const Gimbal::ResultCallback& callback)
+{
+    if (_gimbal_protocol != nullptr) {
+        _parent->call_user_callback([callback]() { callback(Gimbal::Result::Success); });
+    } else {
+        _parent->request_message().request(
+            MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
+            [this,
+             callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
+                if (result == MavlinkCommandSender::Result::Success) {
+                    mavlink_gimbal_manager_information_t gimbal_manager_information;
+                    mavlink_msg_gimbal_manager_information_decode(
+                        &message, &gimbal_manager_information);
 
-                LogDebug() << "Gimbal manager information for gimbal device "
-                           << static_cast<int>(gimbal_manager_information.gimbal_device_id)
-                           << " was discovered";
+                    LogDebug() << "Gimbal manager information for gimbal device "
+                               << static_cast<int>(gimbal_manager_information.gimbal_device_id)
+                               << " was discovered";
 
-                _gimbal_protocol.reset(new GimbalProtocolV2(
-                    *_parent, gimbal_manager_information, message.sysid, message.compid));
+                    _gimbal_protocol.reset(new GimbalProtocolV2(
+                        *_parent, gimbal_manager_information, message.sysid, message.compid));
 
-                _parent->call_user_callback([callback]() { callback(Gimbal::Result::Success); });
-            } else {
-                _parent->call_user_callback(
-                    [callback, result]() { callback(gimbal_result_from_command_result(result)); });
-            }
-        },
-        0); // any component
+                    _parent->call_user_callback(
+                        [callback]() { callback(Gimbal::Result::Success); });
+                } else {
+                    _parent->call_user_callback([callback, result]() {
+                        callback(gimbal_result_from_command_result(result));
+                    });
+                }
+            },
+            0); // any component
+    }
 } // namespace mavsdk
 
 void GimbalImpl::disable()
@@ -224,7 +232,7 @@ Gimbal::ControlStatus GimbalImpl::control()
 {
     if (_gimbal_protocol == nullptr) {
         LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
-        return Gimbal::Result::Error;
+        return {};
     }
 
     return _gimbal_protocol->control();
@@ -233,10 +241,7 @@ Gimbal::ControlStatus GimbalImpl::control()
 void GimbalImpl::subscribe_control(Gimbal::ControlCallback callback)
 {
     if (_gimbal_protocol == nullptr) {
-        _parent->call_user_callback([callback]() {
-            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
-            callback(Gimbal::Result::Error);
-        });
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
 
         return;
     }

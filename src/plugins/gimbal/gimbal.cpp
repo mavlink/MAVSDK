@@ -20,6 +20,16 @@ Gimbal::Gimbal(std::shared_ptr<System> system) :
 
 Gimbal::~Gimbal() {}
 
+void Gimbal::prepare_async(const ResultCallback callback)
+{
+    _impl->prepare_async(callback);
+}
+
+Gimbal::Result Gimbal::prepare() const
+{
+    return _impl->prepare();
+}
+
 void Gimbal::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback)
 {
     _impl->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);

@@ -61,7 +61,8 @@ void RequestMessage::send_request(uint32_t message_id, uint8_t target_component_
     command_request_message.target_component_id = target_component_id;
     command_request_message.params.maybe_param1 = {static_cast<float>(message_id)};
     _command_sender.queue_command_async(
-        command_request_message, [this, message_id](MavlinkCommandSender::Result result, float) {
+        command_request_message,
+        [this, message_id, target_component_id](MavlinkCommandSender::Result result, float) {
             if (result != MavlinkCommandSender::Result::InProgress) {
                 handle_command_result(message_id, target_component_id, result);
             }
@@ -112,7 +113,9 @@ void RequestMessage::handle_command_result(
                 // This is promising, let's hope the message will actually arrive.
                 // We'll set a timeout in case we need to retry.
                 _timeout_handler.add(
-                    [this, message_id]() { handle_timeout(message_id, target_component_id); },
+                    [this, message_id, target_component_id]() {
+                        handle_timeout(message_id, target_component_id);
+                    },
                     1.0,
                     &it->timeout_cookie);
                 return;

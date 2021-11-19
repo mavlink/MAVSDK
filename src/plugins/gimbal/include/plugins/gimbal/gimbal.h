@@ -142,6 +142,22 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
+     * @brief Prepare the gimbal plugin. Must be called before the plugin can be used.
+     *
+     * This function is non-blocking. See 'prepare' for the blocking counterpart.
+     */
+    void prepare_async(const ResultCallback callback);
+
+    /**
+     * @brief Prepare the gimbal plugin. Must be called before the plugin can be used.
+     *
+     * This function is blocking. See 'prepare_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result prepare() const;
+
+    /**
      * @brief Set gimbal pitch and yaw angles.
      *
      * This sets the desired pitch and yaw angles of a gimbal.

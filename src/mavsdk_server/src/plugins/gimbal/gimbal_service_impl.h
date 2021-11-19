@@ -178,6 +178,29 @@ public:
         }
     }
 
+    grpc::Status Prepare(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::PrepareRequest* /* request */,
+        rpc::gimbal::PrepareResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->prepare();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetPitchAndYaw(
         grpc::ServerContext* /* context */,
         const rpc::gimbal::SetPitchAndYawRequest* request,

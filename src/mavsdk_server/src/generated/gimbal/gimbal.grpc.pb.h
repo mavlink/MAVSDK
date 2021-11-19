@@ -39,6 +39,15 @@ class GimbalService final {
    public:
     virtual ~StubInterface() {}
     //
+    // Prepare the gimbal plugin. Must be called before the plugin can be used.
+    virtual ::grpc::Status Prepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::mavsdk::rpc::gimbal::PrepareResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::PrepareResponse>> AsyncPrepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::PrepareResponse>>(AsyncPrepareRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::PrepareResponse>> PrepareAsyncPrepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::PrepareResponse>>(PrepareAsyncPrepareRaw(context, request, cq));
+    }
+    //
     //
     // Set gimbal pitch and yaw angles.
     //
@@ -141,6 +150,10 @@ class GimbalService final {
      public:
       virtual ~async_interface() {}
       //
+      // Prepare the gimbal plugin. Must be called before the plugin can be used.
+      virtual void Prepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest* request, ::mavsdk::rpc::gimbal::PrepareResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Prepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest* request, ::mavsdk::rpc::gimbal::PrepareResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
       //
       // Set gimbal pitch and yaw angles.
       //
@@ -206,6 +219,8 @@ class GimbalService final {
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
   private:
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::PrepareResponse>* AsyncPrepareRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::PrepareResponse>* PrepareAsyncPrepareRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* AsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* PrepareAsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>* AsyncSetPitchRateAndYawRateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -225,6 +240,13 @@ class GimbalService final {
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
+    ::grpc::Status Prepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::mavsdk::rpc::gimbal::PrepareResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::PrepareResponse>> AsyncPrepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::PrepareResponse>>(AsyncPrepareRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::PrepareResponse>> PrepareAsyncPrepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::PrepareResponse>>(PrepareAsyncPrepareRaw(context, request, cq));
+    }
     ::grpc::Status SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>> AsyncSetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>>(AsyncSetPitchAndYawRaw(context, request, cq));
@@ -279,6 +301,8 @@ class GimbalService final {
     class async final :
       public StubInterface::async_interface {
      public:
+      void Prepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest* request, ::mavsdk::rpc::gimbal::PrepareResponse* response, std::function<void(::grpc::Status)>) override;
+      void Prepare(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest* request, ::mavsdk::rpc::gimbal::PrepareResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, std::function<void(::grpc::Status)>) override;
       void SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SetPitchRateAndYawRate(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest* request, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse* response, std::function<void(::grpc::Status)>) override;
@@ -303,6 +327,8 @@ class GimbalService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::PrepareResponse>* AsyncPrepareRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::PrepareResponse>* PrepareAsyncPrepareRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* AsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* PrepareAsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>* AsyncSetPitchRateAndYawRateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -318,6 +344,7 @@ class GimbalService final {
     ::grpc::ClientReader< ::mavsdk::rpc::gimbal::ControlResponse>* SubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>* AsyncSubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::ControlResponse>* PrepareAsyncSubscribeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_Prepare_;
     const ::grpc::internal::RpcMethod rpcmethod_SetPitchAndYaw_;
     const ::grpc::internal::RpcMethod rpcmethod_SetPitchRateAndYawRate_;
     const ::grpc::internal::RpcMethod rpcmethod_SetMode_;
@@ -332,6 +359,9 @@ class GimbalService final {
    public:
     Service();
     virtual ~Service();
+    //
+    // Prepare the gimbal plugin. Must be called before the plugin can be used.
+    virtual ::grpc::Status Prepare(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest* request, ::mavsdk::rpc::gimbal::PrepareResponse* response);
     //
     //
     // Set gimbal pitch and yaw angles.
@@ -389,12 +419,32 @@ class GimbalService final {
     virtual ::grpc::Status SubscribeControl(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* writer);
   };
   template <class BaseClass>
+  class WithAsyncMethod_Prepare : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_Prepare() {
+      ::grpc::Service::MarkMethodAsync(0);
+    }
+    ~WithAsyncMethod_Prepare() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Prepare(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::PrepareRequest* /*request*/, ::mavsdk::rpc::gimbal::PrepareResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPrepare(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::PrepareRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::PrepareResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_SetPitchAndYaw : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetPitchAndYaw() {
-      ::grpc::Service::MarkMethodAsync(0);
+      ::grpc::Service::MarkMethodAsync(1);
     }
     ~WithAsyncMethod_SetPitchAndYaw() override {
       BaseClassMustBeDerivedFromService(this);
@@ -405,7 +455,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetPitchAndYaw(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -414,7 +464,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetPitchRateAndYawRate() {
-      ::grpc::Service::MarkMethodAsync(1);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_SetPitchRateAndYawRate() override {
       BaseClassMustBeDerivedFromService(this);
@@ -425,7 +475,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetPitchRateAndYawRate(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -434,7 +484,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetMode() {
-      ::grpc::Service::MarkMethodAsync(2);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_SetMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -445,7 +495,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetMode(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::SetModeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::SetModeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -454,7 +504,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetRoiLocation() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(4);
     }
     ~WithAsyncMethod_SetRoiLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -465,7 +515,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetRoiLocation(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -474,7 +524,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_TakeControl() {
-      ::grpc::Service::MarkMethodAsync(4);
+      ::grpc::Service::MarkMethodAsync(5);
     }
     ~WithAsyncMethod_TakeControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -485,7 +535,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTakeControl(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::TakeControlResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -494,7 +544,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_ReleaseControl() {
-      ::grpc::Service::MarkMethodAsync(5);
+      ::grpc::Service::MarkMethodAsync(6);
     }
     ~WithAsyncMethod_ReleaseControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -505,7 +555,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestReleaseControl(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::gimbal::ReleaseControlResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -514,7 +564,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeControl() {
-      ::grpc::Service::MarkMethodAsync(6);
+      ::grpc::Service::MarkMethodAsync(7);
     }
     ~WithAsyncMethod_SubscribeControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -525,23 +575,50 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSubscribeControl(::grpc::ServerContext* context, ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::gimbal::ControlResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(6, context, request, writer, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncServerStreaming(7, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetPitchAndYaw<WithAsyncMethod_SetPitchRateAndYawRate<WithAsyncMethod_SetMode<WithAsyncMethod_SetRoiLocation<WithAsyncMethod_TakeControl<WithAsyncMethod_ReleaseControl<WithAsyncMethod_SubscribeControl<Service > > > > > > > AsyncService;
+  typedef WithAsyncMethod_Prepare<WithAsyncMethod_SetPitchAndYaw<WithAsyncMethod_SetPitchRateAndYawRate<WithAsyncMethod_SetMode<WithAsyncMethod_SetRoiLocation<WithAsyncMethod_TakeControl<WithAsyncMethod_ReleaseControl<WithAsyncMethod_SubscribeControl<Service > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithCallbackMethod_Prepare : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_Prepare() {
+      ::grpc::Service::MarkMethodCallback(0,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::PrepareRequest, ::mavsdk::rpc::gimbal::PrepareResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::PrepareRequest* request, ::mavsdk::rpc::gimbal::PrepareResponse* response) { return this->Prepare(context, request, response); }));}
+    void SetMessageAllocatorFor_Prepare(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::gimbal::PrepareRequest, ::mavsdk::rpc::gimbal::PrepareResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::PrepareRequest, ::mavsdk::rpc::gimbal::PrepareResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_Prepare() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Prepare(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::PrepareRequest* /*request*/, ::mavsdk::rpc::gimbal::PrepareResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Prepare(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::PrepareRequest* /*request*/, ::mavsdk::rpc::gimbal::PrepareResponse* /*response*/)  { return nullptr; }
+  };
   template <class BaseClass>
   class WithCallbackMethod_SetPitchAndYaw : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SetPitchAndYaw() {
-      ::grpc::Service::MarkMethodCallback(0,
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response) { return this->SetPitchAndYaw(context, request, response); }));}
     void SetMessageAllocatorFor_SetPitchAndYaw(
         ::grpc::MessageAllocator< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -562,13 +639,13 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SetPitchRateAndYawRate() {
-      ::grpc::Service::MarkMethodCallback(1,
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest* request, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse* response) { return this->SetPitchRateAndYawRate(context, request, response); }));}
     void SetMessageAllocatorFor_SetPitchRateAndYawRate(
         ::grpc::MessageAllocator< ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -589,13 +666,13 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SetMode() {
-      ::grpc::Service::MarkMethodCallback(2,
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetModeRequest* request, ::mavsdk::rpc::gimbal::SetModeResponse* response) { return this->SetMode(context, request, response); }));}
     void SetMessageAllocatorFor_SetMode(
         ::grpc::MessageAllocator< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -616,13 +693,13 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SetRoiLocation() {
-      ::grpc::Service::MarkMethodCallback(3,
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SetRoiLocationRequest* request, ::mavsdk::rpc::gimbal::SetRoiLocationResponse* response) { return this->SetRoiLocation(context, request, response); }));}
     void SetMessageAllocatorFor_SetRoiLocation(
         ::grpc::MessageAllocator< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -643,13 +720,13 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_TakeControl() {
-      ::grpc::Service::MarkMethodCallback(4,
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::TakeControlRequest* request, ::mavsdk::rpc::gimbal::TakeControlResponse* response) { return this->TakeControl(context, request, response); }));}
     void SetMessageAllocatorFor_TakeControl(
         ::grpc::MessageAllocator< ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -670,13 +747,13 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_ReleaseControl() {
-      ::grpc::Service::MarkMethodCallback(5,
+      ::grpc::Service::MarkMethodCallback(6,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::ReleaseControlRequest* request, ::mavsdk::rpc::gimbal::ReleaseControlResponse* response) { return this->ReleaseControl(context, request, response); }));}
     void SetMessageAllocatorFor_ReleaseControl(
         ::grpc::MessageAllocator< ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -697,7 +774,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SubscribeControl() {
-      ::grpc::Service::MarkMethodCallback(6,
+      ::grpc::Service::MarkMethodCallback(7,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::gimbal::SubscribeControlRequest, ::mavsdk::rpc::gimbal::ControlResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* request) { return this->SubscribeControl(context, request); }));
@@ -713,15 +790,32 @@ class GimbalService final {
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::gimbal::ControlResponse>* SubscribeControl(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* /*request*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SetPitchAndYaw<WithCallbackMethod_SetPitchRateAndYawRate<WithCallbackMethod_SetMode<WithCallbackMethod_SetRoiLocation<WithCallbackMethod_TakeControl<WithCallbackMethod_ReleaseControl<WithCallbackMethod_SubscribeControl<Service > > > > > > > CallbackService;
+  typedef WithCallbackMethod_Prepare<WithCallbackMethod_SetPitchAndYaw<WithCallbackMethod_SetPitchRateAndYawRate<WithCallbackMethod_SetMode<WithCallbackMethod_SetRoiLocation<WithCallbackMethod_TakeControl<WithCallbackMethod_ReleaseControl<WithCallbackMethod_SubscribeControl<Service > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
+  template <class BaseClass>
+  class WithGenericMethod_Prepare : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_Prepare() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_Prepare() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Prepare(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::PrepareRequest* /*request*/, ::mavsdk::rpc::gimbal::PrepareResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
   template <class BaseClass>
   class WithGenericMethod_SetPitchAndYaw : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetPitchAndYaw() {
-      ::grpc::Service::MarkMethodGeneric(0);
+      ::grpc::Service::MarkMethodGeneric(1);
     }
     ~WithGenericMethod_SetPitchAndYaw() override {
       BaseClassMustBeDerivedFromService(this);
@@ -738,7 +832,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetPitchRateAndYawRate() {
-      ::grpc::Service::MarkMethodGeneric(1);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_SetPitchRateAndYawRate() override {
       BaseClassMustBeDerivedFromService(this);
@@ -755,7 +849,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetMode() {
-      ::grpc::Service::MarkMethodGeneric(2);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_SetMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -772,7 +866,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetRoiLocation() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(4);
     }
     ~WithGenericMethod_SetRoiLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -789,7 +883,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_TakeControl() {
-      ::grpc::Service::MarkMethodGeneric(4);
+      ::grpc::Service::MarkMethodGeneric(5);
     }
     ~WithGenericMethod_TakeControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -806,7 +900,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_ReleaseControl() {
-      ::grpc::Service::MarkMethodGeneric(5);
+      ::grpc::Service::MarkMethodGeneric(6);
     }
     ~WithGenericMethod_ReleaseControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -823,7 +917,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeControl() {
-      ::grpc::Service::MarkMethodGeneric(6);
+      ::grpc::Service::MarkMethodGeneric(7);
     }
     ~WithGenericMethod_SubscribeControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -835,12 +929,32 @@ class GimbalService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_Prepare : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_Prepare() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_Prepare() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Prepare(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::PrepareRequest* /*request*/, ::mavsdk::rpc::gimbal::PrepareResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPrepare(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_SetPitchAndYaw : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetPitchAndYaw() {
-      ::grpc::Service::MarkMethodRaw(0);
+      ::grpc::Service::MarkMethodRaw(1);
     }
     ~WithRawMethod_SetPitchAndYaw() override {
       BaseClassMustBeDerivedFromService(this);
@@ -851,7 +965,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetPitchAndYaw(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -860,7 +974,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetPitchRateAndYawRate() {
-      ::grpc::Service::MarkMethodRaw(1);
+      ::grpc::Service::MarkMethodRaw(2);
     }
     ~WithRawMethod_SetPitchRateAndYawRate() override {
       BaseClassMustBeDerivedFromService(this);
@@ -871,7 +985,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetPitchRateAndYawRate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -880,7 +994,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetMode() {
-      ::grpc::Service::MarkMethodRaw(2);
+      ::grpc::Service::MarkMethodRaw(3);
     }
     ~WithRawMethod_SetMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -891,7 +1005,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetMode(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -900,7 +1014,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetRoiLocation() {
-      ::grpc::Service::MarkMethodRaw(3);
+      ::grpc::Service::MarkMethodRaw(4);
     }
     ~WithRawMethod_SetRoiLocation() override {
       BaseClassMustBeDerivedFromService(this);
@@ -911,7 +1025,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetRoiLocation(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -920,7 +1034,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_TakeControl() {
-      ::grpc::Service::MarkMethodRaw(4);
+      ::grpc::Service::MarkMethodRaw(5);
     }
     ~WithRawMethod_TakeControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -931,7 +1045,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTakeControl(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -940,7 +1054,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_ReleaseControl() {
-      ::grpc::Service::MarkMethodRaw(5);
+      ::grpc::Service::MarkMethodRaw(6);
     }
     ~WithRawMethod_ReleaseControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -951,7 +1065,7 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestReleaseControl(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -960,7 +1074,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeControl() {
-      ::grpc::Service::MarkMethodRaw(6);
+      ::grpc::Service::MarkMethodRaw(7);
     }
     ~WithRawMethod_SubscribeControl() override {
       BaseClassMustBeDerivedFromService(this);
@@ -971,8 +1085,30 @@ class GimbalService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSubscribeControl(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(6, context, request, writer, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncServerStreaming(7, context, request, writer, new_call_cq, notification_cq, tag);
     }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_Prepare : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_Prepare() {
+      ::grpc::Service::MarkMethodRawCallback(0,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Prepare(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_Prepare() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Prepare(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::PrepareRequest* /*request*/, ::mavsdk::rpc::gimbal::PrepareResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Prepare(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_SetPitchAndYaw : public BaseClass {
@@ -980,7 +1116,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SetPitchAndYaw() {
-      ::grpc::Service::MarkMethodRawCallback(0,
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetPitchAndYaw(context, request, response); }));
@@ -1002,7 +1138,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SetPitchRateAndYawRate() {
-      ::grpc::Service::MarkMethodRawCallback(1,
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetPitchRateAndYawRate(context, request, response); }));
@@ -1024,7 +1160,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SetMode() {
-      ::grpc::Service::MarkMethodRawCallback(2,
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetMode(context, request, response); }));
@@ -1046,7 +1182,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SetRoiLocation() {
-      ::grpc::Service::MarkMethodRawCallback(3,
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRoiLocation(context, request, response); }));
@@ -1068,7 +1204,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_TakeControl() {
-      ::grpc::Service::MarkMethodRawCallback(4,
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TakeControl(context, request, response); }));
@@ -1090,7 +1226,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_ReleaseControl() {
-      ::grpc::Service::MarkMethodRawCallback(5,
+      ::grpc::Service::MarkMethodRawCallback(6,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ReleaseControl(context, request, response); }));
@@ -1112,7 +1248,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SubscribeControl() {
-      ::grpc::Service::MarkMethodRawCallback(6,
+      ::grpc::Service::MarkMethodRawCallback(7,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeControl(context, request); }));
@@ -1129,12 +1265,39 @@ class GimbalService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_Prepare : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_Prepare() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::gimbal::PrepareRequest, ::mavsdk::rpc::gimbal::PrepareResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::gimbal::PrepareRequest, ::mavsdk::rpc::gimbal::PrepareResponse>* streamer) {
+                       return this->StreamedPrepare(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_Prepare() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status Prepare(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::gimbal::PrepareRequest* /*request*/, ::mavsdk::rpc::gimbal::PrepareResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedPrepare(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::gimbal::PrepareRequest,::mavsdk::rpc::gimbal::PrepareResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetPitchAndYaw : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetPitchAndYaw() {
-      ::grpc::Service::MarkMethodStreamed(0,
+      ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(
             [this](::grpc::ServerContext* context,
@@ -1161,7 +1324,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetPitchRateAndYawRate() {
-      ::grpc::Service::MarkMethodStreamed(1,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>(
             [this](::grpc::ServerContext* context,
@@ -1188,7 +1351,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetMode() {
-      ::grpc::Service::MarkMethodStreamed(2,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse>(
             [this](::grpc::ServerContext* context,
@@ -1215,7 +1378,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetRoiLocation() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(4,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse>(
             [this](::grpc::ServerContext* context,
@@ -1242,7 +1405,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_TakeControl() {
-      ::grpc::Service::MarkMethodStreamed(4,
+      ::grpc::Service::MarkMethodStreamed(5,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse>(
             [this](::grpc::ServerContext* context,
@@ -1269,7 +1432,7 @@ class GimbalService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_ReleaseControl() {
-      ::grpc::Service::MarkMethodStreamed(5,
+      ::grpc::Service::MarkMethodStreamed(6,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse>(
             [this](::grpc::ServerContext* context,
@@ -1290,14 +1453,14 @@ class GimbalService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedReleaseControl(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::gimbal::ReleaseControlRequest,::mavsdk::rpc::gimbal::ReleaseControlResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<WithStreamedUnaryMethod_TakeControl<WithStreamedUnaryMethod_ReleaseControl<Service > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_Prepare<WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<WithStreamedUnaryMethod_TakeControl<WithStreamedUnaryMethod_ReleaseControl<Service > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeControl : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeControl() {
-      ::grpc::Service::MarkMethodStreamed(6,
+      ::grpc::Service::MarkMethodStreamed(7,
         new ::grpc::internal::SplitServerStreamingHandler<
           ::mavsdk::rpc::gimbal::SubscribeControlRequest, ::mavsdk::rpc::gimbal::ControlResponse>(
             [this](::grpc::ServerContext* context,
@@ -1319,7 +1482,7 @@ class GimbalService final {
     virtual ::grpc::Status StreamedSubscribeControl(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::gimbal::SubscribeControlRequest,::mavsdk::rpc::gimbal::ControlResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeControl<Service > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<WithStreamedUnaryMethod_TakeControl<WithStreamedUnaryMethod_ReleaseControl<WithSplitStreamingMethod_SubscribeControl<Service > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_Prepare<WithStreamedUnaryMethod_SetPitchAndYaw<WithStreamedUnaryMethod_SetPitchRateAndYawRate<WithStreamedUnaryMethod_SetMode<WithStreamedUnaryMethod_SetRoiLocation<WithStreamedUnaryMethod_TakeControl<WithStreamedUnaryMethod_ReleaseControl<WithSplitStreamingMethod_SubscribeControl<Service > > > > > > > > StreamedService;
 };
 
 }  // namespace gimbal
