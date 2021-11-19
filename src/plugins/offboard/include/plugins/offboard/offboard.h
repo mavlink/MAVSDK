@@ -213,9 +213,9 @@ public:
          * @brief Possible altitude options
          */
         enum class AltitudeType {
-            AltitudeRelHome, /**< @brief Altitude realtive to the Home position. */
-            AltitudeAmsl, /**< @brief Altitude above mean sea level (AMSL). */
-            AltitudeAgl, /**< @brief Altitude above ground level (AGL). */
+            RelHome, /**< @brief Altitude relative to the Home position. */
+            Amsl, /**< @brief Altitude above mean sea level (AMSL). */
+            Agl, /**< @brief Altitude above ground level (AGL). */
         };
 
         /**

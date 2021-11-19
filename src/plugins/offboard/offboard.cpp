@@ -210,12 +210,12 @@ std::ostream&
 operator<<(std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type)
 {
     switch (altitude_type) {
-        case Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome:
-            return str << "Altitude Rel Home";
-        case Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl:
-            return str << "Altitude Amsl";
-        case Offboard::PositionGlobalYaw::AltitudeType::AltitudeAgl:
-            return str << "Altitude Agl";
+        case Offboard::PositionGlobalYaw::AltitudeType::RelHome:
+            return str << "Rel Home";
+        case Offboard::PositionGlobalYaw::AltitudeType::Amsl:
+            return str << "Amsl";
+        case Offboard::PositionGlobalYaw::AltitudeType::Agl:
+            return str << "Agl";
         default:
             return str << "Unknown";
     }

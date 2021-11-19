@@ -432,20 +432,19 @@ Offboard::Result OffboardImpl::send_position_global()
     }();
 
     MAV_FRAME frame;
-    switch (position_global_yaw.altitude_type)
-    {
-    case Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl:
-        frame = MAV_FRAME_GLOBAL_INT;
-        break;
-    case Offboard::PositionGlobalYaw::AltitudeType::AltitudeAgl:
-        frame = MAV_FRAME_GLOBAL_TERRAIN_ALT_INT;
-        break;
-    case Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome:  
-        frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
-        break;
-    default:
-        return Offboard::Result::CommandDenied;
-        break;
+    switch (position_global_yaw.altitude_type) {
+        case Offboard::PositionGlobalYaw::AltitudeType::Amsl:
+            frame = MAV_FRAME_GLOBAL_INT;
+            break;
+        case Offboard::PositionGlobalYaw::AltitudeType::Agl:
+            frame = MAV_FRAME_GLOBAL_TERRAIN_ALT_INT;
+            break;
+        case Offboard::PositionGlobalYaw::AltitudeType::RelHome:
+            frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+            break;
+        default:
+            return Offboard::Result::CommandDenied;
+            break;
     }
 
     mavlink_message_t message;

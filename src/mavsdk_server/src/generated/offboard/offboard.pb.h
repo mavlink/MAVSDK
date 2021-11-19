@@ -204,15 +204,15 @@ namespace rpc {
 namespace offboard {
 
 enum PositionGlobalYaw_AltitudeType : int {
-  PositionGlobalYaw_AltitudeType_ALTITUDE_REL_HOME = 0,
-  PositionGlobalYaw_AltitudeType_ALTITUDE_AMSL = 1,
-  PositionGlobalYaw_AltitudeType_ALTITUDE_AGL = 2,
+  PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME = 0,
+  PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AMSL = 1,
+  PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AGL = 2,
   PositionGlobalYaw_AltitudeType_PositionGlobalYaw_AltitudeType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   PositionGlobalYaw_AltitudeType_PositionGlobalYaw_AltitudeType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool PositionGlobalYaw_AltitudeType_IsValid(int value);
-constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw_AltitudeType_AltitudeType_MIN = PositionGlobalYaw_AltitudeType_ALTITUDE_REL_HOME;
-constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw_AltitudeType_AltitudeType_MAX = PositionGlobalYaw_AltitudeType_ALTITUDE_AGL;
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw_AltitudeType_AltitudeType_MIN = PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME;
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw_AltitudeType_AltitudeType_MAX = PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AGL;
 constexpr int PositionGlobalYaw_AltitudeType_AltitudeType_ARRAYSIZE = PositionGlobalYaw_AltitudeType_AltitudeType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PositionGlobalYaw_AltitudeType_descriptor();
@@ -4688,12 +4688,12 @@ class PositionGlobalYaw final :
   // nested types ----------------------------------------------------
 
   typedef PositionGlobalYaw_AltitudeType AltitudeType;
-  static constexpr AltitudeType ALTITUDE_REL_HOME =
-    PositionGlobalYaw_AltitudeType_ALTITUDE_REL_HOME;
-  static constexpr AltitudeType ALTITUDE_AMSL =
-    PositionGlobalYaw_AltitudeType_ALTITUDE_AMSL;
-  static constexpr AltitudeType ALTITUDE_AGL =
-    PositionGlobalYaw_AltitudeType_ALTITUDE_AGL;
+  static constexpr AltitudeType ALTITUDE_TYPE_REL_HOME =
+    PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME;
+  static constexpr AltitudeType ALTITUDE_TYPE_AMSL =
+    PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AMSL;
+  static constexpr AltitudeType ALTITUDE_TYPE_AGL =
+    PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AGL;
   static inline bool AltitudeType_IsValid(int value) {
     return PositionGlobalYaw_AltitudeType_IsValid(value);
   }

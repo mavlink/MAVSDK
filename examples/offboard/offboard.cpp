@@ -174,7 +174,7 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
         origin.longitude_deg + 0.0001,
         15.0f,
         90.0f,
-        Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome};
+        Offboard::PositionGlobalYaw::AltitudeType::RelHome};
     offboard.set_position_global(east);
     std::cout << "Going East at 15m relative altitude\n";
     sleep_for(seconds(10));
@@ -185,9 +185,10 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
         origin.longitude_deg,
         origin.altitude_m + 10.0f,
         180.0f,
-        Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl};
+        Offboard::PositionGlobalYaw::AltitudeType::Amsl};
     offboard.set_position_global(home);
-    std::cout << "Going Home facing south at " << (origin.altitude_m + 10.0f) << "m AMSL altitude\n";
+    std::cout << "Going Home facing south at " << (origin.altitude_m + 10.0f)
+              << "m AMSL altitude\n";
     sleep_for(seconds(10));
 
     offboard_result = offboard.stop();

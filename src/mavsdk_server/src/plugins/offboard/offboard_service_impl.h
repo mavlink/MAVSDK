@@ -191,13 +191,12 @@ public:
             default:
                 LogErr() << "Unknown altitude_type enum value: " << static_cast<int>(altitude_type);
             // FALLTHROUGH
-            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome:
-                return rpc::offboard::
-                    PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_REL_HOME;
-            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl:
-                return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AMSL;
-            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAgl:
-                return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AGL;
+            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::RelHome:
+                return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME;
+            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::Amsl:
+                return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AMSL;
+            case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::Agl:
+                return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AGL;
         }
     }
 
@@ -208,12 +207,12 @@ public:
             default:
                 LogErr() << "Unknown altitude_type enum value: " << static_cast<int>(altitude_type);
             // FALLTHROUGH
-            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_REL_HOME:
-                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeRelHome;
-            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AMSL:
-                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAmsl;
-            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_ALTITUDE_AGL:
-                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::AltitudeAgl;
+            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME:
+                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::RelHome;
+            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AMSL:
+                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::Amsl;
+            case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_AGL:
+                return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::Agl;
         }
     }
 
