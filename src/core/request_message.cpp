@@ -13,7 +13,11 @@ RequestMessage::RequestMessage(
     _timeout_handler(timeout_handler)
 {}
 
-void RequestMessage::request(uint32_t message_id, RequestMessageCallback callback, uint32_t param2)
+void RequestMessage::request(
+    uint32_t message_id,
+    RequestMessageCallback callback,
+    uint8_t target_component_id,
+    uint32_t param2)
 {
     if (!callback) {
         LogWarn() << "Can't request message without callback";
@@ -46,20 +50,20 @@ void RequestMessage::request(uint32_t message_id, RequestMessageCallback callbac
         this);
 
     // And send off command
-    send_request(message_id);
+    send_request(message_id, target_component_id);
 }
 
-void RequestMessage::send_request(uint32_t message_id)
+void RequestMessage::send_request(uint32_t message_id, uint8_t target_component_id)
 {
     MavlinkCommandSender::CommandLong command_request_message{};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.target_system_id = 1;
-    command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
+    command_request_message.target_component_id = target_component_id;
     command_request_message.params.maybe_param1 = {static_cast<float>(message_id)};
     _command_sender.queue_command_async(
         command_request_message, [this, message_id](MavlinkCommandSender::Result result, float) {
             if (result != MavlinkCommandSender::Result::InProgress) {
-                handle_command_result(message_id, result);
+                handle_command_result(message_id, target_component_id, result);
             }
         });
 }
@@ -92,7 +96,8 @@ void RequestMessage::handle_any_message(const mavlink_message_t& message)
     }
 }
 
-void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSender::Result result)
+void RequestMessage::handle_command_result(
+    uint32_t message_id, uint8_t target_component_id, MavlinkCommandSender::Result result)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
@@ -107,7 +112,9 @@ void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSe
                 // This is promising, let's hope the message will actually arrive.
                 // We'll set a timeout in case we need to retry.
                 _timeout_handler.add(
-                    [this, message_id]() { handle_timeout(message_id); }, 1.0, &it->timeout_cookie);
+                    [this, message_id]() { handle_timeout(message_id, target_component_id); },
+                    1.0,
+                    &it->timeout_cookie);
                 return;
 
             case MavlinkCommandSender::Result::NoSystem:
@@ -140,7 +147,7 @@ void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSe
     }
 }
 
-void RequestMessage::handle_timeout(uint32_t message_id)
+void RequestMessage::handle_timeout(uint32_t message_id, uint8_t target_component_id)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
@@ -159,7 +166,7 @@ void RequestMessage::handle_timeout(uint32_t message_id)
             temp_callback(MavlinkCommandSender::Result::Timeout, {});
             return;
         } else {
-            send_request(message_id);
+            send_request(message_id, target_component_id);
             LogWarn() << "Requesting message again (retries: " << it->retries << ")";
             it->retries += 1;
         }

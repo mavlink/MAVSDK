@@ -24,62 +24,58 @@ GimbalImpl::~GimbalImpl()
     _parent->unregister_plugin(this);
 }
 
-void GimbalImpl::init()
-{
-    _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
-        [this](const mavlink_message_t& message) { process_gimbal_manager_information(message); },
-        this);
-}
+void GimbalImpl::init() {}
 
 void GimbalImpl::deinit() {}
 
-void GimbalImpl::enable()
-{
-    _parent->register_timeout_handler(
-        [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
+void GimbalImpl::enable() {}
 
-    MavlinkCommandSender::CommandLong command{};
-    command.command = MAV_CMD_REQUEST_MESSAGE;
-    command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION)};
-    command.target_component_id = 0; // any component
-    _parent->send_command_async(command, nullptr);
+Gimbal::Result GimbalImpl::prepare()
+{
+    auto prom = std::make_shared<std::promise<Gimbal::Result>>();
+    auto ret = prom->get_future();
+
+    prepare_async([&prom](Gimbal::Result result) { prom->set_value(result); });
+
+    return ret.get();
 }
+
+void GimbalImpl::prepare_async(const Gimbal::ResultCallback& callback) _parent->request_message()
+    .request(
+        MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
+        [this, callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
+            if (result == MavlinkCommandSender::Result::Success) {
+                mavlink_gimbal_manager_information_t gimbal_manager_information;
+                mavlink_msg_gimbal_manager_information_decode(
+                    &message, &gimbal_manager_information);
+
+                LogDebug() << "Gimbal manager information for gimbal device "
+                           << static_cast<int>(gimbal_manager_information.gimbal_device_id)
+                           << " was discovered";
+
+                _gimbal_protocol.reset(new GimbalProtocolV2(
+                    *_parent, gimbal_manager_information, message.sysid, message.compid));
+
+                _parent->call_user_callback([callback]() { callback(Gimbal::Result::Success); });
+            } else {
+                _parent->call_user_callback(
+                    [callback, result]() { callback(gimbal_result_from_command_result(result)); });
+            }
+        },
+        0); // any component
+} // namespace mavsdk
 
 void GimbalImpl::disable()
 {
     _gimbal_protocol.reset(nullptr);
 }
 
-void GimbalImpl::receive_protocol_timeout()
-{
-    // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
-    // assume Version2 is not available.
-    LogDebug() << "Falling back to Gimbal Version 1";
-    _gimbal_protocol.reset(new GimbalProtocolV1(*_parent));
-    _protocol_cookie = nullptr;
-}
-
-void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& message)
-{
-    mavlink_gimbal_manager_information_t gimbal_manager_information;
-    mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
-
-    if (_protocol_cookie != nullptr) {
-        LogDebug() << "Using Gimbal Version 2 as gimbal manager information for gimbal device "
-                   << static_cast<int>(gimbal_manager_information.gimbal_device_id)
-                   << " was discovered";
-
-        _parent->unregister_timeout_handler(_protocol_cookie);
-        _protocol_cookie = nullptr;
-        _gimbal_protocol.reset(new GimbalProtocolV2(
-            *_parent, gimbal_manager_information, message.sysid, message.compid));
-    }
-}
-
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
-    wait_for_protocol();
+    if (_gimbal_protocol == nullptr) {
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+        return Gimbal::Result::Error;
+    }
 
     return _gimbal_protocol->set_pitch_and_yaw(pitch_deg, yaw_deg);
 }
@@ -87,13 +83,24 @@ Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 void GimbalImpl::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async(
-        [=]() { _gimbal_protocol->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback); });
+    if (_gimbal_protocol == nullptr) {
+        _parent->call_user_callback([callback]() {
+            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+            callback(Gimbal::Result::Error);
+        });
+
+        return;
+    }
+
+    _gimbal_protocol->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);
 }
 
 Gimbal::Result GimbalImpl::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
 {
-    wait_for_protocol();
+    if (_gimbal_protocol == nullptr) {
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+        return Gimbal::Result::Error;
+    }
 
     return _gimbal_protocol->set_pitch_rate_and_yaw_rate(pitch_rate_deg_s, yaw_rate_deg_s);
 }
@@ -101,85 +108,140 @@ Gimbal::Result GimbalImpl::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, f
 void GimbalImpl::set_pitch_rate_and_yaw_rate_async(
     float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async([=]() {
-        _gimbal_protocol->set_pitch_rate_and_yaw_rate_async(
-            pitch_rate_deg_s, yaw_rate_deg_s, callback);
-    });
+    if (_gimbal_protocol == nullptr) {
+        _parent->call_user_callback([callback]() {
+            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+            callback(Gimbal::Result::Error);
+        });
+
+        return;
+    }
+
+    _gimbal_protocol->set_pitch_rate_and_yaw_rate_async(pitch_rate_deg_s, yaw_rate_deg_s, callback);
 }
 
 Gimbal::Result GimbalImpl::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
-    wait_for_protocol();
+    if (_gimbal_protocol == nullptr) {
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+        return Gimbal::Result::Error;
+    }
+
     return _gimbal_protocol->set_mode(gimbal_mode);
 }
 
 void GimbalImpl::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async([=]() { _gimbal_protocol->set_mode_async(gimbal_mode, callback); });
+    if (_gimbal_protocol == nullptr) {
+        _parent->call_user_callback([callback]() {
+            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+            callback(Gimbal::Result::Error);
+        });
+
+        return;
+    }
+
+    _gimbal_protocol->set_mode_async(gimbal_mode, callback);
 }
 
 Gimbal::Result
 GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
 {
-    wait_for_protocol();
+    if (_gimbal_protocol == nullptr) {
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+        return Gimbal::Result::Error;
+    }
+
     return _gimbal_protocol->set_roi_location(latitude_deg, longitude_deg, altitude_m);
 }
 
 void GimbalImpl::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async([=]() {
-        _gimbal_protocol->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
-    });
+    if (_gimbal_protocol == nullptr) {
+        _parent->call_user_callback([callback]() {
+            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+            callback(Gimbal::Result::Error);
+        });
+
+        return;
+    }
+
+    _gimbal_protocol->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
 }
 
 Gimbal::Result GimbalImpl::take_control(Gimbal::ControlMode control_mode)
 {
-    wait_for_protocol();
+    if (_gimbal_protocol == nullptr) {
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+        return Gimbal::Result::Error;
+    }
+
     return _gimbal_protocol->take_control(control_mode);
 }
 
 void GimbalImpl::take_control_async(
     Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async(
-        [=]() { _gimbal_protocol->take_control_async(control_mode, callback); });
+    if (_gimbal_protocol == nullptr) {
+        _parent->call_user_callback([callback]() {
+            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+            callback(Gimbal::Result::Error);
+        });
+
+        return;
+    }
+
+    _gimbal_protocol->take_control_async(control_mode, callback);
 }
 
 Gimbal::Result GimbalImpl::release_control()
 {
-    wait_for_protocol();
+    if (_gimbal_protocol == nullptr) {
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+        return Gimbal::Result::Error;
+    }
+
     return _gimbal_protocol->release_control();
 }
 
 void GimbalImpl::release_control_async(Gimbal::ResultCallback callback)
 {
-    wait_for_protocol_async([=]() { _gimbal_protocol->release_control_async(callback); });
+    if (_gimbal_protocol == nullptr) {
+        _parent->call_user_callback([callback]() {
+            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+            callback(Gimbal::Result::Error);
+        });
+
+        return;
+    }
+
+    _gimbal_protocol->release_control_async(callback);
 }
 
 Gimbal::ControlStatus GimbalImpl::control()
 {
-    wait_for_protocol();
+    if (_gimbal_protocol == nullptr) {
+        LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+        return Gimbal::Result::Error;
+    }
+
     return _gimbal_protocol->control();
 }
 
 void GimbalImpl::subscribe_control(Gimbal::ControlCallback callback)
 {
-    wait_for_protocol_async([=]() { _gimbal_protocol->control_async(callback); });
-}
+    if (_gimbal_protocol == nullptr) {
+        _parent->call_user_callback([callback]() {
+            LogErr() << "Gimbal plugin not prepared! Call `prepare()` first!";
+            callback(Gimbal::Result::Error);
+        });
 
-void GimbalImpl::wait_for_protocol()
-{
-    while (_gimbal_protocol == nullptr) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return;
     }
-}
 
-void GimbalImpl::wait_for_protocol_async(std::function<void()> callback)
-{
-    wait_for_protocol();
-    callback();
+    _gimbal_protocol->control_async(callback);
 }
 
 void GimbalImpl::receive_command_result(

@@ -22,7 +22,11 @@ public:
     using RequestMessageCallback =
         std::function<void(MavlinkCommandSender::Result, const mavlink_message_t&)>;
 
-    void request(uint32_t message_id, RequestMessageCallback callback, uint32_t param2 = 0);
+    void request(
+        uint32_t message_id,
+        RequestMessageCallback callback,
+        uint8_t target_component_id = MAV_COMP_ID_AUTOPILOT1,
+        uint32_t param2 = 0);
 
 private:
     struct WorkItem {
@@ -34,7 +38,7 @@ private:
         std::optional<MavlinkCommandSender::Result> maybe_result{};
     };
 
-    void send_request(uint32_t message_id);
+    void send_request(uint32_t message_id, uint8_t target_component_id = MAV_COMP_ID_AUTOPILOT1);
     void handle_any_message(const mavlink_message_t& message);
     void handle_command_result(uint32_t message_id, MavlinkCommandSender::Result result);
     void handle_timeout(uint32_t message_id);

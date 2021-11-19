@@ -19,6 +19,9 @@ public:
     void enable() override;
     void disable() override;
 
+    Gimbal::Result prepare();
+    void prepare_async(const Gimbal::ResultCallback& callback);
+
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg);
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback);
 
@@ -58,13 +61,6 @@ public:
 
 private:
     std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
-
-    void* _protocol_cookie{nullptr};
-
-    void wait_for_protocol();
-    void wait_for_protocol_async(std::function<void()> callback);
-    void receive_protocol_timeout();
-    void process_gimbal_manager_information(const mavlink_message_t& message);
 };
 
 } // namespace mavsdk
