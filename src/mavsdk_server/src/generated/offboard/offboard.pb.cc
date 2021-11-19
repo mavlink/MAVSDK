@@ -379,7 +379,9 @@ constexpr PositionGlobalYaw::PositionGlobalYaw(
   : lat_deg_(0)
   , lon_deg_(0)
   , alt_m_(0)
-  , yaw_deg_(0){}
+  , yaw_deg_(0)
+  , altitude_type_(0)
+{}
 struct PositionGlobalYawDefaultTypeInternal {
   constexpr PositionGlobalYawDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -451,7 +453,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT OffboardResultDefaultTypeIntern
 }  // namespace rpc
 }  // namespace mavsdk
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_offboard_2foffboard_2eproto[34];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_offboard_2foffboard_2eproto[1];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_offboard_2foffboard_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_offboard_2foffboard_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_offboard_2foffboard_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -645,6 +647,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_offboard_2foffboard_2eproto::o
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::PositionGlobalYaw, lon_deg_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::PositionGlobalYaw, alt_m_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::PositionGlobalYaw, yaw_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::PositionGlobalYaw, altitude_type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::offboard::VelocityBodyYawspeed, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -710,10 +713,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 163, -1, sizeof(::mavsdk::rpc::offboard::AttitudeRate)},
   { 172, -1, sizeof(::mavsdk::rpc::offboard::PositionNedYaw)},
   { 181, -1, sizeof(::mavsdk::rpc::offboard::PositionGlobalYaw)},
-  { 190, -1, sizeof(::mavsdk::rpc::offboard::VelocityBodyYawspeed)},
-  { 199, -1, sizeof(::mavsdk::rpc::offboard::VelocityNedYaw)},
-  { 208, -1, sizeof(::mavsdk::rpc::offboard::AccelerationNed)},
-  { 216, -1, sizeof(::mavsdk::rpc::offboard::OffboardResult)},
+  { 191, -1, sizeof(::mavsdk::rpc::offboard::VelocityBodyYawspeed)},
+  { 200, -1, sizeof(::mavsdk::rpc::offboard::VelocityNedYaw)},
+  { 209, -1, sizeof(::mavsdk::rpc::offboard::AccelerationNed)},
+  { 217, -1, sizeof(::mavsdk::rpc::offboard::OffboardResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -813,65 +816,70 @@ const char descriptor_table_protodef_offboard_2foffboard_2eproto[] PROTOBUF_SECT
   "\001(\002\022\023\n\013pitch_deg_s\030\002 \001(\002\022\021\n\tyaw_deg_s\030\003 "
   "\001(\002\022\024\n\014thrust_value\030\004 \001(\002\"R\n\016PositionNed"
   "Yaw\022\017\n\007north_m\030\001 \001(\002\022\016\n\006east_m\030\002 \001(\002\022\016\n\006"
-  "down_m\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\"U\n\021Positio"
-  "nGlobalYaw\022\017\n\007lat_deg\030\001 \001(\001\022\017\n\007lon_deg\030\002"
-  " \001(\001\022\r\n\005alt_m\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\"h\n\024"
-  "VelocityBodyYawspeed\022\023\n\013forward_m_s\030\001 \001("
-  "\002\022\021\n\tright_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\022\026"
-  "\n\016yawspeed_deg_s\030\004 \001(\002\"X\n\016VelocityNedYaw"
-  "\022\021\n\tnorth_m_s\030\001 \001(\002\022\020\n\010east_m_s\030\002 \001(\002\022\020\n"
-  "\010down_m_s\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\"K\n\017Acce"
-  "lerationNed\022\022\n\nnorth_m_s2\030\001 \001(\002\022\021\n\teast_"
-  "m_s2\030\002 \001(\002\022\021\n\tdown_m_s2\030\003 \001(\002\"\242\002\n\016Offboa"
-  "rdResult\022:\n\006result\030\001 \001(\0162*.mavsdk.rpc.of"
-  "fboard.OffboardResult.Result\022\022\n\nresult_s"
-  "tr\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022"
-  "\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020"
-  "\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT"
-  "_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RE"
-  "SULT_TIMEOUT\020\006\022\032\n\026RESULT_NO_SETPOINT_SET"
-  "\020\0072\301\n\n\017OffboardService\022P\n\005Start\022!.mavsdk"
-  ".rpc.offboard.StartRequest\032\".mavsdk.rpc."
-  "offboard.StartResponse\"\000\022M\n\004Stop\022 .mavsd"
-  "k.rpc.offboard.StopRequest\032!.mavsdk.rpc."
-  "offboard.StopResponse\"\000\022]\n\010IsActive\022$.ma"
-  "vsdk.rpc.offboard.IsActiveRequest\032%.mavs"
-  "dk.rpc.offboard.IsActiveResponse\"\004\200\265\030\001\022f"
-  "\n\013SetAttitude\022\'.mavsdk.rpc.offboard.SetA"
-  "ttitudeRequest\032(.mavsdk.rpc.offboard.Set"
-  "AttitudeResponse\"\004\200\265\030\001\022{\n\022SetActuatorCon"
-  "trol\022..mavsdk.rpc.offboard.SetActuatorCo"
-  "ntrolRequest\032/.mavsdk.rpc.offboard.SetAc"
-  "tuatorControlResponse\"\004\200\265\030\001\022r\n\017SetAttitu"
-  "deRate\022+.mavsdk.rpc.offboard.SetAttitude"
-  "RateRequest\032,.mavsdk.rpc.offboard.SetAtt"
-  "itudeRateResponse\"\004\200\265\030\001\022o\n\016SetPositionNe"
-  "d\022*.mavsdk.rpc.offboard.SetPositionNedRe"
-  "quest\032+.mavsdk.rpc.offboard.SetPositionN"
-  "edResponse\"\004\200\265\030\001\022x\n\021SetPositionGlobal\022-."
-  "mavsdk.rpc.offboard.SetPositionGlobalReq"
-  "uest\032..mavsdk.rpc.offboard.SetPositionGl"
-  "obalResponse\"\004\200\265\030\001\022r\n\017SetVelocityBody\022+."
-  "mavsdk.rpc.offboard.SetVelocityBodyReque"
-  "st\032,.mavsdk.rpc.offboard.SetVelocityBody"
-  "Response\"\004\200\265\030\001\022o\n\016SetVelocityNed\022*.mavsd"
-  "k.rpc.offboard.SetVelocityNedRequest\032+.m"
-  "avsdk.rpc.offboard.SetVelocityNedRespons"
-  "e\"\004\200\265\030\001\022\207\001\n\026SetPositionVelocityNed\0222.mav"
-  "sdk.rpc.offboard.SetPositionVelocityNedR"
-  "equest\0323.mavsdk.rpc.offboard.SetPosition"
-  "VelocityNedResponse\"\004\200\265\030\001\022{\n\022SetAccelera"
-  "tionNed\022..mavsdk.rpc.offboard.SetAcceler"
-  "ationNedRequest\032/.mavsdk.rpc.offboard.Se"
-  "tAccelerationNedResponse\"\004\200\265\030\001B#\n\022io.mav"
-  "sdk.offboardB\rOffboardProtob\006proto3"
+  "down_m\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\"\374\001\n\021Positi"
+  "onGlobalYaw\022\017\n\007lat_deg\030\001 \001(\001\022\017\n\007lon_deg\030"
+  "\002 \001(\001\022\r\n\005alt_m\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\022J\n"
+  "\raltitude_type\030\005 \001(\01623.mavsdk.rpc.offboa"
+  "rd.PositionGlobalYaw.AltitudeType\"Y\n\014Alt"
+  "itudeType\022\032\n\026ALTITUDE_TYPE_REL_HOME\020\000\022\026\n"
+  "\022ALTITUDE_TYPE_AMSL\020\001\022\025\n\021ALTITUDE_TYPE_A"
+  "GL\020\002\"h\n\024VelocityBodyYawspeed\022\023\n\013forward_"
+  "m_s\030\001 \001(\002\022\021\n\tright_m_s\030\002 \001(\002\022\020\n\010down_m_s"
+  "\030\003 \001(\002\022\026\n\016yawspeed_deg_s\030\004 \001(\002\"X\n\016Veloci"
+  "tyNedYaw\022\021\n\tnorth_m_s\030\001 \001(\002\022\020\n\010east_m_s\030"
+  "\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002"
+  "\"K\n\017AccelerationNed\022\022\n\nnorth_m_s2\030\001 \001(\002\022"
+  "\021\n\teast_m_s2\030\002 \001(\002\022\021\n\tdown_m_s2\030\003 \001(\002\"\242\002"
+  "\n\016OffboardResult\022:\n\006result\030\001 \001(\0162*.mavsd"
+  "k.rpc.offboard.OffboardResult.Result\022\022\n\n"
+  "result_str\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016RESULT_UN"
+  "KNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO"
+  "_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017"
+  "\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED"
+  "\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\032\n\026RESULT_NO_SETP"
+  "OINT_SET\020\0072\301\n\n\017OffboardService\022P\n\005Start\022"
+  "!.mavsdk.rpc.offboard.StartRequest\032\".mav"
+  "sdk.rpc.offboard.StartResponse\"\000\022M\n\004Stop"
+  "\022 .mavsdk.rpc.offboard.StopRequest\032!.mav"
+  "sdk.rpc.offboard.StopResponse\"\000\022]\n\010IsAct"
+  "ive\022$.mavsdk.rpc.offboard.IsActiveReques"
+  "t\032%.mavsdk.rpc.offboard.IsActiveResponse"
+  "\"\004\200\265\030\001\022f\n\013SetAttitude\022\'.mavsdk.rpc.offbo"
+  "ard.SetAttitudeRequest\032(.mavsdk.rpc.offb"
+  "oard.SetAttitudeResponse\"\004\200\265\030\001\022{\n\022SetAct"
+  "uatorControl\022..mavsdk.rpc.offboard.SetAc"
+  "tuatorControlRequest\032/.mavsdk.rpc.offboa"
+  "rd.SetActuatorControlResponse\"\004\200\265\030\001\022r\n\017S"
+  "etAttitudeRate\022+.mavsdk.rpc.offboard.Set"
+  "AttitudeRateRequest\032,.mavsdk.rpc.offboar"
+  "d.SetAttitudeRateResponse\"\004\200\265\030\001\022o\n\016SetPo"
+  "sitionNed\022*.mavsdk.rpc.offboard.SetPosit"
+  "ionNedRequest\032+.mavsdk.rpc.offboard.SetP"
+  "ositionNedResponse\"\004\200\265\030\001\022x\n\021SetPositionG"
+  "lobal\022-.mavsdk.rpc.offboard.SetPositionG"
+  "lobalRequest\032..mavsdk.rpc.offboard.SetPo"
+  "sitionGlobalResponse\"\004\200\265\030\001\022r\n\017SetVelocit"
+  "yBody\022+.mavsdk.rpc.offboard.SetVelocityB"
+  "odyRequest\032,.mavsdk.rpc.offboard.SetVelo"
+  "cityBodyResponse\"\004\200\265\030\001\022o\n\016SetVelocityNed"
+  "\022*.mavsdk.rpc.offboard.SetVelocityNedReq"
+  "uest\032+.mavsdk.rpc.offboard.SetVelocityNe"
+  "dResponse\"\004\200\265\030\001\022\207\001\n\026SetPositionVelocityN"
+  "ed\0222.mavsdk.rpc.offboard.SetPositionVelo"
+  "cityNedRequest\0323.mavsdk.rpc.offboard.Set"
+  "PositionVelocityNedResponse\"\004\200\265\030\001\022{\n\022Set"
+  "AccelerationNed\022..mavsdk.rpc.offboard.Se"
+  "tAccelerationNedRequest\032/.mavsdk.rpc.off"
+  "board.SetAccelerationNedResponse\"\004\200\265\030\001B#"
+  "\n\022io.mavsdk.offboardB\rOffboardProtob\006pro"
+  "to3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_offboard_2foffboard_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_offboard_2foffboard_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_offboard_2foffboard_2eproto = {
-  false, false, 4435, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 
+  false, false, 4603, descriptor_table_protodef_offboard_2foffboard_2eproto, "offboard/offboard.proto", 
   &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_deps, 1, 34,
   schemas, file_default_instances, TableStruct_offboard_2foffboard_2eproto::offsets,
   file_level_metadata_offboard_2foffboard_2eproto, file_level_enum_descriptors_offboard_2foffboard_2eproto, file_level_service_descriptors_offboard_2foffboard_2eproto,
@@ -885,9 +893,32 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDe
 namespace mavsdk {
 namespace rpc {
 namespace offboard {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* OffboardResult_Result_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PositionGlobalYaw_AltitudeType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_offboard_2foffboard_2eproto);
   return file_level_enum_descriptors_offboard_2foffboard_2eproto[0];
+}
+bool PositionGlobalYaw_AltitudeType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw::ALTITUDE_TYPE_REL_HOME;
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw::ALTITUDE_TYPE_AMSL;
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw::ALTITUDE_TYPE_AGL;
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw::AltitudeType_MIN;
+constexpr PositionGlobalYaw_AltitudeType PositionGlobalYaw::AltitudeType_MAX;
+constexpr int PositionGlobalYaw::AltitudeType_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* OffboardResult_Result_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_offboard_2foffboard_2eproto);
+  return file_level_enum_descriptors_offboard_2foffboard_2eproto[1];
 }
 bool OffboardResult_Result_IsValid(int value) {
   switch (value) {
@@ -6782,16 +6813,16 @@ PositionGlobalYaw::PositionGlobalYaw(const PositionGlobalYaw& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&lat_deg_, &from.lat_deg_,
-    static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
-    reinterpret_cast<char*>(&lat_deg_)) + sizeof(yaw_deg_));
+    static_cast<size_t>(reinterpret_cast<char*>(&altitude_type_) -
+    reinterpret_cast<char*>(&lat_deg_)) + sizeof(altitude_type_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.offboard.PositionGlobalYaw)
 }
 
 inline void PositionGlobalYaw::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&lat_deg_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
-    reinterpret_cast<char*>(&lat_deg_)) + sizeof(yaw_deg_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&altitude_type_) -
+    reinterpret_cast<char*>(&lat_deg_)) + sizeof(altitude_type_));
 }
 
 PositionGlobalYaw::~PositionGlobalYaw() {
@@ -6822,8 +6853,8 @@ void PositionGlobalYaw::Clear() {
   (void) cached_has_bits;
 
   ::memset(&lat_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_deg_) -
-      reinterpret_cast<char*>(&lat_deg_)) + sizeof(yaw_deg_));
+      reinterpret_cast<char*>(&altitude_type_) -
+      reinterpret_cast<char*>(&lat_deg_)) + sizeof(altitude_type_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -6859,6 +6890,14 @@ const char* PositionGlobalYaw::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
           yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.offboard.PositionGlobalYaw.AltitudeType altitude_type = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_altitude_type(static_cast<::mavsdk::rpc::offboard::PositionGlobalYaw_AltitudeType>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -6914,6 +6953,13 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_yaw_deg(), target);
   }
 
+  // .mavsdk.rpc.offboard.PositionGlobalYaw.AltitudeType altitude_type = 5;
+  if (this->_internal_altitude_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      5, this->_internal_altitude_type(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -6948,6 +6994,12 @@ size_t PositionGlobalYaw::ByteSizeLong() const {
   // float yaw_deg = 4;
   if (!(this->_internal_yaw_deg() <= 0 && this->_internal_yaw_deg() >= 0)) {
     total_size += 1 + 4;
+  }
+
+  // .mavsdk.rpc.offboard.PositionGlobalYaw.AltitudeType altitude_type = 5;
+  if (this->_internal_altitude_type() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_altitude_type());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -6990,6 +7042,9 @@ void PositionGlobalYaw::MergeFrom(const PositionGlobalYaw& from) {
   if (!(from._internal_yaw_deg() <= 0 && from._internal_yaw_deg() >= 0)) {
     _internal_set_yaw_deg(from._internal_yaw_deg());
   }
+  if (from._internal_altitude_type() != 0) {
+    _internal_set_altitude_type(from._internal_altitude_type());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -7008,8 +7063,8 @@ void PositionGlobalYaw::InternalSwap(PositionGlobalYaw* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PositionGlobalYaw, yaw_deg_)
-      + sizeof(PositionGlobalYaw::yaw_deg_)
+      PROTOBUF_FIELD_OFFSET(PositionGlobalYaw, altitude_type_)
+      + sizeof(PositionGlobalYaw::altitude_type_)
       - PROTOBUF_FIELD_OFFSET(PositionGlobalYaw, lat_deg_)>(
           reinterpret_cast<char*>(&lat_deg_),
           reinterpret_cast<char*>(&other->lat_deg_));

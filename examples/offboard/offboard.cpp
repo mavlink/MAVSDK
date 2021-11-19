@@ -153,7 +153,7 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
     std::cout << "Starting Offboard position control in Global coordinates\n";
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    // this is a step north about 10m, this uses altitude relative from home
+    // this is a step north about 10m, using the default altitude type (altitude relative to home)
     const Offboard::PositionGlobalYaw north{
         origin.latitude_deg + 0.0001, origin.longitude_deg, 20.0f, 0.0f};
     offboard.set_position_global(north);
@@ -165,19 +165,30 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
     }
 
     std::cout << "Offboard started\n";
-    std::cout << "Going North\n";
+    std::cout << "Going North at 20m relative altitude\n";
     sleep_for(seconds(10));
 
+    // here we use an explicit altitude type (relative to home)
     const Offboard::PositionGlobalYaw east{
-        origin.latitude_deg + 0.0001, origin.longitude_deg + 0.0001, 15.0f, 90.0f};
+        origin.latitude_deg + 0.0001,
+        origin.longitude_deg + 0.0001,
+        15.0f,
+        90.0f,
+        Offboard::PositionGlobalYaw::AltitudeType::RelHome};
     offboard.set_position_global(east);
-    std::cout << "Going East\n";
+    std::cout << "Going East at 15m relative altitude\n";
     sleep_for(seconds(10));
 
+    // here we use the above mean sea level altitude
     const Offboard::PositionGlobalYaw home{
-        origin.latitude_deg, origin.longitude_deg, 10.0f, 180.0f};
+        origin.latitude_deg,
+        origin.longitude_deg,
+        origin.altitude_m + 10.0f,
+        180.0f,
+        Offboard::PositionGlobalYaw::AltitudeType::Amsl};
     offboard.set_position_global(home);
-    std::cout << "Going Home facing south\n";
+    std::cout << "Going Home facing south at " << (origin.altitude_m + 10.0f)
+              << "m AMSL altitude\n";
     sleep_for(seconds(10));
 
     offboard_result = offboard.stop();

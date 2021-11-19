@@ -209,11 +209,29 @@ public:
      * yaw.
      */
     struct PositionGlobalYaw {
+        /**
+         * @brief Possible altitude options
+         */
+        enum class AltitudeType {
+            RelHome, /**< @brief Altitude relative to the Home position. */
+            Amsl, /**< @brief Altitude above mean sea level (AMSL). */
+            Agl, /**< @brief Altitude above ground level (AGL). */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Offboard::AltitudeType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type);
+
         double lat_deg{}; /**< @brief Latitude (in degrees) */
         double lon_deg{}; /**< @brief Longitude (in degrees) */
         float alt_m{}; /**< @brief altitude (in metres) */
         float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
                             above) */
+        AltitudeType altitude_type{}; /**< @brief altitude type for this position */
     };
 
     /**
@@ -425,7 +443,7 @@ public:
     Result set_position_ned(PositionNedYaw position_ned_yaw) const;
 
     /**
-     * @brief Set the position in Global coordinates and yaw.
+     * @brief Set the position in Global coordinates (latitude, longitude, altitude) and yaw
      *
      * This function is blocking.
      *

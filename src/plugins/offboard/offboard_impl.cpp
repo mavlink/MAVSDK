@@ -431,6 +431,22 @@ Offboard::Result OffboardImpl::send_position_global()
         return _position_global_yaw;
     }();
 
+    MAV_FRAME frame;
+    switch (position_global_yaw.altitude_type) {
+        case Offboard::PositionGlobalYaw::AltitudeType::Amsl:
+            frame = MAV_FRAME_GLOBAL_INT;
+            break;
+        case Offboard::PositionGlobalYaw::AltitudeType::Agl:
+            frame = MAV_FRAME_GLOBAL_TERRAIN_ALT_INT;
+            break;
+        case Offboard::PositionGlobalYaw::AltitudeType::RelHome:
+            frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+            break;
+        default:
+            return Offboard::Result::CommandDenied;
+            break;
+    }
+
     mavlink_message_t message;
     mavlink_msg_set_position_target_global_int_pack(
         _parent->get_own_system_id(),
@@ -439,7 +455,7 @@ Offboard::Result OffboardImpl::send_position_global()
         static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
-        MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, // or MAV_FRAME_GLOBAL_INT
+        frame,
         IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
         (int32_t)(position_global_yaw.lat_deg * 1.0e7),
         (int32_t)(position_global_yaw.lon_deg * 1.0e7),
