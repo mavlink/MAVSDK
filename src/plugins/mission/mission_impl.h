@@ -1,7 +1,6 @@
 #pragma once
 
 #include <atomic>
-#include <json/json.h>
 #include <vector>
 #include <memory>
 #include <mutex>
@@ -97,19 +96,6 @@ private:
         const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
 
     static Mission::Result convert_result(MAVLinkMissionTransfer::Result result);
-
-    static Mission::Result import_simple_mission_item(
-        std::vector<Mission::MissionItem>& all_mission_items,
-        const Json::Value& json_mission_item,
-        Mission::MissionItem& new_mission_item);
-
-    static Mission::Result import_complex_mission_item(
-        std::vector<Mission::MissionItem>& all_mission_items,
-        const Json::Value& json_mission_item,
-        Mission::MissionItem& new_mission_item);
-
-    static Mission::Result import_mission_items(
-        std::vector<Mission::MissionItem>& all_mission_items, const Json::Value& qgc_plan_json);
 
     void add_gimbal_items_v1(
         std::vector<MAVLinkMissionTransfer::ItemInt>& int_items,
