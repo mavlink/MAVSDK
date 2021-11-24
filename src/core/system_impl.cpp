@@ -553,7 +553,9 @@ void SystemImpl::set_connected()
         // If not yet connected there is nothing to do/
     }
     if (enable_needed) {
-        send_autopilot_version_request();
+        if (has_autopilot()) {
+            send_autopilot_version_request();
+        }
 
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
         for (auto plugin_impl : _plugin_impls) {
