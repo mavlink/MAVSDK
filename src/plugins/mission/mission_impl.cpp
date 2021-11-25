@@ -674,6 +674,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 } else {
                     LogErr() << "Mission item DO_CHANGE_SPEED params unsupported";
                     result_pair.first = Mission::Result::Unsupported;
+                    break;
                 }
 
             } else if (int_item.command == MAV_CMD_NAV_LOITER_TIME) {
@@ -692,6 +693,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                     // is not trivial
                     LogErr() << "Mission item NAV_DELAY params unsupported";
                     result_pair.first = Mission::Result::Unsupported;
+                    break;
                 }
 
             } else if (int_item.command == MAV_CMD_NAV_RETURN_TO_LAUNCH) {
