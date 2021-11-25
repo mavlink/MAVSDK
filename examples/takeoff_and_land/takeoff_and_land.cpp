@@ -77,7 +77,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    // Instantiate pluginis.
+    // Instantiate plugins.
     auto telemetry = Telemetry{system};
     auto action = Action{system};
 
