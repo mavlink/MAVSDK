@@ -407,35 +407,6 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
         }
 
         if (item.camera_action != CameraAction::None) {
-            // There is a camera action that we need to send.
-
-            // In case of distance triggering we need to set up the distance first.
-            if (item.camera_action == CameraAction::StartPhotoDistance &&
-                std::isfinite(item.camera_photo_distance_m)) {
-                // Current is the 0th waypoint
-                uint8_t current = ((int_items.size() == 0) ? 1 : 0);
-                uint8_t autocontinue = 1;
-
-                MAVLinkMissionTransfer::ItemInt next_item{
-                    static_cast<uint16_t>(int_items.size()),
-                    MAV_FRAME_MISSION,
-                    MAV_CMD_DO_SET_CAM_TRIGG_DIST,
-                    current,
-                    autocontinue,
-                    item.camera_photo_distance_m,
-                    -1.0f, // ignore shutter integration time
-                    1.0f, // trigger immediately
-                    NAN,
-                    0,
-                    0,
-                    NAN,
-                    MAV_MISSION_TYPE_MISSION};
-
-                int_items.push_back(next_item);
-
-                _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
-            }
-
             // Current is the 0th waypoint
             uint8_t current = ((int_items.size() == 0) ? 1 : 0);
             uint8_t autocontinue = 1;
@@ -470,19 +441,22 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     param1 = 0.0f; // all camera IDs
                     break;
                 case CameraAction::StartPhotoDistance:
-                    command = MAV_CMD_DO_TRIGGER_CONTROL;
-                    param1 = 1.0f; // enable
-                    param2 = 0.0f; // don't reset
-                    param3 = -1.0f; // don't pause
+                    command = MAV_CMD_DO_SET_CAM_TRIGG_DIST;
+                    if (std::isfinite(item.camera_photo_distance_m)) {
+                        LogErr() << "No photo distance specified";
+                    }
+                    param1 = item.camera_photo_distance_m; // enable with distance
+                    param2 = 0.0f; // ignore
+                    param3 = 1.0f; // trigger
                     break;
                 case CameraAction::StopPhotoDistance:
-                    command = MAV_CMD_DO_TRIGGER_CONTROL;
-                    param1 = 0.0f; // disable
-                    param2 = 0.0f; // don't reset
-                    param3 = -1.0f; // don't pause
+                    command = MAV_CMD_DO_SET_CAM_TRIGG_DIST;
+                    param1 = 0.0f; // stop
+                    param2 = 0.0f; // ignore
+                    param3 = 0.0f; // no trigger
                     break;
                 default:
-                    LogErr() << "Error: camera action not supported";
+                    LogErr() << "Camera action not supported";
                     break;
             }
 
@@ -647,25 +621,16 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
             } else if (int_item.command == MAV_CMD_VIDEO_STOP_CAPTURE) {
                 new_mission_item.camera_action = CameraAction::StopVideo;
 
-            } else if (int_item.command == MAV_CMD_DO_TRIGGER_CONTROL) {
-                if (static_cast<int>(int_item.param1) == 1) {
-                    new_mission_item.camera_action = CameraAction::StartPhotoDistance;
-                } else if (static_cast<int>(int_item.param1) == 0) {
-                    new_mission_item.camera_action = CameraAction::StopPhotoDistance;
-                } else {
-                    LogWarn() << "Unknown trigger control mission item ignored";
+            } else if (int_item.command == MAV_CMD_DO_SET_CAM_TRIGG_DIST) {
+                if (!std::isfinite(int_item.param1)) {
+                    LogErr() << "Trigger distance in SET_CAM_TRIGG_DIST not finite.";
                     result_pair.first = Mission::Result::Unsupported;
                     break;
-                }
-
-            } else if (int_item.command == MAV_CMD_DO_SET_CAM_TRIGG_DIST) {
-                if (static_cast<int>(int_item.param2) == -1 &&
-                    static_cast<int>(int_item.param3) == 1) {
+                } else if (static_cast<int>(int_item.param1) > 0.0f) {
+                    new_mission_item.camera_action = CameraAction::StartPhotoDistance;
                     new_mission_item.camera_photo_distance_m = int_item.param1;
                 } else {
-                    LogWarn() << "Unknown SET_CAM_TRIGG_DIST params";
-                    result_pair.first = Mission::Result::Unsupported;
-                    break;
+                    new_mission_item.camera_action = CameraAction::StopPhotoDistance;
                 }
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
