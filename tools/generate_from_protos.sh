@@ -6,7 +6,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 proto_dir="${script_dir}/../proto/protos"
 mavsdk_server_generated_dir="${script_dir}/../src/mavsdk_server/src/generated"
-third_party_dir="${script_dir}/../build/default/third_party"
+third_party_dir="${script_dir}/../build/third_party"
 protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
 
@@ -27,7 +27,7 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
     echo >&2 ""
     echo >&2 "You may want to run the CMake configure step first:"
     echo >&2 ""
-    echo >&2 "    cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H."
+    echo >&2 "    cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild -H."
     exit 1
 }
 
@@ -72,18 +72,18 @@ for plugin in ${plugin_list_and_core}; do
         continue
     fi
 
-    mkdir -p ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}
+    mkdir -p ${script_dir}/../src/mavsdk/lib/plugins/${plugin}/include/plugins/${plugin}
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
-    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/mavsdk/lib/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
 
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
-    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${script_dir}/../src/plugins/${plugin}/${plugin}.cpp
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${script_dir}/../src/mavsdk/lib/plugins/${plugin}/${plugin}.cpp
 
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" ${proto_dir}/${plugin}/${plugin}.proto
     mkdir -p ${script_dir}/../src/mavsdk_server/src/plugins/${plugin}
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/mavsdk_server/src/plugins/${plugin}/${plugin}_service_impl.h
 
-    file_impl_h="${script_dir}/../src/plugins/${plugin}/${plugin}_impl.h"
+    file_impl_h="${script_dir}/../src/mavsdk/lib/plugins/${plugin}/${plugin}_impl.h"
     if [[ ! -f "${file_impl_h}" ]]; then
         ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_impl_h}" ${proto_dir}/${plugin}/${plugin}.proto
         mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${file_impl_h}
@@ -95,7 +95,7 @@ for plugin in ${plugin_list_and_core}; do
         fi
     fi
 
-    file_impl_cpp="${script_dir}/../src/plugins/${plugin}/${plugin}_impl.cpp"
+    file_impl_cpp="${script_dir}/../src/mavsdk/lib/plugins/${plugin}/${plugin}_impl.cpp"
     if [[ ! -f $file_impl_cpp ]]; then
         ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_impl_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
         mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${file_impl_cpp}
@@ -107,7 +107,7 @@ for plugin in ${plugin_list_and_core}; do
         fi
     fi
 
-    file_cmake="${script_dir}/../src/plugins/${plugin}/CMakeLists.txt"
+    file_cmake="${script_dir}/../src/mavsdk/lib/plugins/${plugin}/CMakeLists.txt"
     if [[ ! -f $file_cmake ]]; then
         ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=txt,template_path=${template_path_cmake}" ${proto_dir}/${plugin}/${plugin}.proto
         mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).txt ${file_cmake}
@@ -119,13 +119,13 @@ for plugin in ${plugin_list_and_core}; do
         fi
     fi
 
-    plugins_cmake_file="${script_dir}/../src/plugins/CMakeLists.txt"
+    plugins_cmake_file="${script_dir}/../src/mavsdk/lib/plugins/CMakeLists.txt"
     if [[ ! $(grep ${plugin} ${plugins_cmake_file}) ]]; then
         echo "-> Adding entry for '${plugin}' to ${plugins_cmake_file}"
 
         # We want to append the plugin to the list but before the passthrough plugin.
         # Therefore, we grep for the line numbers of add_subdirectory, cut to numbers only, and use the first of the two last.
-        last_line=$(grep -n 'add_subdirectory' 'src/plugins/CMakeLists.txt' | cut -f1 -d: | tail -2 | head -n 1)
+        last_line=$(grep -n 'add_subdirectory' 'src/mavsdk/lib/plugins/CMakeLists.txt' | cut -f1 -d: | tail -2 | head -n 1)
         # We have to increment by one to write it below the last one.
         last_line=$(($last_line+1))
         sed -i "${last_line}iadd_subdirectory(${plugin})" ${plugins_cmake_file}

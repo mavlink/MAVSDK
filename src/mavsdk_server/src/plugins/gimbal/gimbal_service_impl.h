@@ -24,6 +24,7 @@ class GimbalServiceImpl final : public rpc::gimbal::GimbalService::Service {
 public:
     GimbalServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Gimbal::Result& result) const
     {
@@ -38,8 +39,8 @@ public:
         response->set_allocated_gimbal_result(rpc_gimbal_result);
     }
 
-    static rpc::gimbal::GimbalMode
-    translateToRpcGimbalMode(const mavsdk::Gimbal::GimbalMode& gimbal_mode)
+
+    static rpc::gimbal::GimbalMode translateToRpcGimbalMode(const mavsdk::Gimbal::GimbalMode& gimbal_mode)
     {
         switch (gimbal_mode) {
             default:
@@ -52,8 +53,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::GimbalMode
-    translateFromRpcGimbalMode(const rpc::gimbal::GimbalMode gimbal_mode)
+    static mavsdk::Gimbal::GimbalMode translateFromRpcGimbalMode(const rpc::gimbal::GimbalMode gimbal_mode)
     {
         switch (gimbal_mode) {
             default:
@@ -66,8 +66,7 @@ public:
         }
     }
 
-    static rpc::gimbal::ControlMode
-    translateToRpcControlMode(const mavsdk::Gimbal::ControlMode& control_mode)
+    static rpc::gimbal::ControlMode translateToRpcControlMode(const mavsdk::Gimbal::ControlMode& control_mode)
     {
         switch (control_mode) {
             default:
@@ -82,8 +81,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::ControlMode
-    translateFromRpcControlMode(const rpc::gimbal::ControlMode control_mode)
+    static mavsdk::Gimbal::ControlMode translateFromRpcControlMode(const rpc::gimbal::ControlMode control_mode)
     {
         switch (control_mode) {
             default:
@@ -98,44 +96,71 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::gimbal::ControlStatus>
-    translateToRpcControlStatus(const mavsdk::Gimbal::ControlStatus& control_status)
+
+
+    static std::unique_ptr<rpc::gimbal::ControlStatus> translateToRpcControlStatus(const mavsdk::Gimbal::ControlStatus &control_status)
     {
         auto rpc_obj = std::make_unique<rpc::gimbal::ControlStatus>();
 
+
+            
+                
         rpc_obj->set_control_mode(translateToRpcControlMode(control_status.control_mode));
-
+                
+            
+        
+            
         rpc_obj->set_sysid_primary_control(control_status.sysid_primary_control);
-
+            
+        
+            
         rpc_obj->set_compid_primary_control(control_status.compid_primary_control);
-
+            
+        
+            
         rpc_obj->set_sysid_secondary_control(control_status.sysid_secondary_control);
-
+            
+        
+            
         rpc_obj->set_compid_secondary_control(control_status.compid_secondary_control);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Gimbal::ControlStatus
-    translateFromRpcControlStatus(const rpc::gimbal::ControlStatus& control_status)
+    static mavsdk::Gimbal::ControlStatus translateFromRpcControlStatus(const rpc::gimbal::ControlStatus& control_status)
     {
         mavsdk::Gimbal::ControlStatus obj;
 
+
+            
         obj.control_mode = translateFromRpcControlMode(control_status.control_mode());
-
+            
+        
+            
         obj.sysid_primary_control = control_status.sysid_primary_control();
-
+            
+        
+            
         obj.compid_primary_control = control_status.compid_primary_control();
-
+            
+        
+            
         obj.sysid_secondary_control = control_status.sysid_secondary_control();
-
+            
+        
+            
         obj.compid_secondary_control = control_status.compid_secondary_control();
-
+            
+        
         return obj;
     }
 
-    static rpc::gimbal::GimbalResult::Result
-    translateToRpcResult(const mavsdk::Gimbal::Result& result)
+
+
+
+    static rpc::gimbal::GimbalResult::Result translateToRpcResult(const mavsdk::Gimbal::Result& result)
     {
         switch (result) {
             default:
@@ -156,8 +181,7 @@ public:
         }
     }
 
-    static mavsdk::Gimbal::Result
-    translateFromRpcResult(const rpc::gimbal::GimbalResult::Result result)
+    static mavsdk::Gimbal::Result translateFromRpcResult(const rpc::gimbal::GimbalResult::Result result)
     {
         switch (result) {
             default:
@@ -178,17 +202,21 @@ public:
         }
     }
 
+
+
+
     grpc::Status SetPitchAndYaw(
         grpc::ServerContext* /* context */,
         const rpc::gimbal::SetPitchAndYawRequest* request,
         rpc::gimbal::SetPitchAndYawResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gimbal::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -196,13 +224,18 @@ public:
             LogWarn() << "SetPitchAndYaw sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_pitch_and_yaw(request->pitch_deg(), request->yaw_deg());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_pitch_and_yaw(
-            request->pitch_deg(), request->yaw_deg());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -213,11 +246,12 @@ public:
         rpc::gimbal::SetPitchRateAndYawRateResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gimbal::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -225,13 +259,18 @@ public:
             LogWarn() << "SetPitchRateAndYawRate sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_pitch_rate_and_yaw_rate(request->pitch_rate_deg_s(), request->yaw_rate_deg_s());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_pitch_rate_and_yaw_rate(
-            request->pitch_rate_deg_s(), request->yaw_rate_deg_s());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -242,11 +281,12 @@ public:
         rpc::gimbal::SetModeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gimbal::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -254,13 +294,16 @@ public:
             LogWarn() << "SetMode sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_mode(translateFromRpcGimbalMode(request->gimbal_mode()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_mode(
-            translateFromRpcGimbalMode(request->gimbal_mode()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -271,11 +314,12 @@ public:
         rpc::gimbal::SetRoiLocationResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gimbal::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -283,13 +327,20 @@ public:
             LogWarn() << "SetRoiLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_roi_location(request->latitude_deg(), request->longitude_deg(), request->altitude_m());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_roi_location(
-            request->latitude_deg(), request->longitude_deg(), request->altitude_m());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -300,11 +351,12 @@ public:
         rpc::gimbal::TakeControlResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gimbal::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -312,13 +364,16 @@ public:
             LogWarn() << "TakeControl sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->take_control(translateFromRpcControlMode(request->control_mode()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->take_control(
-            translateFromRpcControlMode(request->control_mode()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -329,29 +384,32 @@ public:
         rpc::gimbal::ReleaseControlResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gimbal::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
+        
         auto result = _lazy_plugin.maybe_plugin()->release_control();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeControl(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::gimbal::SubscribeControlRequest* /* request */,
-        grpc::ServerWriter<rpc::gimbal::ControlResponse>* writer) override
+    grpc::Status SubscribeControl(grpc::ServerContext* /* context */, const mavsdk::rpc::gimbal::SubscribeControlRequest* /* request */, grpc::ServerWriter<rpc::gimbal::ControlResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -363,22 +421,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _lazy_plugin.maybe_plugin()->subscribe_control(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Gimbal::ControlStatus control) {
-                rpc::gimbal::ControlResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](const mavsdk::Gimbal::ControlStatus control) {
 
-                rpc_response.set_allocated_control_status(
-                    translateToRpcControlStatus(control).release());
+            rpc::gimbal::ControlResponse rpc_response;
+        
+            rpc_response.set_allocated_control_status(translateToRpcControlStatus(control).release());
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_control(nullptr);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->subscribe_control(nullptr);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -387,8 +448,8 @@ public:
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -398,8 +459,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -410,10 +470,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -424,7 +482,7 @@ private:
 
     LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

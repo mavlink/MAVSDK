@@ -48,19 +48,41 @@ if(BUILD_TESTS AND (IOS OR ANDROID))
     set(BUILD_TESTS OFF)
 endif()
 
-if(ANDROID)
-    set(lib_path "lib/android/${ANDROID_ABI}")
-elseif(IOS)
-    set(lib_path "lib/ios")
-else()
-    set(lib_path "lib")
+add_library(mavsdk
+    # source files are added in subdirectories.
+)
+
+target_link_libraries(mavsdk
+    PRIVATE
+    CURL::libcurl
+    Threads::Threads
+    #JsonCpp::jsoncpp
+    tinyxml2::tinyxml2
+)
+
+if (IOS)
+    target_link_libraries(mavsdk
+        PUBLIC
+        "-framework Foundation"
+        "-framework Security"
+    )
+elseif (MSVC OR MINGW)
+    # Link to Windows networking lib.
+    target_link_libraries(mavsdk
+        PRIVATE
+        ws2_32
+    )
+elseif(ANDROID)
+    target_link_libraries(mavsdk
+        PRIVATE
+        log
+    )
 endif()
 
 set(mavsdk_install_include_dir "include/mavsdk")
 set(mavsdk_install_lib_dir ${lib_path})
 
-add_subdirectory(core)
-add_subdirectory(plugins)
+add_subdirectory(mavsdk)
 
 if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
     add_subdirectory(${EXTERNAL_DIR}/plugins
@@ -70,16 +92,30 @@ endif()
 
 include(cmake/static_analyzers.cmake)
 
-if(BUILD_TESTS)
+if(BUILD_TESTS AND false)
     enable_testing()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
-    add_subdirectory(integration_tests)
+    #add_subdirectory(integration_tests)
 
-    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
-        add_subdirectory(${EXTERNAL_DIR}/integration_tests
-            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
-    endif()
+    list(APPEND UNIT_TEST_SOURCES
+        ${PROJECT_SOURCE_DIR}/mavsdk/global_include_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavlink_channels_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/unittests_main.cpp
+        # TODO: add this again
+        #${PROJECT_SOURCE_DIR}/mavsdk/http_loader_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/timeout_handler_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/call_every_handler_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/curl_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/cli_arg_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/locked_queue_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/safe_queue_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavsdk_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavlink_mission_transfer_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/mavlink_statustext_handler_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/geometry_test.cpp
+    )
+    set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
 
     include(cmake/unit_tests.cmake)
 endif()
