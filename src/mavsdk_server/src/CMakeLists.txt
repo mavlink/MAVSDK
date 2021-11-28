@@ -70,32 +70,6 @@ endif()
 
 target_link_libraries(mavsdk_server
     PRIVATE
-    mavsdk_action
-    mavsdk_action_server
-    mavsdk_calibration
-    mavsdk_camera
-    mavsdk_failure
-    mavsdk_follow_me
-    mavsdk_ftp
-    mavsdk_geofence
-    mavsdk_gimbal
-    mavsdk_info
-    mavsdk_log_files
-    mavsdk_manual_control
-    mavsdk_mission
-    mavsdk_mission_raw
-    mavsdk_mission_raw_server
-    mavsdk_mocap
-    mavsdk_offboard
-    mavsdk_param
-    mavsdk_param_server
-    mavsdk_server_utility
-    mavsdk_shell
-    mavsdk_telemetry
-    mavsdk_telemetry_server
-    mavsdk_tracking_server
-    mavsdk_tune
-    mavsdk_transponder
     mavsdk
     gRPC::grpc++
     ${COMPONENTS_PROTOGENS}

@@ -1,27 +1,12 @@
-add_library(mavsdk_mavlink_passthrough
+target_sources(mavsdk
+    PRIVATE
     mavlink_passthrough.cpp
     mavlink_passthrough_impl.cpp
 )
 
-target_link_libraries(mavsdk_mavlink_passthrough
-    mavsdk
-)
-
-set_target_properties(mavsdk_mavlink_passthrough
-    PROPERTIES COMPILE_FLAGS ${warnings}
-    VERSION ${MAVSDK_VERSION_STRING}
-    SOVERSION ${MAVSDK_SOVERSION_STRING}
-)
-
-target_include_directories(mavsdk_mavlink_passthrough PUBLIC
+target_include_directories(mavsdk PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/mavsdk>
-    )
-
-install(TARGETS mavsdk_mavlink_passthrough
-    EXPORT mavsdk-targets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 
 install(FILES
@@ -31,6 +16,6 @@ install(FILES
 )
 
 install(DIRECTORY
-    ../../third_party/mavlink/include/mavlink
+    ../../../third_party/mavlink/include/mavlink
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mavlink_passthrough
 )

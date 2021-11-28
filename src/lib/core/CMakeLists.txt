@@ -1,13 +1,10 @@
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-include_directories(
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
-)
-
 configure_file(version.h.in version.h)
 
-add_library(mavsdk
+target_sources(mavsdk
+    PRIVATE
     call_every_handler.cpp
     connection.cpp
     connection_result.cpp
@@ -38,12 +35,13 @@ add_library(mavsdk
     timesync.cpp
 )
 
-
+cmake_policy(SET CMP0079 NEW)
 target_link_libraries(mavsdk
     PRIVATE
     CURL::libcurl
     Threads::Threads
 )
+
 set_target_properties(mavsdk PROPERTIES
     VERSION ${MAVSDK_VERSION_STRING}
     SOVERSION ${MAVSDK_SOVERSION_STRING}

@@ -29,13 +29,8 @@ target_include_directories(unit_tests_mavsdk_server
 )
 
 target_link_libraries(unit_tests_mavsdk_server
+    mavsdk
     mavsdk_server
-    mavsdk_action
-    mavsdk_camera
-    mavsdk_info
-    mavsdk_mission
-    mavsdk_offboard
-    mavsdk_telemetry
     gRPC::grpc++
     gtest
     gmock

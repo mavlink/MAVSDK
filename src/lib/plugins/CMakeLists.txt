@@ -1,8 +1,3 @@
-include_directories(
-    ${PROJECT_SOURCE_DIR}/core
-    SYSTEM  ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
-)
-
 add_subdirectory(action)
 add_subdirectory(action_server)
 add_subdirectory(calibration)

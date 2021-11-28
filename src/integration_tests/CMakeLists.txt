@@ -82,22 +82,6 @@ set_target_properties(integration_tests_runner
 
 target_link_libraries(integration_tests_runner
     mavsdk
-    mavsdk_telemetry
-    mavsdk_action
-    mavsdk_mission
-    mavsdk_mission_raw
-    mavsdk_offboard
-    mavsdk_log_files
-    mavsdk_info
-    mavsdk_gimbal
-    mavsdk_follow_me
-    mavsdk_camera
-    mavsdk_calibration
-    mavsdk_geofence
-    mavsdk_param
-    mavsdk_ftp
-    mavsdk_mavlink_passthrough
-    mavsdk_server_utility
     gtest
     gtest_main
     gmock
