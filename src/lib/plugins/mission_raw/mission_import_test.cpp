@@ -15,7 +15,7 @@ using namespace mavsdk;
 
 std::string path_prefix(const std::string& path)
 {
-    return std::string("src/plugins/mission_raw/test_plans/") + path;
+    return std::string("src/lib/plugins/mission_raw/test_plans/") + path;
 }
 
 TEST(MissionRaw, ImportSamplePlanSuccessfully)

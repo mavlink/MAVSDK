@@ -4,7 +4,7 @@ add_library(mavsdk_mission
 )
 
 include_directories(
-    ${PROJECT_SOURCE_DIR}/core
+    ${PROJECT_SOURCE_DIR}/lib/core
 )
 
 set_target_properties(mavsdk_mission

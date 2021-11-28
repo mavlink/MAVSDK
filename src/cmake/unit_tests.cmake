@@ -1,4 +1,4 @@
-include_directories(${PROJECT_SOURCE_DIR}/core)
+include_directories(${PROJECT_SOURCE_DIR}/lib/core)
 include_directories(${PROJECT_SOURCE_DIR}/third_party/mavlink/include)
 
 find_package(jsoncpp REQUIRED)

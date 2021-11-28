@@ -18,8 +18,8 @@ target_include_directories(unit_tests_mavsdk_server
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
-    ${PROJECT_SOURCE_DIR}/plugins
-    ${PROJECT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/plugins
 )
 
 target_include_directories(unit_tests_mavsdk_server

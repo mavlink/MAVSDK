@@ -59,8 +59,7 @@ endif()
 set(mavsdk_install_include_dir "include/mavsdk")
 set(mavsdk_install_lib_dir ${lib_path})
 
-add_subdirectory(core)
-add_subdirectory(plugins)
+add_subdirectory(lib)
 
 if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
     add_subdirectory(${EXTERNAL_DIR}/plugins
