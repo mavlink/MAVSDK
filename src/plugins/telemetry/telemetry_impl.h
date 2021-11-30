@@ -389,28 +389,33 @@ private:
 
     void* _calibration_cookie{nullptr};
 
-    bool _has_received_hitl_param{false};
-    bool _has_received_gyro_calibration{false};
-    bool _has_received_accel_calibration{false};
-    bool _has_received_mag_calibration{false};
+    std::atomic<bool> _has_received_hitl_param{false};
 
-    // Ardupilot calibration status values
+    std::atomic<bool> _has_received_gyro_calibration{false};
+    std::atomic<bool> _has_received_accel_calibration{false};
+    std::atomic<bool> _has_received_mag_calibration{false};
 
-    struct ap_calibration_offset {
-        float x{0};
-        float y{0};
-        float z{0};
+    std::mutex _ap_calibration_mutex{};
+    struct ArdupilotCalibration {
+        struct OffsetStatus {
+            std::optional<float> x{};
+            std::optional<float> y{};
+            std::optional<float> z{};
 
-        [[nodiscard]] bool calibrated() const { return ((x != 0) && (y != 0) && (z != 0)); }
-    };
+            [[nodiscard]] bool received_all() const
+            {
+                return x.has_value() && y.has_value() && z.has_value();
+            }
+            [[nodiscard]] bool calibrated() const
+            {
+                return received_all() && ((x.value() != 0) && (y.value() != 0) && (z.value() != 0));
+            }
+        };
 
-    mutable std::mutex _ap_mag_offset_mutex{};
-    ap_calibration_offset _ap_mag_offset;
+        OffsetStatus mag_offset;
+        OffsetStatus accel_offset;
+        OffsetStatus gyro_offset;
 
-    mutable std::mutex _ap_accel_offset_mutex{};
-    ap_calibration_offset _ap_accel_offset;
-
-    mutable std::mutex _ap_gyro_offset_mutex{};
-    ap_calibration_offset _ap_gyro_offset;
+    } _ap_calibration{};
 };
 } // namespace mavsdk
