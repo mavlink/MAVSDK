@@ -155,6 +155,11 @@ void TelemetryImpl::deinit()
     _has_received_gyro_calibration = false;
     _has_received_accel_calibration = false;
     _has_received_mag_calibration = false;
+
+    {
+        std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+        _ap_calibration = {};
+    }
 }
 
 void TelemetryImpl::enable()
@@ -1049,6 +1054,27 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 
     set_rc_status({rc_ok}, std::nullopt);
 
+    if (sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_3D_GYRO) {
+        set_health_gyrometer_calibration(
+            sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_SENSOR_3D_GYRO);
+    } else {
+        // If the flag is not supported yet, we fall back to the param.
+    }
+
+    if (sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_3D_ACCEL) {
+        set_health_accelerometer_calibration(
+            sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_SENSOR_3D_ACCEL);
+    } else {
+        // If the flag is not supported yet, we fall back to the param.
+    }
+
+    if (sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_3D_MAG) {
+        set_health_magnetometer_calibration(
+            sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_SENSOR_3D_MAG);
+    } else {
+        // If the flag is not supported yet, we fall back to the param.
+    }
+
     {
         std::lock_guard<std::mutex> lock(_subscription_mutex);
         if (_rc_status_subscription) {
@@ -1453,7 +1479,6 @@ void TelemetryImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int
 
     bool ok = (value != 0);
     set_health_gyrometer_calibration(ok);
-    _has_received_gyro_calibration = true;
 }
 
 void TelemetryImpl::receive_param_cal_accel(MAVLinkParameters::Result result, int value)
@@ -1465,7 +1490,6 @@ void TelemetryImpl::receive_param_cal_accel(MAVLinkParameters::Result result, in
 
     bool ok = (value != 0);
     set_health_accelerometer_calibration(ok);
-    _has_received_accel_calibration = true;
 }
 
 void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int value)
@@ -1477,7 +1501,6 @@ void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int 
 
     bool ok = (value != 0);
     set_health_magnetometer_calibration(ok);
-    _has_received_mag_calibration = true;
 }
 
 void TelemetryImpl::receive_param_cal_mag_offset_x(MAVLinkParameters::Result result, float value)
@@ -1487,11 +1510,11 @@ void TelemetryImpl::receive_param_cal_mag_offset_x(MAVLinkParameters::Result res
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_mag_offset_mutex);
-    _ap_mag_offset.x = value;
-    auto calibration_complete = _ap_mag_offset.calibrated();
-    set_health_magnetometer_calibration(calibration_complete);
-    _has_received_mag_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.mag_offset.x = {value};
+    if (_ap_calibration.mag_offset.received_all()) {
+        set_health_magnetometer_calibration(_ap_calibration.mag_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_mag_offset_y(MAVLinkParameters::Result result, float value)
@@ -1501,11 +1524,11 @@ void TelemetryImpl::receive_param_cal_mag_offset_y(MAVLinkParameters::Result res
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_mag_offset_mutex);
-    _ap_mag_offset.y = value;
-    auto calibration_complete = _ap_mag_offset.calibrated();
-    set_health_magnetometer_calibration(calibration_complete);
-    _has_received_mag_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.mag_offset.y = {value};
+    if (_ap_calibration.mag_offset.received_all()) {
+        set_health_magnetometer_calibration(_ap_calibration.mag_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_mag_offset_z(MAVLinkParameters::Result result, float value)
@@ -1515,11 +1538,11 @@ void TelemetryImpl::receive_param_cal_mag_offset_z(MAVLinkParameters::Result res
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_mag_offset_mutex);
-    _ap_mag_offset.z = value;
-    auto calibration_complete = _ap_mag_offset.calibrated();
-    set_health_magnetometer_calibration(calibration_complete);
-    _has_received_mag_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.mag_offset.z = {value};
+    if (_ap_calibration.mag_offset.received_all()) {
+        set_health_magnetometer_calibration(_ap_calibration.mag_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_accel_offset_x(MAVLinkParameters::Result result, float value)
@@ -1529,11 +1552,11 @@ void TelemetryImpl::receive_param_cal_accel_offset_x(MAVLinkParameters::Result r
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_accel_offset_mutex);
-    _ap_accel_offset.x = value;
-    auto calibration_complete = _ap_accel_offset.calibrated();
-    set_health_accelerometer_calibration(calibration_complete);
-    _has_received_accel_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.accel_offset.x = {value};
+    if (_ap_calibration.accel_offset.received_all()) {
+        set_health_accelerometer_calibration(_ap_calibration.accel_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_accel_offset_y(MAVLinkParameters::Result result, float value)
@@ -1543,11 +1566,11 @@ void TelemetryImpl::receive_param_cal_accel_offset_y(MAVLinkParameters::Result r
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_accel_offset_mutex);
-    _ap_accel_offset.y = value;
-    auto calibration_complete = _ap_accel_offset.calibrated();
-    set_health_accelerometer_calibration(calibration_complete);
-    _has_received_accel_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.accel_offset.y = {value};
+    if (_ap_calibration.accel_offset.received_all()) {
+        set_health_accelerometer_calibration(_ap_calibration.accel_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_accel_offset_z(MAVLinkParameters::Result result, float value)
@@ -1557,11 +1580,11 @@ void TelemetryImpl::receive_param_cal_accel_offset_z(MAVLinkParameters::Result r
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_accel_offset_mutex);
-    _ap_accel_offset.z = value;
-    auto calibration_complete = _ap_accel_offset.calibrated();
-    set_health_accelerometer_calibration(calibration_complete);
-    _has_received_accel_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.accel_offset.z = {value};
+    if (_ap_calibration.accel_offset.received_all()) {
+        set_health_accelerometer_calibration(_ap_calibration.accel_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_gyro_offset_x(MAVLinkParameters::Result result, float value)
@@ -1571,11 +1594,11 @@ void TelemetryImpl::receive_param_cal_gyro_offset_x(MAVLinkParameters::Result re
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_gyro_offset_mutex);
-    _ap_gyro_offset.x = value;
-    auto calibration_complete = _ap_gyro_offset.calibrated();
-    set_health_gyrometer_calibration(calibration_complete);
-    _has_received_gyro_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.gyro_offset.x = {value};
+    if (_ap_calibration.gyro_offset.received_all()) {
+        set_health_gyrometer_calibration(_ap_calibration.gyro_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_gyro_offset_y(MAVLinkParameters::Result result, float value)
@@ -1585,11 +1608,11 @@ void TelemetryImpl::receive_param_cal_gyro_offset_y(MAVLinkParameters::Result re
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_gyro_offset_mutex);
-    _ap_gyro_offset.y = value;
-    auto calibration_complete = _ap_gyro_offset.calibrated();
-    set_health_gyrometer_calibration(calibration_complete);
-    _has_received_gyro_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.gyro_offset.y = {value};
+    if (_ap_calibration.gyro_offset.received_all()) {
+        set_health_gyrometer_calibration(_ap_calibration.gyro_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_cal_gyro_offset_z(MAVLinkParameters::Result result, float value)
@@ -1599,11 +1622,11 @@ void TelemetryImpl::receive_param_cal_gyro_offset_z(MAVLinkParameters::Result re
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_ap_gyro_offset_mutex);
-    _ap_gyro_offset.z = value;
-    auto calibration_complete = _ap_gyro_offset.calibrated();
-    set_health_gyrometer_calibration(calibration_complete);
-    _has_received_gyro_calibration = (calibration_complete);
+    std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
+    _ap_calibration.gyro_offset.z = {value};
+    if (_ap_calibration.gyro_offset.received_all()) {
+        set_health_gyrometer_calibration(_ap_calibration.gyro_offset.calibrated());
+    }
 }
 
 void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int value)
@@ -1964,18 +1987,24 @@ void TelemetryImpl::set_health_home_position(bool ok)
 
 void TelemetryImpl::set_health_gyrometer_calibration(bool ok)
 {
+    _has_received_gyro_calibration = true;
+
     std::lock_guard<std::mutex> lock(_health_mutex);
     _health.is_gyrometer_calibration_ok = (ok || _hitl_enabled);
 }
 
 void TelemetryImpl::set_health_accelerometer_calibration(bool ok)
 {
+    _has_received_accel_calibration = true;
+
     std::lock_guard<std::mutex> lock(_health_mutex);
     _health.is_accelerometer_calibration_ok = (ok || _hitl_enabled);
 }
 
 void TelemetryImpl::set_health_magnetometer_calibration(bool ok)
 {
+    _has_received_mag_calibration = true;
+
     std::lock_guard<std::mutex> lock(_health_mutex);
     _health.is_magnetometer_calibration_ok = (ok || _hitl_enabled);
 }
