@@ -425,14 +425,13 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 {
     if (new_configuration.get_always_send_heartbeats() &&
         !_configuration.get_always_send_heartbeats()) {
-        _configuration = new_configuration;
         start_sending_heartbeats();
     } else if (
         !new_configuration.get_always_send_heartbeats() &&
         _configuration.get_always_send_heartbeats() && !is_any_system_connected()) {
-        _configuration = new_configuration;
         stop_sending_heartbeats();
     }
+    _configuration = new_configuration;
 }
 
 uint8_t MavsdkImpl::get_own_system_id() const
