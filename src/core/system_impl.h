@@ -58,6 +58,7 @@ public:
     void init(uint8_t system_id, uint8_t comp_id, bool connected);
 
     void enable_timesync();
+    void enable_sending_autopilot_version();
 
     void subscribe_is_connected(System::IsConnectedCallback callback);
 
@@ -408,6 +409,8 @@ private:
     std::mutex _autopilot_version_mutex{};
     System::AutopilotVersion _autopilot_version{
         MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, {0}};
+
+    std::atomic<bool> _should_send_autopilot_version{false};
 };
 
 } // namespace mavsdk

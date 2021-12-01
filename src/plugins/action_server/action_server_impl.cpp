@@ -53,6 +53,8 @@ ActionServerImpl::~ActionServerImpl()
 
 void ActionServerImpl::init()
 {
+    _parent->enable_sending_autopilot_version();
+
     // Arming / Disarm / Kill
     _parent->register_mavlink_command_handler(
         MAV_CMD_COMPONENT_ARM_DISARM,

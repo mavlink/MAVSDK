@@ -138,6 +138,11 @@ void SystemImpl::enable_timesync()
     _timesync.enable();
 }
 
+void SystemImpl::enable_sending_autopilot_version()
+{
+    _should_send_autopilot_version = true;
+}
+
 void SystemImpl::subscribe_is_connected(System::IsConnectedCallback callback)
 {
     std::lock_guard<std::mutex> lock(_connection_mutex);
@@ -288,11 +293,12 @@ void SystemImpl::system_thread()
 std::optional<mavlink_message_t>
 SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
 {
-    LogDebug() << "Autopilot Capabilities Request";
+    if (_should_send_autopilot_version) {
+        send_autopilot_version();
+        return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    }
 
-    send_autopilot_version();
-
-    return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return {};
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)
@@ -1288,7 +1294,9 @@ void SystemImpl::add_capabilities(uint64_t add_capabilities)
 
     // We need to resend capabilities...
     lock.unlock();
-    send_autopilot_version();
+    if (_should_send_autopilot_version) {
+        send_autopilot_version();
+    }
 }
 
 void SystemImpl::set_flight_sw_version(uint32_t flight_sw_version)
