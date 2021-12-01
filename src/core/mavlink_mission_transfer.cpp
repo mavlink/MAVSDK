@@ -20,6 +20,7 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_i
 {
     if (!_int_messages_supported) {
         if (callback) {
+            LogErr() << "Int messages are not supported.";
             callback(Result::IntMessagesNotSupported);
         }
         return {};
@@ -38,6 +39,7 @@ MAVLinkMissionTransfer::download_items_async(uint8_t type, ResultAndItemsCallbac
 {
     if (!_int_messages_supported) {
         if (callback) {
+            LogErr() << "Int messages are not supported.";
             callback(Result::IntMessagesNotSupported, {});
         }
         return {};
@@ -57,6 +59,7 @@ MAVLinkMissionTransfer::receive_incoming_items_async(
 {
     if (!_int_messages_supported) {
         if (callback) {
+            LogErr() << "Int messages are not supported.";
             callback(Result::IntMessagesNotSupported, {});
         }
         return {};
