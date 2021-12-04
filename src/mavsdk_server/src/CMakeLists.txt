@@ -82,6 +82,8 @@ set_target_properties(mavsdk_server
     )
 
 if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+    target_link_libraries(mavsdk_server PRIVATE atomic.a)
+elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "(armv6|armv7)")
     target_link_libraries(mavsdk_server PRIVATE atomic)
 endif()
 

@@ -81,6 +81,7 @@ set_target_properties(integration_tests_runner
 )
 
 target_link_libraries(integration_tests_runner
+    PRIVATE
     mavsdk
     gtest
     gtest_main

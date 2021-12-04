@@ -29,6 +29,7 @@ target_include_directories(unit_tests_mavsdk_server
 )
 
 target_link_libraries(unit_tests_mavsdk_server
+    PRIVATE
     mavsdk
     mavsdk_server
     gRPC::grpc++
