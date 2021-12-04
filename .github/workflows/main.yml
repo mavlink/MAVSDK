@@ -39,6 +39,10 @@ jobs:
         run: ./build/src/unit_tests_runner
       - name: run lcov
         run: lcov --capture --directory . --output-file lcov.info
+      - name: check lcov.info
+        run: |
+          ls -l lcov.info
+          cat lcov.info
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
@@ -216,7 +220,7 @@ jobs:
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [fedora-33]
+        container_name: [fedora-34, fedora-35]
     steps:
       - uses: actions/checkout@v2
         with:
