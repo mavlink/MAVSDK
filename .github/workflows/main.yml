@@ -13,8 +13,8 @@ on:
 
 jobs:
   coverage:
-    name: coverage (ubuntu-18.04)
-    runs-on: ubuntu-18.04
+    name: coverage (ubuntu-20.04)
+    runs-on: ubuntu-20.04
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -29,14 +29,6 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" >> $GITHUB_ENV
-      - name: Install latest cmake
-        run: |
-          sudo apt-get update
-          sudo apt-get install apt-transport-https ca-certificates gnupg software-properties-common wget
-          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
-          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
-          sudo apt-get update
-          sudo apt-get install cmake
       - name: Install lcov
         run: sudo apt-get update && sudo apt-get install -y lcov
       - name: configure
@@ -53,23 +45,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./lcov.info"
 
-  ubuntu18-non-superbuild:
-    name: ubuntu-18.04 (non-mavsdk_server, non-superbuild)
-    runs-on: ubuntu-18.04
+  ubuntu20-non-superbuild:
+    name: ubuntu-20.04 (non-mavsdk_server, non-superbuild)
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install
         run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
-      - name: Install latest cmake
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https ca-certificates gnupg software-properties-common wget
-          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
-          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
-          sudo apt-get update
-          sudo apt-get install -y cmake
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -DWERROR=OFF -Bbuild/release -H.
       - name: build
@@ -77,9 +61,9 @@ jobs:
       - name: test
         run: ./build/release/src/unit_tests_runner
 
-  ubuntu18-superbuild:
-    name: ubuntu-18.04 (mavsdk_server, superbuild)
-    runs-on: ubuntu-18.04
+  ubuntu20-superbuild:
+    name: ubuntu-20.04 (mavsdk_server, superbuild)
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -92,14 +76,6 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
-      - name: Install latest cmake
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https ca-certificates gnupg software-properties-common wget
-          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
-          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
-          sudo apt-get update
-          sudo apt-get install -y cmake
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/release -H.
       - name: build
@@ -185,7 +161,7 @@ jobs:
 
   deb-package:
     name: ${{ matrix.container_name }} (package, non-mavsdk_server)
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
@@ -236,7 +212,7 @@ jobs:
 
   rpm-package:
     name: ${{ matrix.container_name }} (package, non-mavsdk_server)
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
@@ -592,24 +568,9 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  px4-sitl-older:
-    name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-18.04)
-    runs-on: ubuntu-18.04
-    container: mavsdk/mavsdk-ubuntu-18.04-px4-sitl-${{ matrix.px4_version }}
-    strategy:
-      matrix:
-        px4_version: [v1.9, v1.10]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: test
-        run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
-
   px4-sitl-newer:
     name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-20.04)
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: mavsdk/mavsdk-ubuntu-20.04-px4-sitl-${{ matrix.px4_version }}
     strategy:
       matrix:
