@@ -38,11 +38,10 @@ jobs:
       - name: test
         run: ./build/src/unit_tests_runner
       - name: run lcov
-        run: lcov --capture --directory . --output-file lcov.info
-      - name: check lcov.info
+        run: lcov --capture --directory . --no-external --exclude "*/third_party/*"  --output-file lcov.info
+      - name: check size of lcov.info
         run: |
           ls -l lcov.info
-          cat lcov.info
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
