@@ -12,8 +12,6 @@ add_executable(vtol_transition
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(vtol_transition
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
 )
 

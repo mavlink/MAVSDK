@@ -13,7 +13,6 @@ find_package(MAVSDK REQUIRED)
 
 target_link_libraries(terminate
     MAVSDK::mavsdk
-    MAVSDK::mavsdk_action
 )
 
 if(NOT MSVC)

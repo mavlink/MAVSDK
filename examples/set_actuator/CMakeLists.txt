@@ -12,7 +12,6 @@ add_executable(set_actuator
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(set_actuator
-    MAVSDK::mavsdk_action
     MAVSDK::mavsdk
 )
 

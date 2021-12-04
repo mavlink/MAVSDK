@@ -12,10 +12,6 @@ add_executable(geofence_inclusion
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(geofence_inclusion
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_mission
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_geofence
     MAVSDK::mavsdk
 )
 

@@ -12,8 +12,6 @@ add_executable(battery
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(battery
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_mavlink_passthrough
     MAVSDK::mavsdk
 )
 

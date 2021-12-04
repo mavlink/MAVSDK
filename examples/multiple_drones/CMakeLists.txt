@@ -13,8 +13,6 @@ find_package(MAVSDK REQUIRED)
 find_package(Threads REQUIRED)
 
 target_link_libraries(multiple_drones
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_action
     MAVSDK::mavsdk
     Threads::Threads
 )

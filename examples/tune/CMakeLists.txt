@@ -12,7 +12,6 @@ add_executable(tune
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(tune
-    MAVSDK::mavsdk_tune
     MAVSDK::mavsdk
 )
 

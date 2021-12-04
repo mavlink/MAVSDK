@@ -12,9 +12,6 @@ add_executable(offboard
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(offboard
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_offboard
-    MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
 )
 

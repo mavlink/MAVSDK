@@ -13,15 +13,6 @@ find_package(MAVSDK REQUIRED)
 find_package(Threads REQUIRED)
 
 target_link_libraries(autopilot_server
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_telemetry_server
-    MAVSDK::mavsdk_mission_raw_server
-    MAVSDK::mavsdk_mission
-    MAVSDK::mavsdk_param_server
-    MAVSDK::mavsdk_param
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_action_server
-    MAVSDK::mavsdk_mavlink_passthrough
     MAVSDK::mavsdk
     Threads::Threads
 )

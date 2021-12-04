@@ -12,7 +12,6 @@ add_executable(transponder
 )
 
 target_link_libraries(transponder
-    MAVSDK::mavsdk_transponder
     MAVSDK::mavsdk
 )
 
