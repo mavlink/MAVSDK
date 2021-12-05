@@ -22,7 +22,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
 # This includes all GTests that run integration tests
 add_executable(integration_tests_runner
-    ../lib/core/unittests_main.cpp
+    ../mavsdk/core/unittests_main.cpp
     action_hover_async.cpp
     action_hover_sync.cpp
     action_takeoff_and_kill.cpp

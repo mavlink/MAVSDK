@@ -105,21 +105,21 @@ install(FILES
 )
 
 list(APPEND UNIT_TEST_SOURCES
-    ${PROJECT_SOURCE_DIR}/lib/core/global_include_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/mavlink_channels_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/unittests_main.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/global_include_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
     # TODO: add this again
-    #${PROJECT_SOURCE_DIR}/lib/core/http_loader_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/timeout_handler_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/call_every_handler_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/curl_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/cli_arg_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/locked_queue_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/safe_queue_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/mavsdk_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/mavlink_mission_transfer_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/mavlink_statustext_handler_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/geometry_test.cpp
-    ${PROJECT_SOURCE_DIR}/lib/core/ringbuffer_test.cpp
+    #${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/timeout_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/call_every_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/cli_arg_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/safe_queue_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/ringbuffer_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
