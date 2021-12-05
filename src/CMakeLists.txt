@@ -7,12 +7,6 @@ cmake_policy(SET CMP0025 NEW)
 
 project(mavsdk)
 
-include("cmake/HunterGate.cmake")
-HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.315.tar.gz"
-    SHA1 "ea5d72afc0df67f2126e7fd069f20c5f723709e1"
-)
-
 # ccache
 option(CCACHE "Use ccache if available" ON)
 find_program(CCACHE_PROGRAM ccache)

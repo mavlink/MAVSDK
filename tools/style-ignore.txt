@@ -1,4 +1,4 @@
 src/mavsdk_server/src/generated
-src/lib/plugins/camera/camera_definition_files/generated
-src/lib/plugins/ftp/stackoverflow_unistd.h
-src/lib/plugins/ftp/tronkko_dirent.h
+src/mavsdk/plugins/camera/camera_definition_files/generated
+src/mavsdk/plugins/ftp/stackoverflow_unistd.h
+src/mavsdk/plugins/ftp/tronkko_dirent.h

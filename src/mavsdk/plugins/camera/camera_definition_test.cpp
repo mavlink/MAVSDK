@@ -8,7 +8,7 @@
 
 using namespace mavsdk;
 
-static const std::string e90_unit_test_file = "src/lib/plugins/camera/e90_unit_test.xml";
+static const std::string e90_unit_test_file = "src/mavsdk/plugins/camera/e90_unit_test.xml";
 
 TEST(CameraDefinition, E90LoadInfoFile)
 {
@@ -484,7 +484,7 @@ TEST(CameraDefinition, E90OptionHumanReadable)
     EXPECT_STREQ(description.c_str(), "");
 }
 
-static const std::string uvc_unit_test_file = "src/lib/plugins/camera/uvc_unit_test.xml";
+static const std::string uvc_unit_test_file = "src/mavsdk/plugins/camera/uvc_unit_test.xml";
 
 TEST(CameraDefinition, UVCLoadInfoFile)
 {
