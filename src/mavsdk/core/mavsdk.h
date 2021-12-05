@@ -20,7 +20,6 @@ enum class ForwardingOption {
 };
 
 class MavsdkImpl;
-class System;
 
 /**
  * @brief This is the main class of MAVSDK (a MAVLink API Library).
