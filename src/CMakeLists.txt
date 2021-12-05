@@ -7,6 +7,12 @@ cmake_policy(SET CMP0025 NEW)
 
 project(mavsdk)
 
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.315.tar.gz"
+    SHA1 "ea5d72afc0df67f2126e7fd069f20c5f723709e1"
+)
+
 # ccache
 option(CCACHE "Use ccache if available" ON)
 find_program(CCACHE_PROGRAM ccache)
@@ -99,3 +105,28 @@ if (DROP_DEBUG EQUAL 1)
         mavsdk
     )
 endif()
+
+install(EXPORT mavsdk-targets
+    FILE MAVSDKTargets.cmake
+    NAMESPACE MAVSDK::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/MAVSDK
+    )
+
+# For the build tree
+configure_file(MAVSDKConfig.cmake.in
+    "${PROJECT_BINARY_DIR}/MAVSDKConfig.cmake" @ONLY)
+# For the install tree
+configure_file(MAVSDKConfig.cmake.in
+    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/MAVSDKConfig.cmake" @ONLY)
+
+include(CMakePackageConfigHelpers)
+# Supply version to config
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/MAVSDKConfigVersion.cmake
+    VERSION ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH}
+    COMPATIBILITY SameMajorVersion )
+
+install(FILES
+    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/MAVSDKConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/MAVSDKConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/MAVSDK)
