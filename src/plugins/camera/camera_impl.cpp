@@ -940,7 +940,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
         // Notify user if a new image has been captured.
         if (_capture_info.last_advertised_image_index < capture_info.index) {
-            if (_capture_info.callback) {
+            if (_capture_info.callback && !capture_info.file_url.empty()) {
                 const auto temp_callback = _capture_info.callback;
                 _parent->call_user_callback(
                     [temp_callback, capture_info]() { temp_callback(capture_info); });
@@ -964,7 +964,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
 
         else if (auto it = _capture_info.missing_image_retries.find(capture_info.index);
                  it != _capture_info.missing_image_retries.end()) {
-            if (_capture_info.callback) {
+            if (_capture_info.callback && !capture_info.file_url.empty()) {
                 const auto temp_callback = _capture_info.callback;
                 _parent->call_user_callback(
                     [temp_callback, capture_info]() { temp_callback(capture_info); });
@@ -2000,7 +2000,11 @@ void CameraImpl::list_photos_async(
         {
             std::lock_guard<std::mutex> status_lock(_status.mutex);
 
-            for (auto capture_info : _status.photo_list) {
+            for (const auto& capture_info : _status.photo_list) {
+                if (capture_info.second.file_url.empty()) {
+                    continue;
+                }
+
                 if (capture_info.first >= start_index) {
                     photo_list.push_back(capture_info.second);
                 }
