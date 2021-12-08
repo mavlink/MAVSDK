@@ -311,6 +311,9 @@ MissionRawServer::MissionItem MissionRawServerImpl::current_item_changed() const
 
 void MissionRawServerImpl::set_current_item_complete()
 {
+    if (_current_seq + 1 > _current_mission.size())
+        return;
+
     mavlink_message_t mission_reached;
     mavlink_msg_mission_item_reached_pack(
         _parent->get_own_system_id(),
@@ -318,17 +321,18 @@ void MissionRawServerImpl::set_current_item_complete()
         &mission_reached,
         static_cast<uint16_t>(_current_seq));
     _parent->send_message(mission_reached);
+
     if (_current_seq + 1 == _current_mission.size()) {
         _mission_completed = true;
-        set_current_seq(0);
-    } else {
-        set_current_seq(_current_seq + 1);
     }
+    // This will publish 0 - N mission current
+    // mission_current mission.size() is end of mission!
+    set_current_seq(_current_seq + 1);
 }
 
 void MissionRawServerImpl::set_current_seq(std::size_t seq)
 {
-    if (_current_mission.size() <= static_cast<size_t>(seq)) {
+    if (_current_mission.size() < static_cast<size_t>(seq)) {
         return;
     }
 
