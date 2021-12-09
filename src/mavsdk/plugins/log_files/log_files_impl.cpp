@@ -209,6 +209,7 @@ LogFiles::Result LogFilesImpl::download_log_file(LogFiles::Entry entry, const st
     auto future_result = prom->get_future();
 
     download_log_file_async(entry, file_path, [prom](LogFiles::Result result, LogFiles::ProgressData progress) {
+        UNUSED(progress);
         if (result != LogFiles::Result::Next) {
             prom->set_value(result);
 	}
