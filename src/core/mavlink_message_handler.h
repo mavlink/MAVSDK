@@ -4,6 +4,7 @@
 #include <functional>
 #include <mutex>
 #include <vector>
+#include <map>
 #include "mavlink_include.h"
 
 namespace mavsdk {
@@ -13,7 +14,6 @@ public:
     using Callback = std::function<void(const mavlink_message_t&)>;
 
     struct Entry {
-        uint32_t msg_id;
         Callback callback;
         const void* cookie; // This is the identification to unregister.
     };
@@ -25,7 +25,7 @@ public:
 
 private:
     std::mutex _mutex{};
-    std::vector<Entry> _table{};
+    std::map<uint32_t, std::vector<Entry>> _map{};
 };
 
 } // namespace mavsdk

@@ -8,28 +8,21 @@ void MAVLinkMessageHandler::register_one(
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    Entry entry = {msg_id, callback, cookie};
-    _table.push_back(entry);
+    if (_map.count(msg_id) == 0) {
+        _map.emplace(std::make_pair(msg_id, std::vector<MAVLinkMessageHandler::Entry>()));
+    }
+
+    Entry entry{callback, cookie};
+    _map[msg_id].push_back(entry);
 }
 
 void MAVLinkMessageHandler::unregister_one(uint16_t msg_id, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    for (auto it = _table.begin(); it != _table.end();
-         /* no ++it */) {
-        if (it->msg_id == msg_id && it->cookie == cookie) {
-            it = _table.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
+    if (_map.count(msg_id) == 0) return;
 
-void MAVLinkMessageHandler::unregister_all(const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_mutex);
-
+    auto& _table = _map[msg_id];
     for (auto it = _table.begin(); it != _table.end();
          /* no ++it */) {
         if (it->cookie == cookie) {
@@ -38,28 +31,57 @@ void MAVLinkMessageHandler::unregister_all(const void* cookie)
             ++it;
         }
     }
+
+    if (_table.size() == 0) {
+        _map.erase(msg_id);
+    }
+}
+
+void MAVLinkMessageHandler::unregister_all(const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    for (auto map_it = _map.begin(); map_it != _map.end(); /* no ++map_it */) {
+	auto& _table = map_it->second;
+
+        for (auto it = _table.begin(); it != _table.end();
+             /* no ++it */) {
+            if (it->cookie == cookie) {
+                it = _table.erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        if (_table.size() == 0) {
+            map_it = _map.erase(map_it);
+        } else {
+            ++map_it;
+	}
+    }
 }
 
 void MAVLinkMessageHandler::process_message(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
+    if (_map.count(message.msgid) == 0) return;
 #if MESSAGE_DEBUGGING == 1
-    bool forwarded = false;
+    bool processed = false;
 #endif
+
+    auto& _table = _map[message.msgid];
     for (auto& entry : _table) {
-        if (entry.msg_id == message.msgid) {
 #if MESSAGE_DEBUGGING == 1
-            LogDebug() << "Forwarding msg " << int(message.msgid) << " to "
-                       << size_t(entry->cookie);
-            forwarded = true;
+        LogDebug() << "Forwarding msg " << int(message.msgid) << " to "
+                   << size_t(entry->cookie);
+        processed = true;
 #endif
-            entry.callback(message);
-        }
+        entry.callback(message);
     }
 
 #if MESSAGE_DEBUGGING == 1
-    if (!forwarded) {
+    if (!processed) {
         LogDebug() << "Ignoring msg " << int(message.msgid);
     }
 #endif
