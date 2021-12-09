@@ -32,9 +32,19 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFiles::get_entries(
 }
 
 void LogFiles::download_log_file_async(
-    Entry entry, std::string path, DownloadLogFileCallback callback)
+    LogFiles::Entry entry, std::string path, DownloadLogFileCallback callback)
 {
     _impl->download_log_file_async(entry, path, callback);
+}
+
+LogFiles::Result LogFiles::download_log_file(LogFiles::Entry entry, std::string path)
+{
+    return _impl->download_log_file(entry, path);
+}
+
+void LogFiles::erase_log_files()
+{
+    _impl->erase_log_files();
 }
 
 bool operator==(const LogFiles::ProgressData& lhs, const LogFiles::ProgressData& rhs)

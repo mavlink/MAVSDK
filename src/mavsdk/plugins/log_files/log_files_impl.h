@@ -23,10 +23,13 @@ public:
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
     void get_entries_async(LogFiles::GetEntriesCallback callback);
 
+    LogFiles::Result download_log_file(LogFiles::Entry entry, const std::string& file_path);
     void download_log_file_async(
         LogFiles::Entry entry,
         const std::string& file_path,
         LogFiles::DownloadLogFileCallback callback);
+
+    void erase_log_files();
 
 private:
     void request_end();
