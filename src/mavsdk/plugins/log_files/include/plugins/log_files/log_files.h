@@ -153,28 +153,31 @@ public:
      * @brief Callback type for download_log_file_async.
      */
 
-    using DownloadLogFileCallback = std::function<void(LogFiles::Result, ProgressData)>;
+    using DownloadLogFileCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Download log file.
-     *
-     * This function is non-blocking. See 'download_log_file' for the non-blocking counterpart.
      */
-    void download_log_file_async(LogFiles::Entry entry, std::string path, DownloadLogFileCallback callback);
+    void download_log_file_async(Entry entry, std::string path, DownloadLogFileCallback callback);
 
-    /** @brief Download log file.
+    /**
+     * @brief Download log file synchronously.
      *
-     * This function is blocking. See 'download_log_file_async' for the non-blocking counterpart.
+     * This function is blocking.
      *
-     * @return Result of the log download.
+     * @return Result of request.
      */
-
-    LogFiles::Result download_log_file(LogFiles::Entry entry, std::string path);
+    std::pair<Result, LogFiles::ProgressData>
+    download_log_file(Entry entry, std::string path) const;
 
     /**
      * @brief Erase all log files.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
      */
-    void erase_log_files();
+    Result erase_all_log_files() const;
 
     /**
      * @brief Copy constructor.

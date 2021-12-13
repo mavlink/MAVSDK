@@ -19,8 +19,7 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name
-              << " <connection_url> [--rm]\n"
+    std::cerr << "Usage : " << bin_name << " <connection_url> [--rm]\n"
               << '\n'
               << "Connection URL format should be :\n"
               << " For TCP : tcp://[server_host][:server_port]\n"
@@ -29,8 +28,7 @@ void usage(const std::string& bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540\n"
               << '\n'
               << "To remove log files after all downloads completed,\n"
-              << "please add the --rm argument"
-              << std::endl;
+              << "please add the --rm argument" << std::endl;
 }
 
 std::shared_ptr<System> get_system(Mavsdk& mavsdk)
@@ -70,10 +68,10 @@ int main(int argc, char** argv)
     /* parse arguments */
     bool remove_log_files = false;
 
-    for (int i=2; i<argc; ++i) {
+    for (int i = 2; i < argc; ++i) {
         if (argv[i] == "--rm") {
             remove_log_files = true;
-	}
+        }
     }
 
     Mavsdk mavsdk;
@@ -96,9 +94,11 @@ int main(int argc, char** argv)
     auto get_entries_result = log_files.get_entries();
     if (get_entries_result.first == LogFiles::Result::Success) {
         bool download_failure = false;
-        for(auto entry : get_entries_result.second) {
-            std::cerr << "Got log file with ID " << entry.id << " and date " << entry.date << std::endl;
-            LogFiles::Result result = log_files.download_log_file(entry, std::string("log-") + entry.date + ".ulg");
+        for (auto entry : get_entries_result.second) {
+            std::cerr << "Got log file with ID " << entry.id << " and date " << entry.date
+                      << std::endl;
+            LogFiles::Result result =
+                log_files.download_log_file(entry, std::string("log-") + entry.date + ".ulg");
             if (result != LogFiles::Result::Success) {
                 download_failure = true;
                 std::cerr << "LogFiles::download_log_file failed: " << result << std::endl;

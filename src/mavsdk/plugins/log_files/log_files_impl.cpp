@@ -202,18 +202,20 @@ void LogFilesImpl::list_timeout()
     }
 }
 
-LogFiles::Result LogFilesImpl::download_log_file(LogFiles::Entry entry, const std::string& file_path)
+std::pair<LogFiles::Result, LogFiles::ProgressData>
+LogFilesImpl::download_log_file(LogFiles::Entry entry, const std::string& file_path)
 {
     auto prom =
-        std::make_shared<std::promise<LogFiles::Result>>();
+        std::make_shared<std::promise<std::pair<LogFiles::Result, LogFiles::ProgressData>>>();
     auto future_result = prom->get_future();
 
-    download_log_file_async(entry, file_path, [prom](LogFiles::Result result, LogFiles::ProgressData progress) {
-        UNUSED(progress);
-        if (result != LogFiles::Result::Next) {
-            prom->set_value(result);
-	}
-    });
+    download_log_file_async(
+        entry, file_path, [prom](LogFiles::Result result, LogFiles::ProgressData progress) {
+            UNUSED(progress);
+            if (result != LogFiles::Result::Next) {
+                prom->set_value(std::make_pair(result, progress));
+            }
+        });
     return future_result.get();
 }
 
@@ -310,7 +312,7 @@ void LogFilesImpl::download_log_file_async(
     }
 }
 
-void LogFilesImpl::erase_log_files()
+void LogFilesImpl::erase_log_files_async(LogFiles::ResultCallback callback)
 {
     mavlink_message_t msg;
     mavlink_msg_log_erase_pack(
@@ -320,6 +322,9 @@ void LogFilesImpl::erase_log_files()
         _parent->get_system_id(),
         MAV_COMP_ID_AUTOPILOT1);
     _parent->send_message(msg);
+
+    // TODO: find a good way to know about the success or failure of the operation
+    callback(LogFiles::Result::Success);
 }
 
 std::size_t LogFilesImpl::determine_part_end()
