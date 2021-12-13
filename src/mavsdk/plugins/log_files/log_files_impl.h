@@ -30,7 +30,7 @@ public:
         const std::string& file_path,
         LogFiles::DownloadLogFileCallback callback);
 
-    void erase_log_files_async(LogFiles::ResultCallback callback);
+    LogFiles::Result erase_all_log_files();
 
 private:
     void request_end();

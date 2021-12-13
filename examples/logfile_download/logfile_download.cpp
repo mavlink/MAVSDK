@@ -105,6 +105,12 @@ int main(int argc, char** argv)
             }
         }
         if (!download_failure && remove_log_files) {
+            /*
+             * If you want to be sure the log has been deleted, call get_entries again
+             * that there are no log files present anymore
+             *
+             * TODO: provide a more reliable solution
+             */
             log_files.erase_log_files();
         }
     } else {

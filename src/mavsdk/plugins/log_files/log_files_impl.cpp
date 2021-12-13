@@ -1,6 +1,7 @@
 #include "log_files_impl.h"
 #include "mavsdk_impl.h"
 #include "filesystem_include.h"
+#include "unused.h"
 
 #include <algorithm>
 #include <cmath>
@@ -312,7 +313,7 @@ void LogFilesImpl::download_log_file_async(
     }
 }
 
-void LogFilesImpl::erase_log_files_async(LogFiles::ResultCallback callback)
+LogFiles::Result LogFilesImpl::erase_all_log_files()
 {
     mavlink_message_t msg;
     mavlink_msg_log_erase_pack(
@@ -324,7 +325,7 @@ void LogFilesImpl::erase_log_files_async(LogFiles::ResultCallback callback)
     _parent->send_message(msg);
 
     // TODO: find a good way to know about the success or failure of the operation
-    callback(LogFiles::Result::Success);
+    return LogFiles::Result::Success;
 }
 
 std::size_t LogFilesImpl::determine_part_end()
