@@ -17,6 +17,14 @@ service LogFilesService {
         option (mavsdk.options.async_type) = ASYNC;
         option (mavsdk.options.is_finite) = true;
     }
+    // Download log file synchronously.
+    rpc DownloadLogFile(DownloadLogFileRequest) returns(DownloadLogFileResponse) {
+        option (mavsdk.options.async_type) = SYNC;
+    }
+    // Erase log files.
+    rpc EraseLogFiles(EraseLogFilesRequest) returns(EraseLogFilesResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+    }
 }
 
 message GetEntriesRequest {}
@@ -33,6 +41,14 @@ message DownloadLogFileResponse {
     LogFilesResult log_files_result = 1;
     ProgressData progress = 2; // Progress if result is progress
 }
+
+message DownloadLogFileRequest {
+    Entry entry = 1; // Entry of the log file to download.
+    string path = 2; // Path of where to download log file to.
+}
+
+message EraseLogFilesRequest {}
+message EraseLogFilesResponse {}
 
 /*
  * Progress data coming when downloading a log file.
