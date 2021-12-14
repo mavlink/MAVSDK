@@ -21,9 +21,9 @@ service LogFilesService {
     rpc DownloadLogFile(DownloadLogFileRequest) returns(DownloadLogFileResponse) {
         option (mavsdk.options.async_type) = SYNC;
     }
-    // Erase log files.
-    rpc EraseLogFiles(EraseLogFilesRequest) returns(EraseLogFilesResponse) {
-        option (mavsdk.options.async_type) = ASYNC;
+    // Erase all log files.
+    rpc EraseAllLogFiles(EraseAllLogFilesRequest) returns(EraseAllLogFilesResponse) {
+        option (mavsdk.options.async_type) = SYNC;
     }
 }
 
@@ -47,8 +47,10 @@ message DownloadLogFileRequest {
     string path = 2; // Path of where to download log file to.
 }
 
-message EraseLogFilesRequest {}
-message EraseLogFilesResponse {}
+message EraseAllLogFilesRequest {}
+message EraseAllLogFilesResponse {
+    LogFilesResult log_files_result = 1;
+}
 
 /*
  * Progress data coming when downloading a log file.
