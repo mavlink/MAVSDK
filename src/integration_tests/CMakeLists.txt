@@ -1,22 +1,3 @@
-# SYSTEM because we don't want warnings for gtest headers.
-include_directories(
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
-)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
-
-if(MSVC)
-    add_compile_options(
-         /wd4996 # ignore deprecated
-    )
-else()
-    add_compile_options(
-        -Wno-error=deprecated-declarations
-    )
-endif()
-
 # `make test` does not show output, but `make check` does
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
@@ -71,10 +52,34 @@ add_executable(integration_tests_runner
     mission_transfer_lossy.cpp
 )
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/core
-    ${PROJECT_SOURCE_DIR}
+target_include_directories(integration_tests_runner
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/mavsdk/core
 )
+
+# SYSTEM because we don't want warnings for gtest headers.
+target_include_directories(integration_tests_runner
+    PRIVATE
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
+)
+
+if(MSVC)
+    target_compile_options(integration_tests_runner
+        PRIVATE
+         /wd4996 # ignore deprecated
+    )
+else()
+    target_compile_options(integration_tests_runner
+        PRIVATE
+        -Wno-error=deprecated-declarations
+    )
+endif()
+
+target_compile_definitions(integration_tests_runner
+    PRIVATE
+    "-DTESTING")
 
 set_target_properties(integration_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}

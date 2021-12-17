@@ -81,10 +81,11 @@ set_target_properties(mavsdk
 
 target_include_directories(mavsdk
     PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/mavsdk>
+    $<INSTALL_INTERFACE:include/mavsdk>
     PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     )
 
 install(TARGETS mavsdk
@@ -94,14 +95,14 @@ install(TARGETS mavsdk
     )
 
 install(FILES
-    connection_result.h
-    deprecated.h
-    system.h
-    mavsdk.h
-    log_callback.h
-    plugin_base.h
-    geometry.h
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
+    include/mavsdk/connection_result.h
+    include/mavsdk/deprecated.h
+    include/mavsdk/system.h
+    include/mavsdk/mavsdk.h
+    include/mavsdk/log_callback.h
+    include/mavsdk/plugin_base.h
+    include/mavsdk/geometry.h
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
 list(APPEND UNIT_TEST_SOURCES
