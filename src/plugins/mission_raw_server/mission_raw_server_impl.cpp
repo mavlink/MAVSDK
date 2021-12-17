@@ -311,8 +311,9 @@ MissionRawServer::MissionItem MissionRawServerImpl::current_item_changed() const
 
 void MissionRawServerImpl::set_current_item_complete()
 {
-    if (_current_seq + 1 > _current_mission.size())
+    if (_current_seq + 1 > _current_mission.size()) {
         return;
+    }
 
     mavlink_message_t mission_reached;
     mavlink_msg_mission_item_reached_pack(
