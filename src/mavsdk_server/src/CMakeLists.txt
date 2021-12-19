@@ -89,8 +89,8 @@ endif()
 
 target_include_directories(mavsdk_server
     PRIVATE
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/core>
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/plugins>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk/core>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk/plugins>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins>
     PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated>
