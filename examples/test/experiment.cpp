@@ -333,7 +333,6 @@ int main(int argc, char** argv)
 
     /***************************Land********************************/
     // std::cout << "Sleeping for 1 seconds..." << std::endl;
-    // sleep_for(seconds(1));
 
     std::cout << "Landing..." << std::endl;
     const Action::Result land_result = action.land();
