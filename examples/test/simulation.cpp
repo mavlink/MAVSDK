@@ -188,14 +188,26 @@ int main(int argc, char** argv)
         acc_x = imu.acceleration_frd.forward_m_s2 ;
         acc_y = imu.acceleration_frd.right_m_s2 ;
         acc_z = imu.acceleration_frd.down_m_s2 ;
-        // std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
-        //           << "ACC_X: " << acc_x << " m/s^2"
-        //           << "ACC_Y: " << acc_y << " m/s^2"
-        //           << "ACC_Z: " << acc_z << " m/s^2"
-        //           << NORMAL_CONSOLE_TEXT // set to default color again
-        //           << std::endl;
+        std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
+                  << "ACC_X: " << acc_x << " m/s^2"
+                  << "ACC_Y: " << acc_y << " m/s^2"
+                  << "ACC_Z: " << acc_z << " m/s^2"
+                  << NORMAL_CONSOLE_TEXT // set to default color again
+                  << std::endl;
 
     });
+
+    // Set up callback to monitor flight mode 'changes'
+    Telemetry::FlightMode oldFlightMode=Telemetry::FlightMode::Unknown;
+    telemetry.subscribe_flight_mode([&oldFlightMode](Telemetry::FlightMode flightMode) {
+    if (oldFlightMode != flightMode) {
+        //Flight mode changed. Print!
+        std::cout << "FlightMode: " << flightMode << '\n';
+        oldFlightMode=flightMode; //Save updated mode.
+        }
+    });
+
+
 
 /***********************************************************************************/
 
@@ -206,8 +218,8 @@ int main(int argc, char** argv)
     //     sleep_for(seconds(1));
     // }
 /********************************ARMED*************************************/
-    std::cout << "Sleeping for 2 seconds..." << std::endl;
-    sleep_for(seconds(2));
+    std::cout << "Sleeping for 5 seconds..." << std::endl;
+    sleep_for(seconds(5));
     std::cout << "Arming..." << std::endl;
     const Action::Result arm_result = action.arm();
 
@@ -225,10 +237,22 @@ int main(int argc, char** argv)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
-/********************************Unfold Arms*************************************/
-    std::cout << "Sleeping for 13 seconds..." << std::endl;
-    sleep_for(seconds(13));
 
+
+    // std::cout << "Sleeping for 10 seconds..." << std::endl;
+    // sleep_for(seconds(10));
+// /********************************KIll*************************************/
+//     std::cout << "Kill Rotors..." << std::endl;
+//     const Action::Result kill_result = action.terminate();
+//     if (kill_result != Action::Result::Success) {
+//         std::cout << ERROR_CONSOLE_TEXT << "Kill failed:" << kill_result
+//                   << NORMAL_CONSOLE_TEXT << std::endl;
+//         return 1;
+//     }
+/********************************Unfold Arms*************************************/
+    std::cout << "Sleeping for 5 seconds..." << std::endl;
+    sleep_for(seconds(5));
+/* 
     std::cout << "Unfolding Arms...\n";
     const Action::Result set_actuator0_result = action.set_actuator(1, 1.0);
 
@@ -237,9 +261,10 @@ int main(int argc, char** argv)
         return 1;
     }
     std::cout << "Unfolded Arms !!!\n";
+*/
 
 /********************************Fire Parachute*************************************/
-    std::cout << "Sleeping for 3 seconds..." << std::endl;
+/*     std::cout << "Sleeping for 3 seconds..." << std::endl;
     sleep_for(seconds(3));
 
     std::cout << "Firing Parachute...\n";
@@ -252,17 +277,20 @@ int main(int argc, char** argv)
     std::cout << "Fired Parachute !!!\n";
 
     // Let it hover for a bit before Starting Mission.
-    sleep_for(seconds(2));
+    sleep_for(seconds(2)); */
 /***************************Started Mission***************************************/
+
 {
     std::cout << "Creating and uploading mission" << std::endl;
 
     std::vector<Mission::MissionItem> mission_items;
 
     mission_items.push_back(make_mission_item(
-        47.398570327054473,
-        8.5459490218639658,
-        0.0f,
+        //34.0216930,
+        //108.7577740,
+        47.398139363821485,
+        8.5453846156597137,
+        5.0f,
         5.0f,
         false,
         20.0f,
@@ -283,12 +311,31 @@ int main(int argc, char** argv)
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
             std::cout << "Mission upload failed (" << result << "), exiting." << std::endl;
-            return 1;
-        }
-        std::cout << "Mission uploaded." << std::endl;
+            return 1;}
+
+        // if (result != Mission::Result::Success) {
+        //     std::cout << "Try to upload again..." << std::endl;
+
+        //     auto prom = std::make_shared<std::promise<Mission::Result>>();
+        //     auto future_result = prom->get_future();
+        //     Mission::MissionPlan mission_plan{};
+        //     mission_plan.mission_items = mission_items;
+        //     mission.upload_mission_async(
+        //     mission_plan, [prom](Mission::Result result) { prom->set_value(result); });
+        //     const Mission::Result result_2 = future_result.get();
+        //     if (result_2 != Mission::Result::Success) {
+        //     std::cout << "Mission upload again failed (" << result << "), exiting." << std::endl;
+        //     }
+
+        //     return 1;
+        // }
+            
     }
+    std::cout << "Mission uploaded." << std::endl;
+}
 
 
+{
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     mission.subscribe_mission_progress([](Mission::MissionProgress mission_progress) {
         std::cout << "Mission status update: " << mission_progress.current << " / "
@@ -312,7 +359,7 @@ int main(int argc, char** argv)
     while (!mission.is_mission_finished().second) {
         sleep_for(seconds(1));
     }
-}
+
     /**************************************************************/
 
     std::cout << "Landing..." << std::endl;
@@ -335,6 +382,8 @@ int main(int argc, char** argv)
     std::cout << "Finished..." << std::endl;
 
     return 0;
+}
+
 }
 
 inline void handle_action_err_exit(Action::Result result, const std::string& message)

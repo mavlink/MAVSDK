@@ -464,6 +464,8 @@ void ActionImpl::set_actuator_async(
     }
     command.params.param7 = static_cast<float>(index) / 6.0f;
 
+    LogDebug() << "param7 =  " << command.params.param7 << "param1 = " << command.params.param1; 
+
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);

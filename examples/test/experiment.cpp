@@ -91,6 +91,9 @@ int main(int argc, char** argv)
     float acc_x = 0.0;
     float acc_y = 0.0;
     float acc_z = 0.0;
+    float now_alt = 0.0;            //for recording alt and checking land
+    float pre_alt = 0.0;
+    float pre_pre_alt = 0.0;
 
 /**************************Connecting the vehicle*********************************/
 
@@ -167,11 +170,14 @@ int main(int argc, char** argv)
     }
 
     // Set up callback to monitor altitude while the vehicle is in flight
-    telemetry.subscribe_position([](Telemetry::Position position) {
+    telemetry.subscribe_position([&now_alt, &pre_alt, &pre_pre_alt](Telemetry::Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
                   << "Global Altitude: " << position.relative_altitude_m << " m"
                   << NORMAL_CONSOLE_TEXT // set to default color again
                   << std::endl;
+        pre_alt = now_alt;
+        pre_pre_alt = pre_alt;
+        now_alt = position.relative_altitude_m;
     });
 
     // We want to listen to the acceleration of the drone at 5 Hz in body coordinate system(frd).
@@ -187,13 +193,23 @@ int main(int argc, char** argv)
         acc_x = imu.acceleration_frd.forward_m_s2 ;
         acc_y = imu.acceleration_frd.right_m_s2 ;
         acc_z = imu.acceleration_frd.down_m_s2 ;
-        // std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
-        //           << "ACC_X: " << acc_x << " m/s^2"
-        //           << "ACC_Y: " << acc_y << " m/s^2"
-        //           << "ACC_Z: " << acc_z << " m/s^2"
-        //           << NORMAL_CONSOLE_TEXT // set to default color again
-        //           << std::endl;
+        std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
+                  << "ACC_X: " << acc_x << " m/s^2"
+                  << "ACC_Y: " << acc_y << " m/s^2"
+                  << "ACC_Z: " << acc_z << " m/s^2"
+                  << NORMAL_CONSOLE_TEXT // set to default color again
+                  << std::endl;
 
+    });
+
+    // Set up callback to monitor flight mode 'changes'
+    Telemetry::FlightMode oldFlightMode=Telemetry::FlightMode::Unknown;
+    telemetry.subscribe_flight_mode([&oldFlightMode](Telemetry::FlightMode flightMode) {
+    if (oldFlightMode != flightMode) {
+        //Flight mode changed. Print!
+        std::cout << "FlightMode: " << flightMode << '\n';
+        oldFlightMode=flightMode; //Save updated mode.
+        }
     });
 
 /***********************************************************************************/
@@ -211,21 +227,28 @@ int main(int argc, char** argv)
         sleep_for(std::chrono::milliseconds(200));
         std::cout << "Waiting for launch..." << std::endl;
     }
+/*************************Check for the fire signal**********************************/
+    // while(sqrt(acc_x * acc_x + acc_y * acc_y + acc_z * acc_z) < 0.01 || 
+    //         sqrt(acc_x * acc_x + acc_y * acc_y + acc_z * acc_z) > 5)
+    // {
+    //     sleep_for(std::chrono::milliseconds(200));
+    //     std::cout << "Waiting for launch..." << std::endl;
+    // }
 /********************************Unfold Arms*************************************/
-    std::cout << "Sleeping for 10 seconds..." << std::endl;
-    sleep_for(seconds(10));
+    std::cout << "Sleeping for 4.0 seconds..." << std::endl;
+    sleep_for(seconds(4));
 
-    std::cout << "Unfolding Arms...\n";
-    const Action::Result set_actuator0_result = action.set_actuator(1, 1.0);
+    // std::cout << "Unfolding Arms...\n";
+    // const Action::Result set_actuator0_result = action.set_actuator(1, 1.0);
 
-    if (set_actuator0_result != Action::Result::Success) {
-        std::cerr << "Setting actuator failed:" << set_actuator0_result << '\n';
-        return 1;
-    }
-    std::cout << "Unfolded Arms !!!\n";
+    // if (set_actuator0_result != Action::Result::Success) {
+    //     std::cerr << "Setting actuator failed:" << set_actuator0_result << '\n';
+    //     return 1;
+    // }
+    // std::cout << "Unfolded Arms !!!\n";
 /*************************Arm vehicle**********************************/
-    std::cout << "Sleeping for 2 seconds..." << std::endl;
-    sleep_for(seconds(2));
+    // std::cout << "Sleeping for 2 seconds..." << std::endl;
+    // sleep_for(seconds(2));
     std::cout << "Arming..." << std::endl;
     const Action::Result arm_result = action.arm();
 
@@ -236,17 +259,17 @@ int main(int argc, char** argv)
     }
 
 /********************************Fire Parachute*************************************/
-    std::cout << "Sleeping for 1 seconds..." << std::endl;
-    sleep_for(seconds(1));
+    std::cout << "Sleeping for 0.5 seconds..." << std::endl;
+    sleep_for(milliseconds(500));
 
-    std::cout << "Firing Parachute...\n";
-    const Action::Result set_actuator1_result = action.set_actuator(2, 0.8);
+    // std::cout << "Firing Parachute...\n";
+    // const Action::Result set_actuator1_result = action.set_actuator(2, 0.8);
 
-    if (set_actuator1_result != Action::Result::Success) {
-        std::cerr << "Setting actuator failed:" << set_actuator1_result << '\n';
-        return 1;
-    }
-    std::cout << "Fired Parachute !!!\n";
+    // if (set_actuator1_result != Action::Result::Success) {
+    //     std::cerr << "Setting actuator failed:" << set_actuator1_result << '\n';
+    //     return 1;
+    // }
+    // std::cout << "Fired Parachute !!!\n";
 
 /***************************Started Mission***************************************/
 {
@@ -255,10 +278,10 @@ int main(int argc, char** argv)
     std::vector<Mission::MissionItem> mission_items;
 
     mission_items.push_back(make_mission_item(
-        47.398570327054473,
-        8.5459490218639658,
-        0.0f,
-        5.0f,
+        34.5786541,
+        109.9553620,
+        0.5f,
+        3.0f,
         false,
         20.0f,
         60.0f,
@@ -283,7 +306,7 @@ int main(int argc, char** argv)
         std::cout << "Mission uploaded." << std::endl;
     }
 
-
+}
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     mission.subscribe_mission_progress([](Mission::MissionProgress mission_progress) {
         std::cout << "Mission status update: " << mission_progress.current << " / "
@@ -303,12 +326,14 @@ int main(int argc, char** argv)
         handle_mission_err_exit(result, "Mission start failed: ");
     }
 
-
+{
     while (!mission.is_mission_finished().second) {
         sleep_for(seconds(1));
     }
-}
-    /**************************************************************/
+
+    /***************************Land********************************/
+    // std::cout << "Sleeping for 1 seconds..." << std::endl;
+    // sleep_for(seconds(1));
 
     std::cout << "Landing..." << std::endl;
     const Action::Result land_result = action.land();
@@ -317,16 +342,34 @@ int main(int argc, char** argv)
                   << std::endl;
         return 1;
     }
-
+}
     // Check if vehicle is still in air
     while (telemetry.in_air()) {
         std::cout << "Vehicle is landing..." << std::endl;
         sleep_for(seconds(1));
+
+        
+        // if(pre_alt - now_alt < 0.1 && pre_pre_alt - pre_alt < 0.1){
+
+        //     std::cout << "Deteced Landed!!!" << std::endl;
+
+        //     /********************************KIll*************************************/
+        //     std::cout << "Kill Rotors..." << std::endl;
+        //     const Action::Result kill_result = action.terminate();
+        //     if (kill_result != Action::Result::Success) {
+        //         std::cout << ERROR_CONSOLE_TEXT << "Kill failed:" << kill_result
+        //                 << NORMAL_CONSOLE_TEXT << std::endl;
+        //         return 1;
+        //     }
+
+        //     return 1;
+        // }
+
     }
     std::cout << "Landed!" << std::endl;
 
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
-    sleep_for(seconds(3));
+    sleep_for(seconds(1));
     std::cout << "Finished..." << std::endl;
 
     return 0;
