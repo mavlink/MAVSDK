@@ -96,7 +96,7 @@ ConnectionResult TcpConnection::setup_port()
 
 void TcpConnection::start_recv_thread()
 {
-    _recv_thread = new std::thread(&TcpConnection::receive, this);
+    _recv_thread = std::make_unique<std::thread>(&TcpConnection::receive, this);
 }
 
 ConnectionResult TcpConnection::stop()
@@ -119,8 +119,7 @@ ConnectionResult TcpConnection::stop()
 
     if (_recv_thread) {
         _recv_thread->join();
-        delete _recv_thread;
-        _recv_thread = nullptr;
+        _recv_thread.reset();
     }
 
     // We need to stop this after stopping the receive thread, otherwise

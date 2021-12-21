@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <atomic>
@@ -54,7 +55,7 @@ private:
     std::vector<Remote> _remotes{};
 
     int _socket_fd{-1};
-    std::thread* _recv_thread{nullptr};
+    std::unique_ptr<std::thread> _recv_thread{};
     std::atomic_bool _should_exit{false};
 };
 

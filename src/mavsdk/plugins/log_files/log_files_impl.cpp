@@ -281,7 +281,7 @@ void LogFilesImpl::download_log_file_async(
             ((part_size % MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) != 0));
 
         _parent->register_timeout_handler(
-            std::bind(&LogFilesImpl::data_timeout, this), DATA_TIMEOUT_S, &_data.cookie);
+            [this]() { LogFilesImpl::data_timeout(); }, DATA_TIMEOUT_S, &_data.cookie);
 
         request_log_data(_data.id, _data.part_start, _data.bytes.size());
 
@@ -443,7 +443,7 @@ void LogFilesImpl::data_timeout()
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
         _parent->register_timeout_handler(
-            std::bind(&LogFilesImpl::data_timeout, this), DATA_TIMEOUT_S, &_data.cookie);
+            [this]() { LogFilesImpl::data_timeout(); }, DATA_TIMEOUT_S, &_data.cookie);
         _data.rerequesting = true;
         check_part();
     }

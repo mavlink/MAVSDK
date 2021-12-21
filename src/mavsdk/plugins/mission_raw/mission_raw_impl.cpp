@@ -11,8 +11,6 @@ namespace mavsdk {
 // This is an empty item that can be sent to ArduPilot to mimic clearing of mission.
 constexpr MissionRaw::MissionItem empty_item{0, 3, 16, 1};
 
-using namespace std::placeholders; // for `_1`
-
 MissionRawImpl::MissionRawImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -32,17 +30,17 @@ void MissionRawImpl::init()
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ACK,
-        std::bind(&MissionRawImpl::process_mission_ack, this, _1),
+        [this](const mavlink_message_t& message) { process_mission_ack(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CURRENT,
-        std::bind(&MissionRawImpl::process_mission_current, this, _1),
+        [this](const mavlink_message_t& message) { process_mission_current(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
-        std::bind(&MissionRawImpl::process_mission_item_reached, this, _1),
+        [this](const mavlink_message_t& message) { process_mission_item_reached(message); },
         this);
 }
 

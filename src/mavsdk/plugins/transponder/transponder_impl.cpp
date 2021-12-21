@@ -19,11 +19,9 @@ TransponderImpl::~TransponderImpl()
 
 void TransponderImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
-
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ADSB_VEHICLE,
-        std::bind(&TransponderImpl::process_transponder, this, _1),
+        [this](const mavlink_message_t& message) { process_transponder(message); },
         this);
 }
 
@@ -48,7 +46,9 @@ void TransponderImpl::set_rate_transponder_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ADSB_VEHICLE,
         rate_hz,
-        std::bind(&TransponderImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 Transponder::AdsbVehicle TransponderImpl::transponder() const

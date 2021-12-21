@@ -27,114 +27,130 @@ TelemetryImpl::~TelemetryImpl()
 
 void TelemetryImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
-
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOCAL_POSITION_NED,
-        std::bind(&TelemetryImpl::process_position_velocity_ned, this, _1),
+        [this](const mavlink_message_t& message) { process_position_velocity_ned(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
-        std::bind(&TelemetryImpl::process_global_position_int, this, _1),
+        [this](const mavlink_message_t& message) { process_global_position_int(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HOME_POSITION,
-        std::bind(&TelemetryImpl::process_home_position, this, _1),
+        [this](const mavlink_message_t& message) { process_home_position(message); },
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_ATTITUDE, std::bind(&TelemetryImpl::process_attitude, this, _1), this);
+        MAVLINK_MSG_ID_ATTITUDE,
+        [this](const mavlink_message_t& message) { process_attitude(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
-        std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1),
+        [this](const mavlink_message_t& message) { process_attitude_quaternion(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
-        std::bind(&TelemetryImpl::process_mount_orientation, this, _1),
+        [this](const mavlink_message_t& message) { process_mount_orientation(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
-        std::bind(&TelemetryImpl::process_gimbal_device_attitude_status, this, _1),
+        [this](const mavlink_message_t& message) {
+            process_gimbal_device_attitude_status(message);
+        },
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_GPS_RAW_INT, std::bind(&TelemetryImpl::process_gps_raw_int, this, _1), this);
+        MAVLINK_MSG_ID_GPS_RAW_INT,
+        [this](const mavlink_message_t& message) { process_gps_raw_int(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-        std::bind(&TelemetryImpl::process_extended_sys_state, this, _1),
+        [this](const mavlink_message_t& message) { process_extended_sys_state(message); },
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_SYS_STATUS, std::bind(&TelemetryImpl::process_sys_status, this, _1), this);
+        MAVLINK_MSG_ID_SYS_STATUS,
+        [this](const mavlink_message_t& message) { process_sys_status(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_BATTERY_STATUS,
-        std::bind(&TelemetryImpl::process_battery_status, this, _1),
+        [this](const mavlink_message_t& message) { process_battery_status(message); },
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
+        MAVLINK_MSG_ID_HEARTBEAT,
+        [this](const mavlink_message_t& message) { process_heartbeat(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
+        MAVLINK_MSG_ID_RC_CHANNELS,
+        [this](const mavlink_message_t& message) { process_rc_channels(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
-        std::bind(&TelemetryImpl::process_actuator_control_target, this, _1),
+        [this](const mavlink_message_t& message) { process_actuator_control_target(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS,
-        std::bind(&TelemetryImpl::process_actuator_output_status, this, _1),
+        [this](const mavlink_message_t& message) { process_actuator_output_status(message); },
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_ODOMETRY, std::bind(&TelemetryImpl::process_odometry, this, _1), this);
+        MAVLINK_MSG_ID_ODOMETRY,
+        [this](const mavlink_message_t& message) { process_odometry(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_DISTANCE_SENSOR,
-        std::bind(&TelemetryImpl::process_distance_sensor, this, _1),
+        [this](const mavlink_message_t& message) { process_distance_sensor(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SCALED_PRESSURE,
-        std::bind(&TelemetryImpl::process_scaled_pressure, this, _1),
+        [this](const mavlink_message_t& message) { process_scaled_pressure(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
-        std::bind(&TelemetryImpl::process_unix_epoch_time, this, _1),
+        [this](const mavlink_message_t& message) { process_unix_epoch_time(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HIGHRES_IMU,
-        std::bind(&TelemetryImpl::process_imu_reading_ned, this, _1),
+        [this](const mavlink_message_t& message) { process_imu_reading_ned(message); },
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_SCALED_IMU, std::bind(&TelemetryImpl::process_scaled_imu, this, _1), this);
+        MAVLINK_MSG_ID_SCALED_IMU,
+        [this](const mavlink_message_t& message) { process_scaled_imu(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_RAW_IMU, std::bind(&TelemetryImpl::process_raw_imu, this, _1), this);
+        MAVLINK_MSG_ID_RAW_IMU,
+        [this](const mavlink_message_t& message) { process_raw_imu(message); },
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VFR_HUD,
-        std::bind(&TelemetryImpl::process_fixedwing_metrics, this, _1),
+        [this](const mavlink_message_t& message) { process_fixedwing_metrics(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
-        std::bind(&TelemetryImpl::process_ground_truth, this, _1),
+        [this](const mavlink_message_t& message) { process_ground_truth(message); },
         this);
 
     _parent->register_param_changed_handler(
-        std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
+        [this](const std::string& name) { process_parameter_update(name); }, this);
 
     _parent->register_statustext_handler(
         [this](const MavlinkStatustextHandler::Statustext& statustext) {
@@ -165,12 +181,10 @@ void TelemetryImpl::deinit()
 void TelemetryImpl::enable()
 {
     _parent->register_timeout_handler(
-        std::bind(&TelemetryImpl::receive_gps_raw_timeout, this), 2.0, &_gps_raw_timeout_cookie);
+        [this]() { receive_gps_raw_timeout(); }, 2.0, &_gps_raw_timeout_cookie);
 
     _parent->register_timeout_handler(
-        std::bind(&TelemetryImpl::receive_unix_epoch_timeout, this),
-        2.0,
-        &_unix_epoch_timeout_cookie);
+        [this]() { receive_unix_epoch_timeout(); }, 2.0, &_unix_epoch_timeout_cookie);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
@@ -329,7 +343,9 @@ void TelemetryImpl::set_rate_position_velocity_ned_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_LOCAL_POSITION_NED,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -340,7 +356,9 @@ void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::ResultCal
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         max_rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_home_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -348,7 +366,9 @@ void TelemetryImpl::set_rate_home_async(double rate_hz, Telemetry::ResultCallbac
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HOME_POSITION,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -366,7 +386,9 @@ void TelemetryImpl::set_rate_landed_state_async(double rate_hz, Telemetry::Resul
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -374,7 +396,9 @@ void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::ResultCal
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_camera_attitude_async(
@@ -383,7 +407,9 @@ void TelemetryImpl::set_rate_camera_attitude_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -394,7 +420,9 @@ void TelemetryImpl::set_rate_velocity_ned_async(double rate_hz, Telemetry::Resul
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         max_rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -402,7 +430,9 @@ void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::ResultCallback
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HIGHRES_IMU,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -410,7 +440,9 @@ void TelemetryImpl::set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultC
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_SCALED_IMU,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -418,7 +450,9 @@ void TelemetryImpl::set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCall
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_RAW_IMU,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_fixedwing_metrics_async(
@@ -427,7 +461,9 @@ void TelemetryImpl::set_rate_fixedwing_metrics_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_VFR_HUD,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -435,7 +471,9 @@ void TelemetryImpl::set_rate_ground_truth_async(double rate_hz, Telemetry::Resul
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -443,7 +481,9 @@ void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCal
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_GPS_RAW_INT,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -451,7 +491,9 @@ void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCall
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_SYS_STATUS,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -467,7 +509,9 @@ void TelemetryImpl::set_rate_unix_epoch_time_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_actuator_control_target_async(
@@ -476,7 +520,9 @@ void TelemetryImpl::set_rate_actuator_control_target_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_actuator_output_status_async(
@@ -485,7 +531,9 @@ void TelemetryImpl::set_rate_actuator_output_status_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback)
@@ -493,7 +541,9 @@ void TelemetryImpl::set_rate_odometry_async(double rate_hz, Telemetry::ResultCal
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ODOMETRY,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_distance_sensor_async(
@@ -502,7 +552,9 @@ void TelemetryImpl::set_rate_distance_sensor_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_DISTANCE_SENSOR,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 void TelemetryImpl::set_rate_scaled_pressure_async(
@@ -511,7 +563,9 @@ void TelemetryImpl::set_rate_scaled_pressure_async(
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_SCALED_PRESSURE,
         rate_hz,
-        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
 }
 
 Telemetry::Result
@@ -2364,120 +2418,94 @@ void TelemetryImpl::check_calibration()
             // if any offset is 0 the calibration is not complete/unhealthy.
             _parent->get_param_float_async(
                 std::string("INS_GYROFFS_X"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro_offset_x,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_gyro_offset_x(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("INS_GYROFFS_Y"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro_offset_y,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_gyro_offset_y(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("INS_GYROFFS_Z"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro_offset_z,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_gyro_offset_z(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("INS_ACCOFFS_X"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel_offset_x,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_accel_offset_x(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("INS_ACCOFFS_Y"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel_offset_y,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_accel_offset_y(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("INS_ACCOFFS_Z"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel_offset_z,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_accel_offset_z(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("COMPASS_OFS_X"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag_offset_x,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_mag_offset_x(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("COMPASS_OFS_Y"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag_offset_y,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_mag_offset_y(result, value);
+                },
                 this);
 
             _parent->get_param_float_async(
                 std::string("COMPASS_OFS_Z"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag_offset_z,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_mag_offset_z(result, value);
+                },
                 this);
 
         } else {
             _parent->get_param_int_async(
                 std::string("CAL_GYRO0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_cal_gyro(result, value);
+                },
                 this);
 
             _parent->get_param_int_async(
                 std::string("CAL_ACC0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_cal_accel(result, value);
+                },
                 this);
 
             _parent->get_param_int_async(
                 std::string("CAL_MAG0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_cal_mag(result, value);
+                },
                 this);
 
             _parent->get_param_int_async(
                 std::string("SYS_HITL"),
-                std::bind(
-                    &TelemetryImpl::receive_param_hitl,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_hitl(result, value);
+                },
                 this);
         }
     }
@@ -2489,123 +2517,97 @@ void TelemetryImpl::process_parameter_update(const std::string& name)
         if (name.compare("INS_GYROFFS_X") == 0) {
             _parent->get_param_float_async(
                 std::string("INS_GYROFFS_X"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro_offset_x,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_gyro_offset_x(result, value);
+                },
                 this);
         } else if (name.compare("INS_GYROFFS_Y") == 0) {
             _parent->get_param_float_async(
                 std::string("INS_GYROFFS_Y"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro_offset_y,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_gyro_offset_y(result, value);
+                },
                 this);
         } else if (name.compare("INS_GYROFFS_Z") == 0) {
             _parent->get_param_float_async(
                 std::string("INS_GYROFFS_Z"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro_offset_z,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_gyro_offset_z(result, value);
+                },
                 this);
         } else if (name.compare("INS_ACCOFFS_X") == 0) {
             _parent->get_param_float_async(
                 std::string("INS_ACCOFFS_X"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel_offset_x,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_accel_offset_x(result, value);
+                },
                 this);
         } else if (name.compare("INS_ACCOFFS_Y") == 0) {
             _parent->get_param_float_async(
                 std::string("INS_ACCOFFS_Y"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel_offset_y,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_accel_offset_y(result, value);
+                },
                 this);
         } else if (name.compare("INS_ACCOFFS_Z") == 0) {
             _parent->get_param_float_async(
                 std::string("INS_ACCOFFS_Z"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel_offset_z,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_accel_offset_z(result, value);
+                },
                 this);
         } else if (name.compare("COMPASS_OFS_X") == 0) {
             _parent->get_param_float_async(
                 std::string("COMPASS_OFS_X"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag_offset_x,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_mag_offset_x(result, value);
+                },
                 this);
         } else if (name.compare("COMPASS_OFS_Y") == 0) {
             _parent->get_param_float_async(
                 std::string("COMPASS_OFS_Y"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag_offset_y,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_mag_offset_y(result, value);
+                },
                 this);
         } else if (name.compare("COMPASS_OFS_Z") == 0) {
             _parent->get_param_float_async(
                 std::string("COMPASS_OFS_Z"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag_offset_z,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, float value) {
+                    receive_param_cal_mag_offset_z(result, value);
+                },
                 this);
         }
     } else {
         if (name.compare("CAL_GYRO0_ID") == 0) {
             _parent->get_param_int_async(
                 std::string("CAL_GYRO0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_gyro,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_cal_gyro(result, value);
+                },
                 this);
 
         } else if (name.compare("CAL_ACC0_ID") == 0) {
             _parent->get_param_int_async(
                 std::string("CAL_ACC0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_accel,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_cal_accel(result, value);
+                },
                 this);
         } else if (name.compare("CAL_MAG0_ID") == 0) {
             _parent->get_param_int_async(
                 std::string("CAL_MAG0_ID"),
-                std::bind(
-                    &TelemetryImpl::receive_param_cal_mag,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_cal_mag(result, value);
+                },
                 this);
 
         } else if (name.compare("SYS_HITL") == 0) {
             _parent->get_param_int_async(
                 std::string("SYS_HITL"),
-                std::bind(
-                    &TelemetryImpl::receive_param_hitl,
-                    this,
-                    std::placeholders::_1,
-                    std::placeholders::_2),
+                [this](MAVLinkParameters::Result result, int32_t value) {
+                    receive_param_hitl(result, value);
+                },
                 this);
         }
     }
