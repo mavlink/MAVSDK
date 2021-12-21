@@ -32,7 +32,7 @@ void FollowMeImpl::init()
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&FollowMeImpl::process_heartbeat, this, std::placeholders::_1),
+        [this](const mavlink_message_t& message) { process_heartbeat(message); },
         static_cast<void*>(this));
 }
 

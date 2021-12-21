@@ -276,8 +276,7 @@ void GimbalProtocolV2::control_async(Gimbal::ControlCallback callback)
 
         _system_impl.register_mavlink_message_handler(
             MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS,
-            std::bind(
-                &GimbalProtocolV2::process_gimbal_manager_status, this, std::placeholders::_1),
+            [this](const mavlink_message_t& message) { process_gimbal_manager_status(message); },
             this);
     }
 

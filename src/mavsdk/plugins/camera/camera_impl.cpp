@@ -1722,15 +1722,8 @@ void CameraImpl::notify_possible_setting_options()
         return;
     }
 
-    const auto temp_callback = _subscribe_possible_setting_options.callback;
-
-    // We create a function object in order to be able to move the settings into it.
-    // FIXME: Use C++14 where this is not necessary anymore.
-    _parent->call_user_callback(std::bind(
-        [temp_callback](const std::vector<Camera::SettingOptions>& options) {
-            temp_callback(options);
-        },
-        std::move(setting_options)));
+    _parent->call_user_callback([temp_callback = _subscribe_possible_setting_options.callback,
+                                 setting_options]() { temp_callback(setting_options); });
 }
 
 std::vector<Camera::SettingOptions> CameraImpl::possible_setting_options()

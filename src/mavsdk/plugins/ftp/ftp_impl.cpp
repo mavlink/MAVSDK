@@ -19,8 +19,6 @@
 
 namespace mavsdk {
 
-using namespace std::placeholders; // for `_1`
-
 FtpImpl::FtpImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -40,7 +38,7 @@ void FtpImpl::init()
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL,
-        std::bind(&FtpImpl::process_mavlink_ftp_message, this, _1),
+        [this](const mavlink_message_t& message) { process_mavlink_ftp_message(message); },
         this);
 }
 
@@ -707,7 +705,7 @@ void FtpImpl::_send_mavlink_ftp_message(uint8_t* raw_payload)
     if (!_last_command_timer_running) {
         _last_command_timer_running = true;
         _parent->register_timeout_handler(
-            std::bind(&FtpImpl::_command_timeout, this),
+            [this]() { _command_timeout(); },
             static_cast<double>(_last_command_timeout) / 1000.0,
             &_last_command_timeout_cookie);
     }
@@ -729,7 +727,7 @@ void FtpImpl::_command_timeout()
         LogWarn() << "Response timeout. Retry: " << _last_command_retries;
         _parent->send_message(_last_command);
         _parent->register_timeout_handler(
-            std::bind(&FtpImpl::_command_timeout, this),
+            [this]() { _command_timeout(); },
             static_cast<double>(_last_command_timeout) / 1000.0,
             &_last_command_timeout_cookie);
     }

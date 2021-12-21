@@ -6,7 +6,6 @@
 
 namespace mavsdk {
 
-using namespace std::placeholders; // for `_1`
 using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
 
@@ -29,12 +28,12 @@ void MissionImpl::init()
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CURRENT,
-        std::bind(&MissionImpl::process_mission_current, this, _1),
+        [this](const mavlink_message_t& message) { process_mission_current(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
-        std::bind(&MissionImpl::process_mission_item_reached, this, _1),
+        [this](const mavlink_message_t& message) { process_mission_item_reached(message); },
         this);
 
     _parent->register_mavlink_message_handler(

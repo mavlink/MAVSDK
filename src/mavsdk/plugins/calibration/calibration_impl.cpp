@@ -9,8 +9,6 @@
 
 namespace mavsdk {
 
-using namespace std::placeholders;
-
 CalibrationImpl::CalibrationImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -72,7 +70,9 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
     command.params.maybe_param5 = 0.0f;
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
-        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+        command, [this](MavlinkCommandSender::Result command_result, float progress) {
+            command_result_callback(command_result, progress);
+        });
 }
 
 void CalibrationImpl::call_callback(
@@ -114,7 +114,9 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
     command.params.maybe_param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
-        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+        command, [this](MavlinkCommandSender::Result command_result, float progress) {
+            command_result_callback(command_result, progress);
+        });
 }
 
 void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& callback)
@@ -145,7 +147,9 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
     command.params.maybe_param5 = 0.0f;
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
-        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+        command, [this](MavlinkCommandSender::Result command_result, float progress) {
+            command_result_callback(command_result, progress);
+        });
 }
 
 void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& callback)
@@ -176,7 +180,9 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
     command.params.maybe_param5 = 2.0f; // Board Level
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     _parent->send_command_async(
-        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+        command, [this](MavlinkCommandSender::Result command_result, float progress) {
+            command_result_callback(command_result, progress);
+        });
 }
 
 void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCallback& callback)
@@ -207,7 +213,9 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
     command.params.maybe_param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_GIMBAL;
     _parent->send_command_async(
-        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+        command, [this](MavlinkCommandSender::Result command_result, float progress) {
+            command_result_callback(command_result, progress);
+        });
 }
 
 Calibration::Result CalibrationImpl::cancel()
