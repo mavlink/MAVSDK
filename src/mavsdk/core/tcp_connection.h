@@ -1,7 +1,8 @@
 #pragma once
 
-#include <mutex>
 #include <atomic>
+#include <mutex>
+#include <memory>
 #include "connection.h"
 #include <sys/types.h>
 #ifndef WINDOWS
@@ -43,7 +44,7 @@ private:
     std::mutex _mutex = {};
     int _socket_fd = -1;
 
-    std::thread* _recv_thread = nullptr;
+    std::unique_ptr<std::thread> _recv_thread{};
     std::atomic_bool _should_exit;
     std::atomic_bool _is_ok{false};
 };

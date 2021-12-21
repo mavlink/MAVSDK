@@ -92,7 +92,7 @@ ConnectionResult UdpConnection::setup_port()
 
 void UdpConnection::start_recv_thread()
 {
-    _recv_thread = new std::thread(&UdpConnection::receive, this);
+    _recv_thread = std::make_unique<std::thread>(&UdpConnection::receive, this);
 }
 
 ConnectionResult UdpConnection::stop()
@@ -115,8 +115,7 @@ ConnectionResult UdpConnection::stop()
 
     if (_recv_thread) {
         _recv_thread->join();
-        delete _recv_thread;
-        _recv_thread = nullptr;
+        _recv_thread.reset();
     }
 
     // We need to stop this after stopping the receive thread, otherwise

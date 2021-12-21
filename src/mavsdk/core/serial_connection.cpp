@@ -225,7 +225,7 @@ ConnectionResult SerialConnection::setup_port()
 
 void SerialConnection::start_recv_thread()
 {
-    _recv_thread = new std::thread(&SerialConnection::receive, this);
+    _recv_thread = std::make_unique<std::thread>(&SerialConnection::receive, this);
 }
 
 ConnectionResult SerialConnection::stop()
@@ -234,8 +234,7 @@ ConnectionResult SerialConnection::stop()
 
     if (_recv_thread) {
         _recv_thread->join();
-        delete _recv_thread;
-        _recv_thread = nullptr;
+        _recv_thread.reset();
     }
 
 #if defined(LINUX) || defined(APPLE)
