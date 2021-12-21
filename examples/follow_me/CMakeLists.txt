@@ -14,9 +14,6 @@ find_package(MAVSDK REQUIRED)
 find_package(Threads REQUIRED)
 
 target_link_libraries(follow_me
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_follow_me
-    MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
     Threads::Threads
 )

@@ -13,7 +13,6 @@ find_package(MAVSDK REQUIRED)
 find_package(Threads REQUIRED)
 
 target_link_libraries(gimbal_device_tester
-    MAVSDK::mavsdk_mavlink_passthrough
     MAVSDK::mavsdk
     Threads::Threads
 )

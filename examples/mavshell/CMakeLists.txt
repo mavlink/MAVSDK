@@ -12,7 +12,6 @@ add_executable(mavshell
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(mavshell
-    MAVSDK::mavsdk_shell
     MAVSDK::mavsdk
 )
 

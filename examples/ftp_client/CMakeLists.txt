@@ -12,7 +12,6 @@ add_executable(ftp_client
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(ftp_client
-    MAVSDK::mavsdk_ftp
     MAVSDK::mavsdk
 )
 

@@ -12,9 +12,6 @@ add_executable(fly_mission
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(fly_mission
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_mission
-    MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk
 )
 

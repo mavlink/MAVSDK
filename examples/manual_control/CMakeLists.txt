@@ -26,9 +26,6 @@ endif()
 
 
 target_link_libraries(manual_control
-    MAVSDK::mavsdk_action
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_manual_control
     MAVSDK::mavsdk
     SDL2::SDL2
     Threads::Threads

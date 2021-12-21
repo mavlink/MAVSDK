@@ -18,8 +18,8 @@ target_include_directories(unit_tests_mavsdk_server
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
-    ${PROJECT_SOURCE_DIR}/plugins
-    ${PROJECT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mavsdk/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mavsdk/plugins
 )
 
 target_include_directories(unit_tests_mavsdk_server
@@ -29,13 +29,9 @@ target_include_directories(unit_tests_mavsdk_server
 )
 
 target_link_libraries(unit_tests_mavsdk_server
+    PRIVATE
+    mavsdk
     mavsdk_server
-    mavsdk_action
-    mavsdk_camera
-    mavsdk_info
-    mavsdk_mission
-    mavsdk_offboard
-    mavsdk_telemetry
     gRPC::grpc++
     gtest
     gmock

@@ -12,8 +12,6 @@ add_executable(camera
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(camera
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_camera
     MAVSDK::mavsdk
 )
 

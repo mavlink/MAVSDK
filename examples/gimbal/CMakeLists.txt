@@ -12,8 +12,6 @@ add_executable(gimbal
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(gimbal
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_gimbal
     MAVSDK::mavsdk
 )
 

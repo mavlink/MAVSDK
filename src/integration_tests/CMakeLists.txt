@@ -1,28 +1,9 @@
-# SYSTEM because we don't want warnings for gtest headers.
-include_directories(
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
-)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
-
-if(MSVC)
-    add_compile_options(
-         /wd4996 # ignore deprecated
-    )
-else()
-    add_compile_options(
-        -Wno-error=deprecated-declarations
-    )
-endif()
-
 # `make test` does not show output, but `make check` does
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
 # This includes all GTests that run integration tests
 add_executable(integration_tests_runner
-    ../core/unittests_main.cpp
+    ../mavsdk/core/unittests_main.cpp
     action_hover_async.cpp
     action_hover_sync.cpp
     action_takeoff_and_kill.cpp
@@ -71,33 +52,42 @@ add_executable(integration_tests_runner
     mission_transfer_lossy.cpp
 )
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/core
-    ${PROJECT_SOURCE_DIR}
+target_include_directories(integration_tests_runner
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/mavsdk/core
 )
+
+# SYSTEM because we don't want warnings for gtest headers.
+target_include_directories(integration_tests_runner
+    PRIVATE
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
+)
+
+if(MSVC)
+    target_compile_options(integration_tests_runner
+        PRIVATE
+         /wd4996 # ignore deprecated
+    )
+else()
+    target_compile_options(integration_tests_runner
+        PRIVATE
+        -Wno-error=deprecated-declarations
+    )
+endif()
+
+target_compile_definitions(integration_tests_runner
+    PRIVATE
+    "-DTESTING")
 
 set_target_properties(integration_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
 target_link_libraries(integration_tests_runner
+    PRIVATE
     mavsdk
-    mavsdk_telemetry
-    mavsdk_action
-    mavsdk_mission
-    mavsdk_mission_raw
-    mavsdk_offboard
-    mavsdk_log_files
-    mavsdk_info
-    mavsdk_gimbal
-    mavsdk_follow_me
-    mavsdk_camera
-    mavsdk_calibration
-    mavsdk_geofence
-    mavsdk_param
-    mavsdk_ftp
-    mavsdk_mavlink_passthrough
-    mavsdk_server_utility
     gtest
     gtest_main
     gmock

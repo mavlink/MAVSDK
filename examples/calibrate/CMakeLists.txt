@@ -12,7 +12,6 @@ add_executable(calibrate
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(calibrate
-    MAVSDK::mavsdk_calibration
     MAVSDK::mavsdk
 )
 

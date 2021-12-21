@@ -14,9 +14,6 @@ find_package(MAVSDK REQUIRED)
 
 target_link_libraries(fly_multiple_drones
     MAVSDK::mavsdk
-    MAVSDK::mavsdk_telemetry
-    MAVSDK::mavsdk_mission_raw
-    MAVSDK::mavsdk_action
     Threads::Threads
 )
 

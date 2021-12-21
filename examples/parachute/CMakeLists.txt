@@ -13,7 +13,6 @@ find_package(MAVSDK REQUIRED)
 
 target_link_libraries(parachute
     MAVSDK::mavsdk
-    MAVSDK::mavsdk_mavlink_passthrough
 )
 
 if(NOT MSVC)
