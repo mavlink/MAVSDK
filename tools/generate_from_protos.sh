@@ -72,9 +72,9 @@ for plugin in ${plugin_list_and_core}; do
         continue
     fi
 
-    mkdir -p ${script_dir}/../src/mavsdk/plugins/${plugin}/include/mavsdk
+    mkdir -p ${script_dir}/../src/mavsdk/plugins/${plugin}/include/plugins/${plugin}
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" ${proto_dir}/${plugin}/${plugin}.proto
-    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/mavsdk/plugins/${plugin}/include/mavsdk/${plugin}.h
+    mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).h ${script_dir}/../src/mavsdk/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h
 
     ${protoc_binary} -I ${proto_dir} --custom_out=${tmp_output_dir} --plugin=protoc-gen-custom=${protoc_gen_mavsdk} --custom_opt="file_ext=cpp,template_path=${template_path_plugin_cpp}" ${proto_dir}/${plugin}/${plugin}.proto
     mv ${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case ${plugin}).cpp ${script_dir}/../src/mavsdk/plugins/${plugin}/${plugin}.cpp
