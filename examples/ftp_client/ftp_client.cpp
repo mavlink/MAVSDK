@@ -25,7 +25,8 @@ void usage(const std::string& bin_name)
               << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
               << "For example, to connect to the simulator use URL: udp://:14540\n"
               << '\n'
-              << "Server component id is for example 1 for autopilot or 240 for companion computer."
+              << "Server component id is for example 1 for autopilot or 195 for companion computer,\n"
+	      << "which is being used if you run the ftp_server example\n"
               << '\n'
               << '\n'
               << "Supported commands :\n"
