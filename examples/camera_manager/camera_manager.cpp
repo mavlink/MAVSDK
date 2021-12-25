@@ -98,7 +98,7 @@ int main(int argc, char** argv)
                         CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS |
                         CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
                 camera_information.cam_definition_version = 0;
-                strncpy(camera_information.cam_definition_uri, "mftp://infos/camera_info.xml", 140);
+                strncpy(camera_information.cam_definition_uri, "mftp://[;compid=100]infos/camera_info.xml", 140);
 		std::cout << "Sending CAMERA_INFORMATION" << std::endl;
 		mavlink_message_t send_msg;
 		mavlink_msg_camera_information_encode(mavlink_passthrough.get_our_sysid(), mavlink_passthrough.get_our_compid(), &send_msg, &camera_information);
