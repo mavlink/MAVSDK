@@ -150,6 +150,7 @@ private:
         uint32_t stream_offset{0};
         uint16_t stream_seq_number{0};
         uint8_t stream_target_system_id{0};
+        uint8_t stream_target_component_id{0};
         unsigned stream_chunk_transmitted{0};
     };
 
@@ -216,6 +217,7 @@ private:
     void _reset_timer();
     void _stop_timer();
     void _list_directory(uint32_t offset);
+    unsigned get_size();
     uint8_t _get_target_component_id()
     {
         return _target_component_id_set ? _target_component_id : _parent->get_autopilot_id();
@@ -238,7 +240,7 @@ private:
     ServerResult _work_list(PayloadHeader* payload, bool list_hidden = false);
     ServerResult _work_open(PayloadHeader* payload, int oflag);
     ServerResult _work_read(PayloadHeader* payload);
-    ServerResult _work_burst(PayloadHeader* payload);
+    ServerResult _work_burst(PayloadHeader* payload, uint8_t target_system_id, uint8_t target_component_id);
     ServerResult _work_write(PayloadHeader* payload);
     ServerResult _work_terminate(PayloadHeader* payload);
     ServerResult _work_reset(PayloadHeader* payload);

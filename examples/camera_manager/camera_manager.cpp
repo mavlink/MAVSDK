@@ -22,7 +22,7 @@ void usage(const std::string& bin_name)
 {
     std::cerr << "Usage : " << bin_name << " <root_dir>\n"
               << '\n'
-              << "    Start mavlink camera_manager with camera definition file in <root_dir>\n"
+              << "    Start mavlink camera_manager with camera definition file in <root_dir>" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -59,8 +59,6 @@ int main(int argc, char** argv)
         std::cerr << "No GCS found.\n";
         return 1;
     }
-
-    std::cout << "No GCS found.\n";
 
     // Get discovered system now.
     auto system = fut.get();
@@ -100,7 +98,7 @@ int main(int argc, char** argv)
                         CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS |
                         CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
                 camera_information.cam_definition_version = 0;
-                strncpy(camera_information.cam_definition_uri, "mavlinkftp:///infos/camera_info.xml", 140);
+                strncpy(camera_information.cam_definition_uri, "mftp://infos/camera_info.xml", 140);
 		std::cout << "Sending CAMERA_INFORMATION" << std::endl;
 		mavlink_message_t send_msg;
 		mavlink_msg_camera_information_encode(mavlink_passthrough.get_our_sysid(), mavlink_passthrough.get_our_compid(), &send_msg, &camera_information);
