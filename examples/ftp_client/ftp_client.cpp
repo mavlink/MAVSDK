@@ -16,35 +16,35 @@ using std::chrono::seconds;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name
-              << " <connection_url> <server component id> <command> <parameters>\n"
-              << '\n'
-              << "Connection URL format should be :\n"
-              << " For TCP : tcp://[server_host][:server_port]\n"
-              << " For UDP : udp://[bind_host][:bind_port]\n"
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540\n"
-              << '\n'
-              << "Server component id is for example 1 for autopilot or 195 for companion computer,\n"
-	      << "which is being used if you run the ftp_server example\n"
-              << '\n'
-              << '\n'
-              << "Supported commands :\n"
-              << " put <file> <path>    : Upload one file to remote directory\n"
-              << " get <file> <path>    : Download remote file to local directory\n"
-              << " delete <file>        : Delete remote file\n"
-              << " rename <old> <new>   : Rename file\n"
-              << " dir <path>           : List contents of remote directory\n"
-              << " mkdir <path>         : Make directory on remote machine\n"
-              << " rmdir [-r] <path>    : Remove directory on remote machine. [-r] recursively"
-              << '\n'
-              << " cmp <local> <remote> : Compare local and remote file\n"
-              << '\n'
-              << "Return codes:\n"
-              << " 0 : Success\n"
-              << " 1 : Failure\n"
-              << " 2 : File does not exist\n"
-              << " 3 : Files are different (cmp command)\n";
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url> <server component id> <command> <parameters>\n"
+        << '\n'
+        << "Connection URL format should be :\n"
+        << " For TCP : tcp://[server_host][:server_port]\n"
+        << " For UDP : udp://[bind_host][:bind_port]\n"
+        << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
+        << "For example, to connect to the simulator use URL: udp://:14540\n"
+        << '\n'
+        << "Server component id is for example 1 for autopilot or 195 for companion computer,\n"
+        << "which is being used if you run the ftp_server example\n"
+        << '\n'
+        << '\n'
+        << "Supported commands :\n"
+        << " put <file> <path>    : Upload one file to remote directory\n"
+        << " get <file> <path>    : Download remote file to local directory\n"
+        << " delete <file>        : Delete remote file\n"
+        << " rename <old> <new>   : Rename file\n"
+        << " dir <path>           : List contents of remote directory\n"
+        << " mkdir <path>         : Make directory on remote machine\n"
+        << " rmdir [-r] <path>    : Remove directory on remote machine. [-r] recursively" << '\n'
+        << " cmp <local> <remote> : Compare local and remote file\n"
+        << '\n'
+        << "Return codes:\n"
+        << " 0 : Success\n"
+        << " 1 : Failure\n"
+        << " 2 : File does not exist\n"
+        << " 3 : Files are different (cmp command)\n";
 }
 
 Ftp::Result reset_server(Ftp& ftp)
