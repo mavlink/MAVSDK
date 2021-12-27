@@ -240,7 +240,8 @@ private:
     ServerResult _work_list(PayloadHeader* payload, bool list_hidden = false);
     ServerResult _work_open(PayloadHeader* payload, int oflag);
     ServerResult _work_read(PayloadHeader* payload);
-    ServerResult _work_burst(PayloadHeader* payload, uint8_t target_system_id, uint8_t target_component_id);
+    ServerResult
+    _work_burst(PayloadHeader* payload, uint8_t target_system_id, uint8_t target_component_id);
     ServerResult _work_write(PayloadHeader* payload);
     ServerResult _work_terminate(PayloadHeader* payload);
     ServerResult _work_reset(PayloadHeader* payload);

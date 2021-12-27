@@ -763,7 +763,8 @@ void FtpImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
     mavlink_msg_file_transfer_protocol_decode(&msg, &ftp_req);
 
     if (ftp_req.target_component != 0 && ftp_req.target_component != get_our_compid()) {
-        LogWarn() << "wrong compid! Requested: " << (int)ftp_req.target_component << " Our ID: " << (int)get_our_compid();
+        LogWarn() << "wrong compid! Requested: " << (int)ftp_req.target_component
+                  << " Our ID: " << (int)get_our_compid();
         return;
     }
 
@@ -775,9 +776,8 @@ void FtpImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
     if (payload->size > max_data_length) {
         error_code = ServerResult::ERR_INVALID_DATA_SIZE;
     } else {
-        LogDebug() << "ftp - opc: " << (int)payload->opcode << " size: "
-            << (int)payload->size << " offset: " << (int)payload->offset << " seq: "
-            << payload->seq_number;
+        LogDebug() << "ftp - opc: " << (int)payload->opcode << " size: " << (int)payload->size
+                   << " offset: " << (int)payload->offset << " seq: " << payload->seq_number;
 
         // check the sequence number: if this is a resent request, resend the last response
         if (_last_reply_valid) {
@@ -1098,7 +1098,8 @@ FtpImpl::ServerResult FtpImpl::_work_read(PayloadHeader* payload)
     return ServerResult::SUCCESS;
 }
 
-FtpImpl::ServerResult FtpImpl::_work_burst(PayloadHeader* payload, uint8_t target_system_id, uint8_t target_component_id)
+FtpImpl::ServerResult
+FtpImpl::_work_burst(PayloadHeader* payload, uint8_t target_system_id, uint8_t target_component_id)
 {
     if (payload->session != 0 && _session_info.fd < 0) {
         return ServerResult::ERR_INVALID_SESSION;
@@ -1308,15 +1309,14 @@ FtpImpl::ServerResult FtpImpl::_work_calc_file_CRC32(PayloadHeader* payload)
     return ServerResult::SUCCESS;
 }
 
-unsigned
-FtpImpl::get_size()
+unsigned FtpImpl::get_size()
 {
-        if (_session_info.stream_download) {
-                return MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
+    if (_session_info.stream_download) {
+        return MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
 
-        } else {
-                return 0;
-        }
+    } else {
+        return 0;
+    }
 }
 
 void FtpImpl::send()
@@ -1333,7 +1333,7 @@ void FtpImpl::send()
 
     ServerResult error_code = ServerResult::SUCCESS;
     mavlink_file_transfer_protocol_t ftp_msg;
-    PayloadHeader *payload = reinterpret_cast<PayloadHeader *>(&ftp_msg.payload[0]);
+    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(&ftp_msg.payload[0]);
     payload->seq_number = _session_info.stream_seq_number;
     payload->session = 0;
     payload->opcode = RSP_ACK;
@@ -1361,7 +1361,8 @@ void FtpImpl::send()
             payload->size = bytes_read;
             _session_info.stream_offset += bytes_read;
             _session_info.stream_chunk_transmitted += bytes_read;
-            LogDebug() << "Burst step: " << _session_info.stream_offset << " < " << _session_info.file_size;
+            LogDebug() << "Burst step: " << _session_info.stream_offset << " < "
+                       << _session_info.file_size;
             more_data = (_session_info.stream_offset < _session_info.file_size);
             if (!more_data) {
                 LogDebug() << "Burst completed";
@@ -1372,7 +1373,7 @@ void FtpImpl::send()
             } else {
                 more_data = true;
                 payload->burst_complete = false;
-                max_bytes_to_send  -= get_size();
+                max_bytes_to_send -= get_size();
             }
         }
     }
@@ -1380,25 +1381,27 @@ void FtpImpl::send()
     if (error_code != ServerResult::SUCCESS) {
         payload->opcode = RSP_NAK;
         payload->size = 1;
-        uint8_t *pData = &payload->data[0];
-        *pData = error_code; // Straight reference to data[0] is causing bogus gcc array subscript error
+        uint8_t* pData = &payload->data[0];
+        *pData =
+            error_code; // Straight reference to data[0] is causing bogus gcc array subscript error
 
         if (error_code == ServerResult::ERR_FAIL_ERRNO) {
-                payload->size = 2;
-                payload->data[1] = errno;
+            payload->size = 2;
+            payload->data[1] = errno;
         }
 
         _session_info.stream_download = false;
-
     }
     ftp_msg.target_system = _session_info.stream_target_system_id;
     ftp_msg.target_network = 0;
     ftp_msg.target_component = _get_target_component_id();
     mavlink_message_t msg;
-    mavlink_msg_file_transfer_protocol_encode(_parent->get_own_system_id(), _parent->get_own_component_id(), &msg, &ftp_msg);
+    mavlink_msg_file_transfer_protocol_encode(
+        _parent->get_own_system_id(), _parent->get_own_component_id(), &msg, &ftp_msg);
     _parent->send_message(msg);
 
-    if (more_data) send();
+    if (more_data)
+        send();
 }
 
 } // namespace mavsdk
