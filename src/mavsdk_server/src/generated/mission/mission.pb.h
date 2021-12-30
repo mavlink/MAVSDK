@@ -48,7 +48,7 @@ struct TableStruct_mission_2fmission_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[28]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[34]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -82,6 +82,12 @@ extern DownloadMissionRequestDefaultTypeInternal _DownloadMissionRequest_default
 class DownloadMissionResponse;
 struct DownloadMissionResponseDefaultTypeInternal;
 extern DownloadMissionResponseDefaultTypeInternal _DownloadMissionResponse_default_instance_;
+class DownloadProgress;
+struct DownloadProgressDefaultTypeInternal;
+extern DownloadProgressDefaultTypeInternal _DownloadProgress_default_instance_;
+class DownloadProgressResponse;
+struct DownloadProgressResponseDefaultTypeInternal;
+extern DownloadProgressResponseDefaultTypeInternal _DownloadProgressResponse_default_instance_;
 class GetReturnToLaunchAfterMissionRequest;
 struct GetReturnToLaunchAfterMissionRequestDefaultTypeInternal;
 extern GetReturnToLaunchAfterMissionRequestDefaultTypeInternal _GetReturnToLaunchAfterMissionRequest_default_instance_;
@@ -133,15 +139,27 @@ extern StartMissionRequestDefaultTypeInternal _StartMissionRequest_default_insta
 class StartMissionResponse;
 struct StartMissionResponseDefaultTypeInternal;
 extern StartMissionResponseDefaultTypeInternal _StartMissionResponse_default_instance_;
+class SubscribeDownloadProgressRequest;
+struct SubscribeDownloadProgressRequestDefaultTypeInternal;
+extern SubscribeDownloadProgressRequestDefaultTypeInternal _SubscribeDownloadProgressRequest_default_instance_;
 class SubscribeMissionProgressRequest;
 struct SubscribeMissionProgressRequestDefaultTypeInternal;
 extern SubscribeMissionProgressRequestDefaultTypeInternal _SubscribeMissionProgressRequest_default_instance_;
+class SubscribeUploadProgressRequest;
+struct SubscribeUploadProgressRequestDefaultTypeInternal;
+extern SubscribeUploadProgressRequestDefaultTypeInternal _SubscribeUploadProgressRequest_default_instance_;
 class UploadMissionRequest;
 struct UploadMissionRequestDefaultTypeInternal;
 extern UploadMissionRequestDefaultTypeInternal _UploadMissionRequest_default_instance_;
 class UploadMissionResponse;
 struct UploadMissionResponseDefaultTypeInternal;
 extern UploadMissionResponseDefaultTypeInternal _UploadMissionResponse_default_instance_;
+class UploadProgress;
+struct UploadProgressDefaultTypeInternal;
+extern UploadProgressDefaultTypeInternal _UploadProgress_default_instance_;
+class UploadProgressResponse;
+struct UploadProgressResponseDefaultTypeInternal;
+extern UploadProgressResponseDefaultTypeInternal _UploadProgressResponse_default_instance_;
 }  // namespace mission
 }  // namespace rpc
 }  // namespace mavsdk
@@ -154,6 +172,8 @@ template<> ::mavsdk::rpc::mission::ClearMissionRequest* Arena::CreateMaybeMessag
 template<> ::mavsdk::rpc::mission::ClearMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::ClearMissionResponse>(Arena*);
 template<> ::mavsdk::rpc::mission::DownloadMissionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::DownloadMissionRequest>(Arena*);
 template<> ::mavsdk::rpc::mission::DownloadMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::DownloadMissionResponse>(Arena*);
+template<> ::mavsdk::rpc::mission::DownloadProgress* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::DownloadProgress>(Arena*);
+template<> ::mavsdk::rpc::mission::DownloadProgressResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::DownloadProgressResponse>(Arena*);
 template<> ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest>(Arena*);
 template<> ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>(Arena*);
 template<> ::mavsdk::rpc::mission::IsMissionFinishedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::IsMissionFinishedRequest>(Arena*);
@@ -171,9 +191,13 @@ template<> ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* Arena::
 template<> ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>(Arena*);
 template<> ::mavsdk::rpc::mission::StartMissionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::StartMissionRequest>(Arena*);
 template<> ::mavsdk::rpc::mission::StartMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::StartMissionResponse>(Arena*);
+template<> ::mavsdk::rpc::mission::SubscribeDownloadProgressRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::SubscribeDownloadProgressRequest>(Arena*);
 template<> ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::SubscribeMissionProgressRequest>(Arena*);
+template<> ::mavsdk::rpc::mission::SubscribeUploadProgressRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::SubscribeUploadProgressRequest>(Arena*);
 template<> ::mavsdk::rpc::mission::UploadMissionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::UploadMissionRequest>(Arena*);
 template<> ::mavsdk::rpc::mission::UploadMissionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::UploadMissionResponse>(Arena*);
+template<> ::mavsdk::rpc::mission::UploadProgress* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::UploadProgress>(Arena*);
+template<> ::mavsdk::rpc::mission::UploadProgressResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::mission::UploadProgressResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
 namespace rpc {
@@ -817,6 +841,280 @@ class CancelMissionUploadResponse final :
 };
 // -------------------------------------------------------------------
 
+class SubscribeUploadProgressRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeUploadProgressRequest) */ {
+ public:
+  inline SubscribeUploadProgressRequest() : SubscribeUploadProgressRequest(nullptr) {}
+  ~SubscribeUploadProgressRequest() override;
+  explicit constexpr SubscribeUploadProgressRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SubscribeUploadProgressRequest(const SubscribeUploadProgressRequest& from);
+  SubscribeUploadProgressRequest(SubscribeUploadProgressRequest&& from) noexcept
+    : SubscribeUploadProgressRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeUploadProgressRequest& operator=(const SubscribeUploadProgressRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeUploadProgressRequest& operator=(SubscribeUploadProgressRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeUploadProgressRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeUploadProgressRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeUploadProgressRequest*>(
+               &_SubscribeUploadProgressRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(SubscribeUploadProgressRequest& a, SubscribeUploadProgressRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeUploadProgressRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeUploadProgressRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeUploadProgressRequest* New() const final {
+    return new SubscribeUploadProgressRequest();
+  }
+
+  SubscribeUploadProgressRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeUploadProgressRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SubscribeUploadProgressRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SubscribeUploadProgressRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeUploadProgressRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission.SubscribeUploadProgressRequest";
+  }
+  protected:
+  explicit SubscribeUploadProgressRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeUploadProgressRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_2fmission_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UploadProgressResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.UploadProgressResponse) */ {
+ public:
+  inline UploadProgressResponse() : UploadProgressResponse(nullptr) {}
+  ~UploadProgressResponse() override;
+  explicit constexpr UploadProgressResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  UploadProgressResponse(const UploadProgressResponse& from);
+  UploadProgressResponse(UploadProgressResponse&& from) noexcept
+    : UploadProgressResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline UploadProgressResponse& operator=(const UploadProgressResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadProgressResponse& operator=(UploadProgressResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadProgressResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadProgressResponse* internal_default_instance() {
+    return reinterpret_cast<const UploadProgressResponse*>(
+               &_UploadProgressResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(UploadProgressResponse& a, UploadProgressResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UploadProgressResponse* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadProgressResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UploadProgressResponse* New() const final {
+    return new UploadProgressResponse();
+  }
+
+  UploadProgressResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UploadProgressResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const UploadProgressResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const UploadProgressResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UploadProgressResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission.UploadProgressResponse";
+  }
+  protected:
+  explicit UploadProgressResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUploadProgressFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.UploadProgress upload_progress = 1;
+  bool has_upload_progress() const;
+  private:
+  bool _internal_has_upload_progress() const;
+  public:
+  void clear_upload_progress();
+  const ::mavsdk::rpc::mission::UploadProgress& upload_progress() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::mission::UploadProgress* release_upload_progress();
+  ::mavsdk::rpc::mission::UploadProgress* mutable_upload_progress();
+  void set_allocated_upload_progress(::mavsdk::rpc::mission::UploadProgress* upload_progress);
+  private:
+  const ::mavsdk::rpc::mission::UploadProgress& _internal_upload_progress() const;
+  ::mavsdk::rpc::mission::UploadProgress* _internal_mutable_upload_progress();
+  public:
+  void unsafe_arena_set_allocated_upload_progress(
+      ::mavsdk::rpc::mission::UploadProgress* upload_progress);
+  ::mavsdk::rpc::mission::UploadProgress* unsafe_arena_release_upload_progress();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadProgressResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::mission::UploadProgress* upload_progress_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_2fmission_2eproto;
+};
+// -------------------------------------------------------------------
+
 class DownloadMissionRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.DownloadMissionRequest) */ {
  public:
@@ -861,7 +1159,7 @@ class DownloadMissionRequest final :
                &_DownloadMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    6;
 
   friend void swap(DownloadMissionRequest& a, DownloadMissionRequest& b) {
     a.Swap(&b);
@@ -987,7 +1285,7 @@ class DownloadMissionResponse final :
                &_DownloadMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   friend void swap(DownloadMissionResponse& a, DownloadMissionResponse& b) {
     a.Swap(&b);
@@ -1155,7 +1453,7 @@ class CancelMissionDownloadRequest final :
                &_CancelMissionDownloadRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    8;
 
   friend void swap(CancelMissionDownloadRequest& a, CancelMissionDownloadRequest& b) {
     a.Swap(&b);
@@ -1281,7 +1579,7 @@ class CancelMissionDownloadResponse final :
                &_CancelMissionDownloadResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    9;
 
   friend void swap(CancelMissionDownloadResponse& a, CancelMissionDownloadResponse& b) {
     a.Swap(&b);
@@ -1385,6 +1683,280 @@ class CancelMissionDownloadResponse final :
 };
 // -------------------------------------------------------------------
 
+class SubscribeDownloadProgressRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeDownloadProgressRequest) */ {
+ public:
+  inline SubscribeDownloadProgressRequest() : SubscribeDownloadProgressRequest(nullptr) {}
+  ~SubscribeDownloadProgressRequest() override;
+  explicit constexpr SubscribeDownloadProgressRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SubscribeDownloadProgressRequest(const SubscribeDownloadProgressRequest& from);
+  SubscribeDownloadProgressRequest(SubscribeDownloadProgressRequest&& from) noexcept
+    : SubscribeDownloadProgressRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeDownloadProgressRequest& operator=(const SubscribeDownloadProgressRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeDownloadProgressRequest& operator=(SubscribeDownloadProgressRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeDownloadProgressRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeDownloadProgressRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeDownloadProgressRequest*>(
+               &_SubscribeDownloadProgressRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(SubscribeDownloadProgressRequest& a, SubscribeDownloadProgressRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeDownloadProgressRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeDownloadProgressRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeDownloadProgressRequest* New() const final {
+    return new SubscribeDownloadProgressRequest();
+  }
+
+  SubscribeDownloadProgressRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeDownloadProgressRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SubscribeDownloadProgressRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SubscribeDownloadProgressRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeDownloadProgressRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission.SubscribeDownloadProgressRequest";
+  }
+  protected:
+  explicit SubscribeDownloadProgressRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeDownloadProgressRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_2fmission_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DownloadProgressResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.DownloadProgressResponse) */ {
+ public:
+  inline DownloadProgressResponse() : DownloadProgressResponse(nullptr) {}
+  ~DownloadProgressResponse() override;
+  explicit constexpr DownloadProgressResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DownloadProgressResponse(const DownloadProgressResponse& from);
+  DownloadProgressResponse(DownloadProgressResponse&& from) noexcept
+    : DownloadProgressResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline DownloadProgressResponse& operator=(const DownloadProgressResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadProgressResponse& operator=(DownloadProgressResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadProgressResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadProgressResponse* internal_default_instance() {
+    return reinterpret_cast<const DownloadProgressResponse*>(
+               &_DownloadProgressResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(DownloadProgressResponse& a, DownloadProgressResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DownloadProgressResponse* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadProgressResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DownloadProgressResponse* New() const final {
+    return new DownloadProgressResponse();
+  }
+
+  DownloadProgressResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DownloadProgressResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DownloadProgressResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const DownloadProgressResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DownloadProgressResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission.DownloadProgressResponse";
+  }
+  protected:
+  explicit DownloadProgressResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDownloadProgressFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.DownloadProgress download_progress = 1;
+  bool has_download_progress() const;
+  private:
+  bool _internal_has_download_progress() const;
+  public:
+  void clear_download_progress();
+  const ::mavsdk::rpc::mission::DownloadProgress& download_progress() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::mission::DownloadProgress* release_download_progress();
+  ::mavsdk::rpc::mission::DownloadProgress* mutable_download_progress();
+  void set_allocated_download_progress(::mavsdk::rpc::mission::DownloadProgress* download_progress);
+  private:
+  const ::mavsdk::rpc::mission::DownloadProgress& _internal_download_progress() const;
+  ::mavsdk::rpc::mission::DownloadProgress* _internal_mutable_download_progress();
+  public:
+  void unsafe_arena_set_allocated_download_progress(
+      ::mavsdk::rpc::mission::DownloadProgress* download_progress);
+  ::mavsdk::rpc::mission::DownloadProgress* unsafe_arena_release_download_progress();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadProgressResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::mission::DownloadProgress* download_progress_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_2fmission_2eproto;
+};
+// -------------------------------------------------------------------
+
 class StartMissionRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.StartMissionRequest) */ {
  public:
@@ -1429,7 +2001,7 @@ class StartMissionRequest final :
                &_StartMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    12;
 
   friend void swap(StartMissionRequest& a, StartMissionRequest& b) {
     a.Swap(&b);
@@ -1555,7 +2127,7 @@ class StartMissionResponse final :
                &_StartMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    13;
 
   friend void swap(StartMissionResponse& a, StartMissionResponse& b) {
     a.Swap(&b);
@@ -1703,7 +2275,7 @@ class PauseMissionRequest final :
                &_PauseMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    14;
 
   friend void swap(PauseMissionRequest& a, PauseMissionRequest& b) {
     a.Swap(&b);
@@ -1829,7 +2401,7 @@ class PauseMissionResponse final :
                &_PauseMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    15;
 
   friend void swap(PauseMissionResponse& a, PauseMissionResponse& b) {
     a.Swap(&b);
@@ -1977,7 +2549,7 @@ class ClearMissionRequest final :
                &_ClearMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    16;
 
   friend void swap(ClearMissionRequest& a, ClearMissionRequest& b) {
     a.Swap(&b);
@@ -2103,7 +2675,7 @@ class ClearMissionResponse final :
                &_ClearMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    17;
 
   friend void swap(ClearMissionResponse& a, ClearMissionResponse& b) {
     a.Swap(&b);
@@ -2251,7 +2823,7 @@ class SetCurrentMissionItemRequest final :
                &_SetCurrentMissionItemRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    18;
 
   friend void swap(SetCurrentMissionItemRequest& a, SetCurrentMissionItemRequest& b) {
     a.Swap(&b);
@@ -2390,7 +2962,7 @@ class SetCurrentMissionItemResponse final :
                &_SetCurrentMissionItemResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    19;
 
   friend void swap(SetCurrentMissionItemResponse& a, SetCurrentMissionItemResponse& b) {
     a.Swap(&b);
@@ -2538,7 +3110,7 @@ class IsMissionFinishedRequest final :
                &_IsMissionFinishedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    20;
 
   friend void swap(IsMissionFinishedRequest& a, IsMissionFinishedRequest& b) {
     a.Swap(&b);
@@ -2664,7 +3236,7 @@ class IsMissionFinishedResponse final :
                &_IsMissionFinishedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    21;
 
   friend void swap(IsMissionFinishedResponse& a, IsMissionFinishedResponse& b) {
     a.Swap(&b);
@@ -2823,7 +3395,7 @@ class SubscribeMissionProgressRequest final :
                &_SubscribeMissionProgressRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    22;
 
   friend void swap(SubscribeMissionProgressRequest& a, SubscribeMissionProgressRequest& b) {
     a.Swap(&b);
@@ -2949,7 +3521,7 @@ class MissionProgressResponse final :
                &_MissionProgressResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    23;
 
   friend void swap(MissionProgressResponse& a, MissionProgressResponse& b) {
     a.Swap(&b);
@@ -3097,7 +3669,7 @@ class GetReturnToLaunchAfterMissionRequest final :
                &_GetReturnToLaunchAfterMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    24;
 
   friend void swap(GetReturnToLaunchAfterMissionRequest& a, GetReturnToLaunchAfterMissionRequest& b) {
     a.Swap(&b);
@@ -3223,7 +3795,7 @@ class GetReturnToLaunchAfterMissionResponse final :
                &_GetReturnToLaunchAfterMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    25;
 
   friend void swap(GetReturnToLaunchAfterMissionResponse& a, GetReturnToLaunchAfterMissionResponse& b) {
     a.Swap(&b);
@@ -3382,7 +3954,7 @@ class SetReturnToLaunchAfterMissionRequest final :
                &_SetReturnToLaunchAfterMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    26;
 
   friend void swap(SetReturnToLaunchAfterMissionRequest& a, SetReturnToLaunchAfterMissionRequest& b) {
     a.Swap(&b);
@@ -3521,7 +4093,7 @@ class SetReturnToLaunchAfterMissionResponse final :
                &_SetReturnToLaunchAfterMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    27;
 
   friend void swap(SetReturnToLaunchAfterMissionResponse& a, SetReturnToLaunchAfterMissionResponse& b) {
     a.Swap(&b);
@@ -3669,7 +4241,7 @@ class MissionItem final :
                &_MissionItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    28;
 
   friend void swap(MissionItem& a, MissionItem& b) {
     a.Swap(&b);
@@ -3982,7 +4554,7 @@ class MissionPlan final :
                &_MissionPlan_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    29;
 
   friend void swap(MissionPlan& a, MissionPlan& b) {
     a.Swap(&b);
@@ -4086,6 +4658,284 @@ class MissionPlan final :
 };
 // -------------------------------------------------------------------
 
+class UploadProgress final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.UploadProgress) */ {
+ public:
+  inline UploadProgress() : UploadProgress(nullptr) {}
+  ~UploadProgress() override;
+  explicit constexpr UploadProgress(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  UploadProgress(const UploadProgress& from);
+  UploadProgress(UploadProgress&& from) noexcept
+    : UploadProgress() {
+    *this = ::std::move(from);
+  }
+
+  inline UploadProgress& operator=(const UploadProgress& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadProgress& operator=(UploadProgress&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadProgress& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadProgress* internal_default_instance() {
+    return reinterpret_cast<const UploadProgress*>(
+               &_UploadProgress_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    30;
+
+  friend void swap(UploadProgress& a, UploadProgress& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UploadProgress* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadProgress* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UploadProgress* New() const final {
+    return new UploadProgress();
+  }
+
+  UploadProgress* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UploadProgress>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const UploadProgress& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const UploadProgress& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UploadProgress* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission.UploadProgress";
+  }
+  protected:
+  explicit UploadProgress(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kProgressFieldNumber = 1,
+  };
+  // float progress = 1;
+  void clear_progress();
+  float progress() const;
+  void set_progress(float value);
+  private:
+  float _internal_progress() const;
+  void _internal_set_progress(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadProgress)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  float progress_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_2fmission_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DownloadProgress final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.DownloadProgress) */ {
+ public:
+  inline DownloadProgress() : DownloadProgress(nullptr) {}
+  ~DownloadProgress() override;
+  explicit constexpr DownloadProgress(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DownloadProgress(const DownloadProgress& from);
+  DownloadProgress(DownloadProgress&& from) noexcept
+    : DownloadProgress() {
+    *this = ::std::move(from);
+  }
+
+  inline DownloadProgress& operator=(const DownloadProgress& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadProgress& operator=(DownloadProgress&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadProgress& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadProgress* internal_default_instance() {
+    return reinterpret_cast<const DownloadProgress*>(
+               &_DownloadProgress_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    31;
+
+  friend void swap(DownloadProgress& a, DownloadProgress& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DownloadProgress* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadProgress* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DownloadProgress* New() const final {
+    return new DownloadProgress();
+  }
+
+  DownloadProgress* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DownloadProgress>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DownloadProgress& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const DownloadProgress& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DownloadProgress* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.mission.DownloadProgress";
+  }
+  protected:
+  explicit DownloadProgress(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kProgressFieldNumber = 1,
+  };
+  // float progress = 1;
+  void clear_progress();
+  float progress() const;
+  void set_progress(float value);
+  private:
+  float _internal_progress() const;
+  void _internal_set_progress(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadProgress)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  float progress_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_mission_2fmission_2eproto;
+};
+// -------------------------------------------------------------------
+
 class MissionProgress final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.MissionProgress) */ {
  public:
@@ -4130,7 +4980,7 @@ class MissionProgress final :
                &_MissionProgress_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    32;
 
   friend void swap(MissionProgress& a, MissionProgress& b) {
     a.Swap(&b);
@@ -4280,7 +5130,7 @@ class MissionResult final :
                &_MissionResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    33;
 
   friend void swap(MissionResult& a, MissionResult& b) {
     a.Swap(&b);
@@ -4734,6 +5584,104 @@ inline void CancelMissionUploadResponse::set_allocated_mission_result(::mavsdk::
 
 // -------------------------------------------------------------------
 
+// SubscribeUploadProgressRequest
+
+// -------------------------------------------------------------------
+
+// UploadProgressResponse
+
+// .mavsdk.rpc.mission.UploadProgress upload_progress = 1;
+inline bool UploadProgressResponse::_internal_has_upload_progress() const {
+  return this != internal_default_instance() && upload_progress_ != nullptr;
+}
+inline bool UploadProgressResponse::has_upload_progress() const {
+  return _internal_has_upload_progress();
+}
+inline void UploadProgressResponse::clear_upload_progress() {
+  if (GetArenaForAllocation() == nullptr && upload_progress_ != nullptr) {
+    delete upload_progress_;
+  }
+  upload_progress_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission::UploadProgress& UploadProgressResponse::_internal_upload_progress() const {
+  const ::mavsdk::rpc::mission::UploadProgress* p = upload_progress_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::UploadProgress&>(
+      ::mavsdk::rpc::mission::_UploadProgress_default_instance_);
+}
+inline const ::mavsdk::rpc::mission::UploadProgress& UploadProgressResponse::upload_progress() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadProgressResponse.upload_progress)
+  return _internal_upload_progress();
+}
+inline void UploadProgressResponse::unsafe_arena_set_allocated_upload_progress(
+    ::mavsdk::rpc::mission::UploadProgress* upload_progress) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(upload_progress_);
+  }
+  upload_progress_ = upload_progress;
+  if (upload_progress) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadProgressResponse.upload_progress)
+}
+inline ::mavsdk::rpc::mission::UploadProgress* UploadProgressResponse::release_upload_progress() {
+  
+  ::mavsdk::rpc::mission::UploadProgress* temp = upload_progress_;
+  upload_progress_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::mission::UploadProgress* UploadProgressResponse::unsafe_arena_release_upload_progress() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadProgressResponse.upload_progress)
+  
+  ::mavsdk::rpc::mission::UploadProgress* temp = upload_progress_;
+  upload_progress_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::UploadProgress* UploadProgressResponse::_internal_mutable_upload_progress() {
+  
+  if (upload_progress_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::UploadProgress>(GetArenaForAllocation());
+    upload_progress_ = p;
+  }
+  return upload_progress_;
+}
+inline ::mavsdk::rpc::mission::UploadProgress* UploadProgressResponse::mutable_upload_progress() {
+  ::mavsdk::rpc::mission::UploadProgress* _msg = _internal_mutable_upload_progress();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadProgressResponse.upload_progress)
+  return _msg;
+}
+inline void UploadProgressResponse::set_allocated_upload_progress(::mavsdk::rpc::mission::UploadProgress* upload_progress) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete upload_progress_;
+  }
+  if (upload_progress) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::mission::UploadProgress>::GetOwningArena(upload_progress);
+    if (message_arena != submessage_arena) {
+      upload_progress = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, upload_progress, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  upload_progress_ = upload_progress;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadProgressResponse.upload_progress)
+}
+
+// -------------------------------------------------------------------
+
 // DownloadMissionRequest
 
 // -------------------------------------------------------------------
@@ -5016,6 +5964,104 @@ inline void CancelMissionDownloadResponse::set_allocated_mission_result(::mavsdk
   }
   mission_result_ = mission_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeDownloadProgressRequest
+
+// -------------------------------------------------------------------
+
+// DownloadProgressResponse
+
+// .mavsdk.rpc.mission.DownloadProgress download_progress = 1;
+inline bool DownloadProgressResponse::_internal_has_download_progress() const {
+  return this != internal_default_instance() && download_progress_ != nullptr;
+}
+inline bool DownloadProgressResponse::has_download_progress() const {
+  return _internal_has_download_progress();
+}
+inline void DownloadProgressResponse::clear_download_progress() {
+  if (GetArenaForAllocation() == nullptr && download_progress_ != nullptr) {
+    delete download_progress_;
+  }
+  download_progress_ = nullptr;
+}
+inline const ::mavsdk::rpc::mission::DownloadProgress& DownloadProgressResponse::_internal_download_progress() const {
+  const ::mavsdk::rpc::mission::DownloadProgress* p = download_progress_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::DownloadProgress&>(
+      ::mavsdk::rpc::mission::_DownloadProgress_default_instance_);
+}
+inline const ::mavsdk::rpc::mission::DownloadProgress& DownloadProgressResponse::download_progress() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadProgressResponse.download_progress)
+  return _internal_download_progress();
+}
+inline void DownloadProgressResponse::unsafe_arena_set_allocated_download_progress(
+    ::mavsdk::rpc::mission::DownloadProgress* download_progress) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(download_progress_);
+  }
+  download_progress_ = download_progress;
+  if (download_progress) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadProgressResponse.download_progress)
+}
+inline ::mavsdk::rpc::mission::DownloadProgress* DownloadProgressResponse::release_download_progress() {
+  
+  ::mavsdk::rpc::mission::DownloadProgress* temp = download_progress_;
+  download_progress_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::mission::DownloadProgress* DownloadProgressResponse::unsafe_arena_release_download_progress() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadProgressResponse.download_progress)
+  
+  ::mavsdk::rpc::mission::DownloadProgress* temp = download_progress_;
+  download_progress_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::DownloadProgress* DownloadProgressResponse::_internal_mutable_download_progress() {
+  
+  if (download_progress_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::DownloadProgress>(GetArenaForAllocation());
+    download_progress_ = p;
+  }
+  return download_progress_;
+}
+inline ::mavsdk::rpc::mission::DownloadProgress* DownloadProgressResponse::mutable_download_progress() {
+  ::mavsdk::rpc::mission::DownloadProgress* _msg = _internal_mutable_download_progress();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadProgressResponse.download_progress)
+  return _msg;
+}
+inline void DownloadProgressResponse::set_allocated_download_progress(::mavsdk::rpc::mission::DownloadProgress* download_progress) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete download_progress_;
+  }
+  if (download_progress) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::mission::DownloadProgress>::GetOwningArena(download_progress);
+    if (message_arena != submessage_arena) {
+      download_progress = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, download_progress, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  download_progress_ = download_progress;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadProgressResponse.download_progress)
 }
 
 // -------------------------------------------------------------------
@@ -6192,6 +7238,54 @@ MissionPlan::mission_items() const {
 
 // -------------------------------------------------------------------
 
+// UploadProgress
+
+// float progress = 1;
+inline void UploadProgress::clear_progress() {
+  progress_ = 0;
+}
+inline float UploadProgress::_internal_progress() const {
+  return progress_;
+}
+inline float UploadProgress::progress() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadProgress.progress)
+  return _internal_progress();
+}
+inline void UploadProgress::_internal_set_progress(float value) {
+  
+  progress_ = value;
+}
+inline void UploadProgress::set_progress(float value) {
+  _internal_set_progress(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.UploadProgress.progress)
+}
+
+// -------------------------------------------------------------------
+
+// DownloadProgress
+
+// float progress = 1;
+inline void DownloadProgress::clear_progress() {
+  progress_ = 0;
+}
+inline float DownloadProgress::_internal_progress() const {
+  return progress_;
+}
+inline float DownloadProgress::progress() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadProgress.progress)
+  return _internal_progress();
+}
+inline void DownloadProgress::_internal_set_progress(float value) {
+  
+  progress_ = value;
+}
+inline void DownloadProgress::set_progress(float value) {
+  _internal_set_progress(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.DownloadProgress.progress)
+}
+
+// -------------------------------------------------------------------
+
 // MissionProgress
 
 // int32 current = 1;
@@ -6307,6 +7401,18 @@ inline void MissionResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

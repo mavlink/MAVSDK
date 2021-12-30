@@ -63,6 +63,9 @@ public:
     Mission::MissionProgress mission_progress();
     void subscribe_mission_progress(Mission::MissionProgressCallback callback);
 
+    void subscribe_upload_progress(Mission::UploadProgressCallback callback);
+    void subscribe_download_progress(Mission::DownloadProgressCallback callback);
+
     // Non-copyable
     MissionImpl(const MissionImpl&) = delete;
     const MissionImpl& operator=(const MissionImpl&) = delete;
@@ -125,6 +128,8 @@ private:
         Mission::ResultCallback result_callback{nullptr};
         Mission::DownloadMissionCallback download_mission_callback{nullptr};
         Mission::MissionProgressCallback mission_progress_callback{nullptr};
+        Mission::DownloadProgressCallback download_progress_callback{nullptr};
+        Mission::UploadProgressCallback upload_progress_callback{nullptr};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
         std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_upload{};

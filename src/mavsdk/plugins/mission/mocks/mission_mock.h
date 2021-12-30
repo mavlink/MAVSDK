@@ -29,6 +29,8 @@ public:
     MOCK_CONST_METHOD0(total_mission_items, int()){};
     MOCK_CONST_METHOD0(is_mission_finished, std::pair<Mission::Result, bool>()){};
     MOCK_CONST_METHOD1(subscribe_mission_progress, void(Mission::MissionProgressCallback)){};
+    MOCK_CONST_METHOD1(subscribe_upload_progress, void(Mission::UploadProgressCallback)){};
+    MOCK_CONST_METHOD1(subscribe_download_progress, void(Mission::DownloadProgressCallback)){};
     MOCK_CONST_METHOD0(get_return_to_launch_after_mission, std::pair<Mission::Result, bool>()){};
     MOCK_CONST_METHOD1(set_return_to_launch_after_mission, Mission::Result(bool)){};
 

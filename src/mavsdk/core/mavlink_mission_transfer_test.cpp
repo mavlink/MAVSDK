@@ -884,6 +884,59 @@ TEST_F(MAVLinkMissionTransferTest, UploadMissionNacksNonIntCase)
     EXPECT_TRUE(mmt.is_idle());
 }
 
+TEST_F(MAVLinkMissionTransferTest, UploadMissionWithProgress)
+{
+    std::vector<ItemInt> items;
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    size_t num_progress_received = 0;
+    float last_progress_received = NAN;
+
+    mmt.upload_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        items,
+        [&prom](Result result) {
+            EXPECT_EQ(result, Result::Success);
+            ONCE_ONLY;
+            prom.set_value();
+        },
+        [&num_progress_received, &last_progress_received](float progress) {
+            if (num_progress_received == 0) {
+                EXPECT_EQ(progress, 0.0f);
+            } else {
+                EXPECT_GT(progress, last_progress_received);
+            }
+            ++num_progress_received;
+            last_progress_received = progress;
+        });
+    mmt.do_work();
+
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
+    message_handler.process_message(
+        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+
+    // We are finished and should have received the successful result.
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    EXPECT_EQ(last_progress_received, 1.0f);
+    EXPECT_GE(num_progress_received, 3);
+    EXPECT_LE(num_progress_received, 10);
+
+    // We do not expect a timeout later though.
+    time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
+    timeout_handler.run_once();
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}
+
 TEST_F(MAVLinkMissionTransferTest, DownloadMissionSendsRequestList)
 {
     ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
@@ -1595,6 +1648,54 @@ TEST_F(MAVLinkMissionTransferTest, ReceiveIncomingMissionCanBeCancelled)
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    mmt.do_work();
+    EXPECT_TRUE(mmt.is_idle());
+}
+
+TEST_F(MAVLinkMissionTransferTest, DownloadMissionWithProgress)
+{
+    ON_CALL(mock_sender, send_message(_)).WillByDefault(Return(true));
+
+    std::vector<ItemInt> real_items;
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
+    real_items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+
+    size_t num_progress_received = 0;
+    float last_progress_received = NAN;
+
+    mmt.download_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        [&prom, &real_items](Result result, const std::vector<ItemInt>& items) {
+            EXPECT_EQ(result, Result::Success);
+            EXPECT_EQ(items, real_items);
+            prom.set_value();
+        },
+        [&num_progress_received, &last_progress_received](float progress) {
+            if (num_progress_received == 0) {
+                EXPECT_EQ(progress, 0.0f);
+            } else {
+                EXPECT_GT(progress, last_progress_received);
+            }
+            ++num_progress_received;
+            last_progress_received = progress;
+        });
+    mmt.do_work();
+
+    message_handler.process_message(make_mission_count(real_items.size()));
+    message_handler.process_message(make_mission_item(real_items, 0));
+    message_handler.process_message(make_mission_item(real_items, 1));
+    message_handler.process_message(make_mission_item(real_items, 2));
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    EXPECT_EQ(last_progress_received, 1.0f);
+    EXPECT_GE(num_progress_received, 3);
+    EXPECT_LE(num_progress_received, 10);
 
     mmt.do_work();
     EXPECT_TRUE(mmt.is_idle());

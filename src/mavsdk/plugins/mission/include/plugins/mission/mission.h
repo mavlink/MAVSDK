@@ -145,6 +145,51 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan);
 
     /**
+     * @brief Mission upload progress type.
+     */
+    struct UploadProgress {
+        float progress{}; /**< @brief Upload progress from 0.0 to 1.0 */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Mission::UploadProgress` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Mission::UploadProgress& lhs, const Mission::UploadProgress& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Mission::UploadProgress`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Mission::UploadProgress const& upload_progress);
+
+    /**
+     * @brief Mission download progress type.
+     */
+    struct DownloadProgress {
+        float progress{}; /**< @brief Download progress from 0.0 to 1.0 */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Mission::DownloadProgress` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Mission::DownloadProgress& lhs, const Mission::DownloadProgress& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Mission::DownloadProgress`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Mission::DownloadProgress const& download_progress);
+
+    /**
      * @brief Mission progress type.
      */
     struct MissionProgress {
@@ -231,6 +276,17 @@ public:
     Result cancel_mission_upload() const;
 
     /**
+     * @brief Callback type for subscribe_upload_progress.
+     */
+
+    using UploadProgressCallback = std::function<void(UploadProgress)>;
+
+    /**
+     * @brief Subscribe to mission upload progress.
+     */
+    void subscribe_upload_progress(UploadProgressCallback callback);
+
+    /**
      * @brief Callback type for download_mission_async.
      */
     using DownloadMissionCallback = std::function<void(Result, MissionPlan)>;
@@ -265,6 +321,17 @@ public:
      * @return Result of request.
      */
     Result cancel_mission_download() const;
+
+    /**
+     * @brief Callback type for subscribe_download_progress.
+     */
+
+    using DownloadProgressCallback = std::function<void(DownloadProgress)>;
+
+    /**
+     * @brief Subscribe to mission download progress.
+     */
+    void subscribe_download_progress(DownloadProgressCallback callback);
 
     /**
      * @brief Start the mission.

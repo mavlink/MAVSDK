@@ -11,6 +11,8 @@ namespace mavsdk {
 
 using MissionItem = Mission::MissionItem;
 using MissionPlan = Mission::MissionPlan;
+using UploadProgress = Mission::UploadProgress;
+using DownloadProgress = Mission::DownloadProgress;
 using MissionProgress = Mission::MissionProgress;
 
 Mission::Mission(System& system) : PluginBase(), _impl{std::make_unique<MissionImpl>(system)} {}
@@ -37,6 +39,11 @@ Mission::Result Mission::cancel_mission_upload() const
     return _impl->cancel_mission_upload();
 }
 
+void Mission::subscribe_upload_progress(UploadProgressCallback callback)
+{
+    _impl->subscribe_upload_progress(callback);
+}
+
 void Mission::download_mission_async(const DownloadMissionCallback callback)
 {
     _impl->download_mission_async(callback);
@@ -50,6 +57,11 @@ std::pair<Mission::Result, Mission::MissionPlan> Mission::download_mission() con
 Mission::Result Mission::cancel_mission_download() const
 {
     return _impl->cancel_mission_download();
+}
+
+void Mission::subscribe_download_progress(DownloadProgressCallback callback)
+{
+    _impl->subscribe_download_progress(callback);
 }
 
 void Mission::start_mission_async(const ResultCallback callback)
@@ -203,6 +215,34 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_
         str << *it;
         str << (it + 1 != mission_plan.mission_items.end() ? ", " : "]\n");
     }
+    str << '}';
+    return str;
+}
+
+bool operator==(const Mission::UploadProgress& lhs, const Mission::UploadProgress& rhs)
+{
+    return ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);
+}
+
+std::ostream& operator<<(std::ostream& str, Mission::UploadProgress const& upload_progress)
+{
+    str << std::setprecision(15);
+    str << "upload_progress:" << '\n' << "{\n";
+    str << "    progress: " << upload_progress.progress << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Mission::DownloadProgress& lhs, const Mission::DownloadProgress& rhs)
+{
+    return ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);
+}
+
+std::ostream& operator<<(std::ostream& str, Mission::DownloadProgress const& download_progress)
+{
+    str << std::setprecision(15);
+    str << "download_progress:" << '\n' << "{\n";
+    str << "    progress: " << download_progress.progress << '\n';
     str << '}';
     return str;
 }

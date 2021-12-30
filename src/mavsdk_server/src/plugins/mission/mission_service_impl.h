@@ -184,6 +184,46 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::mission::UploadProgress>
+    translateToRpcUploadProgress(const mavsdk::Mission::UploadProgress& upload_progress)
+    {
+        auto rpc_obj = std::make_unique<rpc::mission::UploadProgress>();
+
+        rpc_obj->set_progress(upload_progress.progress);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Mission::UploadProgress
+    translateFromRpcUploadProgress(const rpc::mission::UploadProgress& upload_progress)
+    {
+        mavsdk::Mission::UploadProgress obj;
+
+        obj.progress = upload_progress.progress();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::mission::DownloadProgress>
+    translateToRpcDownloadProgress(const mavsdk::Mission::DownloadProgress& download_progress)
+    {
+        auto rpc_obj = std::make_unique<rpc::mission::DownloadProgress>();
+
+        rpc_obj->set_progress(download_progress.progress);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Mission::DownloadProgress
+    translateFromRpcDownloadProgress(const rpc::mission::DownloadProgress& download_progress)
+    {
+        mavsdk::Mission::DownloadProgress obj;
+
+        obj.progress = download_progress.progress();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::mission::MissionProgress>
     translateToRpcMissionProgress(const mavsdk::Mission::MissionProgress& mission_progress)
     {
@@ -328,6 +368,47 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeUploadProgress(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::mission::SubscribeUploadProgressRequest* /* request */,
+        grpc::ServerWriter<rpc::mission::UploadProgressResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        _lazy_plugin.maybe_plugin()->subscribe_upload_progress(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+                const mavsdk::Mission::UploadProgress upload_progress) {
+                rpc::mission::UploadProgressResponse rpc_response;
+
+                rpc_response.set_allocated_upload_progress(
+                    translateToRpcUploadProgress(upload_progress).release());
+
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _lazy_plugin.maybe_plugin()->subscribe_upload_progress(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status DownloadMission(
         grpc::ServerContext* /* context */,
         const rpc::mission::DownloadMissionRequest* /* request */,
@@ -373,6 +454,47 @@ public:
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeDownloadProgress(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::mission::SubscribeDownloadProgressRequest* /* request */,
+        grpc::ServerWriter<rpc::mission::DownloadProgressResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        _lazy_plugin.maybe_plugin()->subscribe_download_progress(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+                const mavsdk::Mission::DownloadProgress download_progress) {
+                rpc::mission::DownloadProgressResponse rpc_response;
+
+                rpc_response.set_allocated_download_progress(
+                    translateToRpcDownloadProgress(download_progress).release());
+
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _lazy_plugin.maybe_plugin()->subscribe_download_progress(nullptr);
+
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
 
         return grpc::Status::OK;
     }

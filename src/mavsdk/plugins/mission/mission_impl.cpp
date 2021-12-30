@@ -168,6 +168,14 @@ void MissionImpl::upload_mission_async(
                         callback(converted_result);
                     }
                 });
+            },
+            [this](float progress) {
+                _parent->call_user_callback([this, progress]() {
+                    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+                    if (_mission_data.upload_progress_callback != nullptr) {
+                        _mission_data.upload_progress_callback(Mission::UploadProgress{progress});
+                    }
+                });
             });
     });
 }
@@ -215,6 +223,14 @@ void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback&
             auto result_and_items = convert_to_result_and_mission_items(result, items);
             _parent->call_user_callback([callback, result_and_items]() {
                 callback(result_and_items.first, result_and_items.second);
+            });
+        },
+        [this](float progress) {
+            _parent->call_user_callback([this, progress]() {
+                std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+                if (_mission_data.download_progress_callback != nullptr) {
+                    _mission_data.download_progress_callback(Mission::DownloadProgress{progress});
+                }
             });
         });
 }
@@ -938,6 +954,18 @@ void MissionImpl::subscribe_mission_progress(Mission::MissionProgressCallback ca
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.mission_progress_callback = callback;
+}
+
+void MissionImpl::subscribe_upload_progress(Mission::UploadProgressCallback callback)
+{
+    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    _mission_data.upload_progress_callback = callback;
+}
+
+void MissionImpl::subscribe_download_progress(Mission::DownloadProgressCallback callback)
+{
+    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    _mission_data.download_progress_callback = callback;
 }
 
 Mission::Result MissionImpl::convert_result(MAVLinkMissionTransfer::Result result)
