@@ -2,11 +2,43 @@
 
 set -e
 
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+usage() {
+    cat << EOF
+    Usage: ./generate_from_protos.sh [options]
 
+    -h, --help                   Show help
+    -b, --build-dir BUILD_DIR    Chosen build directory (default: build/default)
+EOF
+}
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 proto_dir="${script_dir}/../proto/protos"
+build_dir="${script_dir}/../build/default"
+
+options=$(getopt -l "help,build-dir:" -o "hb:" -a -- "$@")
+
+eval set -- "$options"
+
+while true
+do
+    case $1 in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -b|--build-dir)
+            shift
+            build_dir=$1
+            ;;
+        --)
+            shift
+            break;;
+    esac
+shift
+done
+
+third_party_dir="${build_dir}/third_party"
 mavsdk_server_generated_dir="${script_dir}/../src/mavsdk_server/src/generated"
-third_party_dir="${script_dir}/../build/default/third_party"
 protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
 
