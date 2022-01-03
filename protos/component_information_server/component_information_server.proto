@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package mavsdk.rpc.component_information_server;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.component_information_server";
+option java_outer_classname = "ComponentInformationServerProto";
+
+// Provide raw access to retrieve and provide server parameters.
+service ComponentInformationServerService {
+    /*
+     * Provide a component information JSON file.
+     */
+    rpc ProvidePeripheralFile(ProvidePeripheralFileRequest) returns(ProvidePeripheralFileResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+message ProvidePeripheralFileRequest {
+    string path = 1; // Path to the file
+}
+
+message ProvidePeripheralFileResponse {
+    ComponentInformationServerResult component_information_server_result = 1;
+}
+
+// Result type.
+message ComponentInformationServerResult {
+    // Possible results returned for param requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NOT_FOUND = 2; // Not Found
+        RESULT_OPEN_FAILURE = 3; // Failure trying to open
+        RESULT_READ_FAILURE = 4; // Failure trying to read
+        RESULT_FAILED_JSON_PARSING = 5; // JSON parsing error
+        RESULT_FAILED_JSON_SCHEMA = 6; // JSON schema error
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
