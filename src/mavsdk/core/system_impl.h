@@ -407,8 +407,8 @@ private:
     static constexpr double _ping_interval_s = 5.0;
 
     MAVLinkParameters _params;
-    MavlinkCommandSender _send_commands;
-    MavlinkCommandReceiver _receive_commands;
+    MavlinkCommandSender _command_sender;
+    MavlinkCommandReceiver _command_receiver;
 
     Timesync _timesync;
     Ping _ping;
