@@ -28,6 +28,18 @@ double Time::elapsed_s()
            static_cast<double>(steady_clock::period::den);
 }
 
+uint64_t Time::elapsed_ms() const
+{
+    return static_cast<uint64_t>(
+        steady_clock::now().time_since_epoch() / std::chrono::milliseconds(1));
+}
+
+uint64_t Time::elapsed_us() const
+{
+    return static_cast<uint64_t>(
+        steady_clock::now().time_since_epoch() / std::chrono::microseconds(1));
+}
+
 double Time::elapsed_since_s(const dl_time_t& since)
 {
     auto now = steady_time();

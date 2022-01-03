@@ -21,13 +21,11 @@ void Ping::run_once()
 {
     mavlink_message_t message;
 
-    auto now = static_cast<uint64_t>(_system_impl.get_time().elapsed_s() * 1e6);
-
     mavlink_msg_ping_pack(
         _system_impl.get_own_system_id(),
         _system_impl.get_own_component_id(),
         &message,
-        now,
+        _system_impl.get_time().elapsed_us(),
         _ping_sequence,
         0,
         0); // to all
@@ -66,8 +64,7 @@ void Ping::process_ping(const mavlink_message_t& message)
             return;
         }
 
-        auto now_us = static_cast<uint64_t>(_system_impl.get_time().elapsed_s() * 1e6);
-        _last_ping_time_us = now_us - ping.time_usec;
+        _last_ping_time_us = _system_impl.get_time().elapsed_us() - ping.time_usec;
     }
 }
 
