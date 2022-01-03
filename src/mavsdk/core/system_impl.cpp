@@ -446,6 +446,26 @@ mavlink_message_t SystemImpl::make_command_ack_message(
     return msg;
 }
 
+mavlink_message_t SystemImpl::make_command_ack_message(
+    const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result)
+{
+    const uint8_t progress = std::numeric_limits<uint8_t>::max();
+    const uint8_t result_param2 = 0;
+
+    mavlink_message_t msg{};
+    mavlink_msg_command_ack_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        command.command,
+        result,
+        progress,
+        result_param2,
+        command.origin_system_id,
+        command.origin_component_id);
+    return msg;
+}
+
 bool SystemImpl::send_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered
