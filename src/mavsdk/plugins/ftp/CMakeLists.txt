@@ -2,7 +2,6 @@ target_sources(mavsdk
     PRIVATE
     ftp.cpp
     ftp_impl.cpp
-    fs.cpp
     crc32.cpp
 )
 

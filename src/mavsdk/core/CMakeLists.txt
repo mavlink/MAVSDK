@@ -11,6 +11,7 @@ target_sources(mavsdk
     curl_wrapper.cpp
     system.cpp
     system_impl.cpp
+    fs.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
     http_loader.cpp
