@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mavlink_commands.h"
+#include "mavlink_command_sender.h"
 #include "mavlink_message_handler.h"
 #include "timeout_handler.h"
 #include "mavlink_include.h"
