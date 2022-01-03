@@ -7,6 +7,7 @@
 #include "mavlink_command_sender.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"
+#include "mavlink_request_message_handler.h"
 #include "mavlink_statustext_handler.h"
 #include "request_message.h"
 #include "ardupilot_custom_mode.h"
@@ -301,6 +302,13 @@ public:
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
 
+    bool register_mavlink_request_message_handler(
+        uint32_t message_id,
+        const MavlinkRequestMessageHandler::Callback& callback,
+        const void* cookie);
+    void unregister_mavlink_request_message_handler(uint32_t message_id, const void* cookie);
+    void unregister_mavlink_request_message_handler(const void* cookie);
+
     double timeout_s() const;
 
     // Autopilot version data
@@ -411,6 +419,7 @@ private:
     MAVLinkParameters _params;
     MavlinkCommandSender _command_sender;
     MavlinkCommandReceiver _command_receiver;
+    MavlinkRequestMessageHandler _request_message_handler;
 
     Timesync _timesync;
     Ping _ping;

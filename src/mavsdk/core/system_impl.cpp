@@ -21,6 +21,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
     _params(*this),
     _command_sender(*this),
     _command_receiver(*this),
+    _request_message_handler(*this),
     _timesync(*this),
     _ping(*this),
     _mission_transfer(
@@ -76,14 +77,6 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
         MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_autopilot_version_request(command);
-        },
-        this);
-
-    // TO-DO!
-    register_mavlink_command_handler(
-        MAV_CMD_REQUEST_MESSAGE,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
-            return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
         },
         this);
 
@@ -1604,6 +1597,22 @@ void SystemImpl::unregister_mavlink_command_handler(uint16_t cmd_id, const void*
 void SystemImpl::unregister_all_mavlink_command_handlers(const void* cookie)
 {
     _command_receiver.unregister_all_mavlink_command_handlers(cookie);
+}
+
+bool SystemImpl::register_mavlink_request_message_handler(
+    uint32_t message_id, const MavlinkRequestMessageHandler::Callback& callback, const void* cookie)
+{
+    return _request_message_handler.register_handler(message_id, callback, cookie);
+}
+
+void SystemImpl::unregister_mavlink_request_message_handler(uint32_t message_id, const void* cookie)
+{
+    _request_message_handler.unregister_handler(message_id, cookie);
+}
+
+void SystemImpl::unregister_mavlink_request_message_handler(const void* cookie)
+{
+    _request_message_handler.unregister_all_handlers(cookie);
 }
 
 void SystemImpl::set_server_armed(bool armed)
