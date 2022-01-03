@@ -1,8 +1,9 @@
-#include <functional>
-#include <memory>
-#include <future>
 #include <atomic>
 #include <cmath>
+#include <functional>
+#include <future>
+#include <iomanip>
+#include <memory>
 #include "integration_test_helper.h"
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
@@ -200,10 +201,25 @@ void test_mission(
     mission->set_return_to_launch_after_mission(true);
     EXPECT_TRUE(mission->get_return_to_launch_after_mission().second);
 
+    LogInfo() << "Subscribe to upload progress.";
+    mission->subscribe_upload_progress([](Mission::UploadProgress progress) {
+        LogInfo() << "Upload: " << std::setw(3)
+                  << static_cast<long>(std::lround(progress.progress * 100.0f)) << " %";
+    });
+
     LogInfo() << "Uploading mission...";
     const auto upload_result = mission->upload_mission(mission_plan);
     ASSERT_EQ(upload_result, Mission::Result::Success);
     LogInfo() << "Mission uploaded.";
+
+    LogInfo() << "Unsubscribe from upload progress.";
+    mission->subscribe_upload_progress(nullptr);
+
+    LogInfo() << "Subscribe to download progress.";
+    mission->subscribe_download_progress([](Mission::DownloadProgress progress) {
+        LogInfo() << "Download: " << std::setw(3)
+                  << static_cast<long>(std::lround(progress.progress * 100.0f)) << " %";
+    });
 
     // Download the mission again and compare it.
     LogInfo() << "Downloading mission...";
@@ -219,6 +235,9 @@ void test_mission(
             EXPECT_EQ(original, downloaded);
         }
     }
+
+    LogInfo() << "Unsubscribe from download progress.";
+    mission->subscribe_download_progress(nullptr);
 
     EXPECT_TRUE(mission->get_return_to_launch_after_mission().second);
 
