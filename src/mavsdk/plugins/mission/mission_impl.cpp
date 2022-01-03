@@ -457,7 +457,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     break;
                 case CameraAction::StartPhotoDistance:
                     command = MAV_CMD_DO_SET_CAM_TRIGG_DIST;
-                    if (std::isfinite(item.camera_photo_distance_m)) {
+                    if (!std::isfinite(item.camera_photo_distance_m)) {
                         LogErr() << "No photo distance specified";
                     }
                     param1 = item.camera_photo_distance_m; // enable with distance
