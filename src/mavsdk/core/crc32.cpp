@@ -1,3 +1,12 @@
+// The CRC32 algorithm used by MAVLink is similar to (but different from) the
+// ISO 3309 standard based on the polygon 0x04C11DB7. It is commonly referred
+// to as "the CRC32 based on Gary Brown's work", as quoted below.
+//
+// The difference of MAVLink's implementation versus the standard are:
+//
+// - Start at 0 instead of 0xFFFFFFFF.
+// - Missing final XOR out operation with 0xFFFFFFFF.
+
 /************************************************************************************************
  *
  * The logic in this file was developed by Gary S. Brown:
