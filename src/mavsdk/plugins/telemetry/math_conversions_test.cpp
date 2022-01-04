@@ -1,7 +1,7 @@
 #include "math_conversions.h"
 #include <gtest/gtest.h>
-#include <global_include.h>
-#include <mavlink_include.h>
+#include "mavlink_include.h"
+#include "mavsdk_math.h"
 
 using namespace mavsdk;
 

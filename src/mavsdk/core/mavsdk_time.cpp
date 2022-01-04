@@ -1,9 +1,9 @@
-#include "global_include.h"
-
+#include "mavsdk_time.h"
 #include <cstdint>
 #include <limits>
 #include <cmath>
 #include <chrono>
+#include <thread>
 
 namespace mavsdk {
 
@@ -127,36 +127,6 @@ void FakeTime::sleep_for(std::chrono::nanoseconds ns)
 void FakeTime::add_overhead()
 {
     _current += std::chrono::microseconds(50);
-}
-
-double to_rad_from_deg(double deg)
-{
-    return deg / 180.0 * M_PI;
-}
-
-double to_deg_from_rad(double rad)
-{
-    return rad / M_PI * 180.0;
-}
-
-float to_rad_from_deg(float deg)
-{
-    return deg / 180.0f * M_PI_F;
-}
-
-float to_deg_from_rad(float rad)
-{
-    return rad / M_PI_F * 180.0f;
-}
-
-bool are_equal(float one, float two)
-{
-    return (std::fabs(one - two) < std::numeric_limits<float>::epsilon());
-}
-
-bool are_equal(double one, double two)
-{
-    return (std::fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
 
 dl_system_time_t AutopilotTime::system_time()

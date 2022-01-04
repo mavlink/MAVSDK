@@ -4,7 +4,6 @@
 #include <mutex>
 
 #include "connection.h"
-#include "global_include.h"
 #include "tcp_connection.h"
 #include "udp_connection.h"
 #include "system.h"
@@ -12,6 +11,7 @@
 #include "serial_connection.h"
 #include "cli_arg.h"
 #include "version.h"
+#include "unused.h"
 
 static mavlink_status_t status_;
 

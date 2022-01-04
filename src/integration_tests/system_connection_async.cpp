@@ -1,6 +1,5 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "global_include.h"
 #include "mavsdk.h"
 
 using namespace mavsdk;

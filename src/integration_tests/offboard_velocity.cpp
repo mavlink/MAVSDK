@@ -2,6 +2,7 @@
 #include <cmath>
 #include "integration_test_helper.h"
 #include "mavsdk.h"
+#include "mavsdk_math.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/offboard/offboard.h"
@@ -56,7 +57,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
     {
         const float step_size = 0.01f;
-        const float one_cycle = 2.0f * M_PI_F;
+        const float one_cycle = 2.0f * static_cast<float>(PI);
         const unsigned steps = 2 * unsigned(one_cycle / step_size);
 
         for (unsigned i = 0; i < steps; ++i) {

@@ -3,7 +3,6 @@
 #include <functional>
 #include <string>
 
-#include "global_include.h"
 #include "px4_custom_mode.h"
 #include "system.h"
 

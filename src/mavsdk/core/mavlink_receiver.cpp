@@ -1,5 +1,4 @@
 #include "mavlink_receiver.h"
-#include "global_include.h"
 #include "log.h"
 #include <iomanip>
 

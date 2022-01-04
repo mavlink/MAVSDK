@@ -1,5 +1,4 @@
 #include "integration_test_helper.h"
-#include "global_include.h"
 #include "mavsdk.h"
 #include "plugins/server_utility/server_utility.h"
 #include "plugins/telemetry/telemetry.h"

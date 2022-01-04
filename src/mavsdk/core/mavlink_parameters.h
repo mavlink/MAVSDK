@@ -1,7 +1,6 @@
 #pragma once
 
 #include "log.h"
-#include "global_include.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
 #include <cstddef>

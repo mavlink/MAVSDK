@@ -1,5 +1,4 @@
 #include "calibration_statustext_parser.h"
-#include "global_include.h"
 #include "calibration_messages.h"
 #include "log.h"
 

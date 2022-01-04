@@ -1,5 +1,4 @@
 #include "serial_connection.h"
-#include "global_include.h"
 #include "log.h"
 
 #if defined(APPLE) || defined(LINUX)

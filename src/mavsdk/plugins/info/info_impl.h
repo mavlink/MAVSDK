@@ -2,7 +2,6 @@
 
 #include <mutex>
 
-#include "global_include.h"
 #include "mavlink_include.h"
 #include "plugins/info/info.h"
 #include "plugin_impl_base.h"

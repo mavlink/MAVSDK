@@ -4,7 +4,7 @@
 #include <memory>
 #include <functional>
 #include <unordered_map>
-#include "global_include.h"
+#include "mavsdk_time.h"
 
 namespace mavsdk {
 

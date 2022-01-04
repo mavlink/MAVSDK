@@ -4,6 +4,7 @@
 #include <utility>
 #include <vector>
 #include <atomic>
+#include <thread>
 
 #include "call_every_handler.h"
 #include "connection.h"

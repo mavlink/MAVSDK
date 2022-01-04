@@ -1,6 +1,6 @@
 #include <cmath>
 #include <utility>
-#include "global_include.h"
+#include "mavsdk_math.h"
 #include "offboard_impl.h"
 #include "mavsdk_impl.h"
 #include "px4_custom_mode.h"

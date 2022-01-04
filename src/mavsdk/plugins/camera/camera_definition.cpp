@@ -1,4 +1,3 @@
-#include "global_include.h"
 #include "log.h"
 #include "camera_definition.h"
 

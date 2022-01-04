@@ -1,18 +1,19 @@
 #include "geometry.h"
+#include "mavsdk_math.h"
 #include <cmath>
 
 namespace mavsdk::geometry {
 
 CoordinateTransformation::CoordinateTransformation(GlobalCoordinate reference) :
-    _ref_lat_rad(rad(reference.latitude_deg)),
-    _ref_lon_rad(rad(reference.longitude_deg))
+    _ref_lat_rad(to_rad_from_deg(reference.latitude_deg)),
+    _ref_lon_rad(to_rad_from_deg(reference.longitude_deg))
 {}
 
 CoordinateTransformation::LocalCoordinate
 CoordinateTransformation::local_from_global(GlobalCoordinate global_coordinate) const
 {
-    const double lat_rad = rad(global_coordinate.latitude_deg);
-    const double lon_rad = rad(global_coordinate.longitude_deg);
+    const double lat_rad = to_rad_from_deg(global_coordinate.latitude_deg);
+    const double lon_rad = to_rad_from_deg(global_coordinate.longitude_deg);
 
     const double sin_lat = sin(lat_rad);
     const double cos_lat = cos(lat_rad);
@@ -54,30 +55,15 @@ CoordinateTransformation::global_from_local(LocalCoordinate local_coordinate) co
             (_ref_lon_rad +
              atan2(y_rad * sin_c, c * ref_cos_lat * cos_c - x_rad * ref_sin_lat * sin_c));
 
-        global.latitude_deg = deg(lat_rad);
-        global.longitude_deg = deg(lon_rad);
+        global.latitude_deg = to_deg_from_rad(lat_rad);
+        global.longitude_deg = to_deg_from_rad(lon_rad);
 
     } else {
-        global.latitude_deg = deg(_ref_lat_rad);
-        global.longitude_deg = deg(_ref_lon_rad);
+        global.latitude_deg = to_deg_from_rad(_ref_lat_rad);
+        global.longitude_deg = to_deg_from_rad(_ref_lon_rad);
     }
 
     return global;
-}
-
-constexpr double CoordinateTransformation::rad(double deg)
-{
-    return M_PI / 180.0 * deg;
-}
-
-constexpr double CoordinateTransformation::deg(double rad)
-{
-    return 180.0 / M_PI * rad;
-}
-
-constexpr double CoordinateTransformation::constrain(double input, double min, double max)
-{
-    return (input > max) ? max : (input < min) ? min : input;
 }
 
 } // namespace mavsdk::geometry

@@ -1,5 +1,4 @@
 #include "system.h"
-#include "global_include.h"
 #include "mavsdk_impl.h"
 #include "mavlink_include.h"
 #include "system_impl.h"

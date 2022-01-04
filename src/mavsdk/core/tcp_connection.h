@@ -3,6 +3,7 @@
 #include <atomic>
 #include <mutex>
 #include <memory>
+#include <thread>
 #include "connection.h"
 #include <sys/types.h>
 #ifndef WINDOWS

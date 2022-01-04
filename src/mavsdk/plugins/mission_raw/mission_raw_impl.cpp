@@ -1,7 +1,6 @@
 #include "mission_raw_impl.h"
 #include "mission_import.h"
 #include "system.h"
-#include "global_include.h"
 
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`

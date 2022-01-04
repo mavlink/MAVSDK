@@ -1,9 +1,10 @@
 #include "camera_impl.h"
 #include "camera_definition.h"
 #include "system.h"
-#include "global_include.h"
+#include "mavsdk_math.h"
 #include "http_loader.h"
 #include "camera_definition_files.h"
+#include "unused.h"
 #include <functional>
 #include <cmath>
 #include <sstream>

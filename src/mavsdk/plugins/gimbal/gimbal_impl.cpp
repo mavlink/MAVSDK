@@ -1,5 +1,4 @@
 #include "gimbal_impl.h"
-#include "global_include.h"
 #include "gimbal_protocol_v1.h"
 #include "gimbal_protocol_v2.h"
 #include <chrono>

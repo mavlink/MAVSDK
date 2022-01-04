@@ -1,8 +1,7 @@
 #pragma once
 
 #include "mavlink_include.h"
-#include "global_include.h"
-#include "time.h"
+#include "mavsdk_time.h"
 #include <cstdint>
 
 namespace mavsdk {

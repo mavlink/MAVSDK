@@ -15,7 +15,6 @@
 #include "fs.h"
 #include "ftp_impl.h"
 #include "system.h"
-#include "global_include.h"
 
 namespace mavsdk {
 

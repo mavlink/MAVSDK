@@ -7,7 +7,6 @@
 #include <future>
 
 #include "integration_test_helper.h"
-#include "global_include.h"
 #include "mavsdk.h"
 #include "system.h"
 #include "plugins/ftp/ftp.h"

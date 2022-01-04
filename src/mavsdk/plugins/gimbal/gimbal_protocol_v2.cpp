@@ -1,6 +1,6 @@
 #include "gimbal_protocol_v2.h"
 #include "gimbal_impl.h"
-#include "global_include.h"
+#include "mavsdk_math.h"
 #include <functional>
 #include <cmath>
 
