@@ -609,6 +609,9 @@ constexpr Status::Status(
   , total_storage_mib_(0)
   , recording_time_s_(0)
   , storage_status_(0)
+
+  , storage_id_(0u)
+  , storage_type_(0)
 {}
 struct StatusDefaultTypeInternal {
   constexpr StatusDefaultTypeInternal()
@@ -684,7 +687,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT InformationDefaultTypeInternal 
 }  // namespace rpc
 }  // namespace mavsdk
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_camera_2fcamera_2eproto[52];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_camera_2fcamera_2eproto[6];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_camera_2fcamera_2eproto[7];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_camera_2fcamera_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_camera_2fcamera_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -993,6 +996,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_camera_2fcamera_2eproto::offse
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Status, recording_time_s_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Status, media_folder_name_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Status, storage_status_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Status, storage_id_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Status, storage_type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Option, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1080,10 +1085,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 272, -1, sizeof(::mavsdk::rpc::camera::VideoStreamSettings)},
   { 284, -1, sizeof(::mavsdk::rpc::camera::VideoStreamInfo)},
   { 292, -1, sizeof(::mavsdk::rpc::camera::Status)},
-  { 305, -1, sizeof(::mavsdk::rpc::camera::Option)},
-  { 312, -1, sizeof(::mavsdk::rpc::camera::Setting)},
-  { 321, -1, sizeof(::mavsdk::rpc::camera::SettingOptions)},
-  { 330, -1, sizeof(::mavsdk::rpc::camera::Information)},
+  { 307, -1, sizeof(::mavsdk::rpc::camera::Option)},
+  { 314, -1, sizeof(::mavsdk::rpc::camera::Setting)},
+  { 323, -1, sizeof(::mavsdk::rpc::camera::SettingOptions)},
+  { 332, -1, sizeof(::mavsdk::rpc::camera::Information)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1239,96 +1244,102 @@ const char descriptor_table_protodef_camera_2fcamera_2eproto[] PROTOBUF_SECTION_
   "TATUS_IN_PROGRESS\020\001\"\205\001\n\023VideoStreamSpect"
   "rum\022!\n\035VIDEO_STREAM_SPECTRUM_UNKNOWN\020\000\022\'"
   "\n#VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT\020\001\022"
-  "\"\n\036VIDEO_STREAM_SPECTRUM_INFRARED\020\002\"\223\003\n\006"
+  "\"\n\036VIDEO_STREAM_SPECTRUM_INFRARED\020\002\"\207\005\n\006"
   "Status\022\020\n\010video_on\030\001 \001(\010\022\031\n\021photo_interv"
   "al_on\030\002 \001(\010\022\030\n\020used_storage_mib\030\003 \001(\002\022\035\n"
   "\025available_storage_mib\030\004 \001(\002\022\031\n\021total_st"
   "orage_mib\030\005 \001(\002\022\030\n\020recording_time_s\030\006 \001("
   "\002\022\031\n\021media_folder_name\030\007 \001(\t\022\?\n\016storage_"
   "status\030\010 \001(\0162\'.mavsdk.rpc.camera.Status."
-  "StorageStatus\"\221\001\n\rStorageStatus\022 \n\034STORA"
-  "GE_STATUS_NOT_AVAILABLE\020\000\022\036\n\032STORAGE_STA"
-  "TUS_UNFORMATTED\020\001\022\034\n\030STORAGE_STATUS_FORM"
-  "ATTED\020\002\022 \n\034STORAGE_STATUS_NOT_SUPPORTED\020"
-  "\003\"7\n\006Option\022\021\n\toption_id\030\001 \001(\t\022\032\n\022option"
-  "_description\030\002 \001(\t\"w\n\007Setting\022\022\n\nsetting"
-  "_id\030\001 \001(\t\022\033\n\023setting_description\030\002 \001(\t\022)"
-  "\n\006option\030\003 \001(\0132\031.mavsdk.rpc.camera.Optio"
-  "n\022\020\n\010is_range\030\004 \001(\010\"\177\n\016SettingOptions\022\022\n"
-  "\nsetting_id\030\001 \001(\t\022\033\n\023setting_description"
-  "\030\002 \001(\t\022*\n\007options\030\003 \003(\0132\031.mavsdk.rpc.cam"
-  "era.Option\022\020\n\010is_range\030\004 \001(\010\"\325\001\n\013Informa"
-  "tion\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_name\030"
-  "\002 \001(\t\022\027\n\017focal_length_mm\030\003 \001(\002\022!\n\031horizo"
-  "ntal_sensor_size_mm\030\004 \001(\002\022\037\n\027vertical_se"
-  "nsor_size_mm\030\005 \001(\002\022 \n\030horizontal_resolut"
-  "ion_px\030\006 \001(\r\022\036\n\026vertical_resolution_px\030\007"
-  " \001(\r*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMODE_P"
-  "HOTO\020\001\022\016\n\nMODE_VIDEO\020\002*F\n\013PhotosRange\022\024\n"
-  "\020PHOTOS_RANGE_ALL\020\000\022!\n\035PHOTOS_RANGE_SINC"
-  "E_CONNECTION\020\0012\354\020\n\rCameraService\022R\n\007Prep"
-  "are\022!.mavsdk.rpc.camera.PrepareRequest\032\""
-  ".mavsdk.rpc.camera.PrepareResponse\"\000\022X\n\t"
-  "TakePhoto\022#.mavsdk.rpc.camera.TakePhotoR"
-  "equest\032$.mavsdk.rpc.camera.TakePhotoResp"
-  "onse\"\000\022s\n\022StartPhotoInterval\022,.mavsdk.rp"
-  "c.camera.StartPhotoIntervalRequest\032-.mav"
-  "sdk.rpc.camera.StartPhotoIntervalRespons"
-  "e\"\000\022p\n\021StopPhotoInterval\022+.mavsdk.rpc.ca"
-  "mera.StopPhotoIntervalRequest\032,.mavsdk.r"
-  "pc.camera.StopPhotoIntervalResponse\"\000\022[\n"
-  "\nStartVideo\022$.mavsdk.rpc.camera.StartVid"
-  "eoRequest\032%.mavsdk.rpc.camera.StartVideo"
-  "Response\"\000\022X\n\tStopVideo\022#.mavsdk.rpc.cam"
-  "era.StopVideoRequest\032$.mavsdk.rpc.camera"
-  ".StopVideoResponse\"\000\022z\n\023StartVideoStream"
-  "ing\022-.mavsdk.rpc.camera.StartVideoStream"
-  "ingRequest\032..mavsdk.rpc.camera.StartVide"
-  "oStreamingResponse\"\004\200\265\030\001\022w\n\022StopVideoStr"
-  "eaming\022,.mavsdk.rpc.camera.StopVideoStre"
-  "amingRequest\032-.mavsdk.rpc.camera.StopVid"
-  "eoStreamingResponse\"\004\200\265\030\001\022R\n\007SetMode\022!.m"
-  "avsdk.rpc.camera.SetModeRequest\032\".mavsdk"
-  ".rpc.camera.SetModeResponse\"\000\022[\n\nListPho"
-  "tos\022$.mavsdk.rpc.camera.ListPhotosReques"
-  "t\032%.mavsdk.rpc.camera.ListPhotosResponse"
-  "\"\000\022]\n\rSubscribeMode\022\'.mavsdk.rpc.camera."
-  "SubscribeModeRequest\032\037.mavsdk.rpc.camera"
-  ".ModeResponse\"\0000\001\022r\n\024SubscribeInformatio"
-  "n\022..mavsdk.rpc.camera.SubscribeInformati"
-  "onRequest\032&.mavsdk.rpc.camera.Informatio"
-  "nResponse\"\0000\001\022~\n\030SubscribeVideoStreamInf"
-  "o\0222.mavsdk.rpc.camera.SubscribeVideoStre"
-  "amInfoRequest\032*.mavsdk.rpc.camera.VideoS"
-  "treamInfoResponse\"\0000\001\022v\n\024SubscribeCaptur"
-  "eInfo\022..mavsdk.rpc.camera.SubscribeCaptu"
-  "reInfoRequest\032&.mavsdk.rpc.camera.Captur"
-  "eInfoResponse\"\004\200\265\030\0000\001\022c\n\017SubscribeStatus"
-  "\022).mavsdk.rpc.camera.SubscribeStatusRequ"
-  "est\032!.mavsdk.rpc.camera.StatusResponse\"\000"
-  "0\001\022\202\001\n\030SubscribeCurrentSettings\0222.mavsdk"
-  ".rpc.camera.SubscribeCurrentSettingsRequ"
-  "est\032*.mavsdk.rpc.camera.CurrentSettingsR"
-  "esponse\"\004\200\265\030\0000\001\022\223\001\n\037SubscribePossibleSet"
-  "tingOptions\0229.mavsdk.rpc.camera.Subscrib"
-  "ePossibleSettingOptionsRequest\0321.mavsdk."
-  "rpc.camera.PossibleSettingOptionsRespons"
-  "e\"\0000\001\022[\n\nSetSetting\022$.mavsdk.rpc.camera."
-  "SetSettingRequest\032%.mavsdk.rpc.camera.Se"
-  "tSettingResponse\"\000\022[\n\nGetSetting\022$.mavsd"
-  "k.rpc.camera.GetSettingRequest\032%.mavsdk."
-  "rpc.camera.GetSettingResponse\"\000\022d\n\rForma"
-  "tStorage\022\'.mavsdk.rpc.camera.FormatStora"
-  "geRequest\032(.mavsdk.rpc.camera.FormatStor"
-  "ageResponse\"\000B\037\n\020io.mavsdk.cameraB\013Camer"
-  "aProtob\006proto3"
+  "StorageStatus\022\022\n\nstorage_id\030\t \001(\r\022;\n\014sto"
+  "rage_type\030\n \001(\0162%.mavsdk.rpc.camera.Stat"
+  "us.StorageType\"\221\001\n\rStorageStatus\022 \n\034STOR"
+  "AGE_STATUS_NOT_AVAILABLE\020\000\022\036\n\032STORAGE_ST"
+  "ATUS_UNFORMATTED\020\001\022\034\n\030STORAGE_STATUS_FOR"
+  "MATTED\020\002\022 \n\034STORAGE_STATUS_NOT_SUPPORTED"
+  "\020\003\"\240\001\n\013StorageType\022\030\n\024STORAGE_TYPE_UNKNO"
+  "WN\020\000\022\032\n\026STORAGE_TYPE_USB_STICK\020\001\022\023\n\017STOR"
+  "AGE_TYPE_SD\020\002\022\030\n\024STORAGE_TYPE_MICROSD\020\003\022"
+  "\023\n\017STORAGE_TYPE_HD\020\007\022\027\n\022STORAGE_TYPE_OTH"
+  "ER\020\376\001\"7\n\006Option\022\021\n\toption_id\030\001 \001(\t\022\032\n\022op"
+  "tion_description\030\002 \001(\t\"w\n\007Setting\022\022\n\nset"
+  "ting_id\030\001 \001(\t\022\033\n\023setting_description\030\002 \001"
+  "(\t\022)\n\006option\030\003 \001(\0132\031.mavsdk.rpc.camera.O"
+  "ption\022\020\n\010is_range\030\004 \001(\010\"\177\n\016SettingOption"
+  "s\022\022\n\nsetting_id\030\001 \001(\t\022\033\n\023setting_descrip"
+  "tion\030\002 \001(\t\022*\n\007options\030\003 \003(\0132\031.mavsdk.rpc"
+  ".camera.Option\022\020\n\010is_range\030\004 \001(\010\"\325\001\n\013Inf"
+  "ormation\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_n"
+  "ame\030\002 \001(\t\022\027\n\017focal_length_mm\030\003 \001(\002\022!\n\031ho"
+  "rizontal_sensor_size_mm\030\004 \001(\002\022\037\n\027vertica"
+  "l_sensor_size_mm\030\005 \001(\002\022 \n\030horizontal_res"
+  "olution_px\030\006 \001(\r\022\036\n\026vertical_resolution_"
+  "px\030\007 \001(\r*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMO"
+  "DE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020\002*F\n\013PhotosRang"
+  "e\022\024\n\020PHOTOS_RANGE_ALL\020\000\022!\n\035PHOTOS_RANGE_"
+  "SINCE_CONNECTION\020\0012\354\020\n\rCameraService\022R\n\007"
+  "Prepare\022!.mavsdk.rpc.camera.PrepareReque"
+  "st\032\".mavsdk.rpc.camera.PrepareResponse\"\000"
+  "\022X\n\tTakePhoto\022#.mavsdk.rpc.camera.TakePh"
+  "otoRequest\032$.mavsdk.rpc.camera.TakePhoto"
+  "Response\"\000\022s\n\022StartPhotoInterval\022,.mavsd"
+  "k.rpc.camera.StartPhotoIntervalRequest\032-"
+  ".mavsdk.rpc.camera.StartPhotoIntervalRes"
+  "ponse\"\000\022p\n\021StopPhotoInterval\022+.mavsdk.rp"
+  "c.camera.StopPhotoIntervalRequest\032,.mavs"
+  "dk.rpc.camera.StopPhotoIntervalResponse\""
+  "\000\022[\n\nStartVideo\022$.mavsdk.rpc.camera.Star"
+  "tVideoRequest\032%.mavsdk.rpc.camera.StartV"
+  "ideoResponse\"\000\022X\n\tStopVideo\022#.mavsdk.rpc"
+  ".camera.StopVideoRequest\032$.mavsdk.rpc.ca"
+  "mera.StopVideoResponse\"\000\022z\n\023StartVideoSt"
+  "reaming\022-.mavsdk.rpc.camera.StartVideoSt"
+  "reamingRequest\032..mavsdk.rpc.camera.Start"
+  "VideoStreamingResponse\"\004\200\265\030\001\022w\n\022StopVide"
+  "oStreaming\022,.mavsdk.rpc.camera.StopVideo"
+  "StreamingRequest\032-.mavsdk.rpc.camera.Sto"
+  "pVideoStreamingResponse\"\004\200\265\030\001\022R\n\007SetMode"
+  "\022!.mavsdk.rpc.camera.SetModeRequest\032\".ma"
+  "vsdk.rpc.camera.SetModeResponse\"\000\022[\n\nLis"
+  "tPhotos\022$.mavsdk.rpc.camera.ListPhotosRe"
+  "quest\032%.mavsdk.rpc.camera.ListPhotosResp"
+  "onse\"\000\022]\n\rSubscribeMode\022\'.mavsdk.rpc.cam"
+  "era.SubscribeModeRequest\032\037.mavsdk.rpc.ca"
+  "mera.ModeResponse\"\0000\001\022r\n\024SubscribeInform"
+  "ation\022..mavsdk.rpc.camera.SubscribeInfor"
+  "mationRequest\032&.mavsdk.rpc.camera.Inform"
+  "ationResponse\"\0000\001\022~\n\030SubscribeVideoStrea"
+  "mInfo\0222.mavsdk.rpc.camera.SubscribeVideo"
+  "StreamInfoRequest\032*.mavsdk.rpc.camera.Vi"
+  "deoStreamInfoResponse\"\0000\001\022v\n\024SubscribeCa"
+  "ptureInfo\022..mavsdk.rpc.camera.SubscribeC"
+  "aptureInfoRequest\032&.mavsdk.rpc.camera.Ca"
+  "ptureInfoResponse\"\004\200\265\030\0000\001\022c\n\017SubscribeSt"
+  "atus\022).mavsdk.rpc.camera.SubscribeStatus"
+  "Request\032!.mavsdk.rpc.camera.StatusRespon"
+  "se\"\0000\001\022\202\001\n\030SubscribeCurrentSettings\0222.ma"
+  "vsdk.rpc.camera.SubscribeCurrentSettings"
+  "Request\032*.mavsdk.rpc.camera.CurrentSetti"
+  "ngsResponse\"\004\200\265\030\0000\001\022\223\001\n\037SubscribePossibl"
+  "eSettingOptions\0229.mavsdk.rpc.camera.Subs"
+  "cribePossibleSettingOptionsRequest\0321.mav"
+  "sdk.rpc.camera.PossibleSettingOptionsRes"
+  "ponse\"\0000\001\022[\n\nSetSetting\022$.mavsdk.rpc.cam"
+  "era.SetSettingRequest\032%.mavsdk.rpc.camer"
+  "a.SetSettingResponse\"\000\022[\n\nGetSetting\022$.m"
+  "avsdk.rpc.camera.GetSettingRequest\032%.mav"
+  "sdk.rpc.camera.GetSettingResponse\"\000\022d\n\rF"
+  "ormatStorage\022\'.mavsdk.rpc.camera.FormatS"
+  "torageRequest\032(.mavsdk.rpc.camera.Format"
+  "StorageResponse\"\000B\037\n\020io.mavsdk.cameraB\013C"
+  "ameraProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_camera_2fcamera_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_camera_2fcamera_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_camera_2fcamera_2eproto = {
-  false, false, 7174, descriptor_table_protodef_camera_2fcamera_2eproto, "camera/camera.proto", 
+  false, false, 7418, descriptor_table_protodef_camera_2fcamera_2eproto, "camera/camera.proto", 
   &descriptor_table_camera_2fcamera_2eproto_once, descriptor_table_camera_2fcamera_2eproto_deps, 1, 52,
   schemas, file_default_instances, TableStruct_camera_2fcamera_2eproto::offsets,
   file_level_metadata_camera_2fcamera_2eproto, file_level_enum_descriptors_camera_2fcamera_2eproto, file_level_service_descriptors_camera_2fcamera_2eproto,
@@ -1446,9 +1457,38 @@ constexpr Status_StorageStatus Status::StorageStatus_MIN;
 constexpr Status_StorageStatus Status::StorageStatus_MAX;
 constexpr int Status::StorageStatus_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Mode_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Status_StorageType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
   return file_level_enum_descriptors_camera_2fcamera_2eproto[4];
+}
+bool Status_StorageType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 7:
+    case 254:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr Status_StorageType Status::STORAGE_TYPE_UNKNOWN;
+constexpr Status_StorageType Status::STORAGE_TYPE_USB_STICK;
+constexpr Status_StorageType Status::STORAGE_TYPE_SD;
+constexpr Status_StorageType Status::STORAGE_TYPE_MICROSD;
+constexpr Status_StorageType Status::STORAGE_TYPE_HD;
+constexpr Status_StorageType Status::STORAGE_TYPE_OTHER;
+constexpr Status_StorageType Status::StorageType_MIN;
+constexpr Status_StorageType Status::StorageType_MAX;
+constexpr int Status::StorageType_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Mode_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
+  return file_level_enum_descriptors_camera_2fcamera_2eproto[5];
 }
 bool Mode_IsValid(int value) {
   switch (value) {
@@ -1463,7 +1503,7 @@ bool Mode_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PhotosRange_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
-  return file_level_enum_descriptors_camera_2fcamera_2eproto[5];
+  return file_level_enum_descriptors_camera_2fcamera_2eproto[6];
 }
 bool PhotosRange_IsValid(int value) {
   switch (value) {
@@ -10792,8 +10832,8 @@ Status::Status(const Status& from)
       GetArenaForAllocation());
   }
   ::memcpy(&video_on_, &from.video_on_,
-    static_cast<size_t>(reinterpret_cast<char*>(&storage_status_) -
-    reinterpret_cast<char*>(&video_on_)) + sizeof(storage_status_));
+    static_cast<size_t>(reinterpret_cast<char*>(&storage_type_) -
+    reinterpret_cast<char*>(&video_on_)) + sizeof(storage_type_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.Status)
 }
 
@@ -10801,8 +10841,8 @@ inline void Status::SharedCtor() {
 media_folder_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&video_on_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&storage_status_) -
-    reinterpret_cast<char*>(&video_on_)) + sizeof(storage_status_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&storage_type_) -
+    reinterpret_cast<char*>(&video_on_)) + sizeof(storage_type_));
 }
 
 Status::~Status() {
@@ -10835,8 +10875,8 @@ void Status::Clear() {
 
   media_folder_name_.ClearToEmpty();
   ::memset(&video_on_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&storage_status_) -
-      reinterpret_cast<char*>(&video_on_)) + sizeof(storage_status_));
+      reinterpret_cast<char*>(&storage_type_) -
+      reinterpret_cast<char*>(&video_on_)) + sizeof(storage_type_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -10903,6 +10943,21 @@ const char* Status::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_storage_status(static_cast<::mavsdk::rpc::camera::Status_StorageStatus>(val));
+        } else goto handle_unusual;
+        continue;
+      // uint32 storage_id = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
+          storage_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.camera.Status.StorageType storage_type = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_storage_type(static_cast<::mavsdk::rpc::camera::Status_StorageType>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -10987,6 +11042,19 @@ failure:
       8, this->_internal_storage_status(), target);
   }
 
+  // uint32 storage_id = 9;
+  if (this->_internal_storage_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(9, this->_internal_storage_id(), target);
+  }
+
+  // .mavsdk.rpc.camera.Status.StorageType storage_type = 10;
+  if (this->_internal_storage_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      10, this->_internal_storage_type(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -11046,6 +11114,19 @@ size_t Status::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_storage_status());
   }
 
+  // uint32 storage_id = 9;
+  if (this->_internal_storage_id() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_storage_id());
+  }
+
+  // .mavsdk.rpc.camera.Status.StorageType storage_type = 10;
+  if (this->_internal_storage_type() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_storage_type());
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -11098,6 +11179,12 @@ void Status::MergeFrom(const Status& from) {
   if (from._internal_storage_status() != 0) {
     _internal_set_storage_status(from._internal_storage_status());
   }
+  if (from._internal_storage_id() != 0) {
+    _internal_set_storage_id(from._internal_storage_id());
+  }
+  if (from._internal_storage_type() != 0) {
+    _internal_set_storage_type(from._internal_storage_type());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -11121,8 +11208,8 @@ void Status::InternalSwap(Status* other) {
       &other->media_folder_name_, other->GetArenaForAllocation()
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Status, storage_status_)
-      + sizeof(Status::storage_status_)
+      PROTOBUF_FIELD_OFFSET(Status, storage_type_)
+      + sizeof(Status::storage_type_)
       - PROTOBUF_FIELD_OFFSET(Status, video_on_)>(
           reinterpret_cast<char*>(&video_on_),
           reinterpret_cast<char*>(&other->video_on_));

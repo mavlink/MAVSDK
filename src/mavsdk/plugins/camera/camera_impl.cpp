@@ -905,6 +905,9 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
         _status.data.available_storage_mib = storage_information.available_capacity;
         _status.data.used_storage_mib = storage_information.used_capacity;
         _status.data.total_storage_mib = storage_information.total_capacity;
+        _status.data.storage_id = storage_information.storage_id;
+        _status.data.storage_type =
+            static_cast<Camera::Status::StorageType>(storage_information.type);
         _status.received_storage_information = true;
     }
 

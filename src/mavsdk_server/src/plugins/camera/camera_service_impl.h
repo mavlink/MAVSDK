@@ -470,6 +470,50 @@ public:
         }
     }
 
+    static rpc::camera::Status::StorageType
+    translateToRpcStorageType(const mavsdk::Camera::Status::StorageType& storage_type)
+    {
+        switch (storage_type) {
+            default:
+                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+            // FALLTHROUGH
+            case mavsdk::Camera::Status::StorageType::Unknown:
+                return rpc::camera::Status_StorageType_STORAGE_TYPE_UNKNOWN;
+            case mavsdk::Camera::Status::StorageType::UsbStick:
+                return rpc::camera::Status_StorageType_STORAGE_TYPE_USB_STICK;
+            case mavsdk::Camera::Status::StorageType::Sd:
+                return rpc::camera::Status_StorageType_STORAGE_TYPE_SD;
+            case mavsdk::Camera::Status::StorageType::Microsd:
+                return rpc::camera::Status_StorageType_STORAGE_TYPE_MICROSD;
+            case mavsdk::Camera::Status::StorageType::Hd:
+                return rpc::camera::Status_StorageType_STORAGE_TYPE_HD;
+            case mavsdk::Camera::Status::StorageType::Other:
+                return rpc::camera::Status_StorageType_STORAGE_TYPE_OTHER;
+        }
+    }
+
+    static mavsdk::Camera::Status::StorageType
+    translateFromRpcStorageType(const rpc::camera::Status::StorageType storage_type)
+    {
+        switch (storage_type) {
+            default:
+                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+            // FALLTHROUGH
+            case rpc::camera::Status_StorageType_STORAGE_TYPE_UNKNOWN:
+                return mavsdk::Camera::Status::StorageType::Unknown;
+            case rpc::camera::Status_StorageType_STORAGE_TYPE_USB_STICK:
+                return mavsdk::Camera::Status::StorageType::UsbStick;
+            case rpc::camera::Status_StorageType_STORAGE_TYPE_SD:
+                return mavsdk::Camera::Status::StorageType::Sd;
+            case rpc::camera::Status_StorageType_STORAGE_TYPE_MICROSD:
+                return mavsdk::Camera::Status::StorageType::Microsd;
+            case rpc::camera::Status_StorageType_STORAGE_TYPE_HD:
+                return mavsdk::Camera::Status::StorageType::Hd;
+            case rpc::camera::Status_StorageType_STORAGE_TYPE_OTHER:
+                return mavsdk::Camera::Status::StorageType::Other;
+        }
+    }
+
     static std::unique_ptr<rpc::camera::Status>
     translateToRpcStatus(const mavsdk::Camera::Status& status)
     {
@@ -490,6 +534,10 @@ public:
         rpc_obj->set_media_folder_name(status.media_folder_name);
 
         rpc_obj->set_storage_status(translateToRpcStorageStatus(status.storage_status));
+
+        rpc_obj->set_storage_id(status.storage_id);
+
+        rpc_obj->set_storage_type(translateToRpcStorageType(status.storage_type));
 
         return rpc_obj;
     }
@@ -513,6 +561,10 @@ public:
         obj.media_folder_name = status.media_folder_name();
 
         obj.storage_status = translateFromRpcStorageStatus(status.storage_status());
+
+        obj.storage_id = status.storage_id();
+
+        obj.storage_type = translateFromRpcStorageType(status.storage_type());
 
         return obj;
     }

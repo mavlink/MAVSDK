@@ -338,6 +338,26 @@ public:
         friend std::ostream&
         operator<<(std::ostream& str, Camera::Status::StorageStatus const& storage_status);
 
+        /**
+         * @brief Storage type.
+         */
+        enum class StorageType {
+            Unknown, /**< @brief Storage type unknown. */
+            UsbStick, /**< @brief Storage type USB stick. */
+            Sd, /**< @brief Storage type SD card. */
+            Microsd, /**< @brief Storage type MicroSD card. */
+            Hd, /**< @brief Storage type HD mass storage. */
+            Other, /**< @brief Storage type other, not listed. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Camera::StorageType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Camera::Status::StorageType const& storage_type);
+
         bool video_on{}; /**< @brief Whether video recording is currently in process */
         bool photo_interval_on{}; /**< @brief Whether a photo interval is currently in process */
         float used_storage_mib{}; /**< @brief Used storage (in MiB) */
@@ -347,6 +367,8 @@ public:
                                      seconds) */
         std::string media_folder_name{}; /**< @brief Current folder name where media are saved */
         StorageStatus storage_status{}; /**< @brief Storage status */
+        uint32_t storage_id{}; /**< @brief Storage ID starting at 1 */
+        StorageType storage_type{}; /**< @brief Storage type */
     };
 
     /**

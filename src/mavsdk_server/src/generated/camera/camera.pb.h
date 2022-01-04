@@ -385,6 +385,35 @@ inline bool Status_StorageStatus_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Status_StorageStatus>(
     Status_StorageStatus_descriptor(), name, value);
 }
+enum Status_StorageType : int {
+  Status_StorageType_STORAGE_TYPE_UNKNOWN = 0,
+  Status_StorageType_STORAGE_TYPE_USB_STICK = 1,
+  Status_StorageType_STORAGE_TYPE_SD = 2,
+  Status_StorageType_STORAGE_TYPE_MICROSD = 3,
+  Status_StorageType_STORAGE_TYPE_HD = 7,
+  Status_StorageType_STORAGE_TYPE_OTHER = 254,
+  Status_StorageType_Status_StorageType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  Status_StorageType_Status_StorageType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool Status_StorageType_IsValid(int value);
+constexpr Status_StorageType Status_StorageType_StorageType_MIN = Status_StorageType_STORAGE_TYPE_UNKNOWN;
+constexpr Status_StorageType Status_StorageType_StorageType_MAX = Status_StorageType_STORAGE_TYPE_OTHER;
+constexpr int Status_StorageType_StorageType_ARRAYSIZE = Status_StorageType_StorageType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Status_StorageType_descriptor();
+template<typename T>
+inline const std::string& Status_StorageType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, Status_StorageType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function Status_StorageType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    Status_StorageType_descriptor(), enum_t_value);
+}
+inline bool Status_StorageType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, Status_StorageType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Status_StorageType>(
+    Status_StorageType_descriptor(), name, value);
+}
 enum Mode : int {
   MODE_UNKNOWN = 0,
   MODE_PHOTO = 1,
@@ -7561,6 +7590,44 @@ class Status final :
     return Status_StorageStatus_Parse(name, value);
   }
 
+  typedef Status_StorageType StorageType;
+  static constexpr StorageType STORAGE_TYPE_UNKNOWN =
+    Status_StorageType_STORAGE_TYPE_UNKNOWN;
+  static constexpr StorageType STORAGE_TYPE_USB_STICK =
+    Status_StorageType_STORAGE_TYPE_USB_STICK;
+  static constexpr StorageType STORAGE_TYPE_SD =
+    Status_StorageType_STORAGE_TYPE_SD;
+  static constexpr StorageType STORAGE_TYPE_MICROSD =
+    Status_StorageType_STORAGE_TYPE_MICROSD;
+  static constexpr StorageType STORAGE_TYPE_HD =
+    Status_StorageType_STORAGE_TYPE_HD;
+  static constexpr StorageType STORAGE_TYPE_OTHER =
+    Status_StorageType_STORAGE_TYPE_OTHER;
+  static inline bool StorageType_IsValid(int value) {
+    return Status_StorageType_IsValid(value);
+  }
+  static constexpr StorageType StorageType_MIN =
+    Status_StorageType_StorageType_MIN;
+  static constexpr StorageType StorageType_MAX =
+    Status_StorageType_StorageType_MAX;
+  static constexpr int StorageType_ARRAYSIZE =
+    Status_StorageType_StorageType_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  StorageType_descriptor() {
+    return Status_StorageType_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& StorageType_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, StorageType>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function StorageType_Name.");
+    return Status_StorageType_Name(enum_t_value);
+  }
+  static inline bool StorageType_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      StorageType* value) {
+    return Status_StorageType_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
@@ -7572,6 +7639,8 @@ class Status final :
     kTotalStorageMibFieldNumber = 5,
     kRecordingTimeSFieldNumber = 6,
     kStorageStatusFieldNumber = 8,
+    kStorageIdFieldNumber = 9,
+    kStorageTypeFieldNumber = 10,
   };
   // string media_folder_name = 7;
   void clear_media_folder_name();
@@ -7650,6 +7719,24 @@ class Status final :
   void _internal_set_storage_status(::mavsdk::rpc::camera::Status_StorageStatus value);
   public:
 
+  // uint32 storage_id = 9;
+  void clear_storage_id();
+  ::PROTOBUF_NAMESPACE_ID::uint32 storage_id() const;
+  void set_storage_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_storage_id() const;
+  void _internal_set_storage_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // .mavsdk.rpc.camera.Status.StorageType storage_type = 10;
+  void clear_storage_type();
+  ::mavsdk::rpc::camera::Status_StorageType storage_type() const;
+  void set_storage_type(::mavsdk::rpc::camera::Status_StorageType value);
+  private:
+  ::mavsdk::rpc::camera::Status_StorageType _internal_storage_type() const;
+  void _internal_set_storage_type(::mavsdk::rpc::camera::Status_StorageType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.Status)
  private:
   class _Internal;
@@ -7665,6 +7752,8 @@ class Status final :
   float total_storage_mib_;
   float recording_time_s_;
   int storage_status_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 storage_id_;
+  int storage_type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };
@@ -11768,6 +11857,46 @@ inline void Status::set_storage_status(::mavsdk::rpc::camera::Status_StorageStat
   // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.storage_status)
 }
 
+// uint32 storage_id = 9;
+inline void Status::clear_storage_id() {
+  storage_id_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Status::_internal_storage_id() const {
+  return storage_id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Status::storage_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.storage_id)
+  return _internal_storage_id();
+}
+inline void Status::_internal_set_storage_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  storage_id_ = value;
+}
+inline void Status::set_storage_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_storage_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.storage_id)
+}
+
+// .mavsdk.rpc.camera.Status.StorageType storage_type = 10;
+inline void Status::clear_storage_type() {
+  storage_type_ = 0;
+}
+inline ::mavsdk::rpc::camera::Status_StorageType Status::_internal_storage_type() const {
+  return static_cast< ::mavsdk::rpc::camera::Status_StorageType >(storage_type_);
+}
+inline ::mavsdk::rpc::camera::Status_StorageType Status::storage_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.storage_type)
+  return _internal_storage_type();
+}
+inline void Status::_internal_set_storage_type(::mavsdk::rpc::camera::Status_StorageType value) {
+  
+  storage_type_ = value;
+}
+inline void Status::set_storage_type(::mavsdk::rpc::camera::Status_StorageType value) {
+  _internal_set_storage_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.storage_type)
+}
+
 // -------------------------------------------------------------------
 
 // Option
@@ -12555,6 +12684,11 @@ template <> struct is_proto_enum< ::mavsdk::rpc::camera::Status_StorageStatus> :
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera::Status_StorageStatus>() {
   return ::mavsdk::rpc::camera::Status_StorageStatus_descriptor();
+}
+template <> struct is_proto_enum< ::mavsdk::rpc::camera::Status_StorageType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera::Status_StorageType>() {
+  return ::mavsdk::rpc::camera::Status_StorageType_descriptor();
 }
 template <> struct is_proto_enum< ::mavsdk::rpc::camera::Mode> : ::std::true_type {};
 template <>

@@ -412,6 +412,26 @@ std::ostream& operator<<(std::ostream& str, Camera::Status::StorageStatus const&
             return str << "Unknown";
     }
 }
+
+std::ostream& operator<<(std::ostream& str, Camera::Status::StorageType const& storage_type)
+{
+    switch (storage_type) {
+        case Camera::Status::StorageType::Unknown:
+            return str << "Unknown";
+        case Camera::Status::StorageType::UsbStick:
+            return str << "Usb Stick";
+        case Camera::Status::StorageType::Sd:
+            return str << "Sd";
+        case Camera::Status::StorageType::Microsd:
+            return str << "Microsd";
+        case Camera::Status::StorageType::Hd:
+            return str << "Hd";
+        case Camera::Status::StorageType::Other:
+            return str << "Other";
+        default:
+            return str << "Unknown";
+    }
+}
 bool operator==(const Camera::Status& lhs, const Camera::Status& rhs)
 {
     return (rhs.video_on == lhs.video_on) && (rhs.photo_interval_on == lhs.photo_interval_on) &&
@@ -424,7 +444,8 @@ bool operator==(const Camera::Status& lhs, const Camera::Status& rhs)
            ((std::isnan(rhs.recording_time_s) && std::isnan(lhs.recording_time_s)) ||
             rhs.recording_time_s == lhs.recording_time_s) &&
            (rhs.media_folder_name == lhs.media_folder_name) &&
-           (rhs.storage_status == lhs.storage_status);
+           (rhs.storage_status == lhs.storage_status) && (rhs.storage_id == lhs.storage_id) &&
+           (rhs.storage_type == lhs.storage_type);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Status const& status)
@@ -439,6 +460,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Status const& status)
     str << "    recording_time_s: " << status.recording_time_s << '\n';
     str << "    media_folder_name: " << status.media_folder_name << '\n';
     str << "    storage_status: " << status.storage_status << '\n';
+    str << "    storage_id: " << status.storage_id << '\n';
+    str << "    storage_type: " << status.storage_type << '\n';
     str << '}';
     return str;
 }
