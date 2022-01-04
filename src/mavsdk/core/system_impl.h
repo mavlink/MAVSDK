@@ -166,6 +166,20 @@ public:
     using SubscribeParamIntCallback = std::function<void(int)>;
     void subscribe_param_int(
         const std::string& name, const SubscribeParamIntCallback& callback, const void* cookie);
+
+    template <class T>
+    void subscribe_param(
+        const std::string& name, const typename std::function<void(T)>& callback, const void* cookie) {
+        MAVLinkParameters::ParamValue value_type;
+        value_type.set<T>(0);
+
+        _params.subscribe_param_changed(
+            name,
+            value_type,
+            [callback](MAVLinkParameters::ParamValue value) { callback(value.get<T>()); },
+            cookie);
+    }
+
     using SubscribeParamFloatCallback = std::function<void(float)>;
     void subscribe_param_float(
         const std::string& name, const SubscribeParamFloatCallback& callback, const void* cookie);

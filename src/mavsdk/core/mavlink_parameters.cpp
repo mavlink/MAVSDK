@@ -27,6 +27,11 @@ MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
         [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
         this);
 
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_PARAM_EXT_SET,
+        [this](const mavlink_message_t& message) { process_param_ext_set(message); },
+        this);
+
     // Parameter Server Callbacks
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_REQUEST_READ,
@@ -368,7 +373,7 @@ void MAVLinkParameters::do_work()
                     &work->mavlink_message,
                     param_id,
                     buf.get(),
-                    work->param_value.get_mav_param_type(),
+                    work->param_value.get_mav_param_ext_type(),
                     work->param_count,
                     work->param_index);
             } else {
@@ -384,6 +389,31 @@ void MAVLinkParameters::do_work()
             }
 
             if (!_parent.send_message(work->mavlink_message)) {
+                LogErr() << "Error: Send message failed";
+                work_queue_guard.pop_front();
+                return;
+            }
+
+            // As we're a server in this case we don't need any response
+            work_queue_guard.pop_front();
+        } break;
+
+        case WorkItem::Type::Ack: {
+            if (work->extended) {
+                auto buf = std::make_unique<char[]>(128);
+                work->param_value.get_128_bytes(buf.get());
+                mavlink_msg_param_ext_ack_pack(
+                    _parent.get_own_system_id(),
+                    _parent.get_own_component_id(),
+                    &work->mavlink_message,
+                    param_id,
+                    buf.get(),
+                    work->param_value.get_mav_param_ext_type(),
+                    PARAM_ACK_ACCEPTED);
+            }
+
+            // TODO: How to ack the non-extended PARAM_SET?
+            if (!work->extended || !_parent.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();
                 return;
@@ -626,6 +656,50 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
     }
 }
 
+void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
+{
+    mavlink_param_ext_set_t set_request{};
+    mavlink_msg_param_ext_set_decode(&message, &set_request);
+
+    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    if (!safe_param_id.empty()) {
+        LogDebug() << "Set Param Request: " << safe_param_id;
+        // Use the ID
+        if (_param_server_store.find(safe_param_id) != _param_server_store.end()) {
+            ParamValue value{};
+            if (!value.set_from_mavlink_param_ext_set(set_request)) {
+                LogWarn() << "Invalid Param Ext Set Request: " << safe_param_id;
+                return;
+            }
+            _param_server_store.at(safe_param_id) = value;
+            auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+            new_work->type = WorkItem::Type::Ack;
+            new_work->param_name = safe_param_id;
+            new_work->param_value = _param_server_store.at(safe_param_id);
+            new_work->extended = true;
+            _work_queue.push_back(new_work);
+            std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+            for (const auto& subscription : _param_changed_subscriptions) {
+                if (subscription.param_name != safe_param_id) {
+                    continue;
+                }
+
+                if (!subscription.value_type.is_same_type(value)) {
+                    LogErr() << "Received wrong param type in subscription for "
+                             << subscription.param_name;
+                    continue;
+                }
+
+                subscription.callback(value);
+            }
+        } else {
+            LogDebug() << "Missing Param: " << safe_param_id;
+        }
+    } else {
+        LogWarn() << "Invalid Param Ext Set ID Request: " << safe_param_id;
+    }
+}
 void MAVLinkParameters::receive_timeout()
 {
     // first check if we are waiting for param list response

@@ -57,7 +57,72 @@ public:
             return set_from_mavlink_param_value(mavlink_value);
         }
 
-        void set_from_mavlink_param_ext_value(mavlink_param_ext_value_t mavlink_ext_value)
+        bool set_from_mavlink_param_ext_set(const mavlink_param_ext_set_t& mavlink_ext_set)
+        {
+            switch (mavlink_ext_set.param_type) {
+                case MAV_PARAM_EXT_TYPE_UINT8: {
+                    uint8_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_INT8: {
+                    int8_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_UINT16: {
+                    uint16_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_INT16: {
+                    int16_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_UINT32: {
+                    uint32_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_INT32: {
+                    int32_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_UINT64: {
+                    uint64_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_INT64: {
+                    int64_t temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_REAL32: {
+                    float temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_REAL64: {
+                    double temp;
+                    memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
+                case MAV_PARAM_EXT_TYPE_CUSTOM:
+                    LogErr() << "EXT_TYPE_CUSTOM is not supported";
+                    return false;
+                default:
+                    // This would be worrying
+                    LogErr() << "Error: unknown mavlink ext param type";
+                    assert(false);
+                    return false;
+            }
+            return true;
+        }
+
+        bool set_from_mavlink_param_ext_value(mavlink_param_ext_value_t mavlink_ext_value)
         {
             switch (mavlink_ext_value.param_type) {
                 case MAV_PARAM_EXT_TYPE_UINT8: {
@@ -112,13 +177,14 @@ public:
                 } break;
                 case MAV_PARAM_EXT_TYPE_CUSTOM:
                     LogErr() << "EXT_TYPE_CUSTOM is not supported";
-                    break;
+                    return false;
                 default:
                     // This would be worrying
                     LogErr() << "Error: unknown mavlink ext param type";
                     assert(false);
-                    break;
+                    return false;
             }
+            return true;
         }
 
         bool set_from_xml(const std::string& type_str, const std::string& value_str)
@@ -522,6 +588,7 @@ public:
 private:
     void process_param_value(const mavlink_message_t& message);
     void process_param_set(const mavlink_message_t& message);
+    void process_param_ext_set(const mavlink_message_t& message);
     void process_param_ext_value(const mavlink_message_t& message);
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
@@ -536,7 +603,7 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16;
 
     struct WorkItem {
-        enum class Type { Get, Set, Value } type{Type::Get};
+        enum class Type { Get, Set, Value, Ack } type{Type::Get};
         // TODO: a union would be nicer for the callback
         get_param_callback_t get_param_callback{nullptr};
         set_param_callback_t set_param_callback{nullptr};
