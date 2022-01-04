@@ -67,8 +67,7 @@ MavsdkImpl::~MavsdkImpl()
     }
 
     {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-
+        std::lock_guard<std::mutex> lock(_systems_mutex);
         _systems.clear();
     }
 
@@ -110,7 +109,7 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
 {
     std::vector<std::shared_ptr<System>> systems_result{};
 
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    std::lock_guard<std::mutex> lock(_systems_mutex);
     for (auto& system : _systems) {
         // We ignore the 0 entry because it's just a null system.
         // It's only created because the older, deprecated API needs a
@@ -213,7 +212,7 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         return;
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    std::lock_guard<std::mutex> lock(_systems_mutex);
 
     // The only situation where we create a system with sysid 0 is when we initialize the connection
     // to the remote.
@@ -366,6 +365,7 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
     if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
+        std::lock_guard<std::mutex> lock(_systems_mutex);
         make_system_with_component(0, 0, true);
     }
     return ret;
@@ -471,7 +471,7 @@ uint8_t MavsdkImpl::get_mav_type() const
 void MavsdkImpl::make_system_with_component(
     uint8_t system_id, uint8_t comp_id, bool always_connected)
 {
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    // Needs _systems_lock
 
     if (_should_exit) {
         // When the system got destroyed in the destructor, we have to give up.

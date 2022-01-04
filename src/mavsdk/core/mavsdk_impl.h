@@ -109,7 +109,7 @@ private:
     std::mutex _connections_mutex{};
     std::vector<std::shared_ptr<Connection>> _connections{};
 
-    mutable std::recursive_mutex _systems_mutex{};
+    mutable std::mutex _systems_mutex{};
 
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
 
