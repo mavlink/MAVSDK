@@ -222,6 +222,34 @@ void MAVLinkParameters::cancel_all_param(const void* cookie)
 
 void MAVLinkParameters::subscribe_param_changed(
     const std::string& name,
+    const MAVLinkParameters::ParamChangedCallback& callback,
+    const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+    if (callback != nullptr) {
+        ParamChangedSubscription subscription{};
+        subscription.param_name = name;
+        subscription.callback = callback;
+        subscription.cookie = cookie;
+        subscription.any_type = true;
+        _param_changed_subscriptions.push_back(subscription);
+
+    } else {
+        for (auto it = _param_changed_subscriptions.begin();
+             it != _param_changed_subscriptions.end();
+             /* ++it */) {
+            if (it->param_name == name && it->cookie == cookie) {
+                it = _param_changed_subscriptions.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
+void MAVLinkParameters::subscribe_param_changed(
+    const std::string& name,
     ParamValue value_type,
     const MAVLinkParameters::ParamChangedCallback& callback,
     const void* cookie)
@@ -520,7 +548,7 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
 
         ParamValue value;
         value.set_from_mavlink_param_value(param_value);
-        if (!subscription.value_type.is_same_type(value)) {
+        if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
             LogErr() << "Received wrong param type in subscription for " << subscription.param_name;
             continue;
         }
@@ -684,7 +712,7 @@ void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
                     continue;
                 }
 
-                if (!subscription.value_type.is_same_type(value)) {
+                if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
                     LogErr() << "Received wrong param type in subscription for "
                              << subscription.param_name;
                     continue;
@@ -884,7 +912,8 @@ void MAVLinkParameters::process_param_ext_request_read(const mavlink_message_t& 
     }
 }
 
-bool MAVLinkParameters::ParamValue::set_from_mavlink_param_value(const mavlink_param_value_t& mavlink_value)
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_value(
+    const mavlink_param_value_t& mavlink_value)
 {
     union {
         float float_value;
@@ -909,7 +938,8 @@ bool MAVLinkParameters::ParamValue::set_from_mavlink_param_value(const mavlink_p
     return true;
 }
 
-bool MAVLinkParameters::ParamValue::set_from_mavlink_param_set(const mavlink_param_set_t& mavlink_set)
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_set(
+    const mavlink_param_set_t& mavlink_set)
 {
     mavlink_param_value_t mavlink_value{};
     mavlink_value.param_value = mavlink_set.param_value;
@@ -917,7 +947,8 @@ bool MAVLinkParameters::ParamValue::set_from_mavlink_param_set(const mavlink_par
     return set_from_mavlink_param_value(mavlink_value);
 }
 
-bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_set(const mavlink_param_ext_set_t& mavlink_ext_set)
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_set(
+    const mavlink_param_ext_set_t& mavlink_ext_set)
 {
     switch (mavlink_ext_set.param_type) {
         case MAV_PARAM_EXT_TYPE_UINT8: {
@@ -982,7 +1013,8 @@ bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_set(const mavlink
     return true;
 }
 
-bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_value(const mavlink_param_ext_value_t& mavlink_ext_value)
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_value(
+    const mavlink_param_ext_value_t& mavlink_ext_value)
 {
     switch (mavlink_ext_value.param_type) {
         case MAV_PARAM_EXT_TYPE_UINT8: {
@@ -1047,7 +1079,8 @@ bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_value(const mavli
     return true;
 }
 
-bool MAVLinkParameters::ParamValue::set_from_xml(const std::string& type_str, const std::string& value_str)
+bool MAVLinkParameters::ParamValue::set_from_xml(
+    const std::string& type_str, const std::string& value_str)
 {
     if (strcmp(type_str.c_str(), "uint8") == 0) {
         uint8_t temp = std::stoi(value_str);
@@ -1269,8 +1302,7 @@ void MAVLinkParameters::ParamValue::get_128_bytes(char* bytes) const
         (std::get_if<double>(&_value) && std::get_if<double>(&rhs._value))) {
         return true;
     } else {
-        LogWarn() << "Comparison type mismatch between " << typestr() << " and "
-                  << rhs.typestr();
+        LogWarn() << "Comparison type mismatch between " << typestr() << " and " << rhs.typestr();
         return false;
     }
 }

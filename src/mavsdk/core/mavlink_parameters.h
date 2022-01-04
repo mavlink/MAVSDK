@@ -87,7 +87,6 @@ public:
 
         [[nodiscard]] std::string typestr() const;
 
-    private:
         std::variant<
             uint8_t,
             int8_t,
@@ -146,6 +145,9 @@ public:
     void get_all_params_async(const get_all_params_callback_t& callback);
 
     using ParamChangedCallback = std::function<void(ParamValue value)>;
+    void subscribe_param_changed(
+        const std::string& name, const ParamChangedCallback& callback, const void* cookie);
+
     void subscribe_param_changed(
         const std::string& name,
         ParamValue value_type,
@@ -206,6 +208,7 @@ private:
         std::string param_name{};
         ParamChangedCallback callback{};
         ParamValue value_type{};
+        bool any_type{false};
         const void* cookie{nullptr};
     };
 
