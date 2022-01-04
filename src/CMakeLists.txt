@@ -77,18 +77,6 @@ else()
     message(STATUS "BUILD_MAVSDK_SERVER not set: not building grpc mavsdk_server")
 endif()
 
-if (DROP_DEBUG EQUAL 1)
-    add_definitions(-DDROP_DEBUG=${DROP_DEBUG})
-
-    add_executable(drop_debug
-        debug_helpers/drop_debug_main.cpp
-    )
-
-    target_link_libraries(drop_debug
-        mavsdk
-    )
-endif()
-
 install(EXPORT mavsdk-targets
     FILE MAVSDKTargets.cmake
     NAMESPACE MAVSDK::

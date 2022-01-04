@@ -2,6 +2,7 @@
 
 #include "mavlink_include.h"
 #include "global_include.h"
+#include "time.h"
 #include <cstdint>
 
 namespace mavsdk {
@@ -20,15 +21,13 @@ public:
 
     bool parse_message();
 
-#if DROP_DEBUG == 1
     void debug_drop_rate();
     void print_line(
         const char* index,
-        unsigned count,
-        unsigned count_total,
-        unsigned overall_bytes,
-        unsigned overall_bytes_total);
-#endif
+        uint64_t count,
+        uint64_t count_total,
+        uint64_t overall_bytes,
+        uint64_t overall_bytes_total);
 
 private:
     uint8_t _channel;
@@ -37,19 +36,19 @@ private:
     char* _datagram = nullptr;
     unsigned _datagram_len = 0;
 
-#if DROP_DEBUG == 1
-    unsigned _bytes_received = 0;
+    Time _time{};
 
-    unsigned _bytes_sent_overall = 0;
-    // unsigned _bytes_at_gimbal_overall = 0;
-    unsigned _bytes_at_camera_overall = 0;
-    unsigned _bytes_at_sdk_overall = 0;
+    bool _drop_debugging_on{false};
 
-    bool _first = true;
-    dl_time_t _last_time;
-
-    double _time_elapsed = 0.0;
-#endif
+    struct {
+        uint64_t bytes_received{0};
+        uint64_t bytes_sent_overall{0};
+        uint64_t bytes_at_camera_overall{0};
+        uint64_t bytes_at_sdk_overall{0};
+        bool first{true};
+        dl_time_t last_time{};
+        double time_elapsed{0.0};
+    } _drop_stats{};
 };
 
 } // namespace mavsdk
