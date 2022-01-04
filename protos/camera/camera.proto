@@ -340,6 +340,16 @@ message Status {
         STORAGE_STATUS_NOT_SUPPORTED = 3; // Storage status is not supported
     }
 
+    // Storage type.
+    enum StorageType {
+        STORAGE_TYPE_UNKNOWN = 0; // Storage type unknown
+        STORAGE_TYPE_USB_STICK = 1; // Storage type USB stick
+        STORAGE_TYPE_SD = 2; // Storage type SD card
+        STORAGE_TYPE_MICROSD = 3; // Storage type MicroSD card
+        STORAGE_TYPE_HD = 7; // Storage type HD mass storage
+        STORAGE_TYPE_OTHER = 254; // Storage type other, not listed
+    }
+
     bool video_on = 1; // Whether video recording is currently in process
     bool photo_interval_on = 2; // Whether a photo interval is currently in process
 
@@ -350,6 +360,10 @@ message Status {
     string media_folder_name = 7; // Current folder name where media are saved
 
     StorageStatus storage_status = 8; // Storage status
+
+    uint32 storage_id = 9; // Storage ID starting at 1
+
+    StorageType storage_type = 10; // Storage type
 }
 
 // Type to represent a setting option.
