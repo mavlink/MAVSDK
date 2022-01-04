@@ -69,7 +69,7 @@ void MissionImpl::deinit()
 
 void MissionImpl::reset_mission_progress()
 {
-    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
     _mission_data.last_current_mavlink_mission_item = -1;
     _mission_data.last_reached_mavlink_mission_item = -1;
     _mission_data.last_current_reported_mission_item = -1;
@@ -81,12 +81,9 @@ void MissionImpl::process_mission_current(const mavlink_message_t& message)
     mavlink_mission_current_t mission_current;
     mavlink_msg_mission_current_decode(&message, &mission_current);
 
-    {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        _mission_data.last_current_mavlink_mission_item = mission_current.seq;
-    }
-
-    report_progress();
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
+    _mission_data.last_current_mavlink_mission_item = mission_current.seq;
+    report_progress_locked();
 }
 
 void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
@@ -94,12 +91,9 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
     mavlink_mission_item_reached_t mission_item_reached;
     mavlink_msg_mission_item_reached_decode(&message, &mission_item_reached);
 
-    {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        _mission_data.last_reached_mavlink_mission_item = mission_item_reached.seq;
-    }
-
-    report_progress();
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
+    _mission_data.last_reached_mavlink_mission_item = mission_item_reached.seq;
+    report_progress_locked();
 }
 
 void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& message)
@@ -870,7 +864,7 @@ void MissionImpl::set_current_mission_item_async(
 {
     int mavlink_index = -1;
     {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        std::lock_guard<std::mutex> lock(_mission_data.mutex);
         // We need to find the first mavlink item which maps to the current mission item.
         int i = 0;
         for (auto index : _mission_data.mavlink_mission_item_to_mission_item_indices) {
@@ -907,15 +901,15 @@ void MissionImpl::set_current_mission_item_async(
         });
 }
 
-void MissionImpl::report_progress()
+void MissionImpl::report_progress_locked()
 {
     const auto temp_callback = _mission_data.mission_progress_callback;
     if (temp_callback == nullptr) {
         return;
     }
 
-    int current = current_mission_item();
-    int total = total_mission_items();
+    int current = current_mission_item_locked();
+    int total = total_mission_items_locked();
 
     // Do not report -1 as a current mission item
     if (current == -1) {
@@ -923,20 +917,16 @@ void MissionImpl::report_progress()
     }
 
     bool should_report = false;
-    {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        if (_mission_data.last_current_reported_mission_item != current) {
-            _mission_data.last_current_reported_mission_item = current;
-            should_report = true;
-        }
-        if (_mission_data.last_total_reported_mission_item != total) {
-            _mission_data.last_total_reported_mission_item = total;
-            should_report = true;
-        }
+    if (_mission_data.last_current_reported_mission_item != current) {
+        _mission_data.last_current_reported_mission_item = current;
+        should_report = true;
+    }
+    if (_mission_data.last_total_reported_mission_item != total) {
+        _mission_data.last_total_reported_mission_item = total;
+        should_report = true;
     }
 
     if (should_report) {
-        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _parent->call_user_callback([temp_callback, current, total]() {
             LogDebug() << "current: " << current << ", total: " << total;
             Mission::MissionProgress mission_progress;
@@ -949,8 +939,13 @@ void MissionImpl::report_progress()
 
 std::pair<Mission::Result, bool> MissionImpl::is_mission_finished() const
 {
-    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
 
+    return is_mission_finished_locked();
+}
+
+std::pair<Mission::Result, bool> MissionImpl::is_mission_finished_locked() const
+{
     if (_mission_data.last_current_mavlink_mission_item < 0) {
         return std::make_pair<Mission::Result, bool>(Mission::Result::Success, false);
     }
@@ -978,13 +973,17 @@ std::pair<Mission::Result, bool> MissionImpl::is_mission_finished() const
 
 int MissionImpl::current_mission_item() const
 {
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
+    return current_mission_item_locked();
+}
+
+int MissionImpl::current_mission_item_locked() const
+{
     // If the mission is finished, let's return the total as the current
     // to signal this.
-    if (is_mission_finished().second) {
-        return total_mission_items();
+    if (is_mission_finished_locked().second) {
+        return total_mission_items_locked();
     }
-
-    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
 
     // We want to return the current mission item and not the underlying
     // mavlink mission item.
@@ -1000,7 +999,12 @@ int MissionImpl::current_mission_item() const
 
 int MissionImpl::total_mission_items() const
 {
-    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
+    return total_mission_items_locked();
+}
+
+int MissionImpl::total_mission_items_locked() const
+{
     if (_mission_data.mavlink_mission_item_to_mission_item_indices.size() == 0) {
         return 0;
     }
@@ -1018,7 +1022,7 @@ Mission::MissionProgress MissionImpl::mission_progress()
 
 void MissionImpl::subscribe_mission_progress(Mission::MissionProgressCallback callback)
 {
-    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
     _mission_data.mission_progress_callback = callback;
 }
 

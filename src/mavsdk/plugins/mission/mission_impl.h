@@ -71,6 +71,10 @@ public:
     const MissionImpl& operator=(const MissionImpl&) = delete;
 
 private:
+    int current_mission_item_locked() const;
+    int total_mission_items_locked() const;
+    std::pair<Mission::Result, bool> is_mission_finished_locked() const;
+
     void process_mission_current(const mavlink_message_t& message);
     void process_mission_item_reached(const mavlink_message_t& message);
     void process_gimbal_manager_information(const mavlink_message_t& message);
@@ -85,7 +89,7 @@ private:
     std::vector<MAVLinkMissionTransfer::ItemInt>
     convert_to_int_items(const std::vector<Mission::MissionItem>& mission_items);
 
-    void report_progress();
+    void report_progress_locked();
     void reset_mission_progress();
 
     void report_flight_mode_change(
@@ -117,7 +121,7 @@ private:
         std::vector<MAVLinkMissionTransfer::ItemInt>& int_items, unsigned item_i);
 
     struct MissionData {
-        mutable std::recursive_mutex mutex{};
+        mutable std::mutex mutex{};
         int last_current_mavlink_mission_item{-1};
         int last_reached_mavlink_mission_item{-1};
         std::vector<int> mavlink_mission_item_to_mission_item_indices{};
