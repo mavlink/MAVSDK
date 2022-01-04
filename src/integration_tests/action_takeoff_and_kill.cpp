@@ -27,6 +27,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
     }
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 

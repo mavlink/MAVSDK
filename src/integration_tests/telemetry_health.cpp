@@ -17,6 +17,7 @@ TEST_F(SitlTest, TelemetryHealth)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
 

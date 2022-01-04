@@ -53,6 +53,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     ASSERT_EQ(systems.size(), 1);
 
     auto system = systems.at(0);
+    ASSERT_TRUE(system->has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(*system);
 

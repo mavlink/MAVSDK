@@ -35,6 +35,7 @@ TEST_F(SitlTest, MissionTransferLossy)
     }
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
     auto mission = std::make_shared<Mission>(system);
 

@@ -13,6 +13,7 @@ TEST(SitlTestDisabled, TelemetryGpsOrigin)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto telemetry = Telemetry{system};
 
     while (!telemetry.health_all_ok()) {

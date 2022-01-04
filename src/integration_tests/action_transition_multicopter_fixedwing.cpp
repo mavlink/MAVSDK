@@ -30,6 +30,7 @@ TEST_F(SitlTest, ActionTransitionSync_standard_vtol)
         std::chrono::seconds(10)));
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
 
