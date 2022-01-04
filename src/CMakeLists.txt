@@ -59,12 +59,6 @@ set(mavsdk_install_lib_dir ${lib_path})
 
 add_subdirectory(mavsdk)
 
-if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
-    add_subdirectory(${EXTERNAL_DIR}/plugins
-        ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/plugins)
-    include_directories(${EXTERNAL_DIR})
-endif()
-
 include(cmake/static_analyzers.cmake)
 
 if(BUILD_TESTS)
@@ -72,11 +66,6 @@ if(BUILD_TESTS)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
     add_subdirectory(integration_tests)
-
-    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
-        add_subdirectory(${EXTERNAL_DIR}/integration_tests
-            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
-    endif()
 
     include(cmake/unit_tests.cmake)
 endif()
