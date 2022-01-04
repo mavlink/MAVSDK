@@ -9,6 +9,7 @@ target_sources(mavsdk
     connection.cpp
     connection_result.cpp
     curl_wrapper.cpp
+    crc32.cpp
     system.cpp
     system_impl.cpp
     fs.cpp
