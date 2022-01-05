@@ -25,12 +25,6 @@
 #include <mutex>
 #include <future>
 
-template<class... Ts> struct overloaded : Ts... {
-    using Ts::operator()...;
-};
-
-template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
-
 namespace mavsdk {
 
 class MavsdkImpl;
@@ -178,7 +172,25 @@ public:
     {
         _params.subscribe_param_changed(
             name,
-            [callback](MAVLinkParameters::ParamValue value) { std::visit(callback, value._value); },
+            [callback](MAVLinkParameters::ParamValue value) {
+                std::visit(callback, value._value);
+            },
+            cookie);
+    }
+
+    template<typename Arg>
+    void subscribe_param_strict(
+        const std::string& name, const std::function<void(Arg)>& callback, const void* cookie)
+    {
+        _params.subscribe_param_changed(
+            name,
+            [callback](MAVLinkParameters::ParamValue value) {
+                if (value.is<Arg>()) {
+                    std::visit(callback, value._value);
+                } else {
+                    LogErr() << "callback argument type does not match received parameter type";
+                }
+            },
             cookie);
     }
 

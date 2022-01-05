@@ -2,6 +2,12 @@
 
 namespace mavsdk {
 
+template<class... Ts> struct overloaded : Ts... {
+    using Ts::operator()...;
+};
+
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
 /**
  * @brief Base class for every plugin.
  */
