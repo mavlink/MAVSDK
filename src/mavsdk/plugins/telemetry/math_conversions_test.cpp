@@ -38,7 +38,7 @@ TEST(MathConversions, QuaternionToEulerAnglesAndBackBaseCase)
     mavlink_quaternion_to_euler(q1_mavlink, &roll, &pitch, &yaw);
 
     EXPECT_NEAR(to_deg_from_rad(roll), 0.0f, 0.01f);
-    EXPECT_NEAR(to_deg_from_rad(pitch), 0.0, 0.01f);
+    EXPECT_NEAR(to_deg_from_rad(pitch), 0.0f, 0.01f);
     EXPECT_NEAR(to_deg_from_rad(yaw), 0.0f, 0.01f);
 
     float q2_mavlink[4];
