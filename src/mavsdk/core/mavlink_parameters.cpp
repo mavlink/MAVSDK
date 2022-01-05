@@ -393,14 +393,14 @@ void MAVLinkParameters::do_work()
 
         case WorkItem::Type::Value: {
             if (work->extended) {
-                auto buf = std::make_unique<char[]>(128);
-                work->param_value.get_128_bytes(buf.get());
+                std::array<char, 128> buf;
+                work->param_value.get_128_bytes(buf.data());
                 mavlink_msg_param_ext_value_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
-                    buf.get(),
+                    buf.data(),
                     work->param_value.get_mav_param_ext_type(),
                     work->param_count,
                     work->param_index);
@@ -428,14 +428,14 @@ void MAVLinkParameters::do_work()
 
         case WorkItem::Type::Ack: {
             if (work->extended) {
-                auto buf = std::make_unique<char[]>(128);
-                work->param_value.get_128_bytes(buf.get());
+                std::array<char, 128> buf;
+                work->param_value.get_128_bytes(buf.data());
                 mavlink_msg_param_ext_ack_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
-                    buf.get(),
+                    buf.data(),
                     work->param_value.get_mav_param_ext_type(),
                     PARAM_ACK_ACCEPTED);
             }
