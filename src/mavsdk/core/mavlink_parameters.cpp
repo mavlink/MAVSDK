@@ -1261,31 +1261,7 @@ void MAVLinkParameters::ParamValue::get_128_bytes(char* bytes) const
 
 [[nodiscard]] std::string MAVLinkParameters::ParamValue::get_string() const
 {
-    if (std::get_if<uint8_t>(&_value)) {
-        return std::to_string(std::get<uint8_t>(_value));
-    } else if (std::get_if<int8_t>(&_value)) {
-        return std::to_string(std::get<int8_t>(_value));
-    } else if (std::get_if<uint16_t>(&_value)) {
-        return std::to_string(std::get<uint16_t>(_value));
-    } else if (std::get_if<int16_t>(&_value)) {
-        return std::to_string(std::get<int16_t>(_value));
-    } else if (std::get_if<uint32_t>(&_value)) {
-        return std::to_string(std::get<uint32_t>(_value));
-    } else if (std::get_if<int32_t>(&_value)) {
-        return std::to_string(std::get<int32_t>(_value));
-    } else if (std::get_if<uint64_t>(&_value)) {
-        return std::to_string(std::get<uint64_t>(_value));
-    } else if (std::get_if<int64_t>(&_value)) {
-        return std::to_string(std::get<int64_t>(_value));
-    } else if (std::get_if<float>(&_value)) {
-        return std::to_string(std::get<float>(_value));
-    } else if (std::get_if<double>(&_value)) {
-        return std::to_string(std::get<double>(_value));
-    } else {
-        LogErr() << "Unknown data type for param.";
-        assert(false);
-        return {"(unknown)"};
-    }
+    return std::visit([](auto value) { return std::to_string(value); }, _value);
 }
 
 [[nodiscard]] bool MAVLinkParameters::ParamValue::is_same_type(const ParamValue& rhs) const
