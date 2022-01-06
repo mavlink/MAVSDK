@@ -215,6 +215,11 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
     _parent->send_command_async(
         command, [this](MavlinkCommandSender::Result command_result, float progress) {
             command_result_callback(command_result, progress);
+            if (command_result == MavlinkCommandSender::Result::Success) {
+                // The gimbal which implements this so far actually uses acks
+                // with progress and final ack, so we need to finish at the end.
+                report_done();
+            }
         });
 }
 
