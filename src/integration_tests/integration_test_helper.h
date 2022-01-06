@@ -7,6 +7,7 @@
 #include <thread>
 #include <gtest/gtest.h>
 #include "log.h"
+#include "unused.h"
 
 // Autostarting SITL is not supported on Windows
 
