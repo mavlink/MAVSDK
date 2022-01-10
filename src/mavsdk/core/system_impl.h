@@ -172,9 +172,7 @@ public:
     {
         _params.subscribe_param_changed(
             name,
-            [callback](MAVLinkParameters::ParamValue value) {
-                std::visit(callback, value._value);
-            },
+            [callback](MAVLinkParameters::ParamValue value) { std::visit(callback, value._value); },
             cookie);
     }
 
