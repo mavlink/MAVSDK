@@ -2,10 +2,16 @@
 
 namespace mavsdk {
 
+/**
+ * @brief Creates an overloaded callable object from multiple other callables
+ */
 template<class... Ts> struct overloaded : Ts... {
     using Ts::operator()...;
 };
 
+/**
+ * @brief Template deduction helper for `overloaded`
+ */
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 /**
