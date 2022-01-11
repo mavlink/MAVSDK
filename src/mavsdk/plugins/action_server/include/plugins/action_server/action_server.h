@@ -56,6 +56,7 @@ public:
      */
     ~ActionServer();
 
+
     /**
      * @brief Flight modes.
      *
@@ -86,11 +87,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode);
 
+
+
+
     /**
      * @brief State to check if the vehicle can transition to
      * respective flightmodes
      */
     struct AllowableFlightModes {
+        
         bool can_auto_mode{}; /**< @brief Auto/mission mode */
         bool can_guided_mode{}; /**< @brief Guided mode */
         bool can_stabilize_mode{}; /**< @brief Stabilize mode */
@@ -101,22 +106,23 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const ActionServer::AllowableFlightModes& lhs,
-        const ActionServer::AllowableFlightModes& rhs);
+    friend bool operator==(const ActionServer::AllowableFlightModes& lhs, const ActionServer::AllowableFlightModes& rhs);
 
     /**
      * @brief Stream operator to print information about a `ActionServer::AllowableFlightModes`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, ActionServer::AllowableFlightModes const& allowable_flight_modes);
+    friend std::ostream& operator<<(std::ostream& str, ActionServer::AllowableFlightModes const& allowable_flight_modes);
+
+
+
 
     /**
      * @brief Arming message type
      */
     struct ArmDisarm {
+        
         bool arm{}; /**< @brief Should vehicle arm */
         bool force{}; /**< @brief Should arm override pre-flight checks */
     };
@@ -135,6 +141,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_disarm);
 
+
+
+
+
     /**
      * @brief Possible results returned for action requests.
      */
@@ -145,15 +155,13 @@ public:
         ConnectionError, /**< @brief Connection error. */
         Busy, /**< @brief Vehicle is busy. */
         CommandDenied, /**< @brief Command refused by vehicle. */
-        CommandDeniedLandedStateUnknown, /**< @brief Command refused because landed state is
-                                            unknown. */
+        CommandDeniedLandedStateUnknown, /**< @brief Command refused because landed state is unknown. */
         CommandDeniedNotLanded, /**< @brief Command refused because vehicle not landed. */
         Timeout, /**< @brief Request timed out. */
         VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition support is unknown. */
         NoVtolTransitionSupport, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
         ParameterError, /**< @brief Error getting or setting parameter. */
-        Next, /**< @brief Intermediate message showing progress or instructions on the next steps.
-               */
+        Next, /**< @brief Intermediate message showing progress or instructions on the next steps. */
     };
 
     /**
@@ -163,15 +171,21 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous ActionServer calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
-    /**
-     * @brief Callback type for subscribe_arm_disarm.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_arm_disarm.
+    */
+        
     using ArmDisarmCallback = std::function<void(Result, ArmDisarm)>;
 
     /**
@@ -179,10 +193,16 @@ public:
      */
     void subscribe_arm_disarm(ArmDisarmCallback callback);
 
-    /**
-     * @brief Callback type for subscribe_flight_mode_change.
-     */
 
+
+
+
+
+        
+    /**
+    * @brief Callback type for subscribe_flight_mode_change.
+    */
+        
     using FlightModeChangeCallback = std::function<void(Result, FlightMode)>;
 
     /**
@@ -190,10 +210,16 @@ public:
      */
     void subscribe_flight_mode_change(FlightModeChangeCallback callback);
 
-    /**
-     * @brief Callback type for subscribe_takeoff.
-     */
 
+
+
+
+
+        
+    /**
+    * @brief Callback type for subscribe_takeoff.
+    */
+        
     using TakeoffCallback = std::function<void(Result, bool)>;
 
     /**
@@ -201,10 +227,16 @@ public:
      */
     void subscribe_takeoff(TakeoffCallback callback);
 
-    /**
-     * @brief Callback type for subscribe_land.
-     */
 
+
+
+
+
+        
+    /**
+    * @brief Callback type for subscribe_land.
+    */
+        
     using LandCallback = std::function<void(Result, bool)>;
 
     /**
@@ -212,10 +244,16 @@ public:
      */
     void subscribe_land(LandCallback callback);
 
-    /**
-     * @brief Callback type for subscribe_reboot.
-     */
 
+
+
+
+
+        
+    /**
+    * @brief Callback type for subscribe_reboot.
+    */
+        
     using RebootCallback = std::function<void(Result, bool)>;
 
     /**
@@ -223,10 +261,16 @@ public:
      */
     void subscribe_reboot(RebootCallback callback);
 
-    /**
-     * @brief Callback type for subscribe_shutdown.
-     */
 
+
+
+
+
+        
+    /**
+    * @brief Callback type for subscribe_shutdown.
+    */
+        
     using ShutdownCallback = std::function<void(Result, bool)>;
 
     /**
@@ -234,16 +278,29 @@ public:
      */
     void subscribe_shutdown(ShutdownCallback callback);
 
-    /**
-     * @brief Callback type for subscribe_terminate.
-     */
 
+
+
+
+
+        
+    /**
+    * @brief Callback type for subscribe_terminate.
+    */
+        
     using TerminateCallback = std::function<void(Result, bool)>;
 
     /**
      * @brief Subscribe to terminate command
      */
     void subscribe_terminate(TerminateCallback callback);
+
+
+
+
+
+
+
 
     /**
      * @brief Can the vehicle takeoff
@@ -254,6 +311,11 @@ public:
      */
     Result set_allow_takeoff(bool allow_takeoff) const;
 
+
+
+
+
+
     /**
      * @brief Can the vehicle arm when requested
      *
@@ -262,6 +324,11 @@ public:
      * @return Result of request.
      */
     Result set_armable(bool armable, bool force_armable) const;
+
+
+
+
+
 
     /**
      * @brief Can the vehicle disarm when requested
@@ -272,6 +339,11 @@ public:
      */
     Result set_disarmable(bool disarmable, bool force_disarmable) const;
 
+
+
+
+
+
     /**
      * @brief Set which modes the vehicle can transition to (Manual always allowed)
      *
@@ -281,6 +353,11 @@ public:
      */
     Result set_allowable_flight_modes(AllowableFlightModes flight_modes) const;
 
+
+
+
+
+
     /**
      * @brief Get which modes the vehicle can transition to (Manual always allowed)
      *
@@ -289,6 +366,9 @@ public:
      * @return Result of request.
      */
     ActionServer::AllowableFlightModes get_allowable_flight_modes() const;
+
+
+
 
     /**
      * @brief Copy constructor.

@@ -59,10 +59,15 @@ public:
      */
     ~Mocap();
 
+
+
+
+
     /**
      * @brief Body position type
      */
     struct PositionBody {
+        
         float x_m{}; /**< @brief X position in metres. */
         float y_m{}; /**< @brief Y position in metres. */
         float z_m{}; /**< @brief Z position in metres. */
@@ -82,10 +87,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::PositionBody const& position_body);
 
+
+
+
     /**
      * @brief Body angle type
      */
     struct AngleBody {
+        
         float roll_rad{}; /**< @brief Roll angle in radians. */
         float pitch_rad{}; /**< @brief Pitch angle in radians. */
         float yaw_rad{}; /**< @brief Yaw angle in radians. */
@@ -105,10 +114,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::AngleBody const& angle_body);
 
+
+
+
     /**
      * @brief Speed type, represented in the Body (X Y Z) frame and in metres/second.
      */
     struct SpeedBody {
+        
         float x_m_s{}; /**< @brief Velocity in X in metres/second. */
         float y_m_s{}; /**< @brief Velocity in Y in metres/second. */
         float z_m_s{}; /**< @brief Velocity in Z in metres/second. */
@@ -128,10 +141,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::SpeedBody const& speed_body);
 
+
+
+
     /**
      * @brief Angular velocity type
      */
     struct AngularVelocityBody {
+        
         float roll_rad_s{}; /**< @brief Roll angular velocity in radians/second. */
         float pitch_rad_s{}; /**< @brief Pitch angular velocity in radians/second. */
         float yaw_rad_s{}; /**< @brief Yaw angular velocity in radians/second. */
@@ -142,16 +159,17 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Mocap::AngularVelocityBody& lhs, const Mocap::AngularVelocityBody& rhs);
+    friend bool operator==(const Mocap::AngularVelocityBody& lhs, const Mocap::AngularVelocityBody& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::AngularVelocityBody`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Mocap::AngularVelocityBody const& angular_velocity_body);
+    friend std::ostream& operator<<(std::ostream& str, Mocap::AngularVelocityBody const& angular_velocity_body);
+
+
+
 
     /**
      * @brief Covariance type.
@@ -160,6 +178,7 @@ public:
      * Needs to be 21 entries or 1 entry with NaN if unknown.
      */
     struct Covariance {
+        
         std::vector<float> covariance_matrix{}; /**< @brief The covariance matrix */
     };
 
@@ -177,6 +196,9 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::Covariance const& covariance);
 
+
+
+
     /**
      * @brief Quaternion type.
      *
@@ -188,6 +210,7 @@ public:
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
+        
         float w{}; /**< @brief Quaternion entry 0, also denoted as a */
         float x{}; /**< @brief Quaternion entry 1, also denoted as b */
         float y{}; /**< @brief Quaternion entry 2, also denoted as c */
@@ -208,12 +231,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::Quaternion const& quaternion);
 
+
+
+
     /**
      * @brief Global position/attitude estimate from a vision source.
      */
     struct VisionPositionEstimate {
-        uint64_t time_usec{}; /**< @brief PositionBody frame timestamp UNIX Epoch time (0 to use
-                                 Backend timestamp) */
+        
+        uint64_t time_usec{}; /**< @brief PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp) */
         PositionBody position_body{}; /**< @brief Global position (m) */
         AngleBody angle_body{}; /**< @brief Body angle (rad). */
         Covariance pose_covariance{}; /**< @brief Pose cross-covariance matrix. */
@@ -224,25 +250,25 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Mocap::VisionPositionEstimate& lhs, const Mocap::VisionPositionEstimate& rhs);
+    friend bool operator==(const Mocap::VisionPositionEstimate& lhs, const Mocap::VisionPositionEstimate& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::VisionPositionEstimate`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_position_estimate);
+    friend std::ostream& operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_position_estimate);
+
+
+
 
     /**
      * @brief Motion capture attitude and position
      */
     struct AttitudePositionMocap {
-        uint64_t time_usec{}; /**< @brief PositionBody frame timestamp UNIX Epoch time (0 to use
-                                 Backend timestamp) */
-        Quaternion
-            q{}; /**< @brief Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) */
+        
+        uint64_t time_usec{}; /**< @brief PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp) */
+        Quaternion q{}; /**< @brief Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) */
         PositionBody position_body{}; /**< @brief Body Position (NED) */
         Covariance pose_covariance{}; /**< @brief Pose cross-covariance matrix. */
     };
@@ -252,46 +278,43 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Mocap::AttitudePositionMocap& lhs, const Mocap::AttitudePositionMocap& rhs);
+    friend bool operator==(const Mocap::AttitudePositionMocap& lhs, const Mocap::AttitudePositionMocap& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::AttitudePositionMocap`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_position_mocap);
+    friend std::ostream& operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_position_mocap);
+
+
+
+
 
     /**
      * @brief Odometry message to communicate odometry information with an external interface.
      */
     struct Odometry {
+        
         /**
-         * @brief Mavlink frame id
-         */
-        enum class MavFrame {
-            MocapNed, /**< @brief MAVLink number: 14. Odometry local coordinate frame of data given
-                         by a motion capture system, Z-down (x: north, y: east, z: down).. */
-            LocalFrd, /**< @brief MAVLink number: 20. Forward, Right, Down coordinate frame. This is
-                         a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned
-                         with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED,
-                         MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.. */
-        };
+     * @brief Mavlink frame id
+     */
+    enum class MavFrame {
+        MocapNed, /**< @brief MAVLink number: 14. Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).. */
+        LocalFrd, /**< @brief MAVLink number: 20. Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.. */
+    };
 
-        /**
-         * @brief Stream operator to print information about a `Mocap::MavFrame`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream&
-        operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame);
-
+    /**
+     * @brief Stream operator to print information about a `Mocap::MavFrame`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame);
+        
         uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
         MavFrame frame_id{}; /**< @brief Coordinate frame of reference for the pose data. */
         PositionBody position_body{}; /**< @brief Body Position. */
-        Quaternion
-            q{}; /**< @brief Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
+        Quaternion q{}; /**< @brief Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
         SpeedBody speed_body{}; /**< @brief Linear speed (m/s). */
         AngularVelocityBody angular_velocity_body{}; /**< @brief Angular speed (rad/s). */
         Covariance pose_covariance{}; /**< @brief Pose cross-covariance matrix. */
@@ -312,6 +335,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::Odometry const& odometry);
 
+
+
+
+
     /**
      * @brief Possible results returned for mocap requests
      */
@@ -330,10 +357,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Mocap calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+
 
     /**
      * @brief Send Global position/attitude estimate from a vision source.
@@ -344,6 +378,11 @@ public:
      */
     Result set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const;
 
+
+
+
+
+
     /**
      * @brief Send motion capture attitude and position.
      *
@@ -353,6 +392,11 @@ public:
      */
     Result set_attitude_position_mocap(AttitudePositionMocap attitude_position_mocap) const;
 
+
+
+
+
+
     /**
      * @brief Send odometry information with an external interface.
      *
@@ -361,6 +405,9 @@ public:
      * @return Result of request.
      */
     Result set_odometry(Odometry odometry) const;
+
+
+
 
     /**
      * @brief Copy constructor.

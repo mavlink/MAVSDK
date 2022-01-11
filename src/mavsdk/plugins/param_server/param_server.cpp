@@ -13,83 +13,111 @@ using IntParam = ParamServer::IntParam;
 using FloatParam = ParamServer::FloatParam;
 using AllParams = ParamServer::AllParams;
 
-ParamServer::ParamServer(System& system) :
-    PluginBase(),
-    _impl{std::make_unique<ParamServerImpl>(system)}
-{}
 
-ParamServer::ParamServer(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<ParamServerImpl>(system)}
-{}
+
+ParamServer::ParamServer(System& system) : PluginBase(), _impl{std::make_unique<ParamServerImpl>(system)} {}
+
+ParamServer::ParamServer(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<ParamServerImpl>(system)} {}
 
 ParamServer::~ParamServer() {}
+
+
+
+
 
 std::pair<ParamServer::Result, int32_t> ParamServer::retrieve_param_int(std::string name) const
 {
     return _impl->retrieve_param_int(name);
 }
 
+
+
+
+
 ParamServer::Result ParamServer::provide_param_int(std::string name, int32_t value) const
 {
     return _impl->provide_param_int(name, value);
 }
+
+
+
+
 
 std::pair<ParamServer::Result, float> ParamServer::retrieve_param_float(std::string name) const
 {
     return _impl->retrieve_param_float(name);
 }
 
+
+
+
+
 ParamServer::Result ParamServer::provide_param_float(std::string name, float value) const
 {
     return _impl->provide_param_float(name, value);
 }
+
+
+
+
 
 ParamServer::AllParams ParamServer::retrieve_all_params() const
 {
     return _impl->retrieve_all_params();
 }
 
+
+
 bool operator==(const ParamServer::IntParam& lhs, const ParamServer::IntParam& rhs)
 {
-    return (rhs.name == lhs.name) && (rhs.value == lhs.value);
+    return
+        (rhs.name == lhs.name) &&
+        (rhs.value == lhs.value);
 }
 
 std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_param)
 {
     str << std::setprecision(15);
-    str << "int_param:" << '\n' << "{\n";
+    str << "int_param:" << '\n'
+        << "{\n";
     str << "    name: " << int_param.name << '\n';
     str << "    value: " << int_param.value << '\n';
     str << '}';
     return str;
 }
 
+
 bool operator==(const ParamServer::FloatParam& lhs, const ParamServer::FloatParam& rhs)
 {
-    return (rhs.name == lhs.name) &&
-           ((std::isnan(rhs.value) && std::isnan(lhs.value)) || rhs.value == lhs.value);
+    return
+        (rhs.name == lhs.name) &&
+        ((std::isnan(rhs.value) && std::isnan(lhs.value)) || rhs.value == lhs.value);
 }
 
 std::ostream& operator<<(std::ostream& str, ParamServer::FloatParam const& float_param)
 {
     str << std::setprecision(15);
-    str << "float_param:" << '\n' << "{\n";
+    str << "float_param:" << '\n'
+        << "{\n";
     str << "    name: " << float_param.name << '\n';
     str << "    value: " << float_param.value << '\n';
     str << '}';
     return str;
 }
 
+
 bool operator==(const ParamServer::AllParams& lhs, const ParamServer::AllParams& rhs)
 {
-    return (rhs.int_params == lhs.int_params) && (rhs.float_params == lhs.float_params);
+    return
+        (rhs.int_params == lhs.int_params) &&
+        (rhs.float_params == lhs.float_params);
 }
 
 std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_params)
 {
     str << std::setprecision(15);
-    str << "all_params:" << '\n' << "{\n";
+    str << "all_params:" << '\n'
+        << "{\n";
     str << "    int_params: [";
     for (auto it = all_params.int_params.begin(); it != all_params.int_params.end(); ++it) {
         str << *it;
@@ -103,6 +131,8 @@ std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_pa
     str << '}';
     return str;
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
 {
@@ -123,5 +153,8 @@ std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
             return str << "Unknown";
     }
 }
+
+
+
 
 } // namespace mavsdk

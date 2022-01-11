@@ -13,143 +13,194 @@ using MissionProgress = MissionRaw::MissionProgress;
 using MissionItem = MissionRaw::MissionItem;
 using MissionImportData = MissionRaw::MissionImportData;
 
-MissionRaw::MissionRaw(System& system) :
-    PluginBase(),
-    _impl{std::make_unique<MissionRawImpl>(system)}
-{}
 
-MissionRaw::MissionRaw(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<MissionRawImpl>(system)}
-{}
+
+MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{std::make_unique<MissionRawImpl>(system)} {}
+
+MissionRaw::MissionRaw(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<MissionRawImpl>(system)} {}
 
 MissionRaw::~MissionRaw() {}
 
-void MissionRaw::upload_mission_async(
-    std::vector<MissionItem> mission_items, const ResultCallback callback)
+
+
+void MissionRaw::upload_mission_async(std::vector<MissionItem> mission_items, const ResultCallback callback)
 {
     _impl->upload_mission_async(mission_items, callback);
 }
+
+
 
 MissionRaw::Result MissionRaw::upload_mission(std::vector<MissionItem> mission_items) const
 {
     return _impl->upload_mission(mission_items);
 }
 
+
+
+
+
 MissionRaw::Result MissionRaw::cancel_mission_upload() const
 {
     return _impl->cancel_mission_upload();
 }
+
+
 
 void MissionRaw::download_mission_async(const DownloadMissionCallback callback)
 {
     _impl->download_mission_async(callback);
 }
 
-std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
-MissionRaw::download_mission() const
+
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> MissionRaw::download_mission() const
 {
     return _impl->download_mission();
 }
+
+
+
+
 
 MissionRaw::Result MissionRaw::cancel_mission_download() const
 {
     return _impl->cancel_mission_download();
 }
 
+
+
 void MissionRaw::start_mission_async(const ResultCallback callback)
 {
     _impl->start_mission_async(callback);
 }
+
+
 
 MissionRaw::Result MissionRaw::start_mission() const
 {
     return _impl->start_mission();
 }
 
+
+
 void MissionRaw::pause_mission_async(const ResultCallback callback)
 {
     _impl->pause_mission_async(callback);
 }
+
+
 
 MissionRaw::Result MissionRaw::pause_mission() const
 {
     return _impl->pause_mission();
 }
 
+
+
 void MissionRaw::clear_mission_async(const ResultCallback callback)
 {
     _impl->clear_mission_async(callback);
 }
+
+
 
 MissionRaw::Result MissionRaw::clear_mission() const
 {
     return _impl->clear_mission();
 }
 
+
+
 void MissionRaw::set_current_mission_item_async(int32_t index, const ResultCallback callback)
 {
     _impl->set_current_mission_item_async(index, callback);
 }
+
+
 
 MissionRaw::Result MissionRaw::set_current_mission_item(int32_t index) const
 {
     return _impl->set_current_mission_item(index);
 }
 
+
+
 void MissionRaw::subscribe_mission_progress(MissionProgressCallback callback)
 {
     _impl->subscribe_mission_progress(callback);
 }
 
-MissionRaw::MissionProgress MissionRaw::mission_progress() const
+
+
+
+MissionRaw::MissionProgress
+MissionRaw::mission_progress() const
 {
     return _impl->mission_progress();
 }
+
+
 
 void MissionRaw::subscribe_mission_changed(MissionChangedCallback callback)
 {
     _impl->subscribe_mission_changed(callback);
 }
 
-std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
-MissionRaw::import_qgroundcontrol_mission(std::string qgc_plan_path) const
+
+
+
+
+
+
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData> MissionRaw::import_qgroundcontrol_mission(std::string qgc_plan_path) const
 {
     return _impl->import_qgroundcontrol_mission(qgc_plan_path);
 }
 
+
+
 bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
 {
-    return (rhs.current == lhs.current) && (rhs.total == lhs.total);
+    return
+        (rhs.current == lhs.current) &&
+        (rhs.total == lhs.total);
 }
 
 std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress)
 {
     str << std::setprecision(15);
-    str << "mission_progress:" << '\n' << "{\n";
+    str << "mission_progress:" << '\n'
+        << "{\n";
     str << "    current: " << mission_progress.current << '\n';
     str << "    total: " << mission_progress.total << '\n';
     str << '}';
     return str;
 }
 
+
 bool operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs)
 {
-    return (rhs.seq == lhs.seq) && (rhs.frame == lhs.frame) && (rhs.command == lhs.command) &&
-           (rhs.current == lhs.current) && (rhs.autocontinue == lhs.autocontinue) &&
-           ((std::isnan(rhs.param1) && std::isnan(lhs.param1)) || rhs.param1 == lhs.param1) &&
-           ((std::isnan(rhs.param2) && std::isnan(lhs.param2)) || rhs.param2 == lhs.param2) &&
-           ((std::isnan(rhs.param3) && std::isnan(lhs.param3)) || rhs.param3 == lhs.param3) &&
-           ((std::isnan(rhs.param4) && std::isnan(lhs.param4)) || rhs.param4 == lhs.param4) &&
-           (rhs.x == lhs.x) && (rhs.y == lhs.y) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
-           (rhs.mission_type == lhs.mission_type);
+    return
+        (rhs.seq == lhs.seq) &&
+        (rhs.frame == lhs.frame) &&
+        (rhs.command == lhs.command) &&
+        (rhs.current == lhs.current) &&
+        (rhs.autocontinue == lhs.autocontinue) &&
+        ((std::isnan(rhs.param1) && std::isnan(lhs.param1)) || rhs.param1 == lhs.param1) &&
+        ((std::isnan(rhs.param2) && std::isnan(lhs.param2)) || rhs.param2 == lhs.param2) &&
+        ((std::isnan(rhs.param3) && std::isnan(lhs.param3)) || rhs.param3 == lhs.param3) &&
+        ((std::isnan(rhs.param4) && std::isnan(lhs.param4)) || rhs.param4 == lhs.param4) &&
+        (rhs.x == lhs.x) &&
+        (rhs.y == lhs.y) &&
+        ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
+        (rhs.mission_type == lhs.mission_type);
 }
 
 std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item)
 {
     str << std::setprecision(15);
-    str << "mission_item:" << '\n' << "{\n";
+    str << "mission_item:" << '\n'
+        << "{\n";
     str << "    seq: " << mission_item.seq << '\n';
     str << "    frame: " << mission_item.frame << '\n';
     str << "    command: " << mission_item.command << '\n';
@@ -167,41 +218,40 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& missi
     return str;
 }
 
+
 bool operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs)
 {
-    return (rhs.mission_items == lhs.mission_items) && (rhs.geofence_items == lhs.geofence_items) &&
-           (rhs.rally_items == lhs.rally_items);
+    return
+        (rhs.mission_items == lhs.mission_items) &&
+        (rhs.geofence_items == lhs.geofence_items) &&
+        (rhs.rally_items == lhs.rally_items);
 }
 
-std::ostream&
-operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_import_data)
+std::ostream& operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_import_data)
 {
     str << std::setprecision(15);
-    str << "mission_import_data:" << '\n' << "{\n";
+    str << "mission_import_data:" << '\n'
+        << "{\n";
     str << "    mission_items: [";
-    for (auto it = mission_import_data.mission_items.begin();
-         it != mission_import_data.mission_items.end();
-         ++it) {
+    for (auto it = mission_import_data.mission_items.begin(); it != mission_import_data.mission_items.end(); ++it) {
         str << *it;
         str << (it + 1 != mission_import_data.mission_items.end() ? ", " : "]\n");
     }
     str << "    geofence_items: [";
-    for (auto it = mission_import_data.geofence_items.begin();
-         it != mission_import_data.geofence_items.end();
-         ++it) {
+    for (auto it = mission_import_data.geofence_items.begin(); it != mission_import_data.geofence_items.end(); ++it) {
         str << *it;
         str << (it + 1 != mission_import_data.geofence_items.end() ? ", " : "]\n");
     }
     str << "    rally_items: [";
-    for (auto it = mission_import_data.rally_items.begin();
-         it != mission_import_data.rally_items.end();
-         ++it) {
+    for (auto it = mission_import_data.rally_items.begin(); it != mission_import_data.rally_items.end(); ++it) {
         str << *it;
         str << (it + 1 != mission_import_data.rally_items.end() ? ", " : "]\n");
     }
     str << '}';
     return str;
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
 {
@@ -236,5 +286,8 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
             return str << "Unknown";
     }
 }
+
+
+
 
 } // namespace mavsdk

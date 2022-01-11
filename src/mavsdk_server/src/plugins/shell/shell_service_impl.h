@@ -24,6 +24,7 @@ class ShellServiceImpl final : public rpc::shell::ShellService::Service {
 public:
     ShellServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Shell::Result& result) const
     {
@@ -37,6 +38,8 @@ public:
 
         response->set_allocated_shell_result(rpc_shell_result);
     }
+
+
 
     static rpc::shell::ShellResult::Result translateToRpcResult(const mavsdk::Shell::Result& result)
     {
@@ -59,8 +62,7 @@ public:
         }
     }
 
-    static mavsdk::Shell::Result
-    translateFromRpcResult(const rpc::shell::ShellResult::Result result)
+    static mavsdk::Shell::Result translateFromRpcResult(const rpc::shell::ShellResult::Result result)
     {
         switch (result) {
             default:
@@ -81,17 +83,21 @@ public:
         }
     }
 
+
+
+
     grpc::Status Send(
         grpc::ServerContext* /* context */,
         const rpc::shell::SendRequest* request,
         rpc::shell::SendResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Shell::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -99,22 +105,24 @@ public:
             LogWarn() << "Send sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->send(request->command());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeReceive(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::shell::SubscribeReceiveRequest* /* request */,
-        grpc::ServerWriter<rpc::shell::ReceiveResponse>* writer) override
+    grpc::Status SubscribeReceive(grpc::ServerContext* /* context */, const mavsdk::rpc::shell::SubscribeReceiveRequest* /* request */, grpc::ServerWriter<rpc::shell::ReceiveResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -126,21 +134,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _lazy_plugin.maybe_plugin()->subscribe_receive(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const std::string receive) {
-                rpc::shell::ReceiveResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](const std::string receive) {
 
-                rpc_response.set_data(receive);
+            rpc::shell::ReceiveResponse rpc_response;
+        
+            rpc_response.set_data(receive);
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_receive(nullptr);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->subscribe_receive(nullptr);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -149,8 +161,8 @@ public:
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -160,8 +172,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -172,10 +183,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -186,7 +195,7 @@ private:
 
     LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

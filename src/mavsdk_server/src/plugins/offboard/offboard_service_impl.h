@@ -24,6 +24,7 @@ class OffboardServiceImpl final : public rpc::offboard::OffboardService::Service
 public:
     OffboardServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
+
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Offboard::Result& result) const
     {
@@ -38,154 +39,237 @@ public:
         response->set_allocated_offboard_result(rpc_offboard_result);
     }
 
-    static std::unique_ptr<rpc::offboard::Attitude>
-    translateToRpcAttitude(const mavsdk::Offboard::Attitude& attitude)
+
+
+
+    static std::unique_ptr<rpc::offboard::Attitude> translateToRpcAttitude(const mavsdk::Offboard::Attitude &attitude)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::Attitude>();
 
+
+            
         rpc_obj->set_roll_deg(attitude.roll_deg);
-
+            
+        
+            
         rpc_obj->set_pitch_deg(attitude.pitch_deg);
-
+            
+        
+            
         rpc_obj->set_yaw_deg(attitude.yaw_deg);
-
+            
+        
+            
         rpc_obj->set_thrust_value(attitude.thrust_value);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::Attitude
-    translateFromRpcAttitude(const rpc::offboard::Attitude& attitude)
+    static mavsdk::Offboard::Attitude translateFromRpcAttitude(const rpc::offboard::Attitude& attitude)
     {
         mavsdk::Offboard::Attitude obj;
 
+
+            
         obj.roll_deg = attitude.roll_deg();
-
+            
+        
+            
         obj.pitch_deg = attitude.pitch_deg();
-
+            
+        
+            
         obj.yaw_deg = attitude.yaw_deg();
-
+            
+        
+            
         obj.thrust_value = attitude.thrust_value();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::offboard::ActuatorControlGroup> translateToRpcActuatorControlGroup(
-        const mavsdk::Offboard::ActuatorControlGroup& actuator_control_group)
+
+
+
+
+    static std::unique_ptr<rpc::offboard::ActuatorControlGroup> translateToRpcActuatorControlGroup(const mavsdk::Offboard::ActuatorControlGroup &actuator_control_group)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::ActuatorControlGroup>();
 
+
+            
         for (const auto& elem : actuator_control_group.controls) {
             rpc_obj->add_controls(elem);
         }
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::ActuatorControlGroup translateFromRpcActuatorControlGroup(
-        const rpc::offboard::ActuatorControlGroup& actuator_control_group)
+    static mavsdk::Offboard::ActuatorControlGroup translateFromRpcActuatorControlGroup(const rpc::offboard::ActuatorControlGroup& actuator_control_group)
     {
         mavsdk::Offboard::ActuatorControlGroup obj;
 
-        for (const auto& elem : actuator_control_group.controls()) {
-            obj.controls.push_back(elem);
-        }
 
+            
+                for (const auto& elem : actuator_control_group.controls()) {
+                    obj.controls.push_back(elem);
+                }
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::offboard::ActuatorControl>
-    translateToRpcActuatorControl(const mavsdk::Offboard::ActuatorControl& actuator_control)
+
+
+
+
+    static std::unique_ptr<rpc::offboard::ActuatorControl> translateToRpcActuatorControl(const mavsdk::Offboard::ActuatorControl &actuator_control)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::ActuatorControl>();
 
+
+            
+                
         for (const auto& elem : actuator_control.groups) {
             auto* ptr = rpc_obj->add_groups();
             ptr->CopyFrom(*translateToRpcActuatorControlGroup(elem).release());
         }
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::ActuatorControl
-    translateFromRpcActuatorControl(const rpc::offboard::ActuatorControl& actuator_control)
+    static mavsdk::Offboard::ActuatorControl translateFromRpcActuatorControl(const rpc::offboard::ActuatorControl& actuator_control)
     {
         mavsdk::Offboard::ActuatorControl obj;
 
-        for (const auto& elem : actuator_control.groups()) {
-            obj.groups.push_back(translateFromRpcActuatorControlGroup(
-                static_cast<mavsdk::rpc::offboard::ActuatorControlGroup>(elem)));
-        }
 
+            
+                for (const auto& elem : actuator_control.groups()) {
+                    obj.groups.push_back(translateFromRpcActuatorControlGroup(static_cast<mavsdk::rpc::offboard::ActuatorControlGroup>(elem)));
+                }
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::offboard::AttitudeRate>
-    translateToRpcAttitudeRate(const mavsdk::Offboard::AttitudeRate& attitude_rate)
+
+
+
+
+    static std::unique_ptr<rpc::offboard::AttitudeRate> translateToRpcAttitudeRate(const mavsdk::Offboard::AttitudeRate &attitude_rate)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::AttitudeRate>();
 
+
+            
         rpc_obj->set_roll_deg_s(attitude_rate.roll_deg_s);
-
+            
+        
+            
         rpc_obj->set_pitch_deg_s(attitude_rate.pitch_deg_s);
-
+            
+        
+            
         rpc_obj->set_yaw_deg_s(attitude_rate.yaw_deg_s);
-
+            
+        
+            
         rpc_obj->set_thrust_value(attitude_rate.thrust_value);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::AttitudeRate
-    translateFromRpcAttitudeRate(const rpc::offboard::AttitudeRate& attitude_rate)
+    static mavsdk::Offboard::AttitudeRate translateFromRpcAttitudeRate(const rpc::offboard::AttitudeRate& attitude_rate)
     {
         mavsdk::Offboard::AttitudeRate obj;
 
+
+            
         obj.roll_deg_s = attitude_rate.roll_deg_s();
-
+            
+        
+            
         obj.pitch_deg_s = attitude_rate.pitch_deg_s();
-
+            
+        
+            
         obj.yaw_deg_s = attitude_rate.yaw_deg_s();
-
+            
+        
+            
         obj.thrust_value = attitude_rate.thrust_value();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::offboard::PositionNedYaw>
-    translateToRpcPositionNedYaw(const mavsdk::Offboard::PositionNedYaw& position_ned_yaw)
+
+
+
+
+    static std::unique_ptr<rpc::offboard::PositionNedYaw> translateToRpcPositionNedYaw(const mavsdk::Offboard::PositionNedYaw &position_ned_yaw)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::PositionNedYaw>();
 
+
+            
         rpc_obj->set_north_m(position_ned_yaw.north_m);
-
+            
+        
+            
         rpc_obj->set_east_m(position_ned_yaw.east_m);
-
+            
+        
+            
         rpc_obj->set_down_m(position_ned_yaw.down_m);
-
+            
+        
+            
         rpc_obj->set_yaw_deg(position_ned_yaw.yaw_deg);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::PositionNedYaw
-    translateFromRpcPositionNedYaw(const rpc::offboard::PositionNedYaw& position_ned_yaw)
+    static mavsdk::Offboard::PositionNedYaw translateFromRpcPositionNedYaw(const rpc::offboard::PositionNedYaw& position_ned_yaw)
     {
         mavsdk::Offboard::PositionNedYaw obj;
 
+
+            
         obj.north_m = position_ned_yaw.north_m();
-
+            
+        
+            
         obj.east_m = position_ned_yaw.east_m();
-
+            
+        
+            
         obj.down_m = position_ned_yaw.down_m();
-
+            
+        
+            
         obj.yaw_deg = position_ned_yaw.yaw_deg();
-
+            
+        
         return obj;
     }
 
-    static rpc::offboard::PositionGlobalYaw::AltitudeType translateToRpcAltitudeType(
-        const mavsdk::Offboard::PositionGlobalYaw::AltitudeType& altitude_type)
+
+
+
+    static rpc::offboard::PositionGlobalYaw::AltitudeType translateToRpcAltitudeType(const mavsdk::Offboard::PositionGlobalYaw::AltitudeType& altitude_type)
     {
         switch (altitude_type) {
             default:
@@ -200,8 +284,7 @@ public:
         }
     }
 
-    static mavsdk::Offboard::PositionGlobalYaw::AltitudeType
-    translateFromRpcAltitudeType(const rpc::offboard::PositionGlobalYaw::AltitudeType altitude_type)
+    static mavsdk::Offboard::PositionGlobalYaw::AltitudeType translateFromRpcAltitudeType(const rpc::offboard::PositionGlobalYaw::AltitudeType altitude_type)
     {
         switch (altitude_type) {
             default:
@@ -216,136 +299,221 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::offboard::PositionGlobalYaw>
-    translateToRpcPositionGlobalYaw(const mavsdk::Offboard::PositionGlobalYaw& position_global_yaw)
+
+    static std::unique_ptr<rpc::offboard::PositionGlobalYaw> translateToRpcPositionGlobalYaw(const mavsdk::Offboard::PositionGlobalYaw &position_global_yaw)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::PositionGlobalYaw>();
 
+
+            
         rpc_obj->set_lat_deg(position_global_yaw.lat_deg);
-
+            
+        
+            
         rpc_obj->set_lon_deg(position_global_yaw.lon_deg);
-
+            
+        
+            
         rpc_obj->set_alt_m(position_global_yaw.alt_m);
-
+            
+        
+            
         rpc_obj->set_yaw_deg(position_global_yaw.yaw_deg);
-
+            
+        
+            
+                
         rpc_obj->set_altitude_type(translateToRpcAltitudeType(position_global_yaw.altitude_type));
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::PositionGlobalYaw
-    translateFromRpcPositionGlobalYaw(const rpc::offboard::PositionGlobalYaw& position_global_yaw)
+    static mavsdk::Offboard::PositionGlobalYaw translateFromRpcPositionGlobalYaw(const rpc::offboard::PositionGlobalYaw& position_global_yaw)
     {
         mavsdk::Offboard::PositionGlobalYaw obj;
 
+
+            
         obj.lat_deg = position_global_yaw.lat_deg();
-
+            
+        
+            
         obj.lon_deg = position_global_yaw.lon_deg();
-
+            
+        
+            
         obj.alt_m = position_global_yaw.alt_m();
-
+            
+        
+            
         obj.yaw_deg = position_global_yaw.yaw_deg();
-
+            
+        
+            
         obj.altitude_type = translateFromRpcAltitudeType(position_global_yaw.altitude_type());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::offboard::VelocityBodyYawspeed> translateToRpcVelocityBodyYawspeed(
-        const mavsdk::Offboard::VelocityBodyYawspeed& velocity_body_yawspeed)
+
+
+
+
+    static std::unique_ptr<rpc::offboard::VelocityBodyYawspeed> translateToRpcVelocityBodyYawspeed(const mavsdk::Offboard::VelocityBodyYawspeed &velocity_body_yawspeed)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::VelocityBodyYawspeed>();
 
+
+            
         rpc_obj->set_forward_m_s(velocity_body_yawspeed.forward_m_s);
-
+            
+        
+            
         rpc_obj->set_right_m_s(velocity_body_yawspeed.right_m_s);
-
+            
+        
+            
         rpc_obj->set_down_m_s(velocity_body_yawspeed.down_m_s);
-
+            
+        
+            
         rpc_obj->set_yawspeed_deg_s(velocity_body_yawspeed.yawspeed_deg_s);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::VelocityBodyYawspeed translateFromRpcVelocityBodyYawspeed(
-        const rpc::offboard::VelocityBodyYawspeed& velocity_body_yawspeed)
+    static mavsdk::Offboard::VelocityBodyYawspeed translateFromRpcVelocityBodyYawspeed(const rpc::offboard::VelocityBodyYawspeed& velocity_body_yawspeed)
     {
         mavsdk::Offboard::VelocityBodyYawspeed obj;
 
+
+            
         obj.forward_m_s = velocity_body_yawspeed.forward_m_s();
-
+            
+        
+            
         obj.right_m_s = velocity_body_yawspeed.right_m_s();
-
+            
+        
+            
         obj.down_m_s = velocity_body_yawspeed.down_m_s();
-
+            
+        
+            
         obj.yawspeed_deg_s = velocity_body_yawspeed.yawspeed_deg_s();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::offboard::VelocityNedYaw>
-    translateToRpcVelocityNedYaw(const mavsdk::Offboard::VelocityNedYaw& velocity_ned_yaw)
+
+
+
+
+    static std::unique_ptr<rpc::offboard::VelocityNedYaw> translateToRpcVelocityNedYaw(const mavsdk::Offboard::VelocityNedYaw &velocity_ned_yaw)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::VelocityNedYaw>();
 
+
+            
         rpc_obj->set_north_m_s(velocity_ned_yaw.north_m_s);
-
+            
+        
+            
         rpc_obj->set_east_m_s(velocity_ned_yaw.east_m_s);
-
+            
+        
+            
         rpc_obj->set_down_m_s(velocity_ned_yaw.down_m_s);
-
+            
+        
+            
         rpc_obj->set_yaw_deg(velocity_ned_yaw.yaw_deg);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::VelocityNedYaw
-    translateFromRpcVelocityNedYaw(const rpc::offboard::VelocityNedYaw& velocity_ned_yaw)
+    static mavsdk::Offboard::VelocityNedYaw translateFromRpcVelocityNedYaw(const rpc::offboard::VelocityNedYaw& velocity_ned_yaw)
     {
         mavsdk::Offboard::VelocityNedYaw obj;
 
+
+            
         obj.north_m_s = velocity_ned_yaw.north_m_s();
-
+            
+        
+            
         obj.east_m_s = velocity_ned_yaw.east_m_s();
-
+            
+        
+            
         obj.down_m_s = velocity_ned_yaw.down_m_s();
-
+            
+        
+            
         obj.yaw_deg = velocity_ned_yaw.yaw_deg();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::offboard::AccelerationNed>
-    translateToRpcAccelerationNed(const mavsdk::Offboard::AccelerationNed& acceleration_ned)
+
+
+
+
+    static std::unique_ptr<rpc::offboard::AccelerationNed> translateToRpcAccelerationNed(const mavsdk::Offboard::AccelerationNed &acceleration_ned)
     {
         auto rpc_obj = std::make_unique<rpc::offboard::AccelerationNed>();
 
+
+            
         rpc_obj->set_north_m_s2(acceleration_ned.north_m_s2);
-
+            
+        
+            
         rpc_obj->set_east_m_s2(acceleration_ned.east_m_s2);
-
+            
+        
+            
         rpc_obj->set_down_m_s2(acceleration_ned.down_m_s2);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Offboard::AccelerationNed
-    translateFromRpcAccelerationNed(const rpc::offboard::AccelerationNed& acceleration_ned)
+    static mavsdk::Offboard::AccelerationNed translateFromRpcAccelerationNed(const rpc::offboard::AccelerationNed& acceleration_ned)
     {
         mavsdk::Offboard::AccelerationNed obj;
 
+
+            
         obj.north_m_s2 = acceleration_ned.north_m_s2();
-
+            
+        
+            
         obj.east_m_s2 = acceleration_ned.east_m_s2();
-
+            
+        
+            
         obj.down_m_s2 = acceleration_ned.down_m_s2();
-
+            
+        
         return obj;
     }
 
-    static rpc::offboard::OffboardResult::Result
-    translateToRpcResult(const mavsdk::Offboard::Result& result)
+
+
+
+    static rpc::offboard::OffboardResult::Result translateToRpcResult(const mavsdk::Offboard::Result& result)
     {
         switch (result) {
             default:
@@ -370,8 +538,7 @@ public:
         }
     }
 
-    static mavsdk::Offboard::Result
-    translateFromRpcResult(const rpc::offboard::OffboardResult::Result result)
+    static mavsdk::Offboard::Result translateFromRpcResult(const rpc::offboard::OffboardResult::Result result)
     {
         switch (result) {
             default:
@@ -396,25 +563,33 @@ public:
         }
     }
 
+
+
+
     grpc::Status Start(
         grpc::ServerContext* /* context */,
         const rpc::offboard::StartRequest* /* request */,
         rpc::offboard::StartResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
+        
         auto result = _lazy_plugin.maybe_plugin()->start();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -425,19 +600,24 @@ public:
         rpc::offboard::StopResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
+        
         auto result = _lazy_plugin.maybe_plugin()->stop();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -448,14 +628,21 @@ public:
         rpc::offboard::IsActiveResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->is_active();
 
         if (response != nullptr) {
+            
+            
             response->set_is_active(result);
+            
         }
+
 
         return grpc::Status::OK;
     }
@@ -466,11 +653,12 @@ public:
         rpc::offboard::SetAttitudeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -478,13 +666,16 @@ public:
             LogWarn() << "SetAttitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_attitude(translateFromRpcAttitude(request->attitude()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_attitude(
-            translateFromRpcAttitude(request->attitude()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -495,11 +686,12 @@ public:
         rpc::offboard::SetActuatorControlResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -507,13 +699,16 @@ public:
             LogWarn() << "SetActuatorControl sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_actuator_control(translateFromRpcActuatorControl(request->actuator_control()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_actuator_control(
-            translateFromRpcActuatorControl(request->actuator_control()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -524,11 +719,12 @@ public:
         rpc::offboard::SetAttitudeRateResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -536,13 +732,16 @@ public:
             LogWarn() << "SetAttitudeRate sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_attitude_rate(translateFromRpcAttitudeRate(request->attitude_rate()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_attitude_rate(
-            translateFromRpcAttitudeRate(request->attitude_rate()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -553,11 +752,12 @@ public:
         rpc::offboard::SetPositionNedResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -565,13 +765,16 @@ public:
             LogWarn() << "SetPositionNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_position_ned(translateFromRpcPositionNedYaw(request->position_ned_yaw()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_position_ned(
-            translateFromRpcPositionNedYaw(request->position_ned_yaw()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -582,11 +785,12 @@ public:
         rpc::offboard::SetPositionGlobalResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -594,13 +798,16 @@ public:
             LogWarn() << "SetPositionGlobal sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_position_global(translateFromRpcPositionGlobalYaw(request->position_global_yaw()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_position_global(
-            translateFromRpcPositionGlobalYaw(request->position_global_yaw()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -611,11 +818,12 @@ public:
         rpc::offboard::SetVelocityBodyResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -623,13 +831,16 @@ public:
             LogWarn() << "SetVelocityBody sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_velocity_body(translateFromRpcVelocityBodyYawspeed(request->velocity_body_yawspeed()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_velocity_body(
-            translateFromRpcVelocityBodyYawspeed(request->velocity_body_yawspeed()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -640,11 +851,12 @@ public:
         rpc::offboard::SetVelocityNedResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -652,13 +864,16 @@ public:
             LogWarn() << "SetVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_velocity_ned(translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_velocity_ned(
-            translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -669,11 +884,12 @@ public:
         rpc::offboard::SetPositionVelocityNedResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -681,14 +897,18 @@ public:
             LogWarn() << "SetPositionVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_position_velocity_ned(translateFromRpcPositionNedYaw(request->position_ned_yaw()), translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_position_velocity_ned(
-            translateFromRpcPositionNedYaw(request->position_ned_yaw()),
-            translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -699,11 +919,12 @@ public:
         rpc::offboard::SetAccelerationNedResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Offboard::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -711,19 +932,22 @@ public:
             LogWarn() << "SetAccelerationNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_acceleration_ned(translateFromRpcAccelerationNed(request->acceleration_ned()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_acceleration_ned(
-            translateFromRpcAccelerationNed(request->acceleration_ned()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -733,8 +957,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -745,10 +968,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -759,7 +980,7 @@ private:
 
     LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

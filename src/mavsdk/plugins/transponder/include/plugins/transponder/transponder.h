@@ -57,6 +57,7 @@ public:
      */
     ~Transponder();
 
+
     /**
      * @brief ADSB classification for the type of vehicle emitting the transponder signal.
      */
@@ -88,22 +89,23 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type);
+    friend std::ostream& operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type);
+
+
+
 
     /**
      * @brief ADSB Vehicle type.
      */
     struct AdsbVehicle {
-        uint32_t icao_address{}; /**< @brief ICAO (International Civil Aviation Organization) unique
-                                    worldwide identifier */
+        
+        uint32_t icao_address{}; /**< @brief ICAO (International Civil Aviation Organization) unique worldwide identifier */
         double latitude_deg{}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{}; /**< @brief Longitude in degrees (range: -180 to +180). */
         float absolute_altitude_m{}; /**< @brief Altitude AMSL (above mean sea level) in metres */
         float heading_deg{}; /**< @brief Course over ground, in degrees */
         float horizontal_velocity_m_s{}; /**< @brief The horizontal velocity in metres/second */
-        float vertical_velocity_m_s{}; /**< @brief The vertical velocity in metres/second. Positive
-                                          is up. */
+        float vertical_velocity_m_s{}; /**< @brief The vertical velocity in metres/second. Positive is up. */
         std::string callsign{}; /**< @brief The callsign */
         AdsbEmitterType emitter_type{}; /**< @brief ADSB emitter type. */
         uint32_t squawk{}; /**< @brief Squawk code. */
@@ -114,16 +116,18 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs);
+    friend bool operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs);
 
     /**
      * @brief Stream operator to print information about a `Transponder::AdsbVehicle`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle);
+    friend std::ostream& operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle);
+
+
+
+
 
     /**
      * @brief Possible results returned for transponder requests.
@@ -145,21 +149,29 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Transponder::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Transponder calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
-    /**
-     * @brief Callback type for subscribe_transponder.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_transponder.
+    */
+        
     using TransponderCallback = std::function<void(AdsbVehicle)>;
 
     /**
      * @brief Subscribe to 'transponder' updates.
      */
     void subscribe_transponder(TransponderCallback callback);
+
+
 
     /**
      * @brief Poll for 'AdsbVehicle' (blocking).
@@ -168,12 +180,17 @@ public:
      */
     AdsbVehicle transponder() const;
 
+
+
+
     /**
      * @brief Set rate to 'transponder' updates.
      *
      * This function is non-blocking. See 'set_rate_transponder' for the blocking counterpart.
      */
     void set_rate_transponder_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'transponder' updates.
@@ -183,6 +200,9 @@ public:
      * @return Result of request.
      */
     Result set_rate_transponder(double rate_hz) const;
+
+
+
 
     /**
      * @brief Copy constructor.
