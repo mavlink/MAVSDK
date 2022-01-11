@@ -166,6 +166,32 @@ public:
     using SubscribeParamIntCallback = std::function<void(int)>;
     void subscribe_param_int(
         const std::string& name, const SubscribeParamIntCallback& callback, const void* cookie);
+
+    template<typename Callback>
+    void subscribe_param(const std::string& name, const Callback& callback, const void* cookie)
+    {
+        _params.subscribe_param_changed(
+            name,
+            [callback](MAVLinkParameters::ParamValue value) { std::visit(callback, value._value); },
+            cookie);
+    }
+
+    template<typename Arg>
+    void subscribe_param_strict(
+        const std::string& name, const std::function<void(Arg)>& callback, const void* cookie)
+    {
+        _params.subscribe_param_changed(
+            name,
+            [callback](MAVLinkParameters::ParamValue value) {
+                if (value.is<Arg>()) {
+                    std::visit(callback, value._value);
+                } else {
+                    LogErr() << "callback argument type does not match received parameter type";
+                }
+            },
+            cookie);
+    }
+
     using SubscribeParamFloatCallback = std::function<void(float)>;
     void subscribe_param_float(
         const std::string& name, const SubscribeParamFloatCallback& callback, const void* cookie);

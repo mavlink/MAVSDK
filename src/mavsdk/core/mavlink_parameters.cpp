@@ -27,6 +27,11 @@ MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
         [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
         this);
 
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_PARAM_EXT_SET,
+        [this](const mavlink_message_t& message) { process_param_ext_set(message); },
+        this);
+
     // Parameter Server Callbacks
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_REQUEST_READ,
@@ -217,6 +222,34 @@ void MAVLinkParameters::cancel_all_param(const void* cookie)
 
 void MAVLinkParameters::subscribe_param_changed(
     const std::string& name,
+    const MAVLinkParameters::ParamChangedCallback& callback,
+    const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+    if (callback != nullptr) {
+        ParamChangedSubscription subscription{};
+        subscription.param_name = name;
+        subscription.callback = callback;
+        subscription.cookie = cookie;
+        subscription.any_type = true;
+        _param_changed_subscriptions.push_back(subscription);
+
+    } else {
+        for (auto it = _param_changed_subscriptions.begin();
+             it != _param_changed_subscriptions.end();
+             /* ++it */) {
+            if (it->param_name == name && it->cookie == cookie) {
+                it = _param_changed_subscriptions.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
+void MAVLinkParameters::subscribe_param_changed(
+    const std::string& name,
     ParamValue value_type,
     const MAVLinkParameters::ParamChangedCallback& callback,
     const void* cookie)
@@ -360,15 +393,15 @@ void MAVLinkParameters::do_work()
 
         case WorkItem::Type::Value: {
             if (work->extended) {
-                auto buf = std::make_unique<char[]>(128);
-                work->param_value.get_128_bytes(buf.get());
+                std::array<char, 128> buf;
+                work->param_value.get_128_bytes(buf.data());
                 mavlink_msg_param_ext_value_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
-                    buf.get(),
-                    work->param_value.get_mav_param_type(),
+                    buf.data(),
+                    work->param_value.get_mav_param_ext_type(),
                     work->param_count,
                     work->param_index);
             } else {
@@ -384,6 +417,30 @@ void MAVLinkParameters::do_work()
             }
 
             if (!_parent.send_message(work->mavlink_message)) {
+                LogErr() << "Error: Send message failed";
+                work_queue_guard.pop_front();
+                return;
+            }
+
+            // As we're a server in this case we don't need any response
+            work_queue_guard.pop_front();
+        } break;
+
+        case WorkItem::Type::Ack: {
+            if (work->extended) {
+                std::array<char, 128> buf;
+                work->param_value.get_128_bytes(buf.data());
+                mavlink_msg_param_ext_ack_pack(
+                    _parent.get_own_system_id(),
+                    _parent.get_own_component_id(),
+                    &work->mavlink_message,
+                    param_id,
+                    buf.data(),
+                    work->param_value.get_mav_param_ext_type(),
+                    PARAM_ACK_ACCEPTED);
+            }
+
+            if (!work->extended || !_parent.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();
                 return;
@@ -491,7 +548,7 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
 
         ParamValue value;
         value.set_from_mavlink_param_value(param_value);
-        if (!subscription.value_type.is_same_type(value)) {
+        if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
             LogErr() << "Received wrong param type in subscription for " << subscription.param_name;
             continue;
         }
@@ -626,6 +683,50 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
     }
 }
 
+void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
+{
+    mavlink_param_ext_set_t set_request{};
+    mavlink_msg_param_ext_set_decode(&message, &set_request);
+
+    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    if (!safe_param_id.empty()) {
+        LogDebug() << "Set Param Request: " << safe_param_id;
+        // Use the ID
+        if (_param_server_store.find(safe_param_id) != _param_server_store.end()) {
+            ParamValue value{};
+            if (!value.set_from_mavlink_param_ext_set(set_request)) {
+                LogWarn() << "Invalid Param Ext Set Request: " << safe_param_id;
+                return;
+            }
+            _param_server_store.at(safe_param_id) = value;
+            auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+            new_work->type = WorkItem::Type::Ack;
+            new_work->param_name = safe_param_id;
+            new_work->param_value = _param_server_store.at(safe_param_id);
+            new_work->extended = true;
+            _work_queue.push_back(new_work);
+            std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+            for (const auto& subscription : _param_changed_subscriptions) {
+                if (subscription.param_name != safe_param_id) {
+                    continue;
+                }
+
+                if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
+                    LogErr() << "Received wrong param type in subscription for "
+                             << subscription.param_name;
+                    continue;
+                }
+
+                subscription.callback(value);
+            }
+        } else {
+            LogDebug() << "Missing Param: " << safe_param_id;
+        }
+    } else {
+        LogWarn() << "Invalid Param Ext Set ID Request: " << safe_param_id;
+    }
+}
 void MAVLinkParameters::receive_timeout()
 {
     // first check if we are waiting for param list response
@@ -809,6 +910,433 @@ void MAVLinkParameters::process_param_ext_request_read(const mavlink_message_t& 
             LogDebug() << "Missing Param " << safe_param_id;
         }
     }
+}
+
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_value(
+    const mavlink_param_value_t& mavlink_value)
+{
+    union {
+        float float_value;
+        int32_t int32_value;
+    } temp{};
+
+    temp.float_value = mavlink_value.param_value;
+    switch (mavlink_value.param_type) {
+        case MAV_PARAM_TYPE_UINT32:
+        // FALLTHROUGH
+        case MAV_PARAM_TYPE_INT32:
+            _value = temp.int32_value;
+            break;
+        case MAV_PARAM_TYPE_REAL32:
+            _value = temp.float_value;
+            break;
+        default:
+            // This would be worrying
+            LogErr() << "Error: unknown mavlink param type";
+            return false;
+    }
+    return true;
+}
+
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_set(
+    const mavlink_param_set_t& mavlink_set)
+{
+    mavlink_param_value_t mavlink_value{};
+    mavlink_value.param_value = mavlink_set.param_value;
+    mavlink_value.param_type = mavlink_set.param_type;
+    return set_from_mavlink_param_value(mavlink_value);
+}
+
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_set(
+    const mavlink_param_ext_set_t& mavlink_ext_set)
+{
+    switch (mavlink_ext_set.param_type) {
+        case MAV_PARAM_EXT_TYPE_UINT8: {
+            uint8_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT8: {
+            int8_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_UINT16: {
+            uint16_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT16: {
+            int16_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_UINT32: {
+            uint32_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT32: {
+            int32_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_UINT64: {
+            uint64_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT64: {
+            int64_t temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_REAL32: {
+            float temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_REAL64: {
+            double temp;
+            memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_CUSTOM:
+            LogErr() << "EXT_TYPE_CUSTOM is not supported";
+            return false;
+        default:
+            // This would be worrying
+            LogErr() << "Error: unknown mavlink ext param type";
+            assert(false);
+            return false;
+    }
+    return true;
+}
+
+bool MAVLinkParameters::ParamValue::set_from_mavlink_param_ext_value(
+    const mavlink_param_ext_value_t& mavlink_ext_value)
+{
+    switch (mavlink_ext_value.param_type) {
+        case MAV_PARAM_EXT_TYPE_UINT8: {
+            uint8_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT8: {
+            int8_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_UINT16: {
+            uint16_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT16: {
+            int16_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_UINT32: {
+            uint32_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT32: {
+            int32_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_UINT64: {
+            uint64_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_INT64: {
+            int64_t temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_REAL32: {
+            float temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_REAL64: {
+            double temp;
+            memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+            _value = temp;
+        } break;
+        case MAV_PARAM_EXT_TYPE_CUSTOM:
+            LogErr() << "EXT_TYPE_CUSTOM is not supported";
+            return false;
+        default:
+            // This would be worrying
+            LogErr() << "Error: unknown mavlink ext param type";
+            assert(false);
+            return false;
+    }
+    return true;
+}
+
+bool MAVLinkParameters::ParamValue::set_from_xml(
+    const std::string& type_str, const std::string& value_str)
+{
+    if (strcmp(type_str.c_str(), "uint8") == 0) {
+        uint8_t temp = std::stoi(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "int8") == 0) {
+        int8_t temp = std::stoi(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "uint16") == 0) {
+        uint16_t temp = std::stoi(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "int16") == 0) {
+        int16_t temp = std::stoi(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "uint32") == 0) {
+        uint32_t temp = std::stoi(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "int32") == 0) {
+        int32_t temp = std::stoi(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+        uint64_t temp = std::stoll(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "int64") == 0) {
+        int64_t temp = std::stoll(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "float") == 0) {
+        float temp = std::stof(value_str);
+        _value = temp;
+    } else if (strcmp(type_str.c_str(), "double") == 0) {
+        double temp = std::stod(value_str);
+        _value = temp;
+    } else {
+        LogErr() << "Unknown type: " << type_str;
+        return false;
+    }
+    return true;
+}
+
+bool MAVLinkParameters::ParamValue::set_empty_type_from_xml(const std::string& type_str)
+{
+    if (strcmp(type_str.c_str(), "uint8") == 0) {
+        _value = uint8_t(0);
+    } else if (strcmp(type_str.c_str(), "int8") == 0) {
+        _value = int8_t(0);
+    } else if (strcmp(type_str.c_str(), "uint16") == 0) {
+        _value = uint16_t(0);
+    } else if (strcmp(type_str.c_str(), "int16") == 0) {
+        _value = int16_t(0);
+    } else if (strcmp(type_str.c_str(), "uint32") == 0) {
+        _value = uint32_t(0);
+    } else if (strcmp(type_str.c_str(), "int32") == 0) {
+        _value = int32_t(0);
+    } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+        _value = uint64_t(0);
+    } else if (strcmp(type_str.c_str(), "int64") == 0) {
+        _value = int64_t(0);
+    } else if (strcmp(type_str.c_str(), "float") == 0) {
+        _value = 0.0f;
+    } else if (strcmp(type_str.c_str(), "double") == 0) {
+        _value = 0.0;
+    } else {
+        LogErr() << "Unknown type: " << type_str;
+        return false;
+    }
+    return true;
+}
+
+[[nodiscard]] MAV_PARAM_TYPE MAVLinkParameters::ParamValue::get_mav_param_type() const
+{
+    if (std::get_if<float>(&_value)) {
+        return MAV_PARAM_TYPE_REAL32;
+    } else if (std::get_if<int32_t>(&_value)) {
+        return MAV_PARAM_TYPE_INT32;
+    } else {
+        LogErr() << "Unknown param type sent";
+        return MAV_PARAM_TYPE_REAL32;
+    }
+}
+
+[[nodiscard]] MAV_PARAM_EXT_TYPE MAVLinkParameters::ParamValue::get_mav_param_ext_type() const
+{
+    if (std::get_if<uint8_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_UINT8;
+    } else if (std::get_if<int8_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_INT8;
+    } else if (std::get_if<uint16_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_UINT16;
+    } else if (std::get_if<int16_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_INT16;
+    } else if (std::get_if<uint32_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_UINT32;
+    } else if (std::get_if<int32_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_INT32;
+    } else if (std::get_if<uint64_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_UINT64;
+    } else if (std::get_if<int64_t>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_INT64;
+    } else if (std::get_if<float>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_REAL32;
+    } else if (std::get_if<double>(&_value)) {
+        return MAV_PARAM_EXT_TYPE_REAL64;
+    } else {
+        LogErr() << "Unknown data type for param.";
+        assert(false);
+        return MAV_PARAM_EXT_TYPE_INT32;
+    }
+}
+
+bool MAVLinkParameters::ParamValue::set_as_same_type(const std::string& value_str)
+{
+    if (std::get_if<uint8_t>(&_value)) {
+        _value = uint8_t(std::stoi(value_str));
+    } else if (std::get_if<int8_t>(&_value)) {
+        _value = int8_t(std::stoi(value_str));
+    } else if (std::get_if<uint16_t>(&_value)) {
+        _value = uint16_t(std::stoi(value_str));
+    } else if (std::get_if<int16_t>(&_value)) {
+        _value = int16_t(std::stoi(value_str));
+    } else if (std::get_if<uint32_t>(&_value)) {
+        _value = uint32_t(std::stoi(value_str));
+    } else if (std::get_if<int32_t>(&_value)) {
+        _value = int32_t(std::stoi(value_str));
+    } else if (std::get_if<uint64_t>(&_value)) {
+        _value = uint64_t(std::stoll(value_str));
+    } else if (std::get_if<int64_t>(&_value)) {
+        _value = int64_t(std::stoll(value_str));
+    } else if (std::get_if<float>(&_value)) {
+        _value = float(std::stof(value_str));
+    } else if (std::get_if<double>(&_value)) {
+        _value = double(std::stod(value_str));
+    } else {
+        LogErr() << "Unknown type";
+        return false;
+    }
+    return true;
+}
+
+[[nodiscard]] float MAVLinkParameters::ParamValue::get_4_float_bytes() const
+{
+    if (std::get_if<float>(&_value)) {
+        return std::get<float>(_value);
+    } else if (std::get_if<int32_t>(&_value)) {
+        return *(reinterpret_cast<const float*>(&std::get<int32_t>(_value)));
+    } else {
+        LogErr() << "Unknown type";
+        assert(false);
+        return NAN;
+    }
+}
+
+void MAVLinkParameters::ParamValue::get_128_bytes(char* bytes) const
+{
+    if (std::get_if<uint8_t>(&_value)) {
+        memcpy(bytes, &std::get<uint8_t>(_value), sizeof(uint8_t));
+    } else if (std::get_if<int8_t>(&_value)) {
+        memcpy(bytes, &std::get<int8_t>(_value), sizeof(int8_t));
+    } else if (std::get_if<uint16_t>(&_value)) {
+        memcpy(bytes, &std::get<uint16_t>(_value), sizeof(uint16_t));
+    } else if (std::get_if<int16_t>(&_value)) {
+        memcpy(bytes, &std::get<int16_t>(_value), sizeof(int16_t));
+    } else if (std::get_if<uint32_t>(&_value)) {
+        memcpy(bytes, &std::get<uint32_t>(_value), sizeof(uint32_t));
+    } else if (std::get_if<int32_t>(&_value)) {
+        memcpy(bytes, &std::get<int32_t>(_value), sizeof(int32_t));
+    } else if (std::get_if<uint64_t>(&_value)) {
+        memcpy(bytes, &std::get<uint64_t>(_value), sizeof(uint64_t));
+    } else if (std::get_if<int64_t>(&_value)) {
+        memcpy(bytes, &std::get<int64_t>(_value), sizeof(int64_t));
+    } else if (std::get_if<float>(&_value)) {
+        memcpy(bytes, &std::get<float>(_value), sizeof(float));
+    } else if (std::get_if<double>(&_value)) {
+        memcpy(bytes, &std::get<double>(_value), sizeof(double));
+    } else {
+        LogErr() << "Unknown type";
+        assert(false);
+    }
+}
+
+[[nodiscard]] std::string MAVLinkParameters::ParamValue::get_string() const
+{
+    return std::visit([](auto value) { return std::to_string(value); }, _value);
+}
+
+[[nodiscard]] bool MAVLinkParameters::ParamValue::is_same_type(const ParamValue& rhs) const
+{
+    if ((std::get_if<uint8_t>(&_value) && std::get_if<uint8_t>(&rhs._value)) ||
+        (std::get_if<int8_t>(&_value) && std::get_if<int8_t>(&rhs._value)) ||
+        (std::get_if<uint16_t>(&_value) && std::get_if<uint16_t>(&rhs._value)) ||
+        (std::get_if<int16_t>(&_value) && std::get_if<int16_t>(&rhs._value)) ||
+        (std::get_if<uint32_t>(&_value) && std::get_if<uint32_t>(&rhs._value)) ||
+        (std::get_if<int32_t>(&_value) && std::get_if<int32_t>(&rhs._value)) ||
+        (std::get_if<uint64_t>(&_value) && std::get_if<uint64_t>(&rhs._value)) ||
+        (std::get_if<int64_t>(&_value) && std::get_if<int64_t>(&rhs._value)) ||
+        (std::get_if<float>(&_value) && std::get_if<float>(&rhs._value)) ||
+        (std::get_if<double>(&_value) && std::get_if<double>(&rhs._value))) {
+        return true;
+    } else {
+        LogWarn() << "Comparison type mismatch between " << typestr() << " and " << rhs.typestr();
+        return false;
+    }
+}
+
+bool MAVLinkParameters::ParamValue::operator==(const std::string& value_str) const
+{
+    // LogDebug() << "Compare " << value_str() << " and " << rhs.value_str();
+    if (std::get_if<uint8_t>(&_value)) {
+        return std::get<uint8_t>(_value) == std::stoi(value_str);
+    } else if (std::get_if<int8_t>(&_value)) {
+        return std::get<int8_t>(_value) == std::stoi(value_str);
+    } else if (std::get_if<uint16_t>(&_value)) {
+        return std::get<uint16_t>(_value) == std::stoi(value_str);
+    } else if (std::get_if<int16_t>(&_value)) {
+        return std::get<int16_t>(_value) == std::stoi(value_str);
+    } else if (std::get_if<uint32_t>(&_value)) {
+        return std::get<uint32_t>(_value) == std::stoul(value_str);
+    } else if (std::get_if<int32_t>(&_value)) {
+        return std::get<int32_t>(_value) == std::stol(value_str);
+    } else if (std::get_if<uint64_t>(&_value)) {
+        return std::get<uint64_t>(_value) == std::stoull(value_str);
+    } else if (std::get_if<int64_t>(&_value)) {
+        return std::get<int64_t>(_value) == std::stoll(value_str);
+    } else if (std::get_if<float>(&_value)) {
+        return std::get<float>(_value) == std::stof(value_str);
+    } else if (std::get_if<double>(&_value)) {
+        return std::get<double>(_value) == std::stod(value_str);
+    } else {
+        // This also covers custom_type_t
+        return false;
+    }
+}
+
+[[nodiscard]] std::string MAVLinkParameters::ParamValue::typestr() const
+{
+    if (std::get_if<uint8_t>(&_value)) {
+        return "uint8_t";
+    } else if (std::get_if<int8_t>(&_value)) {
+        return "int8_t";
+    } else if (std::get_if<uint16_t>(&_value)) {
+        return "uint16_t";
+    } else if (std::get_if<int16_t>(&_value)) {
+        return "int16_t";
+    } else if (std::get_if<uint32_t>(&_value)) {
+        return "uint32_t";
+    } else if (std::get_if<int32_t>(&_value)) {
+        return "int32_t";
+    } else if (std::get_if<uint64_t>(&_value)) {
+        return "uint64_t";
+    } else if (std::get_if<int64_t>(&_value)) {
+        return "int64_t";
+    } else if (std::get_if<float>(&_value)) {
+        return "float";
+    } else if (std::get_if<double>(&_value)) {
+        return "double";
+    }
+    // FIXME: Added to fix CI error (control reading end of non-void function)
+    return "unknown";
 }
 
 } // namespace mavsdk
