@@ -79,6 +79,7 @@ public:
 
     using ResultCallback = std::function<void(Result result)>;
     using ResultAndItemsCallback = std::function<void(Result result, std::vector<ItemInt> items)>;
+    using ProgressCallback = std::function<void(float progress)>;
 
     class WorkItem {
     public:
@@ -119,7 +120,8 @@ public:
             uint8_t type,
             const std::vector<ItemInt>& items,
             double timeout_s,
-            ResultCallback callback);
+            ResultCallback callback,
+            ProgressCallback progress_callback);
 
         ~UploadWorkItem() override;
         void start() override;
@@ -141,6 +143,8 @@ public:
         void process_timeout();
         void callback_and_reset(Result result);
 
+        void update_progress(float progress);
+
         enum class Step {
             SendCount,
             SendItems,
@@ -148,6 +152,7 @@ public:
 
         std::vector<ItemInt> _items{};
         ResultCallback _callback{nullptr};
+        ProgressCallback _progress_callback{nullptr};
         std::size_t _next_sequence{0};
         void* _cookie{nullptr};
         unsigned _retries_done{0};
@@ -206,7 +211,8 @@ public:
             TimeoutHandler& timeout_handler,
             uint8_t type,
             double timeout_s,
-            ResultAndItemsCallback callback);
+            ResultAndItemsCallback callback,
+            ProgressCallback progress_callback);
 
         ~DownloadWorkItem() override;
         void start() override;
@@ -227,6 +233,8 @@ public:
         void process_timeout();
         void callback_and_reset(Result result);
 
+        void update_progress(float progress);
+
         enum class Step {
             RequestList,
             RequestItem,
@@ -234,6 +242,7 @@ public:
 
         std::vector<ItemInt> _items{};
         ResultAndItemsCallback _callback{nullptr};
+        ProgressCallback _progress_callback{nullptr};
         void* _cookie{nullptr};
         std::size_t _next_sequence{0};
         std::size_t _expected_count{0};
@@ -314,10 +323,16 @@ public:
 
     ~MAVLinkMissionTransfer() = default;
 
-    std::weak_ptr<WorkItem>
-    upload_items_async(uint8_t type, const std::vector<ItemInt>& items, ResultCallback callback);
+    std::weak_ptr<WorkItem> upload_items_async(
+        uint8_t type,
+        const std::vector<ItemInt>& items,
+        ResultCallback callback,
+        ProgressCallback progress_callback = nullptr);
 
-    std::weak_ptr<WorkItem> download_items_async(uint8_t type, ResultAndItemsCallback callback);
+    std::weak_ptr<WorkItem> download_items_async(
+        uint8_t type,
+        ResultAndItemsCallback callback,
+        ProgressCallback progress_callback = nullptr);
 
     // Server-side
     std::weak_ptr<WorkItem> receive_incoming_items_async(
