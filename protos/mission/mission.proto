@@ -17,6 +17,16 @@ service MissionService {
      */
     rpc UploadMission(UploadMissionRequest) returns(UploadMissionResponse) {}
     /*
+     * Upload a list of mission items to the system and report upload progress.
+     *
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if the connection is lost.
+     */
+    rpc SubscribeUploadMissionWithProgress(SubscribeUploadMissionWithProgressRequest) returns(stream UploadMissionWithProgressResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
+    /*
      * Cancel an ongoing mission upload.
      */
     rpc CancelMissionUpload(CancelMissionUploadRequest) returns(CancelMissionUploadResponse) { option (mavsdk.options.async_type) = SYNC; }
@@ -28,8 +38,18 @@ service MissionService {
      */
     rpc DownloadMission(DownloadMissionRequest) returns(DownloadMissionResponse) {}
     /*
-     * Cancel an ongoing mission download.
+     * Download a list of mission items from the system (asynchronous) and report progress.
+     *
+     * Will fail if any of the downloaded mission items are not supported
+     * by the MAVSDK API.
      */
+    rpc SubscribeDownloadMissionWithProgress(SubscribeDownloadMissionWithProgressRequest) returns(stream DownloadMissionWithProgressResponse) {
+        option (mavsdk.options.async_type) = ASYNC;
+        option (mavsdk.options.is_finite) = true;
+    }
+/*
+ * Cancel an ongoing mission download.
+ */
     rpc CancelMissionDownload(CancelMissionDownloadRequest) returns(CancelMissionDownloadResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
      * Start the mission.
@@ -91,6 +111,14 @@ message UploadMissionResponse {
     MissionResult mission_result = 1;
 }
 
+message SubscribeUploadMissionWithProgressRequest {
+    MissionPlan mission_plan = 1; // The mission plan
+}
+message UploadMissionWithProgressResponse {
+    MissionResult mission_result = 1;
+    ProgressData progress_data = 2; // The progress data
+}
+
 message CancelMissionUploadRequest {}
 message CancelMissionUploadResponse {
     MissionResult mission_result = 1;
@@ -100,6 +128,12 @@ message DownloadMissionRequest {}
 message DownloadMissionResponse {
     MissionResult mission_result = 1;
     MissionPlan mission_plan = 2; // The mission plan
+}
+
+message SubscribeDownloadMissionWithProgressRequest {}
+message DownloadMissionWithProgressResponse {
+    MissionResult mission_result = 1;
+    ProgressDataOrMission progress_data = 2; // The progress data, or the mission plan (when the download is finished)
 }
 
 message CancelMissionDownloadRequest {}
@@ -216,8 +250,23 @@ message MissionResult {
         RESULT_UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
         RESULT_TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
         RESULT_NO_SYSTEM = 13; // No system connected
+        RESULT_NEXT = 14; // Intermediate message showing progress
     }
 
     Result result = 1; // Result enum value
     string result_str = 2; // Human-readable English string describing the result
+}
+
+// Progress data coming from mission upload.
+message ProgressData {
+    float progress = 1 [(mavsdk.options.default_value)="NaN"]; // Progress (0..1.0)
+}
+
+// Progress data coming from mission download, or the mission itself (if the transfer succeeds).
+message ProgressDataOrMission {
+    bool has_progress = 1 [(mavsdk.options.default_value)="false"]; // Whether this ProgressData contains a 'progress' status or not
+    float progress = 2 [(mavsdk.options.default_value)="NaN"]; // Progress (0..1.0)
+
+    bool has_mission = 3; // Whether this ProgressData contains a 'mission_plan' or not
+    MissionPlan mission_plan = 4; // Mission plan
 }
