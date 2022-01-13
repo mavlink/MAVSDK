@@ -976,6 +976,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
     command.params.maybe_param1 = static_cast<float>(mode_type);
 
     switch (_vehicle_type) {
+        case MAV_TYPE::MAV_TYPE_SURFACE_BOAT:
         case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
             if (flight_mode_to_ardupilot_rover_mode(flight_mode) == ardupilot::RoverMode::Unknown) {
                 LogErr() << "Cannot translate flight mode to ardupilot rover mode.";
@@ -1136,6 +1137,7 @@ SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t cust
 {
     if (_autopilot == Autopilot::ArduPilot) {
         switch (_vehicle_type) {
+            case MAV_TYPE::MAV_TYPE_SURFACE_BOAT:
             case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
                 return to_flight_mode_from_ardupilot_rover_mode(custom_mode);
             default:
