@@ -55,12 +55,14 @@ class MissionService final {
     //
     // The mission items are uploaded to a drone. Once uploaded the mission can be started and
     // executed even if the connection is lost.
-    virtual ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> AsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(AsyncSubscribeUploadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(SubscribeUploadMissionWithProgressRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> PrepareAsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(PrepareAsyncSubscribeUploadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> AsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(AsyncSubscribeUploadMissionWithProgressRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> PrepareAsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(PrepareAsyncSubscribeUploadMissionWithProgressRaw(context, request, cq));
     }
     //
     // Cancel an ongoing mission upload.
@@ -88,12 +90,14 @@ class MissionService final {
     //
     // Will fail if any of the downloaded mission items are not supported
     // by the MAVSDK API.
-    virtual ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> AsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(AsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(SubscribeDownloadMissionWithProgressRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> PrepareAsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(PrepareAsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> AsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(AsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> PrepareAsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(PrepareAsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq));
     }
     //
     // Cancel an ongoing mission download.
@@ -212,8 +216,7 @@ class MissionService final {
       //
       // The mission items are uploaded to a drone. Once uploaded the mission can be started and
       // executed even if the connection is lost.
-      virtual void SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* reactor) = 0;
       //
       // Cancel an ongoing mission upload.
       virtual void CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -230,8 +233,7 @@ class MissionService final {
       //
       // Will fail if any of the downloaded mission items are not supported
       // by the MAVSDK API.
-      virtual void SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* reactor) = 0;
       //
       // Cancel an ongoing mission download.
       virtual void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -293,14 +295,16 @@ class MissionService final {
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionResponse>* AsyncUploadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionResponse>* PrepareAsyncUploadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* AsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* PrepareAsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* SubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* AsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* PrepareAsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionUploadResponse>* AsyncCancelMissionUploadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionUploadResponse>* PrepareAsyncCancelMissionUploadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionResponse>* AsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionResponse>* PrepareAsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* AsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* PrepareAsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* SubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* AsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* PrepareAsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>* AsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>* PrepareAsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::StartMissionResponse>* AsyncStartMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -331,12 +335,14 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionResponse>> PrepareAsyncUploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionResponse>>(PrepareAsyncUploadMissionRaw(context, request, cq));
     }
-    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> AsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(AsyncSubscribeUploadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(SubscribeUploadMissionWithProgressRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> PrepareAsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(PrepareAsyncSubscribeUploadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> AsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(AsyncSubscribeUploadMissionWithProgressRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>> PrepareAsyncSubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>>(PrepareAsyncSubscribeUploadMissionWithProgressRaw(context, request, cq));
     }
     ::grpc::Status CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::CancelMissionUploadResponse>> AsyncCancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) {
@@ -352,12 +358,14 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionResponse>> PrepareAsyncDownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionResponse>>(PrepareAsyncDownloadMissionRaw(context, request, cq));
     }
-    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> AsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(AsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(SubscribeDownloadMissionWithProgressRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> PrepareAsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(PrepareAsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> AsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(AsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>> PrepareAsyncSubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>>(PrepareAsyncSubscribeDownloadMissionWithProgressRaw(context, request, cq));
     }
     ::grpc::Status CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>> AsyncCancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) {
@@ -429,14 +437,12 @@ class MissionService final {
      public:
       void UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response, std::function<void(::grpc::Status)>) override;
       void UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response, std::function<void(::grpc::Status)>) override;
-      void SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* reactor) override;
       void CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, std::function<void(::grpc::Status)>) override;
       void CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response, std::function<void(::grpc::Status)>) override;
       void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response, std::function<void(::grpc::Status)>) override;
-      void SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* reactor) override;
       void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)>) override;
       void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response, std::function<void(::grpc::Status)>) override;
@@ -467,14 +473,16 @@ class MissionService final {
     class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionResponse>* AsyncUploadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionResponse>* PrepareAsyncUploadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* AsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* PrepareAsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* SubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* AsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* PrepareAsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::CancelMissionUploadResponse>* AsyncCancelMissionUploadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::CancelMissionUploadResponse>* PrepareAsyncCancelMissionUploadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionResponse>* AsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionResponse>* PrepareAsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* AsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* PrepareAsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* SubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* AsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* PrepareAsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>* AsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>* PrepareAsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission::StartMissionResponse>* AsyncStartMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -526,7 +534,7 @@ class MissionService final {
     //
     // The mission items are uploaded to a drone. Once uploaded the mission can be started and
     // executed even if the connection is lost.
-    virtual ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response);
+    virtual ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* writer);
     //
     // Cancel an ongoing mission upload.
     virtual ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response);
@@ -541,7 +549,7 @@ class MissionService final {
     //
     // Will fail if any of the downloaded mission items are not supported
     // by the MAVSDK API.
-    virtual ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response);
+    virtual ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* writer);
     //
     // Cancel an ongoing mission download.
     virtual ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response);
@@ -621,12 +629,12 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeUploadMissionWithProgress(::grpc::ServerContext* context, ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestSubscribeUploadMissionWithProgress(::grpc::ServerContext* context, ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -681,12 +689,12 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestSubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(4, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -904,25 +912,20 @@ class MissionService final {
    public:
     WithCallbackMethod_SubscribeUploadMissionWithProgress() {
       ::grpc::Service::MarkMethodCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* response) { return this->SubscribeUploadMissionWithProgress(context, request, response); }));}
-    void SetMessageAllocatorFor_SubscribeUploadMissionWithProgress(
-        ::grpc::MessageAllocator< ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>*>(handler)
-              ->SetMessageAllocator(allocator);
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request) { return this->SubscribeUploadMissionWithProgress(context, request); }));
     }
     ~WithCallbackMethod_SubscribeUploadMissionWithProgress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* SubscribeUploadMissionWithProgress(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* SubscribeUploadMissionWithProgress(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_CancelMissionUpload : public BaseClass {
@@ -985,25 +988,20 @@ class MissionService final {
    public:
     WithCallbackMethod_SubscribeDownloadMissionWithProgress() {
       ::grpc::Service::MarkMethodCallback(4,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* response) { return this->SubscribeDownloadMissionWithProgress(context, request, response); }));}
-    void SetMessageAllocatorFor_SubscribeDownloadMissionWithProgress(
-        ::grpc::MessageAllocator< ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>*>(handler)
-              ->SetMessageAllocator(allocator);
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request) { return this->SubscribeDownloadMissionWithProgress(context, request); }));
     }
     ~WithCallbackMethod_SubscribeDownloadMissionWithProgress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* SubscribeDownloadMissionWithProgress(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* SubscribeDownloadMissionWithProgress(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_CancelMissionDownload : public BaseClass {
@@ -1274,7 +1272,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1325,7 +1323,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1515,12 +1513,12 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeUploadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestSubscribeUploadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1575,12 +1573,12 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestSubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(4, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1792,20 +1790,20 @@ class MissionService final {
    public:
     WithRawCallbackMethod_SubscribeUploadMissionWithProgress() {
       ::grpc::Service::MarkMethodRawCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SubscribeUploadMissionWithProgress(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeUploadMissionWithProgress(context, request); }));
     }
     ~WithRawCallbackMethod_SubscribeUploadMissionWithProgress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* SubscribeUploadMissionWithProgress(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeUploadMissionWithProgress(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_CancelMissionUpload : public BaseClass {
@@ -1858,20 +1856,20 @@ class MissionService final {
    public:
     WithRawCallbackMethod_SubscribeDownloadMissionWithProgress() {
       ::grpc::Service::MarkMethodRawCallback(4,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SubscribeDownloadMissionWithProgress(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeDownloadMissionWithProgress(context, request); }));
     }
     ~WithRawCallbackMethod_SubscribeDownloadMissionWithProgress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* /*response*/) override {
+    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* SubscribeDownloadMissionWithProgress(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeDownloadMissionWithProgress(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_CancelMissionDownload : public BaseClass {
@@ -2099,33 +2097,6 @@ class MissionService final {
     virtual ::grpc::Status StreamedUploadMission(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission::UploadMissionRequest,::mavsdk::rpc::mission::UploadMissionResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_SubscribeUploadMissionWithProgress : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithStreamedUnaryMethod_SubscribeUploadMissionWithProgress() {
-      ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* streamer) {
-                       return this->StreamedSubscribeUploadMissionWithProgress(context,
-                         streamer);
-                  }));
-    }
-    ~WithStreamedUnaryMethod_SubscribeUploadMissionWithProgress() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSubscribeUploadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest,::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* server_unary_streamer) = 0;
-  };
-  template <class BaseClass>
   class WithStreamedUnaryMethod_CancelMissionUpload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -2178,33 +2149,6 @@ class MissionService final {
     }
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedDownloadMission(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission::DownloadMissionRequest,::mavsdk::rpc::mission::DownloadMissionResponse>* server_unary_streamer) = 0;
-  };
-  template <class BaseClass>
-  class WithStreamedUnaryMethod_SubscribeDownloadMissionWithProgress : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithStreamedUnaryMethod_SubscribeDownloadMissionWithProgress() {
-      ::grpc::Service::MarkMethodStreamed(4,
-        new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* streamer) {
-                       return this->StreamedSubscribeDownloadMissionWithProgress(context,
-                         streamer);
-                  }));
-    }
-    ~WithStreamedUnaryMethod_SubscribeDownloadMissionWithProgress() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest,::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_CancelMissionDownload : public BaseClass {
@@ -2422,7 +2366,61 @@ class MissionService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetReturnToLaunchAfterMission(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest,::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_SubscribeUploadMissionWithProgress<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_SubscribeDownloadMissionWithProgress<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_IsMissionFinished<WithStreamedUnaryMethod_GetReturnToLaunchAfterMission<WithStreamedUnaryMethod_SetReturnToLaunchAfterMission<Service > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_IsMissionFinished<WithStreamedUnaryMethod_GetReturnToLaunchAfterMission<WithStreamedUnaryMethod_SetReturnToLaunchAfterMission<Service > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeUploadMissionWithProgress : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeUploadMissionWithProgress() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* streamer) {
+                       return this->StreamedSubscribeUploadMissionWithProgress(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeUploadMissionWithProgress() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeUploadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeUploadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest,::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeDownloadMissionWithProgress : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeDownloadMissionWithProgress() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* streamer) {
+                       return this->StreamedSubscribeDownloadMissionWithProgress(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeDownloadMissionWithProgress() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeDownloadMissionWithProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest,::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* server_split_streamer) = 0;
+  };
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeMissionProgress : public BaseClass {
    private:
@@ -2450,8 +2448,8 @@ class MissionService final {
     // replace default version of method with split streamed
     virtual ::grpc::Status StreamedSubscribeMissionProgress(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission::SubscribeMissionProgressRequest,::mavsdk::rpc::mission::MissionProgressResponse>* server_split_streamer) = 0;
   };
-  typedef WithSplitStreamingMethod_SubscribeMissionProgress<Service > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_SubscribeUploadMissionWithProgress<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_SubscribeDownloadMissionWithProgress<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_IsMissionFinished<WithSplitStreamingMethod_SubscribeMissionProgress<WithStreamedUnaryMethod_GetReturnToLaunchAfterMission<WithStreamedUnaryMethod_SetReturnToLaunchAfterMission<Service > > > > > > > > > > > > > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribeUploadMissionWithProgress<WithSplitStreamingMethod_SubscribeDownloadMissionWithProgress<WithSplitStreamingMethod_SubscribeMissionProgress<Service > > > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_UploadMission<WithSplitStreamingMethod_SubscribeUploadMissionWithProgress<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithSplitStreamingMethod_SubscribeDownloadMissionWithProgress<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_IsMissionFinished<WithSplitStreamingMethod_SubscribeMissionProgress<WithStreamedUnaryMethod_GetReturnToLaunchAfterMission<WithStreamedUnaryMethod_SetReturnToLaunchAfterMission<Service > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace mission

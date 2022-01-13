@@ -247,12 +247,13 @@ enum MissionResult_Result : int {
   MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD = 11,
   MissionResult_Result_RESULT_TRANSFER_CANCELLED = 12,
   MissionResult_Result_RESULT_NO_SYSTEM = 13,
+  MissionResult_Result_RESULT_NEXT = 14,
   MissionResult_Result_MissionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MissionResult_Result_MissionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MissionResult_Result_IsValid(int value);
 constexpr MissionResult_Result MissionResult_Result_Result_MIN = MissionResult_Result_RESULT_UNKNOWN;
-constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_NO_SYSTEM;
+constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_NEXT;
 constexpr int MissionResult_Result_Result_ARRAYSIZE = MissionResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionResult_Result_descriptor();
@@ -1713,23 +1714,23 @@ class DownloadMissionWithProgressResponse final :
       ::mavsdk::rpc::mission::MissionResult* mission_result);
   ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-  // .mavsdk.rpc.mission.ProgressData progress_data = 2;
+  // .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
   bool has_progress_data() const;
   private:
   bool _internal_has_progress_data() const;
   public:
   void clear_progress_data();
-  const ::mavsdk::rpc::mission::ProgressData& progress_data() const;
-  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::mission::ProgressData* release_progress_data();
-  ::mavsdk::rpc::mission::ProgressData* mutable_progress_data();
-  void set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* progress_data);
+  const ::mavsdk::rpc::mission::ProgressDataOrMission& progress_data() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::mission::ProgressDataOrMission* release_progress_data();
+  ::mavsdk::rpc::mission::ProgressDataOrMission* mutable_progress_data();
+  void set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* progress_data);
   private:
-  const ::mavsdk::rpc::mission::ProgressData& _internal_progress_data() const;
-  ::mavsdk::rpc::mission::ProgressData* _internal_mutable_progress_data();
+  const ::mavsdk::rpc::mission::ProgressDataOrMission& _internal_progress_data() const;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* _internal_mutable_progress_data();
   public:
   void unsafe_arena_set_allocated_progress_data(
-      ::mavsdk::rpc::mission::ProgressData* progress_data);
-  ::mavsdk::rpc::mission::ProgressData* unsafe_arena_release_progress_data();
+      ::mavsdk::rpc::mission::ProgressDataOrMission* progress_data);
+  ::mavsdk::rpc::mission::ProgressDataOrMission* unsafe_arena_release_progress_data();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadMissionWithProgressResponse)
  private:
@@ -1739,7 +1740,7 @@ class DownloadMissionWithProgressResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::mavsdk::rpc::mission::MissionResult* mission_result_;
-  ::mavsdk::rpc::mission::ProgressData* progress_data_;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* progress_data_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -5007,6 +5008,8 @@ class MissionResult final :
     MissionResult_Result_RESULT_TRANSFER_CANCELLED;
   static constexpr Result RESULT_NO_SYSTEM =
     MissionResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_NEXT =
+    MissionResult_Result_RESULT_NEXT;
   static inline bool Result_IsValid(int value) {
     return MissionResult_Result_IsValid(value);
   }
@@ -5332,7 +5335,7 @@ class ProgressDataOrMission final :
     kMissionPlanFieldNumber = 4,
     kProgressFieldNumber = 2,
     kHasProgressFieldNumber = 1,
-    kHasMissionPlanFieldNumber = 3,
+    kHasMissionFieldNumber = 3,
   };
   // .mavsdk.rpc.mission.MissionPlan mission_plan = 4;
   bool has_mission_plan() const;
@@ -5370,13 +5373,13 @@ class ProgressDataOrMission final :
   void _internal_set_has_progress(bool value);
   public:
 
-  // bool has_mission_plan = 3;
-  void clear_has_mission_plan();
-  bool has_mission_plan() const;
-  void set_has_mission_plan(bool value);
+  // bool has_mission = 3;
+  void clear_has_mission();
+  bool has_mission() const;
+  void set_has_mission(bool value);
   private:
-  bool _internal_has_mission_plan() const;
-  void _internal_set_has_mission_plan(bool value);
+  bool _internal_has_mission() const;
+  void _internal_set_has_mission(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ProgressDataOrMission)
@@ -5389,7 +5392,7 @@ class ProgressDataOrMission final :
   ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
   float progress_;
   bool has_progress_;
-  bool has_mission_plan_;
+  bool has_mission_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -6250,7 +6253,7 @@ inline void DownloadMissionWithProgressResponse::set_allocated_mission_result(::
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
 }
 
-// .mavsdk.rpc.mission.ProgressData progress_data = 2;
+// .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
 inline bool DownloadMissionWithProgressResponse::_internal_has_progress_data() const {
   return this != internal_default_instance() && progress_data_ != nullptr;
 }
@@ -6263,17 +6266,17 @@ inline void DownloadMissionWithProgressResponse::clear_progress_data() {
   }
   progress_data_ = nullptr;
 }
-inline const ::mavsdk::rpc::mission::ProgressData& DownloadMissionWithProgressResponse::_internal_progress_data() const {
-  const ::mavsdk::rpc::mission::ProgressData* p = progress_data_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::ProgressData&>(
-      ::mavsdk::rpc::mission::_ProgressData_default_instance_);
+inline const ::mavsdk::rpc::mission::ProgressDataOrMission& DownloadMissionWithProgressResponse::_internal_progress_data() const {
+  const ::mavsdk::rpc::mission::ProgressDataOrMission* p = progress_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::ProgressDataOrMission&>(
+      ::mavsdk::rpc::mission::_ProgressDataOrMission_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::ProgressData& DownloadMissionWithProgressResponse::progress_data() const {
+inline const ::mavsdk::rpc::mission::ProgressDataOrMission& DownloadMissionWithProgressResponse::progress_data() const {
   // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
   return _internal_progress_data();
 }
 inline void DownloadMissionWithProgressResponse::unsafe_arena_set_allocated_progress_data(
-    ::mavsdk::rpc::mission::ProgressData* progress_data) {
+    ::mavsdk::rpc::mission::ProgressDataOrMission* progress_data) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(progress_data_);
   }
@@ -6285,9 +6288,9 @@ inline void DownloadMissionWithProgressResponse::unsafe_arena_set_allocated_prog
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
 }
-inline ::mavsdk::rpc::mission::ProgressData* DownloadMissionWithProgressResponse::release_progress_data() {
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::release_progress_data() {
   
-  ::mavsdk::rpc::mission::ProgressData* temp = progress_data_;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* temp = progress_data_;
   progress_data_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -6300,34 +6303,34 @@ inline ::mavsdk::rpc::mission::ProgressData* DownloadMissionWithProgressResponse
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::mavsdk::rpc::mission::ProgressData* DownloadMissionWithProgressResponse::unsafe_arena_release_progress_data() {
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::unsafe_arena_release_progress_data() {
   // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
   
-  ::mavsdk::rpc::mission::ProgressData* temp = progress_data_;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* temp = progress_data_;
   progress_data_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::mission::ProgressData* DownloadMissionWithProgressResponse::_internal_mutable_progress_data() {
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::_internal_mutable_progress_data() {
   
   if (progress_data_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::ProgressData>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission::ProgressDataOrMission>(GetArenaForAllocation());
     progress_data_ = p;
   }
   return progress_data_;
 }
-inline ::mavsdk::rpc::mission::ProgressData* DownloadMissionWithProgressResponse::mutable_progress_data() {
-  ::mavsdk::rpc::mission::ProgressData* _msg = _internal_mutable_progress_data();
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::mutable_progress_data() {
+  ::mavsdk::rpc::mission::ProgressDataOrMission* _msg = _internal_mutable_progress_data();
   // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
   return _msg;
 }
-inline void DownloadMissionWithProgressResponse::set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* progress_data) {
+inline void DownloadMissionWithProgressResponse::set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* progress_data) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete progress_data_;
   }
   if (progress_data) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::mission::ProgressData>::GetOwningArena(progress_data);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::mission::ProgressDataOrMission>::GetOwningArena(progress_data);
     if (message_arena != submessage_arena) {
       progress_data = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, progress_data, submessage_arena);
@@ -7792,24 +7795,24 @@ inline void ProgressDataOrMission::set_progress(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.progress)
 }
 
-// bool has_mission_plan = 3;
-inline void ProgressDataOrMission::clear_has_mission_plan() {
-  has_mission_plan_ = false;
+// bool has_mission = 3;
+inline void ProgressDataOrMission::clear_has_mission() {
+  has_mission_ = false;
 }
-inline bool ProgressDataOrMission::_internal_has_mission_plan() const {
-  return has_mission_plan_;
+inline bool ProgressDataOrMission::_internal_has_mission() const {
+  return has_mission_;
 }
-inline bool ProgressDataOrMission::has_mission_plan() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.has_mission_plan)
-  return _internal_has_mission_plan();
+inline bool ProgressDataOrMission::has_mission() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.has_mission)
+  return _internal_has_mission();
 }
-inline void ProgressDataOrMission::_internal_set_has_mission_plan(bool value) {
+inline void ProgressDataOrMission::_internal_set_has_mission(bool value) {
   
-  has_mission_plan_ = value;
+  has_mission_ = value;
 }
-inline void ProgressDataOrMission::set_has_mission_plan(bool value) {
-  _internal_set_has_mission_plan(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.has_mission_plan)
+inline void ProgressDataOrMission::set_has_mission(bool value) {
+  _internal_set_has_mission(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.has_mission)
 }
 
 // .mavsdk.rpc.mission.MissionPlan mission_plan = 4;

@@ -431,7 +431,7 @@ constexpr ProgressDataOrMission::ProgressDataOrMission(
   : mission_plan_(nullptr)
   , progress_(0)
   , has_progress_(false)
-  , has_mission_plan_(false){}
+  , has_mission_(false){}
 struct ProgressDataOrMissionDefaultTypeInternal {
   constexpr ProgressDataOrMissionDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -663,7 +663,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_mission_2fmission_2eproto::off
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission::ProgressDataOrMission, has_progress_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission::ProgressDataOrMission, progress_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission::ProgressDataOrMission, has_mission_plan_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission::ProgressDataOrMission, has_mission_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission::ProgressDataOrMission, mission_plan_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -761,133 +761,133 @@ const char descriptor_table_protodef_mission_2fmission_2eproto[] PROTOBUF_SECTIO
   "2!.mavsdk.rpc.mission.MissionResult\0225\n\014m"
   "ission_plan\030\002 \001(\0132\037.mavsdk.rpc.mission.M"
   "issionPlan\"-\n+SubscribeDownloadMissionWi"
-  "thProgressRequest\"\231\001\n#DownloadMissionWit"
+  "thProgressRequest\"\242\001\n#DownloadMissionWit"
   "hProgressResponse\0229\n\016mission_result\030\001 \001("
-  "\0132!.mavsdk.rpc.mission.MissionResult\0227\n\r"
-  "progress_data\030\002 \001(\0132 .mavsdk.rpc.mission"
-  ".ProgressData\"\036\n\034CancelMissionDownloadRe"
-  "quest\"Z\n\035CancelMissionDownloadResponse\0229"
-  "\n\016mission_result\030\001 \001(\0132!.mavsdk.rpc.miss"
-  "ion.MissionResult\"\025\n\023StartMissionRequest"
-  "\"Q\n\024StartMissionResponse\0229\n\016mission_resu"
+  "\0132!.mavsdk.rpc.mission.MissionResult\022@\n\r"
+  "progress_data\030\002 \001(\0132).mavsdk.rpc.mission"
+  ".ProgressDataOrMission\"\036\n\034CancelMissionD"
+  "ownloadRequest\"Z\n\035CancelMissionDownloadR"
+  "esponse\0229\n\016mission_result\030\001 \001(\0132!.mavsdk"
+  ".rpc.mission.MissionResult\"\025\n\023StartMissi"
+  "onRequest\"Q\n\024StartMissionResponse\0229\n\016mis"
+  "sion_result\030\001 \001(\0132!.mavsdk.rpc.mission.M"
+  "issionResult\"\025\n\023PauseMissionRequest\"Q\n\024P"
+  "auseMissionResponse\0229\n\016mission_result\030\001 "
+  "\001(\0132!.mavsdk.rpc.mission.MissionResult\"\025"
+  "\n\023ClearMissionRequest\"Q\n\024ClearMissionRes"
+  "ponse\0229\n\016mission_result\030\001 \001(\0132!.mavsdk.r"
+  "pc.mission.MissionResult\"-\n\034SetCurrentMi"
+  "ssionItemRequest\022\r\n\005index\030\001 \001(\005\"Z\n\035SetCu"
+  "rrentMissionItemResponse\0229\n\016mission_resu"
   "lt\030\001 \001(\0132!.mavsdk.rpc.mission.MissionRes"
-  "ult\"\025\n\023PauseMissionRequest\"Q\n\024PauseMissi"
-  "onResponse\0229\n\016mission_result\030\001 \001(\0132!.mav"
-  "sdk.rpc.mission.MissionResult\"\025\n\023ClearMi"
-  "ssionRequest\"Q\n\024ClearMissionResponse\0229\n\016"
-  "mission_result\030\001 \001(\0132!.mavsdk.rpc.missio"
-  "n.MissionResult\"-\n\034SetCurrentMissionItem"
-  "Request\022\r\n\005index\030\001 \001(\005\"Z\n\035SetCurrentMiss"
-  "ionItemResponse\0229\n\016mission_result\030\001 \001(\0132"
-  "!.mavsdk.rpc.mission.MissionResult\"\032\n\030Is"
-  "MissionFinishedRequest\"k\n\031IsMissionFinis"
-  "hedResponse\0229\n\016mission_result\030\001 \001(\0132!.ma"
-  "vsdk.rpc.mission.MissionResult\022\023\n\013is_fin"
-  "ished\030\002 \001(\010\"!\n\037SubscribeMissionProgressR"
-  "equest\"X\n\027MissionProgressResponse\022=\n\020mis"
-  "sion_progress\030\001 \001(\0132#.mavsdk.rpc.mission"
-  ".MissionProgress\"&\n$GetReturnToLaunchAft"
-  "erMissionRequest\"r\n%GetReturnToLaunchAft"
-  "erMissionResponse\0229\n\016mission_result\030\001 \001("
-  "\0132!.mavsdk.rpc.mission.MissionResult\022\016\n\006"
-  "enable\030\002 \001(\010\"6\n$SetReturnToLaunchAfterMi"
-  "ssionRequest\022\016\n\006enable\030\001 \001(\010\"b\n%SetRetur"
-  "nToLaunchAfterMissionResponse\0229\n\016mission"
-  "_result\030\001 \001(\0132!.mavsdk.rpc.mission.Missi"
-  "onResult\"\274\006\n\013MissionItem\022(\n\014latitude_deg"
-  "\030\001 \001(\001B\022\202\265\030\003NaN\211\265\030H\257\274\232\362\327z>\022)\n\rlongitude_"
-  "deg\030\002 \001(\001B\022\202\265\030\003NaN\211\265\030H\257\274\232\362\327z>\022$\n\023relativ"
-  "e_altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022\032\n\tspeed_m_s"
-  "\030\004 \001(\002B\007\202\265\030\003NaN\022!\n\016is_fly_through\030\005 \001(\010B"
-  "\t\202\265\030\005false\022,\n\020gimbal_pitch_deg\030\006 \001(\002B\022\202\265"
-  "\030\003NaN\211\265\030-C\034\353\3426\032\?\022*\n\016gimbal_yaw_deg\030\007 \001(\002"
-  "B\022\202\265\030\003NaN\211\265\030-C\034\353\3426\032\?\022C\n\rcamera_action\030\010 "
-  "\001(\0162,.mavsdk.rpc.mission.MissionItem.Cam"
-  "eraAction\022\036\n\rloiter_time_s\030\t \001(\002B\007\202\265\030\003Na"
-  "N\022(\n\027camera_photo_interval_s\030\n \001(\001B\007\202\265\030\003"
-  "1.0\022$\n\023acceptance_radius_m\030\013 \001(\002B\007\202\265\030\003Na"
-  "N\022\030\n\007yaw_deg\030\014 \001(\002B\007\202\265\030\003NaN\022(\n\027camera_ph"
-  "oto_distance_m\030\r \001(\002B\007\202\265\030\003NAN\"\237\002\n\014Camera"
-  "Action\022\026\n\022CAMERA_ACTION_NONE\020\000\022\034\n\030CAMERA"
-  "_ACTION_TAKE_PHOTO\020\001\022&\n\"CAMERA_ACTION_ST"
-  "ART_PHOTO_INTERVAL\020\002\022%\n!CAMERA_ACTION_ST"
-  "OP_PHOTO_INTERVAL\020\003\022\035\n\031CAMERA_ACTION_STA"
-  "RT_VIDEO\020\004\022\034\n\030CAMERA_ACTION_STOP_VIDEO\020\005"
-  "\022&\n\"CAMERA_ACTION_START_PHOTO_DISTANCE\020\006"
-  "\022%\n!CAMERA_ACTION_STOP_PHOTO_DISTANCE\020\007\""
-  "E\n\013MissionPlan\0226\n\rmission_items\030\001 \003(\0132\037."
-  "mavsdk.rpc.mission.MissionItem\"1\n\017Missio"
-  "nProgress\022\017\n\007current\030\001 \001(\005\022\r\n\005total\030\002 \001("
-  "\005\"\231\003\n\rMissionResult\0228\n\006result\030\001 \001(\0162(.ma"
-  "vsdk.rpc.mission.MissionResult.Result\022\022\n"
-  "\nresult_str\030\002 \001(\t\"\271\002\n\006Result\022\022\n\016RESULT_U"
-  "NKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_E"
-  "RROR\020\002\022!\n\035RESULT_TOO_MANY_MISSION_ITEMS\020"
-  "\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016RESULT_TIMEOUT\020\005\022\033"
-  "\n\027RESULT_INVALID_ARGUMENT\020\006\022\026\n\022RESULT_UN"
-  "SUPPORTED\020\007\022\037\n\033RESULT_NO_MISSION_AVAILAB"
-  "LE\020\010\022\"\n\036RESULT_UNSUPPORTED_MISSION_CMD\020\013"
-  "\022\035\n\031RESULT_TRANSFER_CANCELLED\020\014\022\024\n\020RESUL"
-  "T_NO_SYSTEM\020\r\")\n\014ProgressData\022\031\n\010progres"
-  "s\030\001 \001(\002B\007\202\265\030\003NaN\"\244\001\n\025ProgressDataOrMissi"
-  "on\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005false\022\031\n\010p"
-  "rogress\030\002 \001(\002B\007\202\265\030\003NaN\022\030\n\020has_mission_pl"
-  "an\030\003 \001(\010\0225\n\014mission_plan\030\004 \001(\0132\037.mavsdk."
-  "rpc.mission.MissionPlan2\231\016\n\016MissionServi"
-  "ce\022f\n\rUploadMission\022(.mavsdk.rpc.mission"
-  ".UploadMissionRequest\032).mavsdk.rpc.missi"
-  "on.UploadMissionResponse\"\000\022\240\001\n\"Subscribe"
-  "UploadMissionWithProgress\022=.mavsdk.rpc.m"
-  "ission.SubscribeUploadMissionWithProgres"
-  "sRequest\0325.mavsdk.rpc.mission.UploadMiss"
-  "ionWithProgressResponse\"\004\200\265\030\001\022|\n\023CancelM"
-  "issionUpload\022..mavsdk.rpc.mission.Cancel"
-  "MissionUploadRequest\032/.mavsdk.rpc.missio"
-  "n.CancelMissionUploadResponse\"\004\200\265\030\001\022l\n\017D"
-  "ownloadMission\022*.mavsdk.rpc.mission.Down"
-  "loadMissionRequest\032+.mavsdk.rpc.mission."
-  "DownloadMissionResponse\"\000\022\246\001\n$SubscribeD"
-  "ownloadMissionWithProgress\022\?.mavsdk.rpc."
-  "mission.SubscribeDownloadMissionWithProg"
-  "ressRequest\0327.mavsdk.rpc.mission.Downloa"
-  "dMissionWithProgressResponse\"\004\200\265\030\001\022\202\001\n\025C"
-  "ancelMissionDownload\0220.mavsdk.rpc.missio"
-  "n.CancelMissionDownloadRequest\0321.mavsdk."
-  "rpc.mission.CancelMissionDownloadRespons"
-  "e\"\004\200\265\030\001\022c\n\014StartMission\022\'.mavsdk.rpc.mis"
-  "sion.StartMissionRequest\032(.mavsdk.rpc.mi"
-  "ssion.StartMissionResponse\"\000\022c\n\014PauseMis"
-  "sion\022\'.mavsdk.rpc.mission.PauseMissionRe"
-  "quest\032(.mavsdk.rpc.mission.PauseMissionR"
-  "esponse\"\000\022c\n\014ClearMission\022\'.mavsdk.rpc.m"
-  "ission.ClearMissionRequest\032(.mavsdk.rpc."
-  "mission.ClearMissionResponse\"\000\022~\n\025SetCur"
-  "rentMissionItem\0220.mavsdk.rpc.mission.Set"
-  "CurrentMissionItemRequest\0321.mavsdk.rpc.m"
-  "ission.SetCurrentMissionItemResponse\"\000\022v"
-  "\n\021IsMissionFinished\022,.mavsdk.rpc.mission"
-  ".IsMissionFinishedRequest\032-.mavsdk.rpc.m"
-  "ission.IsMissionFinishedResponse\"\004\200\265\030\001\022\200"
-  "\001\n\030SubscribeMissionProgress\0223.mavsdk.rpc"
-  ".mission.SubscribeMissionProgressRequest"
-  "\032+.mavsdk.rpc.mission.MissionProgressRes"
-  "ponse\"\0000\001\022\232\001\n\035GetReturnToLaunchAfterMiss"
-  "ion\0228.mavsdk.rpc.mission.GetReturnToLaun"
-  "chAfterMissionRequest\0329.mavsdk.rpc.missi"
-  "on.GetReturnToLaunchAfterMissionResponse"
-  "\"\004\200\265\030\001\022\232\001\n\035SetReturnToLaunchAfterMission"
-  "\0228.mavsdk.rpc.mission.SetReturnToLaunchA"
-  "fterMissionRequest\0329.mavsdk.rpc.mission."
-  "SetReturnToLaunchAfterMissionResponse\"\004\200"
-  "\265\030\001B!\n\021io.mavsdk.missionB\014MissionProtob\006"
-  "proto3"
+  "ult\"\032\n\030IsMissionFinishedRequest\"k\n\031IsMis"
+  "sionFinishedResponse\0229\n\016mission_result\030\001"
+  " \001(\0132!.mavsdk.rpc.mission.MissionResult\022"
+  "\023\n\013is_finished\030\002 \001(\010\"!\n\037SubscribeMission"
+  "ProgressRequest\"X\n\027MissionProgressRespon"
+  "se\022=\n\020mission_progress\030\001 \001(\0132#.mavsdk.rp"
+  "c.mission.MissionProgress\"&\n$GetReturnTo"
+  "LaunchAfterMissionRequest\"r\n%GetReturnTo"
+  "LaunchAfterMissionResponse\0229\n\016mission_re"
+  "sult\030\001 \001(\0132!.mavsdk.rpc.mission.MissionR"
+  "esult\022\016\n\006enable\030\002 \001(\010\"6\n$SetReturnToLaun"
+  "chAfterMissionRequest\022\016\n\006enable\030\001 \001(\010\"b\n"
+  "%SetReturnToLaunchAfterMissionResponse\0229"
+  "\n\016mission_result\030\001 \001(\0132!.mavsdk.rpc.miss"
+  "ion.MissionResult\"\274\006\n\013MissionItem\022(\n\014lat"
+  "itude_deg\030\001 \001(\001B\022\202\265\030\003NaN\211\265\030H\257\274\232\362\327z>\022)\n\rl"
+  "ongitude_deg\030\002 \001(\001B\022\202\265\030\003NaN\211\265\030H\257\274\232\362\327z>\022$"
+  "\n\023relative_altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022\032\n\t"
+  "speed_m_s\030\004 \001(\002B\007\202\265\030\003NaN\022!\n\016is_fly_throu"
+  "gh\030\005 \001(\010B\t\202\265\030\005false\022,\n\020gimbal_pitch_deg\030"
+  "\006 \001(\002B\022\202\265\030\003NaN\211\265\030-C\034\353\3426\032\?\022*\n\016gimbal_yaw_"
+  "deg\030\007 \001(\002B\022\202\265\030\003NaN\211\265\030-C\034\353\3426\032\?\022C\n\rcamera_"
+  "action\030\010 \001(\0162,.mavsdk.rpc.mission.Missio"
+  "nItem.CameraAction\022\036\n\rloiter_time_s\030\t \001("
+  "\002B\007\202\265\030\003NaN\022(\n\027camera_photo_interval_s\030\n "
+  "\001(\001B\007\202\265\030\0031.0\022$\n\023acceptance_radius_m\030\013 \001("
+  "\002B\007\202\265\030\003NaN\022\030\n\007yaw_deg\030\014 \001(\002B\007\202\265\030\003NaN\022(\n\027"
+  "camera_photo_distance_m\030\r \001(\002B\007\202\265\030\003NAN\"\237"
+  "\002\n\014CameraAction\022\026\n\022CAMERA_ACTION_NONE\020\000\022"
+  "\034\n\030CAMERA_ACTION_TAKE_PHOTO\020\001\022&\n\"CAMERA_"
+  "ACTION_START_PHOTO_INTERVAL\020\002\022%\n!CAMERA_"
+  "ACTION_STOP_PHOTO_INTERVAL\020\003\022\035\n\031CAMERA_A"
+  "CTION_START_VIDEO\020\004\022\034\n\030CAMERA_ACTION_STO"
+  "P_VIDEO\020\005\022&\n\"CAMERA_ACTION_START_PHOTO_D"
+  "ISTANCE\020\006\022%\n!CAMERA_ACTION_STOP_PHOTO_DI"
+  "STANCE\020\007\"E\n\013MissionPlan\0226\n\rmission_items"
+  "\030\001 \003(\0132\037.mavsdk.rpc.mission.MissionItem\""
+  "1\n\017MissionProgress\022\017\n\007current\030\001 \001(\005\022\r\n\005t"
+  "otal\030\002 \001(\005\"\252\003\n\rMissionResult\0228\n\006result\030\001"
+  " \001(\0162(.mavsdk.rpc.mission.MissionResult."
+  "Result\022\022\n\nresult_str\030\002 \001(\t\"\312\002\n\006Result\022\022\n"
+  "\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n"
+  "\014RESULT_ERROR\020\002\022!\n\035RESULT_TOO_MANY_MISSI"
+  "ON_ITEMS\020\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016RESULT_TI"
+  "MEOUT\020\005\022\033\n\027RESULT_INVALID_ARGUMENT\020\006\022\026\n\022"
+  "RESULT_UNSUPPORTED\020\007\022\037\n\033RESULT_NO_MISSIO"
+  "N_AVAILABLE\020\010\022\"\n\036RESULT_UNSUPPORTED_MISS"
+  "ION_CMD\020\013\022\035\n\031RESULT_TRANSFER_CANCELLED\020\014"
+  "\022\024\n\020RESULT_NO_SYSTEM\020\r\022\017\n\013RESULT_NEXT\020\016\""
+  ")\n\014ProgressData\022\031\n\010progress\030\001 \001(\002B\007\202\265\030\003N"
+  "aN\"\237\001\n\025ProgressDataOrMission\022\037\n\014has_prog"
+  "ress\030\001 \001(\010B\t\202\265\030\005false\022\031\n\010progress\030\002 \001(\002B"
+  "\007\202\265\030\003NaN\022\023\n\013has_mission\030\003 \001(\010\0225\n\014mission"
+  "_plan\030\004 \001(\0132\037.mavsdk.rpc.mission.Mission"
+  "Plan2\245\016\n\016MissionService\022f\n\rUploadMission"
+  "\022(.mavsdk.rpc.mission.UploadMissionReque"
+  "st\032).mavsdk.rpc.mission.UploadMissionRes"
+  "ponse\"\000\022\246\001\n\"SubscribeUploadMissionWithPr"
+  "ogress\022=.mavsdk.rpc.mission.SubscribeUpl"
+  "oadMissionWithProgressRequest\0325.mavsdk.r"
+  "pc.mission.UploadMissionWithProgressResp"
+  "onse\"\010\200\265\030\000\210\265\030\0010\001\022|\n\023CancelMissionUpload\022"
+  "..mavsdk.rpc.mission.CancelMissionUpload"
+  "Request\032/.mavsdk.rpc.mission.CancelMissi"
+  "onUploadResponse\"\004\200\265\030\001\022l\n\017DownloadMissio"
+  "n\022*.mavsdk.rpc.mission.DownloadMissionRe"
+  "quest\032+.mavsdk.rpc.mission.DownloadMissi"
+  "onResponse\"\000\022\254\001\n$SubscribeDownloadMissio"
+  "nWithProgress\022\?.mavsdk.rpc.mission.Subsc"
+  "ribeDownloadMissionWithProgressRequest\0327"
+  ".mavsdk.rpc.mission.DownloadMissionWithP"
+  "rogressResponse\"\010\200\265\030\000\210\265\030\0010\001\022\202\001\n\025CancelMi"
+  "ssionDownload\0220.mavsdk.rpc.mission.Cance"
+  "lMissionDownloadRequest\0321.mavsdk.rpc.mis"
+  "sion.CancelMissionDownloadResponse\"\004\200\265\030\001"
+  "\022c\n\014StartMission\022\'.mavsdk.rpc.mission.St"
+  "artMissionRequest\032(.mavsdk.rpc.mission.S"
+  "tartMissionResponse\"\000\022c\n\014PauseMission\022\'."
+  "mavsdk.rpc.mission.PauseMissionRequest\032("
+  ".mavsdk.rpc.mission.PauseMissionResponse"
+  "\"\000\022c\n\014ClearMission\022\'.mavsdk.rpc.mission."
+  "ClearMissionRequest\032(.mavsdk.rpc.mission"
+  ".ClearMissionResponse\"\000\022~\n\025SetCurrentMis"
+  "sionItem\0220.mavsdk.rpc.mission.SetCurrent"
+  "MissionItemRequest\0321.mavsdk.rpc.mission."
+  "SetCurrentMissionItemResponse\"\000\022v\n\021IsMis"
+  "sionFinished\022,.mavsdk.rpc.mission.IsMiss"
+  "ionFinishedRequest\032-.mavsdk.rpc.mission."
+  "IsMissionFinishedResponse\"\004\200\265\030\001\022\200\001\n\030Subs"
+  "cribeMissionProgress\0223.mavsdk.rpc.missio"
+  "n.SubscribeMissionProgressRequest\032+.mavs"
+  "dk.rpc.mission.MissionProgressResponse\"\000"
+  "0\001\022\232\001\n\035GetReturnToLaunchAfterMission\0228.m"
+  "avsdk.rpc.mission.GetReturnToLaunchAfter"
+  "MissionRequest\0329.mavsdk.rpc.mission.GetR"
+  "eturnToLaunchAfterMissionResponse\"\004\200\265\030\001\022"
+  "\232\001\n\035SetReturnToLaunchAfterMission\0228.mavs"
+  "dk.rpc.mission.SetReturnToLaunchAfterMis"
+  "sionRequest\0329.mavsdk.rpc.mission.SetRetu"
+  "rnToLaunchAfterMissionResponse\"\004\200\265\030\001B!\n\021"
+  "io.mavsdk.missionB\014MissionProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mission_2fmission_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mission_2fmission_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mission_2fmission_2eproto = {
-  false, false, 5566, descriptor_table_protodef_mission_2fmission_2eproto, "mission/mission.proto", 
+  false, false, 5599, descriptor_table_protodef_mission_2fmission_2eproto, "mission/mission.proto", 
   &descriptor_table_mission_2fmission_2eproto_once, descriptor_table_mission_2fmission_2eproto_deps, 1, 34,
   schemas, file_default_instances, TableStruct_mission_2fmission_2eproto::offsets,
   file_level_metadata_mission_2fmission_2eproto, file_level_enum_descriptors_mission_2fmission_2eproto, file_level_service_descriptors_mission_2fmission_2eproto,
@@ -952,6 +952,7 @@ bool MissionResult_Result_IsValid(int value) {
     case 11:
     case 12:
     case 13:
+    case 14:
       return true;
     default:
       return false;
@@ -971,6 +972,7 @@ constexpr MissionResult_Result MissionResult::RESULT_NO_MISSION_AVAILABLE;
 constexpr MissionResult_Result MissionResult::RESULT_UNSUPPORTED_MISSION_CMD;
 constexpr MissionResult_Result MissionResult::RESULT_TRANSFER_CANCELLED;
 constexpr MissionResult_Result MissionResult::RESULT_NO_SYSTEM;
+constexpr MissionResult_Result MissionResult::RESULT_NEXT;
 constexpr MissionResult_Result MissionResult::Result_MIN;
 constexpr MissionResult_Result MissionResult::Result_MAX;
 constexpr int MissionResult::Result_ARRAYSIZE;
@@ -2736,14 +2738,14 @@ void SubscribeDownloadMissionWithProgressRequest::InternalSwap(SubscribeDownload
 class DownloadMissionWithProgressResponse::_Internal {
  public:
   static const ::mavsdk::rpc::mission::MissionResult& mission_result(const DownloadMissionWithProgressResponse* msg);
-  static const ::mavsdk::rpc::mission::ProgressData& progress_data(const DownloadMissionWithProgressResponse* msg);
+  static const ::mavsdk::rpc::mission::ProgressDataOrMission& progress_data(const DownloadMissionWithProgressResponse* msg);
 };
 
 const ::mavsdk::rpc::mission::MissionResult&
 DownloadMissionWithProgressResponse::_Internal::mission_result(const DownloadMissionWithProgressResponse* msg) {
   return *msg->mission_result_;
 }
-const ::mavsdk::rpc::mission::ProgressData&
+const ::mavsdk::rpc::mission::ProgressDataOrMission&
 DownloadMissionWithProgressResponse::_Internal::progress_data(const DownloadMissionWithProgressResponse* msg) {
   return *msg->progress_data_;
 }
@@ -2765,7 +2767,7 @@ DownloadMissionWithProgressResponse::DownloadMissionWithProgressResponse(const D
     mission_result_ = nullptr;
   }
   if (from._internal_has_progress_data()) {
-    progress_data_ = new ::mavsdk::rpc::mission::ProgressData(*from.progress_data_);
+    progress_data_ = new ::mavsdk::rpc::mission::ProgressDataOrMission(*from.progress_data_);
   } else {
     progress_data_ = nullptr;
   }
@@ -2832,7 +2834,7 @@ const char* DownloadMissionWithProgressResponse::_InternalParse(const char* ptr,
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .mavsdk.rpc.mission.ProgressData progress_data = 2;
+      // .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_progress_data(), ptr);
@@ -2876,7 +2878,7 @@ failure:
         1, _Internal::mission_result(this), target, stream);
   }
 
-  // .mavsdk.rpc.mission.ProgressData progress_data = 2;
+  // .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
   if (this->_internal_has_progress_data()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
@@ -2907,7 +2909,7 @@ size_t DownloadMissionWithProgressResponse::ByteSizeLong() const {
         *mission_result_);
   }
 
-  // .mavsdk.rpc.mission.ProgressData progress_data = 2;
+  // .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
   if (this->_internal_has_progress_data()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -2946,7 +2948,7 @@ void DownloadMissionWithProgressResponse::MergeFrom(const DownloadMissionWithPro
     _internal_mutable_mission_result()->::mavsdk::rpc::mission::MissionResult::MergeFrom(from._internal_mission_result());
   }
   if (from._internal_has_progress_data()) {
-    _internal_mutable_progress_data()->::mavsdk::rpc::mission::ProgressData::MergeFrom(from._internal_progress_data());
+    _internal_mutable_progress_data()->::mavsdk::rpc::mission::ProgressDataOrMission::MergeFrom(from._internal_progress_data());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -7580,16 +7582,16 @@ ProgressDataOrMission::ProgressDataOrMission(const ProgressDataOrMission& from)
     mission_plan_ = nullptr;
   }
   ::memcpy(&progress_, &from.progress_,
-    static_cast<size_t>(reinterpret_cast<char*>(&has_mission_plan_) -
-    reinterpret_cast<char*>(&progress_)) + sizeof(has_mission_plan_));
+    static_cast<size_t>(reinterpret_cast<char*>(&has_mission_) -
+    reinterpret_cast<char*>(&progress_)) + sizeof(has_mission_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mission.ProgressDataOrMission)
 }
 
 inline void ProgressDataOrMission::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&mission_plan_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&has_mission_plan_) -
-    reinterpret_cast<char*>(&mission_plan_)) + sizeof(has_mission_plan_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&has_mission_) -
+    reinterpret_cast<char*>(&mission_plan_)) + sizeof(has_mission_));
 }
 
 ProgressDataOrMission::~ProgressDataOrMission() {
@@ -7625,8 +7627,8 @@ void ProgressDataOrMission::Clear() {
   }
   mission_plan_ = nullptr;
   ::memset(&progress_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&has_mission_plan_) -
-      reinterpret_cast<char*>(&progress_)) + sizeof(has_mission_plan_));
+      reinterpret_cast<char*>(&has_mission_) -
+      reinterpret_cast<char*>(&progress_)) + sizeof(has_mission_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -7650,10 +7652,10 @@ const char* ProgressDataOrMission::_InternalParse(const char* ptr, ::PROTOBUF_NA
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // bool has_mission_plan = 3;
+      // bool has_mission = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          has_mission_plan_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          has_mission_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -7705,10 +7707,10 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_progress(), target);
   }
 
-  // bool has_mission_plan = 3;
-  if (this->_internal_has_mission_plan() != 0) {
+  // bool has_mission = 3;
+  if (this->_internal_has_mission() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(3, this->_internal_has_mission_plan(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(3, this->_internal_has_mission(), target);
   }
 
   // .mavsdk.rpc.mission.MissionPlan mission_plan = 4;
@@ -7752,8 +7754,8 @@ size_t ProgressDataOrMission::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  // bool has_mission_plan = 3;
-  if (this->_internal_has_mission_plan() != 0) {
+  // bool has_mission = 3;
+  if (this->_internal_has_mission() != 0) {
     total_size += 1 + 1;
   }
 
@@ -7794,8 +7796,8 @@ void ProgressDataOrMission::MergeFrom(const ProgressDataOrMission& from) {
   if (from._internal_has_progress() != 0) {
     _internal_set_has_progress(from._internal_has_progress());
   }
-  if (from._internal_has_mission_plan() != 0) {
-    _internal_set_has_mission_plan(from._internal_has_mission_plan());
+  if (from._internal_has_mission() != 0) {
+    _internal_set_has_mission(from._internal_has_mission());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -7815,8 +7817,8 @@ void ProgressDataOrMission::InternalSwap(ProgressDataOrMission* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ProgressDataOrMission, has_mission_plan_)
-      + sizeof(ProgressDataOrMission::has_mission_plan_)
+      PROTOBUF_FIELD_OFFSET(ProgressDataOrMission, has_mission_)
+      + sizeof(ProgressDataOrMission::has_mission_)
       - PROTOBUF_FIELD_OFFSET(ProgressDataOrMission, mission_plan_)>(
           reinterpret_cast<char*>(&mission_plan_),
           reinterpret_cast<char*>(&other->mission_plan_));

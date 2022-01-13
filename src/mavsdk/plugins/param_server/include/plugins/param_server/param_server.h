@@ -56,15 +56,10 @@ public:
      */
     ~ParamServer();
 
-
-
-
-
     /**
      * @brief Type for integer parameters.
      */
     struct IntParam {
-        
         std::string name{}; /**< @brief Name of the parameter */
         int32_t value{}; /**< @brief Value of the parameter */
     };
@@ -83,14 +78,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_param);
 
-
-
-
     /**
      * @brief Type for float parameters.
      */
     struct FloatParam {
-        
         std::string name{}; /**< @brief Name of the parameter */
         float value{}; /**< @brief Value of the parameter */
     };
@@ -109,16 +100,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::FloatParam const& float_param);
 
-
-
-
     /**
      * @brief Type collecting all integer and float parameters.
      */
     struct AllParams {
-        
-        std::vector<IntParam> int_params{}; /**< @brief Collection of all parameter names and values of type int */
-        std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and values of type float */
+        std::vector<IntParam>
+            int_params{}; /**< @brief Collection of all parameter names and values of type int */
+        std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and
+                                                   values of type float */
     };
 
     /**
@@ -134,10 +123,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_params);
-
-
-
-
 
     /**
      * @brief Possible results returned for param requests.
@@ -158,17 +143,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous ParamServer calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
-
-
 
     /**
      * @brief Retrieve an int parameter.
@@ -181,11 +159,6 @@ public:
      */
     std::pair<Result, int32_t> retrieve_param_int(std::string name) const;
 
-
-
-
-
-
     /**
      * @brief Provide an int parameter.
      *
@@ -196,11 +169,6 @@ public:
      * @return Result of request.
      */
     Result provide_param_int(std::string name, int32_t value) const;
-
-
-
-
-
 
     /**
      * @brief Retrieve a float parameter.
@@ -213,11 +181,6 @@ public:
      */
     std::pair<Result, float> retrieve_param_float(std::string name) const;
 
-
-
-
-
-
     /**
      * @brief Provide a float parameter.
      *
@@ -229,11 +192,6 @@ public:
      */
     Result provide_param_float(std::string name, float value) const;
 
-
-
-
-
-
     /**
      * @brief Retrieve all parameters.
      *
@@ -242,9 +200,6 @@ public:
      * @return Result of request.
      */
     ParamServer::AllParams retrieve_all_params() const;
-
-
-
 
     /**
      * @brief Copy constructor.

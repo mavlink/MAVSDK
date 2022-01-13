@@ -56,7 +56,6 @@ public:
      */
     ~Gimbal();
 
-
     /**
      * @brief Gimbal mode type.
      */
@@ -88,19 +87,20 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
 
-
-
-
     /**
      * @brief Control status
      */
     struct ControlStatus {
-        
         ControlMode control_mode{}; /**< @brief Control mode (none, primary or secondary) */
-        int32_t sysid_primary_control{}; /**< @brief Sysid of the component that has primary control over the gimbal (0 if no one is in control) */
-        int32_t compid_primary_control{}; /**< @brief Compid of the component that has primary control over the gimbal (0 if no one is in control) */
-        int32_t sysid_secondary_control{}; /**< @brief Sysid of the component that has secondary control over the gimbal (0 if no one is in control) */
-        int32_t compid_secondary_control{}; /**< @brief Compid of the component that has secondary control over the gimbal (0 if no one is in control) */
+        int32_t sysid_primary_control{}; /**< @brief Sysid of the component that has primary control
+                                            over the gimbal (0 if no one is in control) */
+        int32_t compid_primary_control{}; /**< @brief Compid of the component that has primary
+                                             control over the gimbal (0 if no one is in control) */
+        int32_t sysid_secondary_control{}; /**< @brief Sysid of the component that has secondary
+                                              control over the gimbal (0 if no one is in control) */
+        int32_t
+            compid_secondary_control{}; /**< @brief Compid of the component that has secondary
+                                           control over the gimbal (0 if no one is in control) */
     };
 
     /**
@@ -116,10 +116,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status);
-
-
-
-
 
     /**
      * @brief Possible results returned for gimbal commands.
@@ -140,15 +136,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Gimbal calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
 
     /**
      * @brief Set gimbal pitch and yaw angles.
@@ -160,8 +151,6 @@ public:
      * This function is non-blocking. See 'set_pitch_and_yaw' for the blocking counterpart.
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback);
-
-
 
     /**
      * @brief Set gimbal pitch and yaw angles.
@@ -176,9 +165,6 @@ public:
      */
     Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) const;
 
-
-
-
     /**
      * @brief Set gimbal angular rates around pitch and yaw axes.
      *
@@ -186,11 +172,11 @@ public:
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually reach the angular rate.
      *
-     * This function is non-blocking. See 'set_pitch_rate_and_yaw_rate' for the blocking counterpart.
+     * This function is non-blocking. See 'set_pitch_rate_and_yaw_rate' for the blocking
+     * counterpart.
      */
-    void set_pitch_rate_and_yaw_rate_async(float pitch_rate_deg_s, float yaw_rate_deg_s, const ResultCallback callback);
-
-
+    void set_pitch_rate_and_yaw_rate_async(
+        float pitch_rate_deg_s, float yaw_rate_deg_s, const ResultCallback callback);
 
     /**
      * @brief Set gimbal angular rates around pitch and yaw axes.
@@ -199,14 +185,12 @@ public:
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually reach the angular rate.
      *
-     * This function is blocking. See 'set_pitch_rate_and_yaw_rate_async' for the non-blocking counterpart.
+     * This function is blocking. See 'set_pitch_rate_and_yaw_rate_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
     Result set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s) const;
-
-
-
 
     /**
      * @brief Set gimbal mode.
@@ -218,8 +202,6 @@ public:
      * This function is non-blocking. See 'set_mode' for the blocking counterpart.
      */
     void set_mode_async(GimbalMode gimbal_mode, const ResultCallback callback);
-
-
 
     /**
      * @brief Set gimbal mode.
@@ -234,9 +216,6 @@ public:
      */
     Result set_mode(GimbalMode gimbal_mode) const;
 
-
-
-
     /**
      * @brief Set gimbal region of interest (ROI).
      *
@@ -248,9 +227,8 @@ public:
      *
      * This function is non-blocking. See 'set_roi_location' for the blocking counterpart.
      */
-    void set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback);
-
-
+    void set_roi_location_async(
+        double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback);
 
     /**
      * @brief Set gimbal region of interest (ROI).
@@ -267,9 +245,6 @@ public:
      */
     Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const;
 
-
-
-
     /**
      * @brief Take control.
      *
@@ -284,8 +259,6 @@ public:
      * This function is non-blocking. See 'take_control' for the blocking counterpart.
      */
     void take_control_async(ControlMode control_mode, const ResultCallback callback);
-
-
 
     /**
      * @brief Take control.
@@ -304,9 +277,6 @@ public:
      */
     Result take_control(ControlMode control_mode) const;
 
-
-
-
     /**
      * @brief Release control.
      *
@@ -315,8 +285,6 @@ public:
      * This function is non-blocking. See 'release_control' for the blocking counterpart.
      */
     void release_control_async(const ResultCallback callback);
-
-
 
     /**
      * @brief Release control.
@@ -329,14 +297,10 @@ public:
      */
     Result release_control() const;
 
-
-
-
-        
     /**
-    * @brief Callback type for subscribe_control.
-    */
-        
+     * @brief Callback type for subscribe_control.
+     */
+
     using ControlCallback = std::function<void(ControlStatus)>;
 
     /**
@@ -348,17 +312,12 @@ public:
      */
     void subscribe_control(ControlCallback callback);
 
-
-
     /**
      * @brief Poll for 'ControlStatus' (blocking).
      *
      * @return One ControlStatus update.
      */
     ControlStatus control() const;
-
-
-
 
     /**
      * @brief Copy constructor.

@@ -24,7 +24,6 @@ class MissionRawServiceImpl final : public rpc::mission_raw::MissionRawService::
 public:
     MissionRawServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
-
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::MissionRaw::Result& result) const
     {
@@ -39,237 +38,146 @@ public:
         response->set_allocated_mission_raw_result(rpc_mission_raw_result);
     }
 
-
-
-
-    static std::unique_ptr<rpc::mission_raw::MissionProgress> translateToRpcMissionProgress(const mavsdk::MissionRaw::MissionProgress &mission_progress)
+    static std::unique_ptr<rpc::mission_raw::MissionProgress>
+    translateToRpcMissionProgress(const mavsdk::MissionRaw::MissionProgress& mission_progress)
     {
         auto rpc_obj = std::make_unique<rpc::mission_raw::MissionProgress>();
 
-
-            
         rpc_obj->set_current(mission_progress.current);
-            
-        
-            
+
         rpc_obj->set_total(mission_progress.total);
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::MissionRaw::MissionProgress translateFromRpcMissionProgress(const rpc::mission_raw::MissionProgress& mission_progress)
+    static mavsdk::MissionRaw::MissionProgress
+    translateFromRpcMissionProgress(const rpc::mission_raw::MissionProgress& mission_progress)
     {
         mavsdk::MissionRaw::MissionProgress obj;
 
-
-            
         obj.current = mission_progress.current();
-            
-        
-            
+
         obj.total = mission_progress.total();
-            
-        
+
         return obj;
     }
 
-
-
-
-
-    static std::unique_ptr<rpc::mission_raw::MissionItem> translateToRpcMissionItem(const mavsdk::MissionRaw::MissionItem &mission_item)
+    static std::unique_ptr<rpc::mission_raw::MissionItem>
+    translateToRpcMissionItem(const mavsdk::MissionRaw::MissionItem& mission_item)
     {
         auto rpc_obj = std::make_unique<rpc::mission_raw::MissionItem>();
 
-
-            
         rpc_obj->set_seq(mission_item.seq);
-            
-        
-            
+
         rpc_obj->set_frame(mission_item.frame);
-            
-        
-            
+
         rpc_obj->set_command(mission_item.command);
-            
-        
-            
+
         rpc_obj->set_current(mission_item.current);
-            
-        
-            
+
         rpc_obj->set_autocontinue(mission_item.autocontinue);
-            
-        
-            
+
         rpc_obj->set_param1(mission_item.param1);
-            
-        
-            
+
         rpc_obj->set_param2(mission_item.param2);
-            
-        
-            
+
         rpc_obj->set_param3(mission_item.param3);
-            
-        
-            
+
         rpc_obj->set_param4(mission_item.param4);
-            
-        
-            
+
         rpc_obj->set_x(mission_item.x);
-            
-        
-            
+
         rpc_obj->set_y(mission_item.y);
-            
-        
-            
+
         rpc_obj->set_z(mission_item.z);
-            
-        
-            
+
         rpc_obj->set_mission_type(mission_item.mission_type);
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::MissionRaw::MissionItem translateFromRpcMissionItem(const rpc::mission_raw::MissionItem& mission_item)
+    static mavsdk::MissionRaw::MissionItem
+    translateFromRpcMissionItem(const rpc::mission_raw::MissionItem& mission_item)
     {
         mavsdk::MissionRaw::MissionItem obj;
 
-
-            
         obj.seq = mission_item.seq();
-            
-        
-            
+
         obj.frame = mission_item.frame();
-            
-        
-            
+
         obj.command = mission_item.command();
-            
-        
-            
+
         obj.current = mission_item.current();
-            
-        
-            
+
         obj.autocontinue = mission_item.autocontinue();
-            
-        
-            
+
         obj.param1 = mission_item.param1();
-            
-        
-            
+
         obj.param2 = mission_item.param2();
-            
-        
-            
+
         obj.param3 = mission_item.param3();
-            
-        
-            
+
         obj.param4 = mission_item.param4();
-            
-        
-            
+
         obj.x = mission_item.x();
-            
-        
-            
+
         obj.y = mission_item.y();
-            
-        
-            
+
         obj.z = mission_item.z();
-            
-        
-            
+
         obj.mission_type = mission_item.mission_type();
-            
-        
+
         return obj;
     }
 
-
-
-
-
-    static std::unique_ptr<rpc::mission_raw::MissionImportData> translateToRpcMissionImportData(const mavsdk::MissionRaw::MissionImportData &mission_import_data)
+    static std::unique_ptr<rpc::mission_raw::MissionImportData> translateToRpcMissionImportData(
+        const mavsdk::MissionRaw::MissionImportData& mission_import_data)
     {
         auto rpc_obj = std::make_unique<rpc::mission_raw::MissionImportData>();
 
-
-            
-                
         for (const auto& elem : mission_import_data.mission_items) {
             auto* ptr = rpc_obj->add_mission_items();
             ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
         }
-                
-            
-        
-            
-                
+
         for (const auto& elem : mission_import_data.geofence_items) {
             auto* ptr = rpc_obj->add_geofence_items();
             ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
         }
-                
-            
-        
-            
-                
+
         for (const auto& elem : mission_import_data.rally_items) {
             auto* ptr = rpc_obj->add_rally_items();
             ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
         }
-                
-            
-        
 
         return rpc_obj;
     }
 
-    static mavsdk::MissionRaw::MissionImportData translateFromRpcMissionImportData(const rpc::mission_raw::MissionImportData& mission_import_data)
+    static mavsdk::MissionRaw::MissionImportData translateFromRpcMissionImportData(
+        const rpc::mission_raw::MissionImportData& mission_import_data)
     {
         mavsdk::MissionRaw::MissionImportData obj;
 
+        for (const auto& elem : mission_import_data.mission_items()) {
+            obj.mission_items.push_back(translateFromRpcMissionItem(
+                static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+        }
 
-            
-                for (const auto& elem : mission_import_data.mission_items()) {
-                    obj.mission_items.push_back(translateFromRpcMissionItem(static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
-                }
-            
-        
-            
-                for (const auto& elem : mission_import_data.geofence_items()) {
-                    obj.geofence_items.push_back(translateFromRpcMissionItem(static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
-                }
-            
-        
-            
-                for (const auto& elem : mission_import_data.rally_items()) {
-                    obj.rally_items.push_back(translateFromRpcMissionItem(static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
-                }
-            
-        
+        for (const auto& elem : mission_import_data.geofence_items()) {
+            obj.geofence_items.push_back(translateFromRpcMissionItem(
+                static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+        }
+
+        for (const auto& elem : mission_import_data.rally_items()) {
+            obj.rally_items.push_back(translateFromRpcMissionItem(
+                static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+        }
+
         return obj;
     }
 
-
-
-
-    static rpc::mission_raw::MissionRawResult::Result translateToRpcResult(const mavsdk::MissionRaw::Result& result)
+    static rpc::mission_raw::MissionRawResult::Result
+    translateToRpcResult(const mavsdk::MissionRaw::Result& result)
     {
         switch (result) {
             default:
@@ -304,7 +212,8 @@ public:
         }
     }
 
-    static mavsdk::MissionRaw::Result translateFromRpcResult(const rpc::mission_raw::MissionRawResult::Result result)
+    static mavsdk::MissionRaw::Result
+    translateFromRpcResult(const rpc::mission_raw::MissionRawResult::Result result)
     {
         switch (result) {
             default:
@@ -339,21 +248,17 @@ public:
         }
     }
 
-
-
-
     grpc::Status UploadMission(
         grpc::ServerContext* /* context */,
         const rpc::mission_raw::UploadMissionRequest* request,
         rpc::mission_raw::UploadMissionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
@@ -361,21 +266,17 @@ public:
             LogWarn() << "UploadMission sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-            
+
         std::vector<mavsdk::MissionRaw::MissionItem> mission_items_vec;
         for (const auto& elem : request->mission_items()) {
             mission_items_vec.push_back(translateFromRpcMissionItem(elem));
         }
-            
-        
-        auto result = _lazy_plugin.maybe_plugin()->upload_mission(mission_items_vec);
-        
 
-        
+        auto result = _lazy_plugin.maybe_plugin()->upload_mission(mission_items_vec);
+
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -386,24 +287,19 @@ public:
         rpc::mission_raw::CancelMissionUploadResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
-        
         auto result = _lazy_plugin.maybe_plugin()->cancel_mission_upload();
-        
 
-        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -414,31 +310,24 @@ public:
         rpc::mission_raw::DownloadMissionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
-
-        
 
         auto result = _lazy_plugin.maybe_plugin()->download_mission();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
+
             for (auto elem : result.second) {
-                
                 auto* ptr = response->add_mission_items();
                 ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
-                
             }
-            
         }
-
 
         return grpc::Status::OK;
     }
@@ -449,24 +338,19 @@ public:
         rpc::mission_raw::CancelMissionDownloadResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
-        
         auto result = _lazy_plugin.maybe_plugin()->cancel_mission_download();
-        
 
-        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -477,24 +361,19 @@ public:
         rpc::mission_raw::StartMissionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
-        
         auto result = _lazy_plugin.maybe_plugin()->start_mission();
-        
 
-        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -505,24 +384,19 @@ public:
         rpc::mission_raw::PauseMissionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
-        
         auto result = _lazy_plugin.maybe_plugin()->pause_mission();
-        
 
-        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -533,24 +407,19 @@ public:
         rpc::mission_raw::ClearMissionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
-        
         auto result = _lazy_plugin.maybe_plugin()->clear_mission();
-        
 
-        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
@@ -561,12 +430,11 @@ public:
         rpc::mission_raw::SetCurrentMissionItemResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
@@ -574,24 +442,22 @@ public:
             LogWarn() << "SetCurrentMissionItem sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-            
-        
-        auto result = _lazy_plugin.maybe_plugin()->set_current_mission_item(request->index());
-        
 
-        
+        auto result = _lazy_plugin.maybe_plugin()->set_current_mission_item(request->index());
+
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeMissionProgress(grpc::ServerContext* /* context */, const mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* /* request */, grpc::ServerWriter<rpc::mission_raw::MissionProgressResponse>* writer) override
+    grpc::Status SubscribeMissionProgress(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* /* request */,
+        grpc::ServerWriter<rpc::mission_raw::MissionProgressResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             return grpc::Status::OK;
         }
 
@@ -603,25 +469,22 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _lazy_plugin.maybe_plugin()->subscribe_mission_progress(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](const mavsdk::MissionRaw::MissionProgress mission_progress) {
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+                const mavsdk::MissionRaw::MissionProgress mission_progress) {
+                rpc::mission_raw::MissionProgressResponse rpc_response;
 
-            rpc::mission_raw::MissionProgressResponse rpc_response;
-        
-            rpc_response.set_allocated_mission_progress(translateToRpcMissionProgress(mission_progress).release());
-        
+                rpc_response.set_allocated_mission_progress(
+                    translateToRpcMissionProgress(mission_progress).release());
 
-        
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _lazy_plugin.maybe_plugin()->subscribe_mission_progress(nullptr);
 
-            std::unique_lock<std::mutex> lock(*subscribe_mutex);
-            if (!*is_finished && !writer->Write(rpc_response)) {
-                
-                _lazy_plugin.maybe_plugin()->subscribe_mission_progress(nullptr);
-                
-                *is_finished = true;
-                unregister_stream_stop_promise(stream_closed_promise);
-                stream_closed_promise->set_value();
-            }
-        });
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -630,10 +493,12 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeMissionChanged(grpc::ServerContext* /* context */, const mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest* /* request */, grpc::ServerWriter<rpc::mission_raw::MissionChangedResponse>* writer) override
+    grpc::Status SubscribeMissionChanged(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest* /* request */,
+        grpc::ServerWriter<rpc::mission_raw::MissionChangedResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             return grpc::Status::OK;
         }
 
@@ -645,25 +510,21 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         _lazy_plugin.maybe_plugin()->subscribe_mission_changed(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](const bool mission_changed) {
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+                const bool mission_changed) {
+                rpc::mission_raw::MissionChangedResponse rpc_response;
 
-            rpc::mission_raw::MissionChangedResponse rpc_response;
-        
-            rpc_response.set_mission_changed(mission_changed);
-        
+                rpc_response.set_mission_changed(mission_changed);
 
-        
+                std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                if (!*is_finished && !writer->Write(rpc_response)) {
+                    _lazy_plugin.maybe_plugin()->subscribe_mission_changed(nullptr);
 
-            std::unique_lock<std::mutex> lock(*subscribe_mutex);
-            if (!*is_finished && !writer->Write(rpc_response)) {
-                
-                _lazy_plugin.maybe_plugin()->subscribe_mission_changed(nullptr);
-                
-                *is_finished = true;
-                unregister_stream_stop_promise(stream_closed_promise);
-                stream_closed_promise->set_value();
-            }
-        });
+                    *is_finished = true;
+                    unregister_stream_stop_promise(stream_closed_promise);
+                    stream_closed_promise->set_value();
+                }
+            });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -678,12 +539,11 @@ public:
         rpc::mission_raw::ImportQgroundcontrolMissionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::MissionRaw::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
@@ -692,21 +552,21 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->import_qgroundcontrol_mission(request->qgc_plan_path());
+        auto result =
+            _lazy_plugin.maybe_plugin()->import_qgroundcontrol_mission(request->qgc_plan_path());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-            
-            response->set_allocated_mission_import_data(translateToRpcMissionImportData(result.second).release());
-            
-        }
 
+            response->set_allocated_mission_import_data(
+                translateToRpcMissionImportData(result.second).release());
+        }
 
         return grpc::Status::OK;
     }
 
-
-    void stop() {
+    void stop()
+    {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -716,7 +576,8 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
+    {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -727,8 +588,10 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
+    {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
+             /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -739,7 +602,7 @@ private:
 
     LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 
 } // namespace mavsdk_server

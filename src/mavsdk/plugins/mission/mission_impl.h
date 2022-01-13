@@ -29,15 +29,18 @@ public:
 
     void upload_mission_async(
         const Mission::MissionPlan& mission_plan, const Mission::ResultCallback& callback);
+    void upload_mission_with_progress_async(
+        const Mission::MissionPlan& mission_plan,
+        const Mission::UploadMissionWithProgressCallback callback);
 
-    void cancel_mission_upload_async(const Mission::ResultCallback callback);
-    Mission::Result cancel_mission_upload();
+    Mission::Result cancel_mission_upload() const;
 
     std::pair<Mission::Result, Mission::MissionPlan> download_mission();
     void download_mission_async(const Mission::DownloadMissionCallback& callback);
+    void download_mission_with_progress_async(
+        const Mission::DownloadMissionWithProgressCallback callback);
 
-    Mission::Result cancel_mission_download();
-    void cancel_mission_download_async(const Mission::ResultCallback& callback);
+    Mission::Result cancel_mission_download() const;
 
     Mission::Result set_return_to_launch_after_mission(bool enable_rtl);
 

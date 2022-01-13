@@ -18,8 +18,8 @@ MAVLinkMissionTransfer::MAVLinkMissionTransfer(
 std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_items_async(
     uint8_t type,
     const std::vector<ItemInt>& items,
-    ResultCallback callback,
-    ProgressCallback progress_callback)
+    const ResultCallback& callback,
+    const ProgressCallback& progress_callback)
 {
     if (!_int_messages_supported) {
         if (callback) {

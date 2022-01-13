@@ -56,17 +56,13 @@ public:
      */
     ~Info();
 
-
-
-
-
     /**
      * @brief System flight information.
      */
     struct FlightInfo {
-        
         uint32_t time_boot_ms{}; /**< @brief Time since system boot */
-        uint64_t flight_uid{}; /**< @brief Flight counter. Starts from zero, is incremented at every disarm and is never reset (even after reboot) */
+        uint64_t flight_uid{}; /**< @brief Flight counter. Starts from zero, is incremented at every
+                                  disarm and is never reset (even after reboot) */
     };
 
     /**
@@ -83,16 +79,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info);
 
-
-
-
     /**
      * @brief System identification.
      */
     struct Identification {
-        
-        std::string hardware_uid{}; /**< @brief UID of the hardware. This refers to uid2 of MAVLink. If the system does not support uid2 yet, this is all zeros. */
-        uint64_t legacy_uid{}; /**< @brief Legacy UID of the hardware, referred to as uid in MAVLink (formerly exposed during system discovery as UUID). */
+        std::string
+            hardware_uid{}; /**< @brief UID of the hardware. This refers to uid2 of MAVLink. If the
+                               system does not support uid2 yet, this is all zeros. */
+        uint64_t legacy_uid{}; /**< @brief Legacy UID of the hardware, referred to as uid in MAVLink
+                                  (formerly exposed during system discovery as UUID). */
     };
 
     /**
@@ -109,14 +104,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Info::Identification const& identification);
 
-
-
-
     /**
      * @brief System product information.
      */
     struct Product {
-        
         int32_t vendor_id{}; /**< @brief ID of the board vendor */
         std::string vendor_name{}; /**< @brief Name of the vendor */
         int32_t product_id{}; /**< @brief ID of the product */
@@ -137,14 +128,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Info::Product const& product);
 
-
-
-
     /**
      * @brief System version information.
      */
     struct Version {
-        
         int32_t flight_sw_major{}; /**< @brief Flight software major version */
         int32_t flight_sw_minor{}; /**< @brief Flight software minor version */
         int32_t flight_sw_patch{}; /**< @brief Flight software patch version */
@@ -172,10 +159,6 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Info::Version const& version);
 
-
-
-
-
     /**
      * @brief Possible results returned for info requests.
      */
@@ -193,17 +176,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Info::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Info calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
-
-
 
     /**
      * @brief Get flight information of the system.
@@ -214,11 +190,6 @@ public:
      */
     std::pair<Result, Info::FlightInfo> get_flight_information() const;
 
-
-
-
-
-
     /**
      * @brief Get the identification of the system.
      *
@@ -227,11 +198,6 @@ public:
      * @return Result of request.
      */
     std::pair<Result, Info::Identification> get_identification() const;
-
-
-
-
-
 
     /**
      * @brief Get product information of the system.
@@ -242,11 +208,6 @@ public:
      */
     std::pair<Result, Info::Product> get_product() const;
 
-
-
-
-
-
     /**
      * @brief Get the version information of the system.
      *
@@ -256,22 +217,15 @@ public:
      */
     std::pair<Result, Info::Version> get_version() const;
 
-
-
-
-
-
     /**
-     * @brief Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
+     * @brief Get the speed factor of a simulation (with lockstep a simulation can run faster or
+     * slower than realtime).
      *
      * This function is blocking.
      *
      * @return Result of request.
      */
     std::pair<Result, double> get_speed_factor() const;
-
-
-
 
     /**
      * @brief Copy constructor.

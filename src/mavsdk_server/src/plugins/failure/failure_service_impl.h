@@ -24,7 +24,6 @@ class FailureServiceImpl final : public rpc::failure::FailureService::Service {
 public:
     FailureServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
-
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Failure::Result& result) const
     {
@@ -39,8 +38,8 @@ public:
         response->set_allocated_failure_result(rpc_failure_result);
     }
 
-
-    static rpc::failure::FailureUnit translateToRpcFailureUnit(const mavsdk::Failure::FailureUnit& failure_unit)
+    static rpc::failure::FailureUnit
+    translateToRpcFailureUnit(const mavsdk::Failure::FailureUnit& failure_unit)
     {
         switch (failure_unit) {
             default:
@@ -79,7 +78,8 @@ public:
         }
     }
 
-    static mavsdk::Failure::FailureUnit translateFromRpcFailureUnit(const rpc::failure::FailureUnit failure_unit)
+    static mavsdk::Failure::FailureUnit
+    translateFromRpcFailureUnit(const rpc::failure::FailureUnit failure_unit)
     {
         switch (failure_unit) {
             default:
@@ -118,7 +118,8 @@ public:
         }
     }
 
-    static rpc::failure::FailureType translateToRpcFailureType(const mavsdk::Failure::FailureType& failure_type)
+    static rpc::failure::FailureType
+    translateToRpcFailureType(const mavsdk::Failure::FailureType& failure_type)
     {
         switch (failure_type) {
             default:
@@ -143,7 +144,8 @@ public:
         }
     }
 
-    static mavsdk::Failure::FailureType translateFromRpcFailureType(const rpc::failure::FailureType failure_type)
+    static mavsdk::Failure::FailureType
+    translateFromRpcFailureType(const rpc::failure::FailureType failure_type)
     {
         switch (failure_type) {
             default:
@@ -168,8 +170,8 @@ public:
         }
     }
 
-
-    static rpc::failure::FailureResult::Result translateToRpcResult(const mavsdk::Failure::Result& result)
+    static rpc::failure::FailureResult::Result
+    translateToRpcResult(const mavsdk::Failure::Result& result)
     {
         switch (result) {
             default:
@@ -194,7 +196,8 @@ public:
         }
     }
 
-    static mavsdk::Failure::Result translateFromRpcResult(const rpc::failure::FailureResult::Result result)
+    static mavsdk::Failure::Result
+    translateFromRpcResult(const rpc::failure::FailureResult::Result result)
     {
         switch (result) {
             default:
@@ -219,21 +222,17 @@ public:
         }
     }
 
-
-
-
     grpc::Status Inject(
         grpc::ServerContext* /* context */,
         const rpc::failure::InjectRequest* request,
         rpc::failure::InjectResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
             if (response != nullptr) {
                 auto result = mavsdk::Failure::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-            
+
             return grpc::Status::OK;
         }
 
@@ -241,26 +240,21 @@ public:
             LogWarn() << "Inject sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-            
-        
-            
-        
-            
-        
-        auto result = _lazy_plugin.maybe_plugin()->inject(translateFromRpcFailureUnit(request->failure_unit()), translateFromRpcFailureType(request->failure_type()), request->instance());
-        
 
-        
+        auto result = _lazy_plugin.maybe_plugin()->inject(
+            translateFromRpcFailureUnit(request->failure_unit()),
+            translateFromRpcFailureType(request->failure_type()),
+            request->instance());
+
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
-        
 
         return grpc::Status::OK;
     }
 
-
-    void stop() {
+    void stop()
+    {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -270,7 +264,8 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
+    {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -281,8 +276,10 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
+    {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
+             /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -293,7 +290,7 @@ private:
 
     LazyPlugin& _lazy_plugin;
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 
 } // namespace mavsdk_server

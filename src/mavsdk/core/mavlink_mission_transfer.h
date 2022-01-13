@@ -326,8 +326,8 @@ public:
     std::weak_ptr<WorkItem> upload_items_async(
         uint8_t type,
         const std::vector<ItemInt>& items,
-        ResultCallback callback,
-        ProgressCallback progress_callback = nullptr);
+        const ResultCallback& callback,
+        const ProgressCallback& progress_callback = nullptr);
 
     std::weak_ptr<WorkItem> download_items_async(
         uint8_t type,
