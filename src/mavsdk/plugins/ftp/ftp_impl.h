@@ -217,7 +217,7 @@ private:
     void _reset_timer();
     void _stop_timer();
     void _list_directory(uint32_t offset);
-    unsigned get_size();
+    unsigned get_size() const;
     uint8_t _get_target_component_id()
     {
         return _target_component_id_set ? _target_component_id : _parent->get_autopilot_id();

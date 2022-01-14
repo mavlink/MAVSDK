@@ -36,7 +36,6 @@ FtpImpl::~FtpImpl()
 
 void FtpImpl::init()
 {
-    LogDebug() << "register mavlink message handler";
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL,
         [this](const mavlink_message_t& message) { process_mavlink_ftp_message(message); },
@@ -1400,8 +1399,9 @@ void FtpImpl::send()
         _parent->get_own_system_id(), _parent->get_own_component_id(), &msg, &ftp_msg);
     _parent->send_message(msg);
 
-    if (more_data)
+    if (more_data) {
         send();
+    }
 }
 
 } // namespace mavsdk

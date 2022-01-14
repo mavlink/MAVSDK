@@ -12,9 +12,6 @@ add_executable(camera_manager
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(camera_manager
-    MAVSDK::mavsdk_ftp
-    MAVSDK::mavsdk_mavlink_passthrough
-    MAVSDK::mavsdk_param_server
     MAVSDK::mavsdk
 )
 
