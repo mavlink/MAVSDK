@@ -30,20 +30,25 @@ public:
     void enable() override;
     void disable() override;
 
-    void provide_camera_information(const std::function<(mavlink_camera_information_t& camera_information)>& callback) {
+    void provide_camera_information(
+        const std::function<(mavlink_camera_information_t & camera_information)>& callback)
+    {
         callback(camera_information);
         camera_information_valid = true;
     }
 
-    template <class T>
-    void add_param(const std::string& name, T default_value, const typename std::function<void(T t)>& callback) {
+    template<class T>
+    void add_param(
+        const std::string& name, T default_value, const typename std::function<void(T t)>& callback)
+    {
         _parent->provide_server_param_int("CAM_ISO", default_value);
         _parent->subscribe_param(
             name,
-            overloaded {
-                [&name](auto value) { std::cerr << "invalid parameter type for " << name << std::endl; },
-                callback
-            },
+            overloaded{
+                [&name](auto value) {
+                    std::cerr << "invalid parameter type for " << name << std::endl;
+                },
+                callback},
             nullptr);
     }
 
@@ -52,7 +57,8 @@ private:
     bool camera_information_valid{false};
 };
 
-void CameraManagerPluginImpl::init() {
+void CameraManagerPluginImpl::init()
+{
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_LONG,
         [this](const mavlink_message_t& message) {
@@ -80,4 +86,4 @@ void CameraManagerPluginImpl::deinit() {}
 void CameraManagerPluginImpl::enable() {}
 void CameraManagerPluginImpl::disable() {}
 
-}
+} // namespace mavsdk

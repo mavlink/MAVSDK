@@ -80,8 +80,14 @@ int main(int argc, char** argv)
                 case MAV_CMD_REQUEST_CAMERA_INFORMATION:
                     mavlink_camera_information_t camera_information;
                     camera_information.time_boot_ms = 0;
-                    strncpy((char*)camera_information.vendor_name, "Foo Industries", sizeof(camera_information.vendor_name));
-                    strncpy((char*)camera_information.model_name, "T100", sizeof(camera_information.model_name));
+                    strncpy(
+                        (char*)camera_information.vendor_name,
+                        "Foo Industries",
+                        sizeof(camera_information.vendor_name));
+                    strncpy(
+                        (char*)camera_information.model_name,
+                        "T100",
+                        sizeof(camera_information.model_name));
                     camera_information.firmware_version = 0;
                     camera_information.focal_length = 16;
                     camera_information.sensor_size_h = 23.2;
