@@ -5,6 +5,7 @@ set(COMPONENTS_LIST
     action_server
     calibration
     camera
+    camera_server
     core
     failure
     follow_me
