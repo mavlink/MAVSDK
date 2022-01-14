@@ -172,7 +172,46 @@ void MissionImpl::upload_mission_async(
     });
 }
 
-Mission::Result MissionImpl::cancel_mission_upload()
+void MissionImpl::upload_mission_with_progress_async(
+    const Mission::MissionPlan& mission_plan,
+    const Mission::UploadMissionWithProgressCallback callback)
+{
+    if (_mission_data.last_upload.lock()) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                callback(Mission::Result::Busy, Mission::ProgressData{});
+            }
+        });
+        return;
+    }
+
+    reset_mission_progress();
+
+    wait_for_protocol_async([callback, mission_plan, this]() {
+        const auto int_items = convert_to_int_items(mission_plan.mission_items);
+
+        _mission_data.last_upload = _parent->mission_transfer().upload_items_async(
+            MAV_MISSION_TYPE_MISSION,
+            int_items,
+            [this, callback](MAVLinkMissionTransfer::Result result) {
+                auto converted_result = convert_result(result);
+                _parent->call_user_callback([callback, converted_result]() {
+                    if (callback) {
+                        callback(converted_result, Mission::ProgressData{});
+                    }
+                });
+            },
+            [this, callback](float progress) {
+                _parent->call_user_callback([callback, progress]() {
+                    if (callback) {
+                        callback(Mission::Result::Next, Mission::ProgressData{progress});
+                    }
+                });
+            });
+    });
+}
+
+Mission::Result MissionImpl::cancel_mission_upload() const
 {
     auto ptr = _mission_data.last_upload.lock();
     if (ptr) {
@@ -189,9 +228,10 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
     auto prom = std::promise<std::pair<Mission::Result, Mission::MissionPlan>>();
     auto fut = prom.get_future();
 
-    download_mission_async([&prom](Mission::Result result, Mission::MissionPlan mission_plan) {
-        prom.set_value(std::make_pair<>(result, mission_plan));
-    });
+    download_mission_async(
+        [&prom](Mission::Result result, const Mission::MissionPlan& mission_plan) {
+            prom.set_value(std::make_pair<>(result, mission_plan));
+        });
     return fut.get();
 }
 
@@ -219,7 +259,49 @@ void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback&
         });
 }
 
-Mission::Result MissionImpl::cancel_mission_download()
+void MissionImpl::download_mission_with_progress_async(
+    const Mission::DownloadMissionWithProgressCallback callback)
+{
+    if (_mission_data.last_download.lock()) {
+        _parent->call_user_callback([callback]() {
+            if (callback) {
+                Mission::ProgressDataOrMission progress_data_or_mission{};
+                progress_data_or_mission.has_mission = false;
+                progress_data_or_mission.has_progress = false;
+                callback(Mission::Result::Busy, progress_data_or_mission);
+            }
+        });
+        return;
+    }
+
+    _mission_data.last_download = _parent->mission_transfer().download_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        [this, callback](
+            MAVLinkMissionTransfer::Result result,
+            const std::vector<MAVLinkMissionTransfer::ItemInt>& items) {
+            auto result_and_items = convert_to_result_and_mission_items(result, items);
+            _parent->call_user_callback([callback, result_and_items]() {
+                if (result_and_items.first == Mission::Result::Success) {
+                    Mission::ProgressDataOrMission progress_data_or_mission{};
+                    progress_data_or_mission.has_mission = true;
+                    progress_data_or_mission.mission_plan = result_and_items.second;
+                    callback(Mission::Result::Next, progress_data_or_mission);
+                }
+
+                callback(result_and_items.first, Mission::ProgressDataOrMission{});
+            });
+        },
+        [this, callback](float progress) {
+            _parent->call_user_callback([callback, progress]() {
+                Mission::ProgressDataOrMission progress_data_or_mission{};
+                progress_data_or_mission.has_progress = true;
+                progress_data_or_mission.progress = progress;
+                callback(Mission::Result::Next, progress_data_or_mission);
+            });
+        });
+}
+
+Mission::Result MissionImpl::cancel_mission_download() const
 {
     auto ptr = _mission_data.last_download.lock();
     if (ptr) {

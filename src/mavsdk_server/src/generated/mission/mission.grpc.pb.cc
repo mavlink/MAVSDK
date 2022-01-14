@@ -25,8 +25,10 @@ namespace mission {
 
 static const char* MissionService_method_names[] = {
   "/mavsdk.rpc.mission.MissionService/UploadMission",
+  "/mavsdk.rpc.mission.MissionService/SubscribeUploadMissionWithProgress",
   "/mavsdk.rpc.mission.MissionService/CancelMissionUpload",
   "/mavsdk.rpc.mission.MissionService/DownloadMission",
+  "/mavsdk.rpc.mission.MissionService/SubscribeDownloadMissionWithProgress",
   "/mavsdk.rpc.mission.MissionService/CancelMissionDownload",
   "/mavsdk.rpc.mission.MissionService/StartMission",
   "/mavsdk.rpc.mission.MissionService/PauseMission",
@@ -46,17 +48,19 @@ std::unique_ptr< MissionService::Stub> MissionService::NewStub(const std::shared
 
 MissionService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_UploadMission_(MissionService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_CancelMissionUpload_(MissionService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DownloadMission_(MissionService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_CancelMissionDownload_(MissionService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_StartMission_(MissionService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PauseMission_(MissionService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ClearMission_(MissionService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetCurrentMissionItem_(MissionService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_IsMissionFinished_(MissionService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeMissionProgress_(MissionService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_GetReturnToLaunchAfterMission_(MissionService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetReturnToLaunchAfterMission_(MissionService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeUploadMissionWithProgress_(MissionService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_CancelMissionUpload_(MissionService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DownloadMission_(MissionService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeDownloadMissionWithProgress_(MissionService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_CancelMissionDownload_(MissionService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_StartMission_(MissionService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PauseMission_(MissionService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ClearMission_(MissionService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetCurrentMissionItem_(MissionService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_IsMissionFinished_(MissionService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeMissionProgress_(MissionService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_GetReturnToLaunchAfterMission_(MissionService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetReturnToLaunchAfterMission_(MissionService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MissionService::Stub::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::mavsdk::rpc::mission::UploadMissionResponse* response) {
@@ -80,6 +84,22 @@ void MissionService::Stub::async::UploadMission(::grpc::ClientContext* context, 
     this->PrepareAsyncUploadMissionRaw(context, request, cq);
   result->StartCall();
   return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* MissionService::Stub::SubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>::Create(channel_.get(), rpcmethod_SubscribeUploadMissionWithProgress_, context, request);
+}
+
+void MissionService::Stub::async::SubscribeUploadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeUploadMissionWithProgress_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* MissionService::Stub::AsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeUploadMissionWithProgress_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* MissionService::Stub::PrepareAsyncSubscribeUploadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeUploadMissionWithProgress_, context, request, false, nullptr);
 }
 
 ::grpc::Status MissionService::Stub::CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) {
@@ -126,6 +146,22 @@ void MissionService::Stub::async::DownloadMission(::grpc::ClientContext* context
     this->PrepareAsyncDownloadMissionRaw(context, request, cq);
   result->StartCall();
   return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* MissionService::Stub::SubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>::Create(channel_.get(), rpcmethod_SubscribeDownloadMissionWithProgress_, context, request);
+}
+
+void MissionService::Stub::async::SubscribeDownloadMissionWithProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeDownloadMissionWithProgress_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* MissionService::Stub::AsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadMissionWithProgress_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* MissionService::Stub::PrepareAsyncSubscribeDownloadMissionWithProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadMissionWithProgress_, context, request, false, nullptr);
 }
 
 ::grpc::Status MissionService::Stub::CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) {
@@ -341,6 +377,16 @@ MissionService::Service::Service() {
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionService_method_names[1],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< MissionService::Service, ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest, ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>(
+          [](MissionService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* writer) {
+               return service->SubscribeUploadMissionWithProgress(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MissionService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::CancelMissionUploadRequest, ::mavsdk::rpc::mission::CancelMissionUploadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -350,7 +396,7 @@ MissionService::Service::Service() {
                return service->CancelMissionUpload(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[2],
+      MissionService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::DownloadMissionRequest, ::mavsdk::rpc::mission::DownloadMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -360,7 +406,17 @@ MissionService::Service::Service() {
                return service->DownloadMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[3],
+      MissionService_method_names[4],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< MissionService::Service, ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest, ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>(
+          [](MissionService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* writer) {
+               return service->SubscribeDownloadMissionWithProgress(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MissionService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::CancelMissionDownloadRequest, ::mavsdk::rpc::mission::CancelMissionDownloadResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -370,7 +426,7 @@ MissionService::Service::Service() {
                return service->CancelMissionDownload(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[4],
+      MissionService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::StartMissionRequest, ::mavsdk::rpc::mission::StartMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -380,7 +436,7 @@ MissionService::Service::Service() {
                return service->StartMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[5],
+      MissionService_method_names[7],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::PauseMissionRequest, ::mavsdk::rpc::mission::PauseMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -390,7 +446,7 @@ MissionService::Service::Service() {
                return service->PauseMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[6],
+      MissionService_method_names[8],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::ClearMissionRequest, ::mavsdk::rpc::mission::ClearMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -400,7 +456,7 @@ MissionService::Service::Service() {
                return service->ClearMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[7],
+      MissionService_method_names[9],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -410,7 +466,7 @@ MissionService::Service::Service() {
                return service->SetCurrentMissionItem(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[8],
+      MissionService_method_names[10],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::IsMissionFinishedRequest, ::mavsdk::rpc::mission::IsMissionFinishedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -420,7 +476,7 @@ MissionService::Service::Service() {
                return service->IsMissionFinished(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[9],
+      MissionService_method_names[11],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< MissionService::Service, ::mavsdk::rpc::mission::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission::MissionProgressResponse>(
           [](MissionService::Service* service,
@@ -430,7 +486,7 @@ MissionService::Service::Service() {
                return service->SubscribeMissionProgress(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[10],
+      MissionService_method_names[12],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -440,7 +496,7 @@ MissionService::Service::Service() {
                return service->GetReturnToLaunchAfterMission(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MissionService_method_names[11],
+      MissionService_method_names[13],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MissionService::Service, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MissionService::Service* service,
@@ -461,6 +517,13 @@ MissionService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
+::grpc::Status MissionService::Service::SubscribeUploadMissionWithProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeUploadMissionWithProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::UploadMissionWithProgressResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
 ::grpc::Status MissionService::Service::CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) {
   (void) context;
   (void) request;
@@ -472,6 +535,13 @@ MissionService::Service::~Service() {
   (void) context;
   (void) request;
   (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MissionService::Service::SubscribeDownloadMissionWithProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeDownloadMissionWithProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::DownloadMissionWithProgressResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

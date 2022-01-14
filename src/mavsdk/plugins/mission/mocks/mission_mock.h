@@ -12,8 +12,13 @@ public:
     MOCK_CONST_METHOD2(
         upload_mission_async, void(Mission::MissionPlan&, Mission::ResultCallback)){};
     MOCK_CONST_METHOD1(upload_mission, Mission::Result(Mission::MissionPlan)){};
+    MOCK_CONST_METHOD2(
+        upload_mission_with_progress_async,
+        void(Mission::MissionPlan, Mission::UploadMissionWithProgressCallback)){};
     MOCK_CONST_METHOD1(download_mission_async, void(Mission::DownloadMissionCallback)){};
     MOCK_CONST_METHOD0(download_mission, std::pair<Mission::Result, Mission::MissionPlan>()){};
+    MOCK_CONST_METHOD1(
+        download_mission_with_progress_async, void(Mission::DownloadMissionWithProgressCallback)){};
     MOCK_CONST_METHOD0(cancel_mission_upload, Mission::Result()){};
     MOCK_CONST_METHOD0(cancel_mission_download, Mission::Result()){};
     MOCK_CONST_METHOD1(start_mission_async, void(Mission::ResultCallback)){};

@@ -13,6 +13,9 @@ using MissionItem = Mission::MissionItem;
 using MissionPlan = Mission::MissionPlan;
 using MissionProgress = Mission::MissionProgress;
 
+using ProgressData = Mission::ProgressData;
+using ProgressDataOrMission = Mission::ProgressDataOrMission;
+
 Mission::Mission(System& system) : PluginBase(), _impl{std::make_unique<MissionImpl>(system)} {}
 
 Mission::Mission(std::shared_ptr<System> system) :
@@ -32,6 +35,12 @@ Mission::Result Mission::upload_mission(MissionPlan mission_plan) const
     return _impl->upload_mission(mission_plan);
 }
 
+void Mission::upload_mission_with_progress_async(
+    MissionPlan mission_plan, UploadMissionWithProgressCallback callback)
+{
+    _impl->upload_mission_with_progress_async(mission_plan, callback);
+}
+
 Mission::Result Mission::cancel_mission_upload() const
 {
     return _impl->cancel_mission_upload();
@@ -45,6 +54,11 @@ void Mission::download_mission_async(const DownloadMissionCallback callback)
 std::pair<Mission::Result, Mission::MissionPlan> Mission::download_mission() const
 {
     return _impl->download_mission();
+}
+
+void Mission::download_mission_with_progress_async(DownloadMissionWithProgressCallback callback)
+{
+    _impl->download_mission_with_progress_async(callback);
 }
 
 Mission::Result Mission::cancel_mission_download() const
@@ -249,9 +263,47 @@ std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
             return str << "Transfer Cancelled";
         case Mission::Result::NoSystem:
             return str << "No System";
+        case Mission::Result::Next:
+            return str << "Next";
         default:
             return str << "Unknown";
     }
+}
+
+bool operator==(const Mission::ProgressData& lhs, const Mission::ProgressData& rhs)
+{
+    return ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);
+}
+
+std::ostream& operator<<(std::ostream& str, Mission::ProgressData const& progress_data)
+{
+    str << std::setprecision(15);
+    str << "progress_data:" << '\n' << "{\n";
+    str << "    progress: " << progress_data.progress << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(
+    const Mission::ProgressDataOrMission& lhs, const Mission::ProgressDataOrMission& rhs)
+{
+    return (rhs.has_progress == lhs.has_progress) &&
+           ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) ||
+            rhs.progress == lhs.progress) &&
+           (rhs.has_mission == lhs.has_mission) && (rhs.mission_plan == lhs.mission_plan);
+}
+
+std::ostream&
+operator<<(std::ostream& str, Mission::ProgressDataOrMission const& progress_data_or_mission)
+{
+    str << std::setprecision(15);
+    str << "progress_data_or_mission:" << '\n' << "{\n";
+    str << "    has_progress: " << progress_data_or_mission.has_progress << '\n';
+    str << "    progress: " << progress_data_or_mission.progress << '\n';
+    str << "    has_mission: " << progress_data_or_mission.has_mission << '\n';
+    str << "    mission_plan: " << progress_data_or_mission.mission_plan << '\n';
+    str << '}';
+    return str;
 }
 
 } // namespace mavsdk

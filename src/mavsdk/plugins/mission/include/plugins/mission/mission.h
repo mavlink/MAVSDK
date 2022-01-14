@@ -185,6 +185,7 @@ public:
         UnsupportedMissionCmd, /**< @brief Unsupported mission command. */
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
         NoSystem, /**< @brief No system connected. */
+        Next, /**< @brief Intermediate message showing progress. */
     };
 
     /**
@@ -193,6 +194,56 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Mission::Result const& result);
+
+    /**
+     * @brief Progress data coming from mission upload.
+     */
+    struct ProgressData {
+        float progress{float(NAN)}; /**< @brief Progress (0..1.0) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Mission::ProgressData` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Mission::ProgressData& lhs, const Mission::ProgressData& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Mission::ProgressData`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Mission::ProgressData const& progress_data);
+
+    /**
+     * @brief Progress data coming from mission download, or the mission itself (if the transfer
+     * succeeds).
+     */
+    struct ProgressDataOrMission {
+        bool has_progress{
+            false}; /**< @brief Whether this ProgressData contains a 'progress' status or not */
+        float progress{float(NAN)}; /**< @brief Progress (0..1.0) */
+        bool
+            has_mission{}; /**< @brief Whether this ProgressData contains a 'mission_plan' or not */
+        MissionPlan mission_plan{}; /**< @brief Mission plan */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Mission::ProgressDataOrMission` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const Mission::ProgressDataOrMission& lhs, const Mission::ProgressDataOrMission& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Mission::ProgressDataOrMission`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Mission::ProgressDataOrMission const& progress_data_or_mission);
 
     /**
      * @brief Callback type for asynchronous Mission calls.
@@ -220,6 +271,21 @@ public:
      * @return Result of request.
      */
     Result upload_mission(MissionPlan mission_plan) const;
+
+    /**
+     * @brief Callback type for upload_mission_with_progress_async.
+     */
+
+    using UploadMissionWithProgressCallback = std::function<void(Result, ProgressData)>;
+
+    /**
+     * @brief Upload a list of mission items to the system and report upload progress.
+     *
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if the connection is lost.
+     */
+    void upload_mission_with_progress_async(
+        MissionPlan mission_plan, UploadMissionWithProgressCallback callback);
 
     /**
      * @brief Cancel an ongoing mission upload.
@@ -256,6 +322,20 @@ public:
      * @return Result of request.
      */
     std::pair<Result, Mission::MissionPlan> download_mission() const;
+
+    /**
+     * @brief Callback type for download_mission_with_progress_async.
+     */
+
+    using DownloadMissionWithProgressCallback = std::function<void(Result, ProgressDataOrMission)>;
+
+    /**
+     * @brief Download a list of mission items from the system (asynchronous) and report progress.
+     *
+     * Will fail if any of the downloaded mission items are not supported
+     * by the MAVSDK API.
+     */
+    void download_mission_with_progress_async(DownloadMissionWithProgressCallback callback);
 
     /**
      * @brief Cancel an ongoing mission download.
