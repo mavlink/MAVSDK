@@ -14,6 +14,8 @@
 #include "calibration/calibration_service_impl.h"
 #include "plugins/camera/camera.h"
 #include "camera/camera_service_impl.h"
+#include "plugins/camera_server/camera_server.h"
+#include "camera_server/camera_server_service_impl.h"
 #include "plugins/failure/failure.h"
 #include "failure/failure_service_impl.h"
 #include "plugins/follow_me/follow_me.h"
@@ -74,6 +76,8 @@ public:
         _calibration_service(_calibration_lazy_plugin),
         _camera_lazy_plugin(mavsdk),
         _camera_service(_camera_lazy_plugin),
+        _camera_server_lazy_plugin(mavsdk),
+        _camera_server_service(_camera_server_lazy_plugin),
         _failure_lazy_plugin(mavsdk),
         _failure_service(_failure_lazy_plugin),
         _follow_me_lazy_plugin(mavsdk),
@@ -137,6 +141,8 @@ private:
     CalibrationServiceImpl<> _calibration_service;
     LazyPlugin<Camera> _camera_lazy_plugin;
     CameraServiceImpl<> _camera_service;
+    LazyPlugin<CameraServer> _camera_server_lazy_plugin;
+    CameraServerServiceImpl<> _camera_server_service;
     LazyPlugin<Failure> _failure_lazy_plugin;
     FailureServiceImpl<> _failure_service;
     LazyPlugin<FollowMe> _follow_me_lazy_plugin;
