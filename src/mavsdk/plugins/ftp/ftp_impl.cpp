@@ -1308,7 +1308,7 @@ FtpImpl::ServerResult FtpImpl::_work_calc_file_CRC32(PayloadHeader* payload)
     return ServerResult::SUCCESS;
 }
 
-unsigned FtpImpl::get_size()
+unsigned FtpImpl::get_size() const
 {
     if (_session_info.stream_download) {
         return MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
