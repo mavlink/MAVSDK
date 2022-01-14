@@ -1,6 +1,6 @@
 #pragma once
 
-#include "global_include.h"
+#include "mavsdk_time.h"
 #include "mavlink_include.h"
 
 namespace mavsdk {

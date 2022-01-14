@@ -13,7 +13,6 @@ target_sources(mavsdk
     system_impl.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
-    global_include.cpp
     http_loader.cpp
     mavlink_channels.cpp
     mavlink_commands.cpp
@@ -32,6 +31,7 @@ target_sources(mavsdk
     cli_arg.cpp
     geometry.cpp
     request_message.cpp
+    mavsdk_time.cpp
     timesync.cpp
 )
 
@@ -106,7 +106,8 @@ install(FILES
 )
 
 list(APPEND UNIT_TEST_SOURCES
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/global_include_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
     # TODO: add this again

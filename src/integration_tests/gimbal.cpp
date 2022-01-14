@@ -5,6 +5,8 @@
 #include <memory>
 
 #include "mavsdk.h"
+#include "mavsdk_math.h"
+#include "unused.h"
 #include "integration_test_helper.h"
 #include "plugins/action/action.h"
 #include "plugins/gimbal/gimbal.h"
@@ -312,7 +314,7 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     // fly in north-south direction (back & forth a few times)
     const float step_size = 0.01f;
-    const float one_cycle = 2.0f * M_PI_F;
+    const float one_cycle = 2.0f * static_cast<float>(PI);
     const unsigned steps = static_cast<unsigned>(2.5f * one_cycle / step_size);
 
     for (unsigned i = 0; i < steps; ++i) {

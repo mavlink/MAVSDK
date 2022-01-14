@@ -1,4 +1,5 @@
 #include "log.h"
+#include "unused.h"
 
 #if defined(WINDOWS)
 #include "Windows.h"

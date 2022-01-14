@@ -3,6 +3,7 @@
 #include <cmath>
 #include <future>
 #include <memory>
+#include <unused.h>
 
 namespace mavsdk {
 

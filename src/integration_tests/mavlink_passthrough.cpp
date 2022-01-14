@@ -27,6 +27,7 @@ TEST_F(SitlTest, MavlinkPassthrough)
     }
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
 
     {

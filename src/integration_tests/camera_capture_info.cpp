@@ -20,6 +20,7 @@ TEST(CameraTest, CaptureInfo)
     ASSERT_EQ(mavsdk.systems().size(), 1);
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_camera());
     auto camera = Camera{system};
 
     std::this_thread::sleep_for(std::chrono::seconds(2));

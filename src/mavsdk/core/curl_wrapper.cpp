@@ -1,6 +1,6 @@
-#include "global_include.h"
 #include "log.h"
 #include "curl_wrapper.h"
+#include "unused.h"
 #include <iostream>
 #include <cstdio>
 #include <fstream>

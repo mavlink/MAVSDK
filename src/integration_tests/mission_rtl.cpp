@@ -61,6 +61,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     }
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);

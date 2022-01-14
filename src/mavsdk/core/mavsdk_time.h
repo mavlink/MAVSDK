@@ -1,37 +1,7 @@
 #pragma once
 
-#define UNUSED(x) (void)(x)
-
 #include <chrono>
-#include <thread>
 #include <mutex>
-
-// Instead of using the constant from math.h or cmath we define it ourselves. This way
-// we don't import all the other C math functions and make sure to use the C++ functions
-// from the standard library (e.g. std::abs() instead of abs()).
-#ifndef M_PI
-constexpr double M_PI = 3.14159265358979323846;
-#endif
-
-#ifndef M_PI_F
-constexpr float M_PI_F = float(M_PI);
-#endif
-
-#ifdef WINDOWS
-#define STRNCPY strncpy_s
-#else
-#define STRNCPY strncpy
-#endif
-
-#if !defined(WINDOWS)
-// Remove path and extract only filename.
-#define FILENAME \
-    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
-#else
-#define FILENAME __FILE__
-#endif
-
-#define call_user_callback(...) call_user_callback_located(FILENAME, __LINE__, __VA_ARGS__)
 
 namespace mavsdk {
 
@@ -93,14 +63,5 @@ private:
 
     virtual dl_system_time_t system_time();
 };
-
-double to_rad_from_deg(double deg);
-double to_deg_from_rad(double rad);
-
-float to_rad_from_deg(float deg);
-float to_deg_from_rad(float rad);
-
-bool are_equal(float one, float two);
-bool are_equal(double one, double two);
 
 } // namespace mavsdk

@@ -1,4 +1,5 @@
 #include "telemetry_server_impl.h"
+#include "unused.h"
 
 namespace mavsdk {
 

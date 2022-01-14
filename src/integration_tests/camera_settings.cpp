@@ -7,6 +7,7 @@
 #include "system.h"
 #include "integration_test_helper.h"
 #include "camera_test_helpers.h"
+#include "unused.h"
 
 using namespace mavsdk;
 

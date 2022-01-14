@@ -291,7 +291,7 @@ void MAVLinkParameters::do_work()
     }
 
     char param_id[PARAM_ID_LEN + 1] = {};
-    STRNCPY(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
+    strncpy(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
 
     switch (work->type) {
         case WorkItem::Type::Set: {

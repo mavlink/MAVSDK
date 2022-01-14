@@ -1,5 +1,4 @@
 #include "tune_impl.h"
-#include "global_include.h"
 #include "log.h"
 
 namespace mavsdk {

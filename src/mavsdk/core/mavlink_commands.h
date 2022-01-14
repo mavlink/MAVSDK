@@ -2,7 +2,7 @@
 
 #include "mavlink_include.h"
 #include "locked_queue.h"
-#include "global_include.h"
+#include "mavsdk_time.h"
 #include <cmath>
 #include <cstdint>
 #include <string>

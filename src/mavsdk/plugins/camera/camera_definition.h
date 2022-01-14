@@ -60,6 +60,9 @@ public:
     const CameraDefinition& operator=(const CameraDefinition&) = delete;
 
 private:
+    bool get_possible_settings_locked(
+        std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings);
+
     typedef std::unordered_map<std::string, MAVLinkParameters::ParamValue> parameter_range_t;
 
     struct Option {
@@ -96,7 +99,7 @@ private:
     std::pair<bool, Option> find_default(
         const std::vector<std::shared_ptr<Option>>& options, const std::string& default_str);
 
-    mutable std::recursive_mutex _mutex{};
+    mutable std::mutex _mutex{};
 
     tinyxml2::XMLDocument _doc{};
 

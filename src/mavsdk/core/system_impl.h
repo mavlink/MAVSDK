@@ -1,6 +1,5 @@
 #pragma once
 
-#include "global_include.h"
 #include "mavlink_address.h"
 #include "mavlink_include.h"
 #include "mavlink_parameters.h"

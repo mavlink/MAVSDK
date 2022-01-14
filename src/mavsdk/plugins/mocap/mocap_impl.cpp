@@ -1,6 +1,5 @@
 #include "mocap_impl.h"
 #include "system.h"
-#include "global_include.h"
 #include "px4_custom_mode.h"
 #include <array>
 #include <ctime>

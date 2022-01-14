@@ -1,7 +1,6 @@
 #include <functional>
 #include "mavlink_passthrough_impl.h"
 #include "system.h"
-#include "global_include.h"
 
 namespace mavsdk {
 

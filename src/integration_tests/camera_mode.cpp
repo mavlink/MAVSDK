@@ -1,7 +1,6 @@
 #include <iostream>
 #include <future>
 #include "integration_test_helper.h"
-#include "global_include.h"
 #include "mavsdk.h"
 #include "system.h"
 #include "camera_test_helpers.h"

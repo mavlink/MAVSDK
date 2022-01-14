@@ -1,7 +1,6 @@
 #include <iostream>
 #include <future>
 #include "integration_test_helper.h"
-#include "global_include.h"
 #include "mavsdk.h"
 #include "plugins/calibration/calibration.h"
 #include "plugins/param/param.h"

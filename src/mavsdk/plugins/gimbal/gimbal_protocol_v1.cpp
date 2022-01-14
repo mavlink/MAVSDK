@@ -1,8 +1,8 @@
-#include "gimbal_protocol_v1.h"
-#include "gimbal_impl.h"
-#include "global_include.h"
 #include <functional>
 #include <cmath>
+#include "gimbal_protocol_v1.h"
+#include "gimbal_impl.h"
+#include "unused.h"
 
 namespace mavsdk {
 

@@ -1,5 +1,4 @@
 #include "tcp_connection.h"
-#include "global_include.h"
 #include "log.h"
 
 #ifdef WINDOWS

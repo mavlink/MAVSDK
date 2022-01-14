@@ -1,4 +1,3 @@
-#include "global_include.h"
 #include "log_files_impl.h"
 #include "mavsdk_impl.h"
 #include "filesystem_include.h"

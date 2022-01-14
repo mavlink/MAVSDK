@@ -14,6 +14,7 @@ TEST_F(SitlTest, TelemetrySync)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     ASSERT_TRUE(system->is_connected());
 
     auto telemetry = std::make_shared<Telemetry>(system);

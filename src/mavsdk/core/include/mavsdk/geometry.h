@@ -61,10 +61,6 @@ public:
     ~CoordinateTransformation() = default;
 
 private:
-    static constexpr double rad(double deg);
-    static constexpr double deg(double rad);
-    static constexpr double constrain(double input, double min, double max);
-
     double _ref_lat_rad;
     double _ref_lon_rad;
     static constexpr double world_radius_m{6371000.0};

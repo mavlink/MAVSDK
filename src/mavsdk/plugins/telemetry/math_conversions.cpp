@@ -1,4 +1,4 @@
-#include "global_include.h"
+#include "mavsdk_math.h"
 #include "math_conversions.h"
 #include <cmath>
 

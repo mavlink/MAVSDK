@@ -22,7 +22,7 @@ MissionRawServerImpl::~MissionRawServerImpl()
 MAVLinkMissionTransfer::ItemInt
 convert_mission_raw(const MissionRawServer::MissionItem transfer_mission_raw)
 {
-    MAVLinkMissionTransfer::ItemInt new_item_int;
+    MAVLinkMissionTransfer::ItemInt new_item_int{};
 
     new_item_int.seq = transfer_mission_raw.seq;
     new_item_int.frame = transfer_mission_raw.frame;
@@ -158,7 +158,7 @@ void MissionRawServerImpl::init()
             // We need to queue this on a different thread or it will deadlock
             add_task([this]() {
                 // Mission Upload Inbound
-                if (_mission_data.last_download.lock()) {
+                if (_last_download.lock()) {
                     _parent->call_user_callback([this]() {
                         if (_incoming_mission_callback) {
                             MissionRawServer::MissionPlan mission_plan{};
@@ -169,28 +169,25 @@ void MissionRawServerImpl::init()
                     return;
                 }
 
-                _mission_data.last_download =
-                    _parent->mission_transfer().receive_incoming_items_async(
-                        MAV_MISSION_TYPE_MISSION,
-                        _mission_count,
-                        _target_component,
-                        [this](
-                            MAVLinkMissionTransfer::Result result,
-                            std::vector<MAVLinkMissionTransfer::ItemInt> items) {
-                            _current_mission = items;
-                            auto converted_result = convert_result(result);
-                            auto converted_items = convert_items(items);
-                            _parent->call_user_callback([this,
-                                                         converted_result,
-                                                         converted_items]() {
-                                if (_incoming_mission_callback) {
-                                    _incoming_mission_callback(converted_result, {converted_items});
-                                }
+                _last_download = _parent->mission_transfer().receive_incoming_items_async(
+                    MAV_MISSION_TYPE_MISSION,
+                    _mission_count,
+                    _target_component,
+                    [this](
+                        MAVLinkMissionTransfer::Result result,
+                        std::vector<MAVLinkMissionTransfer::ItemInt> items) {
+                        _current_mission = items;
+                        auto converted_result = convert_result(result);
+                        auto converted_items = convert_items(items);
+                        _parent->call_user_callback([this, converted_result, converted_items]() {
+                            if (_incoming_mission_callback) {
+                                _incoming_mission_callback(converted_result, {converted_items});
+                            }
 
-                                _mission_completed = false;
-                                set_current_seq(0);
-                            });
+                            _mission_completed = false;
+                            set_current_seq(0);
                         });
+                    });
             });
         },
         this);

@@ -4,7 +4,6 @@
 #include <chrono>
 #include <array>
 #include "integration_test_helper.h"
-#include "global_include.h"
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"

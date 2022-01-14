@@ -1,8 +1,8 @@
-#include "global_include.h"
 #include "cli_arg.h"
 #include "log.h"
 #include <cctype>
 #include <algorithm>
+#include <limits>
 
 namespace mavsdk {
 

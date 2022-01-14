@@ -3,9 +3,9 @@
 #include <future>
 #include <gtest/gtest.h>
 
-#include "global_include.h"
 #include "mavlink_mission_transfer.h"
 #include "mocks/sender_mock.h"
+#include "unused.h"
 
 using namespace mavsdk;
 

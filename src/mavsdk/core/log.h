@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sstream>
-#include "global_include.h"
 #include "log_callback.h"
 
 #if defined(ANDROID)
@@ -10,6 +9,16 @@
 #include <iostream>
 #include <ctime>
 #endif
+
+#if !defined(WINDOWS)
+// Remove path and extract only filename.
+#define FILENAME \
+    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+#else
+#define FILENAME __FILE__
+#endif
+
+#define call_user_callback(...) call_user_callback_located(FILENAME, __LINE__, __VA_ARGS__)
 
 #define LogDebug() LogDebugDetailed(FILENAME, __LINE__)
 #define LogInfo() LogInfoDetailed(FILENAME, __LINE__)

@@ -17,6 +17,7 @@ TEST_F(SitlTest, Info)
     ASSERT_TRUE(mavsdk.systems().size() > 0);
 
     auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
     auto info = std::make_shared<Info>(system);
 
     // FIXME: we need to wait some time until Info has determined the version.

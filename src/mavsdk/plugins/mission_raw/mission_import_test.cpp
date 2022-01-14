@@ -5,7 +5,6 @@
 #include <string>
 #include <gtest/gtest.h>
 
-#include "global_include.h"
 #include "log.h"
 #include "mavlink_include.h"
 #include "plugins/mission_raw/mission_raw.h"

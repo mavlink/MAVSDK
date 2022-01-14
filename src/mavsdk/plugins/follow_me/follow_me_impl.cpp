@@ -1,6 +1,5 @@
 #include "follow_me_impl.h"
 #include "system.h"
-#include "global_include.h"
 #include "px4_custom_mode.h"
 #include <cmath>
 

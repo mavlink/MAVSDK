@@ -71,9 +71,12 @@ public:
     const MissionImpl& operator=(const MissionImpl&) = delete;
 
 private:
+    int current_mission_item_locked() const;
+    int total_mission_items_locked() const;
+    std::pair<Mission::Result, bool> is_mission_finished_locked() const;
+
     void process_mission_current(const mavlink_message_t& message);
     void process_mission_item_reached(const mavlink_message_t& message);
-    void process_gimbal_information(const mavlink_message_t& message);
     void process_gimbal_manager_information(const mavlink_message_t& message);
     void receive_protocol_timeout();
     void wait_for_protocol();
@@ -86,7 +89,7 @@ private:
     std::vector<MAVLinkMissionTransfer::ItemInt>
     convert_to_int_items(const std::vector<Mission::MissionItem>& mission_items);
 
-    void report_progress();
+    void report_progress_locked();
     void reset_mission_progress();
 
     void report_flight_mode_change(
@@ -118,15 +121,10 @@ private:
         std::vector<MAVLinkMissionTransfer::ItemInt>& int_items, unsigned item_i);
 
     struct MissionData {
-        mutable std::recursive_mutex mutex{};
+        mutable std::mutex mutex{};
         int last_current_mavlink_mission_item{-1};
         int last_reached_mavlink_mission_item{-1};
         std::vector<int> mavlink_mission_item_to_mission_item_indices{};
-        int num_mission_items_to_download{-1};
-        int next_mission_item_to_download{-1};
-        int last_mission_item_to_upload{-1};
-        Mission::ResultCallback result_callback{nullptr};
-        Mission::DownloadMissionCallback download_mission_callback{nullptr};
         Mission::MissionProgressCallback mission_progress_callback{nullptr};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
@@ -142,19 +140,6 @@ private:
     // FIXME: This is hardcoded for now because it is urgently needed for 3DR with Yuneec H520.
     //        Ultimate it needs a setter.
     bool _enable_absolute_gimbal_yaw_angle{true};
-
-    static constexpr unsigned MAX_RETRIES = 10;
-
-    static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
-
-    // FIXME: these chould potentially change anytime
-    // derived from:
-    // https://github.com/PX4/Firmware/blob/master/src/modules/commander/px4_custom_mode.h
-    static constexpr uint8_t PX4_CUSTOM_MAIN_MODE_AUTO = 4;
-    static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_LOITER = 3;
-    static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4;
-
-    static constexpr double RETRY_TIMEOUT_S = 0.250;
 
     void* _gimbal_protocol_cookie{nullptr};
     enum class GimbalProtocol { Unknown, V1, V2 };

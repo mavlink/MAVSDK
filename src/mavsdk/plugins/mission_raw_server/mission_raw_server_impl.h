@@ -43,43 +43,15 @@ private:
     std::vector<MAVLinkMissionTransfer::ItemInt> _current_mission;
     std::size_t _current_seq;
 
-    struct MissionData {
-        mutable std::recursive_mutex mutex{};
-        int last_current_mavlink_mission_item{-1};
-        int last_reached_mavlink_mission_item{-1};
-        std::vector<int> mavlink_mission_item_to_mission_item_indices{};
-        int num_mission_items_to_download{-1};
-        int next_mission_item_to_download{-1};
-        int last_mission_item_to_upload{-1};
-        MissionRawServer::ResultCallback result_callback{nullptr};
-        MissionRawServer::IncomingMissionCallback download_mission_callback{nullptr};
-        int last_current_reported_mission_item{-1};
-        int last_total_reported_mission_item{-1};
-        std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_upload{};
-        std::weak_ptr<MAVLinkMissionTransfer::WorkItem> last_download{};
-        bool gimbal_v2_in_control{false};
-    } _mission_data{};
-
-    // FIXME: make static
-    std::pair<MissionRawServer::Result, MissionRawServer::MissionPlan>
-    convert_to_result_and_mission_items(
-        MAVLinkMissionTransfer::Result result,
-        const std::vector<MAVLinkMissionTransfer::ItemInt>& int_items);
+    std::weak_ptr<MAVLinkMissionTransfer::WorkItem> _last_download{};
 
     void set_current_seq(std::size_t seq);
 
     void add_task(std::function<void()> task)
     {
-        std::unique_lock<std::mutex> lock(_work_mutex);
         _work_queue.push(task);
         _wait_for_new_task.notify_one();
     }
-
-    bool _enable_return_to_launch_after_mission{false};
-
-    // FIXME: This is hardcoded for now because it is urgently needed for 3DR with Yuneec H520.
-    //        Ultimate it needs a setter.
-    bool _enable_absolute_gimbal_yaw_angle{true};
 };
 
 } // namespace mavsdk

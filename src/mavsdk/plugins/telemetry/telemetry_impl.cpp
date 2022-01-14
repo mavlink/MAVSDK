@@ -1,12 +1,13 @@
 #include "telemetry_impl.h"
 #include "system.h"
 #include "math_conversions.h"
-#include "global_include.h"
+#include "mavsdk_math.h"
 #include <cmath>
 #include <functional>
 #include <string>
 #include <array>
 #include <cassert>
+#include <unused.h>
 
 namespace mavsdk {
 

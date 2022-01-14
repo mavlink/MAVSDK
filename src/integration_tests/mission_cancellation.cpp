@@ -8,6 +8,7 @@
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
 #include "plugins/mission/mission.h"
+#include "unused.h"
 
 using namespace mavsdk;
 
