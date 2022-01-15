@@ -7,8 +7,6 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-echo "PX4 Version is: " ${PX4_VERSION}
-
 if [ "${PX4_VERSION}" ]; then
     echo "PX4 Autopilot Version Specified: " ${PX4_VERSION}
     PX4_FIRMWARE_DIR=$1
