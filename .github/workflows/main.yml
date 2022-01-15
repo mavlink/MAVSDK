@@ -630,3 +630,27 @@ jobs:
       - name: look at core files
         if: failure()
         run: gdb /home/user/Firmware/build/px4_sitl_default/bin/px4 px4.core -ex "thread apply all bt" -ex "quit"
+  
+  apm-sitl-newer:
+    name: APM SITL ${{ matrix.apm_version }} (ubuntu-20.04)
+    runs-on: ubuntu-20.04
+    container: 
+      image: mavsdk/mavsdk-ubuntu-20.04-apm-sitl-${{ matrix.apm_version }}
+      options: --privileged
+      env: 
+        APM_HOME_LAT: 47.397742
+        APM_HOME_LONG: 8.545594
+        APM_HOME_ALT: 488.0
+        APM_HOME_DIR: 180
+        WORKDIR: "/home/user/MAVSDK"
+        FIRMWARE_DIR: /home/user/ArduPilot
+    strategy:
+      matrix:
+        apm_version: [rover-4.1.2, copter-4.1.2]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: test
+        run: APM_VERSION=${{ matrix.apm_version }} tools/run-sitl-tests.sh /home/user/ArduPilot

@@ -1,0 +1,57 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+    - 'main'
+
+jobs:  
+  px4-sitl-newer:
+    name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-20.04)
+    runs-on: ubuntu-20.04
+    container: khedar/mavsdk-ubuntu-20.04-px4-sitl-${{ matrix.px4_version }}
+    strategy:
+      matrix:
+        px4_version: [v1.11, v1.12]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: test
+        run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
+  
+
+  apm-sitl-newer:
+    name: APM SITL ${{ matrix.apm_version }} (ubuntu-20.04)
+    runs-on: ubuntu-20.04
+    container: 
+      image: khedar/mavsdk-ubuntu-20.04-apm-sitl-${{ matrix.apm_version }}
+      options: --privileged
+      env: 
+        APM_HOME_LAT: 47.397742
+        APM_HOME_LONG: 8.545594
+        APM_HOME_ALT: 488.0
+        APM_HOME_DIR: 180
+        WORKDIR: "/home/user/MAVSDK"
+        FIRMWARE_DIR: /home/user/ArduPilot
+        
+    strategy:
+      matrix:
+        apm_version: [rover-4.1.2, copter-4.1.2]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Current Directory
+        run: echo $(pwd) && echo "System Path is " && echo $(PATH)
+
+      - name: Python2
+        run: which python && python -c "import sys; print(sys.path)"
+      
+      - name: Python3
+        run: which python3
+      
+      - name: Ardupilot
+        run: APM_VERSION=${{ matrix.apm_version }} tools/run-sitl-tests.sh /home/user/ArduPilot
