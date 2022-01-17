@@ -360,6 +360,9 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
         0,
         0,
         0,
+        0,
+        0,
+        0,
         0);
 
     add_msg_cache(MAVLINK_MSG_ID_SYS_STATUS, msg);
