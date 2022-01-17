@@ -14,7 +14,7 @@
 #include <utility>
 #include <vector>
 
-#include "plugin_base.h"
+#include "mavsdk/plugin_base.h"
 
 namespace mavsdk {
 
