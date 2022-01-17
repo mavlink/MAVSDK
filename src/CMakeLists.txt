@@ -54,9 +54,6 @@ else()
     set(lib_path "lib")
 endif()
 
-set(mavsdk_install_include_dir "include/mavsdk")
-set(mavsdk_install_lib_dir ${lib_path})
-
 add_subdirectory(mavsdk)
 
 include(cmake/static_analyzers.cmake)
