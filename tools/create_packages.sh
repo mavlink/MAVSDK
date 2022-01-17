@@ -46,7 +46,7 @@ common_args="--chdir ${working_dir}/install \
 
 if cat /etc/os-release | grep 'Ubuntu'
 then
-    echo "Building DEB package"
+    echo "Building Ubuntu DEB package"
     fpm ${common_args} \
         --output-type deb \
         --deb-no-default-config-files \
@@ -58,6 +58,22 @@ then
     do
         mv -v "${file}" "${output_dir}/${file%_amd64.deb}_ubuntu${dist_version}_amd64.deb"
     done
+
+elif cat /etc/os-release | grep 'Debian'
+then
+    echo "Building Debian DEB package"
+    fpm ${common_args} \
+        --output-type deb \
+        --deb-no-default-config-files \
+        ${library_files}
+
+    dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9.]*//g')
+
+    for file in *_amd64.deb
+    do
+        mv -v "${file}" "${output_dir}/${file%_amd64.deb}_debian${dist_version}_amd64.deb"
+    done
+
 elif cat /etc/os-release | grep 'Fedora'
 then
     echo "Building RPM package"
