@@ -241,9 +241,51 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
+  dockcross-linux-arm:
+    name: linux-${{ matrix.arch_name }}
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arch_name: [armv6, armv7, arm64]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: setup dockcross
+        run: docker run --rm mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: ./build/linux-${{ matrix.arch_name }}/third_party/install
+          key: ${{ github.job }}-linux-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
+      - name: configure
+        run: ./dockcross-linux-${{ matrix.arch_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/linux-${{ matrix.arch_name }} -H."
+      - name: build
+        run: ./dockcross-linux-${{ matrix.arch_name }}-custom cmake --build build/linux-${{ matrix.arch_name }} -j2 --target install
+      - name: create deb packages
+        run: ./dockcross-linux-${{ matrix.arch_name }}-custom tools/create_packages.sh ./build/linux-${{ matrix.arch_name }}/install .
+      - name: fix file name
+        run: |
+          src=$(ls *.deb)
+          dst=$(echo $src | sed 's/amd64/${{ matrix.arch_name }}/g')
+          mv $src $dst
+      - name: Publish artefacts
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: '*.deb'
+          tag: ${{ github.ref }}
+          overwrite: true
+
+
   dockcross-manylinux2010-x64:
     name: manylinux2010-x64
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -274,7 +316,7 @@ jobs:
 
   alpine-linux:
     name: alpine 3.11.6 (musl)
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: alpine:3.11.6
     steps:
       - name: install tools
@@ -316,7 +358,7 @@ jobs:
 
   dockcross-linux-musl:
     name: ${{ matrix.arch_name }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         arch_name: [linux-armv6-musl, linux-armv7l-musl, linux-arm64-musl]
@@ -350,7 +392,7 @@ jobs:
 
   dockcross-android:
     name: ${{ matrix.name }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         include:
