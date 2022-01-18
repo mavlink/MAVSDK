@@ -5,16 +5,17 @@ set -e
 echo "Packaging"
 echo "---------"
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
   echo "Error: missing path to the 'install' directory (i.e. what was specified as -DCMAKE_INSTALL_PREFIX)" >&2
   echo "       or output path (where the package will be generated)!" >&2
-  echo "Usage: $0 <path/to/install> <output/path>" >&2
+  echo "Usage: $0 <path/to/install> <output/path> <architecture>" >&2
   exit 1
 fi
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 install_dir=$1
 output_dir=$2
+arch="$3"
 
 working_dir=$(mktemp -d)
 mkdir -p ${working_dir}/install
@@ -50,13 +51,14 @@ then
     fpm ${common_args} \
         --output-type deb \
         --deb-no-default-config-files \
+        -a ${arch} \
         ${library_files}
 
     dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9.]*//g')
 
-    for file in *_amd64.deb
+    for file in *_${arch}.deb
     do
-        mv -v "${file}" "${output_dir}/${file%_amd64.deb}_ubuntu${dist_version}_amd64.deb"
+        mv -v "${file}" "${output_dir}/${file%_${arch}.deb}_ubuntu${dist_version}_${arch}.deb"
     done
 
 elif cat /etc/os-release | grep 'Debian'
@@ -65,13 +67,14 @@ then
     fpm ${common_args} \
         --output-type deb \
         --deb-no-default-config-files \
+        -a ${arch} \
         ${library_files}
 
     dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9.]*//g')
 
-    for file in *_amd64.deb
+    for file in *_${arch}.deb
     do
-        mv -v "${file}" "${output_dir}/${file%_amd64.deb}_debian${dist_version}_amd64.deb"
+        mv -v "${file}" "${output_dir}/${file%_${arch}.deb}_debian${dist_version}_${arch}.deb"
     done
 
 elif cat /etc/os-release | grep 'Fedora'
@@ -80,12 +83,13 @@ then
     fpm ${common_args} \
         --output-type rpm \
         --rpm-rpmbuild-define "_build_id_links none" \
+        -a ${arch} \
         ${library_files}
 
     dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9]*//g')
 
-    for file in *.x86_64.rpm
+    for file in *.${arch}.rpm
     do
-        mv -v "${file}" "${output_dir}/${file%.x86_64.rpm}.fc${dist_version}-x86_64.rpm"
+        mv -v "${file}" "${output_dir}/${file%.${arch}.rpm}.fc${dist_version}-${arch}.rpm"
     done
 fi
