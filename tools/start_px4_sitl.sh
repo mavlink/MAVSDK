@@ -135,10 +135,6 @@ elif [[ "${APM_VERSION}" ]]; then
             --speedup 10 \
             -m "--out=udp:127.0.0.1:14540"
     
-    echo "DEBUG: TOP" $(top)
-    sleep 1
-    echo "DEBUG: TOP" $(top)
-    # mavproxy.py --master=tcp:localhost:5760 --out=udp:127.0.0.1:14540 &
     # Go back to dir where we started
     popd
 

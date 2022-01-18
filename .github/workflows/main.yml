@@ -654,3 +654,4 @@ jobs:
           submodules: recursive
       - name: test
         run: APM_VERSION=${{ matrix.apm_version }} tools/run-sitl-tests.sh /home/user/ArduPilot
+        timeout-minutes: 45
