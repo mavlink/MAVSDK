@@ -44,12 +44,12 @@ TEST_F(SitlTest, MissionSetCurrent)
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);
 
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "Waiting for system to be ready";
-        LogDebug() << "Health: " << telemetry->health();
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { 
+            LogInfo() << "Waiting for system to be ready"; 
+            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
+            
     LogInfo() << "System ready, let's start";
 
     Mission::MissionPlan mission_plan{};

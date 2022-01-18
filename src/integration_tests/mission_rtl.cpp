@@ -72,11 +72,11 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         pc.check_current_alitude(position.relative_altitude_m);
     });
 
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "Waiting for system to be ready";
-        LogDebug() << "Health: " << telemetry->health();
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { 
+            LogInfo() << "Waiting for system to be ready"; 
+            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     LogInfo() << "Setting RTL return altitude to " << return_altitude_m;
     action->set_return_to_launch_altitude(return_altitude_m);

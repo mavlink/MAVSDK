@@ -27,10 +27,11 @@ TEST(SitlTestDisabled, TelemetryFlightModes)
     telemetry->subscribe_flight_mode(
         [](Telemetry::FlightMode flight_mode) { observe_mode(flight_mode); });
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << '\n';
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { 
+            LogInfo() << "Waiting for system to be ready"; 
+            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     EXPECT_EQ(action->arm(), Action::Result::Success);
 

@@ -81,11 +81,11 @@ void test_mission(
     std::shared_ptr<Mission> mission,
     std::shared_ptr<Action> action)
 {
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "Waiting for system to be ready";
-        LogDebug() << "Health: " << telemetry->health();
-        std::this_thread::sleep_for(std::chrono::seconds(30));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { 
+            LogInfo() << "Waiting for system to be ready"; 
+            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";

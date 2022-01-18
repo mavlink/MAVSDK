@@ -116,6 +116,11 @@ elif [[ "${APM_VERSION}" ]]; then
     # Before changing dir, save where we start from.
     pushd .
 
+    APM_HOME_LAT=${APM_HOME_LAT:-47.397742}
+    APM_HOME_LONG=${APM_HOME_LONG:-8.545594}
+    APM_HOME_ALT=${APM_HOME_ALT:-488}
+    APM_HOME_DIR=${APM_HOME_DIR:-180}
+
     # Go to Firmware build dir.
     cd $apm_firmware_dir
     echo "DEBUG: current dir: " $(pwd)
@@ -129,7 +134,10 @@ elif [[ "${APM_VERSION}" ]]; then
             --no-rebuild \
             --speedup 10 \
             -m "--out=udp:127.0.0.1:14540"
-
+    
+    echo "DEBUG: TOP" $(top)
+    sleep 1
+    echo "DEBUG: TOP" $(top)
     # mavproxy.py --master=tcp:localhost:5760 --out=udp:127.0.0.1:14540 &
     # Go back to dir where we started
     popd
