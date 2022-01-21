@@ -20,11 +20,16 @@
 
 namespace mavsdk {
 
-log::Callback LogDetailed::callback = nullptr;
+static log::Callback callback_{nullptr};
+
+log::Callback& log::get_callback()
+{
+    return callback_;
+}
 
 void log::subscribe(const log::Callback& callback)
 {
-    LogDetailed::callback = callback;
+    callback_ = callback;
 }
 
 void set_color(Color color)
