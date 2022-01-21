@@ -14,6 +14,7 @@ enum class Level : int { Debug = 0, Info = 1, Warn = 2, Err = 3 };
 using Callback =
     std::function<bool(Level level, const std::string& message, const std::string& file, int line)>;
 
-void subscribe(const Callback& callback);
+extern Callback& get_callback();
+extern void subscribe(const Callback& callback);
 
 } // namespace mavsdk::log
