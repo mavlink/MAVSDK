@@ -16,7 +16,8 @@ extern "C" {
 #define DLLExport __attribute__((visibility("default")))
 #endif
 
-    struct MavsdkServer;
+struct MavsdkServer;
+
 DLLExport void mavsdk_server_init(struct MavsdkServer** mavsdk_server);
 
 DLLExport int mavsdk_server_run(
