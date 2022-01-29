@@ -74,6 +74,10 @@ class Method(object):
             self._return_name = name_parser_factory.create(
                 return_params[0]['field'].json_name)
             self._return_description = return_params[0]['docs']
+        elif len(return_params) == 0 and self.return_type_required:
+            raise Exception(
+                "Responses must have 1 return parameter" +
+                f"(and an optional '*Result')!\nError in {method_output}")
 
     def extract_async_type(self, pb_method):
         self._is_sync = True
@@ -118,6 +122,10 @@ class Method(object):
     @property
     def name(self):
         return self._name
+
+    @property
+    def return_type_required(self):
+        return False
 
     @staticmethod
     def collect_methods(
@@ -269,6 +277,10 @@ class Stream(Method):
         self._name = name_parser_factory.create(
             remove_subscribe(pb_method.name))
         self._template = template_env.get_template("stream.j2")
+
+    @property
+    def return_type_required(self):
+        return True
 
     def __repr__(self):
         return self._template.render(
