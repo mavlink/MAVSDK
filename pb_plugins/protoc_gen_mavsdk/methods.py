@@ -66,7 +66,7 @@ class Method(object):
         if len(return_params) > 1:
             raise Exception(
                 "Responses cannot have more than 1 return parameter" +
-                f"(and an optional '*Result')!\nError in {method_output}")
+                f" (and an optional '*Result')!\nError in {method_output}")
 
         if len(return_params) == 1:
             self._return_type = type_info_factory.create(
@@ -76,8 +76,8 @@ class Method(object):
             self._return_description = return_params[0]['docs']
         elif len(return_params) == 0 and self.return_type_required:
             raise Exception(
-                "Responses must have 1 return parameter" +
-                f"(and an optional '*Result')!\nError in {method_output}")
+                "This response must have 1 return parameter" +
+                f" (and an optional '*Result')!\nError in {method_output}")
 
     def extract_async_type(self, pb_method):
         self._is_sync = True
