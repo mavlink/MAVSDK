@@ -91,6 +91,7 @@ target_include_directories(mavsdk
 
 install(TARGETS mavsdk
     EXPORT mavsdk-targets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
