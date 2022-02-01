@@ -146,9 +146,11 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { 
-            LogInfo() << "Waiting for system to be ready"; 
-            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     Action::Result action_result = action->arm();
     EXPECT_EQ(action_result, Action::Result::Success);
@@ -260,9 +262,11 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { 
-            LogInfo() << "Waiting for system to be ready"; 
-            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     const Telemetry::Position& position = telemetry->position();
 

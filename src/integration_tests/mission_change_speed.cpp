@@ -50,9 +50,11 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { 
-            LogInfo() << "Waiting for system to be ready"; 
-            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     LogInfo() << "System ready, let's start";
 

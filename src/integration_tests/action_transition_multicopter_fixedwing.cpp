@@ -36,9 +36,11 @@ TEST_F(SitlTest, ActionTransitionSync_standard_vtol)
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [telemetry]() { 
-            LogInfo() << "Waiting for system to be ready"; 
-            return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     // We need to takeoff first, otherwise we can't actually transition
     float altitude_m = 10.0f;
