@@ -8,7 +8,7 @@ using namespace mavsdk;
 void print_health(Telemetry::Health health);
 void print_rc_status(Telemetry::RcStatus rc_status);
 
-TEST_F(SitlTest, PX4TelemetryHealth)
+TEST_F(SitlTest, TelemetryHealth)
 {
     Mavsdk mavsdk;
 
