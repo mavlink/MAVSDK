@@ -19,7 +19,7 @@ void send_location_updates(
 
 const size_t N_LOCATIONS = 100ul;
 
-TEST_F(SitlTest, FollowMeOneLocation)
+TEST_F(SitlTest, PX4FollowMeOneLocation)
 {
     Mavsdk mavsdk;
 
@@ -98,7 +98,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     telemetry->subscribe_flight_mode(nullptr);
 }
 
-TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
+TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
 {
     Mavsdk mavsdk;
 

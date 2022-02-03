@@ -16,7 +16,7 @@ Mission::MissionItem
 add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_m);
 
 // Test to check speed set for mission items.
-TEST_F(SitlTest, MissionSetCurrent)
+TEST_F(SitlTest, PX4MissionSetCurrent)
 {
     Mavsdk mavsdk;
 

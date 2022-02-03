@@ -5,7 +5,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, TelemetrySync)
+TEST_F(SitlTest, PX4TelemetrySync)
 {
     Mavsdk mavsdk;
 

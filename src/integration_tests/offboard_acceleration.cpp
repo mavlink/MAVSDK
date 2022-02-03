@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, OffboardAccelerationNED)
+TEST_F(SitlTest, PX4OffboardAccelerationNED)
 {
     Mavsdk mavsdk;
 

@@ -36,7 +36,7 @@ static constexpr int NUM_MISSION_ITEMS = 6;
 
 static std::atomic<bool> pause_already_done{false};
 
-TEST_F(SitlTest, MissionAddWaypointsAndFly)
+TEST_F(SitlTest, PX4MissionAddWaypointsAndFly)
 {
     Mavsdk mavsdk;
 

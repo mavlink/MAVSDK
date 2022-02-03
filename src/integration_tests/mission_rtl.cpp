@@ -17,17 +17,17 @@ using namespace mavsdk;
 
 void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m);
 
-TEST_F(SitlTest, MissionWithRTLHigh)
+TEST_F(SitlTest, PX4MissionWithRTLHigh)
 {
     do_mission_with_rtl(20, 30);
 }
 
-TEST_F(SitlTest, MissionWithRTLLow)
+TEST_F(SitlTest, PX4MissionWithRTLLow)
 {
     do_mission_with_rtl(5, 10);
 }
 
-TEST_F(SitlTest, MissionWithRTLHigherAnyway)
+TEST_F(SitlTest, PX4MissionWithRTLHigherAnyway)
 {
     do_mission_with_rtl(10, 5);
 }

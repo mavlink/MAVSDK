@@ -646,7 +646,7 @@ jobs:
         FIRMWARE_DIR: /home/user/ArduPilot
     strategy:
       matrix:
-        apm_version: [rover-4.1.2, copter-4.1.2]
+        apm_version: [copter-4.1.2]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2

@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, ActionGoto)
+TEST_F(SitlTest, PX4ActionGoto)
 {
     Mavsdk mavsdk;
 

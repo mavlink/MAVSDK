@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, MavlinkPassthrough)
+TEST_F(SitlTest, PX4MavlinkPassthrough)
 {
     Mavsdk mavsdk;
     ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);

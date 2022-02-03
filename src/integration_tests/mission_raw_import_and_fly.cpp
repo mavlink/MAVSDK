@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, MissionRawImportAndFly)
+TEST_F(SitlTest, PX4MissionRawImportAndFly)
 {
     Mavsdk mavsdk;
 

@@ -9,7 +9,7 @@ using namespace mavsdk;
 
 static Geofence::Point add_point(double latitude_deg, double longitude_deg);
 
-TEST_F(SitlTest, GeofenceInclusion)
+TEST_F(SitlTest, PX4GeofenceInclusion)
 {
     Mavsdk mavsdk;
 

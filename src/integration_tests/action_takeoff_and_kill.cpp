@@ -6,7 +6,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, ActionTakeoffAndKill)
+TEST_F(SitlTest, PX4ActionTakeoffAndKill)
 {
     Mavsdk mavsdk;
     ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
