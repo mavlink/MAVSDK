@@ -18,6 +18,13 @@
 
 namespace mavsdk {
 
+bool seq_lt(uint16_t a, uint16_t b)
+{
+    // From https://en.wikipedia.org/wiki/Serial_number_arithmetic
+    return (a < b && (b - a) < (std::numeric_limits<uint16_t>::max() / 2)) ||
+           (a > b && (a - b) > (std::numeric_limits<uint16_t>::max() / 2));
+}
+
 FtpImpl::FtpImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
@@ -50,6 +57,12 @@ void FtpImpl::disable() {}
 void FtpImpl::_process_ack(PayloadHeader* payload)
 {
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
+
+    if (seq_lt(payload->seq_number, _seq_number)) {
+        // (payload->seq_number < _seq_number) with wrap around
+        // received an ack for a previous seq that we already considered done
+        return;
+    }
 
     if (_curr_op != payload->req_opcode) {
         LogWarn() << "Received ACK not matching our current operation";
