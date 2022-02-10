@@ -133,7 +133,9 @@ download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& 
     ftp.download_async(
         remote_file_path, local_path, [&prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
-                int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
+                int percentage = progress.total_bytes > 0 ?
+                                     progress.bytes_transferred * 100 / progress.total_bytes :
+                                     0;
                 std::cerr << "\rDownloading [" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
                 if (progress.bytes_transferred >= progress.total_bytes) {
@@ -156,7 +158,9 @@ upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& rem
     ftp.upload_async(
         local_file_path, remote_path, [&prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
-                int percentage = progress.bytes_transferred * 100 / progress.total_bytes;
+                int percentage = progress.total_bytes > 0 ?
+                                     progress.bytes_transferred * 100 / progress.total_bytes :
+                                     0;
                 std::cerr << "\rUploading "
                           << "[" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
