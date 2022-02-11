@@ -134,9 +134,10 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
         (command_ack.target_component &&
          command_ack.target_component != _parent.get_own_component_id())) {
         if (_command_debugging) {
-            LogDebug() << "Ignoring command ack from " << static_cast<int>(message.sysid) << '/'
-                       << static_cast<int>(message.compid) << " to "
-                       << static_cast<int>(command_ack.target_system) << '/'
+            LogDebug() << "Ignoring command ack for command "
+                       << static_cast<int>(command_ack.command) << " from "
+                       << static_cast<int>(message.sysid) << '/' << static_cast<int>(message.compid)
+                       << " to " << static_cast<int>(command_ack.target_system) << '/'
                        << static_cast<int>(command_ack.target_component);
         }
         return;
