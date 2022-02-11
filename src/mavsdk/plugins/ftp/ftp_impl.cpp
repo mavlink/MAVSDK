@@ -4,6 +4,11 @@
 #if defined(WINDOWS)
 #include "tronkko_dirent.h"
 #include "stackoverflow_unistd.h"
+// Fix MSVC error C4003
+// https://stackoverflow.com/a/6884102/8548472
+#ifdef max
+#undef max
+#endif
 #else
 #include <dirent.h>
 #include <unistd.h>
