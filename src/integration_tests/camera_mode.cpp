@@ -60,45 +60,45 @@ TEST(CameraTest, SetModeAsync)
     ASSERT_TRUE(system->has_camera());
     auto camera = std::make_shared<Camera>(system);
 
-    set_mode_async(camera, Camera::Mode::Photo);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    Camera::Mode new_mode = get_mode(camera);
+    Camera::Mode new_mode = camera->mode();
     EXPECT_EQ(new_mode, Camera::Mode::Photo);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode_async(camera, Camera::Mode::Video);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Video), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    new_mode = get_mode(camera);
+    new_mode = camera->mode();
     EXPECT_EQ(new_mode, Camera::Mode::Video);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode_async(camera, Camera::Mode::Photo);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    new_mode = get_mode(camera);
+    new_mode = camera->mode();
     EXPECT_EQ(new_mode, Camera::Mode::Photo);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode_async(camera, Camera::Mode::Photo);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    new_mode = get_mode(camera);
+    new_mode = camera->mode();
     EXPECT_EQ(new_mode, Camera::Mode::Photo);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode_async(camera, Camera::Mode::Video);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Video), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    new_mode = get_mode(camera);
+    new_mode = camera->mode();
     EXPECT_EQ(new_mode, Camera::Mode::Video);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode_async(camera, Camera::Mode::Video);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Video), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    new_mode = get_mode(camera);
+    new_mode = camera->mode();
     EXPECT_EQ(new_mode, Camera::Mode::Video);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode_async(camera, Camera::Mode::Photo);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Video), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    new_mode = get_mode(camera);
-    EXPECT_EQ(new_mode, Camera::Mode::Photo);
+    new_mode = camera->mode();
+    EXPECT_EQ(new_mode, Camera::Mode::Video);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }

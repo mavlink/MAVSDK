@@ -53,7 +53,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
     if (is_e90 || is_e50 || is_et) {
         // Set to photo mode
-        set_mode_async(camera, Camera::Mode::Photo);
+        EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
         auto settings = camera->possible_setting_options();
@@ -72,7 +72,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
             EXPECT_EQ(settings.size(), 5);
         }
 
-        set_mode_async(camera, Camera::Mode::Video);
+        EXPECT_EQ(camera->set_mode(Camera::Mode::Video), Camera::Result::Success);
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
 

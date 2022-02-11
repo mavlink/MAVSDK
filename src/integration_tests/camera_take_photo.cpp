@@ -29,17 +29,14 @@ TEST(CameraTest, TakePhotoSingle)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // We want to take the picture in photo mode.
-    set_mode_async(camera, Camera::Mode::Photo);
-
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
 
     bool received_capture_info = false;
     camera->subscribe_capture_info([&received_capture_info](Camera::CaptureInfo capture_info) {
         receive_capture_info(capture_info, received_capture_info);
     });
 
-    const auto result = camera->take_photo();
-    EXPECT_EQ(result, Camera::Result::Success);
+    EXPECT_EQ(camera->take_photo(), Camera::Result::Success);
     std::this_thread::sleep_for(std::chrono::seconds(5));
     EXPECT_TRUE(received_capture_info);
 }
@@ -61,7 +58,7 @@ TEST(CameraTest, TakePhotosMultiple)
     auto camera = std::make_shared<Camera>(system);
 
     // We want to take the picture in photo mode.
-    set_mode_async(camera, Camera::Mode::Photo);
+    EXPECT_EQ(camera->set_mode(Camera::Mode::Photo), Camera::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
