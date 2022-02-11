@@ -42,8 +42,43 @@ mavsdk_server_generated_dir="${script_dir}/../src/mavsdk_server/src/generated"
 protoc_binary="${third_party_dir}/install/bin/protoc"
 protoc_grpc_binary="${third_party_dir}/install/bin/grpc_cpp_plugin"
 
-command -v ${protoc_binary} > /dev/null || protoc_binary="$(command -v protoc)"
-command -v ${protoc_grpc_binary} > /dev/null || protoc_grpc_binary="$(command -v grpc_cpp_plugin)"
+echo "Looking for ${protoc_binary}"
+if ! command -v ${protoc_binary} > /dev/null; then
+    echo "Falling back to looking for protoc in PATH"
+    if ! protoc_binary="$(command -v protoc)"; then
+        echo >&2 "No protoc binary found"
+        echo >&2 "'protoc' not found"
+        echo >&2 ""
+        echo >&2 "You may want to run the CMake configure step first:"
+        echo >&2 ""
+        echo >&2 "    cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H."
+        echo >&2 ""
+        echo >&2 "or set the build directory used with -b"
+        echo >&2 ""
+        usage
+        exit 1
+    fi
+fi
+echo "Found protoc ($(${protoc_binary} --version)): ${protoc_binary}"
+
+echo "Looking for ${protoc_grpc_binary}"
+if ! command -v ${protoc_grpc_binary} > /dev/null; then
+echo "Falling back to looking for grpc_cpp_plugin in PATH"
+    if ! protoc_grpc_binary="$(command -v grpc_cpp_plugin)"; then
+        echo >&2 "No grpc_cpp_plugin binary found"
+        echo >&2 "'grpc_cpp_plugin' not found"
+        echo >&2 ""
+        echo >&2 "You may want to run the CMake configure step first:"
+        echo >&2 ""
+        echo >&2 "    cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H."
+        echo >&2 ""
+        echo >&2 "or set the build directory used with -b"
+        echo >&2 ""
+        usage
+        exit 1
+    fi
+fi
+echo "Found grpc_cpp_plugin: ${protoc_grpc_binary}"
 
 function snake_case_to_camel_case {
     echo $1 | awk -v FS="_" -v OFS="" '{for (i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} 1'
@@ -53,14 +88,6 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
     echo "-------------------------------"
     echo " Error"
     echo "-------------------------------"
-    echo >&2 "'protoc' or 'grpc_cpp_plugin' not found"
-    echo >&2 ""
-    echo >&2 "Those are expected to be built for the host system in '${third_party_dir}'!"
-    echo >&2 ""
-    echo >&2 "You may want to run the CMake configure step first:"
-    echo >&2 ""
-    echo >&2 "    cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H."
-    exit 1
 }
 
 command -v protoc-gen-mavsdk > /dev/null || {
@@ -75,9 +102,6 @@ command -v protoc-gen-mavsdk > /dev/null || {
     echo >&2 "    pip3 install --user protoc-gen-mavsdk"
     exit 1
 }
-
-echo "Found protoc ($(${protoc_binary} --version)): ${protoc_binary}"
-echo "Found grpc_cpp_plugin: ${protoc_grpc_binary}"
 
 plugin_list_and_core=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::')
 
