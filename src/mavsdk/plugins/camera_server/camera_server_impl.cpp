@@ -140,7 +140,10 @@ void CameraServerImpl::deinit() {}
 
 void CameraServerImpl::enable() {}
 
-void CameraServerImpl::disable() {}
+void CameraServerImpl::disable()
+{
+    stop_image_capture_interval();
+}
 
 CameraServer::Result CameraServerImpl::set_information(CameraServer::Information information)
 {
@@ -151,7 +154,7 @@ CameraServer::Result CameraServerImpl::set_information(CameraServer::Information
 
 CameraServer::Result CameraServerImpl::set_in_progress(bool in_progress)
 {
-    _in_progress = in_progress;
+    _is_image_capture_in_progress = in_progress;
     return CameraServer::Result::Success;
 }
 
@@ -162,9 +165,27 @@ void CameraServerImpl::subscribe_take_photo(CameraServer::TakePhotoCallback call
 
 CameraServer::Result CameraServerImpl::respond_take_photo(CameraServer::CaptureInfo capture_info)
 {
+    // If capture_info.index == INT32_MIN, it means this was an interval
+    // capture rather than a single image capture.
+    if (capture_info.index != INT32_MIN) {
+        // We expect each capture to be the next sequential number.
+        // If _image_capture_count == 0, we ignore since it means that this is
+        // the first photo since the plugin was intialized.
+        if (_image_capture_count != 0 && capture_info.index != _image_capture_count + 1) {
+            LogErr() << "unexpected image index, expecting " << +(_image_capture_count + 1)
+                     << " but was " << +capture_info.index;
+        }
+
+        _image_capture_count = capture_info.index;
+    }
+
+    // REVISIT: Should we cache all CaptureInfo in memory for single image
+    // captures so that we can respond to requests for lost CAMERA_IMAGE_CAPTURED
+    // messages without calling back to user code?
+
     static const uint8_t camera_id = 0; // deprecated unused field
 
-    const float attitude_quaternion[] = { 
+    const float attitude_quaternion[] = {
         capture_info.attitude_quaternion.w,
         capture_info.attitude_quaternion.x,
         capture_info.attitude_quaternion.y,
@@ -188,10 +209,57 @@ CameraServer::Result CameraServerImpl::respond_take_photo(CameraServer::CaptureI
         capture_info.is_success,
         capture_info.file_url.c_str());
 
+    // TODO: this should be a broadcast message
     _parent->send_message(msg);
     LogDebug() << "sent camera image captured msg - index: " << +capture_info.index;
 
     return CameraServer::Result::Success;
+}
+
+/**
+ * Starts capturing images with the given interval.
+ * @param [in]  interval_s      The interval between captures in seconds.
+ * @param [in]  count           The number of images to capture or 0 for "forever".
+ * @param [in]  index           The index/sequence number pass to the user callback (always
+ *                              @c INT32_MIN).
+ */
+void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t count, int32_t index)
+{
+    // If count == 0, it means capture "forever" until a stop command is received.
+    auto remaining = std::make_shared<int32_t>(count == 0 ? INT32_MAX : count);
+
+    _parent->add_call_every(
+        [this, remaining, index]() {
+            LogDebug() << "capture image timer triggered";
+
+            if (_take_photo_callback) {
+                _take_photo_callback(CameraServer::Result::Success, index);
+                (*remaining)--;
+            }
+
+            if (*remaining == 0) {
+                stop_image_capture_interval();
+            }
+        },
+        interval_s,
+        &_image_capture_timer_cookie);
+
+    _is_image_capture_interval_set = true;
+    _image_capture_timer_interval_s = interval_s;
+}
+
+/**
+ * Stops any pending image capture interval timer.
+ */
+void CameraServerImpl::stop_image_capture_interval()
+{
+    if (_image_capture_timer_cookie) {
+        _parent->remove_call_every(_image_capture_timer_cookie);
+    }
+
+    _image_capture_timer_cookie = nullptr;
+    _is_image_capture_interval_set = false;
+    _image_capture_timer_interval_s = 0;
 }
 
 std::optional<mavlink_message_t> CameraServerImpl::process_camera_information_request(
@@ -378,15 +446,17 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_capture_status
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     uint8_t image_status{};
-    if (_in_progress) {
+
+    if (_is_image_capture_in_progress) {
         image_status |= StatusFlags::IN_PROGRESS;
     }
 
-    int32_t image_count = 0; // TODO: get image capture vector length
+    if (_is_image_capture_interval_set) {
+        image_status |= StatusFlags::INTERVAL_SET;
+    }
 
     // unsupported
     const uint8_t video_status = 0;
-    const float image_interval = 0;
     const uint32_t recording_time_ms = 0;
     const float available_capacity = 0;
 
@@ -398,10 +468,10 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_capture_status
         static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
         image_status,
         video_status,
-        image_interval,
+        _image_capture_timer_interval_s,
         recording_time_ms,
         available_capacity,
-        image_count);
+        _image_capture_count);
 
     _parent->send_message(msg);
 
@@ -478,36 +548,43 @@ CameraServerImpl::process_set_storage_usage(const MavlinkCommandReceiver::Comman
 std::optional<mavlink_message_t>
 CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::CommandLong& command)
 {
-    auto interval = command.params.param2;
-    auto total_images = static_cast<uint32_t>(command.params.param3);
-    auto seq_number = static_cast<uint32_t>(command.params.param4);
+    auto interval_s = command.params.param2;
+    auto total_images = static_cast<int32_t>(command.params.param3);
+    auto seq_number = static_cast<int32_t>(command.params.param4);
 
-    auto current = std::make_shared<uint32_t>(total_images == 1 ? seq_number : 1);
-    auto end = *current + total_images;
-    auto forever = total_images == 0;
-
-    LogDebug() << "received image start capture request - interval: " << +interval << " total: " << +total_images << " index: " << +seq_number;
+    LogDebug() << "received image start capture request - interval: " << +interval_s
+               << " total: " << +total_images << " index: " << +seq_number;
 
     // TODO: validate parameters and return MAV_RESULT_DENIED not valid
 
-    // cancel any previous handler
-    if (_image_capture_timer_cookie) {
-        _parent->unregister_timeout_handler(_image_capture_timer_cookie);
-        _image_capture_timer_cookie = nullptr;
+    stop_image_capture_interval();
+
+    if (!_take_photo_callback) {
+        LogDebug() << "image capture requested with no take photo subscriber";
+        return _parent->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_TEMPORARILY_REJECTED);
     }
 
-    _parent->register_timeout_handler([this, current, end, forever]() {
-        LogDebug() << "capture image timer triggered";
-
-        if (_take_photo_callback) {
-            _take_photo_callback(CameraServer::Result::Success, *current);
+    // single image capture
+    if (total_images == 1) {
+        if (seq_number <= _image_capture_count) {
+            LogDebug() << "received duplicate single image capture request";
+            return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_DENIED);
         }
 
-        if (!forever &&  ++(*current) >= end) {
-            _parent->unregister_timeout_handler(_image_capture_timer_cookie);
-            _image_capture_timer_cookie = nullptr;
-        }
-    }, interval, &_image_capture_timer_cookie);
+        // MAV_RESULT_ACCEPTED must be sent before CAMERA_IMAGE_CAPTURED
+        auto ack_msg = _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+        _parent->send_message(ack_msg);
+
+        // FIXME: why is this needed to prevent dropping messages?
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        _take_photo_callback(CameraServer::Result::Success, seq_number);
+
+        return std::nullopt;
+    }
+
+    start_image_capture_interval(interval_s, total_images, seq_number);
 
     return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
@@ -517,10 +594,9 @@ CameraServerImpl::process_image_stop_capture(const MavlinkCommandReceiver::Comma
 {
     LogDebug() << "received image stop capture request";
 
-    if (_image_capture_timer_cookie) {
-        _parent->unregister_timeout_handler(_image_capture_timer_cookie);
-        _image_capture_timer_cookie = nullptr;
-    }
+    // REVISIT: should we returns something other that MAV_RESULT_ACCEPTED if
+    // there is not currently a capture interval active?
+    stop_image_capture_interval();
 
     return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
