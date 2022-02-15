@@ -99,12 +99,6 @@ void CameraServerImpl::init()
         },
         this);
     _parent->register_mavlink_command_handler(
-        MAV_CMD_DO_TRIGGER_CONTROL,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
-            return process_do_trigger_control(command);
-        },
-        this);
-    _parent->register_mavlink_command_handler(
         MAV_CMD_VIDEO_START_CAPTURE,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_video_start_capture(command);
@@ -163,15 +157,41 @@ CameraServer::Result CameraServerImpl::set_in_progress(bool in_progress)
 
 void CameraServerImpl::subscribe_take_photo(CameraServer::TakePhotoCallback callback)
 {
-    UNUSED(callback);
+    _take_photo_callback = callback;
 }
 
-CameraServer::Result CameraServerImpl::publish_photo(CameraServer::CaptureInfo capture_info)
+CameraServer::Result CameraServerImpl::respond_take_photo(CameraServer::CaptureInfo capture_info)
 {
-    UNUSED(capture_info);
+    static const uint8_t camera_id = 0; // deprecated unused field
 
-    // TODO :)
-    return {};
+    const float attitude_quaternion[] = { 
+        capture_info.attitude_quaternion.w,
+        capture_info.attitude_quaternion.x,
+        capture_info.attitude_quaternion.y,
+        capture_info.attitude_quaternion.z,
+    };
+
+    mavlink_message_t msg{};
+    mavlink_msg_camera_image_captured_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        capture_info.time_utc_us,
+        camera_id,
+        capture_info.position.latitude_deg * 1e7,
+        capture_info.position.longitude_deg * 1e7,
+        capture_info.position.absolute_altitude_m * 1e3f,
+        capture_info.position.relative_altitude_m * 1e3f,
+        attitude_quaternion,
+        capture_info.index,
+        capture_info.is_success,
+        capture_info.file_url.c_str());
+
+    _parent->send_message(msg);
+    LogDebug() << "sent camera image captured msg - index: " << +capture_info.index;
+
+    return CameraServer::Result::Success;
 }
 
 std::optional<mavlink_message_t> CameraServerImpl::process_camera_information_request(
@@ -462,21 +482,47 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
     auto total_images = static_cast<uint32_t>(command.params.param3);
     auto seq_number = static_cast<uint32_t>(command.params.param4);
 
-    UNUSED(interval);
-    UNUSED(total_images);
-    UNUSED(seq_number);
+    auto current = std::make_shared<uint32_t>(total_images == 1 ? seq_number : 1);
+    auto end = *current + total_images;
+    auto forever = total_images == 0;
 
-    LogDebug() << "unsupported image start capture request";
+    LogDebug() << "received image start capture request - interval: " << +interval << " total: " << +total_images << " index: " << +seq_number;
 
-    return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    // TODO: validate parameters and return MAV_RESULT_DENIED not valid
+
+    // cancel any previous handler
+    if (_image_capture_timer_cookie) {
+        _parent->unregister_timeout_handler(_image_capture_timer_cookie);
+        _image_capture_timer_cookie = nullptr;
+    }
+
+    _parent->register_timeout_handler([this, current, end, forever]() {
+        LogDebug() << "capture image timer triggered";
+
+        if (_take_photo_callback) {
+            _take_photo_callback(CameraServer::Result::Success, *current);
+        }
+
+        if (!forever &&  ++(*current) >= end) {
+            _parent->unregister_timeout_handler(_image_capture_timer_cookie);
+            _image_capture_timer_cookie = nullptr;
+        }
+    }, interval, &_image_capture_timer_cookie);
+
+    return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_message_t>
 CameraServerImpl::process_image_stop_capture(const MavlinkCommandReceiver::CommandLong& command)
 {
-    LogDebug() << "unsupported image stop capture request";
+    LogDebug() << "received image stop capture request";
 
-    return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    if (_image_capture_timer_cookie) {
+        _parent->unregister_timeout_handler(_image_capture_timer_cookie);
+        _image_capture_timer_cookie = nullptr;
+    }
+
+    return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_message_t> CameraServerImpl::process_camera_image_capture_request(
@@ -487,22 +533,6 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_image_capture_
     UNUSED(seq_number);
 
     LogDebug() << "unsupported image capture request";
-
-    return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
-}
-
-std::optional<mavlink_message_t>
-CameraServerImpl::process_do_trigger_control(const MavlinkCommandReceiver::CommandLong& command)
-{
-    auto enable = static_cast<TriggerControl>(command.params.param1);
-    auto reset = static_cast<TriggerControl>(command.params.param2);
-    auto pause = static_cast<TriggerControl>(command.params.param3);
-
-    UNUSED(enable);
-    UNUSED(reset);
-    UNUSED(pause);
-
-    LogDebug() << "unsupported do trigger control request";
 
     return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
 }

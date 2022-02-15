@@ -27,7 +27,7 @@ static const char* CameraServerService_method_names[] = {
   "/mavsdk.rpc.camera_server.CameraServerService/SetInformation",
   "/mavsdk.rpc.camera_server.CameraServerService/SetInProgress",
   "/mavsdk.rpc.camera_server.CameraServerService/SubscribeTakePhoto",
-  "/mavsdk.rpc.camera_server.CameraServerService/PublishPhoto",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondTakePhoto",
 };
 
 std::unique_ptr< CameraServerService::Stub> CameraServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -40,7 +40,7 @@ CameraServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   : channel_(channel), rpcmethod_SetInformation_(CameraServerService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetInProgress_(CameraServerService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeTakePhoto_(CameraServerService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_PublishPhoto_(CameraServerService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTakePhoto_(CameraServerService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraServerService::Stub::SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) {
@@ -105,25 +105,25 @@ void CameraServerService::Stub::async::SubscribeTakePhoto(::grpc::ClientContext*
   return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::TakePhotoResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeTakePhoto_, context, request, false, nullptr);
 }
 
-::grpc::Status CameraServerService::Stub::PublishPhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::PublishPhotoRequest& request, ::mavsdk::rpc::camera_server::PublishPhotoResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::PublishPhotoRequest, ::mavsdk::rpc::camera_server::PublishPhotoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PublishPhoto_, context, request, response);
+::grpc::Status CameraServerService::Stub::RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest& request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondTakePhotoRequest, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondTakePhoto_, context, request, response);
 }
 
-void CameraServerService::Stub::async::PublishPhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::PublishPhotoRequest* request, ::mavsdk::rpc::camera_server::PublishPhotoResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::PublishPhotoRequest, ::mavsdk::rpc::camera_server::PublishPhotoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishPhoto_, context, request, response, std::move(f));
+void CameraServerService::Stub::async::RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondTakePhotoRequest, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTakePhoto_, context, request, response, std::move(f));
 }
 
-void CameraServerService::Stub::async::PublishPhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::PublishPhotoRequest* request, ::mavsdk::rpc::camera_server::PublishPhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishPhoto_, context, request, response, reactor);
+void CameraServerService::Stub::async::RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTakePhoto_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::PublishPhotoResponse>* CameraServerService::Stub::PrepareAsyncPublishPhotoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::PublishPhotoRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::PublishPhotoResponse, ::mavsdk::rpc::camera_server::PublishPhotoRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PublishPhoto_, context, request);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse>* CameraServerService::Stub::PrepareAsyncRespondTakePhotoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse, ::mavsdk::rpc::camera_server::RespondTakePhotoRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondTakePhoto_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::PublishPhotoResponse>* CameraServerService::Stub::AsyncPublishPhotoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::PublishPhotoRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse>* CameraServerService::Stub::AsyncRespondTakePhotoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncPublishPhotoRaw(context, request, cq);
+    this->PrepareAsyncRespondTakePhotoRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -162,12 +162,12 @@ CameraServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraServerService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::PublishPhotoRequest, ::mavsdk::rpc::camera_server::PublishPhotoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTakePhotoRequest, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::camera_server::PublishPhotoRequest* req,
-             ::mavsdk::rpc::camera_server::PublishPhotoResponse* resp) {
-               return service->PublishPhoto(ctx, req, resp);
+             const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* req,
+             ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* resp) {
+               return service->RespondTakePhoto(ctx, req, resp);
              }, this)));
 }
 
@@ -195,7 +195,7 @@ CameraServerService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status CameraServerService::Service::PublishPhoto(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::PublishPhotoRequest* request, ::mavsdk::rpc::camera_server::PublishPhotoResponse* response) {
+::grpc::Status CameraServerService::Service::RespondTakePhoto(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response) {
   (void) context;
   (void) request;
   (void) response;

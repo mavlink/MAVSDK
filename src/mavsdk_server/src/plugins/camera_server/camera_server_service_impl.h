@@ -354,10 +354,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status PublishPhoto(
+    grpc::Status RespondTakePhoto(
         grpc::ServerContext* /* context */,
-        const rpc::camera_server::PublishPhotoRequest* request,
-        rpc::camera_server::PublishPhotoResponse* response) override
+        const rpc::camera_server::RespondTakePhotoRequest* request,
+        rpc::camera_server::RespondTakePhotoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
@@ -369,11 +369,11 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishPhoto sent with a null request! Ignoring...";
+            LogWarn() << "RespondTakePhoto sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->publish_photo(
+        auto result = _lazy_plugin.maybe_plugin()->respond_take_photo(
             translateFromRpcCaptureInfo(request->capture_info()));
 
         if (response != nullptr) {

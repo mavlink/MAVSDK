@@ -22,7 +22,7 @@ public:
 
     void subscribe_take_photo(CameraServer::TakePhotoCallback callback);
 
-    CameraServer::Result publish_photo(CameraServer::CaptureInfo capture_info);
+    CameraServer::Result respond_take_photo(CameraServer::CaptureInfo capture_info);
 
 private:
     enum StatusFlags {
@@ -39,6 +39,8 @@ private:
     bool _is_information_set{};
     CameraServer::Information _information{};
     bool _in_progress{};
+    CameraServer::TakePhotoCallback _take_photo_callback{};
+    void* _image_capture_timer_cookie{};
 
     std::optional<mavlink_message_t>
     process_camera_information_request(const MavlinkCommandReceiver::CommandLong& command);
@@ -66,8 +68,6 @@ private:
     process_image_stop_capture(const MavlinkCommandReceiver::CommandLong& command);
     std::optional<mavlink_message_t>
     process_camera_image_capture_request(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
-    process_do_trigger_control(const MavlinkCommandReceiver::CommandLong& command);
     std::optional<mavlink_message_t>
     process_video_start_capture(const MavlinkCommandReceiver::CommandLong& command);
     std::optional<mavlink_message_t>

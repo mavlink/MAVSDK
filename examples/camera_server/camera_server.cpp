@@ -56,7 +56,7 @@ void handle_per_system_camera(std::shared_ptr<mavsdk::System> system)
     camera_server->set_in_progress(false);
 
     camera_server->subscribe_take_photo(
-        [&camera_server](CameraServer::Result result, int32_t index) {
+        [camera_server](CameraServer::Result result, int32_t index) {
             camera_server->set_in_progress(true);
 
             std::cout << "taking a picture..." << std::endl;
@@ -75,7 +75,7 @@ void handle_per_system_camera(std::shared_ptr<mavsdk::System> system)
 
             camera_server->set_in_progress(false);
 
-            camera_server->publish_photo({
+            camera_server->respond_take_photo({
                 .position = position,
                 .attitude_quaternion = attitude,
                 .time_utc_us = static_cast<uint64_t>(timestamp),
@@ -85,7 +85,8 @@ void handle_per_system_camera(std::shared_ptr<mavsdk::System> system)
             });
         });
 
-    std::cout << "Connected to " << (system->is_standalone() ? "GCS" : "autopilot") << " system ID " << +system->get_system_id() << std::endl;
+    std::cout << "Connected to " << (system->is_standalone() ? "GCS" : "autopilot") << " system ID "
+              << +system->get_system_id() << std::endl;
 }
 
 int main(int argc, char** argv)
