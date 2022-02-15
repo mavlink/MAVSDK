@@ -838,6 +838,18 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
             new_work->param_value = _param_server_store.at(safe_param_id);
             new_work->extended = false;
             _work_queue.push_back(new_work);
+            std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+            for (const auto& subscription : _param_changed_subscriptions) {
+                if (subscription.param_name != safe_param_id) {
+                    continue;
+                }
+                if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
+                    LogErr() << "Received wrong param type in subscription for "
+                             << subscription.param_name;
+                    continue;
+                }
+                subscription.callback(value);
+            }
         } else {
             LogDebug() << "Missing Param: " << safe_param_id;
         }

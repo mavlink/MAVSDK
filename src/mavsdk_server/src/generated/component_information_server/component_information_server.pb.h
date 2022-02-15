@@ -48,7 +48,7 @@ struct TableStruct_component_5finformation_5fserver_2fcomponent_5finformation_5f
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[3]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -61,19 +61,35 @@ namespace component_information_server {
 class ComponentInformationServerResult;
 struct ComponentInformationServerResultDefaultTypeInternal;
 extern ComponentInformationServerResultDefaultTypeInternal _ComponentInformationServerResult_default_instance_;
-class ProvidePeripheralFileRequest;
-struct ProvidePeripheralFileRequestDefaultTypeInternal;
-extern ProvidePeripheralFileRequestDefaultTypeInternal _ProvidePeripheralFileRequest_default_instance_;
-class ProvidePeripheralFileResponse;
-struct ProvidePeripheralFileResponseDefaultTypeInternal;
-extern ProvidePeripheralFileResponseDefaultTypeInternal _ProvidePeripheralFileResponse_default_instance_;
+class FloatParam;
+struct FloatParamDefaultTypeInternal;
+extern FloatParamDefaultTypeInternal _FloatParam_default_instance_;
+class FloatParamResponse;
+struct FloatParamResponseDefaultTypeInternal;
+extern FloatParamResponseDefaultTypeInternal _FloatParamResponse_default_instance_;
+class FloatParamUpdate;
+struct FloatParamUpdateDefaultTypeInternal;
+extern FloatParamUpdateDefaultTypeInternal _FloatParamUpdate_default_instance_;
+class ProvideFloatParamRequest;
+struct ProvideFloatParamRequestDefaultTypeInternal;
+extern ProvideFloatParamRequestDefaultTypeInternal _ProvideFloatParamRequest_default_instance_;
+class ProvideFloatParamResponse;
+struct ProvideFloatParamResponseDefaultTypeInternal;
+extern ProvideFloatParamResponseDefaultTypeInternal _ProvideFloatParamResponse_default_instance_;
+class SubscribeFloatParamRequest;
+struct SubscribeFloatParamRequestDefaultTypeInternal;
+extern SubscribeFloatParamRequestDefaultTypeInternal _SubscribeFloatParamRequest_default_instance_;
 }  // namespace component_information_server
 }  // namespace rpc
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
 template<> ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::ComponentInformationServerResult>(Arena*);
-template<> ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest>(Arena*);
-template<> ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>(Arena*);
+template<> ::mavsdk::rpc::component_information_server::FloatParam* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::FloatParam>(Arena*);
+template<> ::mavsdk::rpc::component_information_server::FloatParamResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::FloatParamResponse>(Arena*);
+template<> ::mavsdk::rpc::component_information_server::FloatParamUpdate* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::FloatParamUpdate>(Arena*);
+template<> ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::ProvideFloatParamRequest>(Arena*);
+template<> ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>(Arena*);
+template<> ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace mavsdk {
 namespace rpc {
@@ -82,17 +98,16 @@ namespace component_information_server {
 enum ComponentInformationServerResult_Result : int {
   ComponentInformationServerResult_Result_RESULT_UNKNOWN = 0,
   ComponentInformationServerResult_Result_RESULT_SUCCESS = 1,
-  ComponentInformationServerResult_Result_RESULT_NOT_FOUND = 2,
-  ComponentInformationServerResult_Result_RESULT_OPEN_FAILURE = 3,
-  ComponentInformationServerResult_Result_RESULT_READ_FAILURE = 4,
-  ComponentInformationServerResult_Result_RESULT_FAILED_JSON_PARSING = 5,
-  ComponentInformationServerResult_Result_RESULT_FAILED_JSON_SCHEMA = 6,
+  ComponentInformationServerResult_Result_RESULT_DUPLICATE_PARAM = 2,
+  ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_START_VALUE = 3,
+  ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_DEFAULT_VALUE = 4,
+  ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_NAME = 5,
   ComponentInformationServerResult_Result_ComponentInformationServerResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ComponentInformationServerResult_Result_ComponentInformationServerResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ComponentInformationServerResult_Result_IsValid(int value);
 constexpr ComponentInformationServerResult_Result ComponentInformationServerResult_Result_Result_MIN = ComponentInformationServerResult_Result_RESULT_UNKNOWN;
-constexpr ComponentInformationServerResult_Result ComponentInformationServerResult_Result_Result_MAX = ComponentInformationServerResult_Result_RESULT_FAILED_JSON_SCHEMA;
+constexpr ComponentInformationServerResult_Result ComponentInformationServerResult_Result_Result_MAX = ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_NAME;
 constexpr int ComponentInformationServerResult_Result_Result_ARRAYSIZE = ComponentInformationServerResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ComponentInformationServerResult_Result_descriptor();
@@ -111,24 +126,24 @@ inline bool ComponentInformationServerResult_Result_Parse(
 }
 // ===================================================================
 
-class ProvidePeripheralFileRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest) */ {
+class FloatParam final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.FloatParam) */ {
  public:
-  inline ProvidePeripheralFileRequest() : ProvidePeripheralFileRequest(nullptr) {}
-  ~ProvidePeripheralFileRequest() override;
-  explicit constexpr ProvidePeripheralFileRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline FloatParam() : FloatParam(nullptr) {}
+  ~FloatParam() override;
+  explicit constexpr FloatParam(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  ProvidePeripheralFileRequest(const ProvidePeripheralFileRequest& from);
-  ProvidePeripheralFileRequest(ProvidePeripheralFileRequest&& from) noexcept
-    : ProvidePeripheralFileRequest() {
+  FloatParam(const FloatParam& from);
+  FloatParam(FloatParam&& from) noexcept
+    : FloatParam() {
     *this = ::std::move(from);
   }
 
-  inline ProvidePeripheralFileRequest& operator=(const ProvidePeripheralFileRequest& from) {
+  inline FloatParam& operator=(const FloatParam& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ProvidePeripheralFileRequest& operator=(ProvidePeripheralFileRequest&& from) noexcept {
+  inline FloatParam& operator=(FloatParam&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()) {
       InternalSwap(&from);
@@ -147,20 +162,20 @@ class ProvidePeripheralFileRequest final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ProvidePeripheralFileRequest& default_instance() {
+  static const FloatParam& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ProvidePeripheralFileRequest* internal_default_instance() {
-    return reinterpret_cast<const ProvidePeripheralFileRequest*>(
-               &_ProvidePeripheralFileRequest_default_instance_);
+  static inline const FloatParam* internal_default_instance() {
+    return reinterpret_cast<const FloatParam*>(
+               &_FloatParam_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(ProvidePeripheralFileRequest& a, ProvidePeripheralFileRequest& b) {
+  friend void swap(FloatParam& a, FloatParam& b) {
     a.Swap(&b);
   }
-  inline void Swap(ProvidePeripheralFileRequest* other) {
+  inline void Swap(FloatParam* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -168,7 +183,7 @@ class ProvidePeripheralFileRequest final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ProvidePeripheralFileRequest* other) {
+  void UnsafeArenaSwap(FloatParam* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -176,17 +191,17 @@ class ProvidePeripheralFileRequest final :
 
   // implements Message ----------------------------------------------
 
-  inline ProvidePeripheralFileRequest* New() const final {
-    return new ProvidePeripheralFileRequest();
+  inline FloatParam* New() const final {
+    return new FloatParam();
   }
 
-  ProvidePeripheralFileRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<ProvidePeripheralFileRequest>(arena);
+  FloatParam* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<FloatParam>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ProvidePeripheralFileRequest& from);
+  void CopyFrom(const FloatParam& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const ProvidePeripheralFileRequest& from);
+  void MergeFrom(const FloatParam& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
   public:
@@ -203,13 +218,13 @@ class ProvidePeripheralFileRequest final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ProvidePeripheralFileRequest* other);
+  void InternalSwap(FloatParam* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest";
+    return "mavsdk.rpc.component_information_server.FloatParam";
   }
   protected:
-  explicit ProvidePeripheralFileRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit FloatParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -226,53 +241,156 @@ class ProvidePeripheralFileRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPathFieldNumber = 1,
+    kNameFieldNumber = 1,
+    kShortDescriptionFieldNumber = 2,
+    kLongDescriptionFieldNumber = 3,
+    kUnitFieldNumber = 4,
+    kDecimalPlacesFieldNumber = 5,
+    kStartValueFieldNumber = 6,
+    kDefaultValueFieldNumber = 7,
+    kMinValueFieldNumber = 8,
+    kMaxValueFieldNumber = 9,
   };
-  // string path = 1;
-  void clear_path();
-  const std::string& path() const;
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_path();
-  PROTOBUF_MUST_USE_RESULT std::string* release_path();
-  void set_allocated_path(std::string* path);
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_MUST_USE_RESULT std::string* release_name();
+  void set_allocated_name(std::string* name);
   private:
-  const std::string& _internal_path() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_path(const std::string& value);
-  std::string* _internal_mutable_path();
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
   public:
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest)
+  // string short_description = 2;
+  void clear_short_description();
+  const std::string& short_description() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_short_description(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_short_description();
+  PROTOBUF_MUST_USE_RESULT std::string* release_short_description();
+  void set_allocated_short_description(std::string* short_description);
+  private:
+  const std::string& _internal_short_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_short_description(const std::string& value);
+  std::string* _internal_mutable_short_description();
+  public:
+
+  // string long_description = 3;
+  void clear_long_description();
+  const std::string& long_description() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_long_description(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_long_description();
+  PROTOBUF_MUST_USE_RESULT std::string* release_long_description();
+  void set_allocated_long_description(std::string* long_description);
+  private:
+  const std::string& _internal_long_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_long_description(const std::string& value);
+  std::string* _internal_mutable_long_description();
+  public:
+
+  // string unit = 4;
+  void clear_unit();
+  const std::string& unit() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_unit(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_unit();
+  PROTOBUF_MUST_USE_RESULT std::string* release_unit();
+  void set_allocated_unit(std::string* unit);
+  private:
+  const std::string& _internal_unit() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_unit(const std::string& value);
+  std::string* _internal_mutable_unit();
+  public:
+
+  // int32 decimal_places = 5;
+  void clear_decimal_places();
+  ::PROTOBUF_NAMESPACE_ID::int32 decimal_places() const;
+  void set_decimal_places(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_decimal_places() const;
+  void _internal_set_decimal_places(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // float start_value = 6;
+  void clear_start_value();
+  float start_value() const;
+  void set_start_value(float value);
+  private:
+  float _internal_start_value() const;
+  void _internal_set_start_value(float value);
+  public:
+
+  // float default_value = 7;
+  void clear_default_value();
+  float default_value() const;
+  void set_default_value(float value);
+  private:
+  float _internal_default_value() const;
+  void _internal_set_default_value(float value);
+  public:
+
+  // float min_value = 8;
+  void clear_min_value();
+  float min_value() const;
+  void set_min_value(float value);
+  private:
+  float _internal_min_value() const;
+  void _internal_set_min_value(float value);
+  public:
+
+  // float max_value = 9;
+  void clear_max_value();
+  float max_value() const;
+  void set_max_value(float value);
+  private:
+  float _internal_max_value() const;
+  void _internal_set_max_value(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.FloatParam)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr short_description_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr long_description_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr unit_;
+  ::PROTOBUF_NAMESPACE_ID::int32 decimal_places_;
+  float start_value_;
+  float default_value_;
+  float min_value_;
+  float max_value_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_component_5finformation_5fserver_2fcomponent_5finformation_5fserver_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ProvidePeripheralFileResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse) */ {
+class ProvideFloatParamRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.ProvideFloatParamRequest) */ {
  public:
-  inline ProvidePeripheralFileResponse() : ProvidePeripheralFileResponse(nullptr) {}
-  ~ProvidePeripheralFileResponse() override;
-  explicit constexpr ProvidePeripheralFileResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline ProvideFloatParamRequest() : ProvideFloatParamRequest(nullptr) {}
+  ~ProvideFloatParamRequest() override;
+  explicit constexpr ProvideFloatParamRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  ProvidePeripheralFileResponse(const ProvidePeripheralFileResponse& from);
-  ProvidePeripheralFileResponse(ProvidePeripheralFileResponse&& from) noexcept
-    : ProvidePeripheralFileResponse() {
+  ProvideFloatParamRequest(const ProvideFloatParamRequest& from);
+  ProvideFloatParamRequest(ProvideFloatParamRequest&& from) noexcept
+    : ProvideFloatParamRequest() {
     *this = ::std::move(from);
   }
 
-  inline ProvidePeripheralFileResponse& operator=(const ProvidePeripheralFileResponse& from) {
+  inline ProvideFloatParamRequest& operator=(const ProvideFloatParamRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ProvidePeripheralFileResponse& operator=(ProvidePeripheralFileResponse&& from) noexcept {
+  inline ProvideFloatParamRequest& operator=(ProvideFloatParamRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()) {
       InternalSwap(&from);
@@ -291,20 +409,20 @@ class ProvidePeripheralFileResponse final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ProvidePeripheralFileResponse& default_instance() {
+  static const ProvideFloatParamRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ProvidePeripheralFileResponse* internal_default_instance() {
-    return reinterpret_cast<const ProvidePeripheralFileResponse*>(
-               &_ProvidePeripheralFileResponse_default_instance_);
+  static inline const ProvideFloatParamRequest* internal_default_instance() {
+    return reinterpret_cast<const ProvideFloatParamRequest*>(
+               &_ProvideFloatParamRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  friend void swap(ProvidePeripheralFileResponse& a, ProvidePeripheralFileResponse& b) {
+  friend void swap(ProvideFloatParamRequest& a, ProvideFloatParamRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(ProvidePeripheralFileResponse* other) {
+  inline void Swap(ProvideFloatParamRequest* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -312,7 +430,7 @@ class ProvidePeripheralFileResponse final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ProvidePeripheralFileResponse* other) {
+  void UnsafeArenaSwap(ProvideFloatParamRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -320,17 +438,17 @@ class ProvidePeripheralFileResponse final :
 
   // implements Message ----------------------------------------------
 
-  inline ProvidePeripheralFileResponse* New() const final {
-    return new ProvidePeripheralFileResponse();
+  inline ProvideFloatParamRequest* New() const final {
+    return new ProvideFloatParamRequest();
   }
 
-  ProvidePeripheralFileResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<ProvidePeripheralFileResponse>(arena);
+  ProvideFloatParamRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ProvideFloatParamRequest>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ProvidePeripheralFileResponse& from);
+  void CopyFrom(const ProvideFloatParamRequest& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const ProvidePeripheralFileResponse& from);
+  void MergeFrom(const ProvideFloatParamRequest& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
   public:
@@ -347,13 +465,161 @@ class ProvidePeripheralFileResponse final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ProvidePeripheralFileResponse* other);
+  void InternalSwap(ProvideFloatParamRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse";
+    return "mavsdk.rpc.component_information_server.ProvideFloatParamRequest";
   }
   protected:
-  explicit ProvidePeripheralFileResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit ProvideFloatParamRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kParamFieldNumber = 1,
+  };
+  // .mavsdk.rpc.component_information_server.FloatParam param = 1;
+  bool has_param() const;
+  private:
+  bool _internal_has_param() const;
+  public:
+  void clear_param();
+  const ::mavsdk::rpc::component_information_server::FloatParam& param() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::component_information_server::FloatParam* release_param();
+  ::mavsdk::rpc::component_information_server::FloatParam* mutable_param();
+  void set_allocated_param(::mavsdk::rpc::component_information_server::FloatParam* param);
+  private:
+  const ::mavsdk::rpc::component_information_server::FloatParam& _internal_param() const;
+  ::mavsdk::rpc::component_information_server::FloatParam* _internal_mutable_param();
+  public:
+  void unsafe_arena_set_allocated_param(
+      ::mavsdk::rpc::component_information_server::FloatParam* param);
+  ::mavsdk::rpc::component_information_server::FloatParam* unsafe_arena_release_param();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.ProvideFloatParamRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::component_information_server::FloatParam* param_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_component_5finformation_5fserver_2fcomponent_5finformation_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ProvideFloatParamResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.ProvideFloatParamResponse) */ {
+ public:
+  inline ProvideFloatParamResponse() : ProvideFloatParamResponse(nullptr) {}
+  ~ProvideFloatParamResponse() override;
+  explicit constexpr ProvideFloatParamResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  ProvideFloatParamResponse(const ProvideFloatParamResponse& from);
+  ProvideFloatParamResponse(ProvideFloatParamResponse&& from) noexcept
+    : ProvideFloatParamResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ProvideFloatParamResponse& operator=(const ProvideFloatParamResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ProvideFloatParamResponse& operator=(ProvideFloatParamResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ProvideFloatParamResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ProvideFloatParamResponse* internal_default_instance() {
+    return reinterpret_cast<const ProvideFloatParamResponse*>(
+               &_ProvideFloatParamResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(ProvideFloatParamResponse& a, ProvideFloatParamResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ProvideFloatParamResponse* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ProvideFloatParamResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ProvideFloatParamResponse* New() const final {
+    return new ProvideFloatParamResponse();
+  }
+
+  ProvideFloatParamResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ProvideFloatParamResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const ProvideFloatParamResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const ProvideFloatParamResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ProvideFloatParamResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.component_information_server.ProvideFloatParamResponse";
+  }
+  protected:
+  explicit ProvideFloatParamResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -390,7 +656,7 @@ class ProvidePeripheralFileResponse final :
       ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* component_information_server_result);
   ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* unsafe_arena_release_component_information_server_result();
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.ProvideFloatParamResponse)
  private:
   class _Internal;
 
@@ -398,6 +664,435 @@ class ProvidePeripheralFileResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* component_information_server_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_component_5finformation_5fserver_2fcomponent_5finformation_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FloatParamUpdate final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.FloatParamUpdate) */ {
+ public:
+  inline FloatParamUpdate() : FloatParamUpdate(nullptr) {}
+  ~FloatParamUpdate() override;
+  explicit constexpr FloatParamUpdate(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  FloatParamUpdate(const FloatParamUpdate& from);
+  FloatParamUpdate(FloatParamUpdate&& from) noexcept
+    : FloatParamUpdate() {
+    *this = ::std::move(from);
+  }
+
+  inline FloatParamUpdate& operator=(const FloatParamUpdate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FloatParamUpdate& operator=(FloatParamUpdate&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FloatParamUpdate& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FloatParamUpdate* internal_default_instance() {
+    return reinterpret_cast<const FloatParamUpdate*>(
+               &_FloatParamUpdate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(FloatParamUpdate& a, FloatParamUpdate& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(FloatParamUpdate* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FloatParamUpdate* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline FloatParamUpdate* New() const final {
+    return new FloatParamUpdate();
+  }
+
+  FloatParamUpdate* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<FloatParamUpdate>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const FloatParamUpdate& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const FloatParamUpdate& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(FloatParamUpdate* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.component_information_server.FloatParamUpdate";
+  }
+  protected:
+  explicit FloatParamUpdate(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kNameFieldNumber = 1,
+    kValueFieldNumber = 2,
+  };
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_MUST_USE_RESULT std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // float value = 2;
+  void clear_value();
+  float value() const;
+  void set_value(float value);
+  private:
+  float _internal_value() const;
+  void _internal_set_value(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.FloatParamUpdate)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+  float value_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_component_5finformation_5fserver_2fcomponent_5finformation_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFloatParamRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.SubscribeFloatParamRequest) */ {
+ public:
+  inline SubscribeFloatParamRequest() : SubscribeFloatParamRequest(nullptr) {}
+  ~SubscribeFloatParamRequest() override;
+  explicit constexpr SubscribeFloatParamRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SubscribeFloatParamRequest(const SubscribeFloatParamRequest& from);
+  SubscribeFloatParamRequest(SubscribeFloatParamRequest&& from) noexcept
+    : SubscribeFloatParamRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeFloatParamRequest& operator=(const SubscribeFloatParamRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFloatParamRequest& operator=(SubscribeFloatParamRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFloatParamRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFloatParamRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFloatParamRequest*>(
+               &_SubscribeFloatParamRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(SubscribeFloatParamRequest& a, SubscribeFloatParamRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeFloatParamRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFloatParamRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeFloatParamRequest* New() const final {
+    return new SubscribeFloatParamRequest();
+  }
+
+  SubscribeFloatParamRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeFloatParamRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SubscribeFloatParamRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SubscribeFloatParamRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeFloatParamRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.component_information_server.SubscribeFloatParamRequest";
+  }
+  protected:
+  explicit SubscribeFloatParamRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.SubscribeFloatParamRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_component_5finformation_5fserver_2fcomponent_5finformation_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FloatParamResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.component_information_server.FloatParamResponse) */ {
+ public:
+  inline FloatParamResponse() : FloatParamResponse(nullptr) {}
+  ~FloatParamResponse() override;
+  explicit constexpr FloatParamResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  FloatParamResponse(const FloatParamResponse& from);
+  FloatParamResponse(FloatParamResponse&& from) noexcept
+    : FloatParamResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline FloatParamResponse& operator=(const FloatParamResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FloatParamResponse& operator=(FloatParamResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FloatParamResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FloatParamResponse* internal_default_instance() {
+    return reinterpret_cast<const FloatParamResponse*>(
+               &_FloatParamResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(FloatParamResponse& a, FloatParamResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(FloatParamResponse* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FloatParamResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline FloatParamResponse* New() const final {
+    return new FloatParamResponse();
+  }
+
+  FloatParamResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<FloatParamResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const FloatParamResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const FloatParamResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(FloatParamResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.component_information_server.FloatParamResponse";
+  }
+  protected:
+  explicit FloatParamResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kParamUpdateFieldNumber = 1,
+  };
+  // .mavsdk.rpc.component_information_server.FloatParamUpdate param_update = 1;
+  bool has_param_update() const;
+  private:
+  bool _internal_has_param_update() const;
+  public:
+  void clear_param_update();
+  const ::mavsdk::rpc::component_information_server::FloatParamUpdate& param_update() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::component_information_server::FloatParamUpdate* release_param_update();
+  ::mavsdk::rpc::component_information_server::FloatParamUpdate* mutable_param_update();
+  void set_allocated_param_update(::mavsdk::rpc::component_information_server::FloatParamUpdate* param_update);
+  private:
+  const ::mavsdk::rpc::component_information_server::FloatParamUpdate& _internal_param_update() const;
+  ::mavsdk::rpc::component_information_server::FloatParamUpdate* _internal_mutable_param_update();
+  public:
+  void unsafe_arena_set_allocated_param_update(
+      ::mavsdk::rpc::component_information_server::FloatParamUpdate* param_update);
+  ::mavsdk::rpc::component_information_server::FloatParamUpdate* unsafe_arena_release_param_update();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.component_information_server.FloatParamResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::component_information_server::FloatParamUpdate* param_update_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_component_5finformation_5fserver_2fcomponent_5finformation_5fserver_2eproto;
 };
@@ -447,7 +1142,7 @@ class ComponentInformationServerResult final :
                &_ComponentInformationServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    6;
 
   friend void swap(ComponentInformationServerResult& a, ComponentInformationServerResult& b) {
     a.Swap(&b);
@@ -520,16 +1215,14 @@ class ComponentInformationServerResult final :
     ComponentInformationServerResult_Result_RESULT_UNKNOWN;
   static constexpr Result RESULT_SUCCESS =
     ComponentInformationServerResult_Result_RESULT_SUCCESS;
-  static constexpr Result RESULT_NOT_FOUND =
-    ComponentInformationServerResult_Result_RESULT_NOT_FOUND;
-  static constexpr Result RESULT_OPEN_FAILURE =
-    ComponentInformationServerResult_Result_RESULT_OPEN_FAILURE;
-  static constexpr Result RESULT_READ_FAILURE =
-    ComponentInformationServerResult_Result_RESULT_READ_FAILURE;
-  static constexpr Result RESULT_FAILED_JSON_PARSING =
-    ComponentInformationServerResult_Result_RESULT_FAILED_JSON_PARSING;
-  static constexpr Result RESULT_FAILED_JSON_SCHEMA =
-    ComponentInformationServerResult_Result_RESULT_FAILED_JSON_SCHEMA;
+  static constexpr Result RESULT_DUPLICATE_PARAM =
+    ComponentInformationServerResult_Result_RESULT_DUPLICATE_PARAM;
+  static constexpr Result RESULT_INVALID_PARAM_START_VALUE =
+    ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_START_VALUE;
+  static constexpr Result RESULT_INVALID_PARAM_DEFAULT_VALUE =
+    ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_DEFAULT_VALUE;
+  static constexpr Result RESULT_INVALID_PARAM_NAME =
+    ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_NAME;
   static inline bool Result_IsValid(int value) {
     return ComponentInformationServerResult_Result_IsValid(value);
   }
@@ -605,81 +1298,413 @@ class ComponentInformationServerResult final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// ProvidePeripheralFileRequest
+// FloatParam
 
-// string path = 1;
-inline void ProvidePeripheralFileRequest::clear_path() {
-  path_.ClearToEmpty();
+// string name = 1;
+inline void FloatParam::clear_name() {
+  name_.ClearToEmpty();
 }
-inline const std::string& ProvidePeripheralFileRequest::path() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest.path)
-  return _internal_path();
+inline const std::string& FloatParam::name() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.name)
+  return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void ProvidePeripheralFileRequest::set_path(ArgT0&& arg0, ArgT... args) {
+void FloatParam::set_name(ArgT0&& arg0, ArgT... args) {
  
- path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest.path)
+ name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.name)
 }
-inline std::string* ProvidePeripheralFileRequest::mutable_path() {
-  std::string* _s = _internal_mutable_path();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest.path)
+inline std::string* FloatParam::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.FloatParam.name)
   return _s;
 }
-inline const std::string& ProvidePeripheralFileRequest::_internal_path() const {
-  return path_.Get();
+inline const std::string& FloatParam::_internal_name() const {
+  return name_.Get();
 }
-inline void ProvidePeripheralFileRequest::_internal_set_path(const std::string& value) {
+inline void FloatParam::_internal_set_name(const std::string& value) {
   
-  path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* ProvidePeripheralFileRequest::_internal_mutable_path() {
+inline std::string* FloatParam::_internal_mutable_name() {
   
-  return path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* ProvidePeripheralFileRequest::release_path() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest.path)
-  return path_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* FloatParam::release_name() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.FloatParam.name)
+  return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void ProvidePeripheralFileRequest::set_allocated_path(std::string* path) {
-  if (path != nullptr) {
+inline void FloatParam::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
     
   } else {
     
   }
-  path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), path,
+  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.ProvidePeripheralFileRequest.path)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.FloatParam.name)
+}
+
+// string short_description = 2;
+inline void FloatParam::clear_short_description() {
+  short_description_.ClearToEmpty();
+}
+inline const std::string& FloatParam::short_description() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.short_description)
+  return _internal_short_description();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FloatParam::set_short_description(ArgT0&& arg0, ArgT... args) {
+ 
+ short_description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.short_description)
+}
+inline std::string* FloatParam::mutable_short_description() {
+  std::string* _s = _internal_mutable_short_description();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.FloatParam.short_description)
+  return _s;
+}
+inline const std::string& FloatParam::_internal_short_description() const {
+  return short_description_.Get();
+}
+inline void FloatParam::_internal_set_short_description(const std::string& value) {
+  
+  short_description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* FloatParam::_internal_mutable_short_description() {
+  
+  return short_description_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* FloatParam::release_short_description() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.FloatParam.short_description)
+  return short_description_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void FloatParam::set_allocated_short_description(std::string* short_description) {
+  if (short_description != nullptr) {
+    
+  } else {
+    
+  }
+  short_description_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), short_description,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.FloatParam.short_description)
+}
+
+// string long_description = 3;
+inline void FloatParam::clear_long_description() {
+  long_description_.ClearToEmpty();
+}
+inline const std::string& FloatParam::long_description() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.long_description)
+  return _internal_long_description();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FloatParam::set_long_description(ArgT0&& arg0, ArgT... args) {
+ 
+ long_description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.long_description)
+}
+inline std::string* FloatParam::mutable_long_description() {
+  std::string* _s = _internal_mutable_long_description();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.FloatParam.long_description)
+  return _s;
+}
+inline const std::string& FloatParam::_internal_long_description() const {
+  return long_description_.Get();
+}
+inline void FloatParam::_internal_set_long_description(const std::string& value) {
+  
+  long_description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* FloatParam::_internal_mutable_long_description() {
+  
+  return long_description_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* FloatParam::release_long_description() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.FloatParam.long_description)
+  return long_description_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void FloatParam::set_allocated_long_description(std::string* long_description) {
+  if (long_description != nullptr) {
+    
+  } else {
+    
+  }
+  long_description_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), long_description,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.FloatParam.long_description)
+}
+
+// string unit = 4;
+inline void FloatParam::clear_unit() {
+  unit_.ClearToEmpty();
+}
+inline const std::string& FloatParam::unit() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.unit)
+  return _internal_unit();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FloatParam::set_unit(ArgT0&& arg0, ArgT... args) {
+ 
+ unit_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.unit)
+}
+inline std::string* FloatParam::mutable_unit() {
+  std::string* _s = _internal_mutable_unit();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.FloatParam.unit)
+  return _s;
+}
+inline const std::string& FloatParam::_internal_unit() const {
+  return unit_.Get();
+}
+inline void FloatParam::_internal_set_unit(const std::string& value) {
+  
+  unit_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* FloatParam::_internal_mutable_unit() {
+  
+  return unit_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* FloatParam::release_unit() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.FloatParam.unit)
+  return unit_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void FloatParam::set_allocated_unit(std::string* unit) {
+  if (unit != nullptr) {
+    
+  } else {
+    
+  }
+  unit_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), unit,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.FloatParam.unit)
+}
+
+// int32 decimal_places = 5;
+inline void FloatParam::clear_decimal_places() {
+  decimal_places_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 FloatParam::_internal_decimal_places() const {
+  return decimal_places_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 FloatParam::decimal_places() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.decimal_places)
+  return _internal_decimal_places();
+}
+inline void FloatParam::_internal_set_decimal_places(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  decimal_places_ = value;
+}
+inline void FloatParam::set_decimal_places(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_decimal_places(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.decimal_places)
+}
+
+// float start_value = 6;
+inline void FloatParam::clear_start_value() {
+  start_value_ = 0;
+}
+inline float FloatParam::_internal_start_value() const {
+  return start_value_;
+}
+inline float FloatParam::start_value() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.start_value)
+  return _internal_start_value();
+}
+inline void FloatParam::_internal_set_start_value(float value) {
+  
+  start_value_ = value;
+}
+inline void FloatParam::set_start_value(float value) {
+  _internal_set_start_value(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.start_value)
+}
+
+// float default_value = 7;
+inline void FloatParam::clear_default_value() {
+  default_value_ = 0;
+}
+inline float FloatParam::_internal_default_value() const {
+  return default_value_;
+}
+inline float FloatParam::default_value() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.default_value)
+  return _internal_default_value();
+}
+inline void FloatParam::_internal_set_default_value(float value) {
+  
+  default_value_ = value;
+}
+inline void FloatParam::set_default_value(float value) {
+  _internal_set_default_value(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.default_value)
+}
+
+// float min_value = 8;
+inline void FloatParam::clear_min_value() {
+  min_value_ = 0;
+}
+inline float FloatParam::_internal_min_value() const {
+  return min_value_;
+}
+inline float FloatParam::min_value() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.min_value)
+  return _internal_min_value();
+}
+inline void FloatParam::_internal_set_min_value(float value) {
+  
+  min_value_ = value;
+}
+inline void FloatParam::set_min_value(float value) {
+  _internal_set_min_value(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.min_value)
+}
+
+// float max_value = 9;
+inline void FloatParam::clear_max_value() {
+  max_value_ = 0;
+}
+inline float FloatParam::_internal_max_value() const {
+  return max_value_;
+}
+inline float FloatParam::max_value() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParam.max_value)
+  return _internal_max_value();
+}
+inline void FloatParam::_internal_set_max_value(float value) {
+  
+  max_value_ = value;
+}
+inline void FloatParam::set_max_value(float value) {
+  _internal_set_max_value(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParam.max_value)
 }
 
 // -------------------------------------------------------------------
 
-// ProvidePeripheralFileResponse
+// ProvideFloatParamRequest
+
+// .mavsdk.rpc.component_information_server.FloatParam param = 1;
+inline bool ProvideFloatParamRequest::_internal_has_param() const {
+  return this != internal_default_instance() && param_ != nullptr;
+}
+inline bool ProvideFloatParamRequest::has_param() const {
+  return _internal_has_param();
+}
+inline void ProvideFloatParamRequest::clear_param() {
+  if (GetArenaForAllocation() == nullptr && param_ != nullptr) {
+    delete param_;
+  }
+  param_ = nullptr;
+}
+inline const ::mavsdk::rpc::component_information_server::FloatParam& ProvideFloatParamRequest::_internal_param() const {
+  const ::mavsdk::rpc::component_information_server::FloatParam* p = param_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::component_information_server::FloatParam&>(
+      ::mavsdk::rpc::component_information_server::_FloatParam_default_instance_);
+}
+inline const ::mavsdk::rpc::component_information_server::FloatParam& ProvideFloatParamRequest::param() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.ProvideFloatParamRequest.param)
+  return _internal_param();
+}
+inline void ProvideFloatParamRequest::unsafe_arena_set_allocated_param(
+    ::mavsdk::rpc::component_information_server::FloatParam* param) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_);
+  }
+  param_ = param;
+  if (param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.component_information_server.ProvideFloatParamRequest.param)
+}
+inline ::mavsdk::rpc::component_information_server::FloatParam* ProvideFloatParamRequest::release_param() {
+  
+  ::mavsdk::rpc::component_information_server::FloatParam* temp = param_;
+  param_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::component_information_server::FloatParam* ProvideFloatParamRequest::unsafe_arena_release_param() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.ProvideFloatParamRequest.param)
+  
+  ::mavsdk::rpc::component_information_server::FloatParam* temp = param_;
+  param_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::component_information_server::FloatParam* ProvideFloatParamRequest::_internal_mutable_param() {
+  
+  if (param_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::component_information_server::FloatParam>(GetArenaForAllocation());
+    param_ = p;
+  }
+  return param_;
+}
+inline ::mavsdk::rpc::component_information_server::FloatParam* ProvideFloatParamRequest::mutable_param() {
+  ::mavsdk::rpc::component_information_server::FloatParam* _msg = _internal_mutable_param();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.ProvideFloatParamRequest.param)
+  return _msg;
+}
+inline void ProvideFloatParamRequest::set_allocated_param(::mavsdk::rpc::component_information_server::FloatParam* param) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete param_;
+  }
+  if (param) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::component_information_server::FloatParam>::GetOwningArena(param);
+    if (message_arena != submessage_arena) {
+      param = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, param, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  param_ = param;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.ProvideFloatParamRequest.param)
+}
+
+// -------------------------------------------------------------------
+
+// ProvideFloatParamResponse
 
 // .mavsdk.rpc.component_information_server.ComponentInformationServerResult component_information_server_result = 1;
-inline bool ProvidePeripheralFileResponse::_internal_has_component_information_server_result() const {
+inline bool ProvideFloatParamResponse::_internal_has_component_information_server_result() const {
   return this != internal_default_instance() && component_information_server_result_ != nullptr;
 }
-inline bool ProvidePeripheralFileResponse::has_component_information_server_result() const {
+inline bool ProvideFloatParamResponse::has_component_information_server_result() const {
   return _internal_has_component_information_server_result();
 }
-inline void ProvidePeripheralFileResponse::clear_component_information_server_result() {
+inline void ProvideFloatParamResponse::clear_component_information_server_result() {
   if (GetArenaForAllocation() == nullptr && component_information_server_result_ != nullptr) {
     delete component_information_server_result_;
   }
   component_information_server_result_ = nullptr;
 }
-inline const ::mavsdk::rpc::component_information_server::ComponentInformationServerResult& ProvidePeripheralFileResponse::_internal_component_information_server_result() const {
+inline const ::mavsdk::rpc::component_information_server::ComponentInformationServerResult& ProvideFloatParamResponse::_internal_component_information_server_result() const {
   const ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* p = component_information_server_result_;
   return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::component_information_server::ComponentInformationServerResult&>(
       ::mavsdk::rpc::component_information_server::_ComponentInformationServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::component_information_server::ComponentInformationServerResult& ProvidePeripheralFileResponse::component_information_server_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse.component_information_server_result)
+inline const ::mavsdk::rpc::component_information_server::ComponentInformationServerResult& ProvideFloatParamResponse::component_information_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.ProvideFloatParamResponse.component_information_server_result)
   return _internal_component_information_server_result();
 }
-inline void ProvidePeripheralFileResponse::unsafe_arena_set_allocated_component_information_server_result(
+inline void ProvideFloatParamResponse::unsafe_arena_set_allocated_component_information_server_result(
     ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* component_information_server_result) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(component_information_server_result_);
@@ -690,9 +1715,9 @@ inline void ProvidePeripheralFileResponse::unsafe_arena_set_allocated_component_
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse.component_information_server_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.component_information_server.ProvideFloatParamResponse.component_information_server_result)
 }
-inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvidePeripheralFileResponse::release_component_information_server_result() {
+inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvideFloatParamResponse::release_component_information_server_result() {
   
   ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* temp = component_information_server_result_;
   component_information_server_result_ = nullptr;
@@ -707,14 +1732,14 @@ inline ::mavsdk::rpc::component_information_server::ComponentInformationServerRe
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvidePeripheralFileResponse::unsafe_arena_release_component_information_server_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse.component_information_server_result)
+inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvideFloatParamResponse::unsafe_arena_release_component_information_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.ProvideFloatParamResponse.component_information_server_result)
   
   ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* temp = component_information_server_result_;
   component_information_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvidePeripheralFileResponse::_internal_mutable_component_information_server_result() {
+inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvideFloatParamResponse::_internal_mutable_component_information_server_result() {
   
   if (component_information_server_result_ == nullptr) {
     auto* p = CreateMaybeMessage<::mavsdk::rpc::component_information_server::ComponentInformationServerResult>(GetArenaForAllocation());
@@ -722,12 +1747,12 @@ inline ::mavsdk::rpc::component_information_server::ComponentInformationServerRe
   }
   return component_information_server_result_;
 }
-inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvidePeripheralFileResponse::mutable_component_information_server_result() {
+inline ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* ProvideFloatParamResponse::mutable_component_information_server_result() {
   ::mavsdk::rpc::component_information_server::ComponentInformationServerResult* _msg = _internal_mutable_component_information_server_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse.component_information_server_result)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.ProvideFloatParamResponse.component_information_server_result)
   return _msg;
 }
-inline void ProvidePeripheralFileResponse::set_allocated_component_information_server_result(::mavsdk::rpc::component_information_server::ComponentInformationServerResult* component_information_server_result) {
+inline void ProvideFloatParamResponse::set_allocated_component_information_server_result(::mavsdk::rpc::component_information_server::ComponentInformationServerResult* component_information_server_result) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete component_information_server_result_;
@@ -744,7 +1769,175 @@ inline void ProvidePeripheralFileResponse::set_allocated_component_information_s
     
   }
   component_information_server_result_ = component_information_server_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.ProvidePeripheralFileResponse.component_information_server_result)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.ProvideFloatParamResponse.component_information_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// FloatParamUpdate
+
+// string name = 1;
+inline void FloatParamUpdate::clear_name() {
+  name_.ClearToEmpty();
+}
+inline const std::string& FloatParamUpdate::name() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParamUpdate.name)
+  return _internal_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FloatParamUpdate::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParamUpdate.name)
+}
+inline std::string* FloatParamUpdate::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.FloatParamUpdate.name)
+  return _s;
+}
+inline const std::string& FloatParamUpdate::_internal_name() const {
+  return name_.Get();
+}
+inline void FloatParamUpdate::_internal_set_name(const std::string& value) {
+  
+  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* FloatParamUpdate::_internal_mutable_name() {
+  
+  return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* FloatParamUpdate::release_name() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.FloatParamUpdate.name)
+  return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void FloatParamUpdate::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.FloatParamUpdate.name)
+}
+
+// float value = 2;
+inline void FloatParamUpdate::clear_value() {
+  value_ = 0;
+}
+inline float FloatParamUpdate::_internal_value() const {
+  return value_;
+}
+inline float FloatParamUpdate::value() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParamUpdate.value)
+  return _internal_value();
+}
+inline void FloatParamUpdate::_internal_set_value(float value) {
+  
+  value_ = value;
+}
+inline void FloatParamUpdate::set_value(float value) {
+  _internal_set_value(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.component_information_server.FloatParamUpdate.value)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFloatParamRequest
+
+// -------------------------------------------------------------------
+
+// FloatParamResponse
+
+// .mavsdk.rpc.component_information_server.FloatParamUpdate param_update = 1;
+inline bool FloatParamResponse::_internal_has_param_update() const {
+  return this != internal_default_instance() && param_update_ != nullptr;
+}
+inline bool FloatParamResponse::has_param_update() const {
+  return _internal_has_param_update();
+}
+inline void FloatParamResponse::clear_param_update() {
+  if (GetArenaForAllocation() == nullptr && param_update_ != nullptr) {
+    delete param_update_;
+  }
+  param_update_ = nullptr;
+}
+inline const ::mavsdk::rpc::component_information_server::FloatParamUpdate& FloatParamResponse::_internal_param_update() const {
+  const ::mavsdk::rpc::component_information_server::FloatParamUpdate* p = param_update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::component_information_server::FloatParamUpdate&>(
+      ::mavsdk::rpc::component_information_server::_FloatParamUpdate_default_instance_);
+}
+inline const ::mavsdk::rpc::component_information_server::FloatParamUpdate& FloatParamResponse::param_update() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.component_information_server.FloatParamResponse.param_update)
+  return _internal_param_update();
+}
+inline void FloatParamResponse::unsafe_arena_set_allocated_param_update(
+    ::mavsdk::rpc::component_information_server::FloatParamUpdate* param_update) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(param_update_);
+  }
+  param_update_ = param_update;
+  if (param_update) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.component_information_server.FloatParamResponse.param_update)
+}
+inline ::mavsdk::rpc::component_information_server::FloatParamUpdate* FloatParamResponse::release_param_update() {
+  
+  ::mavsdk::rpc::component_information_server::FloatParamUpdate* temp = param_update_;
+  param_update_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::component_information_server::FloatParamUpdate* FloatParamResponse::unsafe_arena_release_param_update() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.component_information_server.FloatParamResponse.param_update)
+  
+  ::mavsdk::rpc::component_information_server::FloatParamUpdate* temp = param_update_;
+  param_update_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::component_information_server::FloatParamUpdate* FloatParamResponse::_internal_mutable_param_update() {
+  
+  if (param_update_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::component_information_server::FloatParamUpdate>(GetArenaForAllocation());
+    param_update_ = p;
+  }
+  return param_update_;
+}
+inline ::mavsdk::rpc::component_information_server::FloatParamUpdate* FloatParamResponse::mutable_param_update() {
+  ::mavsdk::rpc::component_information_server::FloatParamUpdate* _msg = _internal_mutable_param_update();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.component_information_server.FloatParamResponse.param_update)
+  return _msg;
+}
+inline void FloatParamResponse::set_allocated_param_update(::mavsdk::rpc::component_information_server::FloatParamUpdate* param_update) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete param_update_;
+  }
+  if (param_update) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::component_information_server::FloatParamUpdate>::GetOwningArena(param_update);
+    if (message_arena != submessage_arena) {
+      param_update = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, param_update, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  param_update_ = param_update;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_information_server.FloatParamResponse.param_update)
 }
 
 // -------------------------------------------------------------------
@@ -820,6 +2013,14 @@ inline void ComponentInformationServerResult::set_allocated_result_str(std::stri
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

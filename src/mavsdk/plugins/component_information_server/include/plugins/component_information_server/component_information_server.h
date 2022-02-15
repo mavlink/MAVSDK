@@ -58,16 +58,73 @@ public:
     ~ComponentInformationServer();
 
     /**
+     * @brief
+     */
+    struct FloatParam {
+        std::string name{}; /**< @brief Name (max 16 chars) */
+        std::string short_description{}; /**< @brief Short description */
+        std::string long_description{}; /**< @brief Long description */
+        std::string unit{}; /**< @brief Unit */
+        int32_t decimal_places{}; /**< @brief Decimal places for user to show */
+        float start_value{}; /**< @brief Current/starting value */
+        float default_value{}; /**< @brief Default value */
+        float min_value{}; /**< @brief Minimum value */
+        float max_value{}; /**< @brief Maximum value */
+    };
+
+    /**
+     * @brief Equal operator to compare two `ComponentInformationServer::FloatParam` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const ComponentInformationServer::FloatParam& lhs,
+        const ComponentInformationServer::FloatParam& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `ComponentInformationServer::FloatParam`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, ComponentInformationServer::FloatParam const& float_param);
+
+    /**
+     * @brief
+     */
+    struct FloatParamUpdate {
+        std::string name{}; /**< @brief Name of param that changed */
+        float value{}; /**< @brief New value of param */
+    };
+
+    /**
+     * @brief Equal operator to compare two `ComponentInformationServer::FloatParamUpdate` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const ComponentInformationServer::FloatParamUpdate& lhs,
+        const ComponentInformationServer::FloatParamUpdate& rhs);
+
+    /**
+     * @brief Stream operator to print information about a
+     * `ComponentInformationServer::FloatParamUpdate`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(
+        std::ostream& str, ComponentInformationServer::FloatParamUpdate const& float_param_update);
+
+    /**
      * @brief Possible results returned for param requests.
      */
     enum class Result {
         Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
-        NotFound, /**< @brief Not Found. */
-        OpenFailure, /**< @brief Failure trying to open. */
-        ReadFailure, /**< @brief Failure trying to read. */
-        FailedJsonParsing, /**< @brief JSON parsing error. */
-        FailedJsonSchema, /**< @brief JSON schema error. */
+        DuplicateParam, /**< @brief Duplicate param. */
+        InvalidParamStartValue, /**< @brief Invalid start param value. */
+        InvalidParamDefaultValue, /**< @brief Invalid default param value. */
+        InvalidParamName, /**< @brief Invalid param name. */
     };
 
     /**
@@ -84,13 +141,24 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
-     * @brief Provide a component information JSON file.
+     * @brief Provide a param of type float.
      *
      * This function is blocking.
      *
      * @return Result of request.
      */
-    Result provide_peripheral_file(std::string path) const;
+    Result provide_float_param(FloatParam param) const;
+
+    /**
+     * @brief Callback type for subscribe_float_param.
+     */
+
+    using FloatParamCallback = std::function<void(FloatParamUpdate)>;
+
+    /**
+     * @brief
+     */
+    void subscribe_float_param(FloatParamCallback callback);
 
     /**
      * @brief Copy constructor.

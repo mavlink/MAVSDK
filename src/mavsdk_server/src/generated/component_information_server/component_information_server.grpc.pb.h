@@ -39,44 +39,67 @@ class ComponentInformationServerService final {
    public:
     virtual ~StubInterface() {}
     //
-    // Provide a component information JSON file.
-    virtual ::grpc::Status ProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>> AsyncProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>>(AsyncProvidePeripheralFileRaw(context, request, cq));
+    // Provide a param of type float.
+    virtual ::grpc::Status ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>> AsyncProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>>(AsyncProvideFloatParamRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>> PrepareAsyncProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>>(PrepareAsyncProvidePeripheralFileRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>> PrepareAsyncProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>>(PrepareAsyncProvideFloatParamRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>> SubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>>(SubscribeFloatParamRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>> AsyncSubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>>(AsyncSubscribeFloatParamRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>> PrepareAsyncSubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>>(PrepareAsyncSubscribeFloatParamRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
       //
-      // Provide a component information JSON file.
-      virtual void ProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void ProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Provide a param of type float.
+      virtual void ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void SubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::component_information_server::FloatParamResponse>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* AsyncProvidePeripheralFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* PrepareAsyncProvidePeripheralFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* AsyncProvideFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* PrepareAsyncProvideFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>* SubscribeFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>* AsyncSubscribeFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>* PrepareAsyncSubscribeFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status ProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>> AsyncProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>>(AsyncProvidePeripheralFileRaw(context, request, cq));
+    ::grpc::Status ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>> AsyncProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>>(AsyncProvideFloatParamRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>> PrepareAsyncProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>>(PrepareAsyncProvidePeripheralFileRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>> PrepareAsyncProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>>(PrepareAsyncProvideFloatParamRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>> SubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>>(SubscribeFloatParamRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>> AsyncSubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>>(AsyncSubscribeFloatParamRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>> PrepareAsyncSubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>>(PrepareAsyncSubscribeFloatParamRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void ProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response, std::function<void(::grpc::Status)>) override;
-      void ProvidePeripheralFile(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response, std::function<void(::grpc::Status)>) override;
+      void ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::component_information_server::FloatParamResponse>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -88,9 +111,13 @@ class ComponentInformationServerService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* AsyncProvidePeripheralFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* PrepareAsyncProvidePeripheralFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_ProvidePeripheralFile_;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* AsyncProvideFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* PrepareAsyncProvideFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>* SubscribeFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>* AsyncSubscribeFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::component_information_server::FloatParamResponse>* PrepareAsyncSubscribeFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_ProvideFloatParam_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeFloatParam_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -99,148 +126,277 @@ class ComponentInformationServerService final {
     Service();
     virtual ~Service();
     //
-    // Provide a component information JSON file.
-    virtual ::grpc::Status ProvidePeripheralFile(::grpc::ServerContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response);
+    // Provide a param of type float.
+    virtual ::grpc::Status ProvideFloatParam(::grpc::ServerContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response);
+    virtual ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* writer);
   };
   template <class BaseClass>
-  class WithAsyncMethod_ProvidePeripheralFile : public BaseClass {
+  class WithAsyncMethod_ProvideFloatParam : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_ProvidePeripheralFile() {
+    WithAsyncMethod_ProvideFloatParam() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_ProvidePeripheralFile() override {
+    ~WithAsyncMethod_ProvideFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ProvidePeripheralFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* /*response*/) override {
+    ::grpc::Status ProvideFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestProvidePeripheralFile(::grpc::ServerContext* context, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestProvideFloatParam(::grpc::ServerContext* context, ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_ProvidePeripheralFile<Service > AsyncService;
   template <class BaseClass>
-  class WithCallbackMethod_ProvidePeripheralFile : public BaseClass {
+  class WithAsyncMethod_SubscribeFloatParam : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_ProvidePeripheralFile() {
+    WithAsyncMethod_SubscribeFloatParam() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_SubscribeFloatParam() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeFloatParam(::grpc::ServerContext* context, ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_ProvideFloatParam<WithAsyncMethod_SubscribeFloatParam<Service > > AsyncService;
+  template <class BaseClass>
+  class WithCallbackMethod_ProvideFloatParam : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_ProvideFloatParam() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* request, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* response) { return this->ProvidePeripheralFile(context, request, response); }));}
-    void SetMessageAllocatorFor_ProvidePeripheralFile(
-        ::grpc::MessageAllocator< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response) { return this->ProvideFloatParam(context, request, response); }));}
+    void SetMessageAllocatorFor_ProvideFloatParam(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_ProvidePeripheralFile() override {
+    ~WithCallbackMethod_ProvideFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ProvidePeripheralFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* /*response*/) override {
+    ::grpc::Status ProvideFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* ProvidePeripheralFile(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* ProvideFloatParam(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_ProvidePeripheralFile<Service > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeFloatParam : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeFloatParam() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest, ::mavsdk::rpc::component_information_server::FloatParamResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* request) { return this->SubscribeFloatParam(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeFloatParam() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::component_information_server::FloatParamResponse>* SubscribeFloatParam(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* /*request*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_ProvideFloatParam<WithCallbackMethod_SubscribeFloatParam<Service > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_ProvidePeripheralFile : public BaseClass {
+  class WithGenericMethod_ProvideFloatParam : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_ProvidePeripheralFile() {
+    WithGenericMethod_ProvideFloatParam() {
       ::grpc::Service::MarkMethodGeneric(0);
     }
-    ~WithGenericMethod_ProvidePeripheralFile() override {
+    ~WithGenericMethod_ProvideFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ProvidePeripheralFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* /*response*/) override {
+    ::grpc::Status ProvideFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_ProvidePeripheralFile : public BaseClass {
+  class WithGenericMethod_SubscribeFloatParam : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_ProvidePeripheralFile() {
-      ::grpc::Service::MarkMethodRaw(0);
+    WithGenericMethod_SubscribeFloatParam() {
+      ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithRawMethod_ProvidePeripheralFile() override {
+    ~WithGenericMethod_SubscribeFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ProvidePeripheralFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* /*response*/) override {
+    ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestProvidePeripheralFile(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+  };
+  template <class BaseClass>
+  class WithRawMethod_ProvideFloatParam : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_ProvideFloatParam() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_ProvideFloatParam() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ProvideFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestProvideFloatParam(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_ProvidePeripheralFile : public BaseClass {
+  class WithRawMethod_SubscribeFloatParam : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_ProvidePeripheralFile() {
+    WithRawMethod_SubscribeFloatParam() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_SubscribeFloatParam() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeFloatParam(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_ProvideFloatParam : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_ProvideFloatParam() {
       ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ProvidePeripheralFile(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ProvideFloatParam(context, request, response); }));
     }
-    ~WithRawCallbackMethod_ProvidePeripheralFile() override {
+    ~WithRawCallbackMethod_ProvideFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ProvidePeripheralFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* /*response*/) override {
+    ::grpc::Status ProvideFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* ProvidePeripheralFile(
+    virtual ::grpc::ServerUnaryReactor* ProvideFloatParam(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_ProvidePeripheralFile : public BaseClass {
+  class WithRawCallbackMethod_SubscribeFloatParam : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_ProvidePeripheralFile() {
+    WithRawCallbackMethod_SubscribeFloatParam() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeFloatParam(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeFloatParam() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFloatParam(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_ProvideFloatParam : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_ProvideFloatParam() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>(
+          ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* streamer) {
-                       return this->StreamedProvidePeripheralFile(context,
+                     ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* streamer) {
+                       return this->StreamedProvideFloatParam(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_ProvidePeripheralFile() override {
+    ~WithStreamedUnaryMethod_ProvideFloatParam() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status ProvidePeripheralFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse* /*response*/) override {
+    ::grpc::Status ProvideFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* /*request*/, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedProvidePeripheralFile(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::component_information_server::ProvidePeripheralFileRequest,::mavsdk::rpc::component_information_server::ProvidePeripheralFileResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedProvideFloatParam(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest,::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_ProvidePeripheralFile<Service > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_ProvidePeripheralFile<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_ProvideFloatParam<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeFloatParam : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeFloatParam() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest, ::mavsdk::rpc::component_information_server::FloatParamResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest, ::mavsdk::rpc::component_information_server::FloatParamResponse>* streamer) {
+                       return this->StreamedSubscribeFloatParam(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeFloatParam() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeFloatParam(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest,::mavsdk::rpc::component_information_server::FloatParamResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_SubscribeFloatParam<Service > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_ProvideFloatParam<WithSplitStreamingMethod_SubscribeFloatParam<Service > > StreamedService;
 };
 
 }  // namespace component_information_server
