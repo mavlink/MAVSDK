@@ -38,9 +38,19 @@ private:
 
     bool _is_information_set{};
     CameraServer::Information _information{};
-    bool _in_progress{};
-    CameraServer::TakePhotoCallback _take_photo_callback{};
+
+    // CAMERA_CAPTURE_STATUS fields
+    // TODO: how do we keep this info in sync between plugin instances?
+    bool _is_image_capture_in_progress{};
+    bool _is_image_capture_interval_set{};
+    float _image_capture_timer_interval_s{};
     void* _image_capture_timer_cookie{};
+    int32_t _image_capture_count{};
+
+    CameraServer::TakePhotoCallback _take_photo_callback{};
+
+    void start_image_capture_interval(float interval, int32_t count, int32_t index);
+    void stop_image_capture_interval();
 
     std::optional<mavlink_message_t>
     process_camera_information_request(const MavlinkCommandReceiver::CommandLong& command);
