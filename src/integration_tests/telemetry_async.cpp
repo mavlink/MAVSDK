@@ -56,7 +56,7 @@ static bool _received_position_velocity_ned = false;
 static bool _received_actuator_control_target = false;
 static bool _received_actuator_output_status = false;
 
-TEST_F(SitlTest, TelemetryAsync)
+TEST_F(SitlTest, PX4TelemetryAsync)
 {
     Mavsdk mavsdk;
 

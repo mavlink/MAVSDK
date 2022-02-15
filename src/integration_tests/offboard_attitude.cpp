@@ -35,10 +35,9 @@ TEST(SitlTestDisabled, OffboardAttitudeRate)
     // FIXME: trying new plugin instantiation.
     auto offboard = Offboard{system};
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << '\n';
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     arm_and_takeoff(action, telemetry);
 

@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, OffboardVelocityNED)
+TEST_F(SitlTest, PX4OffboardVelocityNED)
 {
     Mavsdk mavsdk;
 
@@ -27,10 +27,13 @@ TEST_F(SitlTest, OffboardVelocityNED)
     auto offboard = std::make_shared<Offboard>(system);
     auto mission = std::make_shared<Mission>(system);
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << '\n';
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
@@ -129,7 +132,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     }
 }
 
-TEST_F(SitlTest, OffboardVelocityBody)
+TEST_F(SitlTest, PX4OffboardVelocityBody)
 {
     Mavsdk mavsdk;
 
@@ -146,10 +149,13 @@ TEST_F(SitlTest, OffboardVelocityBody)
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << '\n';
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);

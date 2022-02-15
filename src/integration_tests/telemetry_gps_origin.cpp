@@ -16,10 +16,13 @@ TEST(SitlTestDisabled, TelemetryGpsOrigin)
     ASSERT_TRUE(system->has_autopilot());
     auto telemetry = Telemetry{system};
 
-    while (!telemetry.health_all_ok()) {
-        LogInfo() << "Waiting for system to be ready";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [&telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry.health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 

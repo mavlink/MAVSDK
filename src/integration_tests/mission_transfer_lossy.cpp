@@ -15,7 +15,7 @@ static bool should_keep_message(const mavlink_message_t& message);
 
 static std::atomic<size_t> _lossy_counter{0};
 
-TEST_F(SitlTest, MissionTransferLossy)
+TEST_F(SitlTest, PX4MissionTransferLossy)
 {
     Mavsdk mavsdk;
     ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);

@@ -144,10 +144,13 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);
 
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "waiting for system to be ready";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     Action::Result action_result = action->arm();
     EXPECT_EQ(action_result, Action::Result::Success);
@@ -257,10 +260,13 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);
 
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "waiting for system to be ready";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     const Telemetry::Position& position = telemetry->position();
 

@@ -5,7 +5,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, ParamSad)
+TEST_F(SitlTest, PX4ParamSad)
 {
     Mavsdk mavsdk;
 
@@ -43,7 +43,7 @@ TEST_F(SitlTest, ParamSad)
     }
 }
 
-TEST_F(SitlTest, ParamHappy)
+TEST_F(SitlTest, PX4ParamHappy)
 {
     Mavsdk mavsdk;
 

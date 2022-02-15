@@ -14,7 +14,7 @@ static constexpr unsigned NUM_SOME_ITEMS = sizeof(SOME_LATITUDES) / sizeof(SOME_
 
 static void validate_items(const std::vector<MissionRaw::MissionItem>& items);
 
-TEST_F(SitlTest, MissionRawMissionChanged)
+TEST_F(SitlTest, PX4MissionRawMissionChanged)
 {
     Mavsdk mavsdk;
 

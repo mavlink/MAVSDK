@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, ActionTransitionSync_standard_vtol)
+TEST_F(SitlTest, PX4ActionTransitionSync_standard_vtol)
 {
     // Init & connect
     Mavsdk mavsdk;
@@ -34,10 +34,13 @@ TEST_F(SitlTest, ActionTransitionSync_standard_vtol)
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << '\n';
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     // We need to takeoff first, otherwise we can't actually transition
     float altitude_m = 10.0f;

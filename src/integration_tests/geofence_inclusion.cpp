@@ -9,7 +9,7 @@ using namespace mavsdk;
 
 static Geofence::Point add_point(double latitude_deg, double longitude_deg);
 
-TEST_F(SitlTest, GeofenceInclusion)
+TEST_F(SitlTest, PX4GeofenceInclusion)
 {
     Mavsdk mavsdk;
 
@@ -24,10 +24,13 @@ TEST_F(SitlTest, GeofenceInclusion)
     auto telemetry = std::make_shared<Telemetry>(system);
     auto geofence = std::make_shared<Geofence>(system);
 
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "waiting for system to be ready";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     LogInfo() << "System ready, let's start";
 

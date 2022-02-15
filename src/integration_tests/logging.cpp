@@ -5,7 +5,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, Logging)
+TEST_F(SitlTest, PX4Logging)
 {
     Mavsdk mavsdk;
 

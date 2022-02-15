@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, ActionHoverAsync)
+TEST_F(SitlTest, PX4ActionHoverAsync)
 {
     Mavsdk mavsdk;
 

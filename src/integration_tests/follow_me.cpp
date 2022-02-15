@@ -19,7 +19,7 @@ void send_location_updates(
 
 const size_t N_LOCATIONS = 100ul;
 
-TEST_F(SitlTest, FollowMeOneLocation)
+TEST_F(SitlTest, PX4FollowMeOneLocation)
 {
     Mavsdk mavsdk;
 
@@ -35,10 +35,13 @@ TEST_F(SitlTest, FollowMeOneLocation)
     auto follow_me = std::make_shared<FollowMe>(system);
     auto action = std::make_shared<Action>(system);
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << '\n';
-        sleep_for(seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
@@ -95,7 +98,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     telemetry->subscribe_flight_mode(nullptr);
 }
 
-TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
+TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
 {
     Mavsdk mavsdk;
 
@@ -122,10 +125,13 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     auto follow_me = std::make_shared<FollowMe>(system);
     auto action = std::make_shared<Action>(system);
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "Waiting for system to be ready" << '\n';
-        sleep_for(seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry->health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);

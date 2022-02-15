@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, MissionRawImportAndFly)
+TEST_F(SitlTest, PX4MissionRawImportAndFly)
 {
     Mavsdk mavsdk;
 
@@ -30,10 +30,13 @@ TEST_F(SitlTest, MissionRawImportAndFly)
         mission_raw.import_qgroundcontrol_mission("./src/integration_tests/triangle.plan");
     ASSERT_EQ(import_result.first, MissionRaw::Result::Success);
 
-    while (!telemetry.health_all_ok()) {
-        LogInfo() << "Waiting for drone to be ready.";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [&telemetry]() {
+            LogInfo() << "Waiting for system to be ready";
+            return telemetry.health_all_ok();
+        },
+        std::chrono::seconds(10)));
 
     ASSERT_EQ(action.arm(), Action::Result::Success);
 
