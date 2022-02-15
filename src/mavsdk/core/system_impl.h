@@ -307,7 +307,7 @@ public:
         const MavlinkRequestMessageHandler::Callback& callback,
         const void* cookie);
     void unregister_mavlink_request_message_handler(uint32_t message_id, const void* cookie);
-    void unregister_mavlink_request_message_handler(const void* cookie);
+    void unregister_all_mavlink_request_message_handlers(const void* cookie);
 
     double timeout_s() const;
 

@@ -1610,7 +1610,7 @@ void SystemImpl::unregister_mavlink_request_message_handler(uint32_t message_id,
     _request_message_handler.unregister_handler(message_id, cookie);
 }
 
-void SystemImpl::unregister_mavlink_request_message_handler(const void* cookie)
+void SystemImpl::unregister_all_mavlink_request_message_handlers(const void* cookie)
 {
     _request_message_handler.unregister_all_handlers(cookie);
 }
