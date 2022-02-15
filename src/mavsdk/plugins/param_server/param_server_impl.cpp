@@ -29,10 +29,11 @@ std::pair<ParamServer::Result, int32_t> ParamServerImpl::retrieve_param_int(std:
 {
     std::pair<MAVLinkParameters::Result, int> result = _parent->retrieve_server_param_int(name);
 
-    if (result.first == MAVLinkParameters::Result::Success)
+    if (result.first == MAVLinkParameters::Result::Success) {
         return {ParamServer::Result::Success, result.second};
-    else
+    } else {
         return {ParamServer::Result::NotFound, -1};
+    }
 }
 
 ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t value)
@@ -45,10 +46,11 @@ std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std:
 {
     std::pair<MAVLinkParameters::Result, float> result = _parent->retrieve_server_param_float(name);
 
-    if (result.first == MAVLinkParameters::Result::Success)
+    if (result.first == MAVLinkParameters::Result::Success) {
         return {ParamServer::Result::Success, result.second};
-    else
+    } else {
         return {ParamServer::Result::NotFound, NAN};
+    }
 }
 
 ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float value)
