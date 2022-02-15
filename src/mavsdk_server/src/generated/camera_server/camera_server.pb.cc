@@ -91,30 +91,30 @@ struct TakePhotoResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TakePhotoResponseDefaultTypeInternal _TakePhotoResponse_default_instance_;
-constexpr PublishPhotoRequest::PublishPhotoRequest(
+constexpr RespondTakePhotoRequest::RespondTakePhotoRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : capture_info_(nullptr){}
-struct PublishPhotoRequestDefaultTypeInternal {
-  constexpr PublishPhotoRequestDefaultTypeInternal()
+struct RespondTakePhotoRequestDefaultTypeInternal {
+  constexpr RespondTakePhotoRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~PublishPhotoRequestDefaultTypeInternal() {}
+  ~RespondTakePhotoRequestDefaultTypeInternal() {}
   union {
-    PublishPhotoRequest _instance;
+    RespondTakePhotoRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PublishPhotoRequestDefaultTypeInternal _PublishPhotoRequest_default_instance_;
-constexpr PublishPhotoResponse::PublishPhotoResponse(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTakePhotoRequestDefaultTypeInternal _RespondTakePhotoRequest_default_instance_;
+constexpr RespondTakePhotoResponse::RespondTakePhotoResponse(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : camera_server_result_(nullptr){}
-struct PublishPhotoResponseDefaultTypeInternal {
-  constexpr PublishPhotoResponseDefaultTypeInternal()
+struct RespondTakePhotoResponseDefaultTypeInternal {
+  constexpr RespondTakePhotoResponseDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~PublishPhotoResponseDefaultTypeInternal() {}
+  ~RespondTakePhotoResponseDefaultTypeInternal() {}
   union {
-    PublishPhotoResponse _instance;
+    RespondTakePhotoResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PublishPhotoResponseDefaultTypeInternal _PublishPhotoResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RespondTakePhotoResponseDefaultTypeInternal _RespondTakePhotoResponse_default_instance_;
 constexpr Information::Information(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : vendor_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -239,17 +239,17 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_camera_5fserver_2fcamera_5fser
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::TakePhotoResponse, camera_server_result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::TakePhotoResponse, index_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::PublishPhotoRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondTakePhotoRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::PublishPhotoRequest, capture_info_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondTakePhotoRequest, capture_info_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::PublishPhotoResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondTakePhotoResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::PublishPhotoResponse, camera_server_result_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondTakePhotoResponse, camera_server_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -306,8 +306,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 18, -1, sizeof(::mavsdk::rpc::camera_server::SetInProgressResponse)},
   { 24, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest)},
   { 29, -1, sizeof(::mavsdk::rpc::camera_server::TakePhotoResponse)},
-  { 36, -1, sizeof(::mavsdk::rpc::camera_server::PublishPhotoRequest)},
-  { 42, -1, sizeof(::mavsdk::rpc::camera_server::PublishPhotoResponse)},
+  { 36, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoRequest)},
+  { 42, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoResponse)},
   { 48, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
   { 60, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
   { 69, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
@@ -322,8 +322,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_SetInProgressResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_SubscribeTakePhotoRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_TakePhotoResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_PublishPhotoRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_PublishPhotoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_RespondTakePhotoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_RespondTakePhotoResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_Information_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_Position_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera_server::_Quaternion_default_instance_),
@@ -345,56 +345,56 @@ const char descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto[]
   "meraServerResult\"\033\n\031SubscribeTakePhotoRe"
   "quest\"n\n\021TakePhotoResponse\022J\n\024camera_ser"
   "ver_result\030\001 \001(\0132,.mavsdk.rpc.camera_ser"
-  "ver.CameraServerResult\022\r\n\005index\030\002 \001(\005\"R\n"
-  "\023PublishPhotoRequest\022;\n\014capture_info\030\001 \001"
-  "(\0132%.mavsdk.rpc.camera_server.CaptureInf"
-  "o\"b\n\024PublishPhotoResponse\022J\n\024camera_serv"
-  "er_result\030\001 \001(\0132,.mavsdk.rpc.camera_serv"
-  "er.CameraServerResult\"\325\001\n\013Information\022\023\n"
-  "\013vendor_name\030\001 \001(\t\022\022\n\nmodel_name\030\002 \001(\t\022\027"
-  "\n\017focal_length_mm\030\003 \001(\002\022!\n\031horizontal_se"
-  "nsor_size_mm\030\004 \001(\002\022\037\n\027vertical_sensor_si"
-  "ze_mm\030\005 \001(\002\022 \n\030horizontal_resolution_px\030"
-  "\006 \001(\r\022\036\n\026vertical_resolution_px\030\007 \001(\r\"q\n"
-  "\010Position\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongi"
-  "tude_deg\030\002 \001(\001\022\033\n\023absolute_altitude_m\030\003 "
-  "\001(\002\022\033\n\023relative_altitude_m\030\004 \001(\002\"8\n\nQuat"
-  "ernion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003 \001(\002\022"
-  "\t\n\001z\030\004 \001(\002\"\320\001\n\013CaptureInfo\0224\n\010position\030\001"
-  " \001(\0132\".mavsdk.rpc.camera_server.Position"
-  "\022A\n\023attitude_quaternion\030\002 \001(\0132$.mavsdk.r"
-  "pc.camera_server.Quaternion\022\023\n\013time_utc_"
-  "us\030\003 \001(\004\022\022\n\nis_success\030\004 \001(\010\022\r\n\005index\030\005 "
-  "\001(\005\022\020\n\010file_url\030\006 \001(\t\"\263\002\n\022CameraServerRe"
-  "sult\022C\n\006result\030\001 \001(\01623.mavsdk.rpc.camera"
-  "_server.CameraServerResult.Result\022\022\n\nres"
-  "ult_str\030\002 \001(\t\"\303\001\n\006Result\022\022\n\016RESULT_UNKNO"
-  "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\026\n\022RESULT_IN_PR"
-  "OGRESS\020\002\022\017\n\013RESULT_BUSY\020\003\022\021\n\rRESULT_DENI"
-  "ED\020\004\022\020\n\014RESULT_ERROR\020\005\022\022\n\016RESULT_TIMEOUT"
-  "\020\006\022\031\n\025RESULT_WRONG_ARGUMENT\020\007\022\024\n\020RESULT_"
-  "NO_SYSTEM\020\0102\375\003\n\023CameraServerService\022y\n\016S"
-  "etInformation\022/.mavsdk.rpc.camera_server"
-  ".SetInformationRequest\0320.mavsdk.rpc.came"
-  "ra_server.SetInformationResponse\"\004\200\265\030\001\022v"
-  "\n\rSetInProgress\022..mavsdk.rpc.camera_serv"
-  "er.SetInProgressRequest\032/.mavsdk.rpc.cam"
-  "era_server.SetInProgressResponse\"\004\200\265\030\001\022~"
-  "\n\022SubscribeTakePhoto\0223.mavsdk.rpc.camera"
-  "_server.SubscribeTakePhotoRequest\032+.mavs"
-  "dk.rpc.camera_server.TakePhotoResponse\"\004"
-  "\200\265\030\0000\001\022s\n\014PublishPhoto\022-.mavsdk.rpc.came"
-  "ra_server.PublishPhotoRequest\032..mavsdk.r"
-  "pc.camera_server.PublishPhotoResponse\"\004\200"
-  "\265\030\001B,\n\027io.mavsdk.camera_serverB\021CameraSe"
-  "rverProtob\006proto3"
+  "ver.CameraServerResult\022\r\n\005index\030\002 \001(\005\"V\n"
+  "\027RespondTakePhotoRequest\022;\n\014capture_info"
+  "\030\001 \001(\0132%.mavsdk.rpc.camera_server.Captur"
+  "eInfo\"f\n\030RespondTakePhotoResponse\022J\n\024cam"
+  "era_server_result\030\001 \001(\0132,.mavsdk.rpc.cam"
+  "era_server.CameraServerResult\"\325\001\n\013Inform"
+  "ation\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_name"
+  "\030\002 \001(\t\022\027\n\017focal_length_mm\030\003 \001(\002\022!\n\031horiz"
+  "ontal_sensor_size_mm\030\004 \001(\002\022\037\n\027vertical_s"
+  "ensor_size_mm\030\005 \001(\002\022 \n\030horizontal_resolu"
+  "tion_px\030\006 \001(\r\022\036\n\026vertical_resolution_px\030"
+  "\007 \001(\r\"q\n\010Position\022\024\n\014latitude_deg\030\001 \001(\001\022"
+  "\025\n\rlongitude_deg\030\002 \001(\001\022\033\n\023absolute_altit"
+  "ude_m\030\003 \001(\002\022\033\n\023relative_altitude_m\030\004 \001(\002"
+  "\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001"
+  "y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\320\001\n\013CaptureInfo\0224\n\010po"
+  "sition\030\001 \001(\0132\".mavsdk.rpc.camera_server."
+  "Position\022A\n\023attitude_quaternion\030\002 \001(\0132$."
+  "mavsdk.rpc.camera_server.Quaternion\022\023\n\013t"
+  "ime_utc_us\030\003 \001(\004\022\022\n\nis_success\030\004 \001(\010\022\r\n\005"
+  "index\030\005 \001(\005\022\020\n\010file_url\030\006 \001(\t\"\263\002\n\022Camera"
+  "ServerResult\022C\n\006result\030\001 \001(\01623.mavsdk.rp"
+  "c.camera_server.CameraServerResult.Resul"
+  "t\022\022\n\nresult_str\030\002 \001(\t\"\303\001\n\006Result\022\022\n\016RESU"
+  "LT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\026\n\022RESU"
+  "LT_IN_PROGRESS\020\002\022\017\n\013RESULT_BUSY\020\003\022\021\n\rRES"
+  "ULT_DENIED\020\004\022\020\n\014RESULT_ERROR\020\005\022\022\n\016RESULT"
+  "_TIMEOUT\020\006\022\031\n\025RESULT_WRONG_ARGUMENT\020\007\022\024\n"
+  "\020RESULT_NO_SYSTEM\020\0102\211\004\n\023CameraServerServ"
+  "ice\022y\n\016SetInformation\022/.mavsdk.rpc.camer"
+  "a_server.SetInformationRequest\0320.mavsdk."
+  "rpc.camera_server.SetInformationResponse"
+  "\"\004\200\265\030\001\022v\n\rSetInProgress\022..mavsdk.rpc.cam"
+  "era_server.SetInProgressRequest\032/.mavsdk"
+  ".rpc.camera_server.SetInProgressResponse"
+  "\"\004\200\265\030\001\022~\n\022SubscribeTakePhoto\0223.mavsdk.rp"
+  "c.camera_server.SubscribeTakePhotoReques"
+  "t\032+.mavsdk.rpc.camera_server.TakePhotoRe"
+  "sponse\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhoto\0221.mav"
+  "sdk.rpc.camera_server.RespondTakePhotoRe"
+  "quest\0322.mavsdk.rpc.camera_server.Respond"
+  "TakePhotoResponse\"\004\200\265\030\001B,\n\027io.mavsdk.cam"
+  "era_serverB\021CameraServerProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto = {
-  false, false, 2217, descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto, "camera_server/camera_server.proto", 
+  false, false, 2237, descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto, "camera_server/camera_server.proto", 
   &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once, descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps, 1, 13,
   schemas, file_default_instances, TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets,
   file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto, file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto, file_level_service_descriptors_camera_5fserver_2fcamera_5fserver_2eproto,
@@ -1615,25 +1615,25 @@ void TakePhotoResponse::InternalSwap(TakePhotoResponse* other) {
 
 // ===================================================================
 
-class PublishPhotoRequest::_Internal {
+class RespondTakePhotoRequest::_Internal {
  public:
-  static const ::mavsdk::rpc::camera_server::CaptureInfo& capture_info(const PublishPhotoRequest* msg);
+  static const ::mavsdk::rpc::camera_server::CaptureInfo& capture_info(const RespondTakePhotoRequest* msg);
 };
 
 const ::mavsdk::rpc::camera_server::CaptureInfo&
-PublishPhotoRequest::_Internal::capture_info(const PublishPhotoRequest* msg) {
+RespondTakePhotoRequest::_Internal::capture_info(const RespondTakePhotoRequest* msg) {
   return *msg->capture_info_;
 }
-PublishPhotoRequest::PublishPhotoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+RespondTakePhotoRequest::RespondTakePhotoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.PublishPhotoRequest)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
 }
-PublishPhotoRequest::PublishPhotoRequest(const PublishPhotoRequest& from)
+RespondTakePhotoRequest::RespondTakePhotoRequest(const RespondTakePhotoRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_capture_info()) {
@@ -1641,37 +1641,37 @@ PublishPhotoRequest::PublishPhotoRequest(const PublishPhotoRequest& from)
   } else {
     capture_info_ = nullptr;
   }
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.PublishPhotoRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
 }
 
-inline void PublishPhotoRequest::SharedCtor() {
+inline void RespondTakePhotoRequest::SharedCtor() {
 capture_info_ = nullptr;
 }
 
-PublishPhotoRequest::~PublishPhotoRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.PublishPhotoRequest)
+RespondTakePhotoRequest::~RespondTakePhotoRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-inline void PublishPhotoRequest::SharedDtor() {
+inline void RespondTakePhotoRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete capture_info_;
 }
 
-void PublishPhotoRequest::ArenaDtor(void* object) {
-  PublishPhotoRequest* _this = reinterpret_cast< PublishPhotoRequest* >(object);
+void RespondTakePhotoRequest::ArenaDtor(void* object) {
+  RespondTakePhotoRequest* _this = reinterpret_cast< RespondTakePhotoRequest* >(object);
   (void)_this;
 }
-void PublishPhotoRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void RespondTakePhotoRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void PublishPhotoRequest::SetCachedSize(int size) const {
+void RespondTakePhotoRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void PublishPhotoRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.PublishPhotoRequest)
+void RespondTakePhotoRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1683,7 +1683,7 @@ void PublishPhotoRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* PublishPhotoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RespondTakePhotoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -1719,9 +1719,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* PublishPhotoRequest::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* RespondTakePhotoRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.PublishPhotoRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1737,12 +1737,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.PublishPhotoRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
   return target;
 }
 
-size_t PublishPhotoRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.PublishPhotoRequest)
+size_t RespondTakePhotoRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1765,21 +1765,21 @@ size_t PublishPhotoRequest::ByteSizeLong() const {
   return total_size;
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishPhotoRequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RespondTakePhotoRequest::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    PublishPhotoRequest::MergeImpl
+    RespondTakePhotoRequest::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishPhotoRequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RespondTakePhotoRequest::GetClassData() const { return &_class_data_; }
 
-void PublishPhotoRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+void RespondTakePhotoRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
                       const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<PublishPhotoRequest *>(to)->MergeFrom(
-      static_cast<const PublishPhotoRequest &>(from));
+  static_cast<RespondTakePhotoRequest *>(to)->MergeFrom(
+      static_cast<const RespondTakePhotoRequest &>(from));
 }
 
 
-void PublishPhotoRequest::MergeFrom(const PublishPhotoRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.PublishPhotoRequest)
+void RespondTakePhotoRequest::MergeFrom(const RespondTakePhotoRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1790,24 +1790,24 @@ void PublishPhotoRequest::MergeFrom(const PublishPhotoRequest& from) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void PublishPhotoRequest::CopyFrom(const PublishPhotoRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.PublishPhotoRequest)
+void RespondTakePhotoRequest::CopyFrom(const RespondTakePhotoRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool PublishPhotoRequest::IsInitialized() const {
+bool RespondTakePhotoRequest::IsInitialized() const {
   return true;
 }
 
-void PublishPhotoRequest::InternalSwap(PublishPhotoRequest* other) {
+void RespondTakePhotoRequest::InternalSwap(RespondTakePhotoRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(capture_info_, other->capture_info_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishPhotoRequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata RespondTakePhotoRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
       file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[6]);
@@ -1815,25 +1815,25 @@ void PublishPhotoRequest::InternalSwap(PublishPhotoRequest* other) {
 
 // ===================================================================
 
-class PublishPhotoResponse::_Internal {
+class RespondTakePhotoResponse::_Internal {
  public:
-  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const PublishPhotoResponse* msg);
+  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const RespondTakePhotoResponse* msg);
 };
 
 const ::mavsdk::rpc::camera_server::CameraServerResult&
-PublishPhotoResponse::_Internal::camera_server_result(const PublishPhotoResponse* msg) {
+RespondTakePhotoResponse::_Internal::camera_server_result(const RespondTakePhotoResponse* msg) {
   return *msg->camera_server_result_;
 }
-PublishPhotoResponse::PublishPhotoResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+RespondTakePhotoResponse::RespondTakePhotoResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.PublishPhotoResponse)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
 }
-PublishPhotoResponse::PublishPhotoResponse(const PublishPhotoResponse& from)
+RespondTakePhotoResponse::RespondTakePhotoResponse(const RespondTakePhotoResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_camera_server_result()) {
@@ -1841,37 +1841,37 @@ PublishPhotoResponse::PublishPhotoResponse(const PublishPhotoResponse& from)
   } else {
     camera_server_result_ = nullptr;
   }
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.PublishPhotoResponse)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
 }
 
-inline void PublishPhotoResponse::SharedCtor() {
+inline void RespondTakePhotoResponse::SharedCtor() {
 camera_server_result_ = nullptr;
 }
 
-PublishPhotoResponse::~PublishPhotoResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.PublishPhotoResponse)
+RespondTakePhotoResponse::~RespondTakePhotoResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-inline void PublishPhotoResponse::SharedDtor() {
+inline void RespondTakePhotoResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete camera_server_result_;
 }
 
-void PublishPhotoResponse::ArenaDtor(void* object) {
-  PublishPhotoResponse* _this = reinterpret_cast< PublishPhotoResponse* >(object);
+void RespondTakePhotoResponse::ArenaDtor(void* object) {
+  RespondTakePhotoResponse* _this = reinterpret_cast< RespondTakePhotoResponse* >(object);
   (void)_this;
 }
-void PublishPhotoResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void RespondTakePhotoResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void PublishPhotoResponse::SetCachedSize(int size) const {
+void RespondTakePhotoResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void PublishPhotoResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.PublishPhotoResponse)
+void RespondTakePhotoResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1883,7 +1883,7 @@ void PublishPhotoResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* PublishPhotoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RespondTakePhotoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -1919,9 +1919,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* PublishPhotoResponse::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* RespondTakePhotoResponse::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.PublishPhotoResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1937,12 +1937,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.PublishPhotoResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
   return target;
 }
 
-size_t PublishPhotoResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.PublishPhotoResponse)
+size_t RespondTakePhotoResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1965,21 +1965,21 @@ size_t PublishPhotoResponse::ByteSizeLong() const {
   return total_size;
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishPhotoResponse::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RespondTakePhotoResponse::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    PublishPhotoResponse::MergeImpl
+    RespondTakePhotoResponse::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishPhotoResponse::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RespondTakePhotoResponse::GetClassData() const { return &_class_data_; }
 
-void PublishPhotoResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+void RespondTakePhotoResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
                       const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<PublishPhotoResponse *>(to)->MergeFrom(
-      static_cast<const PublishPhotoResponse &>(from));
+  static_cast<RespondTakePhotoResponse *>(to)->MergeFrom(
+      static_cast<const RespondTakePhotoResponse &>(from));
 }
 
 
-void PublishPhotoResponse::MergeFrom(const PublishPhotoResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.PublishPhotoResponse)
+void RespondTakePhotoResponse::MergeFrom(const RespondTakePhotoResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1990,24 +1990,24 @@ void PublishPhotoResponse::MergeFrom(const PublishPhotoResponse& from) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void PublishPhotoResponse::CopyFrom(const PublishPhotoResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.PublishPhotoResponse)
+void RespondTakePhotoResponse::CopyFrom(const RespondTakePhotoResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondTakePhotoResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool PublishPhotoResponse::IsInitialized() const {
+bool RespondTakePhotoResponse::IsInitialized() const {
   return true;
 }
 
-void PublishPhotoResponse::InternalSwap(PublishPhotoResponse* other) {
+void RespondTakePhotoResponse::InternalSwap(RespondTakePhotoResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(camera_server_result_, other->camera_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishPhotoResponse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata RespondTakePhotoResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
       file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[7]);
@@ -3510,11 +3510,11 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera_server::SubscribeTakePhotoReq
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera_server::TakePhotoResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera_server::TakePhotoResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::camera_server::TakePhotoResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera_server::PublishPhotoRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera_server::PublishPhotoRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::camera_server::PublishPhotoRequest >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera_server::RespondTakePhotoRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::camera_server::RespondTakePhotoRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera_server::PublishPhotoResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera_server::PublishPhotoResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::camera_server::PublishPhotoResponse >(arena);
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera_server::Information* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera_server::Information >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::camera_server::Information >(arena);
