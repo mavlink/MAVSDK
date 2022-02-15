@@ -12,13 +12,6 @@ MavlinkRequestMessageHandler::MavlinkRequestMessageHandler(SystemImpl& system_im
             return handle_command_long(command);
         },
         this);
-
-    _system_impl.register_mavlink_command_handler(
-        MAV_CMD_REQUEST_MESSAGE,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
-            return handle_command_long(command);
-        },
-        this);
 }
 
 MavlinkRequestMessageHandler::~MavlinkRequestMessageHandler()
