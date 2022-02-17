@@ -145,10 +145,66 @@ void CameraServerImpl::disable()
     stop_image_capture_interval();
 }
 
+/**
+ * Parses a firmware version string.
+ *
+ * The string must be in the format "<major>[.<minor>[.<patch>[.<dev>]]]".
+ *
+ * @param [in]  version_str     The version string to be parsed.
+ * @return                      True if parsing was successful, otherwise false.
+ */
+bool CameraServerImpl::parse_version_string(const std::string& version_str)
+{
+    uint32_t unused;
+
+    return parse_version_string(version_str, unused);
+}
+
+/**
+ * Parses a firmware version string.
+ *
+ * The string must be in the format "<major>[.<minor>[.<patch>[.<dev>]]]".
+ *
+ * @param [in]  version_str     The version string to be parsed.
+ * @param [out] version         Encoded version integer for passing to MAVSDK messages.
+ * @return                      True if parsing was successful, otherwise false.
+ */
+bool CameraServerImpl::parse_version_string(const std::string& version_str, uint32_t& version)
+{
+    // empty string means no version
+    if (version_str.empty()) {
+        version = 0;
+
+        return true;
+    }
+
+    uint8_t major{}, minor{}, patch{}, dev{};
+
+    auto ret = sscanf(version_str.c_str(), "%hhu.%hhu.%hhu.%hhu", &major, &minor, &patch, &dev);
+
+    if (ret == EOF) {
+        return false;
+    }
+
+    // pack version according to MAVLINK spec
+    version = dev << 24 | patch << 16 | minor << 8 | major;
+
+    return true;
+}
+
 CameraServer::Result CameraServerImpl::set_information(CameraServer::Information information)
 {
+    if (!parse_version_string(information.firmware_version)) {
+        LogDebug() << "incorrectly formatted firmware version string: "
+                   << information.firmware_version;
+        return CameraServer::Result::WrongArgument;
+    }
+
+    // TODO: validate information.definition_file_uri
+
     _is_information_set = true;
     _information = information;
+
     return CameraServer::Result::Success;
 }
 
@@ -285,11 +341,10 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_information_re
     // FIXME: why is this needed to prevent dropping messages?
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    // unsupported items
-    const uint32_t firmware_version = 0;
-    const uint8_t lens_id = 0;
-    const uint16_t camera_definition_version = 0;
-    auto camera_definition_uri = "";
+    // It is safe to ignore the return value of parse_version_string() here
+    // since the string was already validated in set_information().
+    uint32_t firmware_version;
+    parse_version_string(_information.firmware_version, firmware_version);
 
     // capability flags are determined by subscriptions
     uint32_t capability_flags{};
@@ -312,10 +367,10 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_information_re
         _information.vertical_sensor_size_mm,
         _information.horizontal_resolution_px,
         _information.vertical_resolution_px,
-        lens_id,
+        _information.lens_id,
         capability_flags,
-        camera_definition_version,
-        camera_definition_uri);
+        _information.definition_file_version,
+        _information.definition_file_uri.c_str());
 
     _parent->send_message(msg);
     LogDebug() << "sent info msg";

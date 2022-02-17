@@ -83,15 +83,21 @@ int main(int argc, char** argv)
 
             // Finally call set_information() to "activate" the camera plugin.
 
-            camera_server->set_information({
+            auto ret = camera_server->set_information({
                 .vendor_name = "MAVSDK",
                 .model_name = "Example Camera Server",
+                .firmware_version = "1.0.0",
                 .focal_length_mm = 3.0,
                 .horizontal_sensor_size_mm = 3.68,
                 .vertical_sensor_size_mm = 2.76,
                 .horizontal_resolution_px = 3280,
                 .vertical_resolution_px = 2464,
             });
+
+            if (ret != CameraServer::Result::Success) {
+                std::cerr << "Failed to set camera info, exiting" << std::endl;
+                exit(1);
+            }
 
             std::cout << "Connected to " << (system->is_standalone() ? "GCS" : "autopilot")
                       << " system ID " << +system->get_system_id() << std::endl;

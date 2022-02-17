@@ -49,6 +49,8 @@ private:
 
     CameraServer::TakePhotoCallback _take_photo_callback{};
 
+    bool parse_version_string(const std::string& version_str);
+    bool parse_version_string(const std::string& version_str, uint32_t& version);
     void start_image_capture_interval(float interval, int32_t count, int32_t index);
     void stop_image_capture_interval();
 
