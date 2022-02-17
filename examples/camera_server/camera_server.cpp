@@ -7,18 +7,6 @@
 #include <mavsdk/plugins/camera/camera.h>
 #include <mavsdk/plugins/camera_server/camera_server.h>
 
-/*
- This example runs a MAVLink "camera" utilizing the MAVSDK server plugins
- on a separate thread. This uses two MAVSDK instances, one GCS, one camera.
-
- The main thread acts as a GCS and reads telemetry, parameters, transmits across
- a mission, clears the mission, arms the vehicle and then triggers a vehicle takeoff.
-
- The camera thread handles all the servers and triggers callbacks, publishes telemetry,
- handles and stores parameters, prints received missions and sets the vehicle height to 10m on
- successful takeoff request.
-*/
-
 using namespace mavsdk;
 
 using std::chrono::duration_cast;
@@ -54,17 +42,7 @@ int main(int argc, char** argv)
 
             all_camera_servers.insert({system->get_system_id(), camera_server});
 
-            camera_server->set_information({
-                .vendor_name = "MAVSDK",
-                .model_name = "Example Camera Server",
-                .focal_length_mm = 3.0,
-                .horizontal_sensor_size_mm = 3.68,
-                .vertical_sensor_size_mm = 2.76,
-                .horizontal_resolution_px = 3280,
-                .vertical_resolution_px = 2464,
-            });
-
-            camera_server->set_in_progress(false);
+            // First add all subscriptions. This defines the camera capabilities.
 
             camera_server->subscribe_take_photo(
                 [camera_server, &all_camera_servers](CameraServer::Result result, int32_t index) {
@@ -98,6 +76,22 @@ int main(int argc, char** argv)
                         });
                     }
                 });
+
+            // Then set the initial state of everything.
+
+            camera_server->set_in_progress(false);
+
+            // Finally call set_information() to "activate" the camera plugin.
+
+            camera_server->set_information({
+                .vendor_name = "MAVSDK",
+                .model_name = "Example Camera Server",
+                .focal_length_mm = 3.0,
+                .horizontal_sensor_size_mm = 3.68,
+                .vertical_sensor_size_mm = 2.76,
+                .horizontal_resolution_px = 3280,
+                .vertical_resolution_px = 2464,
+            });
 
             std::cout << "Connected to " << (system->is_standalone() ? "GCS" : "autopilot")
                       << " system ID " << +system->get_system_id() << std::endl;

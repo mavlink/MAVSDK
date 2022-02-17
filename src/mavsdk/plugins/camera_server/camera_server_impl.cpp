@@ -291,6 +291,13 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_information_re
     const uint16_t camera_definition_version = 0;
     auto camera_definition_uri = "";
 
+    // capability flags are determined by subscriptions
+    uint32_t capability_flags{};
+
+    if (_take_photo_callback) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
+    }
+
     mavlink_message_t msg{};
     mavlink_msg_camera_information_pack(
         _parent->get_own_system_id(),
@@ -306,7 +313,7 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_information_re
         _information.horizontal_resolution_px,
         _information.vertical_resolution_px,
         lens_id,
-        CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE,
+        capability_flags,
         camera_definition_version,
         camera_definition_uri);
 
@@ -561,8 +568,7 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
 
     if (!_take_photo_callback) {
         LogDebug() << "image capture requested with no take photo subscriber";
-        return _parent->make_command_ack_message(
-            command, MAV_RESULT::MAV_RESULT_TEMPORARILY_REJECTED);
+        return _parent->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
     // single image capture
