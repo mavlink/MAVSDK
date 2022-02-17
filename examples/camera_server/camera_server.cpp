@@ -45,8 +45,10 @@ int main(int argc, char** argv)
             // First add all subscriptions. This defines the camera capabilities.
 
             camera_server->subscribe_take_photo(
-                [camera_server, &all_camera_servers](CameraServer::Result result, int32_t index) {
-                    camera_server->set_in_progress(true);
+                [&all_camera_servers](CameraServer::Result result, int32_t index) {
+                    for (auto&& [key, value] : all_camera_servers) {
+                        value->set_in_progress(true);
+                    }
 
                     std::cout << "taking a picture (" << +index << ")..." << std::endl;
 
@@ -62,9 +64,10 @@ int main(int argc, char** argv)
                         duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
                     auto success = true;
 
-                    camera_server->set_in_progress(false);
+                    for (auto&& [key, value] : all_camera_servers) {
+                        value->set_in_progress(false);
+                    }
 
-                    // hack to simulate broadcast and keep total count in sync
                     for (auto&& [key, value] : all_camera_servers) {
                         value->respond_take_photo({
                             .position = position,
@@ -79,6 +82,8 @@ int main(int argc, char** argv)
 
             // Then set the initial state of everything.
 
+            // TODO: this state is not guaranteed, e.g. a new system appears
+            // while a capture is in progress
             camera_server->set_in_progress(false);
 
             // Finally call set_information() to "activate" the camera plugin.
