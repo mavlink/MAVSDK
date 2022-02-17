@@ -38,7 +38,7 @@ class CameraServerService final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // Sets the camera information
+    // Sets the camera information. This must be called as soon as the camera server is created.
     virtual ::grpc::Status SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInformationResponse>> AsyncSetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInformationResponse>>(AsyncSetInformationRaw(context, request, cq));
@@ -46,7 +46,7 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInformationResponse>> PrepareAsyncSetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInformationResponse>>(PrepareAsyncSetInformationRaw(context, request, cq));
     }
-    // Sets the camera capture status
+    // Sets image capture in progress status flags. This should be set to true when the camera is busy taking a photo and false when it is done.
     virtual ::grpc::Status SetInProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInProgressRequest& request, ::mavsdk::rpc::camera_server::SetInProgressResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInProgressResponse>> AsyncSetInProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInProgressRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInProgressResponse>>(AsyncSetInProgressRaw(context, request, cq));
@@ -54,7 +54,7 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInProgressResponse>> PrepareAsyncSetInProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInProgressRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInProgressResponse>>(PrepareAsyncSetInProgressRaw(context, request, cq));
     }
-    // Subscribe to single-image capture commands
+    // Subscribe to image capture requests. Each request received should respond to using RespondTakePhoto.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TakePhotoResponse>> SubscribeTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TakePhotoResponse>>(SubscribeTakePhotoRaw(context, request));
     }
@@ -64,7 +64,7 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TakePhotoResponse>> PrepareAsyncSubscribeTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TakePhotoResponse>>(PrepareAsyncSubscribeTakePhotoRaw(context, request, cq));
     }
-    // Respond to a single-image capture command.
+    // Respond to an image capture request from SubscribeTakePhoto.
     virtual ::grpc::Status RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest& request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse>> AsyncRespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse>>(AsyncRespondTakePhotoRaw(context, request, cq));
@@ -75,15 +75,15 @@ class CameraServerService final {
     class async_interface {
      public:
       virtual ~async_interface() {}
-      // Sets the camera information
+      // Sets the camera information. This must be called as soon as the camera server is created.
       virtual void SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest* request, ::mavsdk::rpc::camera_server::SetInformationResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest* request, ::mavsdk::rpc::camera_server::SetInformationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Sets the camera capture status
+      // Sets image capture in progress status flags. This should be set to true when the camera is busy taking a photo and false when it is done.
       virtual void SetInProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInProgressRequest* request, ::mavsdk::rpc::camera_server::SetInProgressResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetInProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInProgressRequest* request, ::mavsdk::rpc::camera_server::SetInProgressResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Subscribe to single-image capture commands
+      // Subscribe to image capture requests. Each request received should respond to using RespondTakePhoto.
       virtual void SubscribeTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TakePhotoResponse>* reactor) = 0;
-      // Respond to a single-image capture command.
+      // Respond to an image capture request from SubscribeTakePhoto.
       virtual void RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
@@ -175,13 +175,13 @@ class CameraServerService final {
    public:
     Service();
     virtual ~Service();
-    // Sets the camera information
+    // Sets the camera information. This must be called as soon as the camera server is created.
     virtual ::grpc::Status SetInformation(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest* request, ::mavsdk::rpc::camera_server::SetInformationResponse* response);
-    // Sets the camera capture status
+    // Sets image capture in progress status flags. This should be set to true when the camera is busy taking a photo and false when it is done.
     virtual ::grpc::Status SetInProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetInProgressRequest* request, ::mavsdk::rpc::camera_server::SetInProgressResponse* response);
-    // Subscribe to single-image capture commands
+    // Subscribe to image capture requests. Each request received should respond to using RespondTakePhoto.
     virtual ::grpc::Status SubscribeTakePhoto(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TakePhotoResponse>* writer);
-    // Respond to a single-image capture command.
+    // Respond to an image capture request from SubscribeTakePhoto.
     virtual ::grpc::Status RespondTakePhoto(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response);
   };
   template <class BaseClass>

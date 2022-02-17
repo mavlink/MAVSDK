@@ -62,11 +62,18 @@ public:
     struct Information {
         std::string vendor_name{}; /**< @brief Name of the camera vendor */
         std::string model_name{}; /**< @brief Name of the camera model */
+        std::string firmware_version{}; /**< @brief Camera firmware version in
+                                           '<major>.<minor>.<patch>.<build>' format */
         float focal_length_mm{}; /**< @brief Focal length */
         float horizontal_sensor_size_mm{}; /**< @brief Horizontal sensor size */
         float vertical_sensor_size_mm{}; /**< @brief Vertical sensor size */
         uint32_t horizontal_resolution_px{}; /**< @brief Horizontal image resolution in pixels */
         uint32_t vertical_resolution_px{}; /**< @brief Vertical image resolution in pixels */
+        uint32_t lens_id{}; /**< @brief Lens ID */
+        uint32_t
+            definition_file_version{}; /**< @brief Camera definition file version (iteration) */
+        std::string
+            definition_file_uri{}; /**< @brief Camera definition URI (http or mavlink ftp) */
     };
 
     /**
@@ -198,7 +205,8 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
-     * @brief Sets the camera information
+     * @brief Sets the camera information. This must be called as soon as the camera server is
+     * created.
      *
      * This function is blocking.
      *
@@ -207,7 +215,8 @@ public:
     Result set_information(Information information) const;
 
     /**
-     * @brief Sets the camera capture status
+     * @brief Sets image capture in progress status flags. This should be set to true when the
+     * camera is busy taking a photo and false when it is done.
      *
      * This function is blocking.
      *
@@ -222,12 +231,13 @@ public:
     using TakePhotoCallback = std::function<void(Result, int32_t)>;
 
     /**
-     * @brief Subscribe to single-image capture commands
+     * @brief Subscribe to image capture requests. Each request received should respond to using
+     * RespondTakePhoto.
      */
     void subscribe_take_photo(TakePhotoCallback callback);
 
     /**
-     * @brief Respond to a single-image capture command.
+     * @brief Respond to an image capture request from SubscribeTakePhoto.
      *
      * This function is blocking.
      *

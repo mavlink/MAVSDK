@@ -119,11 +119,15 @@ constexpr Information::Information(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : vendor_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , model_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , firmware_version_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , definition_file_uri_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , focal_length_mm_(0)
   , horizontal_sensor_size_mm_(0)
   , vertical_sensor_size_mm_(0)
   , horizontal_resolution_px_(0u)
-  , vertical_resolution_px_(0u){}
+  , vertical_resolution_px_(0u)
+  , lens_id_(0u)
+  , definition_file_version_(0u){}
 struct InformationDefaultTypeInternal {
   constexpr InformationDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -257,11 +261,15 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_camera_5fserver_2fcamera_5fser
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, vendor_name_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, model_name_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, firmware_version_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, focal_length_mm_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, horizontal_sensor_size_mm_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, vertical_sensor_size_mm_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, horizontal_resolution_px_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, vertical_resolution_px_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, lens_id_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, definition_file_version_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, definition_file_uri_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Position, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -309,10 +317,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 36, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoRequest)},
   { 42, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoResponse)},
   { 48, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
-  { 60, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
-  { 69, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
-  { 78, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
-  { 89, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
+  { 64, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
+  { 73, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
+  { 82, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
+  { 93, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -350,51 +358,54 @@ const char descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto[]
   "\030\001 \001(\0132%.mavsdk.rpc.camera_server.Captur"
   "eInfo\"f\n\030RespondTakePhotoResponse\022J\n\024cam"
   "era_server_result\030\001 \001(\0132,.mavsdk.rpc.cam"
-  "era_server.CameraServerResult\"\325\001\n\013Inform"
+  "era_server.CameraServerResult\"\276\002\n\013Inform"
   "ation\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_name"
-  "\030\002 \001(\t\022\027\n\017focal_length_mm\030\003 \001(\002\022!\n\031horiz"
-  "ontal_sensor_size_mm\030\004 \001(\002\022\037\n\027vertical_s"
-  "ensor_size_mm\030\005 \001(\002\022 \n\030horizontal_resolu"
-  "tion_px\030\006 \001(\r\022\036\n\026vertical_resolution_px\030"
-  "\007 \001(\r\"q\n\010Position\022\024\n\014latitude_deg\030\001 \001(\001\022"
-  "\025\n\rlongitude_deg\030\002 \001(\001\022\033\n\023absolute_altit"
-  "ude_m\030\003 \001(\002\022\033\n\023relative_altitude_m\030\004 \001(\002"
-  "\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001"
-  "y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\320\001\n\013CaptureInfo\0224\n\010po"
-  "sition\030\001 \001(\0132\".mavsdk.rpc.camera_server."
-  "Position\022A\n\023attitude_quaternion\030\002 \001(\0132$."
-  "mavsdk.rpc.camera_server.Quaternion\022\023\n\013t"
-  "ime_utc_us\030\003 \001(\004\022\022\n\nis_success\030\004 \001(\010\022\r\n\005"
-  "index\030\005 \001(\005\022\020\n\010file_url\030\006 \001(\t\"\263\002\n\022Camera"
-  "ServerResult\022C\n\006result\030\001 \001(\01623.mavsdk.rp"
-  "c.camera_server.CameraServerResult.Resul"
-  "t\022\022\n\nresult_str\030\002 \001(\t\"\303\001\n\006Result\022\022\n\016RESU"
-  "LT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\026\n\022RESU"
-  "LT_IN_PROGRESS\020\002\022\017\n\013RESULT_BUSY\020\003\022\021\n\rRES"
-  "ULT_DENIED\020\004\022\020\n\014RESULT_ERROR\020\005\022\022\n\016RESULT"
-  "_TIMEOUT\020\006\022\031\n\025RESULT_WRONG_ARGUMENT\020\007\022\024\n"
-  "\020RESULT_NO_SYSTEM\020\0102\211\004\n\023CameraServerServ"
-  "ice\022y\n\016SetInformation\022/.mavsdk.rpc.camer"
-  "a_server.SetInformationRequest\0320.mavsdk."
-  "rpc.camera_server.SetInformationResponse"
-  "\"\004\200\265\030\001\022v\n\rSetInProgress\022..mavsdk.rpc.cam"
-  "era_server.SetInProgressRequest\032/.mavsdk"
-  ".rpc.camera_server.SetInProgressResponse"
-  "\"\004\200\265\030\001\022~\n\022SubscribeTakePhoto\0223.mavsdk.rp"
-  "c.camera_server.SubscribeTakePhotoReques"
-  "t\032+.mavsdk.rpc.camera_server.TakePhotoRe"
-  "sponse\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhoto\0221.mav"
-  "sdk.rpc.camera_server.RespondTakePhotoRe"
-  "quest\0322.mavsdk.rpc.camera_server.Respond"
-  "TakePhotoResponse\"\004\200\265\030\001B,\n\027io.mavsdk.cam"
-  "era_serverB\021CameraServerProtob\006proto3"
+  "\030\002 \001(\t\022\030\n\020firmware_version\030\003 \001(\t\022\027\n\017foca"
+  "l_length_mm\030\004 \001(\002\022!\n\031horizontal_sensor_s"
+  "ize_mm\030\005 \001(\002\022\037\n\027vertical_sensor_size_mm\030"
+  "\006 \001(\002\022 \n\030horizontal_resolution_px\030\007 \001(\r\022"
+  "\036\n\026vertical_resolution_px\030\010 \001(\r\022\017\n\007lens_"
+  "id\030\t \001(\r\022\037\n\027definition_file_version\030\n \001("
+  "\r\022\033\n\023definition_file_uri\030\013 \001(\t\"q\n\010Positi"
+  "on\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitude_de"
+  "g\030\002 \001(\001\022\033\n\023absolute_altitude_m\030\003 \001(\002\022\033\n\023"
+  "relative_altitude_m\030\004 \001(\002\"8\n\nQuaternion\022"
+  "\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 "
+  "\001(\002\"\320\001\n\013CaptureInfo\0224\n\010position\030\001 \001(\0132\"."
+  "mavsdk.rpc.camera_server.Position\022A\n\023att"
+  "itude_quaternion\030\002 \001(\0132$.mavsdk.rpc.came"
+  "ra_server.Quaternion\022\023\n\013time_utc_us\030\003 \001("
+  "\004\022\022\n\nis_success\030\004 \001(\010\022\r\n\005index\030\005 \001(\005\022\020\n\010"
+  "file_url\030\006 \001(\t\"\263\002\n\022CameraServerResult\022C\n"
+  "\006result\030\001 \001(\01623.mavsdk.rpc.camera_server"
+  ".CameraServerResult.Result\022\022\n\nresult_str"
+  "\030\002 \001(\t\"\303\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n"
+  "\016RESULT_SUCCESS\020\001\022\026\n\022RESULT_IN_PROGRESS\020"
+  "\002\022\017\n\013RESULT_BUSY\020\003\022\021\n\rRESULT_DENIED\020\004\022\020\n"
+  "\014RESULT_ERROR\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\031\n\025R"
+  "ESULT_WRONG_ARGUMENT\020\007\022\024\n\020RESULT_NO_SYST"
+  "EM\020\0102\211\004\n\023CameraServerService\022y\n\016SetInfor"
+  "mation\022/.mavsdk.rpc.camera_server.SetInf"
+  "ormationRequest\0320.mavsdk.rpc.camera_serv"
+  "er.SetInformationResponse\"\004\200\265\030\001\022v\n\rSetIn"
+  "Progress\022..mavsdk.rpc.camera_server.SetI"
+  "nProgressRequest\032/.mavsdk.rpc.camera_ser"
+  "ver.SetInProgressResponse\"\004\200\265\030\001\022~\n\022Subsc"
+  "ribeTakePhoto\0223.mavsdk.rpc.camera_server"
+  ".SubscribeTakePhotoRequest\032+.mavsdk.rpc."
+  "camera_server.TakePhotoResponse\"\004\200\265\030\0000\001\022"
+  "\177\n\020RespondTakePhoto\0221.mavsdk.rpc.camera_"
+  "server.RespondTakePhotoRequest\0322.mavsdk."
+  "rpc.camera_server.RespondTakePhotoRespon"
+  "se\"\004\200\265\030\001B,\n\027io.mavsdk.camera_serverB\021Cam"
+  "eraServerProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto = {
-  false, false, 2237, descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto, "camera_server/camera_server.proto", 
+  false, false, 2342, descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto, "camera_server/camera_server.proto", 
   &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once, descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps, 1, 13,
   schemas, file_default_instances, TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets,
   file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto, file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto, file_level_service_descriptors_camera_5fserver_2fcamera_5fserver_2eproto,
@@ -2041,19 +2052,31 @@ Information::Information(const Information& from)
     model_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_model_name(), 
       GetArenaForAllocation());
   }
+  firmware_version_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_firmware_version().empty()) {
+    firmware_version_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_firmware_version(), 
+      GetArenaForAllocation());
+  }
+  definition_file_uri_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_definition_file_uri().empty()) {
+    definition_file_uri_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_definition_file_uri(), 
+      GetArenaForAllocation());
+  }
   ::memcpy(&focal_length_mm_, &from.focal_length_mm_,
-    static_cast<size_t>(reinterpret_cast<char*>(&vertical_resolution_px_) -
-    reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(vertical_resolution_px_));
+    static_cast<size_t>(reinterpret_cast<char*>(&definition_file_version_) -
+    reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(definition_file_version_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.Information)
 }
 
 inline void Information::SharedCtor() {
 vendor_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 model_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+firmware_version_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+definition_file_uri_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&focal_length_mm_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&vertical_resolution_px_) -
-    reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(vertical_resolution_px_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&definition_file_version_) -
+    reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(definition_file_version_));
 }
 
 Information::~Information() {
@@ -2067,6 +2090,8 @@ inline void Information::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   vendor_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   model_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  firmware_version_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  definition_file_uri_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Information::ArenaDtor(void* object) {
@@ -2087,9 +2112,11 @@ void Information::Clear() {
 
   vendor_name_.ClearToEmpty();
   model_name_.ClearToEmpty();
+  firmware_version_.ClearToEmpty();
+  definition_file_uri_.ClearToEmpty();
   ::memset(&focal_length_mm_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&vertical_resolution_px_) -
-      reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(vertical_resolution_px_));
+      reinterpret_cast<char*>(&definition_file_version_) -
+      reinterpret_cast<char*>(&focal_length_mm_)) + sizeof(definition_file_version_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2117,38 +2144,70 @@ const char* Information::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // float focal_length_mm = 3;
+      // string firmware_version = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          auto str = _internal_mutable_firmware_version();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera_server.Information.firmware_version"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // float focal_length_mm = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
           focal_length_mm_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float horizontal_sensor_size_mm = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+      // float horizontal_sensor_size_mm = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
           horizontal_sensor_size_mm_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float vertical_sensor_size_mm = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+      // float vertical_sensor_size_mm = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
           vertical_sensor_size_mm_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // uint32 horizontal_resolution_px = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+      // uint32 horizontal_resolution_px = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
           horizontal_resolution_px_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 vertical_resolution_px = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+      // uint32 vertical_resolution_px = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
           vertical_resolution_px_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 lens_id = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
+          lens_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 definition_file_version = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+          definition_file_version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string definition_file_uri = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
+          auto str = _internal_mutable_definition_file_uri();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.camera_server.Information.definition_file_uri"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2201,34 +2260,66 @@ failure:
         2, this->_internal_model_name(), target);
   }
 
-  // float focal_length_mm = 3;
+  // string firmware_version = 3;
+  if (!this->_internal_firmware_version().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_firmware_version().data(), static_cast<int>(this->_internal_firmware_version().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "mavsdk.rpc.camera_server.Information.firmware_version");
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_firmware_version(), target);
+  }
+
+  // float focal_length_mm = 4;
   if (!(this->_internal_focal_length_mm() <= 0 && this->_internal_focal_length_mm() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_focal_length_mm(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_focal_length_mm(), target);
   }
 
-  // float horizontal_sensor_size_mm = 4;
+  // float horizontal_sensor_size_mm = 5;
   if (!(this->_internal_horizontal_sensor_size_mm() <= 0 && this->_internal_horizontal_sensor_size_mm() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_horizontal_sensor_size_mm(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_horizontal_sensor_size_mm(), target);
   }
 
-  // float vertical_sensor_size_mm = 5;
+  // float vertical_sensor_size_mm = 6;
   if (!(this->_internal_vertical_sensor_size_mm() <= 0 && this->_internal_vertical_sensor_size_mm() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_vertical_sensor_size_mm(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_vertical_sensor_size_mm(), target);
   }
 
-  // uint32 horizontal_resolution_px = 6;
+  // uint32 horizontal_resolution_px = 7;
   if (this->_internal_horizontal_resolution_px() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_horizontal_resolution_px(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(7, this->_internal_horizontal_resolution_px(), target);
   }
 
-  // uint32 vertical_resolution_px = 7;
+  // uint32 vertical_resolution_px = 8;
   if (this->_internal_vertical_resolution_px() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(7, this->_internal_vertical_resolution_px(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(8, this->_internal_vertical_resolution_px(), target);
+  }
+
+  // uint32 lens_id = 9;
+  if (this->_internal_lens_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(9, this->_internal_lens_id(), target);
+  }
+
+  // uint32 definition_file_version = 10;
+  if (this->_internal_definition_file_version() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(10, this->_internal_definition_file_version(), target);
+  }
+
+  // string definition_file_uri = 11;
+  if (!this->_internal_definition_file_uri().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_definition_file_uri().data(), static_cast<int>(this->_internal_definition_file_uri().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "mavsdk.rpc.camera_server.Information.definition_file_uri");
+    target = stream->WriteStringMaybeAliased(
+        11, this->_internal_definition_file_uri(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2261,33 +2352,61 @@ size_t Information::ByteSizeLong() const {
         this->_internal_model_name());
   }
 
-  // float focal_length_mm = 3;
+  // string firmware_version = 3;
+  if (!this->_internal_firmware_version().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_firmware_version());
+  }
+
+  // string definition_file_uri = 11;
+  if (!this->_internal_definition_file_uri().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_definition_file_uri());
+  }
+
+  // float focal_length_mm = 4;
   if (!(this->_internal_focal_length_mm() <= 0 && this->_internal_focal_length_mm() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float horizontal_sensor_size_mm = 4;
+  // float horizontal_sensor_size_mm = 5;
   if (!(this->_internal_horizontal_sensor_size_mm() <= 0 && this->_internal_horizontal_sensor_size_mm() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float vertical_sensor_size_mm = 5;
+  // float vertical_sensor_size_mm = 6;
   if (!(this->_internal_vertical_sensor_size_mm() <= 0 && this->_internal_vertical_sensor_size_mm() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // uint32 horizontal_resolution_px = 6;
+  // uint32 horizontal_resolution_px = 7;
   if (this->_internal_horizontal_resolution_px() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->_internal_horizontal_resolution_px());
   }
 
-  // uint32 vertical_resolution_px = 7;
+  // uint32 vertical_resolution_px = 8;
   if (this->_internal_vertical_resolution_px() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->_internal_vertical_resolution_px());
+  }
+
+  // uint32 lens_id = 9;
+  if (this->_internal_lens_id() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_lens_id());
+  }
+
+  // uint32 definition_file_version = 10;
+  if (this->_internal_definition_file_version() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_definition_file_version());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2324,6 +2443,12 @@ void Information::MergeFrom(const Information& from) {
   if (!from._internal_model_name().empty()) {
     _internal_set_model_name(from._internal_model_name());
   }
+  if (!from._internal_firmware_version().empty()) {
+    _internal_set_firmware_version(from._internal_firmware_version());
+  }
+  if (!from._internal_definition_file_uri().empty()) {
+    _internal_set_definition_file_uri(from._internal_definition_file_uri());
+  }
   if (!(from._internal_focal_length_mm() <= 0 && from._internal_focal_length_mm() >= 0)) {
     _internal_set_focal_length_mm(from._internal_focal_length_mm());
   }
@@ -2338,6 +2463,12 @@ void Information::MergeFrom(const Information& from) {
   }
   if (from._internal_vertical_resolution_px() != 0) {
     _internal_set_vertical_resolution_px(from._internal_vertical_resolution_px());
+  }
+  if (from._internal_lens_id() != 0) {
+    _internal_set_lens_id(from._internal_lens_id());
+  }
+  if (from._internal_definition_file_version() != 0) {
+    _internal_set_definition_file_version(from._internal_definition_file_version());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2366,9 +2497,19 @@ void Information::InternalSwap(Information* other) {
       &model_name_, GetArenaForAllocation(),
       &other->model_name_, other->GetArenaForAllocation()
   );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &firmware_version_, GetArenaForAllocation(),
+      &other->firmware_version_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &definition_file_uri_, GetArenaForAllocation(),
+      &other->definition_file_uri_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Information, vertical_resolution_px_)
-      + sizeof(Information::vertical_resolution_px_)
+      PROTOBUF_FIELD_OFFSET(Information, definition_file_version_)
+      + sizeof(Information::definition_file_version_)
       - PROTOBUF_FIELD_OFFSET(Information, focal_length_mm_)>(
           reinterpret_cast<char*>(&focal_length_mm_),
           reinterpret_cast<char*>(&other->focal_length_mm_));
