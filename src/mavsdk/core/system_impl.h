@@ -452,6 +452,9 @@ private:
         MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, {0}};
 
     std::atomic<bool> _should_send_autopilot_version{false};
+
+    std::mutex _mavlink_ftp_files_mutex{};
+    std::unordered_map<std::string, std::string> _mavlink_ftp_files{};
 };
 
 } // namespace mavsdk

@@ -93,8 +93,9 @@ public:
     uint8_t get_our_compid();
     ClientResult set_target_compid(uint8_t component_id);
 
-private:
+    void register_file(const std::string& path, const std::string& content);
 
+private:
     SystemImpl& _system_impl;
 
     /// @brief Possible server results returned for requests.
@@ -265,8 +266,9 @@ private:
     ServerResult _work_remove_file(PayloadHeader* payload);
     ServerResult _work_rename(PayloadHeader* payload);
     ServerResult _work_calc_file_CRC32(PayloadHeader* payload);
+
+    std::mutex _files_mutex{};
+    std::unordered_map<std::string, std::string> _files{};
 };
 
-}
-
-
+} // namespace mavsdk

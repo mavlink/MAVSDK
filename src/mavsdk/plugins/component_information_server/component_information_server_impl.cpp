@@ -126,8 +126,8 @@ void ComponentInformationServerImpl::update_json_files_with_lock()
     std::cout << "parameter: " << parameter_file << '\n';
     std::cout << "meta: " << meta_file << '\n';
 
-    //_parent.register_mftp_file("general.json", meta_file);
-    //_parent.register_mftp_file("parameter.json", parameter_file);
+    _parent->mavlink_ftp().register_file("general.json", std::move(meta_file));
+    _parent->mavlink_ftp().register_file("parameter.json", std::move(parameter_file));
 }
 
 std::string ComponentInformationServerImpl::generate_parameter_file()
