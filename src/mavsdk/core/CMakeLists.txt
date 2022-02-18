@@ -19,6 +19,7 @@ target_sources(mavsdk
     mavlink_channels.cpp
     mavlink_command_receiver.cpp
     mavlink_command_sender.cpp
+    mavlink_ftp.cpp
     mavlink_mission_transfer.cpp
     mavlink_parameters.cpp
     mavlink_receiver.cpp
