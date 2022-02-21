@@ -27,6 +27,9 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
     _mavlink_ftp(*this)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
+
+    // Cache the param store
+    _param_map = _params.get_all_params();
 }
 
 SystemImpl::~SystemImpl()
@@ -685,14 +688,35 @@ MAVLinkParameters::Result SystemImpl::set_param_float(const std::string& name, f
 MAVLinkParameters::Result SystemImpl::set_param_int(const std::string& name, int32_t value)
 {
     MAVLinkParameters::ParamValue param_value;
-    param_value.set<int32_t>(value);
+    //param_value.set<int32_t>(value);
+    if ( _param_map.find(name) != _param_map.end() ) {
+        param_value = _param_map.at(name);
+    } else {
+        // not found in the param map, let downstream functions handle the exception.
+        // FIXME: Need a better way to handle this.
+        param_value.set<int32_t>(value);
+    }
+    if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT8) {param_value.set<int8_t>(value);}
+    else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT16) {param_value.set<int16_t>(value);}
+    else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT32) {param_value.set<int32_t>(value);}
+    else {std::cout << " Invalid Type "<< "\n";}
 
     return _params.set_param(name, param_value, false);
 }
 
 std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::get_all_params()
 {
-    return _params.get_all_params();
+    _param_map = _params.get_all_params();
+    // for (auto const& x : _param_map)
+    // {
+    //     std::cout << x.first  // ParamValue ID
+    //             << ':' 
+    //             << x.second // ParamValue Value 
+    //             << ':' 
+    //             << x.second.get_mav_param_type() // ParamValue Type
+    //             << std::endl;
+    // }
+    return _param_map;
 }
 
 MAVLinkParameters::Result SystemImpl::set_param_ext_float(const std::string& name, float value)
@@ -809,15 +833,29 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(const std::s
     auto res = prom.get_future();
 
     MAVLinkParameters::ParamValue value_type;
-    value_type.set<int32_t>(0);
-
+    //value_type.set<int32_t>(0);
+    if ( _param_map.find(name) != _param_map.end() ) {
+        value_type = _param_map.at(name);
+    } else {
+        // not found in the param map, let downstream functions handle the exception.
+        // FIXME: Need a better way to handle this.
+        value_type.set<int32_t>(0);
+    }
+    
     _params.get_param_async(
         name,
         value_type,
         [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             int value = 0;
             if (result == MAVLinkParameters::Result::Success) {
-                value = param.get<int32_t>();
+                auto type_string = param.typestr();
+                if (type_string == "int8_t") {
+                    value = param.get<int8_t>();
+                } else if (type_string == "int16_t") {
+                    value = param.get<int16_t>();
+                } else if (type_string == "int32_t") {
+                    value = param.get<int32_t>();
+                }
             }
             prom.set_value(std::make_pair<>(result, value));
         },

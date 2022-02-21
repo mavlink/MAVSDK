@@ -19,7 +19,7 @@ ParamImpl::~ParamImpl()
     _parent->unregister_plugin(this);
 }
 
-void ParamImpl::init() {}
+void ParamImpl::init() { _param_map = _parent->get_all_params(); }
 
 void ParamImpl::deinit() {}
 
@@ -56,7 +56,6 @@ Param::AllParams ParamImpl::get_all_params()
     auto tmp = _parent->get_all_params();
 
     Param::AllParams res{};
-
     for (auto const& parampair : tmp) {
         if (parampair.second.is<float>()) {
             Param::FloatParam tmp_param;
@@ -68,7 +67,18 @@ Param::AllParams ParamImpl::get_all_params()
             tmp_param.name = parampair.first;
             tmp_param.value = parampair.second.get<int32_t>();
             res.int_params.push_back(tmp_param);
+        } else if (parampair.second.is<int16_t>()) {
+            Param::IntParam tmp_param;
+            tmp_param.name = parampair.first;
+            tmp_param.value = parampair.second.get<int16_t>();
+            res.int_params.push_back(tmp_param);
+        } else if (parampair.second.is<int8_t>()) {
+            Param::IntParam tmp_param;
+            tmp_param.name = parampair.first;
+            tmp_param.value = parampair.second.get<int8_t>();
+            res.int_params.push_back(tmp_param);
         }
+        
     }
 
     return res;

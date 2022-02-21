@@ -464,6 +464,8 @@ private:
 
     std::mutex _mavlink_ftp_files_mutex{};
     std::unordered_map<std::string, std::string> _mavlink_ftp_files{};
+
+    std::map<std::string, MAVLinkParameters::ParamValue> _param_map {};
 };
 
 } // namespace mavsdk
