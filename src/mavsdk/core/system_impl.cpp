@@ -28,8 +28,6 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
-    // Cache the param store
-    _param_map = _params.get_all_params();
 }
 
 SystemImpl::~SystemImpl()
@@ -699,7 +697,6 @@ MAVLinkParameters::Result SystemImpl::set_param_int(const std::string& name, int
     if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT8) {param_value.set<int8_t>(value);}
     else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT16) {param_value.set<int16_t>(value);}
     else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT32) {param_value.set<int32_t>(value);}
-    else {std::cout << " Invalid Type "<< "\n";}
 
     return _params.set_param(name, param_value, false);
 }
@@ -707,15 +704,6 @@ MAVLinkParameters::Result SystemImpl::set_param_int(const std::string& name, int
 std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::get_all_params()
 {
     _param_map = _params.get_all_params();
-    // for (auto const& x : _param_map)
-    // {
-    //     std::cout << x.first  // ParamValue ID
-    //             << ':' 
-    //             << x.second // ParamValue Value 
-    //             << ':' 
-    //             << x.second.get_mav_param_type() // ParamValue Type
-    //             << std::endl;
-    // }
     return _param_map;
 }
 

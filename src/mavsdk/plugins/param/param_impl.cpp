@@ -19,7 +19,7 @@ ParamImpl::~ParamImpl()
     _parent->unregister_plugin(this);
 }
 
-void ParamImpl::init() { _param_map = _parent->get_all_params(); }
+void ParamImpl::init() { _parent->get_all_params(); }
 
 void ParamImpl::deinit() {}
 

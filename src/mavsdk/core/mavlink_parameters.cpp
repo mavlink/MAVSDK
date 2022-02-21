@@ -311,28 +311,21 @@ void MAVLinkParameters::do_work()
                     work->param_value.get_mav_param_ext_type());
             } else {
                 // Param set is intended for Autopilot only.
+                float _value_set;
                 if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
-                    mavlink_msg_param_set_pack(
+                    _value_set = work->param_value.get_4_float_bytes_apm();
+                } else {
+                    _value_set = work->param_value.get_4_float_bytes();
+                }
+                mavlink_msg_param_set_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
                     _parent.get_autopilot_id(),
                     param_id,
-                    work->param_value.get_4_float_bytes_apm(),
+                    _value_set,
                     work->param_value.get_mav_param_type());
-                }
-                else {
-                    mavlink_msg_param_set_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
-                    &work->mavlink_message,
-                    _parent.get_system_id(),
-                    _parent.get_autopilot_id(),
-                    param_id,
-                    work->param_value.get_4_float_bytes(),
-                    work->param_value.get_mav_param_type());
-                }
             }
 
             if (!_parent.send_message(work->mavlink_message)) {
@@ -418,28 +411,21 @@ void MAVLinkParameters::do_work()
                     work->param_count,
                     work->param_index);
             } else {
+                float _param_value;
                 if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
-                    mavlink_msg_param_value_pack(
+                    _param_value = work->param_value.get_4_float_bytes_apm();
+                } else {
+                    _param_value = work->param_value.get_4_float_bytes();
+                }
+                mavlink_msg_param_value_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
-                    work->param_value.get_4_float_bytes(),
+                    _param_value,
                     work->param_value.get_mav_param_type(),
                     work->param_count,
                     work->param_index);
-                }
-                else {
-                    mavlink_msg_param_value_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
-                    &work->mavlink_message,
-                    param_id,
-                    work->param_value.get_4_float_bytes(),
-                    work->param_value.get_mav_param_type(),
-                    work->param_count,
-                    work->param_index);
-                }
             }
 
             if (!_parent.send_message(work->mavlink_message)) {

@@ -32,8 +32,6 @@ public:
 
 private:
     static Param::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
-
-    std::map<std::string, MAVLinkParameters::ParamValue> _param_map {};
 };
 
 } // namespace mavsdk
