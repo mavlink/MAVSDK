@@ -166,6 +166,10 @@ private:
         uint8_t data[max_data_length]; ///< command data, varies by Opcode
     });
 
+    static_assert(
+        sizeof(PayloadHeader) == sizeof(mavlink_file_transfer_protocol_t::payload),
+        "PayloadHeader size is incorrect.");
+
     struct SessionInfo {
         int fd{-1};
         uint32_t file_size{0};

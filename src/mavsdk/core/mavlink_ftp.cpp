@@ -1087,7 +1087,7 @@ MavlinkFtp::ServerResult MavlinkFtp::_work_read(PayloadHeader* payload)
         return ServerResult::ERR_FAIL;
     }
 
-    int bytes_read = ::read(_session_info.fd, &payload->data[0], max_data_length);
+    auto bytes_read = ::read(_session_info.fd, &payload->data[0], max_data_length);
 
     if (bytes_read < 0) {
         // Negative return indicates error other than eof
