@@ -29,7 +29,7 @@ namespace mavsdk {
 namespace rpc {
 namespace component_information_server {
 
-// Provide raw access to retrieve and provide server parameters.
+// Provide component information such as parameters.
 class ComponentInformationServerService final {
  public:
   static constexpr char const* service_full_name() {
@@ -47,6 +47,8 @@ class ComponentInformationServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>> PrepareAsyncProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>>(PrepareAsyncProvideFloatParamRaw(context, request, cq));
     }
+    //
+    // Subscribe to float param updates.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>> SubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>>(SubscribeFloatParamRaw(context, request));
     }
@@ -63,6 +65,8 @@ class ComponentInformationServerService final {
       // Provide a param of type float.
       virtual void ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ProvideFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Subscribe to float param updates.
       virtual void SubscribeFloatParam(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::component_information_server::FloatParamResponse>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
@@ -128,6 +132,8 @@ class ComponentInformationServerService final {
     //
     // Provide a param of type float.
     virtual ::grpc::Status ProvideFloatParam(::grpc::ServerContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest* request, ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse* response);
+    //
+    // Subscribe to float param updates.
     virtual ::grpc::Status SubscribeFloatParam(::grpc::ServerContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::component_information_server::FloatParamResponse>* writer);
   };
   template <class BaseClass>

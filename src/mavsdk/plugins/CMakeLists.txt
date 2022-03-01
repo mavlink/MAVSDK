@@ -24,6 +24,7 @@ add_subdirectory(tracking_server)
 add_subdirectory(server_utility)
 add_subdirectory(transponder)
 add_subdirectory(telemetry_server)
+add_subdirectory(component_information)
 add_subdirectory(component_information_server)
 add_subdirectory(tune)
 

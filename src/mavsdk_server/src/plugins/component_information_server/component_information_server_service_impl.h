@@ -147,6 +147,9 @@ public:
             case mavsdk::ComponentInformationServer::Result::InvalidParamName:
                 return rpc::component_information_server::
                     ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_NAME;
+            case mavsdk::ComponentInformationServer::Result::NoSystem:
+                return rpc::component_information_server::
+                    ComponentInformationServerResult_Result_RESULT_NO_SYSTEM;
         }
     }
 
@@ -175,6 +178,9 @@ public:
             case rpc::component_information_server::
                 ComponentInformationServerResult_Result_RESULT_INVALID_PARAM_NAME:
                 return mavsdk::ComponentInformationServer::Result::InvalidParamName;
+            case rpc::component_information_server::
+                ComponentInformationServerResult_Result_RESULT_NO_SYSTEM:
+                return mavsdk::ComponentInformationServer::Result::NoSystem;
         }
     }
 

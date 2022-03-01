@@ -6,6 +6,7 @@
 
 #include "integration_test_helper.h"
 #include "mavsdk.h"
+#include "plugins/component_information/component_information.h"
 #include "plugins/component_information_server/component_information_server.h"
 #include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "plugins/param/param.h"
@@ -56,20 +57,21 @@ TEST(ComponentInformation, Connect)
 
     auto passthrough_client = MavlinkPassthrough{groundstation};
     auto param_client = Param{groundstation};
+    auto client = ComponentInformation{groundstation};
 
-    const auto request = MavlinkPassthrough::CommandLong{
-        companion->get_system_id(),
-        0,
-        MAV_CMD_REQUEST_MESSAGE,
-        static_cast<float>(MAVLINK_MSG_ID_COMPONENT_INFORMATION),
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f};
+    // const auto request = MavlinkPassthrough::CommandLong{
+    //    companion->get_system_id(),
+    //    0,
+    //    MAV_CMD_REQUEST_MESSAGE,
+    //    static_cast<float>(MAVLINK_MSG_ID_COMPONENT_INFORMATION),
+    //    0.0f,
+    //    0.0f,
+    //    0.0f,
+    //    0.0f,
+    //    0.0f,
+    //    0.0f};
 
-    passthrough_client.send_command_long(request);
+    // passthrough_client.send_command_long(request);
 
     param_client.set_param_float("ANG_RATE_ACC_MAX", 4.0f);
 
