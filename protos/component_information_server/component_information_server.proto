@@ -7,13 +7,16 @@ import "mavsdk_options.proto";
 option java_package = "io.mavsdk.component_information_server";
 option java_outer_classname = "ComponentInformationServerProto";
 
-// Provide raw access to retrieve and provide server parameters.
+// Provide component information such as parameters.
 service ComponentInformationServerService {
     /*
      * Provide a param of type float.
      */
     rpc ProvideFloatParam(ProvideFloatParamRequest) returns(ProvideFloatParamResponse) { option (mavsdk.options.async_type) = SYNC; }
 
+    /*
+     * Subscribe to float param updates.
+     */
     rpc SubscribeFloatParam(SubscribeFloatParamRequest) returns(stream FloatParamResponse) { option (mavsdk.options.async_type) = ASYNC; }
 }
 
@@ -58,6 +61,7 @@ message ComponentInformationServerResult {
         RESULT_INVALID_PARAM_START_VALUE = 3; // Invalid start param value
         RESULT_INVALID_PARAM_DEFAULT_VALUE = 4; // Invalid default param value
         RESULT_INVALID_PARAM_NAME = 5; // Invalid param name
+        RESULT_NO_SYSTEM = 6; // No system is connected
     }
 
     Result result = 1; // Result enum value
