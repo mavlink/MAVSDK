@@ -18,6 +18,7 @@
 
 #include "crc32.h"
 #include "fs.h"
+#include <algorithm>
 
 namespace mavsdk {
 
@@ -539,7 +540,7 @@ void MavlinkFtp::_read()
     payload->session = _session;
     payload->opcode = _curr_op = CMD_READ_FILE;
     payload->offset = _bytes_transferred;
-    payload->size = 0;
+    payload->size = std::min(static_cast<uint32_t>(max_data_length), _file_size - _bytes_transferred);
     _send_mavlink_ftp_message(raw_payload);
 }
 
