@@ -12,7 +12,9 @@ add_executable(takeoff_and_land
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(takeoff_and_land
-    MAVSDK::mavsdk
+        MAVSDK::mavsdk
+        MAVSDK::mavsdk_action
+        MAVSDK::mavsdk_telemetry
 )
 
 if(NOT MSVC)
