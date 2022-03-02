@@ -10,9 +10,6 @@
 #include <future>
 #include <utility>
 
-// Set to 1 to log incoming/outgoing mavlink messages.
-#define MESSAGE_DEBUGGING 0
-
 namespace mavsdk {
 
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
@@ -475,9 +472,6 @@ bool SystemImpl::send_message(mavlink_message_t& message)
         }
     }
 
-#if MESSAGE_DEBUGGING == 1
-    LogDebug() << "Sending msg " << size_t(message.msgid);
-#endif
     return _parent.send_message(message);
 }
 
