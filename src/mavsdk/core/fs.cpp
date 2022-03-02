@@ -15,10 +15,16 @@
 #include <stdio.h>
 
 #include "fs.h"
+#include "log.h"
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096
 #endif
+
+#include <filesystem>
+#include <random>
+
+namespace mavsdk {
 
 bool fs_exists(const std::string& filename)
 {
@@ -122,3 +128,31 @@ bool fs_rename(const std::string& old_name, const std::string& new_name)
 {
     return (rename(old_name.c_str(), new_name.c_str()) == 0);
 }
+
+// Inspired by https://stackoverflow.com/a/58454949/8548472
+std::optional<std::string> create_tmp_directory(const std::string& prefix)
+{
+    const auto tmp_dir = std::filesystem::temp_directory_path();
+
+    std::random_device dev;
+    std::mt19937 prng(dev());
+    std::uniform_int_distribution<uint32_t> rand(0);
+
+    static constexpr unsigned max_tries = 100;
+
+    for (unsigned i = 0; i < max_tries; ++i) {
+        std::stringstream ss;
+        ss << prefix << '-' << std::hex << rand(prng);
+        auto path = tmp_dir / ss.str();
+
+        const auto created = std::filesystem::create_directory(path);
+        if (created) {
+            return {path};
+        }
+    }
+
+    LogErr() << "Could not create a temporary directory, aborting.";
+    return {};
+}
+
+} // namespace mavsdk

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <optional>
+
+namespace mavsdk {
 
 #if defined(WINDOWS)
 const std::string path_separator = "\\";
@@ -21,3 +24,7 @@ bool fs_create_directory(const std::string& path);
 bool fs_remove(const std::string& path);
 
 bool fs_rename(const std::string& old_name, const std::string& new_name);
+
+std::optional<std::string> create_tmp_directory(const std::string& prefix);
+
+} // namespace mavsdk
