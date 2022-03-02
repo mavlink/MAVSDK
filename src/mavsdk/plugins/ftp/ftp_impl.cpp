@@ -15,6 +15,7 @@
 #endif
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <algorithm>
 
 #include "crc32.h"
 #include "fs.h"
@@ -380,7 +381,8 @@ void FtpImpl::_read()
     payload->session = _session;
     payload->opcode = _curr_op = CMD_READ_FILE;
     payload->offset = _bytes_transferred;
-    payload->size = 0;
+    payload->size =
+        std::min(static_cast<uint32_t>(max_data_length), _file_size - _bytes_transferred);
     _send_mavlink_ftp_message(raw_payload);
 }
 
