@@ -1045,7 +1045,7 @@ MavlinkFtp::ServerResult MavlinkFtp::_work_open(PayloadHeader* payload, int ofla
     }
 
     // fail only if requested open for read
-    if ((oflag & O_RDONLY) && !fs_exists(path)) {
+    if ((oflag & O_ACCMODE) == O_RDONLY && !fs_exists(path)) {
         LogWarn() << "FTP: Open failed - file not found";
         return ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
     }
