@@ -1052,9 +1052,7 @@ MavlinkFtp::ServerResult MavlinkFtp::_work_open(PayloadHeader* payload, int ofla
 
     uint32_t file_size = fs_file_size(path);
 
-    LogInfo() << "Open: " << path << " FS: " << file_size;
-
-    // Set mode to 666 incase oflag has O_CREAT
+    // Set mode to 666 in case oflag has O_CREAT
     int fd = ::open(path.c_str(), oflag, 0666);
 
     if (fd < 0) {
