@@ -11,9 +11,12 @@
 
 namespace mavsdk {
 
+class SystemImpl;
+
 class RequestMessage {
 public:
     RequestMessage(
+        SystemImpl& system_impl,
         MavlinkCommandSender& command_sender,
         MAVLinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler);
@@ -22,11 +25,16 @@ public:
     using RequestMessageCallback =
         std::function<void(MavlinkCommandSender::Result, const mavlink_message_t&)>;
 
-    void request(uint32_t message_id, RequestMessageCallback callback, uint32_t param2 = 0);
+    void request(
+        uint32_t message_id,
+        uint8_t target_component,
+        RequestMessageCallback callback,
+        uint32_t param2 = 0);
 
 private:
     struct WorkItem {
         uint32_t message_id{0};
+        uint8_t target_component{0};
         RequestMessageCallback callback{};
         uint32_t param2{0};
         std::size_t retries{0};
@@ -34,11 +42,12 @@ private:
         std::optional<MavlinkCommandSender::Result> maybe_result{};
     };
 
-    void send_request(uint32_t message_id);
+    void send_request(uint32_t message_id, uint8_t target_component);
     void handle_any_message(const mavlink_message_t& message);
     void handle_command_result(uint32_t message_id, MavlinkCommandSender::Result result);
-    void handle_timeout(uint32_t message_id);
+    void handle_timeout(uint32_t message_id, uint8_t target_component);
 
+    SystemImpl& _system_impl;
     MavlinkCommandSender& _command_sender;
     MAVLinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;

@@ -26,7 +26,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
     _ping(*this),
     _mission_transfer(
         *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); }),
-    _request_message(_command_sender, _message_handler, _parent.timeout_handler),
+    _request_message(*this, _command_sender, _message_handler, _parent.timeout_handler),
     _mavlink_ftp(*this)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);

@@ -2366,6 +2366,7 @@ void TelemetryImpl::get_gps_global_origin_async(
 {
     _parent->request_message().request(
         MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
+        MAV_COMP_ID_AUTOPILOT1,
         [this, callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
             if (result == MavlinkCommandSender::Result::Success) {
                 mavlink_gps_global_origin_t mavlink_gps_global_origin;

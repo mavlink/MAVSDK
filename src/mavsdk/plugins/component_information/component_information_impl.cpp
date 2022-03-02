@@ -24,8 +24,11 @@ void ComponentInformationImpl::deinit() {}
 
 void ComponentInformationImpl::enable()
 {
+    // TODO: iterate through components!
+
     _parent->request_message().request(
         MAVLINK_MSG_ID_COMPONENT_INFORMATION,
+        MAV_COMP_ID_PATHPLANNER,
         [this](auto&& result, auto&& message) { receive_component_information(result, message); });
 }
 
