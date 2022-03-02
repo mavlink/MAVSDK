@@ -85,6 +85,7 @@ void test_download(
 {
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
+
     ftp->download_async(
         remote_file, local_path, [prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {

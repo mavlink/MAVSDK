@@ -1370,7 +1370,7 @@ MavlinkFtp::write_tmp_file(const std::string& path, const std::string& content)
 
     // We use a temporary directory to put these
     if (_tmp_dir.empty()) {
-        auto maybe_tmp_dir = create_tmp_directory("mavsdk");
+        auto maybe_tmp_dir = create_tmp_directory("mavsdk-mavlink-ftp-tmp-files");
         if (maybe_tmp_dir) {
             _tmp_dir = maybe_tmp_dir.value();
         }

@@ -17,7 +17,7 @@ TEST(ComponentInformation, Connect)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::CompanionComputer});
+        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:24550"), ConnectionResult::Success);
 
     Mavsdk mavsdk_companion;
@@ -57,23 +57,12 @@ TEST(ComponentInformation, Connect)
 
     auto passthrough_client = MavlinkPassthrough{groundstation};
     auto param_client = Param{groundstation};
-    auto client = ComponentInformation{groundstation};
-
-    // const auto request = MavlinkPassthrough::CommandLong{
-    //    companion->get_system_id(),
-    //    0,
-    //    MAV_CMD_REQUEST_MESSAGE,
-    //    static_cast<float>(MAVLINK_MSG_ID_COMPONENT_INFORMATION),
-    //    0.0f,
-    //    0.0f,
-    //    0.0f,
-    //    0.0f,
-    //    0.0f,
-    //    0.0f};
-
-    // passthrough_client.send_command_long(request);
 
     param_client.set_param_float("ANG_RATE_ACC_MAX", 4.0f);
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    auto client = ComponentInformation{groundstation};
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
