@@ -215,6 +215,8 @@ private:
     static_assert(
         std::is_same<DownloadCallback, UploadCallback>::value, "callback types don't match");
     DownloadCallback _curr_op_progress_callback{};
+    int _last_progress_percentage{-1};
+
     ListDirectoryCallback _curr_dir_items_result_callback{};
 
     file_crc32_ResultCallback _current_crc32_result_callback{};

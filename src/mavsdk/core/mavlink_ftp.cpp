@@ -414,13 +414,20 @@ void MavlinkFtp::_call_op_result_callback(ServerResult result)
 void MavlinkFtp::_call_op_progress_callback(uint32_t bytes_read, uint32_t total_bytes)
 {
     if (_curr_op_progress_callback) {
-        const auto temp_callback = _curr_op_progress_callback;
-        _system_impl.call_user_callback([temp_callback, bytes_read, total_bytes]() {
-            ProgressData progress;
-            progress.bytes_transferred = bytes_read;
-            progress.total_bytes = total_bytes;
-            temp_callback(ClientResult::Next, progress);
-        });
+        // Slow callback down to only report ever 1%, otherwise we are slowing
+        // everything down way too much.
+        int percentage = 100 * bytes_read / total_bytes;
+        if (_last_progress_percentage != percentage) {
+            _last_progress_percentage = percentage;
+
+            const auto temp_callback = _curr_op_progress_callback;
+            _system_impl.call_user_callback([temp_callback, bytes_read, total_bytes]() {
+                ProgressData progress;
+                progress.bytes_transferred = bytes_read;
+                progress.total_bytes = total_bytes;
+                temp_callback(ClientResult::Next, progress);
+            });
+        }
     }
 }
 
@@ -504,6 +511,7 @@ void MavlinkFtp::download_async(
     }
 
     _curr_op_progress_callback = callback;
+    _last_progress_percentage = -1;
 
     const auto result_callback = [callback](ClientResult result) {
         ProgressData empty{};
@@ -570,6 +578,8 @@ void MavlinkFtp::upload_async(
 
     _file_size = fs_file_size(local_file_path);
     _curr_op_progress_callback = callback;
+    _last_progress_percentage = -1;
+
     std::string local_path(local_file_path);
     std::string remote_file_path = remote_folder + path_separator + fs_filename(local_path);
 
