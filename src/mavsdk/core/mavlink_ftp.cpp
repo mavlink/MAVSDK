@@ -1,5 +1,6 @@
 #include "mavlink_ftp.h"
 #include "system_impl.h"
+#include <fstream>
 
 #if defined(WINDOWS)
 #include "tronkko_dirent.h"
@@ -1038,11 +1039,25 @@ MavlinkFtp::ServerResult MavlinkFtp::_work_open(PayloadHeader* payload, int ofla
         return ServerResult::ERR_NO_SESSIONS_AVAILABLE;
     }
 
-    std::string path = _get_path(payload);
-    if (path.rfind(_root_dir, 0) != 0) {
-        LogWarn() << "FTP: invalid path " << path;
+    std::string path = [payload, this]() {
+        std::lock_guard<std::mutex> lock(_tmp_files_mutex);
+        const auto it = _tmp_files.find(_data_as_string(payload));
+        if (it != _tmp_files.end()) {
+            return it->second;
+        } else {
+            return _get_path(payload);
+        }
+    }();
+
+    if (path.empty()) {
         return ServerResult::ERR_FAIL;
     }
+
+    // TODO: check again
+    // if (path.rfind(_root_dir, 0) != 0) {
+    //    LogWarn() << "FTP: invalid path " << path;
+    //    return ServerResult::ERR_FAIL;
+    // }
 
     // fail only if requested open for read
     if ((oflag & O_ACCMODE) == O_RDONLY && !fs_exists(path)) {
@@ -1331,10 +1346,52 @@ MavlinkFtp::ClientResult MavlinkFtp::set_target_compid(uint8_t component_id)
     return ClientResult::Success;
 }
 
-void MavlinkFtp::register_file(const std::string& path, const std::string& content)
+std::optional<std::string>
+MavlinkFtp::write_tmp_file(const std::string& path, const std::string& content)
 {
-    std::lock_guard<std::mutex> lock(_files_mutex);
-    _files[path] = content;
+    // TODO: Check if currently an operation is ongoing.
+
+    if (path.find("..") != std::string::npos) {
+        LogWarn() << "Path with .. not supported.";
+        return {};
+    }
+
+    if (path.find('/') != std::string::npos) {
+        LogWarn() << "Path with / not supported.";
+        return {};
+    }
+
+    if (path.find('\\') != std::string::npos) {
+        LogWarn() << "Path with \\ not supported.";
+        return {};
+    }
+
+    // We use a temporary directory to put these
+    if (_tmp_dir.empty()) {
+        auto maybe_tmp_dir = create_tmp_directory("mavsdk");
+        if (maybe_tmp_dir) {
+            _tmp_dir = maybe_tmp_dir.value();
+        }
+        // If we can't get a tmp dir, we'll just try to use our current working dir,
+        // or whatever is the root dir by default.
+    }
+
+    const auto file_path = _tmp_dir + path_separator + path;
+    std::ofstream out(file_path);
+    out << content;
+    out.flush();
+    if (out.bad()) {
+        LogWarn() << "Writing to " << file_path << " failed";
+        out.close();
+        return {};
+    } else {
+        out.close();
+
+        std::lock_guard<std::mutex> lock(_tmp_files_mutex);
+        _tmp_files[path] = file_path;
+
+        return {file_path};
+    }
 }
 
 } // namespace mavsdk

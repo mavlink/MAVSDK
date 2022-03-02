@@ -93,7 +93,7 @@ public:
     uint8_t get_our_compid();
     ClientResult set_target_compid(uint8_t component_id);
 
-    void register_file(const std::string& path, const std::string& content);
+    std::optional<std::string> write_tmp_file(const std::string& path, const std::string& content);
 
 private:
     SystemImpl& _system_impl;
@@ -245,7 +245,7 @@ private:
     uint8_t _get_target_component_id();
 
     // prepend a root directory to each file/dir access to avoid enumerating the full FS tree
-    std::string _root_dir{"/"};
+    std::string _root_dir{"."};
 
     bool _last_reply_valid = false;
     uint16_t _last_reply_seq = 0;
@@ -271,8 +271,9 @@ private:
     ServerResult _work_rename(PayloadHeader* payload);
     ServerResult _work_calc_file_CRC32(PayloadHeader* payload);
 
-    std::mutex _files_mutex{};
-    std::unordered_map<std::string, std::string> _files{};
+    std::mutex _tmp_files_mutex{};
+    std::unordered_map<std::string, std::string> _tmp_files{};
+    std::string _tmp_dir{};
 };
 
 } // namespace mavsdk
