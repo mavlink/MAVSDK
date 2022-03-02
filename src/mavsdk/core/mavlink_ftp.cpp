@@ -472,15 +472,14 @@ void MavlinkFtp::reset_async(ResultCallback callback)
         return;
     }
 
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = _session;
-    payload->opcode = _curr_op = CMD_RESET_SESSIONS;
-    payload->offset = 0;
-    payload->size = 0;
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = _session;
+    payload.opcode = _curr_op = CMD_RESET_SESSIONS;
+    payload.offset = 0;
+    payload.size = 0;
     _curr_op_result_callback = callback;
-    _send_mavlink_ftp_message(raw_payload);
+    _send_mavlink_ftp_message(payload);
 }
 
 void MavlinkFtp::download_async(
@@ -535,15 +534,14 @@ void MavlinkFtp::_read()
         return;
     }
 
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = _session;
-    payload->opcode = _curr_op = CMD_READ_FILE;
-    payload->offset = _bytes_transferred;
-    payload->size =
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = _session;
+    payload.opcode = _curr_op = CMD_READ_FILE;
+    payload.offset = _bytes_transferred;
+    payload.size =
         std::min(static_cast<uint32_t>(max_data_length), _file_size - _bytes_transferred);
-    _send_mavlink_ftp_message(raw_payload);
+    _send_mavlink_ftp_message(payload);
 }
 
 void MavlinkFtp::upload_async(
@@ -600,21 +598,20 @@ void MavlinkFtp::_write()
         return;
     }
 
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = _session;
-    payload->opcode = _curr_op = CMD_WRITE_FILE;
-    payload->offset = _bytes_transferred;
-    int bytes_read = _ifstream.readsome(reinterpret_cast<char*>(payload->data), max_data_length);
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = _session;
+    payload.opcode = _curr_op = CMD_WRITE_FILE;
+    payload.offset = _bytes_transferred;
+    int bytes_read = _ifstream.readsome(reinterpret_cast<char*>(payload.data), max_data_length);
     if (!_ifstream) {
         _end_write_session();
         _call_op_result_callback(ServerResult::ERR_FILE_IO_ERROR);
         return;
     }
-    payload->size = bytes_read;
+    payload.size = bytes_read;
     _bytes_transferred += bytes_read;
-    _send_mavlink_ftp_message(raw_payload);
+    _send_mavlink_ftp_message(payload);
 }
 
 void MavlinkFtp::_terminate_session()
@@ -622,14 +619,13 @@ void MavlinkFtp::_terminate_session()
     if (!_session_valid) {
         return;
     }
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = _session;
-    payload->opcode = _curr_op = CMD_TERMINATE_SESSION;
-    payload->offset = 0;
-    payload->size = 0;
-    _send_mavlink_ftp_message(raw_payload);
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = _session;
+    payload.opcode = _curr_op = CMD_TERMINATE_SESSION;
+    payload.offset = 0;
+    payload.size = 0;
+    _send_mavlink_ftp_message(payload);
 }
 
 std::pair<MavlinkFtp::ClientResult, std::vector<std::string>>
@@ -667,19 +663,18 @@ void MavlinkFtp::list_directory_async(
 
 void MavlinkFtp::_list_directory(uint32_t offset)
 {
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = 0;
-    payload->opcode = _curr_op = CMD_LIST_DIRECTORY;
-    payload->offset = offset;
-    strncpy(reinterpret_cast<char*>(payload->data), _last_path.c_str(), max_data_length - 1);
-    payload->size = _last_path.length() + 1;
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = 0;
+    payload.opcode = _curr_op = CMD_LIST_DIRECTORY;
+    payload.offset = offset;
+    strncpy(reinterpret_cast<char*>(payload.data), _last_path.c_str(), max_data_length - 1);
+    payload.size = _last_path.length() + 1;
 
     if (offset == 0) {
         _curr_directory_list.clear();
     }
-    _send_mavlink_ftp_message(raw_payload);
+    _send_mavlink_ftp_message(payload);
 }
 
 void MavlinkFtp::_generic_command_async(
@@ -694,17 +689,16 @@ void MavlinkFtp::_generic_command_async(
         return;
     }
 
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = 0;
-    payload->opcode = _curr_op = opcode;
-    payload->offset = offset;
-    strncpy(reinterpret_cast<char*>(payload->data), path.c_str(), max_data_length - 1);
-    payload->size = path.length() + 1;
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = 0;
+    payload.opcode = _curr_op = opcode;
+    payload.offset = offset;
+    strncpy(reinterpret_cast<char*>(payload.data), path.c_str(), max_data_length - 1);
+    payload.size = path.length() + 1;
 
     _curr_op_result_callback = callback;
-    _send_mavlink_ftp_message(raw_payload);
+    _send_mavlink_ftp_message(payload);
 }
 
 MavlinkFtp::ClientResult MavlinkFtp::create_directory(const std::string& path)
@@ -780,21 +774,20 @@ void MavlinkFtp::rename_async(
         return;
     }
 
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = 0;
-    payload->opcode = _curr_op = CMD_RENAME;
-    payload->offset = 0;
-    strncpy(reinterpret_cast<char*>(&payload->data[0]), from_path.c_str(), max_data_length - 1);
-    payload->size = from_path.length() + 1;
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = 0;
+    payload.opcode = _curr_op = CMD_RENAME;
+    payload.offset = 0;
+    strncpy(reinterpret_cast<char*>(payload.data), from_path.c_str(), max_data_length - 1);
+    payload.size = from_path.length() + 1;
     strncpy(
-        reinterpret_cast<char*>(&payload->data[payload->size]),
+        reinterpret_cast<char*>(&payload.data[payload.size]),
         to_path.c_str(),
-        max_data_length - payload->size);
-    payload->size += to_path.length() + 1;
+        max_data_length - payload.size);
+    payload.size += to_path.length() + 1;
     _curr_op_result_callback = callback;
-    _send_mavlink_ftp_message(raw_payload);
+    _send_mavlink_ftp_message(payload);
 }
 
 std::pair<MavlinkFtp::ClientResult, bool>
@@ -856,19 +849,18 @@ void MavlinkFtp::_calc_file_crc32_async(const std::string& path, file_crc32_Resu
         return;
     }
 
-    uint8_t raw_payload[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN];
-    PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(raw_payload);
-    payload->seq_number = _seq_number++;
-    payload->session = 0;
-    payload->opcode = _curr_op = CMD_CALC_FILE_CRC32;
-    payload->offset = 0;
-    strncpy(reinterpret_cast<char*>(payload->data), path.c_str(), max_data_length - 1);
-    payload->size = path.length() + 1;
+    auto payload = PayloadHeader{};
+    payload.seq_number = _seq_number++;
+    payload.session = 0;
+    payload.opcode = _curr_op = CMD_CALC_FILE_CRC32;
+    payload.offset = 0;
+    strncpy(reinterpret_cast<char*>(payload.data), path.c_str(), max_data_length - 1);
+    payload.size = path.length() + 1;
     _current_crc32_result_callback = callback;
-    _send_mavlink_ftp_message(raw_payload);
+    _send_mavlink_ftp_message(payload);
 }
 
-void MavlinkFtp::_send_mavlink_ftp_message(uint8_t* raw_payload)
+void MavlinkFtp::_send_mavlink_ftp_message(const PayloadHeader& payload)
 {
     mavlink_msg_file_transfer_protocol_pack(
         _system_impl.get_own_system_id(),
@@ -877,7 +869,7 @@ void MavlinkFtp::_send_mavlink_ftp_message(uint8_t* raw_payload)
         _network_id,
         _system_impl.get_system_id(),
         _get_target_component_id(),
-        raw_payload);
+        reinterpret_cast<const uint8_t*>(&payload));
     _system_impl.send_message(_last_command);
 
     _reset_timer();

@@ -237,7 +237,8 @@ private:
     void _end_read_session(bool delete_file = false);
     void _end_write_session();
     void _terminate_session();
-    void _send_mavlink_ftp_message(uint8_t* raw_payload);
+    void _send_mavlink_ftp_message(const PayloadHeader& payload);
+
     void _command_timeout();
     void _reset_timer();
     void _stop_timer();
