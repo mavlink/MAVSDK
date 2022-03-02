@@ -259,6 +259,12 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
+    if (_connections.empty()) {
+        // We obviously can't send any messages without a connection added, so
+        // we silently ignore this.
+        return true;
+    }
+
     uint8_t successful_emissions = 0;
     for (auto& _connection : _connections) {
         const uint8_t target_system_id = get_target_system_id(message);
