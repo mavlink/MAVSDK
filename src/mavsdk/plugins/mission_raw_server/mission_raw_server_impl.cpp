@@ -336,7 +336,10 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
 
     _current_seq = seq;
 
-    auto converted_item = convert_item(_current_mission.at(_current_seq));
+    // If mission is over, just set item to last one again
+    auto item = seq == _current_mission.size() ? _current_mission.back() :
+                                                 _current_mission.at(_current_seq);
+    auto converted_item = convert_item(item);
     _parent->call_user_callback([this, converted_item]() {
         if (_current_item_changed_callback) {
             _current_item_changed_callback(converted_item);
