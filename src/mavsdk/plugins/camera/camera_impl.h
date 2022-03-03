@@ -107,6 +107,7 @@ private:
     void check_connection_status();
     void manual_enable();
     void manual_disable();
+    void update_component();
 
     void receive_set_mode_command_result(
         const MavlinkCommandSender::Result command_result,

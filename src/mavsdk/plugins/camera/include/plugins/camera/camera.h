@@ -822,6 +822,15 @@ public:
     Result format_storage() const;
 
     /**
+     * @brief
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result select_camera(int32_t camera_id) const;
+
+    /**
      * @brief Copy constructor.
      */
     Camera(const Camera& other);
