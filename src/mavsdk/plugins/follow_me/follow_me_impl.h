@@ -13,7 +13,7 @@ class FollowMeImpl : public PluginImplBase {
 public:
     explicit FollowMeImpl(System& system);
     explicit FollowMeImpl(std::shared_ptr<System> system);
-    ~FollowMeImpl();
+    ~FollowMeImpl() override;
 
     void init() override;
     void deinit() override;

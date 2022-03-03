@@ -29,7 +29,7 @@ FtpImpl::FtpImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-FtpImpl::FtpImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+FtpImpl::FtpImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

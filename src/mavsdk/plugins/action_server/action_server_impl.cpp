@@ -42,7 +42,8 @@ ActionServerImpl::ActionServerImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-ActionServerImpl::ActionServerImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+ActionServerImpl::ActionServerImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

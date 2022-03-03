@@ -12,7 +12,7 @@ class MavlinkPassthroughImpl : public PluginImplBase {
 public:
     explicit MavlinkPassthroughImpl(System& system);
     explicit MavlinkPassthroughImpl(std::shared_ptr<System> system);
-    ~MavlinkPassthroughImpl();
+    ~MavlinkPassthroughImpl() override;
 
     void init() override;
     void deinit() override;

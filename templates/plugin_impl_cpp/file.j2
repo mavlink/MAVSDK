@@ -7,7 +7,7 @@ namespace mavsdk {
     _parent->register_plugin(this);
 }
 
-{{ plugin_name.upper_camel_case }}Impl::{{ plugin_name.upper_camel_case }}Impl(std::shared_ptr<System> system) : PluginImplBase(system)
+{{ plugin_name.upper_camel_case }}Impl::{{ plugin_name.upper_camel_case }}Impl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

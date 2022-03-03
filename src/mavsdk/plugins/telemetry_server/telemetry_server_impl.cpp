@@ -9,7 +9,8 @@ TelemetryServerImpl::TelemetryServerImpl(System& system) : PluginImplBase(system
     _start_time = std::chrono::steady_clock::now();
 }
 
-TelemetryServerImpl::TelemetryServerImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+TelemetryServerImpl::TelemetryServerImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

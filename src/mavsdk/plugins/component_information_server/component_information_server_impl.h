@@ -9,7 +9,7 @@ class ComponentInformationServerImpl : public PluginImplBase {
 public:
     explicit ComponentInformationServerImpl(System& system);
     explicit ComponentInformationServerImpl(std::shared_ptr<System> system);
-    ~ComponentInformationServerImpl();
+    ~ComponentInformationServerImpl() override;
 
     void init() override;
     void deinit() override;

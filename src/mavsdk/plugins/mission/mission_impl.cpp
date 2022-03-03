@@ -14,7 +14,7 @@ MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-MissionImpl::MissionImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+MissionImpl::MissionImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

@@ -10,7 +10,7 @@ class TrackingServerImpl : public PluginImplBase {
 public:
     explicit TrackingServerImpl(System& system);
     explicit TrackingServerImpl(std::shared_ptr<System> system);
-    ~TrackingServerImpl();
+    ~TrackingServerImpl() override;
 
     void init() override;
     void deinit() override;

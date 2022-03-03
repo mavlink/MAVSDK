@@ -9,7 +9,7 @@ ComponentInformationImpl::ComponentInformationImpl(System& system) : PluginImplB
 }
 
 ComponentInformationImpl::ComponentInformationImpl(std::shared_ptr<System> system) :
-    PluginImplBase(system)
+    PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

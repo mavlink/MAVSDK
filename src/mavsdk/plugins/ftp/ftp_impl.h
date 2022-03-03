@@ -25,7 +25,7 @@ public:
     FtpImpl(const FtpImpl&) = delete;
     const FtpImpl& operator=(const FtpImpl&) = delete;
 
-    ~FtpImpl();
+    ~FtpImpl() override;
 
     void init() override;
     void deinit() override;

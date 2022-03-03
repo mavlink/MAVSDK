@@ -7,7 +7,7 @@ ParamServerImpl::ParamServerImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-ParamServerImpl::ParamServerImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+ParamServerImpl::ParamServerImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

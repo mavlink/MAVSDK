@@ -9,7 +9,7 @@ GeofenceImpl::GeofenceImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-GeofenceImpl::GeofenceImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+GeofenceImpl::GeofenceImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }
