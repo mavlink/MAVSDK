@@ -1396,4 +1396,38 @@ MavlinkFtp::write_tmp_file(const std::string& path, const std::string& content)
     }
 }
 
+std::ostream& operator<<(std::ostream& str, MavlinkFtp::ClientResult const& result)
+{
+    switch (result) {
+        default:
+            // Fallthrough
+        case MavlinkFtp::ClientResult::Unknown:
+            return str << "Unknown";
+        case MavlinkFtp::ClientResult::Success:
+            return str << "Success";
+        case MavlinkFtp::ClientResult::Next:
+            return str << "Next";
+        case MavlinkFtp::ClientResult::Timeout:
+            return str << "Timeout";
+        case MavlinkFtp::ClientResult::Busy:
+            return str << "Busy";
+        case MavlinkFtp::ClientResult::FileIoError:
+            return str << "FileIoError";
+        case MavlinkFtp::ClientResult::FileExists:
+            return str << "FileExists";
+        case MavlinkFtp::ClientResult::FileDoesNotExist:
+            return str << "FileDoesNotExist";
+        case MavlinkFtp::ClientResult::FileProtected:
+            return str << "FileProtected";
+        case MavlinkFtp::ClientResult::InvalidParameter:
+            return str << "InvalidParameter";
+        case MavlinkFtp::ClientResult::Unsupported:
+            return str << "Unsupported";
+        case MavlinkFtp::ClientResult::ProtocolError:
+            return str << "ProtocolError";
+        case MavlinkFtp::ClientResult::NoSystem:
+            return str << "NoSystem";
+    }
+}
+
 } // namespace mavsdk

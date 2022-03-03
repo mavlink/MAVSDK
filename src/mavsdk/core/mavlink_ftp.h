@@ -46,6 +46,8 @@ public:
         NoSystem, /**< @brief No system connected. */
     };
 
+    friend std::ostream& operator<<(std::ostream& str, ClientResult const& result);
+
     struct ProgressData {
         uint32_t bytes_transferred{}; /**< @brief The number of bytes already transferred. */
         uint32_t total_bytes{}; /**< @brief The total bytes to transfer. */
