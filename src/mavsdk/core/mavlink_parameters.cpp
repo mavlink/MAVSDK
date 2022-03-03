@@ -1351,4 +1351,30 @@ bool MAVLinkParameters::ParamValue::operator==(const std::string& value_str) con
     return "unknown";
 }
 
+std::ostream& operator<<(std::ostream& str, const MAVLinkParameters::Result& result)
+{
+    switch (result) {
+        case MAVLinkParameters::Result::Success:
+            return str << "Success";
+        case MAVLinkParameters::Result::Timeout:
+            return str << "Timeout";
+        case MAVLinkParameters::Result::ConnectionError:
+            return str << "ConnectionError";
+        case MAVLinkParameters::Result::WrongType:
+            return str << "WrongType";
+        case MAVLinkParameters::Result::ParamNameTooLong:
+            return str << "ParamNameTooLong";
+        case MAVLinkParameters::Result::NotFound:
+            return str << "NotFound";
+        case MAVLinkParameters::Result::ValueUnsupported:
+            return str << "ValueUnsupported";
+        case MAVLinkParameters::Result::Failed:
+            return str << "Failed";
+        case MAVLinkParameters::Result::UnknownError:
+            // Fallthrough
+        default:
+            return str << "UnknownError";
+    }
+};
+
 } // namespace mavsdk
