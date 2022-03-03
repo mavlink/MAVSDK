@@ -79,8 +79,25 @@ Mavsdk::Configuration::Configuration(
     _system_id(system_id),
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
-    _usage_type(Mavsdk::Configuration::UsageType::Custom)
+    _usage_type(usage_type_for_component(component_id))
 {}
+
+Mavsdk::Configuration::UsageType
+Mavsdk::Configuration::usage_type_for_component(uint8_t component_id)
+{
+    switch (component_id) {
+        case MavsdkImpl::DEFAULT_COMPONENT_ID_GCS:
+            return UsageType::GroundStation;
+        case MavsdkImpl::DEFAULT_COMPONENT_ID_CC:
+            return UsageType::CompanionComputer;
+        case MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT:
+            return UsageType::Autopilot;
+        case MavsdkImpl::DEFAULT_COMPONENT_ID_CAMERA:
+            return UsageType::Camera;
+        default:
+            return UsageType::Custom;
+    }
+}
 
 Mavsdk::Configuration::Configuration(UsageType usage_type) :
     _system_id(MavsdkImpl::DEFAULT_SYSTEM_ID_GCS),
