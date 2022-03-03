@@ -1,6 +1,10 @@
 #include "component_information_impl.h"
 #include "fs.h"
 
+#include <utility>
+#include <fstream>
+#include <json/json.h>
+
 namespace mavsdk {
 
 ComponentInformationImpl::ComponentInformationImpl(System& system) : PluginImplBase(system)
@@ -50,17 +54,23 @@ void ComponentInformationImpl::receive_component_information(
         .general_metadata_uri[sizeof(component_information.general_metadata_uri) - 1] = '\0';
     const auto general_metadata_uri = std::string(component_information.general_metadata_uri);
 
-    // TODO:
-    // 1. Download the file if CRC is different, and save it.
-    // 2. Parse the xml.
-    // 3. Update params from it.
-    if (general_metadata_uri.empty()) {
-        LogErr() << "No component information URI provided";
+    download_file_async(
+        general_metadata_uri, [this](std::string path) { parse_metadata_file(path); });
+}
 
-    } else if (general_metadata_uri.find("mftp://") == 0) {
+void ComponentInformationImpl::download_file_async(
+    const std::string& uri, std::function<void(std::string path)> callback)
+{
+    // TODO: check CRC
+
+    if (uri.empty()) {
+        LogErr() << "No component information URI provided";
+        return;
+
+    } else if (uri.find("mftp://") == 0) {
         LogDebug() << "Found mftp URI, using MAVLink FTP to download file";
 
-        const auto path = general_metadata_uri.substr(strlen("mftp://"));
+        const auto path = uri.substr(strlen("mftp://"));
 
         const auto maybe_tmp_path = create_tmp_directory("mavsdk-component-information-tmp-files");
         const auto path_to_download = maybe_tmp_path ? maybe_tmp_path.value() : "./";
@@ -68,30 +78,153 @@ void ComponentInformationImpl::receive_component_information(
         _parent->mavlink_ftp().download_async(
             path,
             path_to_download,
-            [](MavlinkFtp::ClientResult download_result, MavlinkFtp::ProgressData progress_data) {
+            [path_to_download, callback, path](
+                MavlinkFtp::ClientResult download_result, MavlinkFtp::ProgressData progress_data) {
                 if (download_result == MavlinkFtp::ClientResult::Next) {
                     LogDebug() << "File download progress: " << progress_data.bytes_transferred
                                << '/' << progress_data.total_bytes;
                 } else {
                     LogDebug() << "File download ended with result " << download_result;
                     if (download_result == MavlinkFtp::ClientResult::Success) {
-                        LogDebug() << "Received file";
+                        LogDebug() << "Received file " << path_to_download + "/" + path;
+                        callback(path_to_download + "/" + path);
                     }
                 }
             });
-    } else if (
-        general_metadata_uri.find("http://") == 0 || general_metadata_uri.find("https://") == 0) {
+    } else if (uri.find("http://") == 0 || uri.find("https://") == 0) {
         LogWarn() << "Download using http(s) not implemented yet";
     } else {
         LogWarn() << "Unknown URI protocol";
     }
 }
 
+void ComponentInformationImpl::parse_metadata_file(const std::string& path)
+{
+    std::ifstream f(path);
+    if (f.bad()) {
+        LogErr() << "Could not open json metadata file.";
+        return;
+    }
+
+    Json::Value metadata;
+    f >> metadata;
+
+    if (!metadata.isMember("version")) {
+        LogErr() << "version not found";
+        return;
+    }
+
+    if (metadata["version"].asInt() != 1) {
+        LogWarn() << "version " << metadata["version"].asInt() << " not supported";
+    }
+
+    if (!metadata.isMember("metadataTypes")) {
+        LogErr() << "metadataTypes not found";
+        return;
+    }
+
+    for (auto& metadata_type : metadata["metadataTypes"]) {
+        if (!metadata_type.isMember("type")) {
+            LogErr() << "type missing";
+            return;
+        }
+        if (!metadata_type.isMember("uri")) {
+            LogErr() << "uri missing";
+            return;
+        }
+
+        if (metadata_type["type"].asInt() == COMP_METADATA_TYPE_PARAMETER) {
+            download_file_async(
+                metadata_type["uri"].asString(), [this](const std::string& parameter_file_path) {
+                    LogDebug() << "Found parameter file at: " << parameter_file_path;
+                    parse_parameter_file(parameter_file_path);
+                });
+        }
+    }
+}
+
+void ComponentInformationImpl::parse_parameter_file(const std::string& path)
+{
+    std::ifstream f(path);
+    if (f.bad()) {
+        LogErr() << "Could not open json parameter file.";
+        return;
+    }
+
+    Json::Value parameters;
+    f >> parameters;
+
+    if (!parameters.isMember("version")) {
+        LogErr() << "version not found";
+        return;
+    }
+
+    if (parameters["version"].asInt() != 1) {
+        LogWarn() << "version " << parameters["version"].asInt() << " not supported";
+    }
+
+    if (!parameters.isMember("parameters")) {
+        LogErr() << "parameters not found";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_params_mutex);
+    _float_params.clear();
+
+    for (auto& param : parameters["parameters"]) {
+        if (!param.isMember("type")) {
+            LogErr() << "type not found";
+            return;
+        }
+
+        if (param["type"].asString() == "Float") {
+            _float_params.push_back(ComponentInformation::FloatParam{
+                param["name"].asString(),
+                param["shortDesc"].asString(),
+                param["longDesc"].asString(),
+                param["units"].asString(),
+                param["decimalPlaces"].asInt(),
+                NAN,
+                param["default"].asFloat(),
+                param["min"].asFloat(),
+                param["max"].asFloat()});
+
+            const auto name = param["name"].asString();
+
+            _parent->get_param_float_async(
+                name,
+                [this, name](MAVLinkParameters::Result result, float value) {
+                    get_float_param_result(name, result, value);
+                },
+                this);
+
+        } else {
+            LogWarn() << "Ignoring type " << param["type"].asString() << " for now.";
+        }
+    }
+}
+
+void ComponentInformationImpl::get_float_param_result(
+    const std::string& name, MAVLinkParameters::Result result, float value)
+{
+    if (result != MAVLinkParameters::Result::Success) {
+        LogWarn() << "Getting float param result: " << static_cast<int>(result);
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_params_mutex);
+    for (auto& param : _float_params) {
+        if (param.name == name) {
+            param.start_value = value;
+            LogDebug() << "Received value " << value << " for " << name;
+        }
+    }
+}
+
 std::pair<ComponentInformation::Result, std::vector<ComponentInformation::FloatParam>>
 ComponentInformationImpl::access_float_params()
 {
-    // TODO: go through params and return list of them.
-    return {};
+    return {ComponentInformation::Result::Success, _float_params};
 }
 
 void ComponentInformationImpl::subscribe_float_param(

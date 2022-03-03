@@ -25,6 +25,17 @@ public:
 private:
     void receive_component_information(
         MavlinkCommandSender::Result result, const mavlink_message_t& message);
+
+    void
+    download_file_async(const std::string& uri, std::function<void(std::string path)> callback);
+    void parse_metadata_file(const std::string& path);
+    void parse_parameter_file(const std::string& path);
+
+    void
+    get_float_param_result(const std::string& name, MAVLinkParameters::Result result, float value);
+
+    std::mutex _params_mutex{};
+    std::vector<ComponentInformation::FloatParam> _float_params{};
 };
 
 } // namespace mavsdk
