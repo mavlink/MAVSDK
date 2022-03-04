@@ -19,6 +19,7 @@ service ComponentInformationService {
     rpc SubscribeFloatParam(SubscribeFloatParamRequest) returns(stream FloatParamResponse) { option (mavsdk.options.async_type) = ASYNC; }
 }
 
+// Meta information for parameter of type float.
 message FloatParam {
     string name = 1; // Name (max 16 chars)
     string short_description = 2; // Short description
@@ -38,6 +39,7 @@ message AccessFloatParamsResponse {
     repeated FloatParam params = 2; // Float param definitions
 }
 
+// A float param that has been updated.
 message FloatParamUpdate {
     string name = 1; // Name of param that changed
     float value = 2; // New value of param
