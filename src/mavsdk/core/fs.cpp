@@ -15,13 +15,13 @@
 #include <stdio.h>
 
 #include "fs.h"
+#include "filesystem_include.h"
 #include "log.h"
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096
 #endif
 
-#include <filesystem>
 #include <random>
 
 namespace mavsdk {
@@ -132,7 +132,7 @@ bool fs_rename(const std::string& old_name, const std::string& new_name)
 // Inspired by https://stackoverflow.com/a/58454949/8548472
 std::optional<std::string> create_tmp_directory(const std::string& prefix)
 {
-    const auto tmp_dir = std::filesystem::temp_directory_path();
+    const auto tmp_dir = fs::temp_directory_path();
 
     std::random_device dev;
     std::mt19937 prng(dev());
@@ -145,7 +145,7 @@ std::optional<std::string> create_tmp_directory(const std::string& prefix)
         ss << prefix << '-' << std::hex << rand(prng);
         auto path = tmp_dir / ss.str();
 
-        const auto created = std::filesystem::create_directory(path);
+        const auto created = fs::create_directory(path);
         if (created) {
             return {path};
         }
