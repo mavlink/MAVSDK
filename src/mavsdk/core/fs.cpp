@@ -147,7 +147,7 @@ std::optional<std::string> create_tmp_directory(const std::string& prefix)
 
         const auto created = fs::create_directory(path);
         if (created) {
-            return {path};
+            return {std::string(path)};
         }
     }
 
