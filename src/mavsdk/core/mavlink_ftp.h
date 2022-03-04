@@ -3,7 +3,9 @@
 #include <cinttypes>
 #include <functional>
 #include <fstream>
+#include <unordered_map>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
