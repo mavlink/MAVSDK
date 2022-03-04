@@ -58,7 +58,7 @@ public:
     ~ComponentInformationServer();
 
     /**
-     * @brief
+     * @brief Meta information for parameter of type float.
      */
     struct FloatParam {
         std::string name{}; /**< @brief Name (max 16 chars) */
@@ -90,7 +90,7 @@ public:
     operator<<(std::ostream& str, ComponentInformationServer::FloatParam const& float_param);
 
     /**
-     * @brief
+     * @brief A float param that has been updated.
      */
     struct FloatParamUpdate {
         std::string name{}; /**< @brief Name of param that changed */
