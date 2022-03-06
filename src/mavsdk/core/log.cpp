@@ -2,7 +2,7 @@
 #include "unused.h"
 
 #if defined(WINDOWS)
-#include "Windows.h"
+#include "windows_include.h"
 #define WIN_COLOR_RED 4
 #define WIN_COLOR_GREEN 10
 #define WIN_COLOR_YELLOW 14

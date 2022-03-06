@@ -1,3 +1,4 @@
+#pragma once
 // Taken from:
 // https://github.com/tronkko/dirent/blob/c885633e126a3a949ec0497273ec13e2c03e862c/include/dirent.h
 
@@ -9,8 +10,6 @@
  * under the MIT license.  For all details and documentation, see
  * https://github.com/tronkko/dirent
  */
-#ifndef DIRENT_H
-#define DIRENT_H
 
 /* Hide warnings about unreferenced local functions */
 #if defined(__clang__)
@@ -21,14 +20,7 @@
 #   pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
-/*
- * Include windows.h without Windows Sockets 1.1 to prevent conflicts with
- * Windows Sockets 2.0.
- */
-#ifndef WIN32_LEAN_AND_MEAN
-#   define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
+#include <windows_include.h>
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -1160,4 +1152,3 @@ dirent_set_errno(
 #ifdef __cplusplus
 }
 #endif
-#endif /*DIRENT_H*/
