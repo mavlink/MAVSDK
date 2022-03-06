@@ -12,6 +12,10 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#ifndef O_ACCMODE
+#define O_ACCMODE (O_RDONLY | O_WRONLY | O_RDWR)
+#endif
+
 #include "crc32.h"
 #include "fs.h"
 #include <algorithm>
