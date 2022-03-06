@@ -249,6 +249,8 @@ public:
         uint8_t _component_id;
         bool _always_send_heartbeats;
         UsageType _usage_type;
+
+        static Mavsdk::Configuration::UsageType usage_type_for_component(uint8_t component_id);
     };
 
     /**
