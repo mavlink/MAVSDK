@@ -168,7 +168,7 @@ void ComponentInformationImpl::parse_parameter_file(const std::string& path)
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_params_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     _float_params.clear();
 
     for (auto& param : parameters["parameters"]) {
@@ -198,6 +198,9 @@ void ComponentInformationImpl::parse_parameter_file(const std::string& path)
                 },
                 this);
 
+            _parent->subscribe_param_float(
+                name, [this, name](float value) { param_update(name, value); }, this);
+
         } else {
             LogWarn() << "Ignoring type " << param["type"].asString() << " for now.";
         }
@@ -212,13 +215,31 @@ void ComponentInformationImpl::get_float_param_result(
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_params_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     for (auto& param : _float_params) {
         if (param.name == name) {
             param.start_value = value;
             LogDebug() << "Received value " << value << " for " << name;
         }
     }
+}
+
+void ComponentInformationImpl::param_update(const std::string& name, float new_value)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    for (auto& param : _float_params) {
+        if (param.name == name) {
+            param.start_value = new_value;
+            LogDebug() << "Received value " << new_value << " for " << name;
+        }
+    }
+
+    const auto param_update = ComponentInformation::FloatParamUpdate{name, new_value};
+
+    _parent->call_user_callback([this, param_update, callback = _float_param_update_callback]() {
+        callback(param_update);
+    });
 }
 
 std::pair<ComponentInformation::Result, std::vector<ComponentInformation::FloatParam>>
@@ -230,7 +251,8 @@ ComponentInformationImpl::access_float_params()
 void ComponentInformationImpl::subscribe_float_param(
     ComponentInformation::FloatParamCallback callback)
 {
-    (void)(callback);
+    std::lock_guard<std::mutex> lock(_mutex);
+    _float_param_update_callback = callback;
 }
 
 } // namespace mavsdk

@@ -45,22 +45,32 @@ TEST(ComponentInformation, Connect)
     param.min_value = 1.0f;
     param.max_value = 10.0f;
     param.default_value = 3.0f;
-    param.start_value = 5.0f;
+    param.start_value = 4.0f;
     param.decimal_places = 1;
 
     server.provide_float_param(param);
 
     server.subscribe_float_param([](ComponentInformationServer::FloatParamUpdate param_update) {
-        LogInfo() << "Param " << param_update.name << " changed to " << param_update.value;
+        LogInfo() << "Param " << param_update.name << " changed to " << param_update.value
+                  << " on server side";
     });
 
     auto param_client = Param{groundstation};
 
-    param_client.set_param_float("ANG_RATE_ACC_MAX", 4.0f);
+    param_client.set_param_float("ANG_RATE_ACC_MAX", 5.0f);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     auto client = ComponentInformation{groundstation};
+    client.subscribe_float_param([](ComponentInformation::FloatParamUpdate param_update) {
+        LogInfo() << "Param " << param_update.name << " changed to " << param_update.value
+                  << " on client side";
+    });
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    // Use another parameter to trigger the second callback.
+    param_client.set_param_float("ANG_RATE_ACC_MAX", 6.0f);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }

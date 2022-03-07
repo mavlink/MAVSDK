@@ -34,8 +34,12 @@ private:
     void
     get_float_param_result(const std::string& name, MAVLinkParameters::Result result, float value);
 
-    std::mutex _params_mutex{};
+    void param_update(const std::string& name, float new_value);
+
+    std::mutex _mutex{};
     std::vector<ComponentInformation::FloatParam> _float_params{};
+
+    ComponentInformation::FloatParamCallback _float_param_update_callback{};
 };
 
 } // namespace mavsdk
