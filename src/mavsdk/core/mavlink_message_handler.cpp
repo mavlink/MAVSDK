@@ -13,7 +13,7 @@ void MAVLinkMessageHandler::register_one(
 }
 
 void MAVLinkMessageHandler::register_one(
-    uint16_t msg_id, uint8_t cmp_id, const Callback &callback, const void *cookie)
+    uint16_t msg_id, uint8_t component_id, const Callback &callback, const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
