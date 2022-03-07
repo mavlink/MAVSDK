@@ -74,7 +74,7 @@ void MAVLinkMessageHandler::process_message(const mavlink_message_t& message)
 #endif
 }
 
-void MAVLinkMessageHandler::update_component_id(uint16_t msg_id, uint8_t cmp_id, const void* cookie)
+void MAVLinkMessageHandler::update_component_id(uint16_t msg_id, uint8_t component_id, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
