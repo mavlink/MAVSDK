@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package mavsdk.rpc.component_information;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.component_information";
+option java_outer_classname = "ComponentInformationProto";
+
+// Access component information such as parameters.
+service ComponentInformationService {
+    /*
+     * List available float params.
+     */
+    rpc AccessFloatParams(AccessFloatParamsRequest) returns(AccessFloatParamsResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Subscribe to float param changes/updates.
+     */
+    rpc SubscribeFloatParam(SubscribeFloatParamRequest) returns(stream FloatParamResponse) { option (mavsdk.options.async_type) = ASYNC; }
+}
+
+// Meta information for parameter of type float.
+message FloatParam {
+    string name = 1; // Name (max 16 chars)
+    string short_description = 2; // Short description
+    string long_description = 3; // Long description
+    string unit = 4; // Unit
+    int32 decimal_places = 5; // Decimal places for user to show
+    float start_value = 6; // Current/starting value
+    float default_value = 7; // Default value
+    float min_value = 8; // Minimum value
+    float max_value = 9; // Maximum value
+}
+
+message AccessFloatParamsRequest {}
+
+message AccessFloatParamsResponse {
+    ComponentInformationResult component_information_result = 1;
+    repeated FloatParam params = 2; // Float param definitions
+}
+
+// A float param that has been updated.
+message FloatParamUpdate {
+    string name = 1; // Name of param that changed
+    float value = 2; // New value of param
+}
+
+message SubscribeFloatParamRequest {}
+
+message FloatParamResponse {
+    FloatParamUpdate param_update = 1; // A param update
+}
+
+// Result type.
+message ComponentInformationResult {
+    // Possible results returned for param requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Request succeeded
+        RESULT_NO_SYSTEM = 3; // No system is connected
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
