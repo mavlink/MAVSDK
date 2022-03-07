@@ -12,11 +12,22 @@
 #include "timeout_handler.h"
 #include "timeout_s_callback.h"
 #include "locked_queue.h"
-#include "sender.h"
+#include "mavsdk.h"
 
 namespace mavsdk {
 
-class MavlinkMissionTransfer {
+class Sender {
+public:
+    Sender() = default;
+    virtual ~Sender() = default;
+    virtual bool send_message(mavlink_message_t& message) = 0;
+    [[nodiscard]] virtual uint8_t get_own_system_id() const = 0;
+    [[nodiscard]] virtual uint8_t get_own_component_id() const = 0;
+    [[nodiscard]] virtual uint8_t get_system_id() const = 0;
+    [[nodiscard]] virtual System::CompatibilityMode compatibility_mode() const = 0;
+};
+
+class MAVLinkMissionTransfer {
 public:
     enum class Result {
         Success,

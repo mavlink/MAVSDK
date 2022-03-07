@@ -92,4 +92,25 @@ void System::enable_timesync()
     _system_impl->enable_timesync();
 }
 
+void System::set_compatibility_mode(CompatibilityMode compatibility_mode)
+{
+    _system_impl->set_compatibility_mode(compatibility_mode);
+}
+
+std::ostream& operator<<(std::ostream& str, const System::CompatibilityMode& compatibility_mode)
+{
+    switch (compatibility_mode) {
+        default:
+            // Passthrough
+        case System::CompatibilityMode::Unknown:
+            return str << "Unknown";
+        case System::CompatibilityMode::Pure:
+            return str << "Pure";
+        case System::CompatibilityMode::Px4:
+            return str << "PX4";
+        case System::CompatibilityMode::Ardupilot:
+            return str << "ArduPilot";
+    }
+}
+
 } // namespace mavsdk

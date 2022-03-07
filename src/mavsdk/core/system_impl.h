@@ -77,7 +77,7 @@ public:
 
     bool send_message(mavlink_message_t& message) override;
 
-    Autopilot autopilot() const override { return _autopilot; };
+    System::CompatibilityMode compatibility_mode() const override { return _compatibility_mode; };
 
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
 
@@ -274,11 +274,13 @@ public:
 
     RequestMessage& request_message() { return _request_message; };
 
+    double timeout_s() const;
+
+    void set_compatibility_mode(System::CompatibilityMode compatibility_mode);
+
     // Non-copyable
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
-
-    double timeout_s() const;
 
 private:
     static bool is_autopilot(uint8_t comp_id);
@@ -346,8 +348,6 @@ private:
     std::atomic<bool> _hitl_enabled{false};
     bool _always_connected{false};
 
-    std::atomic<Autopilot> _autopilot{Autopilot::Unknown};
-
     MavsdkImpl& _parent;
 
     std::thread* _system_thread{nullptr};
@@ -392,6 +392,10 @@ private:
 
     bool _old_message_520_supported{true};
     bool _old_message_528_supported{true};
+
+    std::mutex _compatibility_mode_mutex{};
+    System::CompatibilityMode _compatibility_mode{System::CompatibilityMode::Unknown};
+    bool _compatibility_mode_fixed{false};
 };
 
 } // namespace mavsdk

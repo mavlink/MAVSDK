@@ -184,6 +184,26 @@ public:
     void enable_timesync();
 
     /**
+     * @brief Possible compatibility modes for this system.
+     */
+    enum class CompatibilityMode {
+        Unknown, // Unknown, not set or detected yet.
+        Pure, // No compatibility, everything up to common spec.
+        Px4, // Compatibility with PX4.
+        Ardupilot, // Compatibility with ArduPilot.
+    };
+
+    friend std::ostream& operator<<(std::ostream& str, CompatibilityMode const& compatibility_mode);
+
+    /**
+     * @brief Set compatibility mode.
+     *
+     * This disables auto-detection based on the heartbeat and sticks to
+     * set compatibility mode.
+     */
+    void set_compatibility_mode(CompatibilityMode compatibility_mode);
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     System(const System&) = delete;

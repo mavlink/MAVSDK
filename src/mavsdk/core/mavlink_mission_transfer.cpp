@@ -346,7 +346,7 @@ void MavlinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 void MavlinkMissionTransfer::UploadWorkItem::process_mission_request(
     const mavlink_message_t& request_message)
 {
-    if (_sender.autopilot() == Sender::Autopilot::ArduPilot) {
+    if (_sender.compatibility_mode() == System::CompatibilityMode::Ardupilot) {
         // ArduCopter 3.6 sends MISSION_REQUEST (not _INT) but actually accepts ITEM_INT in reply
         mavlink_mission_request_t request;
         mavlink_msg_mission_request_decode(&request_message, &request);

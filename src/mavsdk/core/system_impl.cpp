@@ -214,10 +214,17 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    if (heartbeat.autopilot == MAV_AUTOPILOT_PX4) {
-        _autopilot = Autopilot::Px4;
-    } else if (heartbeat.autopilot == MAV_AUTOPILOT_ARDUPILOTMEGA) {
-        _autopilot = Autopilot::ArduPilot;
+    {
+        std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+        if (!_compatibility_mode_fixed) {
+            if (heartbeat.autopilot == MAV_AUTOPILOT_PX4) {
+                _compatibility_mode = System::CompatibilityMode::Px4;
+                LogDebug() << "Auto-detected " << _compatibility_mode;
+            } else if (heartbeat.autopilot == MAV_AUTOPILOT_ARDUPILOTMEGA) {
+                _compatibility_mode = System::CompatibilityMode::Ardupilot;
+                LogDebug() << "Auto-detected " << _compatibility_mode;
+            }
+        }
     }
 
     // Only set the vehicle type if the heartbeat is from an autopilot component
@@ -812,7 +819,7 @@ void SystemImpl::set_flight_mode_async(
 std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
 SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_id)
 {
-    if (_autopilot == Autopilot::ArduPilot) {
+    if (compatibility_mode() == System::CompatibilityMode::Ardupilot) {
         return make_command_ardupilot_mode(flight_mode, component_id);
     } else {
         return make_command_px4_mode(flight_mode, component_id);
@@ -1051,6 +1058,105 @@ SystemImpl::make_command_px4_mode(FlightMode flight_mode, uint8_t component_id)
 FlightMode SystemImpl::get_flight_mode() const
 {
     return _flight_mode;
+}
+
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
+{
+    if (compatibility_mode() == System::CompatibilityMode::Ardupilot) {
+        switch (_vehicle_type) {
+            case MAV_TYPE::MAV_TYPE_SURFACE_BOAT:
+            case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
+                return to_flight_mode_from_ardupilot_rover_mode(custom_mode);
+            default:
+                return to_flight_mode_from_ardupilot_copter_mode(custom_mode);
+        }
+    } else {
+        return to_flight_mode_from_px4_mode(custom_mode);
+    }
+}
+
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode)
+{
+    switch (static_cast<ardupilot::RoverMode>(custom_mode)) {
+        case ardupilot::RoverMode::Auto:
+            return FlightMode::Mission;
+        case ardupilot::RoverMode::Acro:
+            return FlightMode::Acro;
+        case ardupilot::RoverMode::Hold:
+            return FlightMode::Hold;
+        case ardupilot::RoverMode::RTL:
+            return FlightMode::ReturnToLaunch;
+        case ardupilot::RoverMode::Manual:
+            return FlightMode::Manual;
+        case ardupilot::RoverMode::Follow:
+            return FlightMode::FollowMe;
+        default:
+            return FlightMode::Unknown;
+    }
+}
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode)
+{
+    switch (static_cast<ardupilot::CopterMode>(custom_mode)) {
+        case ardupilot::CopterMode::Auto:
+            return FlightMode::Mission;
+        case ardupilot::CopterMode::Acro:
+            return FlightMode::Acro;
+        case ardupilot::CopterMode::Alt_Hold:
+        case ardupilot::CopterMode::POS_HOLD:
+        case ardupilot::CopterMode::Flow_Hold:
+            return FlightMode::Hold;
+        case ardupilot::CopterMode::RTL:
+        case ardupilot::CopterMode::Auto_RTL:
+            return FlightMode::ReturnToLaunch;
+        case ardupilot::CopterMode::Land:
+            return FlightMode::Land;
+        default:
+            return FlightMode::Unknown;
+    }
+}
+
+SystemImpl::FlightMode SystemImpl::to_flight_mode_from_px4_mode(uint32_t custom_mode)
+{
+    px4::px4_custom_mode px4_custom_mode;
+    px4_custom_mode.data = custom_mode;
+
+    switch (px4_custom_mode.main_mode) {
+        case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
+            return FlightMode::Offboard;
+        case px4::PX4_CUSTOM_MAIN_MODE_MANUAL:
+            return FlightMode::Manual;
+        case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
+            return FlightMode::Posctl;
+        case px4::PX4_CUSTOM_MAIN_MODE_ALTCTL:
+            return FlightMode::Altctl;
+        case px4::PX4_CUSTOM_MAIN_MODE_RATTITUDE:
+            return FlightMode::Rattitude;
+        case px4::PX4_CUSTOM_MAIN_MODE_ACRO:
+            return FlightMode::Acro;
+        case px4::PX4_CUSTOM_MAIN_MODE_STABILIZED:
+            return FlightMode::Stabilized;
+        case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
+            switch (px4_custom_mode.sub_mode) {
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
+                    return FlightMode::Ready;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
+                    return FlightMode::Takeoff;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
+                    return FlightMode::Hold;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
+                    return FlightMode::Mission;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
+                    return FlightMode::ReturnToLaunch;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
+                    return FlightMode::Land;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
+                    return FlightMode::FollowMe;
+                default:
+                    return FlightMode::Unknown;
+            }
+        default:
+            return FlightMode::Unknown;
+    }
 }
 
 void SystemImpl::receive_float_param(
@@ -1304,6 +1410,20 @@ void SystemImpl::subscribe_param_custom(
     const void* cookie)
 {
     _params.subscribe_param_custom_changed(name, callback, cookie);
+}
+
+void SystemImpl::set_compatibility_mode(System::CompatibilityMode compatibility_mode)
+{
+    std::lock_guard<std::mutex> lock(_compatibility_mode_mutex);
+    _compatibility_mode = compatibility_mode;
+
+    if (compatibility_mode == System::CompatibilityMode::Unknown) {
+        LogDebug() << "Compatibility reset to Unknown/automatic";
+        _compatibility_mode_fixed = false;
+    } else {
+        LogDebug() << "Compatibility fixed to " << compatibility_mode;
+        _compatibility_mode_fixed = true;
+    }
 }
 
 } // namespace mavsdk

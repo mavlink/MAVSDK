@@ -378,6 +378,10 @@ void ActionImpl::takeoff_async_px4(const Action::ResultCallback& callback) const
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.target_component_id = _parent->get_autopilot_id();
 
+    if (_parent->compatibility_mode() == System::CompatibilityMode::Ardupilot) {
+        command.params.maybe_param7 = get_takeoff_altitude().second;
+    }
+
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
@@ -655,7 +659,7 @@ void ActionImpl::get_takeoff_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_parent->compatibility_mode() == System::CompatibilityMode::Ardupilot) {
         return std::make_pair<>(Action::Result::Success, _takeoff_altitude);
     } else {
         auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);

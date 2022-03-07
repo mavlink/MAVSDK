@@ -419,7 +419,7 @@ void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callb
     reset_mission_progress();
 
     // For ArduPilot to clear a mission we need to upload an empty mission.
-    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_parent->compatibility_mode() == System::CompatibilityMode::Ardupilot) {
         std::vector<MissionRaw::MissionItem> mission_items{empty_item};
         upload_mission_async(mission_items, callback);
     } else {
