@@ -8,7 +8,6 @@
 #include "mavsdk.h"
 #include "plugins/component_information/component_information.h"
 #include "plugins/component_information_server/component_information_server.h"
-#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "plugins/param/param.h"
 
 using namespace mavsdk;
@@ -55,7 +54,6 @@ TEST(ComponentInformation, Connect)
         LogInfo() << "Param " << param_update.name << " changed to " << param_update.value;
     });
 
-    auto passthrough_client = MavlinkPassthrough{groundstation};
     auto param_client = Param{groundstation};
 
     param_client.set_param_float("ANG_RATE_ACC_MAX", 4.0f);
