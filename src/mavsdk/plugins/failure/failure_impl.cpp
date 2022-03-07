@@ -7,7 +7,7 @@ FailureImpl::FailureImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-FailureImpl::FailureImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+FailureImpl::FailureImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

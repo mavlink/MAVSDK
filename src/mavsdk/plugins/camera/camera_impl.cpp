@@ -16,7 +16,7 @@ CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-CameraImpl::CameraImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+CameraImpl::CameraImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

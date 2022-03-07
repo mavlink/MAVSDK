@@ -12,7 +12,7 @@ class ActionImpl : public PluginImplBase {
 public:
     explicit ActionImpl(System& system);
     explicit ActionImpl(std::shared_ptr<System> system_ptr);
-    ~ActionImpl();
+    ~ActionImpl() override;
 
     void init() override;
     void deinit() override;

@@ -9,7 +9,7 @@ class FailureImpl : public PluginImplBase {
 public:
     explicit FailureImpl(System& system);
     explicit FailureImpl(std::shared_ptr<System> system);
-    ~FailureImpl();
+    ~FailureImpl() override;
 
     void init() override;
     void deinit() override;

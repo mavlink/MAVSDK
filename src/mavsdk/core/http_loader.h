@@ -73,6 +73,8 @@ private:
             _progress_callback(std::move(progress_callback))
         {}
 
+        virtual ~DownloadItem() = default;
+
         [[nodiscard]] std::string get_local_path() const { return _local_path; }
 
         [[nodiscard]] std::string get_url() const { return _url; }
@@ -99,6 +101,8 @@ private:
             _local_path(std::move(local_path)),
             _progress_callback(std::move(progress_callback))
         {}
+
+        virtual ~UploadItem() = default;
 
         [[nodiscard]] std::string get_local_path() const { return _local_path; }
 

@@ -85,6 +85,7 @@ void test_download(
 {
     auto prom = std::make_shared<std::promise<Ftp::Result>>();
     auto future_result = prom->get_future();
+
     ftp->download_async(
         remote_file, local_path, [prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
@@ -168,11 +169,14 @@ TEST(FtpTest, ListDirectory)
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
-    auto system = mavsdk.systems().at(0);
-    auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    ASSERT_EQ(mavsdk.systems().size(), 1);
+    auto system = mavsdk.systems().at(0);
+    auto ftp = std::make_shared<Ftp>(system);
+
     // Reset server in case there are stale open sessions
     reset_server(ftp);
 
@@ -185,11 +189,14 @@ TEST(FtpTest, DownloadFile)
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
-    auto system = mavsdk.systems().at(0);
-    auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    ASSERT_EQ(mavsdk.systems().size(), 1);
+    auto system = mavsdk.systems().at(0);
+    auto ftp = std::make_shared<Ftp>(system);
+
     // Reset server in case there are stale open sessions
     reset_server(ftp);
 
@@ -217,11 +224,14 @@ TEST(FtpTest, UploadFiles)
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
-    auto system = mavsdk.systems().at(0);
-    auto ftp = std::make_shared<Ftp>(system);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    ASSERT_EQ(mavsdk.systems().size(), 1);
+    auto system = mavsdk.systems().at(0);
+    auto ftp = std::make_shared<Ftp>(system);
+
     // Reset server in case there are stale open sessions
     reset_server(ftp);
 

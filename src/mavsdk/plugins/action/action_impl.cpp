@@ -12,7 +12,7 @@ ActionImpl::ActionImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-ActionImpl::ActionImpl(std::shared_ptr<System> system_ptr) : PluginImplBase(system_ptr)
+ActionImpl::ActionImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

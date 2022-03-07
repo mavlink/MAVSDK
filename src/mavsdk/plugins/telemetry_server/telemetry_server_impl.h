@@ -18,7 +18,7 @@ public:
 
     explicit TelemetryServerImpl(System& system);
     explicit TelemetryServerImpl(std::shared_ptr<System> system);
-    ~TelemetryServerImpl();
+    ~TelemetryServerImpl() override;
 
     void init() override;
     void deinit() override;

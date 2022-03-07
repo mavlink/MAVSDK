@@ -16,7 +16,7 @@ TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-TelemetryImpl::TelemetryImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+TelemetryImpl::TelemetryImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }
@@ -2366,6 +2366,7 @@ void TelemetryImpl::get_gps_global_origin_async(
 {
     _parent->request_message().request(
         MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
+        MAV_COMP_ID_AUTOPILOT1,
         [this, callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
             if (result == MavlinkCommandSender::Result::Success) {
                 mavlink_gps_global_origin_t mavlink_gps_global_origin;

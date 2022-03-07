@@ -17,7 +17,7 @@ class MissionImpl : public PluginImplBase {
 public:
     explicit MissionImpl(System& system);
     explicit MissionImpl(std::shared_ptr<System> system);
-    ~MissionImpl();
+    ~MissionImpl() override;
 
     void init() override;
     void deinit() override;

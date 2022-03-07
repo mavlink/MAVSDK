@@ -10,22 +10,21 @@
 #include <future>
 #include <utility>
 
-// Set to 1 to log incoming/outgoing mavlink messages.
-#define MESSAGE_DEBUGGING 0
-
 namespace mavsdk {
 
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
     Sender(),
     _parent(parent),
     _params(*this),
-    _send_commands(*this),
-    _receive_commands(*this),
+    _command_sender(*this),
+    _command_receiver(*this),
+    _request_message_handler(*this),
     _timesync(*this),
     _ping(*this),
     _mission_transfer(
         *this, _message_handler, _parent.timeout_handler, [this]() { return timeout_s(); }),
-    _request_message(_send_commands, _message_handler, _parent.timeout_handler)
+    _request_message(*this, _command_sender, _message_handler, _parent.timeout_handler),
+    _mavlink_ftp(*this)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 }
@@ -76,14 +75,6 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
         MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_autopilot_version_request(command);
-        },
-        this);
-
-    // TO-DO!
-    register_mavlink_command_handler(
-        MAV_CMD_REQUEST_MESSAGE,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
-            return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
         },
         this);
 
@@ -268,7 +259,7 @@ void SystemImpl::system_thread()
 
     while (!_should_exit) {
         _params.do_work();
-        _send_commands.do_work();
+        _command_sender.do_work();
         _timesync.do_work();
         _mission_transfer.do_work();
 
@@ -446,6 +437,26 @@ mavlink_message_t SystemImpl::make_command_ack_message(
     return msg;
 }
 
+mavlink_message_t SystemImpl::make_command_ack_message(
+    const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result)
+{
+    const uint8_t progress = std::numeric_limits<uint8_t>::max();
+    const uint8_t result_param2 = 0;
+
+    mavlink_message_t msg{};
+    mavlink_msg_command_ack_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &msg,
+        command.command,
+        result,
+        progress,
+        result_param2,
+        command.origin_system_id,
+        command.origin_component_id);
+    return msg;
+}
+
 bool SystemImpl::send_message(mavlink_message_t& message)
 {
     // This is a low level interface where incoming messages can be tampered
@@ -461,9 +472,6 @@ bool SystemImpl::send_message(mavlink_message_t& message)
         }
     }
 
-#if MESSAGE_DEBUGGING == 1
-    LogDebug() << "Sending msg " << size_t(message.msgid);
-#endif
     return _parent.send_message(message);
 }
 
@@ -1389,7 +1397,7 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
         return MavlinkCommandSender::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
-    return _send_commands.send_command(command);
+    return _command_sender.send_command(command);
 }
 
 MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::CommandInt& command)
@@ -1398,7 +1406,7 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
         return MavlinkCommandSender::Result::NoSystem;
     }
     command.target_system_id = get_system_id();
-    return _send_commands.send_command(command);
+    return _command_sender.send_command(command);
 }
 
 void SystemImpl::send_command_async(
@@ -1412,7 +1420,7 @@ void SystemImpl::send_command_async(
     }
     command.target_system_id = get_system_id();
 
-    _send_commands.queue_command_async(command, callback);
+    _command_sender.queue_command_async(command, callback);
 }
 
 void SystemImpl::send_command_async(
@@ -1426,7 +1434,7 @@ void SystemImpl::send_command_async(
     }
     command.target_system_id = get_system_id();
 
-    _send_commands.queue_command_async(command, callback);
+    _command_sender.queue_command_async(command, callback);
 }
 
 MavlinkCommandSender::Result
@@ -1565,7 +1573,7 @@ void SystemImpl::register_mavlink_command_handler(
     const MavlinkCommandReceiver::MavlinkCommandIntHandler& callback,
     const void* cookie)
 {
-    _receive_commands.register_mavlink_command_handler(cmd_id, callback, cookie);
+    _command_receiver.register_mavlink_command_handler(cmd_id, callback, cookie);
 }
 
 void SystemImpl::register_mavlink_command_handler(
@@ -1573,17 +1581,33 @@ void SystemImpl::register_mavlink_command_handler(
     const MavlinkCommandReceiver::MavlinkCommandLongHandler& callback,
     const void* cookie)
 {
-    _receive_commands.register_mavlink_command_handler(cmd_id, callback, cookie);
+    _command_receiver.register_mavlink_command_handler(cmd_id, callback, cookie);
 }
 
 void SystemImpl::unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie)
 {
-    _receive_commands.unregister_mavlink_command_handler(cmd_id, cookie);
+    _command_receiver.unregister_mavlink_command_handler(cmd_id, cookie);
 }
 
 void SystemImpl::unregister_all_mavlink_command_handlers(const void* cookie)
 {
-    _receive_commands.unregister_all_mavlink_command_handlers(cookie);
+    _command_receiver.unregister_all_mavlink_command_handlers(cookie);
+}
+
+bool SystemImpl::register_mavlink_request_message_handler(
+    uint32_t message_id, const MavlinkRequestMessageHandler::Callback& callback, const void* cookie)
+{
+    return _request_message_handler.register_handler(message_id, callback, cookie);
+}
+
+void SystemImpl::unregister_mavlink_request_message_handler(uint32_t message_id, const void* cookie)
+{
+    _request_message_handler.unregister_handler(message_id, cookie);
+}
+
+void SystemImpl::unregister_all_mavlink_request_message_handlers(const void* cookie)
+{
+    _request_message_handler.unregister_all_handlers(cookie);
 }
 
 void SystemImpl::set_server_armed(bool armed)

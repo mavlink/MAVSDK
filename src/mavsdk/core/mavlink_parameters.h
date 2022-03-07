@@ -159,6 +159,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream&, const ParamValue&);
 
+    friend std::ostream& operator<<(std::ostream&, const Result&);
+
     // Non-copyable
     MAVLinkParameters(const MAVLinkParameters&) = delete;
     const MAVLinkParameters& operator=(const MAVLinkParameters&) = delete;

@@ -15,7 +15,7 @@ class GeofenceImpl : public PluginImplBase {
 public:
     explicit GeofenceImpl(System& system);
     explicit GeofenceImpl(std::shared_ptr<System> system);
-    ~GeofenceImpl();
+    ~GeofenceImpl() override;
 
     void init() override;
     void deinit() override;

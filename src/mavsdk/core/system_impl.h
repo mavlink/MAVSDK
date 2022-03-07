@@ -3,9 +3,12 @@
 #include "mavlink_address.h"
 #include "mavlink_include.h"
 #include "mavlink_parameters.h"
-#include "mavlink_commands.h"
+#include "mavlink_command_receiver.h"
+#include "mavlink_command_sender.h"
+#include "mavlink_ftp.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"
+#include "mavlink_request_message_handler.h"
 #include "mavlink_statustext_handler.h"
 #include "request_message.h"
 #include "ardupilot_custom_mode.h"
@@ -87,6 +90,8 @@ public:
 
     mavlink_message_t
     make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);
+    mavlink_message_t
+    make_command_ack_message(const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result);
     bool send_message(mavlink_message_t& message) override;
 
     Autopilot autopilot() const override { return _autopilot; };
@@ -278,6 +283,8 @@ public:
 
     MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };
 
+    MavlinkFtp& mavlink_ftp() { return _mavlink_ftp; };
+
     RequestMessage& request_message() { return _request_message; };
 
     void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
@@ -297,6 +304,13 @@ public:
         const void* cookie);
     void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
     void unregister_all_mavlink_command_handlers(const void* cookie);
+
+    bool register_mavlink_request_message_handler(
+        uint32_t message_id,
+        const MavlinkRequestMessageHandler::Callback& callback,
+        const void* cookie);
+    void unregister_mavlink_request_message_handler(uint32_t message_id, const void* cookie);
+    void unregister_all_mavlink_request_message_handlers(const void* cookie);
 
     double timeout_s() const;
 
@@ -406,14 +420,16 @@ private:
     static constexpr double _ping_interval_s = 5.0;
 
     MAVLinkParameters _params;
-    MavlinkCommandSender _send_commands;
-    MavlinkCommandReceiver _receive_commands;
+    MavlinkCommandSender _command_sender;
+    MavlinkCommandReceiver _command_receiver;
+    MavlinkRequestMessageHandler _request_message_handler;
 
     Timesync _timesync;
     Ping _ping;
 
     MAVLinkMissionTransfer _mission_transfer;
     RequestMessage _request_message;
+    MavlinkFtp _mavlink_ftp;
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase*> _plugin_impls{};
@@ -436,6 +452,9 @@ private:
         MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, {0}};
 
     std::atomic<bool> _should_send_autopilot_version{false};
+
+    std::mutex _mavlink_ftp_files_mutex{};
+    std::unordered_map<std::string, std::string> _mavlink_ftp_files{};
 };
 
 } // namespace mavsdk

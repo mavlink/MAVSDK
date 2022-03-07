@@ -25,15 +25,13 @@ public:
     FtpImpl(const FtpImpl&) = delete;
     const FtpImpl& operator=(const FtpImpl&) = delete;
 
-    ~FtpImpl();
+    ~FtpImpl() override;
 
     void init() override;
     void deinit() override;
 
     void enable() override;
     void disable() override;
-
-    void send();
 
     std::pair<Ftp::Result, std::vector<std::string>> list_directory(const std::string& path);
     Ftp::Result create_directory(const std::string& path);
@@ -64,189 +62,15 @@ public:
         const std::string& remote_path,
         Ftp::AreFilesIdenticalCallback callback);
 
-    void set_retries(uint32_t retries) { _max_last_command_retries = retries; }
+    void set_retries(uint32_t retries);
     Ftp::Result set_root_directory(const std::string& root_dir);
-    Ftp::Result set_target_compid(uint8_t component_id)
-    {
-        _target_component_id = component_id;
-        _target_component_id_set = true;
-        return Ftp::Result::Success;
-    }
     uint8_t get_our_compid() { return _parent->get_own_component_id(); };
+    Ftp::Result set_target_compid(uint8_t component_id);
 
 private:
-    /// @brief Possible server results returned for requests.
-    enum ServerResult : uint8_t {
-        SUCCESS,
-        ERR_FAIL, ///< Unknown failure
-        ERR_FAIL_ERRNO, ///< Command failed, errno sent back in PayloadHeader.data[1]
-        ERR_INVALID_DATA_SIZE, ///< PayloadHeader.size is invalid
-        ERR_INVALID_SESSION, ///< Session is not currently open
-        ERR_NO_SESSIONS_AVAILABLE, ///< All available Sessions in use
-        ERR_EOF, ///< Offset past end of file for List and Read commands
-        ERR_UNKOWN_COMMAND, ///< Unknown command opcode
-        ERR_FAIL_FILE_EXISTS, ///< File exists already
-        ERR_FAIL_FILE_PROTECTED, ///< File is write protected
-        ERR_FAIL_FILE_DOES_NOT_EXIST, ///< File does not exist
-
-        // These error codes are returned to client without contacting the server
-        ERR_TIMEOUT = 200, ///< Timeout
-        ERR_FILE_IO_ERROR, ///< File IO operation error
-    };
-
-    /// @brief Command opcodes
-    enum Opcode : uint8_t {
-        CMD_NONE, ///< ignored, always acked
-        CMD_TERMINATE_SESSION, ///< Terminates open Read session
-        CMD_RESET_SESSIONS, ///< Terminates all open Read sessions
-        CMD_LIST_DIRECTORY, ///< List files in <path> from <offset>
-        CMD_OPEN_FILE_RO, ///< Opens file at <path> for reading, returns <session>
-        CMD_READ_FILE, ///< Reads <size> bytes from <offset> in <session>
-        CMD_CREATE_FILE, ///< Creates file at <path> for writing, returns <session>
-        CMD_WRITE_FILE, ///< Writes <size> bytes to <offset> in <session>
-        CMD_REMOVE_FILE, ///< Remove file at <path>
-        CMD_CREATE_DIRECTORY, ///< Creates directory at <path>
-        CMD_REMOVE_DIRECTORY, ///< Removes Directory at <path>, must be empty
-        CMD_OPEN_FILE_WO, ///< Opens file at <path> for writing, returns <session>
-        CMD_TRUNCATE_FILE, ///< Truncate file at <path> to <offset> length
-        CMD_RENAME, ///< Rename <path1> to <path2>
-        CMD_CALC_FILE_CRC32, ///< Calculate CRC32 for file at <path>
-        CMD_BURST_READ_FILE, ///< Burst download session file
-
-        RSP_ACK = 128, ///< Ack response
-        RSP_NAK ///< Nak response
-    };
-
-    typedef std::function<void(Ftp::Result, uint32_t)> file_crc32_ResultCallback;
-
-    static constexpr auto DIRENT_FILE = "F"; ///< Identifies File returned from List command
-    static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command
-    static constexpr auto DIRENT_SKIP = "S"; ///< Identifies Skipped entry from List command
-
-    /// @brief Maximum data size in RequestHeader::data
-    static constexpr uint8_t max_data_length = 239;
-
-    /// @brief This is the payload which is in mavlink_file_transfer_protocol_t.payload.
-    /// This needs to be packed, because it's typecasted from
-    /// mavlink_file_transfer_protocol_t.payload, which starts at a 3 byte offset, causing an
-    /// unaligned access to seq_number and offset
-    PACK(struct PayloadHeader {
-        uint16_t seq_number; ///< sequence number for message
-        uint8_t session; ///< Session id for read and write commands
-        uint8_t opcode; ///< Command opcode
-        uint8_t size; ///< Size of data
-        uint8_t req_opcode; ///< Request opcode returned in RSP_ACK, RSP_NAK message
-        uint8_t burst_complete; ///< Only used if req_opcode=CMD_BURST_READ_FILE - 1: set of burst
-                                ///< packets complete, 0: More burst packets coming.
-        uint8_t padding; ///< 32 bit alignment padding
-        uint32_t offset; ///< Offsets for List and Read commands
-        uint8_t data[max_data_length]; ///< command data, varies by Opcode
-    });
-
-    struct SessionInfo {
-        int fd{-1};
-        uint32_t file_size{0};
-        bool stream_download{false};
-        uint32_t stream_offset{0};
-        uint16_t stream_seq_number{0};
-        uint8_t stream_target_system_id{0};
-        unsigned stream_chunk_transmitted{0};
-    };
-
-    struct OfstreamWithPath {
-        std::ofstream stream;
-        std::string path;
-    };
-
-    struct SessionInfo _session_info {}; ///< Session info, fd=-1 for no active session
-
-    uint8_t _network_id = 0;
-    uint8_t _target_component_id = 0;
-    bool _target_component_id_set{false};
-    Opcode _curr_op = CMD_NONE;
-    std::mutex _curr_op_mutex{};
-    mavlink_message_t _last_command{};
-    void* _last_command_timeout_cookie = nullptr;
-    bool _last_command_timer_running{false};
-    std::mutex _timer_mutex{};
-    static constexpr uint32_t _last_command_timeout{200};
-    uint32_t _max_last_command_retries{5};
-    uint32_t _last_command_retries = 0;
-    std::string _last_path{};
-    uint16_t _seq_number = 0;
-    std::ifstream _ifstream{};
-    OfstreamWithPath _ofstream{};
-    bool _session_valid = false;
-    uint8_t _session = 0;
-    ServerResult _session_result = ServerResult::SUCCESS;
-    uint32_t _bytes_transferred = 0;
-    uint32_t _file_size = 0;
-    std::vector<std::string> _curr_directory_list{};
-
-    Ftp::ResultCallback _curr_op_result_callback{};
-    // _curr_op_progress_callback is used for download_callback_t as well as upload_callback_t
-    static_assert(
-        std::is_same<Ftp::DownloadCallback, Ftp::UploadCallback>::value,
-        "callback types don't match");
-    Ftp::DownloadCallback _curr_op_progress_callback{};
-    Ftp::ListDirectoryCallback _curr_dir_items_result_callback{};
-
-    file_crc32_ResultCallback _current_crc32_result_callback{};
-
-    void _calc_file_crc32_async(const std::string& path, file_crc32_ResultCallback callback);
-    Ftp::Result _calc_local_file_crc32(const std::string& path, uint32_t& csum);
-
-    void _process_ack(PayloadHeader* payload);
-    void _process_nak(PayloadHeader* payload);
-    void _process_nak(ServerResult result);
-    static Ftp::Result _translate(ServerResult result);
-    void _call_op_result_callback(ServerResult result);
-    void _call_op_progress_callback(uint32_t bytes_written, uint32_t total_bytes);
-    void _call_dir_items_result_callback(ServerResult result, std::vector<std::string> list);
-    void _call_crc32_result_callback(ServerResult result, uint32_t crc32);
-    void _generic_command_async(
-        Opcode opcode, uint32_t offset, const std::string& path, Ftp::ResultCallback callback);
-    void _read();
-    void _write();
-    void _end_read_session(bool delete_file = false);
-    void _end_write_session();
-    void _terminate_session();
-    void _send_mavlink_ftp_message(uint8_t* raw_payload);
-    void _command_timeout();
-    void _reset_timer();
-    void _stop_timer();
-    void _list_directory(uint32_t offset);
-    uint8_t _get_target_component_id()
-    {
-        return _target_component_id_set ? _target_component_id : _parent->get_autopilot_id();
-    }
-
-    // prepend a root directory to each file/dir access to avoid enumerating the full FS tree
-    std::string _root_dir{"/"};
-
-    bool _last_reply_valid = false;
-    uint16_t _last_reply_seq = 0;
-    mavlink_message_t _last_reply{};
-
-    void process_mavlink_ftp_message(const mavlink_message_t& msg);
-
-    std::string _data_as_string(PayloadHeader* payload);
-    std::string _get_path(PayloadHeader* payload);
-    std::string _get_path(const std::string& payload_path);
-    std::string _get_rel_path(const std::string& path);
-
-    ServerResult _work_list(PayloadHeader* payload, bool list_hidden = false);
-    ServerResult _work_open(PayloadHeader* payload, int oflag);
-    ServerResult _work_read(PayloadHeader* payload);
-    ServerResult _work_burst(PayloadHeader* payload);
-    ServerResult _work_write(PayloadHeader* payload);
-    ServerResult _work_terminate(PayloadHeader* payload);
-    ServerResult _work_reset(PayloadHeader* payload);
-    ServerResult _work_remove_directory(PayloadHeader* payload);
-    ServerResult _work_create_directory(PayloadHeader* payload);
-    ServerResult _work_remove_file(PayloadHeader* payload);
-    ServerResult _work_rename(PayloadHeader* payload);
-    ServerResult _work_calc_file_CRC32(PayloadHeader* payload);
+    Ftp::Result result_from_mavlink_ftp_result(MavlinkFtp::ClientResult result);
+    Ftp::ProgressData
+    progress_data_from_mavlink_ftp_progress_data(MavlinkFtp::ProgressData progress_data);
 };
 
 } // namespace mavsdk

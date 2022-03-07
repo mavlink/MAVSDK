@@ -8,7 +8,8 @@ TrackingServerImpl::TrackingServerImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-TrackingServerImpl::TrackingServerImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+TrackingServerImpl::TrackingServerImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

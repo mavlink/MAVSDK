@@ -10,7 +10,7 @@ MavlinkPassthroughImpl::MavlinkPassthroughImpl(System& system) : PluginImplBase(
 }
 
 MavlinkPassthroughImpl::MavlinkPassthroughImpl(std::shared_ptr<System> system) :
-    PluginImplBase(system)
+    PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }

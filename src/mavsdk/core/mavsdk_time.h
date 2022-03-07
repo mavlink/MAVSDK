@@ -18,6 +18,8 @@ public:
     virtual dl_system_time_t system_time();
     double elapsed_s();
     double elapsed_since_s(const dl_time_t& since);
+    uint64_t elapsed_ms() const;
+    uint64_t elapsed_us() const;
     dl_time_t steady_time_in_future(double duration_s);
     static void shift_steady_time_by(dl_time_t& time, double offset_s);
 

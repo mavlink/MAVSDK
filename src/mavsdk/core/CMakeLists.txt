@@ -9,16 +9,21 @@ target_sources(mavsdk
     connection.cpp
     connection_result.cpp
     curl_wrapper.cpp
+    crc32.cpp
     system.cpp
     system_impl.cpp
+    fs.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
     http_loader.cpp
     mavlink_channels.cpp
-    mavlink_commands.cpp
+    mavlink_command_receiver.cpp
+    mavlink_command_sender.cpp
+    mavlink_ftp.cpp
     mavlink_mission_transfer.cpp
     mavlink_parameters.cpp
     mavlink_receiver.cpp
+    mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp
     mavlink_message_handler.cpp
     ping.cpp

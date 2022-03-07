@@ -13,7 +13,7 @@ class MissionRawImpl : public PluginImplBase {
 public:
     explicit MissionRawImpl(System& system);
     explicit MissionRawImpl(std::shared_ptr<System> system);
-    ~MissionRawImpl();
+    ~MissionRawImpl() override;
 
     void init() override;
     void deinit() override;

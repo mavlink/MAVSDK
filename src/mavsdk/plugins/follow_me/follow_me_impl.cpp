@@ -12,7 +12,7 @@ FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-FollowMeImpl::FollowMeImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+FollowMeImpl::FollowMeImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
     _last_location = _target_location = FollowMe::TargetLocation{};

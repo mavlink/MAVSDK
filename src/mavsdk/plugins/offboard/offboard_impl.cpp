@@ -12,7 +12,7 @@ OffboardImpl::OffboardImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
-OffboardImpl::OffboardImpl(std::shared_ptr<System> system) : PluginImplBase(system)
+OffboardImpl::OffboardImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     _parent->register_plugin(this);
 }
@@ -396,7 +396,7 @@ Offboard::Result OffboardImpl::send_position_ned()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
@@ -452,7 +452,7 @@ Offboard::Result OffboardImpl::send_position_global()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         frame,
@@ -492,7 +492,7 @@ Offboard::Result OffboardImpl::send_velocity_ned()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
@@ -529,7 +529,7 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
@@ -570,7 +570,7 @@ Offboard::Result OffboardImpl::send_acceleration_ned()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
@@ -611,7 +611,7 @@ Offboard::Result OffboardImpl::send_velocity_body()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_BODY_NED,
@@ -668,7 +668,7 @@ Offboard::Result OffboardImpl::send_attitude()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         IGNORE_BODY_ROLL_RATE | IGNORE_BODY_PITCH_RATE | IGNORE_BODY_YAW_RATE,
@@ -698,7 +698,7 @@ Offboard::Result OffboardImpl::send_attitude_rate()
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         IGNORE_ATTITUDE,
@@ -720,7 +720,7 @@ OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group
         _parent->get_own_system_id(),
         _parent->get_own_component_id(),
         &message,
-        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         group_number,
         _parent->get_system_id(),
         _parent->get_autopilot_id(),

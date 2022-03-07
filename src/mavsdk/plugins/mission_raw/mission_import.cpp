@@ -2,7 +2,6 @@
 #include "mission_import.h"
 #include "mavlink_include.h"
 #include <cmath> // for `std::round`
-#include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
 
 namespace mavsdk {

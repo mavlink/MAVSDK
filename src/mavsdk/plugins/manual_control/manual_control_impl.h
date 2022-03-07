@@ -9,7 +9,7 @@ class ManualControlImpl : public PluginImplBase {
 public:
     explicit ManualControlImpl(System& system);
     explicit ManualControlImpl(std::shared_ptr<System> system);
-    ~ManualControlImpl();
+    ~ManualControlImpl() override;
 
     void init() override;
     void deinit() override;

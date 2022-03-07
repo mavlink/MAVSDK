@@ -15,7 +15,7 @@ class ShellImpl : public PluginImplBase {
 public:
     explicit ShellImpl(System& system);
     explicit ShellImpl(std::shared_ptr<System> system);
-    ~ShellImpl();
+    ~ShellImpl() override;
 
     void init() override;
     void deinit() override;

@@ -838,6 +838,18 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
             new_work->param_value = _param_server_store.at(safe_param_id);
             new_work->extended = false;
             _work_queue.push_back(new_work);
+            std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+            for (const auto& subscription : _param_changed_subscriptions) {
+                if (subscription.param_name != safe_param_id) {
+                    continue;
+                }
+                if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
+                    LogErr() << "Received wrong param type in subscription for "
+                             << subscription.param_name;
+                    continue;
+                }
+                subscription.callback(value);
+            }
         } else {
             LogDebug() << "Missing Param: " << safe_param_id;
         }
@@ -1338,5 +1350,31 @@ bool MAVLinkParameters::ParamValue::operator==(const std::string& value_str) con
     // FIXME: Added to fix CI error (control reading end of non-void function)
     return "unknown";
 }
+
+std::ostream& operator<<(std::ostream& str, const MAVLinkParameters::Result& result)
+{
+    switch (result) {
+        case MAVLinkParameters::Result::Success:
+            return str << "Success";
+        case MAVLinkParameters::Result::Timeout:
+            return str << "Timeout";
+        case MAVLinkParameters::Result::ConnectionError:
+            return str << "ConnectionError";
+        case MAVLinkParameters::Result::WrongType:
+            return str << "WrongType";
+        case MAVLinkParameters::Result::ParamNameTooLong:
+            return str << "ParamNameTooLong";
+        case MAVLinkParameters::Result::NotFound:
+            return str << "NotFound";
+        case MAVLinkParameters::Result::ValueUnsupported:
+            return str << "ValueUnsupported";
+        case MAVLinkParameters::Result::Failed:
+            return str << "Failed";
+        case MAVLinkParameters::Result::UnknownError:
+            // Fallthrough
+        default:
+            return str << "UnknownError";
+    }
+};
 
 } // namespace mavsdk

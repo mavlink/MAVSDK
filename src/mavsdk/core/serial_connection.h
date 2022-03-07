@@ -7,7 +7,7 @@
 #include "connection.h"
 
 #if defined(WINDOWS)
-#include <windows.h>
+#include "windows_include.h"
 #endif
 
 namespace mavsdk {
