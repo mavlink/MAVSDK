@@ -452,6 +452,7 @@ void ActionImpl::goto_location_async(
 
             command.command = MAV_CMD_DO_REPOSITION;
             command.target_component_id = _parent->get_autopilot_id();
+            command.params.maybe_param2 = static_cast<float>(MAV_DO_REPOSITION_FLAGS_CHANGE_MODE);
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
@@ -463,19 +464,21 @@ void ActionImpl::goto_location_async(
                 });
         };
 
-    // Change to Hold mode first
-    if (_parent->get_flight_mode() != FlightMode::Hold) {
-        _parent->set_flight_mode_async(
-            FlightMode::Hold,
-            [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
-                Action::Result action_result = action_result_from_command_result(result);
-                if (action_result != Action::Result::Success) {
-                    command_result_callback(result, callback);
-                    return;
-                }
-                send_do_reposition();
-            });
-        return;
+    if (_parent->compatibility_mode() == System::CompatibilityMode::Px4) {
+        // Change to Hold mode first
+        if (_parent->get_flight_mode() != SystemImpl::FlightMode::Hold) {
+            _parent->set_flight_mode_async(
+                SystemImpl::FlightMode::Hold,
+                [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
+                    Action::Result action_result = action_result_from_command_result(result);
+                    if (action_result != Action::Result::Success) {
+                        command_result_callback(result, callback);
+                        return;
+                    }
+                    send_do_reposition();
+                });
+            return;
+        }
     }
 
     send_do_reposition();
