@@ -335,8 +335,8 @@ void ActionImpl::reboot_async(const Action::ResultCallback& callback) const
     command.command = MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN;
     command.params.maybe_param1 = 1.0f; // reboot autopilot
     command.params.maybe_param2 = 1.0f; // reboot onboard computer
-    command.params.maybe_param3 = 1.0f; // reboot camera
-    command.params.maybe_param4 = 1.0f; // reboot gimbal
+    command.params.maybe_param3 = 1.0f; // reboot component
+    command.params.maybe_param4 = 0.0f; // all components
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(
@@ -352,8 +352,8 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
     command.command = MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN;
     command.params.maybe_param1 = 2.0f; // shutdown autopilot
     command.params.maybe_param2 = 2.0f; // shutdown onboard computer
-    command.params.maybe_param3 = 2.0f; // shutdown camera
-    command.params.maybe_param4 = 2.0f; // shutdown gimbal
+    command.params.maybe_param3 = 2.0f; // shutdown component
+    command.params.maybe_param4 = 0.0f; // all components
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(
