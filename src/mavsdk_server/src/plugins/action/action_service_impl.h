@@ -111,6 +111,8 @@ public:
                 return rpc::action::ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT;
             case mavsdk::Action::Result::ParameterError:
                 return rpc::action::ActionResult_Result_RESULT_PARAMETER_ERROR;
+            case mavsdk::Action::Result::Unsupported:
+                return rpc::action::ActionResult_Result_RESULT_UNSUPPORTED;
         }
     }
 
@@ -145,6 +147,8 @@ public:
                 return mavsdk::Action::Result::NoVtolTransitionSupport;
             case rpc::action::ActionResult_Result_RESULT_PARAMETER_ERROR:
                 return mavsdk::Action::Result::ParameterError;
+            case rpc::action::ActionResult_Result_RESULT_UNSUPPORTED:
+                return mavsdk::Action::Result::Unsupported;
         }
     }
 
