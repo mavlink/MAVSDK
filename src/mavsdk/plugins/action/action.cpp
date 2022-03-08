@@ -283,6 +283,8 @@ std::ostream& operator<<(std::ostream& str, Action::Result const& result)
             return str << "No Vtol Transition Support";
         case Action::Result::ParameterError:
             return str << "Parameter Error";
+        case Action::Result::Unsupported:
+            return str << "Unsupported";
         default:
             return str << "Unknown";
     }

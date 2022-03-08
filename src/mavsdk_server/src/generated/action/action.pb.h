@@ -252,12 +252,13 @@ enum ActionResult_Result : int {
   ActionResult_Result_RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9,
   ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT = 10,
   ActionResult_Result_RESULT_PARAMETER_ERROR = 11,
+  ActionResult_Result_RESULT_UNSUPPORTED = 12,
   ActionResult_Result_ActionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ActionResult_Result_ActionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ActionResult_Result_IsValid(int value);
 constexpr ActionResult_Result ActionResult_Result_Result_MIN = ActionResult_Result_RESULT_UNKNOWN;
-constexpr ActionResult_Result ActionResult_Result_Result_MAX = ActionResult_Result_RESULT_PARAMETER_ERROR;
+constexpr ActionResult_Result ActionResult_Result_Result_MAX = ActionResult_Result_RESULT_UNSUPPORTED;
 constexpr int ActionResult_Result_Result_ARRAYSIZE = ActionResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ActionResult_Result_descriptor();
@@ -6405,6 +6406,8 @@ class ActionResult final :
     ActionResult_Result_RESULT_NO_VTOL_TRANSITION_SUPPORT;
   static constexpr Result RESULT_PARAMETER_ERROR =
     ActionResult_Result_RESULT_PARAMETER_ERROR;
+  static constexpr Result RESULT_UNSUPPORTED =
+    ActionResult_Result_RESULT_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return ActionResult_Result_IsValid(value);
   }
