@@ -257,7 +257,7 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
 
 bool ActionImpl::need_hold_before_arm() const
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
+    if (_parent->compatibility_mode() == System::CompatibilityMode::Px4) {
         return need_hold_before_arm_px4();
     } else {
         return need_hold_before_arm_apm();
