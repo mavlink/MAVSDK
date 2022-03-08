@@ -79,6 +79,8 @@ std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)
             return str << "Cancelled";
         case Calibration::Result::FailedArmed:
             return str << "Failed Armed";
+        case Calibration::Result::Unsupported:
+            return str << "Unsupported";
         default:
             return str << "Unknown";
     }

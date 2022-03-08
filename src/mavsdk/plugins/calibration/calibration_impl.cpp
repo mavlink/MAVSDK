@@ -342,6 +342,8 @@ CalibrationImpl::calibration_result_from_command_result(MavlinkCommandSender::Re
             return Calibration::Result::Timeout;
         case MavlinkCommandSender::Result::InProgress:
             return Calibration::Result::Next;
+        case MavlinkCommandSender::Result::Unsupported:
+            return Calibration::Result::Unsupported;
         default:
             return Calibration::Result::Unknown;
     }
