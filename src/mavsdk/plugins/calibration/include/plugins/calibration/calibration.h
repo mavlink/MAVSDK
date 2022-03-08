@@ -72,6 +72,7 @@ public:
         Timeout, /**< @brief Command timed out. */
         Cancelled, /**< @brief Calibration process was cancelled. */
         FailedArmed, /**< @brief Calibration process failed since the vehicle is armed. */
+        Unsupported, /**< @brief Functionality not supported. */
     };
 
     /**

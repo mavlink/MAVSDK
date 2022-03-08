@@ -67,6 +67,8 @@ public:
                 return rpc::calibration::CalibrationResult_Result_RESULT_CANCELLED;
             case mavsdk::Calibration::Result::FailedArmed:
                 return rpc::calibration::CalibrationResult_Result_RESULT_FAILED_ARMED;
+            case mavsdk::Calibration::Result::Unsupported:
+                return rpc::calibration::CalibrationResult_Result_RESULT_UNSUPPORTED;
         }
     }
 
@@ -99,6 +101,8 @@ public:
                 return mavsdk::Calibration::Result::Cancelled;
             case rpc::calibration::CalibrationResult_Result_RESULT_FAILED_ARMED:
                 return mavsdk::Calibration::Result::FailedArmed;
+            case rpc::calibration::CalibrationResult_Result_RESULT_UNSUPPORTED:
+                return mavsdk::Calibration::Result::Unsupported;
         }
     }
 

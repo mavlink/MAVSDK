@@ -135,12 +135,13 @@ enum CalibrationResult_Result : int {
   CalibrationResult_Result_RESULT_TIMEOUT = 8,
   CalibrationResult_Result_RESULT_CANCELLED = 9,
   CalibrationResult_Result_RESULT_FAILED_ARMED = 10,
+  CalibrationResult_Result_RESULT_UNSUPPORTED = 11,
   CalibrationResult_Result_CalibrationResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   CalibrationResult_Result_CalibrationResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool CalibrationResult_Result_IsValid(int value);
 constexpr CalibrationResult_Result CalibrationResult_Result_Result_MIN = CalibrationResult_Result_RESULT_UNKNOWN;
-constexpr CalibrationResult_Result CalibrationResult_Result_Result_MAX = CalibrationResult_Result_RESULT_FAILED_ARMED;
+constexpr CalibrationResult_Result CalibrationResult_Result_Result_MAX = CalibrationResult_Result_RESULT_UNSUPPORTED;
 constexpr int CalibrationResult_Result_Result_ARRAYSIZE = CalibrationResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CalibrationResult_Result_descriptor();
@@ -2038,6 +2039,8 @@ class CalibrationResult final :
     CalibrationResult_Result_RESULT_CANCELLED;
   static constexpr Result RESULT_FAILED_ARMED =
     CalibrationResult_Result_RESULT_FAILED_ARMED;
+  static constexpr Result RESULT_UNSUPPORTED =
+    CalibrationResult_Result_RESULT_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return CalibrationResult_Result_IsValid(value);
   }
