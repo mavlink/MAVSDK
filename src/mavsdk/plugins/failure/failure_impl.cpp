@@ -23,6 +23,12 @@ void FailureImpl::deinit() {}
 
 void FailureImpl::enable()
 {
+    if (_parent->compatibility_mode() != System::CompatibilityMode::Px4) {
+        // Probably only PX4 implements this param.
+        _enabled = EnabledState::Unknown;
+        return;
+    }
+
     constexpr auto param_name = "SYS_FAILURE_EN";
 
     _parent->get_param_int_async(
