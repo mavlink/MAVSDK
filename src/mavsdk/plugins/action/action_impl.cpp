@@ -425,6 +425,8 @@ void ActionImpl::land_async(const Action::ResultCallback& callback) const
     command.params.maybe_param4 = NAN; // Don't change yaw.
     command.target_component_id = _parent->get_autopilot_id();
 
+    // We don't know the altitude of the landing spot, so we don't set it.
+
     _parent->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
