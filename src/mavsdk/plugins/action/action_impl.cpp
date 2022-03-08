@@ -493,8 +493,12 @@ void ActionImpl::do_orbit_async(
     const double absolute_altitude_m,
     const Action::ResultCallback& callback)
 {
-    MavlinkCommandSender::CommandInt command{};
+    // The DO_ORBIT command is marked as WIP, hence only supported for PX4 for now.
+    if (_parent->compatibility_mode() != System::CompatibilityMode::Px4) {
+        _parent->call_user_callback([callback]() { callback(Action::Result::Unsupported); });
+    }
 
+    MavlinkCommandSender::CommandInt command{};
     command.command = MAV_CMD_DO_ORBIT;
     command.target_component_id = _parent->get_autopilot_id();
     command.params.maybe_param1 = radius_m;
