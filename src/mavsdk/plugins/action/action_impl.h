@@ -121,7 +121,7 @@ private:
     std::atomic<bool> _vtol_transition_support_known{false};
     std::atomic<bool> _vtol_transition_possible{false};
 
-    float _takeoff_altitude{2.0};
+    std::atomic<float> _takeoff_altitude{2.0};
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
     static constexpr auto TAKEOFF_ALT_PARAM = "MIS_TAKEOFF_ALT";
