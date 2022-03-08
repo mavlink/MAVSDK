@@ -563,14 +563,16 @@ void ActionImpl::transition_to_fixedwing_async(const Action::ResultCallback& cal
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
-            callback(Action::Result::VtolTransitionSupportUnknown);
+            _parent->call_user_callback(
+                [callback]() { callback(Action::Result::VtolTransitionSupportUnknown); });
         }
         return;
     }
 
     if (!_vtol_transition_possible) {
         if (callback) {
-            callback(Action::Result::NoVtolTransitionSupport);
+            _parent->call_user_callback(
+                [callback]() { callback(Action::Result::NoVtolTransitionSupport); });
         }
         return;
     }
