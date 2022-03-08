@@ -298,6 +298,7 @@ message ActionResult {
         RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN = 9; // Hybrid/VTOL transition support is unknown
         RESULT_NO_VTOL_TRANSITION_SUPPORT = 10; // Vehicle does not support hybrid/VTOL transitions
         RESULT_PARAMETER_ERROR = 11; // Error getting or setting parameter
+        RESULT_UNSUPPORTED = 12; // Action not supported
     }
 
     Result result = 1; // Result enum value
