@@ -520,6 +520,7 @@ void ActionImpl::hold_async(const Action::ResultCallback& callback) const
 void ActionImpl::set_actuator_async(
     const int index, const float value, const Action::ResultCallback& callback)
 {
+    // TODO: improve the API to accept multiple actuators.
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_SET_ACTUATOR;
