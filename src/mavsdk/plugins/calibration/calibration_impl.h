@@ -36,7 +36,7 @@ private:
     void call_callback(
         const CalibrationCallback& callback,
         const Calibration::Result& result,
-        const Calibration::ProgressData progress_data);
+        const Calibration::ProgressData& progress_data);
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
@@ -47,7 +47,6 @@ private:
 
     void report_started();
     void report_done();
-    void report_warning(const std::string& warning);
     void report_failed(const std::string& failed);
     void report_cancelled();
     void report_progress(float progress);
@@ -56,14 +55,6 @@ private:
     CalibrationStatustextParser _parser{};
 
     mutable std::mutex _calibration_mutex{};
-
-    bool _is_gyro_ok = false;
-    bool _is_accelerometer_ok = false;
-    bool _is_magnetometer_ok = false;
-
-    std::atomic<bool> _is_gyro_running = {false};
-    std::atomic<bool> _is_accelerometer_running = {false};
-    std::atomic<bool> _is_magnetometer_running = {false};
 
     enum class State {
         None,

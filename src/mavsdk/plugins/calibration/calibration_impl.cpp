@@ -83,7 +83,7 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
 void CalibrationImpl::call_callback(
     const CalibrationCallback& callback,
     const Calibration::Result& result,
-    const Calibration::ProgressData progress_data)
+    const Calibration::ProgressData& progress_data)
 {
     if (callback) {
         _parent->call_user_callback(
