@@ -88,6 +88,7 @@ message CalibrationResult {
         RESULT_TIMEOUT = 8; // Command timed out
         RESULT_CANCELLED = 9; // Calibration process was cancelled
         RESULT_FAILED_ARMED = 10; // Calibration process failed since the vehicle is armed
+        RESULT_UNSUPPORTED =  11; // Functionality not supported
     }
 
     Result result = 1; // Result enum value
