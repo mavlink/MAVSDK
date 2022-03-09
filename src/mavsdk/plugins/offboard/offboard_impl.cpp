@@ -375,14 +375,6 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
 
 Offboard::Result OffboardImpl::send_position_ned()
 {
-    const static uint16_t IGNORE_VX = (1 << 3);
-    const static uint16_t IGNORE_VY = (1 << 4);
-    const static uint16_t IGNORE_VZ = (1 << 5);
-    const static uint16_t IGNORE_AX = (1 << 6);
-    const static uint16_t IGNORE_AY = (1 << 7);
-    const static uint16_t IGNORE_AZ = (1 << 8);
-    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
-
     const auto position_ned_yaw = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return _position_ned_yaw;
@@ -397,7 +389,10 @@ Offboard::Result OffboardImpl::send_position_ned()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
-        IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        POSITION_TARGET_TYPEMASK_VX_IGNORE | POSITION_TARGET_TYPEMASK_VY_IGNORE |
+            POSITION_TARGET_TYPEMASK_VZ_IGNORE | POSITION_TARGET_TYPEMASK_AX_IGNORE |
+            POSITION_TARGET_TYPEMASK_AY_IGNORE | POSITION_TARGET_TYPEMASK_AZ_IGNORE |
+            POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE,
         position_ned_yaw.north_m,
         position_ned_yaw.east_m,
         position_ned_yaw.down_m,
@@ -415,14 +410,6 @@ Offboard::Result OffboardImpl::send_position_ned()
 
 Offboard::Result OffboardImpl::send_position_global()
 {
-    const static uint16_t IGNORE_VX = (1 << 3);
-    const static uint16_t IGNORE_VY = (1 << 4);
-    const static uint16_t IGNORE_VZ = (1 << 5);
-    const static uint16_t IGNORE_AX = (1 << 6);
-    const static uint16_t IGNORE_AY = (1 << 7);
-    const static uint16_t IGNORE_AZ = (1 << 8);
-    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
-
     const auto position_global_yaw = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return _position_global_yaw;
@@ -453,7 +440,10 @@ Offboard::Result OffboardImpl::send_position_global()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         frame,
-        IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        POSITION_TARGET_TYPEMASK_VX_IGNORE | POSITION_TARGET_TYPEMASK_VY_IGNORE |
+            POSITION_TARGET_TYPEMASK_VZ_IGNORE | POSITION_TARGET_TYPEMASK_AX_IGNORE |
+            POSITION_TARGET_TYPEMASK_AY_IGNORE | POSITION_TARGET_TYPEMASK_AZ_IGNORE |
+            POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE,
         (int32_t)(position_global_yaw.lat_deg * 1.0e7),
         (int32_t)(position_global_yaw.lon_deg * 1.0e7),
         position_global_yaw.alt_m,
@@ -471,14 +461,6 @@ Offboard::Result OffboardImpl::send_position_global()
 
 Offboard::Result OffboardImpl::send_velocity_ned()
 {
-    const static uint16_t IGNORE_X = (1 << 0);
-    const static uint16_t IGNORE_Y = (1 << 1);
-    const static uint16_t IGNORE_Z = (1 << 2);
-    const static uint16_t IGNORE_AX = (1 << 6);
-    const static uint16_t IGNORE_AY = (1 << 7);
-    const static uint16_t IGNORE_AZ = (1 << 8);
-    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
-
     const auto velocity_ned_yaw = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return _velocity_ned_yaw;
@@ -493,7 +475,10 @@ Offboard::Result OffboardImpl::send_velocity_ned()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        POSITION_TARGET_TYPEMASK_X_IGNORE | POSITION_TARGET_TYPEMASK_Y_IGNORE |
+            POSITION_TARGET_TYPEMASK_Z_IGNORE | POSITION_TARGET_TYPEMASK_AX_IGNORE |
+            POSITION_TARGET_TYPEMASK_AY_IGNORE | POSITION_TARGET_TYPEMASK_AZ_IGNORE |
+            POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE,
         0.0f, // x,
         0.0f, // y,
         0.0f, // z,
@@ -511,11 +496,6 @@ Offboard::Result OffboardImpl::send_velocity_ned()
 
 Offboard::Result OffboardImpl::send_position_velocity_ned()
 {
-    const static uint16_t IGNORE_AX = (1 << 6);
-    const static uint16_t IGNORE_AY = (1 << 7);
-    const static uint16_t IGNORE_AZ = (1 << 8);
-    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
-
     const auto position_and_velocity = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return std::make_pair<>(_position_ned_yaw, _velocity_ned_yaw);
@@ -530,7 +510,8 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
-        IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        POSITION_TARGET_TYPEMASK_AX_IGNORE | POSITION_TARGET_TYPEMASK_AY_IGNORE |
+            POSITION_TARGET_TYPEMASK_AZ_IGNORE | POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE,
         position_and_velocity.first.north_m,
         position_and_velocity.first.east_m,
         position_and_velocity.first.down_m,
@@ -548,15 +529,6 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
 
 Offboard::Result OffboardImpl::send_acceleration_ned()
 {
-    const static uint16_t IGNORE_X = (1 << 0);
-    const static uint16_t IGNORE_Y = (1 << 1);
-    const static uint16_t IGNORE_Z = (1 << 2);
-    const static uint16_t IGNORE_VX = (1 << 3);
-    const static uint16_t IGNORE_VY = (1 << 4);
-    const static uint16_t IGNORE_VZ = (1 << 5);
-    const static uint16_t IGNORE_YAW = (1 << 10);
-    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
-
     const auto acceleration_ned = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return _acceleration_ned;
@@ -571,8 +543,10 @@ Offboard::Result OffboardImpl::send_acceleration_ned()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_YAW |
-            IGNORE_YAW_RATE,
+        POSITION_TARGET_TYPEMASK_X_IGNORE | POSITION_TARGET_TYPEMASK_Y_IGNORE |
+            POSITION_TARGET_TYPEMASK_Z_IGNORE | POSITION_TARGET_TYPEMASK_VX_IGNORE |
+            POSITION_TARGET_TYPEMASK_VY_IGNORE | POSITION_TARGET_TYPEMASK_VZ_IGNORE |
+            POSITION_TARGET_TYPEMASK_YAW_IGNORE | POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE,
         0.0f, // x,
         0.0f, // y,
         0.0f, // z,
@@ -590,14 +564,6 @@ Offboard::Result OffboardImpl::send_acceleration_ned()
 
 Offboard::Result OffboardImpl::send_velocity_body()
 {
-    const static uint16_t IGNORE_X = (1 << 0);
-    const static uint16_t IGNORE_Y = (1 << 1);
-    const static uint16_t IGNORE_Z = (1 << 2);
-    const static uint16_t IGNORE_AX = (1 << 6);
-    const static uint16_t IGNORE_AY = (1 << 7);
-    const static uint16_t IGNORE_AZ = (1 << 8);
-    const static uint16_t IGNORE_YAW = (1 << 10);
-
     const auto velocity_body_yawspeed = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return _velocity_body_yawspeed;
@@ -612,7 +578,10 @@ Offboard::Result OffboardImpl::send_velocity_body()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_BODY_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW,
+        POSITION_TARGET_TYPEMASK_X_IGNORE | POSITION_TARGET_TYPEMASK_Y_IGNORE |
+            POSITION_TARGET_TYPEMASK_Z_IGNORE | POSITION_TARGET_TYPEMASK_AX_IGNORE |
+            POSITION_TARGET_TYPEMASK_AY_IGNORE | POSITION_TARGET_TYPEMASK_AZ_IGNORE |
+            POSITION_TARGET_TYPEMASK_YAW_IGNORE,
         0.0f, // x
         0.0f, // y
         0.0f, // z
@@ -630,10 +599,6 @@ Offboard::Result OffboardImpl::send_velocity_body()
 
 Offboard::Result OffboardImpl::send_attitude()
 {
-    const static uint8_t IGNORE_BODY_ROLL_RATE = (1 << 0);
-    const static uint8_t IGNORE_BODY_PITCH_RATE = (1 << 1);
-    const static uint8_t IGNORE_BODY_YAW_RATE = (1 << 2);
-
     const auto attitude = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return _attitude;
@@ -668,7 +633,9 @@ Offboard::Result OffboardImpl::send_attitude()
         static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
-        IGNORE_BODY_ROLL_RATE | IGNORE_BODY_PITCH_RATE | IGNORE_BODY_YAW_RATE,
+        ATTITUDE_TARGET_TYPEMASK_BODY_ROLL_RATE_IGNORE |
+            ATTITUDE_TARGET_TYPEMASK_BODY_PITCH_RATE_IGNORE |
+            ATTITUDE_TARGET_TYPEMASK_BODY_YAW_RATE_IGNORE,
         q,
         0,
         0,
@@ -681,8 +648,6 @@ Offboard::Result OffboardImpl::send_attitude()
 
 Offboard::Result OffboardImpl::send_attitude_rate()
 {
-    const static uint8_t IGNORE_ATTITUDE = (1 << 7);
-
     const auto attitude_rate = [this]() {
         std::lock_guard<std::mutex> lock(_mutex);
         return _attitude_rate;
@@ -698,7 +663,7 @@ Offboard::Result OffboardImpl::send_attitude_rate()
         static_cast<uint32_t>(_parent->get_time().elapsed_ms()),
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
-        IGNORE_ATTITUDE,
+        ATTITUDE_TARGET_TYPEMASK_ATTITUDE_IGNORE,
         0,
         to_rad_from_deg(attitude_rate.roll_deg_s),
         to_rad_from_deg(attitude_rate.pitch_deg_s),
