@@ -453,30 +453,31 @@ const char descriptor_table_protodef_mocap_2fmocap_2eproto[] PROTOBUF_SECTION_VA
   "nce\0229\n\023velocity_covariance\030\010 \001(\0132\034.mavsd"
   "k.rpc.mocap.Covariance\"<\n\010MavFrame\022\027\n\023MA"
   "V_FRAME_MOCAP_NED\020\000\022\027\n\023MAV_FRAME_LOCAL_F"
-  "RD\020\001\"\336\001\n\013MocapResult\0224\n\006result\030\001 \001(\0162$.m"
+  "RD\020\001\"\366\001\n\013MocapResult\0224\n\006result\030\001 \001(\0162$.m"
   "avsdk.rpc.mocap.MocapResult.Result\022\022\n\nre"
-  "sult_str\030\002 \001(\t\"\204\001\n\006Result\022\022\n\016RESULT_UNKN"
+  "sult_str\030\002 \001(\t\"\234\001\n\006Result\022\022\n\016RESULT_UNKN"
   "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_S"
   "YSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\037\n\033"
-  "RESULT_INVALID_REQUEST_DATA\020\0042\207\003\n\014MocapS"
-  "ervice\022\212\001\n\031SetVisionPositionEstimate\0222.m"
-  "avsdk.rpc.mocap.SetVisionPositionEstimat"
-  "eRequest\0323.mavsdk.rpc.mocap.SetVisionPos"
-  "itionEstimateResponse\"\004\200\265\030\001\022\207\001\n\030SetAttit"
-  "udePositionMocap\0221.mavsdk.rpc.mocap.SetA"
-  "ttitudePositionMocapRequest\0322.mavsdk.rpc"
-  ".mocap.SetAttitudePositionMocapResponse\""
-  "\004\200\265\030\001\022`\n\013SetOdometry\022$.mavsdk.rpc.mocap."
-  "SetOdometryRequest\032%.mavsdk.rpc.mocap.Se"
-  "tOdometryResponse\"\004\200\265\030\001B\035\n\017io.mavsdk.moc"
-  "apB\nMocapProtob\006proto3"
+  "RESULT_INVALID_REQUEST_DATA\020\004\022\026\n\022RESULT_"
+  "UNSUPPORTED\020\0052\207\003\n\014MocapService\022\212\001\n\031SetVi"
+  "sionPositionEstimate\0222.mavsdk.rpc.mocap."
+  "SetVisionPositionEstimateRequest\0323.mavsd"
+  "k.rpc.mocap.SetVisionPositionEstimateRes"
+  "ponse\"\004\200\265\030\001\022\207\001\n\030SetAttitudePositionMocap"
+  "\0221.mavsdk.rpc.mocap.SetAttitudePositionM"
+  "ocapRequest\0322.mavsdk.rpc.mocap.SetAttitu"
+  "dePositionMocapResponse\"\004\200\265\030\001\022`\n\013SetOdom"
+  "etry\022$.mavsdk.rpc.mocap.SetOdometryReque"
+  "st\032%.mavsdk.rpc.mocap.SetOdometryRespons"
+  "e\"\004\200\265\030\001B\035\n\017io.mavsdk.mocapB\nMocapProtob\006"
+  "proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mocap_2fmocap_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mocap_2fmocap_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mocap_2fmocap_2eproto = {
-  false, false, 2502, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 
+  false, false, 2526, descriptor_table_protodef_mocap_2fmocap_2eproto, "mocap/mocap.proto", 
   &descriptor_table_mocap_2fmocap_2eproto_once, descriptor_table_mocap_2fmocap_2eproto_deps, 1, 16,
   schemas, file_default_instances, TableStruct_mocap_2fmocap_2eproto::offsets,
   file_level_metadata_mocap_2fmocap_2eproto, file_level_enum_descriptors_mocap_2fmocap_2eproto, file_level_service_descriptors_mocap_2fmocap_2eproto,
@@ -522,6 +523,7 @@ bool MocapResult_Result_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;
@@ -534,6 +536,7 @@ constexpr MocapResult_Result MocapResult::RESULT_SUCCESS;
 constexpr MocapResult_Result MocapResult::RESULT_NO_SYSTEM;
 constexpr MocapResult_Result MocapResult::RESULT_CONNECTION_ERROR;
 constexpr MocapResult_Result MocapResult::RESULT_INVALID_REQUEST_DATA;
+constexpr MocapResult_Result MocapResult::RESULT_UNSUPPORTED;
 constexpr MocapResult_Result MocapResult::Result_MIN;
 constexpr MocapResult_Result MocapResult::Result_MAX;
 constexpr int MocapResult::Result_ARRAYSIZE;
