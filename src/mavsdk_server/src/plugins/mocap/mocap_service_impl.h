@@ -372,6 +372,8 @@ public:
                 return rpc::mocap::MocapResult_Result_RESULT_CONNECTION_ERROR;
             case mavsdk::Mocap::Result::InvalidRequestData:
                 return rpc::mocap::MocapResult_Result_RESULT_INVALID_REQUEST_DATA;
+            case mavsdk::Mocap::Result::Unsupported:
+                return rpc::mocap::MocapResult_Result_RESULT_UNSUPPORTED;
         }
     }
 
@@ -392,6 +394,8 @@ public:
                 return mavsdk::Mocap::Result::ConnectionError;
             case rpc::mocap::MocapResult_Result_RESULT_INVALID_REQUEST_DATA:
                 return mavsdk::Mocap::Result::InvalidRequestData;
+            case rpc::mocap::MocapResult_Result_RESULT_UNSUPPORTED:
+                return mavsdk::Mocap::Result::Unsupported;
         }
     }
 

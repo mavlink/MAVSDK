@@ -321,6 +321,7 @@ public:
         NoSystem, /**< @brief No system is connected. */
         ConnectionError, /**< @brief Connection error. */
         InvalidRequestData, /**< @brief Invalid request data. */
+        Unsupported, /**< @brief Function unsupported. */
     };
 
     /**

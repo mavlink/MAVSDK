@@ -162,12 +162,13 @@ enum MocapResult_Result : int {
   MocapResult_Result_RESULT_NO_SYSTEM = 2,
   MocapResult_Result_RESULT_CONNECTION_ERROR = 3,
   MocapResult_Result_RESULT_INVALID_REQUEST_DATA = 4,
+  MocapResult_Result_RESULT_UNSUPPORTED = 5,
   MocapResult_Result_MocapResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MocapResult_Result_MocapResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool MocapResult_Result_IsValid(int value);
 constexpr MocapResult_Result MocapResult_Result_Result_MIN = MocapResult_Result_RESULT_UNKNOWN;
-constexpr MocapResult_Result MocapResult_Result_Result_MAX = MocapResult_Result_RESULT_INVALID_REQUEST_DATA;
+constexpr MocapResult_Result MocapResult_Result_Result_MAX = MocapResult_Result_RESULT_UNSUPPORTED;
 constexpr int MocapResult_Result_Result_ARRAYSIZE = MocapResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MocapResult_Result_descriptor();
@@ -2863,6 +2864,8 @@ class MocapResult final :
     MocapResult_Result_RESULT_CONNECTION_ERROR;
   static constexpr Result RESULT_INVALID_REQUEST_DATA =
     MocapResult_Result_RESULT_INVALID_REQUEST_DATA;
+  static constexpr Result RESULT_UNSUPPORTED =
+    MocapResult_Result_RESULT_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return MocapResult_Result_IsValid(value);
   }

@@ -249,6 +249,8 @@ std::ostream& operator<<(std::ostream& str, Mocap::Result const& result)
             return str << "Connection Error";
         case Mocap::Result::InvalidRequestData:
             return str << "Invalid Request Data";
+        case Mocap::Result::Unsupported:
+            return str << "Unsupported";
         default:
             return str << "Unknown";
     }
