@@ -140,6 +140,7 @@ message MocapResult {
         RESULT_NO_SYSTEM = 2; // No system is connected
         RESULT_CONNECTION_ERROR = 3; // Connection error
         RESULT_INVALID_REQUEST_DATA = 4; // Invalid request data
+        RESULT_UNSUPPORTED = 5; // Function unsupported
     }
 
     Result result = 1; // Result enum value
