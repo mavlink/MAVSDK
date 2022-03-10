@@ -685,7 +685,6 @@ MAVLinkParameters::Result SystemImpl::set_param_float(const std::string& name, f
 MAVLinkParameters::Result SystemImpl::set_param_int(const std::string& name, int32_t value)
 {
     MAVLinkParameters::ParamValue param_value;
-    // param_value.set<int32_t>(value);
     if (_param_map.find(name) != _param_map.end()) {
         param_value = _param_map.at(name);
     } else {
@@ -824,7 +823,6 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(const std::s
     auto res = prom.get_future();
 
     MAVLinkParameters::ParamValue value_type;
-    // value_type.set<int32_t>(0);
     if (_param_map.find(name) != _param_map.end()) {
         value_type = _param_map.at(name);
     } else {
