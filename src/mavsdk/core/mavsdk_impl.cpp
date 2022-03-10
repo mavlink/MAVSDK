@@ -623,7 +623,7 @@ void MavsdkImpl::send_heartbeat()
                                                            MAV_AUTOPILOT_INVALID,
         get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
         get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
-        0);
+        get_system_status());
     send_message(message);
 }
 
