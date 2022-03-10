@@ -2,6 +2,7 @@
 #include "integration_test_helper.h"
 #include "mavsdk.h"
 #include "plugins/param/param.h"
+#include <map>
 
 using namespace mavsdk;
 
@@ -121,5 +122,44 @@ TEST_F(SitlTest, PX4ParamHappy)
             param->get_param_float("MPC_VEL_MANUAL");
         EXPECT_EQ(get_result3.first, Param::Result::Success);
         EXPECT_FLOAT_EQ(get_result3.second, get_result1.second);
+    }
+}
+
+TEST_F(SitlTest, GetAllParams)
+{
+    Mavsdk mavsdk;
+
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    ASSERT_EQ(mavsdk.systems().size(), 1);
+
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto param = Param{system};
+
+    auto all_params = param.get_all_params();
+
+    std::map<std::string, float> all_mixed{};
+
+    LogInfo() << "Int params: " << all_params.int_params.size();
+    for (const auto& int_param : all_params.int_params) {
+        std::cout << int_param.name << " : " << int_param.value << '\n';
+        all_mixed[int_param.name] = static_cast<float>(int_param.value);
+    }
+
+    LogInfo() << "Float params: " << all_params.float_params.size();
+    for (const auto& float_param : all_params.float_params) {
+        std::cout << float_param.name << " : " << float_param.value << '\n';
+        all_mixed[float_param.name] = float_param.value;
+    }
+
+    LogInfo() << "Combined params: " << all_mixed.size();
+    for (const auto& mixed_param : all_mixed) {
+        std::cout << mixed_param.first << " : " << mixed_param.second << '\n';
     }
 }
