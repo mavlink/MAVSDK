@@ -273,6 +273,15 @@ public:
     void set_timeout_s(double timeout_s);
 
     /**
+     * @brief Set system status of this MAVLink entity.
+     *
+     * The default system status is MAV_STATE_UNINIT.
+     *
+     * @param system_status system status.
+     */
+    void set_system_status(uint8_t system_status);
+
+    /**
      * @brief Callback type discover and timeout notifications.
      */
     using NewSystemCallback = std::function<void()>;

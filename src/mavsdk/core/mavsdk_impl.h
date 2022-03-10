@@ -91,6 +91,8 @@ public:
     uint8_t get_base_mode() const;
     void set_custom_mode(uint32_t custom_mode);
     uint32_t get_custom_mode() const;
+    void set_system_status(uint8_t system_status);
+    uint8_t get_system_status();
 
 private:
     void add_connection(const std::shared_ptr<Connection>&);
@@ -150,6 +152,7 @@ private:
 
     std::atomic<uint8_t> _base_mode = 0;
     std::atomic<uint32_t> _custom_mode = 0;
+    std::atomic<uint8_t> _system_status = 0;
 };
 
 } // namespace mavsdk

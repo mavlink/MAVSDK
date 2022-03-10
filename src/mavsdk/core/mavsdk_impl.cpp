@@ -683,4 +683,14 @@ uint32_t MavsdkImpl::get_custom_mode() const
     return _custom_mode;
 }
 
+void MavsdkImpl::set_system_status(uint8_t system_status)
+{
+    _system_status = system_status;
+}
+
+uint8_t MavsdkImpl::get_system_status()
+{
+    return _system_status;
+}
+
 } // namespace mavsdk
