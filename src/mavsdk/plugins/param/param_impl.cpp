@@ -19,7 +19,10 @@ ParamImpl::~ParamImpl()
     _parent->unregister_plugin(this);
 }
 
-void ParamImpl::init() { _parent->get_all_params(); }
+void ParamImpl::init()
+{
+    _parent->get_all_params();
+}
 
 void ParamImpl::deinit() {}
 
@@ -78,7 +81,6 @@ Param::AllParams ParamImpl::get_all_params()
             tmp_param.value = parampair.second.get<int8_t>();
             res.int_params.push_back(tmp_param);
         }
-        
     }
 
     return res;

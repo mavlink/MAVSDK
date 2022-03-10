@@ -941,28 +941,24 @@ bool MAVLinkParameters::ParamValue::set_from_mavlink_param_value(
 {
     switch (mavlink_value.param_type) {
         case MAV_PARAM_TYPE_INT8: {
-            int8_t temp = mavlink_value.param_value;  
-            _value = temp; 
-            }
-            break;
+            int8_t temp = mavlink_value.param_value;
+            _value = temp;
+        } break;
 
         case MAV_PARAM_TYPE_INT16: {
-            int16_t temp = mavlink_value.param_value;  
+            int16_t temp = mavlink_value.param_value;
             _value = temp;
-            }
-            break;
-    
+        } break;
+
         case MAV_PARAM_TYPE_INT32: {
-            int32_t temp = mavlink_value.param_value;  
-            _value = temp; 
-            }
-            break;
+            int32_t temp = mavlink_value.param_value;
+            _value = temp;
+        } break;
 
         case MAV_PARAM_TYPE_REAL32: {
             float temp = mavlink_value.param_value;
-            _value = temp; 
-            }
-            break;
+            _value = temp;
+        } break;
 
         default:
             // This would be worrying
@@ -1284,18 +1280,15 @@ bool MAVLinkParameters::ParamValue::set_as_same_type(const std::string& value_st
 
 [[nodiscard]] float MAVLinkParameters::ParamValue::get_4_float_bytes_apm() const
 {
-    
     if (std::get_if<float>(&_value)) {
         return std::get<float>(_value);
     } else if (std::get_if<int32_t>(&_value)) {
         return std::stof(get_string());
     } else if (std::get_if<int16_t>(&_value)) {
         return std::stof(get_string());
-    }
-    else if (std::get_if<int8_t>(&_value)) {
-        return std::stof(get_string()); 
-    }
-    else {
+    } else if (std::get_if<int8_t>(&_value)) {
+        return std::stof(get_string());
+    } else {
         LogErr() << "Unknown type";
         assert(false);
         return NAN;
