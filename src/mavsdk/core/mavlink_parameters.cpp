@@ -1281,11 +1281,11 @@ bool MAVLinkParameters::ParamValue::set_as_same_type(const std::string& value_st
     if (std::get_if<float>(&_value)) {
         return std::get<float>(_value);
     } else if (std::get_if<int32_t>(&_value)) {
-        return std::stof(get_string());
+        return static_cast<int32_t>(std::get<float>(_value));
     } else if (std::get_if<int16_t>(&_value)) {
-        return std::stof(get_string());
+        return static_cast<int16_t>(std::get<float>(_value));
     } else if (std::get_if<int8_t>(&_value)) {
-        return std::stof(get_string());
+        return static_cast<int8_t>(std::get<float>(_value));
     } else {
         LogErr() << "Unknown type";
         assert(false);
