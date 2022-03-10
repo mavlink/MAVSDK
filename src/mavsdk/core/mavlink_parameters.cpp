@@ -311,12 +311,10 @@ void MAVLinkParameters::do_work()
                     work->param_value.get_mav_param_ext_type());
             } else {
                 // Param set is intended for Autopilot only.
-                float _value_set;
-                if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
-                    _value_set = work->param_value.get_4_float_bytes_apm();
-                } else {
-                    _value_set = work->param_value.get_4_float_bytes();
-                }
+                float value_set = (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
+                                      work->param_value.get_4_float_bytes_apm() :
+                                      work->param_value.get_4_float_bytes();
+
                 mavlink_msg_param_set_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
@@ -324,7 +322,7 @@ void MAVLinkParameters::do_work()
                     _parent.get_system_id(),
                     _parent.get_autopilot_id(),
                     param_id,
-                    _value_set,
+                    value_set,
                     work->param_value.get_mav_param_type());
             }
 
