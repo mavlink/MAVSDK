@@ -59,26 +59,26 @@ Param::AllParams ParamImpl::get_all_params()
     auto tmp = _parent->get_all_params();
 
     Param::AllParams res{};
-    for (auto const& parampair : tmp) {
-        if (parampair.second.is<float>()) {
+    for (auto const& param_pair : tmp) {
+        if (param_pair.second.is<float>()) {
             Param::FloatParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get<float>();
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<float>();
             res.float_params.push_back(tmp_param);
-        } else if (parampair.second.is<int32_t>()) {
+        } else if (param_pair.second.is<int32_t>()) {
             Param::IntParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get<int32_t>();
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<int32_t>();
             res.int_params.push_back(tmp_param);
-        } else if (parampair.second.is<int16_t>()) {
+        } else if (param_pair.second.is<int16_t>()) {
             Param::IntParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get<int16_t>();
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<int16_t>();
             res.int_params.push_back(tmp_param);
-        } else if (parampair.second.is<int8_t>()) {
+        } else if (param_pair.second.is<int8_t>()) {
             Param::IntParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get<int8_t>();
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<int8_t>();
             res.int_params.push_back(tmp_param);
         }
     }
