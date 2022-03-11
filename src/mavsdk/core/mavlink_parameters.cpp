@@ -310,17 +310,16 @@ void MAVLinkParameters::do_work()
                     param_value_buf,
                     work->param_value.get_mav_param_ext_type());
             } else {
-                // Param set is intended for Autopilot only.
                 float value_set = (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
-                                      work->param_value.get_4_float_bytes_apm() :
-                                      work->param_value.get_4_float_bytes();
+                                      work->param_value.get_4_float_bytes_cast() :
+                                      work->param_value.get_4_float_bytes_bytewise();
 
                 mavlink_msg_param_set_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
-                    _parent.get_autopilot_id(),
+                    _parent.get_autopilot_id(), // Param set is intended for Autopilot only.
                     param_id,
                     value_set,
                     work->param_value.get_mav_param_type());
@@ -409,18 +408,18 @@ void MAVLinkParameters::do_work()
                     work->param_count,
                     work->param_index);
             } else {
-                float _param_value;
+                float param_value;
                 if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
-                    _param_value = work->param_value.get_4_float_bytes_apm();
+                    param_value = work->param_value.get_4_float_bytes_cast();
                 } else {
-                    _param_value = work->param_value.get_4_float_bytes();
+                    param_value = work->param_value.get_4_float_bytes_bytewise();
                 }
                 mavlink_msg_param_value_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
-                    _param_value,
+                    param_value,
                     work->param_value.get_mav_param_type(),
                     work->param_count,
                     work->param_index);
@@ -1263,7 +1262,7 @@ bool MAVLinkParameters::ParamValue::set_as_same_type(const std::string& value_st
     return true;
 }
 
-[[nodiscard]] float MAVLinkParameters::ParamValue::get_4_float_bytes() const
+[[nodiscard]] float MAVLinkParameters::ParamValue::get_4_float_bytes_bytewise() const
 {
     if (std::get_if<float>(&_value)) {
         return std::get<float>(_value);
@@ -1276,7 +1275,7 @@ bool MAVLinkParameters::ParamValue::set_as_same_type(const std::string& value_st
     }
 }
 
-[[nodiscard]] float MAVLinkParameters::ParamValue::get_4_float_bytes_apm() const
+[[nodiscard]] float MAVLinkParameters::ParamValue::get_4_float_bytes_cast() const
 {
     if (std::get_if<float>(&_value)) {
         return std::get<float>(_value);

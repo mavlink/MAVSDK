@@ -35,8 +35,8 @@ public:
 
         bool set_as_same_type(const std::string& value_str);
 
-        [[nodiscard]] float get_4_float_bytes() const;
-        [[nodiscard]] float get_4_float_bytes_apm() const;
+        [[nodiscard]] float get_4_float_bytes_bytewise() const;
+        [[nodiscard]] float get_4_float_bytes_cast() const;
 
         void get_128_bytes(char* bytes) const;
 
