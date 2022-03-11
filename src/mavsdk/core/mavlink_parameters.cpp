@@ -937,13 +937,28 @@ bool MAVLinkParameters::ParamValue::set_from_mavlink_param_value(
     const mavlink_param_value_t& mavlink_value)
 {
     switch (mavlink_value.param_type) {
+        case MAV_PARAM_TYPE_UINT8: {
+            uint8_t temp = mavlink_value.param_value;
+            _value = temp;
+        } break;
+
         case MAV_PARAM_TYPE_INT8: {
             int8_t temp = mavlink_value.param_value;
             _value = temp;
         } break;
 
+        case MAV_PARAM_TYPE_UINT16: {
+            uint16_t temp = mavlink_value.param_value;
+            _value = temp;
+        } break;
+
         case MAV_PARAM_TYPE_INT16: {
             int16_t temp = mavlink_value.param_value;
+            _value = temp;
+        } break;
+
+        case MAV_PARAM_TYPE_UINT32: {
+            uint32_t temp = mavlink_value.param_value;
             _value = temp;
         } break;
 
@@ -959,7 +974,8 @@ bool MAVLinkParameters::ParamValue::set_from_mavlink_param_value(
 
         default:
             // This would be worrying
-            LogErr() << "Error: unknown mavlink param type: ";
+            LogErr() << "Error: unknown mavlink param type: "
+                     << std::to_string(mavlink_value.param_type);
             return false;
     }
     return true;
@@ -1279,12 +1295,18 @@ bool MAVLinkParameters::ParamValue::set_as_same_type(const std::string& value_st
 {
     if (std::get_if<float>(&_value)) {
         return std::get<float>(_value);
+    } else if (std::get_if<uint32_t>(&_value)) {
+        return static_cast<float>(std::get<uint32_t>(_value));
     } else if (std::get_if<int32_t>(&_value)) {
-        return static_cast<int32_t>(std::get<float>(_value));
+        return static_cast<float>(std::get<int32_t>(_value));
+    } else if (std::get_if<uint16_t>(&_value)) {
+        return static_cast<float>(std::get<uint16_t>(_value));
     } else if (std::get_if<int16_t>(&_value)) {
-        return static_cast<int16_t>(std::get<float>(_value));
+        return static_cast<float>(std::get<int16_t>(_value));
+    } else if (std::get_if<uint8_t>(&_value)) {
+        return static_cast<float>(std::get<uint8_t>(_value));
     } else if (std::get_if<int8_t>(&_value)) {
-        return static_cast<int8_t>(std::get<float>(_value));
+        return static_cast<float>(std::get<int8_t>(_value));
     } else {
         LogErr() << "Unknown type";
         assert(false);

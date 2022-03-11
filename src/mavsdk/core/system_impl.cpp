@@ -692,10 +692,16 @@ MAVLinkParameters::Result SystemImpl::set_param_int(const std::string& name, int
         // FIXME: Need a better way to handle this.
         param_value.set<int32_t>(value);
     }
-    if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT8) {
+    if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_UINT8) {
+        param_value.set<uint8_t>(value);
+    } else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT8) {
         param_value.set<int8_t>(value);
+    } else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_UINT16) {
+        param_value.set<uint16_t>(value);
     } else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT16) {
         param_value.set<int16_t>(value);
+    } else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_UINT32) {
+        param_value.set<uint32_t>(value);
     } else if (param_value.get_mav_param_type() == MAV_PARAM_TYPE_INT32) {
         param_value.set<int32_t>(value);
     }
