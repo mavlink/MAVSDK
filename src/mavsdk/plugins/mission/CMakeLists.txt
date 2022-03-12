@@ -1,15 +1,15 @@
-target_sources(mavsdk
-    PRIVATE
-    mission.cpp
-    mission_impl.cpp
-)
-
-target_include_directories(mavsdk PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-    )
-
-install(FILES
-    include/plugins/mission/mission.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
-)
+# WINGTRA: DISABLE target_sources(mavsdk
+# WINGTRA: DISABLE     PRIVATE
+# WINGTRA: DISABLE     mission.cpp
+# WINGTRA: DISABLE     mission_impl.cpp
+# WINGTRA: DISABLE )
+# WINGTRA: DISABLE 
+# WINGTRA: DISABLE target_include_directories(mavsdk PUBLIC
+# WINGTRA: DISABLE     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+# WINGTRA: DISABLE     $<INSTALL_INTERFACE:include>
+# WINGTRA: DISABLE     )
+# WINGTRA: DISABLE 
+# WINGTRA: DISABLE install(FILES
+# WINGTRA: DISABLE     include/plugins/mission/mission.h
+# WINGTRA: DISABLE     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
+# WINGTRA: DISABLE )

@@ -61,6 +61,7 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
     EXPECT_EQ(str, result.value().text);
 }
 
+/* WINGTRA DISABLED
 TEST(MavlinkStatustextHandler, MultiStatustext)
 {
     const std::string str = "Lorem ipsum dolor sit amet, consectetur adipiscing"
@@ -259,6 +260,7 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
         }
     }
 }
+*/
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop

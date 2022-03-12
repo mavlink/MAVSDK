@@ -155,8 +155,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
         static_cast<uint32_t>(static_cast<double>(raw_gps.horizontal_uncertainty_m) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.vertical_uncertainty_m) * 1E3),
         static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5),
-        static_cast<uint16_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
+        static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5)/* WINGTRA DISABLED ,
+        static_cast<uint16_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2) */);
 
     add_msg_cache(MAVLINK_MSG_ID_GPS_RAW_INT, msg);
 
@@ -186,10 +186,10 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
         -1,
         static_cast<uint16_t>(static_cast<double>(battery.remaining_percent) * 1E2),
         0,
-        MAV_BATTERY_CHARGE_STATE_UNDEFINED,
+        MAV_BATTERY_CHARGE_STATE_UNDEFINED /* WINGTRA DISABLED ,
         voltages_ext,
         MAV_BATTERY_MODE_UNKNOWN,
-        0);
+        0 */);
 
     add_msg_cache(MAVLINK_MSG_ID_BATTERY_STATUS, msg);
 
@@ -239,9 +239,9 @@ TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text
         _parent->get_own_component_id(),
         &msg,
         type,
-        status_text.text.data(),
+        status_text.text.data() /* WINGTRA DISABLED ,
         0,
-        0);
+        0 */);
 
     return _parent->send_message(msg) ? TelemetryServer::Result::Success :
                                         TelemetryServer::Result::Unsupported;

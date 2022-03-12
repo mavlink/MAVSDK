@@ -58,12 +58,14 @@ void TelemetryImpl::init()
         [this](const mavlink_message_t& message) { process_mount_orientation(message); },
         this);
 
+    /* WINGTRA DISABLED
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
         [this](const mavlink_message_t& message) {
             process_gimbal_device_attitude_status(message);
         },
         this);
+    */
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_RAW_INT,
@@ -808,6 +810,7 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
 
 void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_t& message)
 {
+    /* WINGTRA DISABLED
     // We accept both MOUNT_ORIENTATION and GIMBAL_DEVICE_ATTITUDE_STATUS for now,
     // in order to support both gimbal v1 and v2 protocols.
 
@@ -836,6 +839,7 @@ void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_
         auto arg = camera_attitude_euler();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
+    */
 }
 
 void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
@@ -973,7 +977,7 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     raw_gps_info.vertical_uncertainty_m = static_cast<float>(gps_raw_int.v_acc) * 1e-3f;
     raw_gps_info.velocity_uncertainty_m_s = static_cast<float>(gps_raw_int.vel_acc) * 1e-3f;
     raw_gps_info.heading_uncertainty_deg = static_cast<float>(gps_raw_int.hdg_acc) * 1e-5f;
-    raw_gps_info.yaw_deg = static_cast<float>(gps_raw_int.yaw) * 1e-2f;
+    // WINGTRA DISABLED raw_gps_info.yaw_deg = static_cast<float>(gps_raw_int.yaw) * 1e-2f;
     set_raw_gps(raw_gps_info);
 
     // TODO: This is just an interim hack, we will have to look at
@@ -1138,7 +1142,7 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
-    const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
+    const bool armable = sys_status.onboard_control_sensors_health /* WINGTRA DISABLED & MAV_SYS_STATUS_PREARM_CHECK */;
 
     set_health_armable(armable);
     if (_health_all_ok_subscription) {
@@ -1442,8 +1446,8 @@ void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
     scaled_pressure_struct.differential_pressure_hpa = scaled_pressure_msg.press_diff;
     scaled_pressure_struct.temperature_deg =
         static_cast<float>(scaled_pressure_msg.temperature) * 1e-2f;
-    scaled_pressure_struct.differential_pressure_temperature_deg =
-        static_cast<float>(scaled_pressure_msg.temperature_press_diff) * 1e-2f;
+    // WINGTRA DISABLED scaled_pressure_struct.differential_pressure_temperature_deg =
+    // WINGTRA DISABLED     static_cast<float>(scaled_pressure_msg.temperature_press_diff) * 1e-2f;
 
     set_scaled_pressure(scaled_pressure_struct);
 

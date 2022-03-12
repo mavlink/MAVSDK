@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
+set(SDK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+
 option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
 option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)

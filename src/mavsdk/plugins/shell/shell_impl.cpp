@@ -73,9 +73,9 @@ bool ShellImpl::send_command_message(std::string command)
             timeout_ms,
             0,
             static_cast<uint8_t>(MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN),
-            reinterpret_cast<const uint8_t*>(command.c_str()),
-            _parent->get_system_id(),
-            _parent->get_autopilot_id());
+            reinterpret_cast<const uint8_t*>(command.c_str())/* WINGTRA,*/);
+            // WINGTRA DISABLED _parent->get_system_id(),
+            // WINGTRA DISABLED _parent->get_autopilot_id());
         command.erase(0, MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN);
         if (!_parent->send_message(message)) {
             return false;
@@ -103,9 +103,9 @@ bool ShellImpl::send_command_message(std::string command)
         timeout_ms,
         0,
         static_cast<uint8_t>(command.length()),
-        data,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id());
+        data/* WINGTRA,*/);
+        // WINGTRA DISABLED _parent->get_system_id(),
+        // WINGTRA DISABLED _parent->get_autopilot_id());
 
     return _parent->send_message(message);
 }

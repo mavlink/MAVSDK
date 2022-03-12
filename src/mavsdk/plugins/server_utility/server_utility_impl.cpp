@@ -91,9 +91,9 @@ ServerUtilityImpl::send_status_text(ServerUtility::StatusTextType type, std::str
             _parent->get_own_component_id(),
             &message,
             maybe_mav_severity.value(),
-            tmp_buf,
+            tmp_buf /* WINGTRA ,
             id,
-            chunk_seq);
+            chunk_seq */);
 
         if (!_parent->send_message(message)) {
             return ServerUtility::Result::ConnectionError;

@@ -596,6 +596,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_list()
         &message,
         _sender.get_system_id(),
         MAV_COMP_ID_AUTOPILOT1,
+        0, // WINGTRA
         _type);
 
     if (!_sender.send_message(message)) {

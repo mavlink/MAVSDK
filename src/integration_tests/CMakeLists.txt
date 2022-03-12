@@ -22,22 +22,22 @@ add_executable(integration_tests_runner
     connection.cpp
     follow_me.cpp
     geofence_inclusion.cpp
-    gimbal.cpp
+    # WINGTRA DISABLED gimbal.cpp
     info.cpp
     offboard_attitude.cpp
     #logging.cpp # Not fully implemented
     log_files.cpp
     ftp.cpp
-    mission_cancellation.cpp
-    mission_change_speed.cpp
-    mission.cpp
-    mission_rtl.cpp
+    # WINGTRA DISABLED mission_cancellation.cpp
+    # WINGTRA DISABLED mission_change_speed.cpp
+    # WINGTRA DISABLED mission.cpp
+    # WINGTRA DISABLED mission_rtl.cpp
     mission_raw_mission_changed.cpp
     mission_raw_import_and_fly.cpp
-    mission_set_current.cpp
-    offboard_acceleration.cpp
-    offboard_velocity.cpp
-    offboard_position.cpp
+    # WINGTRA DISABLED mission_set_current.cpp
+    # WINGTRA DISABLED offboard_acceleration.cpp
+    # WINGTRA DISABLED offboard_velocity.cpp
+    # WINGTRA DISABLED offboard_position.cpp
     param.cpp
     path_checker.cpp
     system_connection_async.cpp
@@ -49,7 +49,7 @@ add_executable(integration_tests_runner
     telemetry_modes.cpp
     telemetry_sync.cpp
     mavlink_passthrough.cpp
-    mission_transfer_lossy.cpp
+    # WINGTRA DISABLED mission_transfer_lossy.cpp
 )
 
 target_include_directories(integration_tests_runner

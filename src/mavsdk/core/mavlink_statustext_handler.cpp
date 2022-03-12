@@ -10,6 +10,7 @@ MavlinkStatustextHandler::process(const mavlink_statustext_t& statustext)
     strncpy(text_with_null, statustext.text, sizeof(text_with_null) - 1);
     auto severity = static_cast<MAV_SEVERITY>(statustext.severity);
 
+    /* WINGTRA: DISABLE id
     if (statustext.id > 0) {
         if (statustext.id != _last_id) {
             _temp_multi_str = "";
@@ -33,6 +34,7 @@ MavlinkStatustextHandler::process(const mavlink_statustext_t& statustext)
             return Statustext{_temp_multi_str, severity};
         }
     }
+    */
 
     return Statustext{text_with_null, severity};
 }

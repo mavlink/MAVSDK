@@ -10,4 +10,4 @@
 
 extern mavlink_status_t* mavlink_get_channel_status(uint8_t chan);
 
-#include "mavlink/v2.0/common/mavlink.h"
+#include "mavlink/v2.0/wingtra/mavlink.h"

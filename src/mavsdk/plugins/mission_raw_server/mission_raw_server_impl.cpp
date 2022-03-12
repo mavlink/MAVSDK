@@ -208,9 +208,10 @@ void MissionRawServerImpl::init()
                     _parent->get_own_component_id(),
                     &status_message,
                     MAV_SEVERITY_ERROR,
-                    "No Mission Loaded",
-                    0,
-                    0);
+                    "No Mission Loaded"/* WINGTRA, */
+                    // WINGTRA 0,
+                    // WINGTRA 0);
+                    /* WINGTRA */);
                 _parent->send_message(status_message);
             } else if (_current_mission.size() <= set_current.seq) {
                 mavlink_message_t status_message;
@@ -219,9 +220,10 @@ void MissionRawServerImpl::init()
                     _parent->get_own_component_id(),
                     &status_message,
                     MAV_SEVERITY_ERROR,
-                    "Unknown Mission seq id",
-                    0,
-                    0);
+                    "Unknown Mission seq id"/* WINGTRA, */
+                    // WINGTRA 0,
+                    // WINGTRA 0);
+                    /* WINGTRA */);
                 _parent->send_message(status_message);
             } else {
                 set_current_seq(set_current.seq);

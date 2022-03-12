@@ -6,14 +6,14 @@ set(COMPONENTS_LIST
     calibration
     camera
     core
-    failure
+    # WINGTRA DISABLE failure
     follow_me
     ftp
     geofence
-    gimbal
+    # WINGTRA DISABLE gimbal
     info log_files
     manual_control
-    mission
+    # WINGTRA DISABLE mission
     mission_raw
     mission_raw_server
     mocap offboard
@@ -23,7 +23,7 @@ set(COMPONENTS_LIST
     shell
     telemetry
     telemetry_server
-    tracking_server
+    # WINGTRA DISABLE tracking_server
     tune
     transponder
 )
@@ -87,15 +87,32 @@ elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "(armv6|armv7)")
     target_link_libraries(mavsdk_server PRIVATE atomic)
 endif()
 
+# WINGTAR ADDED
+target_include_directories(mavsdk_server
+    PRIVATE
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins/connection_initiator.h>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins/grpc_server.h>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins/mavsdk_server.h>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins/mavsdk_server_api.h>
+)
+foreach(COMPONENT_NAME ${COMPONENTS_LIST})
+    target_include_directories(mavsdk_server
+        PRIVATE
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins/${COMPONENT_NAME}>
+    )
+endforeach()
+# WINGTAR ADDED: END
+
 target_include_directories(mavsdk_server
     PRIVATE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk/core>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk/plugins>
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins>
+    # WINGTRA DISABLED $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins>
     PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated>
     $<INSTALL_INTERFACE:include>
 )
+get_target_property(thirdB mavsdk_server INCLUDE_DIRECTORIES)
 
 # Build and install mavsdk_server for all but iOS and Android
 if(NOT IOS AND NOT ANDROID)

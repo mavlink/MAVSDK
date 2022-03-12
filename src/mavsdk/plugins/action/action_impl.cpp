@@ -459,6 +459,7 @@ void ActionImpl::hold_async(const Action::ResultCallback& callback) const
 void ActionImpl::set_actuator_async(
     const int index, const float value, const Action::ResultCallback& callback)
 {
+    /* WINGTRA: DISABLE
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_SET_ACTUATOR;
@@ -490,6 +491,7 @@ void ActionImpl::set_actuator_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
+    */
 }
 
 void ActionImpl::transition_to_fixedwing_async(const Action::ResultCallback& callback) const

@@ -6,7 +6,7 @@ add_executable(unit_tests_mavsdk_server
     camera_service_impl_test.cpp
     connection_initiator_test.cpp
     core_service_impl_test.cpp
-    mission_service_impl_test.cpp
+    # WINGTRA DISABLED mission_service_impl_test.cpp
     offboard_service_impl_test.cpp
     telemetry_service_impl_test.cpp
     info_service_impl_test.cpp

@@ -116,11 +116,12 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
         static_cast<int16_t>(y * 1000),
         static_cast<int16_t>(z * 1000),
         static_cast<int16_t>(r * 1000),
-        buttons,
-        buttons2,
-        enabled_extensions,
-        pitch_only_axis,
-        roll_only_axis);
+        buttons/* WINGTRA */);
+        // WINGTRA: DISABLED buttons,
+        // WINGTRA: DISABLED buttons2,
+        // WINGTRA: DISABLED enabled_extensions,
+        // WINGTRA: DISABLED pitch_only_axis,
+        // WINGTRA: DISABLED roll_only_axis);
     return _parent->send_message(message) ? ManualControl::Result::Success :
                                             ManualControl::Result::ConnectionError;
 }

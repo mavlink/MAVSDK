@@ -676,8 +676,8 @@ Offboard::Result OffboardImpl::send_attitude()
         0,
         0,
         0,
-        thrust,
-        thrust_body);
+        thrust/* WINGTRA, */);
+        // WINGTRA DISABLED thrust_body);
     return _parent->send_message(message) ? Offboard::Result::Success :
                                             Offboard::Result::ConnectionError;
 }
@@ -706,8 +706,8 @@ Offboard::Result OffboardImpl::send_attitude_rate()
         to_rad_from_deg(attitude_rate.roll_deg_s),
         to_rad_from_deg(attitude_rate.pitch_deg_s),
         to_rad_from_deg(attitude_rate.yaw_deg_s),
-        _attitude_rate.thrust_value,
-        thrust_body);
+        _attitude_rate.thrust_value/* WINGTRA, */);
+        // WINGTRA DISABLED thrust_body);
     return _parent->send_message(message) ? Offboard::Result::Success :
                                             Offboard::Result::ConnectionError;
 }
