@@ -7,3 +7,6 @@
 [submodule "mavsdk-proto"]
 	path = proto
 	url = https://github.com/mavlink/MAVSDK-Proto.git
+[submodule "mavlink_generator"]
+	path = mavlink_generator
+	url = git@github.com:wingtra/mavlink_generator.git
