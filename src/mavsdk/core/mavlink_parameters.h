@@ -18,13 +18,15 @@ class SystemImpl;
 
 class MAVLinkParameters {
 public:
+    MAVLinkParameters() = delete;
     explicit MAVLinkParameters(SystemImpl& parent);
     ~MAVLinkParameters();
 
     class ParamValue {
     public:
-        bool set_from_mavlink_param_value(const mavlink_param_value_t& mavlink_value);
-        bool set_from_mavlink_param_set(const mavlink_param_set_t& mavlink_set);
+        bool set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value);
+        bool set_from_mavlink_param_value_cast(const mavlink_param_value_t& mavlink_value);
+        bool set_from_mavlink_param_set_bytewise(const mavlink_param_set_t& mavlink_set);
         bool set_from_mavlink_param_ext_set(const mavlink_param_ext_set_t& mavlink_ext_set);
         bool set_from_mavlink_param_ext_value(const mavlink_param_ext_value_t& mavlink_ext_value);
         bool set_from_xml(const std::string& type_str, const std::string& value_str);
@@ -37,6 +39,12 @@ public:
 
         [[nodiscard]] float get_4_float_bytes_bytewise() const;
         [[nodiscard]] float get_4_float_bytes_cast() const;
+
+        [[nodiscard]] std::optional<int> get_int() const;
+        [[nodiscard]] std::optional<float> get_float() const;
+
+        bool set_int(int new_value);
+        void set_float(float new_value);
 
         void get_128_bytes(char* bytes) const;
 
@@ -113,14 +121,32 @@ public:
         UnknownError
     };
 
-    typedef std::function<void(Result result)> set_param_callback_t;
+    Result set_param(const std::string& name, ParamValue value, bool extended = false);
 
-    Result set_param(const std::string& name, const ParamValue& value, bool extended = false);
+    using SetParamCallback = std::function<void(Result result)>;
 
     void set_param_async(
         const std::string& name,
-        const ParamValue& value,
-        const set_param_callback_t& callback,
+        ParamValue value,
+        const SetParamCallback& callback,
+        const void* cookie = nullptr,
+        bool extended = false);
+
+    Result set_param_int(const std::string& name, int32_t value, bool extended = false);
+
+    void set_param_int_async(
+        const std::string& name,
+        int32_t value,
+        const SetParamCallback& callback,
+        const void* cookie = nullptr,
+        bool extended = false);
+
+    Result set_param_float(const std::string& name, float value, bool extended = false);
+
+    void set_param_float_async(
+        const std::string& name,
+        float value,
+        const SetParamCallback& callback,
         const void* cookie = nullptr,
         bool extended = false);
 
@@ -129,20 +155,43 @@ public:
 
     std::pair<Result, ParamValue>
     retrieve_server_param(const std::string& name, ParamValue value_type);
+
+    using GetParamAnyCallback = std::function<void(Result, ParamValue)>;
+
     std::pair<Result, ParamValue>
-    get_param(const std::string& name, ParamValue value_type, bool extended);
-    typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
+    get_param(const std::string& name, ParamValue value_type, bool extended = false);
+
     void get_param_async(
         const std::string& name,
-        ParamValue value_type,
-        const get_param_callback_t& callback,
+        ParamValue value,
+        const GetParamAnyCallback& callback,
+        const void* cookie,
+        bool extended = false);
+
+    std::pair<Result, float> get_param_float(const std::string& name, bool extended);
+
+    using GetParamFloatCallback = std::function<void(Result, float)>;
+
+    void get_param_float_async(
+        const std::string& name,
+        const GetParamFloatCallback& callback,
+        const void* cookie,
+        bool extended = false);
+
+    std::pair<Result, int32_t> get_param_int(const std::string& name, bool extended);
+
+    using GetParamIntCallback = std::function<void(Result, int32_t)>;
+
+    void get_param_int_async(
+        const std::string& name,
+        const GetParamIntCallback& callback,
         const void* cookie,
         bool extended = false);
 
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
-    typedef std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>
-        get_all_params_callback_t;
-    void get_all_params_async(const get_all_params_callback_t& callback);
+    using GetAllParamsCallback =
+        std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>;
+    void get_all_params_async(const GetAllParamsCallback& callback);
 
     using ParamChangedCallback = std::function<void(ParamValue value)>;
     void subscribe_param_changed(
@@ -185,14 +234,17 @@ private:
 
     struct WorkItem {
         enum class Type { Get, Set, Value, Ack } type{Type::Get};
-        // TODO: a union would be nicer for the callback
-        get_param_callback_t get_param_callback{nullptr};
-        set_param_callback_t set_param_callback{nullptr};
+        std::variant<
+            GetParamFloatCallback,
+            GetParamIntCallback,
+            GetParamAnyCallback,
+            SetParamCallback>
+            callback{};
         std::string param_name{};
         ParamValue param_value{};
         bool extended{false};
-        int retries_done{0};
         bool already_requested{false};
+        bool exact_type_known{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
         double timeout_s;
@@ -217,17 +269,11 @@ private:
     std::mutex _param_changed_subscriptions_mutex{};
     std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
 
-    struct AllParameters {
-        std::map<std::string, ParamValue> all_params{};
-        get_all_params_callback_t callback{nullptr};
-        void* timeout_cookie{nullptr};
-    };
-    std::shared_ptr<AllParameters> _all_param_store{nullptr};
-    std::mutex _all_param_mutex{};
+    std::mutex _all_params_mutex{};
+    GetAllParamsCallback _all_params_callback;
+    void* _all_params_timeout_cookie{nullptr};
+    std::map<std::string, ParamValue> _all_params{};
 
-    // dl_time_t _last_request_time = {};
-
-    std::map<std::string, ParamValue> _param_server_store;
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_ext_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);

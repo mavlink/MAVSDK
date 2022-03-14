@@ -19,10 +19,7 @@ ParamImpl::~ParamImpl()
     _parent->unregister_plugin(this);
 }
 
-void ParamImpl::init()
-{
-    _parent->get_all_params();
-}
+void ParamImpl::init() {}
 
 void ParamImpl::deinit() {}
 

@@ -163,3 +163,29 @@ TEST_F(SitlTest, GetAllParams)
         std::cout << mixed_param.first << " : " << mixed_param.second << '\n';
     }
 }
+
+TEST_F(SitlTest, APParam)
+{
+    Mavsdk mavsdk;
+
+    ConnectionResult ret = mavsdk.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::Success);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    auto system = mavsdk.systems().at(0);
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto param = std::make_shared<Param>(system);
+
+    Param::Result set_result1 = param->set_param_int("TERRAIN_ENABLE", 1);
+
+    ASSERT_EQ(set_result1, Param::Result::Success);
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    const std::pair<Param::Result, int> get_result2 = param->get_param_int("TERRAIN_ENABLE");
+    EXPECT_EQ(get_result2.first, Param::Result::Success);
+    EXPECT_EQ(get_result2.second, 1);
+}
