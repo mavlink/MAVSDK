@@ -35,7 +35,7 @@ if [[ "${PX4_VERSION}" ]]; then
     fi
 
     # Make sure everything is stopped first.
-    ${script_dir}/stop_px4_sitl.sh
+    ${script_dir}/stop_sitl.sh
 
     # To prevent any races.
     sleep 1
@@ -95,7 +95,7 @@ elif [[ "${APM_VERSION}" ]]; then
     fi
     echo "DEBUG: APM_FIRMWARE_DIR: " ${APM_FIRMWARE_DIR}
     # Make sure everything is stopped first.
-    ${script_dir}/stop_px4_sitl.sh
+    ${script_dir}/stop_sitl.sh
     echo "DEBUG: script_dir: " ${script_dir}
     # To prevent any races.
     sleep 1
