@@ -28,10 +28,10 @@ fi
 # PX4 specific SITL Run Code
 if [[ "${PX4_VERSION}" ]]; then
     if [[ -n "$PX4_FIRMWARE_DIR" ]]; then
-        px4_firmware_dir=$PX4_FIRMWARE_DIR
+        px4_firmware_dir=`realpath $PX4_FIRMWARE_DIR`
     else
         # Try to use the default path on the same folder level.
-        px4_firmware_dir=`realpath ../Firmware`
+        px4_firmware_dir=`realpath ../PX4-Autopilot`
     fi
 
     # Make sure everything is stopped first.
@@ -88,7 +88,7 @@ if [[ "${PX4_VERSION}" ]]; then
 
 elif [[ "${APM_VERSION}" ]]; then
     if [[ -n "$APM_FIRMWARE_DIR" ]]; then
-        apm_firmware_dir=$APM_FIRMWARE_DIR
+        apm_firmware_dir=`realpath $APM_FIRMWARE_DIR`
     else
         # Try to use the default path on the same folder level.
         apm_firmware_dir=`realpath ../ArduPilot`
