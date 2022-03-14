@@ -20,8 +20,7 @@ fi
 
 NPROCS=$(nproc --all)
 
-
-cmake -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DUBSAN=ON -DLSAN=ON -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -j $NPROCS -Bbuild/debug -H.;
+cmake -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -j $NPROCS -Bbuild/debug -H.;
 cmake --build build/debug -- -j $NPROCS;
 
 if [ "${PX4_VERSION}" ]; then
