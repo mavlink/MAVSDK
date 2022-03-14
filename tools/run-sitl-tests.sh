@@ -25,9 +25,9 @@ cmake --build build/debug -- -j $NPROCS;
 
 if [ "${PX4_VERSION}" ]; then
     echo "PX4 Autopilot Version Specified: " ${PX4_VERSION}
-    PX4_SIM_SPEED_FACTOR=10 AUTOSTART_SITL=1 PX4_FIRMWARE_DIR=$PX4_FIRMWARE_DIR HEADLESS=1 build/debug/src/integration_tests/integration_tests_runner --gtest_filter="SitlTest.*"
+    PX4_SIM_SPEED_FACTOR=10 AUTOSTART_SITL=1 PX4_FIRMWARE_DIR=$PX4_FIRMWARE_DIR HEADLESS=1 build/debug/src/integration_tests/integration_tests_runner --gtest_filter="SitlTest.*:-SitlTest.AP*"
 else
     echo "Ardupilot Autopilot Version Specified: " ${APM_VERSION}
     SIM_SPEEDUP=10 AUTOSTART_SITL=1 APM_FIRMWARE_DIR=$APM_FIRMWARE_DIR HEADLESS=1 build/debug/src/integration_tests/integration_tests_runner \
-        --gtest_filter="SitlTest.TelemetryHealth:SitlTest.SystemConnectionAsync"
+        --gtest_filter="SitlTest.*:-SitlTest.PX4*"
 fi
