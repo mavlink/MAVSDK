@@ -24,12 +24,10 @@ killall $QUIET gzserver
 killall $QUIET px4
 
 
-pkill -9 -f screen
-pkill -9 -f python
-pkill -9 -f run_in_terminal
-pkill -9 -f mavproxy.py
-pkill -9 -f ardurover
-pkill -9 -f arducopter
+killall $QUIET sim_vehicle.py
+killall $QUIET mavproxy.py
+killall $QUIET ardurover
+killall $QUIET arducopter
 
 sleep 3
 
@@ -37,11 +35,9 @@ killall $QUIET -SIGKILL gzviewer
 killall $QUIET -SIGKILL gzserver
 killall $QUIET -SIGKILL px4
 
-pkill -9 -f screen
-pkill -9 -f python
-pkill -9 -f run_in_terminal
-pkill -9 -f mavproxy.py
-pkill -9 -f ardurover
-pkill -9 -f arducopter
+killall $QUIET -SIGKILL sim_vehicle.py
+killall $QUIET -SIGKILL mavproxy.py
+killall $QUIET -SIGKILL ardurover
+killall $QUIET -SIGKILL arducopter
 
 exit 0
