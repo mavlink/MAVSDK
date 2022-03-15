@@ -2739,7 +2739,7 @@ void TelemetryImpl::check_calibration()
                 },
                 this);
 
-        } else {
+        } else if (_parent->compatibility_mode() == System::CompatibilityMode::Px4) {
             _parent->get_param_int_async(
                 std::string("CAL_GYRO0_ID"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
@@ -2838,7 +2838,7 @@ void TelemetryImpl::process_parameter_update(const std::string& name)
                 },
                 this);
         }
-    } else {
+    } else if (_parent->compatibility_mode() == System::CompatibilityMode::Px4) {
         if (name.compare("CAL_GYRO0_ID") == 0) {
             _parent->get_param_int_async(
                 std::string("CAL_GYRO0_ID"),
