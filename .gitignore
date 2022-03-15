@@ -17,3 +17,6 @@ CMakeLists.txt.user*
 
 tools/docs
 venv/
+
+#mavlink generated files
+src/third_party/mavlink/
