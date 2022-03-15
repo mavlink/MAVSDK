@@ -629,7 +629,7 @@ void MavsdkImpl::send_heartbeat()
                                                            MAV_AUTOPILOT_INVALID,
         get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
         get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
-        0);
+        get_system_status());
     send_message(message);
 }
 
@@ -687,6 +687,16 @@ void MavsdkImpl::set_custom_mode(uint32_t custom_mode)
 uint32_t MavsdkImpl::get_custom_mode() const
 {
     return _custom_mode;
+}
+
+void MavsdkImpl::set_system_status(uint8_t system_status)
+{
+    _system_status = system_status;
+}
+
+uint8_t MavsdkImpl::get_system_status()
+{
+    return _system_status;
 }
 
 } // namespace mavsdk
