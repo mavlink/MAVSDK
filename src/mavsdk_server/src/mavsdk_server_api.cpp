@@ -31,7 +31,8 @@ int mavsdk_server_run_with_mavlink_ids(
     const uint8_t system_id,
     const uint8_t component_id)
 {
-    mavsdk_server->setMavlinkIds(system_id, component_id);
+    // WINGTRA mavsdk_server->setMavlinkIds(system_id, component_id);
+    mavsdk_server->setWingtraConfig();
     return mavsdk_server_run(mavsdk_server, system_address, mavsdk_server_port);
 }
 

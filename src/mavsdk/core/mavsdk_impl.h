@@ -138,8 +138,8 @@ private:
     std::thread* _process_user_callbacks_thread{nullptr};
     SafeQueue<UserCallback> _user_callback_queue{};
 
-    bool _message_logging_on{false};
-    bool _callback_debugging{false};
+    bool _message_logging_on{true}; // WINGTRA: Debug
+    bool _callback_debugging{true}; // WINGTRA: Debug
 
     std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
 

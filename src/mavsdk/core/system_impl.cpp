@@ -9,6 +9,7 @@
 #include <functional>
 #include <future>
 #include <utility>
+#include <pthread.h>
 
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
@@ -28,6 +29,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
     _request_message(_send_commands, _message_handler, _parent.timeout_handler)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
+    pthread_setname_np(_system_thread->native_handle(), "system_impl");
 }
 
 SystemImpl::~SystemImpl()

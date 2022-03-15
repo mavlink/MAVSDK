@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <mutex>
+#include <pthread.h>
 
 #include "connection.h"
 #include "tcp_connection.h"
@@ -42,9 +43,11 @@ MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
     }
 
     _work_thread = new std::thread(&MavsdkImpl::work_thread, this);
+    pthread_setname_np(_work_thread->native_handle(), "mavsdk_work");
 
     _process_user_callbacks_thread =
         new std::thread(&MavsdkImpl::process_user_callbacks_thread, this);
+    pthread_setname_np(_process_user_callbacks_thread->native_handle(), "mavsdk_cb");
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -488,6 +491,9 @@ void MavsdkImpl::make_system_with_component(
     // Make a system with its first component
     auto new_system = std::make_shared<System>(*this);
     new_system->init(system_id, comp_id, always_connected);
+
+    // Wingtra
+    new_system->subscribe_is_connected([](bool connected) {LogWarn() << "WoW system connected! " << connected;});
 
     _systems.emplace_back(system_id, new_system);
 }

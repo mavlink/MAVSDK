@@ -11,6 +11,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <unistd.h> // for close()
+#include <pthread.h>
 #endif
 
 #include <cassert>
@@ -96,6 +97,7 @@ ConnectionResult TcpConnection::setup_port()
 void TcpConnection::start_recv_thread()
 {
     _recv_thread = std::make_unique<std::thread>(&TcpConnection::receive, this);
+    pthread_setname_np(_recv_thread->native_handle(), "tcp_recv");
 }
 
 ConnectionResult TcpConnection::stop()

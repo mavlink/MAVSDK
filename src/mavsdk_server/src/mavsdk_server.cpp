@@ -45,6 +45,12 @@ public:
         _mavsdk.set_configuration(mavsdk::Mavsdk::Configuration{system_id, component_id, false});
     }
 
+    void setWingtraConfig()
+    {
+        auto wingtra_config = mavsdk::Mavsdk::Configuration{mavsdk::Mavsdk::Configuration::UsageType::Camera};
+        _mavsdk.set_configuration(wingtra_config);  // Wingtra
+    }
+
 private:
     mavsdk::Mavsdk _mavsdk;
     ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
@@ -83,4 +89,9 @@ int MavsdkServer::getPort()
 void MavsdkServer::setMavlinkIds(uint8_t system_id, uint8_t component_id)
 {
     _impl->setMavlinkIds(system_id, component_id);
+}
+
+void MavsdkServer::setWingtraConfig()
+{
+    _impl->setWingtraConfig();
 }

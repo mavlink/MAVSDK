@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <poll.h>
+#include <pthread.h>
 
 #include <utility>
 #endif
@@ -225,6 +226,7 @@ ConnectionResult SerialConnection::setup_port()
 void SerialConnection::start_recv_thread()
 {
     _recv_thread = std::make_unique<std::thread>(&SerialConnection::receive, this);
+    pthread_setname_np(_recv_thread->native_handle(), "serial_recv");
 }
 
 ConnectionResult SerialConnection::stop()

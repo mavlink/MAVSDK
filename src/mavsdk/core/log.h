@@ -10,6 +10,9 @@
 #include <ctime>
 #endif
 
+#include <iomanip>
+#include <pthread.h>
+
 #if !defined(WINDOWS)
 // Remove path and extract only filename.
 #define FILENAME \
@@ -98,18 +101,22 @@ public:
 
         switch (_log_level) {
             case log::Level::Debug:
-                std::cout << "|Debug] ";
+                std::cout << "|Debug|";
                 break;
             case log::Level::Info:
-                std::cout << "|Info ] ";
+                std::cout << "|Info |";
                 break;
             case log::Level::Warn:
-                std::cout << "|Warn ] ";
+                std::cout << "|Warn |";
                 break;
             case log::Level::Err:
-                std::cout << "|Error] ";
+                std::cout << "|Error|";
                 break;
         }
+
+        char thread_name[17];
+        pthread_getname_np(pthread_self(), thread_name, 17);
+        std::cout << std::setw (13) << thread_name << "] ";
 
         set_color(Color::Reset);
 

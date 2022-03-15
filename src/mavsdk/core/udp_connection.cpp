@@ -14,6 +14,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <unistd.h> // for close()
+#include <pthread.h>
 #endif
 
 #include <algorithm>
@@ -92,6 +93,7 @@ ConnectionResult UdpConnection::setup_port()
 void UdpConnection::start_recv_thread()
 {
     _recv_thread = std::make_unique<std::thread>(&UdpConnection::receive, this);
+    pthread_setname_np(_recv_thread->native_handle(), "udp_recv");
 }
 
 ConnectionResult UdpConnection::stop()
