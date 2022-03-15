@@ -10,6 +10,7 @@
 #include <cassert>
 #include <vector>
 #include <map>
+#include <optional>
 #include <variant>
 
 namespace mavsdk {
