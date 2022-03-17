@@ -223,25 +223,21 @@ void CameraImpl::update_component()
 {
     uint8_t cmp_id = _camera_id + MAV_COMP_ID_CAMERA;
     _parent->update_componentid_messages_handler(
-                MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS, cmp_id, this);
+        MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS, cmp_id, this);
+
+    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_STORAGE_INFORMATION, cmp_id, this);
 
     _parent->update_componentid_messages_handler(
-                MAVLINK_MSG_ID_STORAGE_INFORMATION, cmp_id, this);
+        MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED, cmp_id, this);
+
+    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_SETTINGS, cmp_id, this);
+
+    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_INFORMATION, cmp_id, this);
 
     _parent->update_componentid_messages_handler(
-                MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED, cmp_id, this);
+        MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION, cmp_id, this);
 
-    _parent->update_componentid_messages_handler(
-                MAVLINK_MSG_ID_CAMERA_SETTINGS, cmp_id, this);
-
-    _parent->update_componentid_messages_handler(
-                MAVLINK_MSG_ID_CAMERA_INFORMATION, cmp_id, this);
-
-    _parent->update_componentid_messages_handler(
-                MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION, cmp_id, this);
-
-    _parent->update_componentid_messages_handler(
-                MAVLINK_MSG_ID_VIDEO_STREAM_STATUS, cmp_id, this);
+    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_VIDEO_STREAM_STATUS, cmp_id, this);
 }
 
 Camera::Result CameraImpl::select_camera(const size_t id)
