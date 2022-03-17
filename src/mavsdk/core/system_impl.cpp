@@ -93,7 +93,7 @@ void SystemImpl::register_mavlink_message_handler(
 }
 
 void SystemImpl::register_mavlink_message_handler(
-    uint16_t msg_id, uint8_t cmp_id, const mavlink_message_handler_t &callback, const void *cookie)
+    uint16_t msg_id, uint8_t cmp_id, const mavlink_message_handler_t& callback, const void* cookie)
 {
     _message_handler.register_one(msg_id, cmp_id, callback, cookie);
 }
@@ -108,7 +108,8 @@ void SystemImpl::unregister_all_mavlink_message_handlers(const void* cookie)
     _message_handler.unregister_all(cookie);
 }
 
-void SystemImpl::update_componentid_messages_handler(uint16_t msg_id, uint8_t cmp_id, const void *cookie)
+void SystemImpl::update_componentid_messages_handler(
+    uint16_t msg_id, uint8_t cmp_id, const void* cookie)
 {
     _message_handler.update_component_id(msg_id, cmp_id, cookie);
 }
@@ -362,7 +363,8 @@ void SystemImpl::add_new_component(uint8_t component_id)
         if (_component_discovered_id_callback != nullptr) {
             const System::ComponentType type = component_type(component_id);
             auto temp_callback = _component_discovered_id_callback;
-            call_user_callback([temp_callback, type, component_id]() { temp_callback(type, component_id); });
+            call_user_callback(
+                [temp_callback, type, component_id]() { temp_callback(type, component_id); });
         }
         LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
                    << ") added.";
@@ -390,7 +392,8 @@ void SystemImpl::register_component_discovered_callback(System::DiscoverCallback
     }
 }
 
-void SystemImpl::register_component_discovered_id_callback(System::DiscoverIdCallback callback) {
+void SystemImpl::register_component_discovered_id_callback(System::DiscoverIdCallback callback)
+{
     std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     _component_discovered_id_callback = std::move(callback);
 

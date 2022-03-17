@@ -12,7 +12,11 @@ void MAVLinkMessageHandler::register_one(
     _table.push_back(entry);
 }
 
-void MAVLinkMessageHandler::register_one(uint16_t msg_id, std::optional<uint8_t> component_id, const Callback &callback, const void *cookie)
+void MAVLinkMessageHandler::register_one(
+    uint16_t msg_id,
+    std::optional<uint8_t> component_id,
+    const Callback& callback,
+    const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -56,7 +60,8 @@ void MAVLinkMessageHandler::process_message(const mavlink_message_t& message)
     bool forwarded = false;
 #endif
     for (auto& entry : _table) {
-        if (entry.msg_id == message.msgid && (!entry.cmp_id.has_value() || entry.cmp_id == message.compid)) {
+        if (entry.msg_id == message.msgid &&
+            (!entry.cmp_id.has_value() || entry.cmp_id == message.compid)) {
 #if MESSAGE_DEBUGGING == 1
             LogDebug() << "Forwarding msg " << int(message.msgid) << " to "
                        << size_t(entry->cookie);
@@ -73,7 +78,8 @@ void MAVLinkMessageHandler::process_message(const mavlink_message_t& message)
 #endif
 }
 
-void MAVLinkMessageHandler::update_component_id(uint16_t msg_id, uint8_t component_id, const void* cookie)
+void MAVLinkMessageHandler::update_component_id(
+    uint16_t msg_id, uint8_t component_id, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 

@@ -71,7 +71,10 @@ public:
     void register_mavlink_message_handler(
         uint16_t msg_id, const mavlink_message_handler_t& callback, const void* cookie);
     void register_mavlink_message_handler(
-        uint16_t msg_id, uint8_t cmp_id, const mavlink_message_handler_t& callback, const void* cookie);
+        uint16_t msg_id,
+        uint8_t cmp_id,
+        const mavlink_message_handler_t& callback,
+        const void* cookie);
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
