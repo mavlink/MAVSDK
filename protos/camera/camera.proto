@@ -103,6 +103,12 @@ service CameraService {
      * This will delete all content of the camera storage!
      */
      rpc FormatStorage(FormatStorageRequest) returns(FormatStorageResponse) {}
+    /*
+     * Select current camera .
+     *
+     * Bind the plugin instance to a specific camera_id 
+     */
+    rpc SelectCamera(SelectCameraRequest) returns(SelectCameraResponse) { option (mavsdk.options.async_type) = SYNC; }
 }
 
 message PrepareRequest {}
@@ -215,6 +221,14 @@ message GetSettingResponse {
 message FormatStorageRequest {}
 message FormatStorageResponse {
     CameraResult camera_result = 1;
+}
+
+message SelectCameraResponse {
+    CameraResult camera_result = 1;
+}
+
+message SelectCameraRequest {
+    int32 camera_id = 1; // Id of camera to be selected
 }
 
 // Result type.
