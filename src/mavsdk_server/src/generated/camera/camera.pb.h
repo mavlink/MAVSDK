@@ -48,7 +48,7 @@ struct TableStruct_camera_2fcamera_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[52]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[54]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -118,6 +118,12 @@ extern PrepareResponseDefaultTypeInternal _PrepareResponse_default_instance_;
 class Quaternion;
 struct QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
+class SelectCameraRequest;
+struct SelectCameraRequestDefaultTypeInternal;
+extern SelectCameraRequestDefaultTypeInternal _SelectCameraRequest_default_instance_;
+class SelectCameraResponse;
+struct SelectCameraResponseDefaultTypeInternal;
+extern SelectCameraResponseDefaultTypeInternal _SelectCameraResponse_default_instance_;
 class SetModeRequest;
 struct SetModeRequestDefaultTypeInternal;
 extern SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
@@ -238,6 +244,8 @@ template<> ::mavsdk::rpc::camera::PossibleSettingOptionsResponse* Arena::CreateM
 template<> ::mavsdk::rpc::camera::PrepareRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::PrepareRequest>(Arena*);
 template<> ::mavsdk::rpc::camera::PrepareResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::PrepareResponse>(Arena*);
 template<> ::mavsdk::rpc::camera::Quaternion* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::Quaternion>(Arena*);
+template<> ::mavsdk::rpc::camera::SelectCameraRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::SelectCameraRequest>(Arena*);
+template<> ::mavsdk::rpc::camera::SelectCameraResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::SelectCameraResponse>(Arena*);
 template<> ::mavsdk::rpc::camera::SetModeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::SetModeRequest>(Arena*);
 template<> ::mavsdk::rpc::camera::SetModeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::SetModeResponse>(Arena*);
 template<> ::mavsdk::rpc::camera::SetSettingRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera::SetSettingRequest>(Arena*);
@@ -6061,6 +6069,293 @@ class FormatStorageResponse final :
 };
 // -------------------------------------------------------------------
 
+class SelectCameraResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SelectCameraResponse) */ {
+ public:
+  inline SelectCameraResponse() : SelectCameraResponse(nullptr) {}
+  ~SelectCameraResponse() override;
+  explicit constexpr SelectCameraResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SelectCameraResponse(const SelectCameraResponse& from);
+  SelectCameraResponse(SelectCameraResponse&& from) noexcept
+    : SelectCameraResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SelectCameraResponse& operator=(const SelectCameraResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SelectCameraResponse& operator=(SelectCameraResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SelectCameraResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SelectCameraResponse* internal_default_instance() {
+    return reinterpret_cast<const SelectCameraResponse*>(
+               &_SelectCameraResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    40;
+
+  friend void swap(SelectCameraResponse& a, SelectCameraResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SelectCameraResponse* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SelectCameraResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SelectCameraResponse* New() const final {
+    return new SelectCameraResponse();
+  }
+
+  SelectCameraResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SelectCameraResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SelectCameraResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SelectCameraResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SelectCameraResponse* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.camera.SelectCameraResponse";
+  }
+  protected:
+  explicit SelectCameraResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCameraResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
+  bool has_camera_result() const;
+  private:
+  bool _internal_has_camera_result() const;
+  public:
+  void clear_camera_result();
+  const ::mavsdk::rpc::camera::CameraResult& camera_result() const;
+  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::camera::CameraResult* release_camera_result();
+  ::mavsdk::rpc::camera::CameraResult* mutable_camera_result();
+  void set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* camera_result);
+  private:
+  const ::mavsdk::rpc::camera::CameraResult& _internal_camera_result() const;
+  ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
+  public:
+  void unsafe_arena_set_allocated_camera_result(
+      ::mavsdk::rpc::camera::CameraResult* camera_result);
+  ::mavsdk::rpc::camera::CameraResult* unsafe_arena_release_camera_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SelectCameraResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::camera::CameraResult* camera_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SelectCameraRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SelectCameraRequest) */ {
+ public:
+  inline SelectCameraRequest() : SelectCameraRequest(nullptr) {}
+  ~SelectCameraRequest() override;
+  explicit constexpr SelectCameraRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SelectCameraRequest(const SelectCameraRequest& from);
+  SelectCameraRequest(SelectCameraRequest&& from) noexcept
+    : SelectCameraRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SelectCameraRequest& operator=(const SelectCameraRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SelectCameraRequest& operator=(SelectCameraRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SelectCameraRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SelectCameraRequest* internal_default_instance() {
+    return reinterpret_cast<const SelectCameraRequest*>(
+               &_SelectCameraRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    41;
+
+  friend void swap(SelectCameraRequest& a, SelectCameraRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SelectCameraRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SelectCameraRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SelectCameraRequest* New() const final {
+    return new SelectCameraRequest();
+  }
+
+  SelectCameraRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SelectCameraRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SelectCameraRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SelectCameraRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SelectCameraRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.camera.SelectCameraRequest";
+  }
+  protected:
+  explicit SelectCameraRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCameraIdFieldNumber = 1,
+  };
+  // int32 camera_id = 1;
+  void clear_camera_id();
+  ::PROTOBUF_NAMESPACE_ID::int32 camera_id() const;
+  void set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_camera_id() const;
+  void _internal_set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SelectCameraRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::int32 camera_id_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};
+// -------------------------------------------------------------------
+
 class CameraResult final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.CameraResult) */ {
  public:
@@ -6105,7 +6400,7 @@ class CameraResult final :
                &_CameraResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    42;
 
   friend void swap(CameraResult& a, CameraResult& b) {
     a.Swap(&b);
@@ -6304,7 +6599,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    43;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -6476,7 +6771,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    44;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -6648,7 +6943,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    45;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -6809,7 +7104,7 @@ class CaptureInfo final :
                &_CaptureInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    46;
 
   friend void swap(CaptureInfo& a, CaptureInfo& b) {
     a.Swap(&b);
@@ -7046,7 +7341,7 @@ class VideoStreamSettings final :
                &_VideoStreamSettings_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    47;
 
   friend void swap(VideoStreamSettings& a, VideoStreamSettings& b) {
     a.Swap(&b);
@@ -7256,7 +7551,7 @@ class VideoStreamInfo final :
                &_VideoStreamInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    48;
 
   friend void swap(VideoStreamInfo& a, VideoStreamInfo& b) {
     a.Swap(&b);
@@ -7488,7 +7783,7 @@ class Status final :
                &_Status_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    49;
 
   friend void swap(Status& a, Status& b) {
     a.Swap(&b);
@@ -7803,7 +8098,7 @@ class Option final :
                &_Option_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    50;
 
   friend void swap(Option& a, Option& b) {
     a.Swap(&b);
@@ -7963,7 +8258,7 @@ class Setting final :
                &_Setting_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    51;
 
   friend void swap(Setting& a, Setting& b) {
     a.Swap(&b);
@@ -8154,7 +8449,7 @@ class SettingOptions final :
                &_SettingOptions_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    52;
 
   friend void swap(SettingOptions& a, SettingOptions& b) {
     a.Swap(&b);
@@ -8345,7 +8640,7 @@ class Information final :
                &_Information_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    53;
 
   friend void swap(Information& a, Information& b) {
     a.Swap(&b);
@@ -10683,6 +10978,124 @@ inline void FormatStorageResponse::set_allocated_camera_result(::mavsdk::rpc::ca
 
 // -------------------------------------------------------------------
 
+// SelectCameraResponse
+
+// .mavsdk.rpc.camera.CameraResult camera_result = 1;
+inline bool SelectCameraResponse::_internal_has_camera_result() const {
+  return this != internal_default_instance() && camera_result_ != nullptr;
+}
+inline bool SelectCameraResponse::has_camera_result() const {
+  return _internal_has_camera_result();
+}
+inline void SelectCameraResponse::clear_camera_result() {
+  if (GetArenaForAllocation() == nullptr && camera_result_ != nullptr) {
+    delete camera_result_;
+  }
+  camera_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::camera::CameraResult& SelectCameraResponse::_internal_camera_result() const {
+  const ::mavsdk::rpc::camera::CameraResult* p = camera_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(
+      ::mavsdk::rpc::camera::_CameraResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::CameraResult& SelectCameraResponse::camera_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
+  return _internal_camera_result();
+}
+inline void SelectCameraResponse::unsafe_arena_set_allocated_camera_result(
+    ::mavsdk::rpc::camera::CameraResult* camera_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(camera_result_);
+  }
+  camera_result_ = camera_result;
+  if (camera_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
+}
+inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::release_camera_result() {
+  
+  ::mavsdk::rpc::camera::CameraResult* temp = camera_result_;
+  camera_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::unsafe_arena_release_camera_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
+  
+  ::mavsdk::rpc::camera::CameraResult* temp = camera_result_;
+  camera_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::_internal_mutable_camera_result() {
+  
+  if (camera_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArenaForAllocation());
+    camera_result_ = p;
+  }
+  return camera_result_;
+}
+inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::mutable_camera_result() {
+  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
+  return _msg;
+}
+inline void SelectCameraResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* camera_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete camera_result_;
+  }
+  if (camera_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::camera::CameraResult>::GetOwningArena(camera_result);
+    if (message_arena != submessage_arena) {
+      camera_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, camera_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  camera_result_ = camera_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
+}
+
+// -------------------------------------------------------------------
+
+// SelectCameraRequest
+
+// int32 camera_id = 1;
+inline void SelectCameraRequest::clear_camera_id() {
+  camera_id_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SelectCameraRequest::_internal_camera_id() const {
+  return camera_id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SelectCameraRequest::camera_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SelectCameraRequest.camera_id)
+  return _internal_camera_id();
+}
+inline void SelectCameraRequest::_internal_set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  camera_id_ = value;
+}
+inline void SelectCameraRequest::set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_camera_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SelectCameraRequest.camera_id)
+}
+
+// -------------------------------------------------------------------
+
 // CameraResult
 
 // .mavsdk.rpc.camera.CameraResult.Result result = 1;
@@ -12554,6 +12967,10 @@ inline void Information::set_vertical_resolution_px(::PROTOBUF_NAMESPACE_ID::uin
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

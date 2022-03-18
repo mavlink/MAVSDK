@@ -822,7 +822,9 @@ public:
     Result format_storage() const;
 
     /**
-     * @brief
+     * @brief Select current camera .
+     *
+     * Bind the plugin instance to a specific camera_id
      *
      * This function is blocking.
      *
