@@ -33,6 +33,7 @@ public:
     MOCK_CONST_METHOD1(
         list_photos,
         std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>(Camera::PhotosRange)){};
+    MOCK_CONST_METHOD1(select_camera, Camera::Result(int32_t)){};
 };
 
 } // namespace testing

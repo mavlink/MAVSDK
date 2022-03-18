@@ -1328,6 +1328,34 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SelectCamera(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::SelectCameraRequest* request,
+        rpc::camera::SelectCameraResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SelectCamera sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->select_camera(request->camera_id());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

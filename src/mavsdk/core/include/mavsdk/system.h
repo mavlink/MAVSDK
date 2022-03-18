@@ -150,12 +150,25 @@ public:
     using DiscoverCallback = std::function<void(ComponentType)>;
 
     /**
+     * @brief type for component discovery callback
+     */
+    using DiscoverIdCallback = std::function<void(ComponentType, uint8_t)>;
+
+    /**
      * @brief Register a callback to be called when a component is discovered.
      *
      * @param callback a function of type void(ComponentType) which will be called with the
      * component type of the new component.
      */
     void register_component_discovered_callback(DiscoverCallback callback) const;
+
+    /**
+     * @brief Register a callback to be called when a component is discovered.
+     *
+     * @param callback a function of type void(ComponentType) which will be called with the
+     * component type and the component id of the new component.
+     */
+    void register_component_discovered_id_callback(DiscoverIdCallback callback) const;
 
     /**
      * @brief Enable time synchronization using the TIMESYNC messages.

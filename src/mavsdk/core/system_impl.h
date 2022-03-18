@@ -70,9 +70,16 @@ public:
 
     void register_mavlink_message_handler(
         uint16_t msg_id, const mavlink_message_handler_t& callback, const void* cookie);
+    void register_mavlink_message_handler(
+        uint16_t msg_id,
+        uint8_t cmp_id,
+        const mavlink_message_handler_t& callback,
+        const void* cookie);
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
+
+    void update_componentid_messages_handler(uint16_t msg_id, uint8_t cmp_id, const void* cookie);
 
     void register_timeout_handler(
         const std::function<void()>& callback, double duration_s, void** cookie);
@@ -125,6 +132,7 @@ public:
     size_t total_components() const;
 
     void register_component_discovered_callback(System::DiscoverCallback callback);
+    void register_component_discovered_id_callback(System::DiscoverIdCallback callback);
 
     uint8_t get_autopilot_id() const;
     std::vector<uint8_t> get_camera_ids() const;
@@ -379,6 +387,7 @@ private:
 
     std::mutex _component_discovered_callback_mutex{};
     System::DiscoverCallback _component_discovered_callback{nullptr};
+    System::DiscoverIdCallback _component_discovered_id_callback{nullptr};
 
     MAVLinkAddress _target_address{};
 

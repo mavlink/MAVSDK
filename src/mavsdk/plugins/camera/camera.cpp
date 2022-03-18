@@ -211,6 +211,11 @@ Camera::Result Camera::format_storage() const
     return _impl->format_storage();
 }
 
+Camera::Result Camera::select_camera(int32_t camera_id) const
+{
+    return _impl->select_camera(camera_id);
+}
+
 std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
 {
     switch (result) {

@@ -65,6 +65,11 @@ void System::register_component_discovered_callback(DiscoverCallback callback) c
     return _system_impl->register_component_discovered_callback(std::move(callback));
 }
 
+void System::register_component_discovered_id_callback(DiscoverIdCallback callback) const
+{
+    return _system_impl->register_component_discovered_id_callback(std::move(callback));
+}
+
 void System::enable_timesync()
 {
     _system_impl->enable_timesync();
