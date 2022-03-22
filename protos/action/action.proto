@@ -142,6 +142,13 @@ service ActionService {
      * Set the return to launch minimum return altitude (in meters).
      */
     rpc SetReturnToLaunchAltitude(SetReturnToLaunchAltitudeRequest) returns(SetReturnToLaunchAltitudeResponse) {}
+    /*
+     * Set current speed.
+     *
+     * This will set the speed during a mission, reposition, and similar.
+     * It is ephemeral, so not stored on the drone and does not survive a reboot.
+     */
+     rpc SetCurrentSpeed(SetCurrentSpeedRequest) returns(SetCurrentSpeedResponse) {}
 }
 
 message ArmRequest {}
@@ -279,6 +286,13 @@ message SetReturnToLaunchAltitudeRequest {
     float relative_altitude_m = 1; // Return altitude relative to takeoff location (in meters)
 }
 message SetReturnToLaunchAltitudeResponse {
+    ActionResult action_result = 1;
+}
+
+message SetCurrentSpeedRequest {
+    float speed_m_s = 1; // Speed in meters/second
+}
+message SetCurrentSpeedResponse {
     ActionResult action_result = 1;
 }
 
