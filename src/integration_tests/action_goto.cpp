@@ -47,12 +47,23 @@ TEST_F(SitlTest, PX4ActionGoto)
 
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, Action::Result::Success);
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(4));
 
     // Go somewhere
-    action->goto_location(47.398000, 8.545592, NAN, NAN);
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    action->goto_location(47.4, 8.545592, NAN, NAN);
+    std::this_thread::sleep_for(std::chrono::seconds(4));
 
+    LogInfo() << "Go slow for a bit.";
+    // Go slow for a bit
+    EXPECT_EQ(Action::Result::Success, action->set_current_speed(1.0f));
+    std::this_thread::sleep_for(std::chrono::seconds(4));
+
+    LogInfo() << "Go fast again.";
+    // Then faster again
+    EXPECT_EQ(Action::Result::Success, action->set_current_speed(5.0f));
+    std::this_thread::sleep_for(std::chrono::seconds(4));
+
+    LogInfo() << "Go back.";
     // And back
     action->goto_location(47.3977233, 8.545592, NAN, NAN);
     std::this_thread::sleep_for(std::chrono::seconds(10));

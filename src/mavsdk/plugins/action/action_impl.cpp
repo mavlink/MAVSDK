@@ -687,6 +687,33 @@ std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() con
         result.second);
 }
 
+void ActionImpl::set_current_speed_async(float speed_m_s, const Action::ResultCallback& callback)
+{
+    MavlinkCommandSender::CommandLong command{};
+
+    command.command = MAV_CMD_DO_CHANGE_SPEED;
+    command.params.maybe_param1 = 1.0f; // ground speed
+    command.params.maybe_param2 = speed_m_s;
+    command.params.maybe_param3 = -1.0f; // no throttle set
+    command.params.maybe_param4 = 0.0f; // reserved
+    command.target_component_id = _parent->get_autopilot_id();
+
+    _parent->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
+}
+
+Action::Result ActionImpl::set_current_speed(float speed_m_s)
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    set_current_speed_async(speed_m_s, [&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::action_result_from_command_result(MavlinkCommandSender::Result result)
 {
     switch (result) {

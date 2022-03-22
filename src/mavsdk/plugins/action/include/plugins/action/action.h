@@ -588,6 +588,28 @@ public:
     Result set_return_to_launch_altitude(float relative_altitude_m) const;
 
     /**
+     * @brief Set current speed.
+     *
+     * This will set the speed during a mission, reposition, and similar.
+     * It is ephemeral, so not stored on the drone and does not survive a reboot.
+     *
+     * This function is non-blocking. See 'set_current_speed' for the blocking counterpart.
+     */
+    void set_current_speed_async(float speed_m_s, const ResultCallback callback);
+
+    /**
+     * @brief Set current speed.
+     *
+     * This will set the speed during a mission, reposition, and similar.
+     * It is ephemeral, so not stored on the drone and does not survive a reboot.
+     *
+     * This function is blocking. See 'set_current_speed_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_current_speed(float speed_m_s) const;
+
+    /**
      * @brief Copy constructor.
      */
     Action(const Action& other);

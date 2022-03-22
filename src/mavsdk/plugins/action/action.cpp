@@ -256,6 +256,16 @@ Action::Result Action::set_return_to_launch_altitude(float relative_altitude_m) 
     return _impl->set_return_to_launch_altitude(relative_altitude_m);
 }
 
+void Action::set_current_speed_async(float speed_m_s, const ResultCallback callback)
+{
+    _impl->set_current_speed_async(speed_m_s, callback);
+}
+
+Action::Result Action::set_current_speed(float speed_m_s) const
+{
+    return _impl->set_current_speed(speed_m_s);
+}
+
 std::ostream& operator<<(std::ostream& str, Action::Result const& result)
 {
     switch (result) {

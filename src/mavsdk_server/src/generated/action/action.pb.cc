@@ -521,6 +521,30 @@ struct SetReturnToLaunchAltitudeResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetReturnToLaunchAltitudeResponseDefaultTypeInternal _SetReturnToLaunchAltitudeResponse_default_instance_;
+constexpr SetCurrentSpeedRequest::SetCurrentSpeedRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : speed_m_s_(0){}
+struct SetCurrentSpeedRequestDefaultTypeInternal {
+  constexpr SetCurrentSpeedRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetCurrentSpeedRequestDefaultTypeInternal() {}
+  union {
+    SetCurrentSpeedRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetCurrentSpeedRequestDefaultTypeInternal _SetCurrentSpeedRequest_default_instance_;
+constexpr SetCurrentSpeedResponse::SetCurrentSpeedResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : action_result_(nullptr){}
+struct SetCurrentSpeedResponseDefaultTypeInternal {
+  constexpr SetCurrentSpeedResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SetCurrentSpeedResponseDefaultTypeInternal() {}
+  union {
+    SetCurrentSpeedResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetCurrentSpeedResponseDefaultTypeInternal _SetCurrentSpeedResponse_default_instance_;
 constexpr ActionResult::ActionResult(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -538,7 +562,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ActionResultDefaultTypeInternal
 }  // namespace action
 }  // namespace rpc
 }  // namespace mavsdk
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_action_2faction_2eproto[43];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_action_2faction_2eproto[45];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_action_2faction_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_action_2faction_2eproto = nullptr;
 
@@ -793,6 +817,18 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_action_2faction_2eproto::offse
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse, action_result_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetCurrentSpeedRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetCurrentSpeedRequest, speed_m_s_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetCurrentSpeedResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetCurrentSpeedResponse, action_result_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::ActionResult, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -843,7 +879,9 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 230, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
   { 237, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
   { 243, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
-  { 249, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
+  { 249, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedRequest)},
+  { 255, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
+  { 261, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -889,6 +927,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_GetReturnToLaunchAltitudeResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_SetReturnToLaunchAltitudeRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_SetReturnToLaunchAltitudeResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_SetCurrentSpeedRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_SetCurrentSpeedResponse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::action::_ActionResult_default_instance_),
 };
 
@@ -959,87 +999,93 @@ const char descriptor_table_protodef_action_2faction_2eproto[] PROTOBUF_SECTION_
   "\n SetReturnToLaunchAltitudeRequest\022\033\n\023re"
   "lative_altitude_m\030\001 \001(\002\"[\n!SetReturnToLa"
   "unchAltitudeResponse\0226\n\raction_result\030\001 "
-  "\001(\0132\037.mavsdk.rpc.action.ActionResult\"\335\003\n"
-  "\014ActionResult\0226\n\006result\030\001 \001(\0162&.mavsdk.r"
-  "pc.action.ActionResult.Result\022\022\n\nresult_"
-  "str\030\002 \001(\t\"\200\003\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000"
-  "\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM"
-  "\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESUL"
-  "T_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022.\n*R"
-  "ESULT_COMMAND_DENIED_LANDED_STATE_UNKNOW"
-  "N\020\006\022$\n RESULT_COMMAND_DENIED_NOT_LANDED\020"
-  "\007\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&RESULT_VTOL_TRA"
-  "NSITION_SUPPORT_UNKNOWN\020\t\022%\n!RESULT_NO_V"
-  "TOL_TRANSITION_SUPPORT\020\n\022\032\n\026RESULT_PARAM"
-  "ETER_ERROR\020\013\022\026\n\022RESULT_UNSUPPORTED\020\014*\363\001\n"
-  "\020OrbitYawBehavior\0222\n.ORBIT_YAW_BEHAVIOR_"
-  "HOLD_FRONT_TO_CIRCLE_CENTER\020\000\022+\n\'ORBIT_Y"
-  "AW_BEHAVIOR_HOLD_INITIAL_HEADING\020\001\022#\n\037OR"
-  "BIT_YAW_BEHAVIOR_UNCONTROLLED\020\002\0223\n/ORBIT"
-  "_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRC"
-  "LE\020\003\022$\n ORBIT_YAW_BEHAVIOR_RC_CONTROLLED"
-  "\020\0042\272\020\n\rActionService\022F\n\003Arm\022\035.mavsdk.rpc"
-  ".action.ArmRequest\032\036.mavsdk.rpc.action.A"
-  "rmResponse\"\000\022O\n\006Disarm\022 .mavsdk.rpc.acti"
-  "on.DisarmRequest\032!.mavsdk.rpc.action.Dis"
-  "armResponse\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.ac"
-  "tion.TakeoffRequest\032\".mavsdk.rpc.action."
-  "TakeoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.a"
-  "ction.LandRequest\032\037.mavsdk.rpc.action.La"
-  "ndResponse\"\000\022O\n\006Reboot\022 .mavsdk.rpc.acti"
-  "on.RebootRequest\032!.mavsdk.rpc.action.Reb"
-  "ootResponse\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.a"
-  "ction.ShutdownRequest\032#.mavsdk.rpc.actio"
-  "n.ShutdownResponse\"\000\022X\n\tTerminate\022#.mavs"
-  "dk.rpc.action.TerminateRequest\032$.mavsdk."
-  "rpc.action.TerminateResponse\"\000\022I\n\004Kill\022\036"
-  ".mavsdk.rpc.action.KillRequest\032\037.mavsdk."
-  "rpc.action.KillResponse\"\000\022g\n\016ReturnToLau"
-  "nch\022(.mavsdk.rpc.action.ReturnToLaunchRe"
-  "quest\032).mavsdk.rpc.action.ReturnToLaunch"
-  "Response\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc."
-  "action.GotoLocationRequest\032\'.mavsdk.rpc."
-  "action.GotoLocationResponse\"\000\022R\n\007DoOrbit"
-  "\022!.mavsdk.rpc.action.DoOrbitRequest\032\".ma"
-  "vsdk.rpc.action.DoOrbitResponse\"\000\022I\n\004Hol"
-  "d\022\036.mavsdk.rpc.action.HoldRequest\032\037.mavs"
-  "dk.rpc.action.HoldResponse\"\000\022^\n\013SetActua"
-  "tor\022%.mavsdk.rpc.action.SetActuatorReque"
-  "st\032&.mavsdk.rpc.action.SetActuatorRespon"
-  "se\"\000\022|\n\025TransitionToFixedwing\022/.mavsdk.r"
-  "pc.action.TransitionToFixedwingRequest\0320"
-  ".mavsdk.rpc.action.TransitionToFixedwing"
-  "Response\"\000\022\202\001\n\027TransitionToMulticopter\0221"
-  ".mavsdk.rpc.action.TransitionToMulticopt"
-  "erRequest\0322.mavsdk.rpc.action.Transition"
-  "ToMulticopterResponse\"\000\022s\n\022GetTakeoffAlt"
-  "itude\022,.mavsdk.rpc.action.GetTakeoffAlti"
-  "tudeRequest\032-.mavsdk.rpc.action.GetTakeo"
-  "ffAltitudeResponse\"\000\022s\n\022SetTakeoffAltitu"
-  "de\022,.mavsdk.rpc.action.SetTakeoffAltitud"
-  "eRequest\032-.mavsdk.rpc.action.SetTakeoffA"
-  "ltitudeResponse\"\000\022j\n\017GetMaximumSpeed\022).m"
-  "avsdk.rpc.action.GetMaximumSpeedRequest\032"
-  "*.mavsdk.rpc.action.GetMaximumSpeedRespo"
-  "nse\"\000\022j\n\017SetMaximumSpeed\022).mavsdk.rpc.ac"
-  "tion.SetMaximumSpeedRequest\032*.mavsdk.rpc"
-  ".action.SetMaximumSpeedResponse\"\000\022\210\001\n\031Ge"
-  "tReturnToLaunchAltitude\0223.mavsdk.rpc.act"
-  "ion.GetReturnToLaunchAltitudeRequest\0324.m"
-  "avsdk.rpc.action.GetReturnToLaunchAltitu"
-  "deResponse\"\000\022\210\001\n\031SetReturnToLaunchAltitu"
-  "de\0223.mavsdk.rpc.action.SetReturnToLaunch"
-  "AltitudeRequest\0324.mavsdk.rpc.action.SetR"
-  "eturnToLaunchAltitudeResponse\"\000B\037\n\020io.ma"
-  "vsdk.actionB\013ActionProtob\006proto3"
+  "\001(\0132\037.mavsdk.rpc.action.ActionResult\"+\n\026"
+  "SetCurrentSpeedRequest\022\021\n\tspeed_m_s\030\001 \001("
+  "\002\"Q\n\027SetCurrentSpeedResponse\0226\n\raction_r"
+  "esult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRe"
+  "sult\"\335\003\n\014ActionResult\0226\n\006result\030\001 \001(\0162&."
+  "mavsdk.rpc.action.ActionResult.Result\022\022\n"
+  "\nresult_str\030\002 \001(\t\"\200\003\n\006Result\022\022\n\016RESULT_U"
+  "NKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_N"
+  "O_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022"
+  "\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIE"
+  "D\020\005\022.\n*RESULT_COMMAND_DENIED_LANDED_STAT"
+  "E_UNKNOWN\020\006\022$\n RESULT_COMMAND_DENIED_NOT"
+  "_LANDED\020\007\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&RESULT_"
+  "VTOL_TRANSITION_SUPPORT_UNKNOWN\020\t\022%\n!RES"
+  "ULT_NO_VTOL_TRANSITION_SUPPORT\020\n\022\032\n\026RESU"
+  "LT_PARAMETER_ERROR\020\013\022\026\n\022RESULT_UNSUPPORT"
+  "ED\020\014*\363\001\n\020OrbitYawBehavior\0222\n.ORBIT_YAW_B"
+  "EHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER\020\000\022+\n"
+  "\'ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADING"
+  "\020\001\022#\n\037ORBIT_YAW_BEHAVIOR_UNCONTROLLED\020\002\022"
+  "3\n/ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT"
+  "_TO_CIRCLE\020\003\022$\n ORBIT_YAW_BEHAVIOR_RC_CO"
+  "NTROLLED\020\0042\246\021\n\rActionService\022F\n\003Arm\022\035.ma"
+  "vsdk.rpc.action.ArmRequest\032\036.mavsdk.rpc."
+  "action.ArmResponse\"\000\022O\n\006Disarm\022 .mavsdk."
+  "rpc.action.DisarmRequest\032!.mavsdk.rpc.ac"
+  "tion.DisarmResponse\"\000\022R\n\007Takeoff\022!.mavsd"
+  "k.rpc.action.TakeoffRequest\032\".mavsdk.rpc"
+  ".action.TakeoffResponse\"\000\022I\n\004Land\022\036.mavs"
+  "dk.rpc.action.LandRequest\032\037.mavsdk.rpc.a"
+  "ction.LandResponse\"\000\022O\n\006Reboot\022 .mavsdk."
+  "rpc.action.RebootRequest\032!.mavsdk.rpc.ac"
+  "tion.RebootResponse\"\000\022U\n\010Shutdown\022\".mavs"
+  "dk.rpc.action.ShutdownRequest\032#.mavsdk.r"
+  "pc.action.ShutdownResponse\"\000\022X\n\tTerminat"
+  "e\022#.mavsdk.rpc.action.TerminateRequest\032$"
+  ".mavsdk.rpc.action.TerminateResponse\"\000\022I"
+  "\n\004Kill\022\036.mavsdk.rpc.action.KillRequest\032\037"
+  ".mavsdk.rpc.action.KillResponse\"\000\022g\n\016Ret"
+  "urnToLaunch\022(.mavsdk.rpc.action.ReturnTo"
+  "LaunchRequest\032).mavsdk.rpc.action.Return"
+  "ToLaunchResponse\"\000\022a\n\014GotoLocation\022&.mav"
+  "sdk.rpc.action.GotoLocationRequest\032\'.mav"
+  "sdk.rpc.action.GotoLocationResponse\"\000\022R\n"
+  "\007DoOrbit\022!.mavsdk.rpc.action.DoOrbitRequ"
+  "est\032\".mavsdk.rpc.action.DoOrbitResponse\""
+  "\000\022I\n\004Hold\022\036.mavsdk.rpc.action.HoldReques"
+  "t\032\037.mavsdk.rpc.action.HoldResponse\"\000\022^\n\013"
+  "SetActuator\022%.mavsdk.rpc.action.SetActua"
+  "torRequest\032&.mavsdk.rpc.action.SetActuat"
+  "orResponse\"\000\022|\n\025TransitionToFixedwing\022/."
+  "mavsdk.rpc.action.TransitionToFixedwingR"
+  "equest\0320.mavsdk.rpc.action.TransitionToF"
+  "ixedwingResponse\"\000\022\202\001\n\027TransitionToMulti"
+  "copter\0221.mavsdk.rpc.action.TransitionToM"
+  "ulticopterRequest\0322.mavsdk.rpc.action.Tr"
+  "ansitionToMulticopterResponse\"\000\022s\n\022GetTa"
+  "keoffAltitude\022,.mavsdk.rpc.action.GetTak"
+  "eoffAltitudeRequest\032-.mavsdk.rpc.action."
+  "GetTakeoffAltitudeResponse\"\000\022s\n\022SetTakeo"
+  "ffAltitude\022,.mavsdk.rpc.action.SetTakeof"
+  "fAltitudeRequest\032-.mavsdk.rpc.action.Set"
+  "TakeoffAltitudeResponse\"\000\022j\n\017GetMaximumS"
+  "peed\022).mavsdk.rpc.action.GetMaximumSpeed"
+  "Request\032*.mavsdk.rpc.action.GetMaximumSp"
+  "eedResponse\"\000\022j\n\017SetMaximumSpeed\022).mavsd"
+  "k.rpc.action.SetMaximumSpeedRequest\032*.ma"
+  "vsdk.rpc.action.SetMaximumSpeedResponse\""
+  "\000\022\210\001\n\031GetReturnToLaunchAltitude\0223.mavsdk"
+  ".rpc.action.GetReturnToLaunchAltitudeReq"
+  "uest\0324.mavsdk.rpc.action.GetReturnToLaun"
+  "chAltitudeResponse\"\000\022\210\001\n\031SetReturnToLaun"
+  "chAltitude\0223.mavsdk.rpc.action.SetReturn"
+  "ToLaunchAltitudeRequest\0324.mavsdk.rpc.act"
+  "ion.SetReturnToLaunchAltitudeResponse\"\000\022"
+  "j\n\017SetCurrentSpeed\022).mavsdk.rpc.action.S"
+  "etCurrentSpeedRequest\032*.mavsdk.rpc.actio"
+  "n.SetCurrentSpeedResponse\"\000B\037\n\020io.mavsdk"
+  ".actionB\013ActionProtob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_action_2faction_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_action_2faction_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_action_2faction_2eproto = {
-  false, false, 5552, descriptor_table_protodef_action_2faction_2eproto, "action/action.proto", 
-  &descriptor_table_action_2faction_2eproto_once, descriptor_table_action_2faction_2eproto_deps, 1, 43,
+  false, false, 5788, descriptor_table_protodef_action_2faction_2eproto, "action/action.proto", 
+  &descriptor_table_action_2faction_2eproto_once, descriptor_table_action_2faction_2eproto_deps, 1, 45,
   schemas, file_default_instances, TableStruct_action_2faction_2eproto::offsets,
   file_level_metadata_action_2faction_2eproto, file_level_enum_descriptors_action_2faction_2eproto, file_level_service_descriptors_action_2faction_2eproto,
 };
@@ -9031,6 +9077,389 @@ void SetReturnToLaunchAltitudeResponse::InternalSwap(SetReturnToLaunchAltitudeRe
 
 // ===================================================================
 
+class SetCurrentSpeedRequest::_Internal {
+ public:
+};
+
+SetCurrentSpeedRequest::SetCurrentSpeedRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetCurrentSpeedRequest)
+}
+SetCurrentSpeedRequest::SetCurrentSpeedRequest(const SetCurrentSpeedRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  speed_m_s_ = from.speed_m_s_;
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.SetCurrentSpeedRequest)
+}
+
+inline void SetCurrentSpeedRequest::SharedCtor() {
+speed_m_s_ = 0;
+}
+
+SetCurrentSpeedRequest::~SetCurrentSpeedRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetCurrentSpeedRequest)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void SetCurrentSpeedRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void SetCurrentSpeedRequest::ArenaDtor(void* object) {
+  SetCurrentSpeedRequest* _this = reinterpret_cast< SetCurrentSpeedRequest* >(object);
+  (void)_this;
+}
+void SetCurrentSpeedRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SetCurrentSpeedRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void SetCurrentSpeedRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetCurrentSpeedRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  speed_m_s_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetCurrentSpeedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // float speed_m_s = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          speed_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SetCurrentSpeedRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetCurrentSpeedRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float speed_m_s = 1;
+  if (!(this->_internal_speed_m_s() <= 0 && this->_internal_speed_m_s() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_speed_m_s(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetCurrentSpeedRequest)
+  return target;
+}
+
+size_t SetCurrentSpeedRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetCurrentSpeedRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float speed_m_s = 1;
+  if (!(this->_internal_speed_m_s() <= 0 && this->_internal_speed_m_s() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetCurrentSpeedRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SetCurrentSpeedRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetCurrentSpeedRequest::GetClassData() const { return &_class_data_; }
+
+void SetCurrentSpeedRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<SetCurrentSpeedRequest *>(to)->MergeFrom(
+      static_cast<const SetCurrentSpeedRequest &>(from));
+}
+
+
+void SetCurrentSpeedRequest::MergeFrom(const SetCurrentSpeedRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetCurrentSpeedRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!(from._internal_speed_m_s() <= 0 && from._internal_speed_m_s() >= 0)) {
+    _internal_set_speed_m_s(from._internal_speed_m_s());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetCurrentSpeedRequest::CopyFrom(const SetCurrentSpeedRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetCurrentSpeedRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetCurrentSpeedRequest::IsInitialized() const {
+  return true;
+}
+
+void SetCurrentSpeedRequest::InternalSwap(SetCurrentSpeedRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(speed_m_s_, other->speed_m_s_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetCurrentSpeedRequest::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
+      file_level_metadata_action_2faction_2eproto[42]);
+}
+
+// ===================================================================
+
+class SetCurrentSpeedResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::action::ActionResult& action_result(const SetCurrentSpeedResponse* msg);
+};
+
+const ::mavsdk::rpc::action::ActionResult&
+SetCurrentSpeedResponse::_Internal::action_result(const SetCurrentSpeedResponse* msg) {
+  return *msg->action_result_;
+}
+SetCurrentSpeedResponse::SetCurrentSpeedResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetCurrentSpeedResponse)
+}
+SetCurrentSpeedResponse::SetCurrentSpeedResponse(const SetCurrentSpeedResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_action_result()) {
+    action_result_ = new ::mavsdk::rpc::action::ActionResult(*from.action_result_);
+  } else {
+    action_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.SetCurrentSpeedResponse)
+}
+
+inline void SetCurrentSpeedResponse::SharedCtor() {
+action_result_ = nullptr;
+}
+
+SetCurrentSpeedResponse::~SetCurrentSpeedResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetCurrentSpeedResponse)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void SetCurrentSpeedResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete action_result_;
+}
+
+void SetCurrentSpeedResponse::ArenaDtor(void* object) {
+  SetCurrentSpeedResponse* _this = reinterpret_cast< SetCurrentSpeedResponse* >(object);
+  (void)_this;
+}
+void SetCurrentSpeedResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SetCurrentSpeedResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void SetCurrentSpeedResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetCurrentSpeedResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && action_result_ != nullptr) {
+    delete action_result_;
+  }
+  action_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetCurrentSpeedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.action.ActionResult action_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_action_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag == 0) || ((tag & 7) == 4)) {
+          CHK_(ptr);
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SetCurrentSpeedResponse::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetCurrentSpeedResponse)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  if (this->_internal_has_action_result()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::action_result(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetCurrentSpeedResponse)
+  return target;
+}
+
+size_t SetCurrentSpeedResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetCurrentSpeedResponse)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  if (this->_internal_has_action_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *action_result_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetCurrentSpeedResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SetCurrentSpeedResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetCurrentSpeedResponse::GetClassData() const { return &_class_data_; }
+
+void SetCurrentSpeedResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+  static_cast<SetCurrentSpeedResponse *>(to)->MergeFrom(
+      static_cast<const SetCurrentSpeedResponse &>(from));
+}
+
+
+void SetCurrentSpeedResponse::MergeFrom(const SetCurrentSpeedResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetCurrentSpeedResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_action_result()) {
+    _internal_mutable_action_result()->::mavsdk::rpc::action::ActionResult::MergeFrom(from._internal_action_result());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetCurrentSpeedResponse::CopyFrom(const SetCurrentSpeedResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetCurrentSpeedResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetCurrentSpeedResponse::IsInitialized() const {
+  return true;
+}
+
+void SetCurrentSpeedResponse::InternalSwap(SetCurrentSpeedResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(action_result_, other->action_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetCurrentSpeedResponse::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
+      file_level_metadata_action_2faction_2eproto[43]);
+}
+
+// ===================================================================
+
 class ActionResult::_Internal {
  public:
 };
@@ -9254,7 +9683,7 @@ void ActionResult::InternalSwap(ActionResult* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ActionResult::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[42]);
+      file_level_metadata_action_2faction_2eproto[44]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -9387,6 +9816,12 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::SetReturnToLaunchAltitudeReq
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::SetCurrentSpeedRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::SetCurrentSpeedRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action::SetCurrentSpeedRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::SetCurrentSpeedResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::SetCurrentSpeedResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::action::SetCurrentSpeedResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::action::ActionResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::action::ActionResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::action::ActionResult >(arena);
