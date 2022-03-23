@@ -32,6 +32,7 @@ public:
     MOCK_CONST_METHOD1(set_maximum_speed, Action::Result(float)){};
     MOCK_CONST_METHOD0(get_return_to_launch_altitude, std::pair<Action::Result, float>()){};
     MOCK_CONST_METHOD1(set_return_to_launch_altitude, Action::Result(float)){};
+    MOCK_CONST_METHOD1(set_current_speed, Action::Result(float)){};
 };
 
 } // namespace testing

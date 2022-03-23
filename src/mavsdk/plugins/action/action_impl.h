@@ -94,6 +94,9 @@ public:
     void get_return_to_launch_altitude_async(
         const Action::GetReturnToLaunchAltitudeCallback& callback) const;
 
+    void set_current_speed_async(float speed_m_s, const Action::ResultCallback& callback);
+    Action::Result set_current_speed(float speed_m_s);
+
     Action::Result set_return_to_launch_altitude(const float relative_altitude_m) const;
     std::pair<Action::Result, float> get_return_to_launch_altitude() const;
 
