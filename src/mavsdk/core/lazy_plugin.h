@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 #include <mavsdk.h>
 
@@ -12,18 +13,20 @@ public:
 
     Plugin* maybe_plugin()
     {
-        if (_action == nullptr) {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_plugin == nullptr) {
             if (_mavsdk.systems().empty()) {
                 return nullptr;
             }
-            _action = std::make_unique<Plugin>(_mavsdk.systems()[0]);
+            _plugin = std::make_unique<Plugin>(_mavsdk.systems()[0]);
         }
-        return _action.get();
+        return _plugin.get();
     }
 
 private:
     Mavsdk& _mavsdk;
-    std::unique_ptr<Plugin> _action{};
+    std::unique_ptr<Plugin> _plugin{};
+    std::mutex _mutex{};
 };
 
 } // namespace mavsdk::mavsdk_server
