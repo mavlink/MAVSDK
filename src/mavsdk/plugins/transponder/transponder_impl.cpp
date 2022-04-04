@@ -85,6 +85,7 @@ void TransponderImpl::process_transponder(const mavlink_message_t& message)
     adsbVehicle.callsign = local_adsb_vehicle.callsign;
     adsbVehicle.emitter_type = Transponder::AdsbEmitterType(local_adsb_vehicle.emitter_type);
     adsbVehicle.squawk = local_adsb_vehicle.squawk;
+    adsbVehicle.tslc_s = local_adsb_vehicle.tslc;
 
     set_transponder(adsbVehicle);
 
