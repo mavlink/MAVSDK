@@ -65,6 +65,7 @@ message AdsbVehicle {
     string callsign = 9 ; // The callsign
     AdsbEmitterType emitter_type = 10; // ADSB emitter type.
     uint32 squawk = 13; // Squawk code.
+    uint32 tslc = 14; // Time Since Last Communication.
 }
 
 // Result type.
