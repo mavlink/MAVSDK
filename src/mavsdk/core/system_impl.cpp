@@ -512,7 +512,7 @@ bool SystemImpl::send_message(mavlink_message_t& message)
 void SystemImpl::send_autopilot_version_request()
 {
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    MavlinkCommandSender::CommandLong command;
+    MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
     command.params.maybe_param1 = 1.0f;
