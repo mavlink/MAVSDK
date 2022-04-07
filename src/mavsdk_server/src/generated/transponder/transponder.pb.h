@@ -851,6 +851,7 @@ class AdsbVehicle final :
     kVerticalVelocityMSFieldNumber = 8,
     kEmitterTypeFieldNumber = 10,
     kSquawkFieldNumber = 13,
+    kTslcSFieldNumber = 14,
   };
   // string callsign = 9;
   void clear_callsign();
@@ -947,6 +948,15 @@ class AdsbVehicle final :
   void _internal_set_squawk(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
+  // uint32 tslc_s = 14;
+  void clear_tslc_s();
+  ::PROTOBUF_NAMESPACE_ID::uint32 tslc_s() const;
+  void set_tslc_s(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_tslc_s() const;
+  void _internal_set_tslc_s(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.AdsbVehicle)
  private:
   class _Internal;
@@ -964,6 +974,7 @@ class AdsbVehicle final :
   float vertical_velocity_m_s_;
   int emitter_type_;
   ::PROTOBUF_NAMESPACE_ID::uint32 squawk_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tslc_s_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_transponder_2ftransponder_2eproto;
 };
@@ -1613,6 +1624,26 @@ inline void AdsbVehicle::_internal_set_squawk(::PROTOBUF_NAMESPACE_ID::uint32 va
 inline void AdsbVehicle::set_squawk(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_squawk(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.squawk)
+}
+
+// uint32 tslc_s = 14;
+inline void AdsbVehicle::clear_tslc_s() {
+  tslc_s_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 AdsbVehicle::_internal_tslc_s() const {
+  return tslc_s_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 AdsbVehicle::tslc_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.tslc_s)
+  return _internal_tslc_s();
+}
+inline void AdsbVehicle::_internal_set_tslc_s(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  tslc_s_ = value;
+}
+inline void AdsbVehicle::set_tslc_s(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_tslc_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.tslc_s)
 }
 
 // -------------------------------------------------------------------

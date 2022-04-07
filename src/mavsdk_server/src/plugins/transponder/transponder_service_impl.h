@@ -165,6 +165,8 @@ public:
 
         rpc_obj->set_squawk(adsb_vehicle.squawk);
 
+        rpc_obj->set_tslc_s(adsb_vehicle.tslc_s);
+
         return rpc_obj;
     }
 
@@ -192,6 +194,8 @@ public:
         obj.emitter_type = translateFromRpcAdsbEmitterType(adsb_vehicle.emitter_type());
 
         obj.squawk = adsb_vehicle.squawk();
+
+        obj.tslc_s = adsb_vehicle.tslc_s();
 
         return obj;
     }

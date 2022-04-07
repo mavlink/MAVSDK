@@ -107,6 +107,7 @@ public:
         std::string callsign{}; /**< @brief The callsign */
         AdsbEmitterType emitter_type{}; /**< @brief ADSB emitter type. */
         uint32_t squawk{}; /**< @brief Squawk code. */
+        uint32_t tslc_s{}; /**< @brief Time Since Last Communication in seconds. */
     };
 
     /**

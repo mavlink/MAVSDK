@@ -78,7 +78,8 @@ constexpr AdsbVehicle::AdsbVehicle(
   , vertical_velocity_m_s_(0)
   , emitter_type_(0)
 
-  , squawk_(0u){}
+  , squawk_(0u)
+  , tslc_s_(0u){}
 struct AdsbVehicleDefaultTypeInternal {
   constexpr AdsbVehicleDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -148,6 +149,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_transponder_2ftransponder_2epr
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, callsign_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, emitter_type_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, squawk_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, tslc_s_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::TransponderResult, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -162,7 +164,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 11, -1, sizeof(::mavsdk::rpc::transponder::SetRateTransponderRequest)},
   { 17, -1, sizeof(::mavsdk::rpc::transponder::SetRateTransponderResponse)},
   { 23, -1, sizeof(::mavsdk::rpc::transponder::AdsbVehicle)},
-  { 38, -1, sizeof(::mavsdk::rpc::transponder::TransponderResult)},
+  { 39, -1, sizeof(::mavsdk::rpc::transponder::TransponderResult)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -182,7 +184,7 @@ const char descriptor_table_protodef_transponder_2ftransponder_2eproto[] PROTOBU
   "Vehicle\",\n\031SetRateTransponderRequest\022\017\n\007"
   "rate_hz\030\001 \001(\001\"c\n\032SetRateTransponderRespo"
   "nse\022E\n\022transponder_result\030\001 \001(\0132).mavsdk"
-  ".rpc.transponder.TransponderResult\"\243\002\n\013A"
+  ".rpc.transponder.TransponderResult\"\263\002\n\013A"
   "dsbVehicle\022\024\n\014icao_address\030\001 \001(\r\022\024\n\014lati"
   "tude_deg\030\002 \001(\001\022\025\n\rlongitude_deg\030\003 \001(\001\022\033\n"
   "\023absolute_altitude_m\030\005 \001(\002\022\023\n\013heading_de"
@@ -190,43 +192,43 @@ const char descriptor_table_protodef_transponder_2ftransponder_2eproto[] PROTOBU
   "\022\035\n\025vertical_velocity_m_s\030\010 \001(\002\022\020\n\010calls"
   "ign\030\t \001(\t\022=\n\014emitter_type\030\n \001(\0162\'.mavsdk"
   ".rpc.transponder.AdsbEmitterType\022\016\n\006squa"
-  "wk\030\r \001(\r\"\217\002\n\021TransponderResult\022@\n\006result"
-  "\030\001 \001(\01620.mavsdk.rpc.transponder.Transpon"
-  "derResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\243\001\n"
-  "\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SU"
-  "CCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_"
-  "CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025R"
-  "ESULT_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOUT"
-  "\020\006*\255\005\n\017AdsbEmitterType\022\035\n\031ADSB_EMITTER_T"
-  "YPE_NO_INFO\020\000\022\033\n\027ADSB_EMITTER_TYPE_LIGHT"
-  "\020\001\022\033\n\027ADSB_EMITTER_TYPE_SMALL\020\002\022\033\n\027ADSB_"
-  "EMITTER_TYPE_LARGE\020\003\022\'\n#ADSB_EMITTER_TYP"
-  "E_HIGH_VORTEX_LARGE\020\004\022\033\n\027ADSB_EMITTER_TY"
-  "PE_HEAVY\020\005\022\"\n\036ADSB_EMITTER_TYPE_HIGHLY_M"
-  "ANUV\020\006\022\037\n\033ADSB_EMITTER_TYPE_ROTOCRAFT\020\007\022"
-  " \n\034ADSB_EMITTER_TYPE_UNASSIGNED\020\010\022\034\n\030ADS"
-  "B_EMITTER_TYPE_GLIDER\020\t\022!\n\035ADSB_EMITTER_"
-  "TYPE_LIGHTER_AIR\020\n\022\037\n\033ADSB_EMITTER_TYPE_"
-  "PARACHUTE\020\013\022!\n\035ADSB_EMITTER_TYPE_ULTRA_L"
-  "IGHT\020\014\022!\n\035ADSB_EMITTER_TYPE_UNASSIGNED2\020"
-  "\r\022\031\n\025ADSB_EMITTER_TYPE_UAV\020\016\022\033\n\027ADSB_EMI"
-  "TTER_TYPE_SPACE\020\017\022!\n\035ADSB_EMITTER_TYPE_U"
-  "NASSGINED3\020\020\022\'\n#ADSB_EMITTER_TYPE_EMERGE"
-  "NCY_SURFACE\020\021\022%\n!ADSB_EMITTER_TYPE_SERVI"
-  "CE_SURFACE\020\022\022$\n ADSB_EMITTER_TYPE_POINT_"
-  "OBSTACLE\020\0232\221\002\n\022TransponderService\022|\n\024Sub"
-  "scribeTransponder\0223.mavsdk.rpc.transpond"
-  "er.SubscribeTransponderRequest\032+.mavsdk."
-  "rpc.transponder.TransponderResponse\"\0000\001\022"
-  "}\n\022SetRateTransponder\0221.mavsdk.rpc.trans"
-  "ponder.SetRateTransponderRequest\0322.mavsd"
-  "k.rpc.transponder.SetRateTransponderResp"
-  "onse\"\000B)\n\025io.mavsdk.transponderB\020Transpo"
-  "nderProtob\006proto3"
+  "wk\030\r \001(\r\022\016\n\006tslc_s\030\016 \001(\r\"\217\002\n\021Transponder"
+  "Result\022@\n\006result\030\001 \001(\01620.mavsdk.rpc.tran"
+  "sponder.TransponderResult.Result\022\022\n\nresu"
+  "lt_str\030\002 \001(\t\"\243\001\n\006Result\022\022\n\016RESULT_UNKNOW"
+  "N\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYS"
+  "TEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RE"
+  "SULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022"
+  "\n\016RESULT_TIMEOUT\020\006*\255\005\n\017AdsbEmitterType\022\035"
+  "\n\031ADSB_EMITTER_TYPE_NO_INFO\020\000\022\033\n\027ADSB_EM"
+  "ITTER_TYPE_LIGHT\020\001\022\033\n\027ADSB_EMITTER_TYPE_"
+  "SMALL\020\002\022\033\n\027ADSB_EMITTER_TYPE_LARGE\020\003\022\'\n#"
+  "ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE\020\004\022\033\n"
+  "\027ADSB_EMITTER_TYPE_HEAVY\020\005\022\"\n\036ADSB_EMITT"
+  "ER_TYPE_HIGHLY_MANUV\020\006\022\037\n\033ADSB_EMITTER_T"
+  "YPE_ROTOCRAFT\020\007\022 \n\034ADSB_EMITTER_TYPE_UNA"
+  "SSIGNED\020\010\022\034\n\030ADSB_EMITTER_TYPE_GLIDER\020\t\022"
+  "!\n\035ADSB_EMITTER_TYPE_LIGHTER_AIR\020\n\022\037\n\033AD"
+  "SB_EMITTER_TYPE_PARACHUTE\020\013\022!\n\035ADSB_EMIT"
+  "TER_TYPE_ULTRA_LIGHT\020\014\022!\n\035ADSB_EMITTER_T"
+  "YPE_UNASSIGNED2\020\r\022\031\n\025ADSB_EMITTER_TYPE_U"
+  "AV\020\016\022\033\n\027ADSB_EMITTER_TYPE_SPACE\020\017\022!\n\035ADS"
+  "B_EMITTER_TYPE_UNASSGINED3\020\020\022\'\n#ADSB_EMI"
+  "TTER_TYPE_EMERGENCY_SURFACE\020\021\022%\n!ADSB_EM"
+  "ITTER_TYPE_SERVICE_SURFACE\020\022\022$\n ADSB_EMI"
+  "TTER_TYPE_POINT_OBSTACLE\020\0232\221\002\n\022Transpond"
+  "erService\022|\n\024SubscribeTransponder\0223.mavs"
+  "dk.rpc.transponder.SubscribeTransponderR"
+  "equest\032+.mavsdk.rpc.transponder.Transpon"
+  "derResponse\"\0000\001\022}\n\022SetRateTransponder\0221."
+  "mavsdk.rpc.transponder.SetRateTransponde"
+  "rRequest\0322.mavsdk.rpc.transponder.SetRat"
+  "eTransponderResponse\"\000B)\n\025io.mavsdk.tran"
+  "sponderB\020TransponderProtob\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_transponder_2ftransponder_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_transponder_2ftransponder_2eproto = {
-  false, false, 1897, descriptor_table_protodef_transponder_2ftransponder_2eproto, "transponder/transponder.proto", 
+  false, false, 1913, descriptor_table_protodef_transponder_2ftransponder_2eproto, "transponder/transponder.proto", 
   &descriptor_table_transponder_2ftransponder_2eproto_once, nullptr, 0, 6,
   schemas, file_default_instances, TableStruct_transponder_2ftransponder_2eproto::offsets,
   file_level_metadata_transponder_2ftransponder_2eproto, file_level_enum_descriptors_transponder_2ftransponder_2eproto, file_level_service_descriptors_transponder_2ftransponder_2eproto,
@@ -1064,8 +1066,8 @@ AdsbVehicle::AdsbVehicle(const AdsbVehicle& from)
       GetArenaForAllocation());
   }
   ::memcpy(&latitude_deg_, &from.latitude_deg_,
-    static_cast<size_t>(reinterpret_cast<char*>(&squawk_) -
-    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(squawk_));
+    static_cast<size_t>(reinterpret_cast<char*>(&tslc_s_) -
+    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(tslc_s_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.transponder.AdsbVehicle)
 }
 
@@ -1073,8 +1075,8 @@ inline void AdsbVehicle::SharedCtor() {
 callsign_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&latitude_deg_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&squawk_) -
-    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(squawk_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&tslc_s_) -
+    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(tslc_s_));
 }
 
 AdsbVehicle::~AdsbVehicle() {
@@ -1107,8 +1109,8 @@ void AdsbVehicle::Clear() {
 
   callsign_.ClearToEmpty();
   ::memset(&latitude_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&squawk_) -
-      reinterpret_cast<char*>(&latitude_deg_)) + sizeof(squawk_));
+      reinterpret_cast<char*>(&tslc_s_) -
+      reinterpret_cast<char*>(&latitude_deg_)) + sizeof(tslc_s_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1188,6 +1190,13 @@ const char* AdsbVehicle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       case 13:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 104)) {
           squawk_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 tslc_s = 14;
+      case 14:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 112)) {
+          tslc_s_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1285,6 +1294,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(13, this->_internal_squawk(), target);
   }
 
+  // uint32 tslc_s = 14;
+  if (this->_internal_tslc_s() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(14, this->_internal_tslc_s(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1358,6 +1373,13 @@ size_t AdsbVehicle::ByteSizeLong() const {
         this->_internal_squawk());
   }
 
+  // uint32 tslc_s = 14;
+  if (this->_internal_tslc_s() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_tslc_s());
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -1416,6 +1438,9 @@ void AdsbVehicle::MergeFrom(const AdsbVehicle& from) {
   if (from._internal_squawk() != 0) {
     _internal_set_squawk(from._internal_squawk());
   }
+  if (from._internal_tslc_s() != 0) {
+    _internal_set_tslc_s(from._internal_tslc_s());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1439,8 +1464,8 @@ void AdsbVehicle::InternalSwap(AdsbVehicle* other) {
       &other->callsign_, other->GetArenaForAllocation()
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(AdsbVehicle, squawk_)
-      + sizeof(AdsbVehicle::squawk_)
+      PROTOBUF_FIELD_OFFSET(AdsbVehicle, tslc_s_)
+      + sizeof(AdsbVehicle::tslc_s_)
       - PROTOBUF_FIELD_OFFSET(AdsbVehicle, latitude_deg_)>(
           reinterpret_cast<char*>(&latitude_deg_),
           reinterpret_cast<char*>(&other->latitude_deg_));
