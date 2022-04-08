@@ -330,7 +330,7 @@ public:
     void send_autopilot_version();
     void send_flight_information_request();
 
-    MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };
+    MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; };
 
     MavlinkFtp& mavlink_ftp() { return _mavlink_ftp; };
 
@@ -477,7 +477,7 @@ private:
     Timesync _timesync;
     Ping _ping;
 
-    MAVLinkMissionTransfer _mission_transfer;
+    MavlinkMissionTransfer _mission_transfer;
     RequestMessage _request_message;
     MavlinkFtp _mavlink_ftp;
 

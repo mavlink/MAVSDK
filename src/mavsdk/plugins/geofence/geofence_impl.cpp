@@ -40,11 +40,11 @@ void GeofenceImpl::upload_geofence_async(
     const std::vector<Geofence::Polygon>& polygons, const Geofence::ResultCallback& callback)
 {
     // We can just create these items on the stack because they get copied
-    // later in the MAVLinkMissionTransfer constructor.
+    // later in the MavlinkMissionTransfer constructor.
     const auto items = assemble_items(polygons);
 
     _parent->mission_transfer().upload_items_async(
-        MAV_MISSION_TYPE_FENCE, items, [this, callback](MAVLinkMissionTransfer::Result result) {
+        MAV_MISSION_TYPE_FENCE, items, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             _parent->call_user_callback(
                 [callback, converted_result]() { callback(converted_result); });
@@ -63,7 +63,7 @@ Geofence::Result GeofenceImpl::clear_geofence()
 void GeofenceImpl::clear_geofence_async(const Geofence::ResultCallback& callback)
 {
     _parent->mission_transfer().clear_items_async(
-        MAV_MISSION_TYPE_FENCE, [this, callback](MAVLinkMissionTransfer::Result result) {
+        MAV_MISSION_TYPE_FENCE, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             _parent->call_user_callback([callback, converted_result]() {
                 if (callback) {
@@ -73,10 +73,10 @@ void GeofenceImpl::clear_geofence_async(const Geofence::ResultCallback& callback
         });
 }
 
-std::vector<MAVLinkMissionTransfer::ItemInt>
+std::vector<MavlinkMissionTransfer::ItemInt>
 GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
 {
-    std::vector<MAVLinkMissionTransfer::ItemInt> items;
+    std::vector<MavlinkMissionTransfer::ItemInt> items;
 
     uint16_t sequence = 0;
     for (auto& polygon : polygons) {
@@ -99,7 +99,7 @@ GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
             const uint8_t autocontinue = 0;
             const float param1 = float(polygon.points.size());
 
-            items.push_back(MAVLinkMissionTransfer::ItemInt{
+            items.push_back(MavlinkMissionTransfer::ItemInt{
                 sequence,
                 MAV_FRAME_GLOBAL_INT,
                 command,
@@ -119,38 +119,38 @@ GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
     return items;
 }
 
-Geofence::Result GeofenceImpl::convert_result(MAVLinkMissionTransfer::Result result)
+Geofence::Result GeofenceImpl::convert_result(MavlinkMissionTransfer::Result result)
 {
     switch (result) {
-        case MAVLinkMissionTransfer::Result::Success:
+        case MavlinkMissionTransfer::Result::Success:
             return Geofence::Result::Success;
-        case MAVLinkMissionTransfer::Result::ConnectionError:
+        case MavlinkMissionTransfer::Result::ConnectionError:
             return Geofence::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::Denied:
+        case MavlinkMissionTransfer::Result::Denied:
             return Geofence::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::TooManyMissionItems:
+        case MavlinkMissionTransfer::Result::TooManyMissionItems:
             return Geofence::Result::TooManyGeofenceItems;
-        case MAVLinkMissionTransfer::Result::Timeout:
+        case MavlinkMissionTransfer::Result::Timeout:
             return Geofence::Result::Timeout;
-        case MAVLinkMissionTransfer::Result::Unsupported:
+        case MavlinkMissionTransfer::Result::Unsupported:
             return Geofence::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::UnsupportedFrame:
+        case MavlinkMissionTransfer::Result::UnsupportedFrame:
             return Geofence::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::NoMissionAvailable:
+        case MavlinkMissionTransfer::Result::NoMissionAvailable:
             return Geofence::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::Cancelled:
+        case MavlinkMissionTransfer::Result::Cancelled:
             return Geofence::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::MissionTypeNotConsistent:
+        case MavlinkMissionTransfer::Result::MissionTypeNotConsistent:
             return Geofence::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::InvalidSequence:
+        case MavlinkMissionTransfer::Result::InvalidSequence:
             return Geofence::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::CurrentInvalid:
+        case MavlinkMissionTransfer::Result::CurrentInvalid:
             return Geofence::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::ProtocolError:
+        case MavlinkMissionTransfer::Result::ProtocolError:
             return Geofence::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::InvalidParam:
+        case MavlinkMissionTransfer::Result::InvalidParam:
             return Geofence::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::IntMessagesNotSupported:
+        case MavlinkMissionTransfer::Result::IntMessagesNotSupported:
             return Geofence::Result::Error; // FIXME
         default:
             return Geofence::Result::Unknown;

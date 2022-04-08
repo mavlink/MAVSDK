@@ -8,7 +8,7 @@ namespace mavsdk {
 RequestMessage::RequestMessage(
     SystemImpl& system_impl,
     MavlinkCommandSender& command_sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler) :
     _system_impl(system_impl),
     _command_sender(command_sender),

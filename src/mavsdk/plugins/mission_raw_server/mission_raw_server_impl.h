@@ -40,10 +40,10 @@ private:
     std::mutex _work_mutex;
     std::atomic<bool> _stop_work_thread = false;
 
-    std::vector<MAVLinkMissionTransfer::ItemInt> _current_mission;
+    std::vector<MavlinkMissionTransfer::ItemInt> _current_mission;
     std::size_t _current_seq;
 
-    std::weak_ptr<MAVLinkMissionTransfer::WorkItem> _last_download{};
+    std::weak_ptr<MavlinkMissionTransfer::WorkItem> _last_download{};
 
     void set_current_seq(std::size_t seq);
 

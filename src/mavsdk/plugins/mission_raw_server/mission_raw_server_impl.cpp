@@ -20,10 +20,10 @@ MissionRawServerImpl::~MissionRawServerImpl()
     _parent->unregister_plugin(this);
 }
 
-MAVLinkMissionTransfer::ItemInt
+MavlinkMissionTransfer::ItemInt
 convert_mission_raw(const MissionRawServer::MissionItem transfer_mission_raw)
 {
-    MAVLinkMissionTransfer::ItemInt new_item_int{};
+    MavlinkMissionTransfer::ItemInt new_item_int{};
 
     new_item_int.seq = transfer_mission_raw.seq;
     new_item_int.frame = transfer_mission_raw.frame;
@@ -42,10 +42,10 @@ convert_mission_raw(const MissionRawServer::MissionItem transfer_mission_raw)
     return new_item_int;
 }
 
-std::vector<MAVLinkMissionTransfer::ItemInt>
+std::vector<MavlinkMissionTransfer::ItemInt>
 convert_to_int_items(const std::vector<MissionRawServer::MissionItem>& mission_raw)
 {
-    std::vector<MAVLinkMissionTransfer::ItemInt> int_items;
+    std::vector<MavlinkMissionTransfer::ItemInt> int_items;
 
     for (const auto& item : mission_raw) {
         int_items.push_back(convert_mission_raw(item));
@@ -54,7 +54,7 @@ convert_to_int_items(const std::vector<MissionRawServer::MissionItem>& mission_r
     return int_items;
 }
 
-MissionRawServer::MissionItem convert_item(const MAVLinkMissionTransfer::ItemInt& transfer_item)
+MissionRawServer::MissionItem convert_item(const MavlinkMissionTransfer::ItemInt& transfer_item)
 {
     MissionRawServer::MissionItem new_item;
 
@@ -76,7 +76,7 @@ MissionRawServer::MissionItem convert_item(const MAVLinkMissionTransfer::ItemInt
 }
 
 std::vector<MissionRawServer::MissionItem>
-convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items)
+convert_items(const std::vector<MavlinkMissionTransfer::ItemInt>& transfer_items)
 {
     std::vector<MissionRawServer::MissionItem> new_items;
     new_items.reserve(transfer_items.size());
@@ -88,38 +88,38 @@ convert_items(const std::vector<MAVLinkMissionTransfer::ItemInt>& transfer_items
     return new_items;
 }
 
-MissionRawServer::Result convert_result(MAVLinkMissionTransfer::Result result)
+MissionRawServer::Result convert_result(MavlinkMissionTransfer::Result result)
 {
     switch (result) {
-        case MAVLinkMissionTransfer::Result::Success:
+        case MavlinkMissionTransfer::Result::Success:
             return MissionRawServer::Result::Success;
-        case MAVLinkMissionTransfer::Result::ConnectionError:
+        case MavlinkMissionTransfer::Result::ConnectionError:
             return MissionRawServer::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::Denied:
+        case MavlinkMissionTransfer::Result::Denied:
             return MissionRawServer::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::TooManyMissionItems:
+        case MavlinkMissionTransfer::Result::TooManyMissionItems:
             return MissionRawServer::Result::TooManyMissionItems;
-        case MAVLinkMissionTransfer::Result::Timeout:
+        case MavlinkMissionTransfer::Result::Timeout:
             return MissionRawServer::Result::Timeout;
-        case MAVLinkMissionTransfer::Result::Unsupported:
+        case MavlinkMissionTransfer::Result::Unsupported:
             return MissionRawServer::Result::Unsupported;
-        case MAVLinkMissionTransfer::Result::UnsupportedFrame:
+        case MavlinkMissionTransfer::Result::UnsupportedFrame:
             return MissionRawServer::Result::Unsupported;
-        case MAVLinkMissionTransfer::Result::NoMissionAvailable:
+        case MavlinkMissionTransfer::Result::NoMissionAvailable:
             return MissionRawServer::Result::NoMissionAvailable;
-        case MAVLinkMissionTransfer::Result::Cancelled:
+        case MavlinkMissionTransfer::Result::Cancelled:
             return MissionRawServer::Result::TransferCancelled;
-        case MAVLinkMissionTransfer::Result::MissionTypeNotConsistent:
+        case MavlinkMissionTransfer::Result::MissionTypeNotConsistent:
             return MissionRawServer::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::InvalidSequence:
+        case MavlinkMissionTransfer::Result::InvalidSequence:
             return MissionRawServer::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::CurrentInvalid:
+        case MavlinkMissionTransfer::Result::CurrentInvalid:
             return MissionRawServer::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::ProtocolError:
+        case MavlinkMissionTransfer::Result::ProtocolError:
             return MissionRawServer::Result::Error; // FIXME
-        case MAVLinkMissionTransfer::Result::InvalidParam:
+        case MavlinkMissionTransfer::Result::InvalidParam:
             return MissionRawServer::Result::InvalidArgument; // FIXME
-        case MAVLinkMissionTransfer::Result::IntMessagesNotSupported:
+        case MavlinkMissionTransfer::Result::IntMessagesNotSupported:
             return MissionRawServer::Result::Unsupported; // FIXME
         default:
             return MissionRawServer::Result::Unknown;
@@ -175,8 +175,8 @@ void MissionRawServerImpl::init()
                     _mission_count,
                     _target_component,
                     [this](
-                        MAVLinkMissionTransfer::Result result,
-                        std::vector<MAVLinkMissionTransfer::ItemInt> items) {
+                        MavlinkMissionTransfer::Result result,
+                        std::vector<MavlinkMissionTransfer::ItemInt> items) {
                         _current_mission = items;
                         auto converted_result = convert_result(result);
                         auto converted_items = convert_items(items);

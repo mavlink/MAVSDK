@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-MAVLinkMissionTransfer::MAVLinkMissionTransfer(
+MavlinkMissionTransfer::MavlinkMissionTransfer(
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
@@ -23,7 +23,7 @@ MAVLinkMissionTransfer::MAVLinkMissionTransfer(
     }
 }
 
-std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_items_async(
+std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::upload_items_async(
     uint8_t type,
     const std::vector<ItemInt>& items,
     const ResultCallback& callback,
@@ -53,7 +53,7 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_i
     return std::weak_ptr<WorkItem>(ptr);
 }
 
-std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::download_items_async(
+std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::download_items_async(
     uint8_t type, ResultAndItemsCallback callback, ProgressCallback progress_callback)
 {
     if (!_int_messages_supported) {
@@ -79,8 +79,8 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::download
     return std::weak_ptr<WorkItem>(ptr);
 }
 
-std::weak_ptr<MAVLinkMissionTransfer::WorkItem>
-MAVLinkMissionTransfer::receive_incoming_items_async(
+std::weak_ptr<MavlinkMissionTransfer::WorkItem>
+MavlinkMissionTransfer::receive_incoming_items_async(
     uint8_t type, uint32_t mission_count, uint8_t target_component, ResultAndItemsCallback callback)
 {
     if (!_int_messages_supported) {
@@ -107,7 +107,7 @@ MAVLinkMissionTransfer::receive_incoming_items_async(
     return std::weak_ptr<WorkItem>(ptr);
 }
 
-void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback callback)
+void MavlinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback callback)
 {
     auto ptr = std::make_shared<ClearWorkItem>(
         _sender,
@@ -121,7 +121,7 @@ void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback call
     _work_queue.push_back(ptr);
 }
 
-void MAVLinkMissionTransfer::set_current_item_async(int current, ResultCallback callback)
+void MavlinkMissionTransfer::set_current_item_async(int current, ResultCallback callback)
 {
     auto ptr = std::make_shared<SetCurrentWorkItem>(
         _sender,
@@ -135,7 +135,7 @@ void MAVLinkMissionTransfer::set_current_item_async(int current, ResultCallback 
     _work_queue.push_back(ptr);
 }
 
-void MAVLinkMissionTransfer::do_work()
+void MavlinkMissionTransfer::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -152,15 +152,15 @@ void MAVLinkMissionTransfer::do_work()
     }
 }
 
-bool MAVLinkMissionTransfer::is_idle()
+bool MavlinkMissionTransfer::is_idle()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     return (work_queue_guard.get_front() == nullptr);
 }
 
-MAVLinkMissionTransfer::WorkItem::WorkItem(
+MavlinkMissionTransfer::WorkItem::WorkItem(
     Sender& sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
     double timeout_s,
@@ -173,23 +173,23 @@ MAVLinkMissionTransfer::WorkItem::WorkItem(
     _debugging(debugging)
 {}
 
-MAVLinkMissionTransfer::WorkItem::~WorkItem() {}
+MavlinkMissionTransfer::WorkItem::~WorkItem() {}
 
-bool MAVLinkMissionTransfer::WorkItem::has_started()
+bool MavlinkMissionTransfer::WorkItem::has_started()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _started;
 }
 
-bool MAVLinkMissionTransfer::WorkItem::is_done()
+bool MavlinkMissionTransfer::WorkItem::is_done()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _done;
 }
 
-MAVLinkMissionTransfer::UploadWorkItem::UploadWorkItem(
+MavlinkMissionTransfer::UploadWorkItem::UploadWorkItem(
     Sender& sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
     const std::vector<ItemInt>& items,
@@ -220,14 +220,14 @@ MAVLinkMissionTransfer::UploadWorkItem::UploadWorkItem(
         this);
 }
 
-MAVLinkMissionTransfer::UploadWorkItem::~UploadWorkItem()
+MavlinkMissionTransfer::UploadWorkItem::~UploadWorkItem()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::start()
+void MavlinkMissionTransfer::UploadWorkItem::start()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -272,7 +272,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::start()
     send_count();
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::cancel()
+void MavlinkMissionTransfer::UploadWorkItem::cancel()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -280,7 +280,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::cancel()
     send_cancel_and_finish();
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::send_count()
+void MavlinkMissionTransfer::UploadWorkItem::send_count()
 {
     mavlink_message_t message;
     mavlink_msg_mission_count_pack(
@@ -306,7 +306,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
+void MavlinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
@@ -327,7 +327,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
     callback_and_reset(Result::Cancelled);
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
+void MavlinkMissionTransfer::UploadWorkItem::process_mission_request(
     const mavlink_message_t& request_message)
 {
     if (_sender.autopilot() == Sender::Autopilot::ArduPilot) {
@@ -372,7 +372,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request(
     }
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
+void MavlinkMissionTransfer::UploadWorkItem::process_mission_request_int(
     const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -417,7 +417,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
     send_mission_item();
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
+void MavlinkMissionTransfer::UploadWorkItem::send_mission_item()
 {
     if (_next_sequence >= _items.size()) {
         LogErr() << "send_mission_item: sequence out of bounds";
@@ -461,7 +461,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::process_mission_ack(const mavlink_message_t& message)
+void MavlinkMissionTransfer::UploadWorkItem::process_mission_ack(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -523,7 +523,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_ack(const mavlink_m
     }
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
+void MavlinkMissionTransfer::UploadWorkItem::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -552,7 +552,7 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
     }
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::callback_and_reset(Result result)
+void MavlinkMissionTransfer::UploadWorkItem::callback_and_reset(Result result)
 {
     if (_callback) {
         _callback(result);
@@ -561,16 +561,16 @@ void MAVLinkMissionTransfer::UploadWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
-void MAVLinkMissionTransfer::UploadWorkItem::update_progress(float progress)
+void MavlinkMissionTransfer::UploadWorkItem::update_progress(float progress)
 {
     if (_progress_callback != nullptr) {
         _progress_callback(progress);
     }
 }
 
-MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
+MavlinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
     Sender& sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
     double timeout_s,
@@ -594,7 +594,7 @@ MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
         this);
 }
 
-MAVLinkMissionTransfer::DownloadWorkItem::~DownloadWorkItem()
+MavlinkMissionTransfer::DownloadWorkItem::~DownloadWorkItem()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -602,7 +602,14 @@ MAVLinkMissionTransfer::DownloadWorkItem::~DownloadWorkItem()
     _timeout_handler.remove(_cookie);
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::start()
+void MavlinkMissionTransfer::UploadWorkItem::update_progress(float progress)
+{
+    if (_progress_callback != nullptr) {
+        _progress_callback(progress);
+    }
+}
+
+void MavlinkMissionTransfer::DownloadWorkItem::start()
 {
     update_progress(0.0f);
 
@@ -615,7 +622,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::start()
     request_list();
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::cancel()
+void MavlinkMissionTransfer::DownloadWorkItem::cancel()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -623,7 +630,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::cancel()
     send_cancel_and_finish();
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::request_list()
+void MavlinkMissionTransfer::DownloadWorkItem::request_list()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_list_pack(
@@ -643,7 +650,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_list()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::request_item()
+void MavlinkMissionTransfer::DownloadWorkItem::request_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_int_pack(
@@ -664,7 +671,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::request_item()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
+void MavlinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
@@ -685,7 +692,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
     callback_and_reset(Result::Success);
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
+void MavlinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
@@ -706,7 +713,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
     callback_and_reset(Result::Cancelled);
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::process_mission_count(
+void MavlinkMissionTransfer::DownloadWorkItem::process_mission_count(
     const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -728,7 +735,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::process_mission_count(
     request_item();
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::process_mission_item_int(
+void MavlinkMissionTransfer::DownloadWorkItem::process_mission_item_int(
     const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -770,7 +777,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::process_mission_item_int(
     }
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::process_timeout()
+void MavlinkMissionTransfer::DownloadWorkItem::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -792,7 +799,7 @@ void MAVLinkMissionTransfer::DownloadWorkItem::process_timeout()
     }
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::callback_and_reset(Result result)
+void MavlinkMissionTransfer::DownloadWorkItem::callback_and_reset(Result result)
 {
     if (_callback) {
         _callback(result, _items);
@@ -801,16 +808,16 @@ void MAVLinkMissionTransfer::DownloadWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
-void MAVLinkMissionTransfer::DownloadWorkItem::update_progress(float progress)
+void MavlinkMissionTransfer::DownloadWorkItem::update_progress(float progress)
 {
     if (_progress_callback != nullptr) {
         _progress_callback(progress);
     }
 }
 
-MAVLinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
+MavlinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
     Sender& sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
     double timeout_s,
@@ -824,7 +831,7 @@ MAVLinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
     _target_component(target_component)
 {}
 
-MAVLinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
+MavlinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -832,7 +839,7 @@ MAVLinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
     _timeout_handler.remove(_cookie);
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::start()
+void MavlinkMissionTransfer::ReceiveIncomingMission::start()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -849,7 +856,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::start()
     process_mission_count();
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::cancel()
+void MavlinkMissionTransfer::ReceiveIncomingMission::cancel()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -857,7 +864,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::cancel()
     send_cancel_and_finish();
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::request_item()
+void MavlinkMissionTransfer::ReceiveIncomingMission::request_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_int_pack(
@@ -878,7 +885,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::request_item()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
+void MavlinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
@@ -899,7 +906,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
     callback_and_reset(Result::Success);
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
+void MavlinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
 {
     mavlink_message_t message;
     mavlink_msg_mission_ack_pack(
@@ -920,7 +927,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
     callback_and_reset(Result::Cancelled);
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_count()
+void MavlinkMissionTransfer::ReceiveIncomingMission::process_mission_count()
 {
     if (_mission_count == 0) {
         send_ack_and_finish();
@@ -936,7 +943,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_count()
     request_item();
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_item_int(
+void MavlinkMissionTransfer::ReceiveIncomingMission::process_mission_item_int(
     const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -971,7 +978,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::process_mission_item_int(
     }
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::process_timeout()
+void MavlinkMissionTransfer::ReceiveIncomingMission::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -984,7 +991,7 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::process_timeout()
     request_item();
 }
 
-void MAVLinkMissionTransfer::ReceiveIncomingMission::callback_and_reset(Result result)
+void MavlinkMissionTransfer::ReceiveIncomingMission::callback_and_reset(Result result)
 {
     if (_callback) {
         _callback(result, _items);
@@ -993,9 +1000,9 @@ void MAVLinkMissionTransfer::ReceiveIncomingMission::callback_and_reset(Result r
     _done = true;
 }
 
-MAVLinkMissionTransfer::ClearWorkItem::ClearWorkItem(
+MavlinkMissionTransfer::ClearWorkItem::ClearWorkItem(
     Sender& sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
     double timeout_s,
@@ -1012,7 +1019,7 @@ MAVLinkMissionTransfer::ClearWorkItem::ClearWorkItem(
         this);
 }
 
-MAVLinkMissionTransfer::ClearWorkItem::~ClearWorkItem()
+MavlinkMissionTransfer::ClearWorkItem::~ClearWorkItem()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1020,7 +1027,7 @@ MAVLinkMissionTransfer::ClearWorkItem::~ClearWorkItem()
     _timeout_handler.remove(_cookie);
 }
 
-void MAVLinkMissionTransfer::ClearWorkItem::start()
+void MavlinkMissionTransfer::ClearWorkItem::start()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1030,7 +1037,7 @@ void MAVLinkMissionTransfer::ClearWorkItem::start()
     send_clear();
 }
 
-void MAVLinkMissionTransfer::ClearWorkItem::cancel()
+void MavlinkMissionTransfer::ClearWorkItem::cancel()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1038,7 +1045,7 @@ void MAVLinkMissionTransfer::ClearWorkItem::cancel()
     // This is presumably not used or exposed because it is quick.
 }
 
-void MAVLinkMissionTransfer::ClearWorkItem::send_clear()
+void MavlinkMissionTransfer::ClearWorkItem::send_clear()
 {
     mavlink_message_t message;
     mavlink_msg_mission_clear_all_pack(
@@ -1058,7 +1065,7 @@ void MAVLinkMissionTransfer::ClearWorkItem::send_clear()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::ClearWorkItem::process_timeout()
+void MavlinkMissionTransfer::ClearWorkItem::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1071,7 +1078,7 @@ void MAVLinkMissionTransfer::ClearWorkItem::process_timeout()
     send_clear();
 }
 
-void MAVLinkMissionTransfer::ClearWorkItem::process_mission_ack(const mavlink_message_t& message)
+void MavlinkMissionTransfer::ClearWorkItem::process_mission_ack(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1125,7 +1132,7 @@ void MAVLinkMissionTransfer::ClearWorkItem::process_mission_ack(const mavlink_me
     }
 }
 
-void MAVLinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
+void MavlinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
 {
     if (_callback) {
         _callback(result);
@@ -1134,14 +1141,14 @@ void MAVLinkMissionTransfer::ClearWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
-void MAVLinkMissionTransfer::set_int_messages_supported(bool supported)
+void MavlinkMissionTransfer::set_int_messages_supported(bool supported)
 {
     _int_messages_supported = supported;
 }
 
-MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
+MavlinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
     Sender& sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     int current,
     double timeout_s,
@@ -1160,14 +1167,14 @@ MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
         this);
 }
 
-MAVLinkMissionTransfer::SetCurrentWorkItem::~SetCurrentWorkItem()
+MavlinkMissionTransfer::SetCurrentWorkItem::~SetCurrentWorkItem()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
 
-void MAVLinkMissionTransfer::SetCurrentWorkItem::start()
+void MavlinkMissionTransfer::SetCurrentWorkItem::start()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1184,7 +1191,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::start()
     send_current_mission_item();
 }
 
-void MAVLinkMissionTransfer::SetCurrentWorkItem::cancel()
+void MavlinkMissionTransfer::SetCurrentWorkItem::cancel()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1192,7 +1199,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::cancel()
     // This is presumably not used or exposed because it is quick.
 }
 
-void MAVLinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
+void MavlinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
 {
     mavlink_message_t message;
     mavlink_msg_mission_set_current_pack(
@@ -1212,7 +1219,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
     ++_retries_done;
 }
 
-void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(
+void MavlinkMissionTransfer::SetCurrentWorkItem::process_mission_current(
     const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -1233,7 +1240,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::process_mission_current(
     }
 }
 
-void MAVLinkMissionTransfer::SetCurrentWorkItem::process_timeout()
+void MavlinkMissionTransfer::SetCurrentWorkItem::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -1246,7 +1253,7 @@ void MAVLinkMissionTransfer::SetCurrentWorkItem::process_timeout()
     send_current_mission_item();
 }
 
-void MAVLinkMissionTransfer::SetCurrentWorkItem::callback_and_reset(Result result)
+void MavlinkMissionTransfer::SetCurrentWorkItem::callback_and_reset(Result result)
 {
     if (_callback) {
         _callback(result);
