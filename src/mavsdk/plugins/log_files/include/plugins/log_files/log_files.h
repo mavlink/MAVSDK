@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~LogFiles();
+    ~LogFiles() override;
 
     /**
      * @brief Progress data coming when downloading a log file.
@@ -159,25 +159,6 @@ public:
      * @brief Download log file.
      */
     void download_log_file_async(Entry entry, std::string path, DownloadLogFileCallback callback);
-
-    /**
-     * @brief Download log file synchronously.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    std::pair<Result, LogFiles::ProgressData>
-    download_log_file(Entry entry, std::string path) const;
-
-    /**
-     * @brief Erase all log files.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Result erase_all_log_files() const;
 
     /**
      * @brief Copy constructor.

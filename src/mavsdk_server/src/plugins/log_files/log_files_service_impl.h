@@ -6,7 +6,9 @@
 #include "plugins/log_files/log_files.h"
 
 #include "mavsdk.h"
+
 #include "lazy_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -20,6 +22,7 @@ namespace mavsdk {
 namespace mavsdk_server {
 
 template<typename LogFiles = LogFiles, typename LazyPlugin = LazyPlugin<LogFiles>>
+
 class LogFilesServiceImpl final : public rpc::log_files::LogFilesService::Service {
 public:
     LogFilesServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
@@ -220,60 +223,6 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status DownloadLogFile(
-        grpc::ServerContext* /* context */,
-        const rpc::log_files::DownloadLogFileRequest* request,
-        rpc::log_files::DownloadLogFileResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::LogFiles::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "DownloadLogFile sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->download_log_file(
-            translateFromRpcEntry(request->entry()), request->path());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result.first);
-
-            response->set_allocated_progress(translateToRpcProgressData(result.second).release());
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status EraseAllLogFiles(
-        grpc::ServerContext* /* context */,
-        const rpc::log_files::EraseAllLogFilesRequest* /* request */,
-        rpc::log_files::EraseAllLogFilesResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::LogFiles::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->erase_all_log_files();
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
     void stop()
     {
         _stopped.store(true);
@@ -310,6 +259,7 @@ private:
     }
 
     LazyPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

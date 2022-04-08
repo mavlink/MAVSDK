@@ -135,13 +135,13 @@ private:
     CoreServiceImpl<> _core;
     LazyPlugin<Action> _action_lazy_plugin;
     ActionServiceImpl<> _action_service;
-    LazyPlugin<ActionServer> _action_server_lazy_plugin;
+    LazyServerPlugin<ActionServer> _action_server_lazy_plugin;
     ActionServerServiceImpl<> _action_server_service;
     LazyPlugin<Calibration> _calibration_lazy_plugin;
     CalibrationServiceImpl<> _calibration_service;
     LazyPlugin<Camera> _camera_lazy_plugin;
     CameraServiceImpl<> _camera_service;
-    LazyPlugin<CameraServer> _camera_server_lazy_plugin;
+    LazyServerPlugin<CameraServer> _camera_server_lazy_plugin;
     CameraServerServiceImpl<> _camera_server_service;
     LazyPlugin<Failure> _failure_lazy_plugin;
     FailureServiceImpl<> _failure_service;
@@ -163,7 +163,7 @@ private:
     MissionServiceImpl<> _mission_service;
     LazyPlugin<MissionRaw> _mission_raw_lazy_plugin;
     MissionRawServiceImpl<> _mission_raw_service;
-    LazyPlugin<MissionRawServer> _mission_raw_server_lazy_plugin;
+    LazyServerPlugin<MissionRawServer> _mission_raw_server_lazy_plugin;
     MissionRawServerServiceImpl<> _mission_raw_server_service;
     LazyPlugin<Mocap> _mocap_lazy_plugin;
     MocapServiceImpl<> _mocap_service;
@@ -171,7 +171,7 @@ private:
     OffboardServiceImpl<> _offboard_service;
     LazyPlugin<Param> _param_lazy_plugin;
     ParamServiceImpl<> _param_service;
-    LazyPlugin<ParamServer> _param_server_lazy_plugin;
+    LazyServerPlugin<ParamServer> _param_server_lazy_plugin;
     ParamServerServiceImpl<> _param_server_service;
     LazyPlugin<ServerUtility> _server_utility_lazy_plugin;
     ServerUtilityServiceImpl<> _server_utility_service;
@@ -179,9 +179,9 @@ private:
     ShellServiceImpl<> _shell_service;
     LazyPlugin<Telemetry> _telemetry_lazy_plugin;
     TelemetryServiceImpl<> _telemetry_service;
-    LazyPlugin<TelemetryServer> _telemetry_server_lazy_plugin;
+    LazyServerPlugin<TelemetryServer> _telemetry_server_lazy_plugin;
     TelemetryServerServiceImpl<> _telemetry_server_service;
-    LazyPlugin<TrackingServer> _tracking_server_lazy_plugin;
+    LazyServerPlugin<TrackingServer> _tracking_server_lazy_plugin;
     TrackingServerServiceImpl<> _tracking_server_service;
     LazyPlugin<Tune> _tune_lazy_plugin;
     TuneServiceImpl<> _tune_service;

@@ -1,28 +1,26 @@
 #pragma once
 
 #include "plugins/camera_server/camera_server.h"
-#include "plugin_impl_base.h"
+#include "server_plugin_impl_base.h"
 
 namespace mavsdk {
 
-class CameraServerImpl : public PluginImplBase {
+class CameraServerImpl : public ServerPluginImplBase {
 public:
-    explicit CameraServerImpl(System& system);
-    explicit CameraServerImpl(std::shared_ptr<System> system);
-    ~CameraServerImpl();
+    explicit CameraServerImpl(std::shared_ptr<ServerComponent> server_component);
+    ~CameraServerImpl() override;
 
     void init() override;
     void deinit() override;
-
-    void enable() override;
-    void disable() override;
 
     CameraServer::Result set_information(CameraServer::Information information);
     CameraServer::Result set_in_progress(bool in_progress);
 
     void subscribe_take_photo(CameraServer::TakePhotoCallback callback);
 
-    CameraServer::Result respond_take_photo(CameraServer::CaptureInfo capture_info);
+    CameraServer::Result respond_take_photo(
+        CameraServer::TakePhotoFeedback take_photo_feedback,
+        CameraServer::CaptureInfo capture_info);
 
 private:
     enum StatusFlags {
@@ -48,6 +46,8 @@ private:
     int32_t _image_capture_count{};
 
     CameraServer::TakePhotoCallback _take_photo_callback{};
+
+    MavlinkCommandReceiver::CommandLong _last_take_photo_command;
 
     bool parse_version_string(const std::string& version_str);
     bool parse_version_string(const std::string& version_str, uint32_t& version);

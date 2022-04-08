@@ -101,18 +101,12 @@ public:
     std::pair<Action::Result, float> get_return_to_launch_altitude() const;
 
 private:
-    Action::Result disarming_allowed() const;
-    Action::Result taking_off_allowed() const;
-
     void process_extended_sys_state(const mavlink_message_t& message);
 
     static Action::Result action_result_from_command_result(MavlinkCommandSender::Result result);
 
     void command_result_callback(
         MavlinkCommandSender::Result command_result, const Action::ResultCallback& callback) const;
-
-    std::atomic<bool> _in_air_state_known{false};
-    std::atomic<bool> _in_air{false};
 
     std::atomic<bool> _vtol_transition_support_known{false};
     std::atomic<bool> _vtol_transition_possible{false};

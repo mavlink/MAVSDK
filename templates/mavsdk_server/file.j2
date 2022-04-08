@@ -6,7 +6,11 @@
 #include "plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h"
 
 #include "mavsdk.h"
+{% if is_server %}
+#include "lazy_server_plugin.h"
+{% else %}
 #include "lazy_plugin.h"
+{% endif %}
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -19,10 +23,18 @@
 namespace {{ package.lower_snake_case.split('.')[0] }} {
 namespace mavsdk_server {
 
+{% if is_server %}
+template<typename {{ plugin_name.upper_camel_case }} = {{ plugin_name.upper_camel_case }}, typename LazyServerPlugin = LazyServerPlugin<{{ plugin_name.upper_camel_case }}>>
+{% else %}
 template<typename {{ plugin_name.upper_camel_case }} = {{ plugin_name.upper_camel_case }}, typename LazyPlugin = LazyPlugin<{{ plugin_name.upper_camel_case }}>>
+{% endif %}
 class {{ plugin_name.upper_camel_case }}ServiceImpl final : public rpc::{{ plugin_name.lower_snake_case }}::{{ plugin_name.upper_camel_case }}Service::Service {
 public:
+{% if is_server %}
+    {{ plugin_name.upper_camel_case }}ServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+{% else %}
     {{ plugin_name.upper_camel_case }}ServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+{% endif %}
 
 {% if has_result %}
     template<typename ResponseType>
@@ -85,7 +97,11 @@ private:
         }
     }
 
+{% if is_server %}
+    LazyServerPlugin& _lazy_plugin;
+{% else %}
     LazyPlugin& _lazy_plugin;
+{% endif %}
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };

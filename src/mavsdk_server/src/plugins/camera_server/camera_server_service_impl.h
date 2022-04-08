@@ -7,7 +7,9 @@
 #include "plugins/camera_server/camera_server.h"
 
 #include "mavsdk.h"
-#include "lazy_plugin.h"
+
+#include "lazy_server_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -20,10 +22,13 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename CameraServer = CameraServer, typename LazyPlugin = LazyPlugin<CameraServer>>
+template<
+    typename CameraServer = CameraServer,
+    typename LazyServerPlugin = LazyServerPlugin<CameraServer>>
+
 class CameraServerServiceImpl final : public rpc::camera_server::CameraServerService::Service {
 public:
-    CameraServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+    CameraServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::CameraServer::Result& result) const
@@ -37,6 +42,44 @@ public:
         rpc_camera_server_result->set_result_str(ss.str());
 
         response->set_allocated_camera_server_result(rpc_camera_server_result);
+    }
+
+    static rpc::camera_server::TakePhotoFeedback translateToRpcTakePhotoFeedback(
+        const mavsdk::CameraServer::TakePhotoFeedback& take_photo_feedback)
+    {
+        switch (take_photo_feedback) {
+            default:
+                LogErr() << "Unknown take_photo_feedback enum value: "
+                         << static_cast<int>(take_photo_feedback);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::TakePhotoFeedback::Unknown:
+                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_UNKNOWN;
+            case mavsdk::CameraServer::TakePhotoFeedback::Ok:
+                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_OK;
+            case mavsdk::CameraServer::TakePhotoFeedback::Busy:
+                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_BUSY;
+            case mavsdk::CameraServer::TakePhotoFeedback::Failed:
+                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_FAILED;
+        }
+    }
+
+    static mavsdk::CameraServer::TakePhotoFeedback translateFromRpcTakePhotoFeedback(
+        const rpc::camera_server::TakePhotoFeedback take_photo_feedback)
+    {
+        switch (take_photo_feedback) {
+            default:
+                LogErr() << "Unknown take_photo_feedback enum value: "
+                         << static_cast<int>(take_photo_feedback);
+            // FALLTHROUGH
+            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_UNKNOWN:
+                return mavsdk::CameraServer::TakePhotoFeedback::Unknown;
+            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_OK:
+                return mavsdk::CameraServer::TakePhotoFeedback::Ok;
+            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_BUSY:
+                return mavsdk::CameraServer::TakePhotoFeedback::Busy;
+            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_FAILED:
+                return mavsdk::CameraServer::TakePhotoFeedback::Failed;
+        }
     }
 
     static std::unique_ptr<rpc::camera_server::Information>
@@ -323,11 +366,6 @@ public:
         grpc::ServerWriter<rpc::camera_server::TakePhotoResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            rpc::camera_server::TakePhotoResponse rpc_response;
-            auto result = mavsdk::CameraServer::Result::NoSystem;
-            fillResponseWithResult(&rpc_response, result);
-            writer->Write(rpc_response);
-
             return grpc::Status::OK;
         }
 
@@ -340,18 +378,10 @@ public:
 
         _lazy_plugin.maybe_plugin()->subscribe_take_photo(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                mavsdk::CameraServer::Result result, const int32_t take_photo) {
+                const int32_t take_photo) {
                 rpc::camera_server::TakePhotoResponse rpc_response;
 
                 rpc_response.set_index(take_photo);
-
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_camera_server_result = new rpc::camera_server::CameraServerResult();
-                rpc_camera_server_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_camera_server_result->set_result_str(ss.str());
-                rpc_response.set_allocated_camera_server_result(rpc_camera_server_result);
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
@@ -390,6 +420,7 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->respond_take_photo(
+            translateFromRpcTakePhotoFeedback(request->take_photo_feedback()),
             translateFromRpcCaptureInfo(request->capture_info()));
 
         if (response != nullptr) {
@@ -434,7 +465,8 @@ private:
         }
     }
 
-    LazyPlugin& _lazy_plugin;
+    LazyServerPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

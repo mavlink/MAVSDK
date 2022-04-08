@@ -1,21 +1,21 @@
 #pragma once
 
 #include "plugins/mission_raw_server/mission_raw_server.h"
-#include "plugin_impl_base.h"
+#include "server_plugin_impl_base.h"
+
+#include <thread>
+#include <condition_variable>
 
 namespace mavsdk {
 
-class MissionRawServerImpl : public PluginImplBase {
+class MissionRawServerImpl : public ServerPluginImplBase {
 public:
-    explicit MissionRawServerImpl(System& system);
-    explicit MissionRawServerImpl(std::shared_ptr<System> system);
+    explicit MissionRawServerImpl(std::shared_ptr<ServerComponent> server_component);
+
     ~MissionRawServerImpl() override;
 
     void init() override;
     void deinit() override;
-
-    void enable() override;
-    void disable() override;
 
     void subscribe_incoming_mission(MissionRawServer::IncomingMissionCallback callback);
     void subscribe_current_item_changed(MissionRawServer::CurrentItemChangedCallback callback);

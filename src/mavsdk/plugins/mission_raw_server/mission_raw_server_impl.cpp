@@ -2,22 +2,15 @@
 
 namespace mavsdk {
 
-using MissionItem = MissionRawServer::MissionItem;
-
-MissionRawServerImpl::MissionRawServerImpl(System& system) : PluginImplBase(system)
+MissionRawServerImpl::MissionRawServerImpl(std::shared_ptr<ServerComponent> server_component) :
+    ServerPluginImplBase(server_component)
 {
-    _parent->register_plugin(this);
-}
-
-MissionRawServerImpl::MissionRawServerImpl(std::shared_ptr<System> system) :
-    PluginImplBase(std::move(system))
-{
-    _parent->register_plugin(this);
+    _server_component_impl->register_plugin(this);
 }
 
 MissionRawServerImpl::~MissionRawServerImpl()
 {
-    _parent->unregister_plugin(this);
+    _server_component_impl->unregister_plugin(this);
 }
 
 MavlinkMissionTransfer::ItemInt
@@ -128,7 +121,7 @@ MissionRawServer::Result convert_result(MavlinkMissionTransfer::Result result)
 
 void MissionRawServerImpl::init()
 {
-    _parent->add_capabilities(MAV_PROTOCOL_CAPABILITY_MISSION_INT);
+    _server_component_impl->add_capabilities(MAV_PROTOCOL_CAPABILITY_MISSION_INT);
 
     _thread_mission = std::thread([this] {
         while (!_stop_work_thread) {
@@ -145,7 +138,7 @@ void MissionRawServerImpl::init()
     });
 
     // Handle Initiate Upload
-    _parent->register_mavlink_message_handler(
+    _server_component_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_COUNT,
         [this](const mavlink_message_t& message) {
             LogDebug() << "Receive Mission Count in Server";
@@ -157,10 +150,10 @@ void MissionRawServerImpl::init()
             _mission_count = count.count;
 
             // We need to queue this on a different thread or it will deadlock
-            add_task([this]() {
+            add_task([this, target_system_id = message.sysid]() {
                 // Mission Upload Inbound
                 if (_last_download.lock()) {
-                    _parent->call_user_callback([this]() {
+                    _server_component_impl->call_user_callback([this]() {
                         if (_incoming_mission_callback) {
                             MissionRawServer::MissionPlan mission_plan{};
                             _incoming_mission_callback(
@@ -170,31 +163,36 @@ void MissionRawServerImpl::init()
                     return;
                 }
 
-                _last_download = _parent->mission_transfer().receive_incoming_items_async(
-                    MAV_MISSION_TYPE_MISSION,
-                    _mission_count,
-                    _target_component,
-                    [this](
-                        MavlinkMissionTransfer::Result result,
-                        std::vector<MavlinkMissionTransfer::ItemInt> items) {
-                        _current_mission = items;
-                        auto converted_result = convert_result(result);
-                        auto converted_items = convert_items(items);
-                        _parent->call_user_callback([this, converted_result, converted_items]() {
-                            if (_incoming_mission_callback) {
-                                _incoming_mission_callback(converted_result, {converted_items});
-                            }
+                _server_component_impl->set_our_current_target_system_id(target_system_id);
 
-                            _mission_completed = false;
-                            set_current_seq(0);
+                _last_download =
+                    _server_component_impl->mission_transfer().receive_incoming_items_async(
+                        MAV_MISSION_TYPE_MISSION,
+                        _mission_count,
+                        _target_component,
+                        [this](
+                            MavlinkMissionTransfer::Result result,
+                            std::vector<MavlinkMissionTransfer::ItemInt> items) {
+                            _current_mission = items;
+                            auto converted_result = convert_result(result);
+                            auto converted_items = convert_items(items);
+                            _server_component_impl->call_user_callback([this,
+                                                                        converted_result,
+                                                                        converted_items]() {
+                                if (_incoming_mission_callback) {
+                                    _incoming_mission_callback(converted_result, {converted_items});
+                                }
+
+                                _mission_completed = false;
+                                set_current_seq(0);
+                            });
                         });
-                    });
             });
         },
         this);
 
     // Handle Set Current from GCS
-    _parent->register_mavlink_message_handler(
+    _server_component_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_SET_CURRENT,
         [this](const mavlink_message_t& message) {
             LogDebug() << "Receive Mission Set Current";
@@ -205,25 +203,25 @@ void MissionRawServerImpl::init()
             if (_current_mission.size() == 0) {
                 mavlink_message_t status_message;
                 mavlink_msg_statustext_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
+                    _server_component_impl->get_own_system_id(),
+                    _server_component_impl->get_own_component_id(),
                     &status_message,
                     MAV_SEVERITY_ERROR,
                     "No Mission Loaded",
                     0,
                     0);
-                _parent->send_message(status_message);
+                _server_component_impl->send_message(status_message);
             } else if (_current_mission.size() <= set_current.seq) {
                 mavlink_message_t status_message;
                 mavlink_msg_statustext_pack(
-                    _parent->get_own_system_id(),
-                    _parent->get_own_component_id(),
+                    _server_component_impl->get_own_system_id(),
+                    _server_component_impl->get_own_component_id(),
                     &status_message,
                     MAV_SEVERITY_ERROR,
                     "Unknown Mission seq id",
                     0,
                     0);
-                _parent->send_message(status_message);
+                _server_component_impl->send_message(status_message);
             } else {
                 set_current_seq(set_current.seq);
             }
@@ -231,7 +229,7 @@ void MissionRawServerImpl::init()
         this);
 
     // Handle Clears
-    _parent->register_mavlink_message_handler(
+    _server_component_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CLEAR_ALL,
         [this](const mavlink_message_t& message) {
             mavlink_mission_clear_all_t clear_all;
@@ -240,7 +238,7 @@ void MissionRawServerImpl::init()
                 clear_all.mission_type == MAV_MISSION_TYPE_MISSION) {
                 _current_mission.clear();
                 _current_seq = 0;
-                _parent->call_user_callback([this, clear_all]() {
+                _server_component_impl->call_user_callback([this, clear_all]() {
                     if (_clear_all_callback) {
                         _clear_all_callback(clear_all.mission_type);
                     }
@@ -250,14 +248,14 @@ void MissionRawServerImpl::init()
             // Send the MISSION_ACK
             mavlink_message_t ack_message;
             mavlink_msg_mission_ack_pack(
-                _parent->get_own_system_id(),
-                _parent->get_own_component_id(),
+                _server_component_impl->get_own_system_id(),
+                _server_component_impl->get_own_component_id(),
                 &ack_message,
                 message.sysid,
                 message.compid,
                 MAV_MISSION_RESULT::MAV_MISSION_ACCEPTED,
                 clear_all.mission_type);
-            _parent->send_message(ack_message);
+            _server_component_impl->send_message(ack_message);
         },
         this);
 }
@@ -268,10 +266,6 @@ void MissionRawServerImpl::deinit()
     _wait_for_new_task.notify_all();
     _thread_mission.join();
 }
-
-void MissionRawServerImpl::enable() {}
-
-void MissionRawServerImpl::disable() {}
 
 void MissionRawServerImpl::subscribe_incoming_mission(
     const MissionRawServer::IncomingMissionCallback callback)
@@ -315,11 +309,11 @@ void MissionRawServerImpl::set_current_item_complete()
 
     mavlink_message_t mission_reached;
     mavlink_msg_mission_item_reached_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &mission_reached,
         static_cast<uint16_t>(_current_seq));
-    _parent->send_message(mission_reached);
+    _server_component_impl->send_message(mission_reached);
 
     if (_current_seq + 1 == _current_mission.size()) {
         _mission_completed = true;
@@ -341,7 +335,7 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
     auto item = seq == _current_mission.size() ? _current_mission.back() :
                                                  _current_mission.at(_current_seq);
     auto converted_item = convert_item(item);
-    _parent->call_user_callback([this, converted_item]() {
+    _server_component_impl->call_user_callback([this, converted_item]() {
         if (_current_item_changed_callback) {
             _current_item_changed_callback(converted_item);
         }
@@ -349,11 +343,11 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
 
     mavlink_message_t mission_current;
     mavlink_msg_mission_current_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &mission_current,
         static_cast<uint16_t>(_current_seq));
-    _parent->send_message(mission_current);
+    _server_component_impl->send_message(mission_current);
 }
 
 } // namespace mavsdk

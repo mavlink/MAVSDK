@@ -7,9 +7,12 @@
 
 #include "deprecated.h"
 #include "system.h"
+#include "server_component.h"
 #include "connection_result.h"
 
 namespace mavsdk {
+
+class ServerPluginImplBase;
 
 /**
  * @brief ForwardingOption for Connection, used to set message forwarding option.
@@ -300,9 +303,45 @@ public:
      */
     void subscribe_on_new_system(const NewSystemCallback& callback);
 
+    enum class ServerComponentType {
+        Autopilot, /**< @brief The component identifies as an autopilot. */
+        GroundStation, /**< @brief The component identifies as a ground station. */
+        CompanionComputer, /**< @brief The component identifies as a companion computer on board the
+                              system. */
+        Camera, /** < @brief The component identifies as a camera. */
+    };
+
+    /**
+     * @brief Get server component by a high level type.
+     *
+     * This represents a server component of the MAVSDK instance.
+     *
+     * @param server_component_type The high level type of the component.
+     * @param instance The instance of the component if there are multiple, starting at 0.
+     *
+     * @return A valid shared pointer to a server component if it was successful, an empty pointer
+     * otherwise.
+     */
+    std::shared_ptr<ServerComponent>
+    server_component_by_type(ServerComponentType server_component_type, unsigned instance = 0);
+
+    /**
+     * @brief Get server component by the low MAVLink component ID.
+     *
+     * This represents a server component of the MAVSDK instance.
+     *
+     * @param component_id MAVLink component ID to use
+     *
+     * @return A valid shared pointer to a server component if it was successful, an empty pointer
+     * otherwise.
+     */
+    std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
+
 private:
     /* @private. */
     std::shared_ptr<MavsdkImpl> _impl{};
+
+    friend ServerPluginImplBase;
 
     // Non-copyable
     Mavsdk(const Mavsdk&) = delete;

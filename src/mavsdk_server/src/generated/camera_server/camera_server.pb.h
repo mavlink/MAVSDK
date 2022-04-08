@@ -151,6 +151,33 @@ inline bool CameraServerResult_Result_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CameraServerResult_Result>(
     CameraServerResult_Result_descriptor(), name, value);
 }
+enum TakePhotoFeedback : int {
+  TAKE_PHOTO_FEEDBACK_UNKNOWN = 0,
+  TAKE_PHOTO_FEEDBACK_OK = 1,
+  TAKE_PHOTO_FEEDBACK_BUSY = 2,
+  TAKE_PHOTO_FEEDBACK_FAILED = 3,
+  TakePhotoFeedback_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  TakePhotoFeedback_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool TakePhotoFeedback_IsValid(int value);
+constexpr TakePhotoFeedback TakePhotoFeedback_MIN = TAKE_PHOTO_FEEDBACK_UNKNOWN;
+constexpr TakePhotoFeedback TakePhotoFeedback_MAX = TAKE_PHOTO_FEEDBACK_FAILED;
+constexpr int TakePhotoFeedback_ARRAYSIZE = TakePhotoFeedback_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TakePhotoFeedback_descriptor();
+template<typename T>
+inline const std::string& TakePhotoFeedback_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, TakePhotoFeedback>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function TakePhotoFeedback_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    TakePhotoFeedback_descriptor(), enum_t_value);
+}
+inline bool TakePhotoFeedback_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, TakePhotoFeedback* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TakePhotoFeedback>(
+    TakePhotoFeedback_descriptor(), name, value);
+}
 // ===================================================================
 
 class SetInformationRequest final :
@@ -977,28 +1004,9 @@ class TakePhotoResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kCameraServerResultFieldNumber = 1,
-    kIndexFieldNumber = 2,
+    kIndexFieldNumber = 1,
   };
-  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
-  bool has_camera_server_result() const;
-  private:
-  bool _internal_has_camera_server_result() const;
-  public:
-  void clear_camera_server_result();
-  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
-  PROTOBUF_MUST_USE_RESULT ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
-  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
-  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result);
-  private:
-  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
-  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
-  public:
-  void unsafe_arena_set_allocated_camera_server_result(
-      ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result);
-  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
-
-  // int32 index = 2;
+  // int32 index = 1;
   void clear_index();
   ::PROTOBUF_NAMESPACE_ID::int32 index() const;
   void set_index(::PROTOBUF_NAMESPACE_ID::int32 value);
@@ -1014,7 +1022,6 @@ class TakePhotoResponse final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
   ::PROTOBUF_NAMESPACE_ID::int32 index_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
@@ -1136,9 +1143,10 @@ class RespondTakePhotoRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kCaptureInfoFieldNumber = 1,
+    kCaptureInfoFieldNumber = 2,
+    kTakePhotoFeedbackFieldNumber = 1,
   };
-  // .mavsdk.rpc.camera_server.CaptureInfo capture_info = 1;
+  // .mavsdk.rpc.camera_server.CaptureInfo capture_info = 2;
   bool has_capture_info() const;
   private:
   bool _internal_has_capture_info() const;
@@ -1156,6 +1164,15 @@ class RespondTakePhotoRequest final :
       ::mavsdk::rpc::camera_server::CaptureInfo* capture_info);
   ::mavsdk::rpc::camera_server::CaptureInfo* unsafe_arena_release_capture_info();
 
+  // .mavsdk.rpc.camera_server.TakePhotoFeedback take_photo_feedback = 1;
+  void clear_take_photo_feedback();
+  ::mavsdk::rpc::camera_server::TakePhotoFeedback take_photo_feedback() const;
+  void set_take_photo_feedback(::mavsdk::rpc::camera_server::TakePhotoFeedback value);
+  private:
+  ::mavsdk::rpc::camera_server::TakePhotoFeedback _internal_take_photo_feedback() const;
+  void _internal_set_take_photo_feedback(::mavsdk::rpc::camera_server::TakePhotoFeedback value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondTakePhotoRequest)
  private:
   class _Internal;
@@ -1164,6 +1181,7 @@ class RespondTakePhotoRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::mavsdk::rpc::camera_server::CaptureInfo* capture_info_;
+  int take_photo_feedback_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
 };
@@ -2665,97 +2683,7 @@ inline void SetInProgressResponse::set_allocated_camera_server_result(::mavsdk::
 
 // TakePhotoResponse
 
-// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
-inline bool TakePhotoResponse::_internal_has_camera_server_result() const {
-  return this != internal_default_instance() && camera_server_result_ != nullptr;
-}
-inline bool TakePhotoResponse::has_camera_server_result() const {
-  return _internal_has_camera_server_result();
-}
-inline void TakePhotoResponse::clear_camera_server_result() {
-  if (GetArenaForAllocation() == nullptr && camera_server_result_ != nullptr) {
-    delete camera_server_result_;
-  }
-  camera_server_result_ = nullptr;
-}
-inline const ::mavsdk::rpc::camera_server::CameraServerResult& TakePhotoResponse::_internal_camera_server_result() const {
-  const ::mavsdk::rpc::camera_server::CameraServerResult* p = camera_server_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(
-      ::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
-}
-inline const ::mavsdk::rpc::camera_server::CameraServerResult& TakePhotoResponse::camera_server_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.TakePhotoResponse.camera_server_result)
-  return _internal_camera_server_result();
-}
-inline void TakePhotoResponse::unsafe_arena_set_allocated_camera_server_result(
-    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(camera_server_result_);
-  }
-  camera_server_result_ = camera_server_result;
-  if (camera_server_result) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.TakePhotoResponse.camera_server_result)
-}
-inline ::mavsdk::rpc::camera_server::CameraServerResult* TakePhotoResponse::release_camera_server_result() {
-  
-  ::mavsdk::rpc::camera_server::CameraServerResult* temp = camera_server_result_;
-  camera_server_result_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::mavsdk::rpc::camera_server::CameraServerResult* TakePhotoResponse::unsafe_arena_release_camera_server_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.TakePhotoResponse.camera_server_result)
-  
-  ::mavsdk::rpc::camera_server::CameraServerResult* temp = camera_server_result_;
-  camera_server_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::camera_server::CameraServerResult* TakePhotoResponse::_internal_mutable_camera_server_result() {
-  
-  if (camera_server_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(GetArenaForAllocation());
-    camera_server_result_ = p;
-  }
-  return camera_server_result_;
-}
-inline ::mavsdk::rpc::camera_server::CameraServerResult* TakePhotoResponse::mutable_camera_server_result() {
-  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.TakePhotoResponse.camera_server_result)
-  return _msg;
-}
-inline void TakePhotoResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete camera_server_result_;
-  }
-  if (camera_server_result) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::mavsdk::rpc::camera_server::CameraServerResult>::GetOwningArena(camera_server_result);
-    if (message_arena != submessage_arena) {
-      camera_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, camera_server_result, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  camera_server_result_ = camera_server_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.TakePhotoResponse.camera_server_result)
-}
-
-// int32 index = 2;
+// int32 index = 1;
 inline void TakePhotoResponse::clear_index() {
   index_ = 0;
 }
@@ -2779,7 +2707,27 @@ inline void TakePhotoResponse::set_index(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // RespondTakePhotoRequest
 
-// .mavsdk.rpc.camera_server.CaptureInfo capture_info = 1;
+// .mavsdk.rpc.camera_server.TakePhotoFeedback take_photo_feedback = 1;
+inline void RespondTakePhotoRequest::clear_take_photo_feedback() {
+  take_photo_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::TakePhotoFeedback RespondTakePhotoRequest::_internal_take_photo_feedback() const {
+  return static_cast< ::mavsdk::rpc::camera_server::TakePhotoFeedback >(take_photo_feedback_);
+}
+inline ::mavsdk::rpc::camera_server::TakePhotoFeedback RespondTakePhotoRequest::take_photo_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondTakePhotoRequest.take_photo_feedback)
+  return _internal_take_photo_feedback();
+}
+inline void RespondTakePhotoRequest::_internal_set_take_photo_feedback(::mavsdk::rpc::camera_server::TakePhotoFeedback value) {
+  
+  take_photo_feedback_ = value;
+}
+inline void RespondTakePhotoRequest::set_take_photo_feedback(::mavsdk::rpc::camera_server::TakePhotoFeedback value) {
+  _internal_set_take_photo_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondTakePhotoRequest.take_photo_feedback)
+}
+
+// .mavsdk.rpc.camera_server.CaptureInfo capture_info = 2;
 inline bool RespondTakePhotoRequest::_internal_has_capture_info() const {
   return this != internal_default_instance() && capture_info_ != nullptr;
 }
@@ -3859,6 +3807,11 @@ template <> struct is_proto_enum< ::mavsdk::rpc::camera_server::CameraServerResu
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera_server::CameraServerResult_Result>() {
   return ::mavsdk::rpc::camera_server::CameraServerResult_Result_descriptor();
+}
+template <> struct is_proto_enum< ::mavsdk::rpc::camera_server::TakePhotoFeedback> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::camera_server::TakePhotoFeedback>() {
+  return ::mavsdk::rpc::camera_server::TakePhotoFeedback_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

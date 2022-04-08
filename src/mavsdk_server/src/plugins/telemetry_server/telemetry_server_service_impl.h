@@ -7,7 +7,9 @@
 #include "plugins/telemetry_server/telemetry_server.h"
 
 #include "mavsdk.h"
-#include "lazy_plugin.h"
+
+#include "lazy_server_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -22,11 +24,12 @@ namespace mavsdk_server {
 
 template<
     typename TelemetryServer = TelemetryServer,
-    typename LazyPlugin = LazyPlugin<TelemetryServer>>
+    typename LazyServerPlugin = LazyServerPlugin<TelemetryServer>>
+
 class TelemetryServerServiceImpl final
     : public rpc::telemetry_server::TelemetryServerService::Service {
 public:
-    TelemetryServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+    TelemetryServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void
@@ -1606,7 +1609,8 @@ private:
         }
     }
 
-    LazyPlugin& _lazy_plugin;
+    LazyServerPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

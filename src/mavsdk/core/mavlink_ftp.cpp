@@ -216,7 +216,7 @@ void MavlinkFtp::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
 MavlinkFtp::~MavlinkFtp()
 {
-    _system_impl.unregister_all_mavlink_request_message_handlers(this);
+    //_mavlink_request_message_handler.unregister_all_handlers(this);
 }
 
 void MavlinkFtp::_process_ack(PayloadHeader* payload)

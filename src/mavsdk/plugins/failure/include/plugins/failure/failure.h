@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Failure();
+    ~Failure() override;
 
     /**
      * @brief A failure unit.

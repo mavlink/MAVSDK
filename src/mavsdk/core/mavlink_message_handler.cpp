@@ -12,7 +12,7 @@ void MavlinkMessageHandler::register_one(
     _table.push_back(entry);
 }
 
-void MAVLinkMessageHandler::register_one(
+void MavlinkMessageHandler::register_one(
     uint16_t msg_id,
     std::optional<uint8_t> component_id,
     const Callback& callback,
@@ -78,7 +78,7 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
 #endif
 }
 
-void MAVLinkMessageHandler::update_component_id(
+void MavlinkMessageHandler::update_component_id(
     uint16_t msg_id, uint8_t component_id, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);

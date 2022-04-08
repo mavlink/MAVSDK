@@ -13,18 +13,40 @@
 #include <utility>
 #include <vector>
 
+{% if is_server %}
+#include "mavsdk/server_plugin_base.h"
+{% else %}
 #include "mavsdk/plugin_base.h"
+{% endif %}
 
 namespace mavsdk {
 
+{% if is_server %}
+class ServerComponent;
+{% else %}
 class System;
+{%- endif -%}
 class {{ plugin_name.upper_camel_case }}Impl;
 
 /**
  * @brief {{ class_description | replace('\n', '\n *')}}
  */
-class {{ plugin_name.upper_camel_case }} : public PluginBase {
+class {{ plugin_name.upper_camel_case }} : public {% if is_server %}ServerPluginBase{% else %}PluginBase{% endif %} {
 public:
+{% if is_server %}
+    /**
+     * @brief Constructor. Creates the plugin for a ServerComponent instance.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto {{ plugin_name.lower_snake_case }} = {{ plugin_name.upper_camel_case }}(server_component);
+     *     ```
+     *
+     * @param server_component The ServerComponent instance associated with this server plugin.
+     */
+    explicit {{ plugin_name.upper_camel_case }}(std::shared_ptr<ServerComponent> server_component);
+{% else %}
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -50,11 +72,12 @@ public:
      * @param system The specific system associated with this plugin.
      */
     explicit {{ plugin_name.upper_camel_case }}(std::shared_ptr<System> system); // new
+{% endif %}
 
     /**
      * @brief Destructor (internal use only).
      */
-    ~{{ plugin_name.upper_camel_case }}();
+    ~{{ plugin_name.upper_camel_case }}() override;
 
 {% for enum in enums %}
 {{ indent(enum, 1) }}

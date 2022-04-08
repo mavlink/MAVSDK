@@ -7,7 +7,7 @@ namespace mavsdk {
 
 MavlinkMissionTransfer::MavlinkMissionTransfer(
     Sender& sender,
-    MAVLinkMessageHandler& message_handler,
+    MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     TimeoutSCallback timeout_s_callback) :
     _sender(sender),
@@ -600,13 +600,6 @@ MavlinkMissionTransfer::DownloadWorkItem::~DownloadWorkItem()
 
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
-}
-
-void MavlinkMissionTransfer::UploadWorkItem::update_progress(float progress)
-{
-    if (_progress_callback != nullptr) {
-        _progress_callback(progress);
-    }
 }
 
 void MavlinkMissionTransfer::DownloadWorkItem::start()

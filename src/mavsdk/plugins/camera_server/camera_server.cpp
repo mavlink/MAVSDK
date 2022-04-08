@@ -15,14 +15,9 @@ using Position = CameraServer::Position;
 using Quaternion = CameraServer::Quaternion;
 using CaptureInfo = CameraServer::CaptureInfo;
 
-CameraServer::CameraServer(System& system) :
-    PluginBase(),
-    _impl{std::make_unique<CameraServerImpl>(system)}
-{}
-
-CameraServer::CameraServer(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<CameraServerImpl>(system)}
+CameraServer::CameraServer(std::shared_ptr<ServerComponent> server_component) :
+    ServerPluginBase(),
+    _impl{std::make_unique<CameraServerImpl>(server_component)}
 {}
 
 CameraServer::~CameraServer() {}
@@ -42,9 +37,10 @@ void CameraServer::subscribe_take_photo(TakePhotoCallback callback)
     _impl->subscribe_take_photo(callback);
 }
 
-CameraServer::Result CameraServer::respond_take_photo(CaptureInfo capture_info) const
+CameraServer::Result CameraServer::respond_take_photo(
+    TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const
 {
-    return _impl->respond_take_photo(capture_info);
+    return _impl->respond_take_photo(take_photo_feedback, capture_info);
 }
 
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
@@ -170,6 +166,23 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result)
             return str << "Wrong Argument";
         case CameraServer::Result::NoSystem:
             return str << "No System";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream&
+operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback)
+{
+    switch (take_photo_feedback) {
+        case CameraServer::TakePhotoFeedback::Unknown:
+            return str << "Unknown";
+        case CameraServer::TakePhotoFeedback::Ok:
+            return str << "Ok";
+        case CameraServer::TakePhotoFeedback::Busy:
+            return str << "Busy";
+        case CameraServer::TakePhotoFeedback::Failed:
+            return str << "Failed";
         default:
             return str << "Unknown";
     }

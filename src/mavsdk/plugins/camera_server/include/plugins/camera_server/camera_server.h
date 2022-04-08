@@ -13,48 +13,53 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "mavsdk/server_plugin_base.h"
 
 namespace mavsdk {
 
-class System;
+class ServerComponent;
 class CameraServerImpl;
 
 /**
  * @brief Provides handling of camera trigger commands.
  */
-class CameraServer : public PluginBase {
+class CameraServer : public ServerPluginBase {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific System.
+     * @brief Constructor. Creates the plugin for a ServerComponent instance.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto camera_server = CameraServer(system);
+     *     auto camera_server = CameraServer(server_component);
      *     ```
      *
-     * @param system The specific system associated with this plugin.
+     * @param server_component The ServerComponent instance associated with this server plugin.
      */
-    explicit CameraServer(System& system); // deprecated
-
-    /**
-     * @brief Constructor. Creates the plugin for a specific System.
-     *
-     * The plugin is typically created as shown below:
-     *
-     *     ```cpp
-     *     auto camera_server = CameraServer(system);
-     *     ```
-     *
-     * @param system The specific system associated with this plugin.
-     */
-    explicit CameraServer(std::shared_ptr<System> system); // new
+    explicit CameraServer(std::shared_ptr<ServerComponent> server_component);
 
     /**
      * @brief Destructor (internal use only).
      */
-    ~CameraServer();
+    ~CameraServer() override;
+
+    /**
+     * @brief
+     */
+    enum class TakePhotoFeedback {
+        Unknown, /**< @brief. */
+        Ok, /**< @brief. */
+        Busy, /**< @brief. */
+        Failed, /**< @brief. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::TakePhotoFeedback`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback);
 
     /**
      * @brief Type to represent a camera information.
@@ -63,7 +68,7 @@ public:
         std::string vendor_name{}; /**< @brief Name of the camera vendor */
         std::string model_name{}; /**< @brief Name of the camera model */
         std::string firmware_version{}; /**< @brief Camera firmware version in
-                                           '<major>.<minor>.<patch>.<build>' format */
+                                           <major>[.<minor>[.<patch>[.<dev>]]] format */
         float focal_length_mm{}; /**< @brief Focal length */
         float horizontal_sensor_size_mm{}; /**< @brief Horizontal sensor size */
         float vertical_sensor_size_mm{}; /**< @brief Vertical sensor size */
@@ -228,7 +233,7 @@ public:
      * @brief Callback type for subscribe_take_photo.
      */
 
-    using TakePhotoCallback = std::function<void(Result, int32_t)>;
+    using TakePhotoCallback = std::function<void(int32_t)>;
 
     /**
      * @brief Subscribe to image capture requests. Each request received should respond to using
@@ -243,7 +248,8 @@ public:
      *
      * @return Result of request.
      */
-    Result respond_take_photo(CaptureInfo capture_info) const;
+    Result
+    respond_take_photo(TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const;
 
     /**
      * @brief Copy constructor.

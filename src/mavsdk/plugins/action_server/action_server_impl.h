@@ -1,21 +1,19 @@
 #pragma once
 
+#include <atomic>
+
 #include "plugins/action_server/action_server.h"
-#include "plugin_impl_base.h"
+#include "server_plugin_impl_base.h"
 
 namespace mavsdk {
 
-class ActionServerImpl : public PluginImplBase {
+class ActionServerImpl : public ServerPluginImplBase {
 public:
-    explicit ActionServerImpl(System& system);
-    explicit ActionServerImpl(std::shared_ptr<System> system);
+    explicit ActionServerImpl(std::shared_ptr<ServerComponent> server_component);
     ~ActionServerImpl() override;
 
     void init() override;
     void deinit() override;
-
-    void enable() override;
-    void disable() override;
 
     void subscribe_arm_disarm(ActionServer::ArmDisarmCallback callback);
 
@@ -43,6 +41,19 @@ public:
     ActionServer::AllowableFlightModes get_allowable_flight_modes();
 
 private:
+    void set_custom_mode(uint32_t custom_mode);
+    uint32_t get_custom_mode() const;
+
+    void set_base_mode(uint8_t base_mode);
+    uint8_t get_base_mode() const;
+
+    // Used when acting as autopilot!
+    void set_server_armed(bool armed);
+    bool is_server_armed() const;
+
+    void send_autopilot_version();
+    void enable_sending_autopilot_version();
+
     ActionServer::ArmDisarmCallback _arm_disarm_callback{nullptr};
     ActionServer::FlightModeChangeCallback _flight_mode_change_callback{nullptr};
     ActionServer::TakeoffCallback _takeoff_callback{nullptr};
@@ -67,6 +78,14 @@ private:
 
     std::mutex _flight_mode_mutex;
     ActionServer::AllowableFlightModes _allowed_flight_modes{};
+
+    // std::atomic<bool> _should_send_autopilot_version{false};
+
+    std::atomic<ActionServer::FlightMode> _flight_mode{ActionServer::FlightMode::Unknown};
+
+    // std::mutex _autopilot_version_mutex{};
+    // AutopilotVersion _autopilot_version{MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0,
+    // {0}};
 };
 
 } // namespace mavsdk

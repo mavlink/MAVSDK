@@ -62,7 +62,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Offboard();
+    ~Offboard() override;
 
     /**
      * @brief Type for attitude body angles in NED reference frame (roll, pitch, yaw and thrust)

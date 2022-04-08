@@ -37,17 +37,6 @@ void LogFiles::download_log_file_async(
     _impl->download_log_file_async(entry, path, callback);
 }
 
-std::pair<LogFiles::Result, LogFiles::ProgressData>
-LogFiles::download_log_file(Entry entry, std::string path) const
-{
-    return _impl->download_log_file(entry, path);
-}
-
-LogFiles::Result LogFiles::erase_all_log_files() const
-{
-    return _impl->erase_all_log_files();
-}
-
 bool operator==(const LogFiles::ProgressData& lhs, const LogFiles::ProgressData& rhs)
 {
     return ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);

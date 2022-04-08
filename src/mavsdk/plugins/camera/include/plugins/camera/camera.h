@@ -60,7 +60,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Camera();
+    ~Camera() override;
 
     /**
      * @brief Camera mode type.

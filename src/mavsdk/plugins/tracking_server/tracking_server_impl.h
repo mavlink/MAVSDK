@@ -1,22 +1,18 @@
 #pragma once
 
 #include "plugins/tracking_server/tracking_server.h"
-#include "plugin_impl_base.h"
+#include "server_plugin_impl_base.h"
 #include <optional>
 
 namespace mavsdk {
 
-class TrackingServerImpl : public PluginImplBase {
+class TrackingServerImpl : public ServerPluginImplBase {
 public:
-    explicit TrackingServerImpl(System& system);
-    explicit TrackingServerImpl(std::shared_ptr<System> system);
+    explicit TrackingServerImpl(std::shared_ptr<ServerComponent> server_component);
     ~TrackingServerImpl() override;
 
     void init() override;
     void deinit() override;
-
-    void enable() override;
-    void disable() override;
 
     void set_tracking_point_status(TrackingServer::TrackPoint tracked_point);
 

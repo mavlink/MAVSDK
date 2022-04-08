@@ -1488,37 +1488,36 @@ Telemetry::VtolState TelemetryImpl::to_vtol_state(mavlink_extended_sys_state_t e
     }
 }
 
-Telemetry::FlightMode
-TelemetryImpl::telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode)
+Telemetry::FlightMode TelemetryImpl::telemetry_flight_mode_from_flight_mode(FlightMode flight_mode)
 {
     switch (flight_mode) {
-        case SystemImpl::FlightMode::Ready:
+        case FlightMode::Ready:
             return Telemetry::FlightMode::Ready;
-        case SystemImpl::FlightMode::Takeoff:
+        case FlightMode::Takeoff:
             return Telemetry::FlightMode::Takeoff;
-        case SystemImpl::FlightMode::Hold:
+        case FlightMode::Hold:
             return Telemetry::FlightMode::Hold;
-        case SystemImpl::FlightMode::Mission:
+        case FlightMode::Mission:
             return Telemetry::FlightMode::Mission;
-        case SystemImpl::FlightMode::ReturnToLaunch:
+        case FlightMode::ReturnToLaunch:
             return Telemetry::FlightMode::ReturnToLaunch;
-        case SystemImpl::FlightMode::Land:
+        case FlightMode::Land:
             return Telemetry::FlightMode::Land;
-        case SystemImpl::FlightMode::Offboard:
+        case FlightMode::Offboard:
             return Telemetry::FlightMode::Offboard;
-        case SystemImpl::FlightMode::FollowMe:
+        case FlightMode::FollowMe:
             return Telemetry::FlightMode::FollowMe;
-        case SystemImpl::FlightMode::Manual:
+        case FlightMode::Manual:
             return Telemetry::FlightMode::Manual;
-        case SystemImpl::FlightMode::Posctl:
+        case FlightMode::Posctl:
             return Telemetry::FlightMode::Posctl;
-        case SystemImpl::FlightMode::Altctl:
+        case FlightMode::Altctl:
             return Telemetry::FlightMode::Altctl;
-        case SystemImpl::FlightMode::Rattitude:
+        case FlightMode::Rattitude:
             return Telemetry::FlightMode::Rattitude;
-        case SystemImpl::FlightMode::Acro:
+        case FlightMode::Acro:
             return Telemetry::FlightMode::Acro;
-        case SystemImpl::FlightMode::Stabilized:
+        case FlightMode::Stabilized:
             return Telemetry::FlightMode::Stabilized;
         default:
             return Telemetry::FlightMode::Unknown;

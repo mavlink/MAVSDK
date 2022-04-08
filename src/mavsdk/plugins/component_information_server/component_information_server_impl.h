@@ -1,21 +1,17 @@
 #pragma once
 
 #include "plugins/component_information_server/component_information_server.h"
-#include "plugin_impl_base.h"
+#include "server_plugin_impl_base.h"
 
 namespace mavsdk {
 
-class ComponentInformationServerImpl : public PluginImplBase {
+class ComponentInformationServerImpl : public ServerPluginImplBase {
 public:
-    explicit ComponentInformationServerImpl(System& system);
-    explicit ComponentInformationServerImpl(std::shared_ptr<System> system);
+    explicit ComponentInformationServerImpl(std::shared_ptr<ServerComponent> server_component);
     ~ComponentInformationServerImpl() override;
 
     void init() override;
     void deinit() override;
-
-    void enable() override;
-    void disable() override;
 
     ComponentInformationServer::Result set_our_ip(const std::string& ip);
 

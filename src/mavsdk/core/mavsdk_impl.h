@@ -11,7 +11,10 @@
 #include "mavsdk.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
+#include "mavlink_message_handler.h"
+#include "mavlink_command_receiver.h"
 #include "safe_queue.h"
+#include "server_component.h"
 #include "system.h"
 #include "timeout_handler.h"
 
@@ -77,6 +80,11 @@ public:
     void start_sending_heartbeats();
     void stop_sending_heartbeats();
 
+    std::shared_ptr<ServerComponent> server_component(uint8_t component_id); // FIXME: remove again
+    std::shared_ptr<ServerComponent> server_component_by_type(
+        Mavsdk::ServerComponentType server_component_type, unsigned instance = 0);
+    std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
+
     TimeoutHandler timeout_handler;
     CallEveryHandler call_every_handler;
 
@@ -87,12 +95,8 @@ public:
 
     double timeout_s() const { return _timeout_s; };
 
-    void set_base_mode(uint8_t base_mode);
-    uint8_t get_base_mode() const;
-    void set_custom_mode(uint32_t custom_mode);
-    uint32_t get_custom_mode() const;
-    void set_system_status(uint8_t system_status);
-    uint8_t get_system_status();
+    MavlinkMessageHandler mavlink_message_handler{};
+    Time time{};
 
 private:
     void add_connection(const std::shared_ptr<Connection>&);
@@ -113,6 +117,10 @@ private:
 
     mutable std::recursive_mutex _systems_mutex{};
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
+
+    mutable std::mutex _server_components_mutex{};
+    std::vector<std::pair<uint8_t, std::shared_ptr<ServerComponent>>> _server_components{};
+
     Mavsdk::NewSystemCallback _new_system_callback{nullptr};
 
     Time _time{};
@@ -146,10 +154,6 @@ private:
     void* _heartbeat_send_cookie{nullptr};
 
     std::atomic<bool> _should_exit = {false};
-
-    std::atomic<uint8_t> _base_mode = 0;
-    std::atomic<uint32_t> _custom_mode = 0;
-    std::atomic<uint8_t> _system_status = 0;
 };
 
 } // namespace mavsdk

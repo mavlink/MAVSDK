@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Geofence();
+    ~Geofence() override;
 
     /**
      * @brief Point type.

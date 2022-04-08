@@ -12,6 +12,7 @@
 #include "cli_arg.h"
 #include "version.h"
 #include "unused.h"
+#include "server_component_impl.h"
 
 namespace mavsdk {
 
@@ -113,6 +114,90 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
     }
 
     return systems_result;
+}
+
+std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_type(
+    Mavsdk::ServerComponentType server_component_type, unsigned instance)
+{
+    switch (server_component_type) {
+        case Mavsdk::ServerComponentType::Autopilot:
+            if (instance == 0) {
+                return server_component(MAV_COMP_ID_AUTOPILOT1);
+            } else {
+                LogErr() << "Only autopilot instance 0 is valid";
+                return {};
+            }
+
+        case Mavsdk::ServerComponentType::GroundStation:
+            if (instance == 0) {
+                return server_component(MAV_COMP_ID_MISSIONPLANNER);
+            } else {
+                LogErr() << "Only one ground station supported at this time";
+                return {};
+            }
+
+        case Mavsdk::ServerComponentType::CompanionComputer:
+            if (instance == 0) {
+                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER);
+            } else if (instance == 1) {
+                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER2);
+            } else if (instance == 2) {
+                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER3);
+            } else if (instance == 3) {
+                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER4);
+            } else {
+                LogErr() << "Only companion computer 0..3 are supported";
+                return {};
+            }
+
+        case Mavsdk::ServerComponentType::Camera:
+            if (instance == 0) {
+                return server_component(MAV_COMP_ID_CAMERA);
+            } else if (instance == 1) {
+                return server_component(MAV_COMP_ID_CAMERA2);
+            } else if (instance == 2) {
+                return server_component(MAV_COMP_ID_CAMERA3);
+            } else if (instance == 3) {
+                return server_component(MAV_COMP_ID_CAMERA4);
+            } else if (instance == 4) {
+                return server_component(MAV_COMP_ID_CAMERA5);
+            } else if (instance == 5) {
+                return server_component(MAV_COMP_ID_CAMERA6);
+            } else {
+                LogErr() << "Only camera 0..5 are supported";
+                return {};
+            }
+
+        default:
+            LogErr() << "Unknown server component type";
+            return {};
+    }
+}
+
+std::shared_ptr<ServerComponent> MavsdkImpl::server_component(uint8_t component_id)
+{
+    return server_component_by_id(component_id);
+}
+
+std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id(uint8_t component_id)
+{
+    if (component_id == 0) {
+        LogErr() << "Server component with component ID 0 not allowed";
+        return nullptr;
+    }
+
+    std::lock_guard<std::mutex> lock(_server_components_mutex);
+
+    for (auto& it : _server_components) {
+        if (it.first == component_id) {
+            return it.second;
+        }
+    }
+
+    _server_components.emplace_back(std::pair<uint8_t, std::shared_ptr<ServerComponent>>(
+        component_id, std::make_shared<ServerComponent>(*this, component_id)));
+
+    return _server_components.back().second;
 }
 
 void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connection)
@@ -230,13 +315,14 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
     if (_should_exit) {
         // Don't try to call at() if systems have already been destroyed
-        // in descructor.
+        // in destructor.
         return;
     }
 
     for (auto& system : _systems) {
         if (system.first == message.sysid) {
-            system.second->system_impl()->process_mavlink_message(message);
+            // system.second->system_impl()->process_mavlink_message(message);
+            mavlink_message_handler.process_message(message);
             break;
         }
     }
@@ -429,6 +515,10 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
         _configuration.get_always_send_heartbeats() && !is_any_system_connected()) {
         stop_sending_heartbeats();
     }
+
+    // Create default component
+    (void)server_component(new_configuration.get_component_id());
+
     _configuration = new_configuration;
 }
 
@@ -442,6 +532,7 @@ uint8_t MavsdkImpl::get_own_component_id() const
     return _configuration.get_component_id();
 }
 
+// FIXME: this should be per component
 uint8_t MavsdkImpl::get_mav_type() const
 {
     switch (_configuration.get_usage_type()) {
@@ -479,7 +570,7 @@ void MavsdkImpl::make_system_with_component(
     if (static_cast<int>(system_id) == 0 && static_cast<int>(comp_id) == 0) {
         LogDebug() << "Initializing connection to remote system...";
     } else {
-        LogDebug() << "New: System ID: " << static_cast<int>(system_id)
+        LogDebug() << "New system ID: " << static_cast<int>(system_id)
                    << " Comp ID: " << static_cast<int>(comp_id);
     }
 
@@ -611,18 +702,9 @@ void MavsdkImpl::stop_sending_heartbeats()
 
 void MavsdkImpl::send_heartbeat()
 {
-    mavlink_message_t message;
-    mavlink_msg_heartbeat_pack(
-        get_own_system_id(),
-        get_own_component_id(),
-        &message,
-        get_mav_type(),
-        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
-                                                           MAV_AUTOPILOT_INVALID,
-        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
-        get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
-        get_system_status());
-    send_message(message);
+    for (auto& it : _server_components) {
+        it.second->_impl->send_heartbeat();
+    }
 }
 
 uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
@@ -659,36 +741,6 @@ uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
     }
 
     return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
-}
-
-void MavsdkImpl::set_base_mode(uint8_t base_mode)
-{
-    _base_mode = base_mode;
-}
-
-uint8_t MavsdkImpl::get_base_mode() const
-{
-    return _base_mode;
-}
-
-void MavsdkImpl::set_custom_mode(uint32_t custom_mode)
-{
-    _custom_mode = custom_mode;
-}
-
-uint32_t MavsdkImpl::get_custom_mode() const
-{
-    return _custom_mode;
-}
-
-void MavsdkImpl::set_system_status(uint8_t system_status)
-{
-    _system_status = system_status;
-}
-
-uint8_t MavsdkImpl::get_system_status()
-{
-    return _system_status;
 }
 
 } // namespace mavsdk

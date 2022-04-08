@@ -3,9 +3,10 @@ target_sources(mavsdk
     mission_raw_server.cpp
     mission_raw_server_impl.cpp
 )
+
 target_include_directories(mavsdk PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:include/mavsdk>
     )
 
 install(FILES

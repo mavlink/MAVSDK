@@ -6,7 +6,9 @@
 #include "plugins/ftp/ftp.h"
 
 #include "mavsdk.h"
+
 #include "lazy_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -20,6 +22,7 @@ namespace mavsdk {
 namespace mavsdk_server {
 
 template<typename Ftp = Ftp, typename LazyPlugin = LazyPlugin<Ftp>>
+
 class FtpServiceImpl final : public rpc::ftp::FtpService::Service {
 public:
     FtpServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
@@ -554,6 +557,7 @@ private:
     }
 
     LazyPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

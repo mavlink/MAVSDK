@@ -1,21 +1,28 @@
 #pragma once
 
 #include "plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h"
+{% if is_server %}
+#include "server_plugin_impl_base.h"
+{% else %}
 #include "plugin_impl_base.h"
+{% endif %}
 
 namespace mavsdk {
 
+{% if is_server %}
+class {{ plugin_name.upper_camel_case }}Impl : public ServerPluginImplBase {
+public:
+    explicit {{ plugin_name.upper_camel_case }}Impl(std::shared_ptr<ServerComponent> server_component);
+{% else %}
 class {{ plugin_name.upper_camel_case }}Impl : public PluginImplBase {
 public:
     explicit {{ plugin_name.upper_camel_case }}Impl(System& system);
     explicit {{ plugin_name.upper_camel_case }}Impl(std::shared_ptr<System> system);
+{% endif %}
     ~{{ plugin_name.upper_camel_case }}Impl() override;
 
     void init() override;
     void deinit() override;
-
-    void enable() override;
-    void disable() override;
 
 {% for method in methods %}
 {{ indent(method, 1) }}

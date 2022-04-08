@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~FollowMe();
+    ~FollowMe() override;
 
     /**
      * @brief Configuration type.

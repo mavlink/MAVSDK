@@ -26,8 +26,6 @@ namespace log_files {
 static const char* LogFilesService_method_names[] = {
   "/mavsdk.rpc.log_files.LogFilesService/GetEntries",
   "/mavsdk.rpc.log_files.LogFilesService/SubscribeDownloadLogFile",
-  "/mavsdk.rpc.log_files.LogFilesService/DownloadLogFile",
-  "/mavsdk.rpc.log_files.LogFilesService/EraseAllLogFiles",
 };
 
 std::unique_ptr< LogFilesService::Stub> LogFilesService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -39,8 +37,6 @@ std::unique_ptr< LogFilesService::Stub> LogFilesService::NewStub(const std::shar
 LogFilesService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_GetEntries_(LogFilesService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeDownloadLogFile_(LogFilesService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_DownloadLogFile_(LogFilesService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_EraseAllLogFiles_(LogFilesService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status LogFilesService::Stub::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::mavsdk::rpc::log_files::GetEntriesResponse* response) {
@@ -82,52 +78,6 @@ void LogFilesService::Stub::async::SubscribeDownloadLogFile(::grpc::ClientContex
   return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadLogFile_, context, request, false, nullptr);
 }
 
-::grpc::Status LogFilesService::Stub::DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DownloadLogFile_, context, request, response);
-}
-
-void LogFilesService::Stub::async::DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DownloadLogFile_, context, request, response, std::move(f));
-}
-
-void LogFilesService::Stub::async::DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DownloadLogFile_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* LogFilesService::Stub::PrepareAsyncDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::log_files::DownloadLogFileResponse, ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DownloadLogFile_, context, request);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* LogFilesService::Stub::AsyncDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
-  auto* result =
-    this->PrepareAsyncDownloadLogFileRaw(context, request, cq);
-  result->StartCall();
-  return result;
-}
-
-::grpc::Status LogFilesService::Stub::EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_EraseAllLogFiles_, context, request, response);
-}
-
-void LogFilesService::Stub::async::EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_EraseAllLogFiles_, context, request, response, std::move(f));
-}
-
-void LogFilesService::Stub::async::EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_EraseAllLogFiles_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* LogFilesService::Stub::PrepareAsyncEraseAllLogFilesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse, ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_EraseAllLogFiles_, context, request);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* LogFilesService::Stub::AsyncEraseAllLogFilesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) {
-  auto* result =
-    this->PrepareAsyncEraseAllLogFilesRaw(context, request, cq);
-  result->StartCall();
-  return result;
-}
-
 LogFilesService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       LogFilesService_method_names[0],
@@ -149,26 +99,6 @@ LogFilesService::Service::Service() {
              ::grpc::ServerWriter<::mavsdk::rpc::log_files::DownloadLogFileResponse>* writer) {
                return service->SubscribeDownloadLogFile(ctx, req, writer);
              }, this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
-      LogFilesService_method_names[2],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
-          [](LogFilesService::Service* service,
-             ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::log_files::DownloadLogFileRequest* req,
-             ::mavsdk::rpc::log_files::DownloadLogFileResponse* resp) {
-               return service->DownloadLogFile(ctx, req, resp);
-             }, this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
-      LogFilesService_method_names[3],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
-          [](LogFilesService::Service* service,
-             ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* req,
-             ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* resp) {
-               return service->EraseAllLogFiles(ctx, req, resp);
-             }, this)));
 }
 
 LogFilesService::Service::~Service() {
@@ -185,20 +115,6 @@ LogFilesService::Service::~Service() {
   (void) context;
   (void) request;
   (void) writer;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
-::grpc::Status LogFilesService::Service::DownloadLogFile(::grpc::ServerContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response) {
-  (void) context;
-  (void) request;
-  (void) response;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
-::grpc::Status LogFilesService::Service::EraseAllLogFiles(::grpc::ServerContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response) {
-  (void) context;
-  (void) request;
-  (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

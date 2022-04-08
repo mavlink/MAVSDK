@@ -6,7 +6,9 @@
 #include "plugins/shell/shell.h"
 
 #include "mavsdk.h"
+
 #include "lazy_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -20,6 +22,7 @@ namespace mavsdk {
 namespace mavsdk_server {
 
 template<typename Shell = Shell, typename LazyPlugin = LazyPlugin<Shell>>
+
 class ShellServiceImpl final : public rpc::shell::ShellService::Service {
 public:
     ShellServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
@@ -185,6 +188,7 @@ private:
     }
 
     LazyPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

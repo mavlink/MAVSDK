@@ -1,12 +1,20 @@
 #include "mavlink_request_message_handler.h"
-#include "system_impl.h"
+#include "mavsdk_impl.h"
+#include "server_component_impl.h"
+#include "mavlink_command_receiver.h"
+#include "log.h"
 
 namespace mavsdk {
 
-MavlinkRequestMessageHandler::MavlinkRequestMessageHandler(SystemImpl& system_impl) :
-    _system_impl(system_impl)
+MavlinkRequestMessageHandler::MavlinkRequestMessageHandler(
+    MavsdkImpl& mavsdk_impl,
+    ServerComponentImpl& server_component_impl,
+    MavlinkCommandReceiver& mavlink_command_receiver) :
+    _mavsdk_impl(mavsdk_impl),
+    _server_component_impl(server_component_impl),
+    _mavlink_command_receiver(mavlink_command_receiver)
 {
-    _system_impl.register_mavlink_command_handler(
+    _mavlink_command_receiver.register_mavlink_command_handler(
         MAV_CMD_REQUEST_MESSAGE,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return handle_command_long(command);
@@ -16,7 +24,7 @@ MavlinkRequestMessageHandler::MavlinkRequestMessageHandler(SystemImpl& system_im
 
 MavlinkRequestMessageHandler::~MavlinkRequestMessageHandler()
 {
-    _system_impl.unregister_all_mavlink_message_handlers(this);
+    _mavsdk_impl.mavlink_message_handler.unregister_all(this);
 }
 
 bool MavlinkRequestMessageHandler::register_handler(
@@ -77,7 +85,7 @@ std::optional<mavlink_message_t> MavlinkRequestMessageHandler::handle_command_lo
                      command.params.param6});
 
                 if (result.has_value()) {
-                    return _system_impl.make_command_ack_message(command, result.value());
+                    return _server_component_impl.make_command_ack_message(command, result.value());
                 }
             }
             return {};
@@ -106,7 +114,7 @@ MavlinkRequestMessageHandler::handle_command_int(const MavlinkCommandReceiver::C
                      static_cast<float>(command.params.y)});
 
                 if (result.has_value()) {
-                    return _system_impl.make_command_ack_message(command, result.value());
+                    return _server_component_impl.make_command_ack_message(command, result.value());
                 }
             }
             return {};
