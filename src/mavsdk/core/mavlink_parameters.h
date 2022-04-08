@@ -122,7 +122,11 @@ public:
         UnknownError
     };
 
-    Result set_param(const std::string& name, ParamValue value, bool extended = false);
+    Result set_param(
+        const std::string& name,
+        ParamValue value,
+        std::optional<uint8_t> maybe_component_id,
+        bool extended = false);
 
     using SetParamCallback = std::function<void(Result result)>;
 
@@ -130,25 +134,36 @@ public:
         const std::string& name,
         ParamValue value,
         const SetParamCallback& callback,
-        const void* cookie = nullptr,
+        const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
         bool extended = false);
 
-    Result set_param_int(const std::string& name, int32_t value, bool extended = false);
+    Result set_param_int(
+        const std::string& name,
+        int32_t value,
+        std::optional<uint8_t> maybe_component_id,
+        bool extended = false);
 
     void set_param_int_async(
         const std::string& name,
         int32_t value,
         const SetParamCallback& callback,
-        const void* cookie = nullptr,
+        const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
         bool extended = false);
 
-    Result set_param_float(const std::string& name, float value, bool extended = false);
+    Result set_param_float(
+        const std::string& name,
+        float value,
+        std::optional<uint8_t> maybe_component_id,
+        bool extended = false);
 
     void set_param_float_async(
         const std::string& name,
         float value,
         const SetParamCallback& callback,
-        const void* cookie = nullptr,
+        const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
         bool extended = false);
 
     void provide_server_param(const std::string& name, const ParamValue& value);
@@ -167,9 +182,11 @@ public:
         ParamValue value,
         const GetParamAnyCallback& callback,
         const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
         bool extended = false);
 
-    std::pair<Result, float> get_param_float(const std::string& name, bool extended);
+    std::pair<Result, float> get_param_float(
+        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
 
     using GetParamFloatCallback = std::function<void(Result, float)>;
 
@@ -177,9 +194,11 @@ public:
         const std::string& name,
         const GetParamFloatCallback& callback,
         const void* cookie,
-        bool extended = false);
+        std::optional<uint8_t> maybe_component_id,
+        bool extended);
 
-    std::pair<Result, int32_t> get_param_int(const std::string& name, bool extended);
+    std::pair<Result, int32_t> get_param_int(
+        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
 
     using GetParamIntCallback = std::function<void(Result, int32_t)>;
 
@@ -187,7 +206,8 @@ public:
         const std::string& name,
         const GetParamIntCallback& callback,
         const void* cookie,
-        bool extended = false);
+        std::optional<uint8_t> maybe_component_id,
+        bool extended);
 
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
     using GetAllParamsCallback =
@@ -243,6 +263,7 @@ private:
             callback{};
         std::string param_name{};
         ParamValue param_value{};
+        std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
         bool already_requested{false};
         bool exact_type_known{false};
