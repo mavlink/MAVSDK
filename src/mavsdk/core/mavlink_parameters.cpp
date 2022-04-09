@@ -342,7 +342,7 @@ MAVLinkParameters::get_param_float(const std::string& name, bool extended)
     auto prom = std::promise<std::pair<Result, float>>();
     auto res = prom.get_future();
 
-    get_param_int_async(
+    get_param_float_async(
         name,
         [&prom](Result result, float value) { prom.set_value(std::make_pair<>(result, value)); },
         this,
