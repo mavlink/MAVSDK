@@ -1,6 +1,7 @@
 #include "log_files_impl.h"
 #include "mavsdk_impl.h"
 #include "filesystem_include.h"
+#include "unused.h"
 
 #include <algorithm>
 #include <cmath>
@@ -202,6 +203,23 @@ void LogFilesImpl::list_timeout()
     }
 }
 
+std::pair<LogFiles::Result, LogFiles::ProgressData>
+LogFilesImpl::download_log_file(LogFiles::Entry entry, const std::string& file_path)
+{
+    auto prom =
+        std::make_shared<std::promise<std::pair<LogFiles::Result, LogFiles::ProgressData>>>();
+    auto future_result = prom->get_future();
+
+    download_log_file_async(
+        entry, file_path, [prom](LogFiles::Result result, LogFiles::ProgressData progress) {
+            UNUSED(progress);
+            if (result != LogFiles::Result::Next) {
+                prom->set_value(std::make_pair(result, progress));
+            }
+        });
+    return future_result.get();
+}
+
 void LogFilesImpl::download_log_file_async(
     LogFiles::Entry entry, const std::string& file_path, LogFiles::DownloadLogFileCallback callback)
 {
@@ -293,6 +311,21 @@ void LogFilesImpl::download_log_file_async(
             });
         }
     }
+}
+
+LogFiles::Result LogFilesImpl::erase_all_log_files()
+{
+    mavlink_message_t msg;
+    mavlink_msg_log_erase_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        _parent->get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1);
+    _parent->send_message(msg);
+
+    // TODO: find a good way to know about the success or failure of the operation
+    return LogFiles::Result::Success;
 }
 
 std::size_t LogFilesImpl::determine_part_end()
