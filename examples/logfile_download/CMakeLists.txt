@@ -12,7 +12,6 @@ add_executable(logfile_download
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(logfile_download
-    MAVSDK::mavsdk_log_files
     MAVSDK::mavsdk
 )
 

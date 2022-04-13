@@ -97,11 +97,11 @@ int main(int argc, char** argv)
         for (auto entry : get_entries_result.second) {
             std::cerr << "Got log file with ID " << entry.id << " and date " << entry.date
                       << std::endl;
-            LogFiles::Result result =
+            auto result =
                 log_files.download_log_file(entry, std::string("log-") + entry.date + ".ulg");
-            if (result != LogFiles::Result::Success) {
+            if (result.first != LogFiles::Result::Success) {
                 download_failure = true;
-                std::cerr << "LogFiles::download_log_file failed: " << result << std::endl;
+                std::cerr << "LogFiles::download_log_file failed: " << result.first << std::endl;
             }
         }
         if (!download_failure && remove_log_files) {
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
              *
              * TODO: provide a more reliable solution
              */
-            log_files.erase_log_files();
+            log_files.erase_all_log_files();
         }
     } else {
         std::cerr << "LogFiles::get_entries failed: " << get_entries_result.first << std::endl;
