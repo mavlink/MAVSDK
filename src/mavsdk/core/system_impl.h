@@ -155,21 +155,27 @@ public:
 
     bool is_armed() const { return _armed; }
 
-    MAVLinkParameters::Result set_param_float(const std::string& name, float value);
-    MAVLinkParameters::Result set_param_int(const std::string& name, int32_t value);
-    MAVLinkParameters::Result set_param_ext_float(const std::string& name, float value);
-    MAVLinkParameters::Result set_param_ext_int(const std::string& name, int32_t value);
+    MAVLinkParameters::Result
+    set_param(const std::string& name, MAVLinkParameters::ParamValue value, bool extended = false);
+    MAVLinkParameters::Result
+    set_param_float(const std::string& name, float value, bool extended = false);
+    MAVLinkParameters::Result
+    set_param_int(const std::string& name, int32_t value, bool extended = false);
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
 
-    typedef std::function<void(MAVLinkParameters::Result result)> success_t;
+    using SetParamCallback = std::function<void(MAVLinkParameters::Result result)>;
     void set_param_float_async(
-        const std::string& name, float value, const success_t& callback, const void* cookie);
+        const std::string& name,
+        float value,
+        const SetParamCallback& callback,
+        const void* cookie,
+        bool extended = false);
     void set_param_int_async(
-        const std::string& name, int32_t value, const success_t& callback, const void* cookie);
-    void set_param_ext_float_async(
-        const std::string& name, float value, const success_t& callback, const void* cookie);
-    void set_param_ext_int_async(
-        const std::string& name, int32_t value, const success_t& callback, const void* cookie);
+        const std::string& name,
+        int32_t value,
+        const SetParamCallback& callback,
+        const void* cookie,
+        bool extended = false);
 
     void provide_server_param_float(const std::string& name, float value);
     void provide_server_param_int(const std::string& name, int32_t value);
@@ -217,10 +223,12 @@ public:
         const CommandResultCallback& callback,
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
-    typedef std::function<void(MAVLinkParameters::Result result, float value)>
-        get_param_float_callback_t;
-    typedef std::function<void(MAVLinkParameters::Result result, int32_t value)>
-        get_param_int_callback_t;
+    using GetParamAnyCallback =
+        std::function<void(MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value)>;
+    using GetParamFloatCallback =
+        std::function<void(MAVLinkParameters::Result result, float value)>;
+    using GetParamIntCallback =
+        std::function<void(MAVLinkParameters::Result result, int32_t value)>;
 
     std::pair<MAVLinkParameters::Result, float>
     retrieve_server_param_float(const std::string& name);
@@ -233,35 +241,29 @@ public:
 
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.
+    void get_param_async(
+        const std::string& name,
+        MAVLinkParameters::ParamValue value,
+        const GetParamAnyCallback& callback,
+        const void* cookie,
+        bool extended = false);
     void get_param_float_async(
-        const std::string& name, const get_param_float_callback_t& callback, const void* cookie);
+        const std::string& name,
+        const GetParamFloatCallback& callback,
+        const void* cookie,
+        bool extended = false);
     void get_param_int_async(
-        const std::string& name, const get_param_int_callback_t& callback, const void* cookie);
-    void get_param_ext_float_async(
-        const std::string& name, const get_param_float_callback_t& callback, const void* cookie);
-    void get_param_ext_int_async(
-        const std::string& name, const get_param_int_callback_t& callback, const void* cookie);
-
-    typedef std::function<void(
-        MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value)>
-        get_param_callback_t;
+        const std::string& name,
+        const GetParamIntCallback& callback,
+        const void* cookie,
+        bool extended = false);
 
     void set_param_async(
         const std::string& name,
         MAVLinkParameters::ParamValue value,
-        const success_t& callback,
+        const SetParamCallback& callback,
         const void* cookie,
         bool extended = false);
-
-    MAVLinkParameters::Result
-    set_param(const std::string& name, MAVLinkParameters::ParamValue value, bool extended = false);
-
-    void get_param_async(
-        const std::string& name,
-        MAVLinkParameters::ParamValue value_type,
-        const get_param_callback_t& callback,
-        const void* cookie,
-        bool extended);
 
     void cancel_all_param(const void* cookie);
 
@@ -379,11 +381,11 @@ private:
     static void receive_float_param(
         MAVLinkParameters::Result result,
         MAVLinkParameters::ParamValue value,
-        const get_param_float_callback_t& callback);
+        const GetParamFloatCallback& callback);
     static void receive_int_param(
         MAVLinkParameters::Result result,
         MAVLinkParameters::ParamValue value,
-        const get_param_int_callback_t& callback);
+        const GetParamIntCallback& callback);
 
     std::mutex _component_discovered_callback_mutex{};
     System::DiscoverCallback _component_discovered_callback{nullptr};
