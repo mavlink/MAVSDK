@@ -30,36 +30,43 @@ void CameraImpl::init()
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS,
+        _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_capture_status(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_STORAGE_INFORMATION,
+        _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_storage_information(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED,
+        _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_image_captured(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_SETTINGS,
+        _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_settings(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_INFORMATION,
+        _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_information(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION,
+        _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_video_information(message); },
         this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_STATUS,
+        _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_video_stream_status(message); },
         this);
 
