@@ -119,13 +119,13 @@ public:
         MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback);
 
     MavlinkCommandSender::Result set_msg_rate(
-        uint16_t message_id, double rate_hz, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+        uint16_t message_id, double rate_hz, uint8_t maybe_component_id = MAV_COMP_ID_AUTOPILOT1);
 
     void set_msg_rate_async(
         uint16_t message_id,
         double rate_hz,
         const CommandResultCallback& callback,
-        uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+        uint8_t maybe_component_id = MAV_COMP_ID_AUTOPILOT1);
 
     // Adds unique component ids
     void add_new_component(uint8_t component_id);
@@ -155,26 +155,42 @@ public:
 
     bool is_armed() const { return _armed; }
 
-    MAVLinkParameters::Result
-    set_param(const std::string& name, MAVLinkParameters::ParamValue value, bool extended = false);
-    MAVLinkParameters::Result
-    set_param_float(const std::string& name, float value, bool extended = false);
-    MAVLinkParameters::Result
-    set_param_int(const std::string& name, int32_t value, bool extended = false);
+    MAVLinkParameters::Result set_param(
+        const std::string& name,
+        MAVLinkParameters::ParamValue value,
+        std::optional<uint8_t> maybe_component_id = {},
+        bool extended = false);
+
+    MAVLinkParameters::Result set_param_float(
+        const std::string& name,
+        float value,
+        std::optional<uint8_t> maybe_component_id = {},
+        bool extended = false);
+
+    MAVLinkParameters::Result set_param_int(
+        const std::string& name,
+        int32_t value,
+        std::optional<uint8_t> maybe_component_id = {},
+        bool extended = false);
+
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
 
     using SetParamCallback = std::function<void(MAVLinkParameters::Result result)>;
+
     void set_param_float_async(
         const std::string& name,
         float value,
         const SetParamCallback& callback,
         const void* cookie,
+        std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
+
     void set_param_int_async(
         const std::string& name,
         int32_t value,
         const SetParamCallback& callback,
         const void* cookie,
+        std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
     void provide_server_param_float(const std::string& name, float value);
@@ -236,8 +252,6 @@ public:
 
     std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
     std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
-    std::pair<MAVLinkParameters::Result, float> get_param_ext_float(const std::string& name);
-    std::pair<MAVLinkParameters::Result, int> get_param_ext_int(const std::string& name);
 
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.
@@ -246,16 +260,21 @@ public:
         MAVLinkParameters::ParamValue value,
         const GetParamAnyCallback& callback,
         const void* cookie,
+        std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
+
     void get_param_float_async(
         const std::string& name,
         const GetParamFloatCallback& callback,
         const void* cookie,
+        std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
+
     void get_param_int_async(
         const std::string& name,
         const GetParamIntCallback& callback,
         const void* cookie,
+        std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
     void set_param_async(
@@ -263,6 +282,7 @@ public:
         MAVLinkParameters::ParamValue value,
         const SetParamCallback& callback,
         const void* cookie,
+        std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
     void cancel_all_param(const void* cookie);

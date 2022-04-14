@@ -1579,6 +1579,7 @@ void CameraImpl::set_option_async(
             }
         },
         this,
+        static_cast<uint8_t>(_camera_id + MAV_COMP_ID_CAMERA),
         true);
 }
 
@@ -1826,6 +1827,7 @@ void CameraImpl::refresh_params()
                 }
             },
             this,
+            static_cast<uint8_t>(_camera_id + MAV_COMP_ID_CAMERA),
             true);
         ++count;
     }

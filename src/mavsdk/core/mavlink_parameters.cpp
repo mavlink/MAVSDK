@@ -59,14 +59,22 @@ void MAVLinkParameters::provide_server_param(const std::string& name, const Para
     _all_params.insert_or_assign(name, value);
 }
 
-MAVLinkParameters::Result
-MAVLinkParameters::set_param(const std::string& name, ParamValue value, bool extended)
+MAVLinkParameters::Result MAVLinkParameters::set_param(
+    const std::string& name,
+    ParamValue value,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
     set_param_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this, extended);
+        name,
+        value,
+        [&prom](Result result) { prom.set_value(result); },
+        this,
+        maybe_component_id,
+        extended);
 
     return res.get();
 }
@@ -76,6 +84,7 @@ void MAVLinkParameters::set_param_async(
     ParamValue value,
     const SetParamCallback& callback,
     const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
     if (name.size() > PARAM_ID_LEN) {
@@ -90,6 +99,7 @@ void MAVLinkParameters::set_param_async(
 
     new_work->type = WorkItem::Type::Set;
     new_work->callback = callback;
+    new_work->maybe_component_id = maybe_component_id;
     new_work->param_name = name;
     new_work->param_value = value;
     new_work->extended = extended;
@@ -103,6 +113,7 @@ void MAVLinkParameters::set_param_int_async(
     int32_t value,
     const SetParamCallback& callback,
     const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
     if (name.size() > PARAM_ID_LEN) {
@@ -139,19 +150,27 @@ void MAVLinkParameters::set_param_int_async(
         set_step();
     } else {
         // We don't know the exact type, so we need to get it first.
-        get_param_int_async(name, nullptr, cookie, extended);
+        get_param_int_async(name, nullptr, cookie, maybe_component_id, extended);
         set_step();
     }
 }
 
-MAVLinkParameters::Result
-MAVLinkParameters::set_param_int(const std::string& name, int32_t value, bool extended)
+MAVLinkParameters::Result MAVLinkParameters::set_param_int(
+    const std::string& name,
+    int32_t value,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
     set_param_int_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this, extended);
+        name,
+        value,
+        [&prom](Result result) { prom.set_value(result); },
+        this,
+        maybe_component_id,
+        extended);
 
     return res.get();
 }
@@ -161,6 +180,7 @@ void MAVLinkParameters::set_param_float_async(
     float value,
     const SetParamCallback& callback,
     const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
     if (name.size() > PARAM_ID_LEN) {
@@ -178,6 +198,7 @@ void MAVLinkParameters::set_param_float_async(
 
     new_work->type = WorkItem::Type::Set;
     new_work->callback = callback;
+    new_work->maybe_component_id = maybe_component_id;
     new_work->param_name = name;
     new_work->param_value = value_to_set;
     new_work->extended = extended;
@@ -186,14 +207,19 @@ void MAVLinkParameters::set_param_float_async(
     _work_queue.push_back(new_work);
 }
 
-MAVLinkParameters::Result
-MAVLinkParameters::set_param_float(const std::string& name, float value, bool extended)
+MAVLinkParameters::Result MAVLinkParameters::set_param_float(
+    const std::string& name, float value, std::optional<uint8_t> maybe_component_id, bool extended)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
     set_param_float_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this, extended);
+        name,
+        value,
+        [&prom](Result result) { prom.set_value(result); },
+        this,
+        maybe_component_id,
+        extended);
 
     return res.get();
 }
@@ -202,6 +228,7 @@ void MAVLinkParameters::get_param_float_async(
     const std::string& name,
     const GetParamFloatCallback& callback,
     const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
@@ -221,6 +248,7 @@ void MAVLinkParameters::get_param_float_async(
     auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
     new_work->type = WorkItem::Type::Get;
     new_work->callback = callback;
+    new_work->maybe_component_id = maybe_component_id;
     new_work->param_name = name;
     new_work->param_value = value_type;
     new_work->extended = extended;
@@ -234,6 +262,7 @@ void MAVLinkParameters::get_param_async(
     ParamValue value,
     const GetParamAnyCallback& callback,
     const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
@@ -250,6 +279,7 @@ void MAVLinkParameters::get_param_async(
     auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
     new_work->type = WorkItem::Type::Get;
     new_work->callback = callback;
+    new_work->maybe_component_id = maybe_component_id;
     new_work->param_name = name;
     new_work->param_value = value;
     new_work->extended = extended;
@@ -260,7 +290,11 @@ void MAVLinkParameters::get_param_async(
 }
 
 void MAVLinkParameters::get_param_int_async(
-    const std::string& name, const GetParamIntCallback& callback, const void* cookie, bool extended)
+    const std::string& name,
+    const GetParamIntCallback& callback,
+    const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
 
@@ -276,6 +310,7 @@ void MAVLinkParameters::get_param_int_async(
     auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
     new_work->type = WorkItem::Type::Get;
     new_work->callback = callback;
+    new_work->maybe_component_id = maybe_component_id;
     new_work->param_name = name;
     new_work->param_value = {};
     new_work->extended = extended;
@@ -321,8 +356,8 @@ std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue> MAVLinkParam
     return res.get();
 }
 
-std::pair<MAVLinkParameters::Result, int32_t>
-MAVLinkParameters::get_param_int(const std::string& name, bool extended)
+std::pair<MAVLinkParameters::Result, int32_t> MAVLinkParameters::get_param_int(
+    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
     auto prom = std::promise<std::pair<Result, int32_t>>();
     auto res = prom.get_future();
@@ -331,13 +366,14 @@ MAVLinkParameters::get_param_int(const std::string& name, bool extended)
         name,
         [&prom](Result result, int32_t value) { prom.set_value(std::make_pair<>(result, value)); },
         this,
+        maybe_component_id,
         extended);
 
     return res.get();
 }
 
-std::pair<MAVLinkParameters::Result, float>
-MAVLinkParameters::get_param_float(const std::string& name, bool extended)
+std::pair<MAVLinkParameters::Result, float> MAVLinkParameters::get_param_float(
+    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
     auto prom = std::promise<std::pair<Result, float>>();
     auto res = prom.get_future();
@@ -346,6 +382,7 @@ MAVLinkParameters::get_param_float(const std::string& name, bool extended)
         name,
         [&prom](Result result, float value) { prom.set_value(std::make_pair<>(result, value)); },
         this,
+        maybe_component_id,
         extended);
 
     return res.get();
@@ -475,6 +512,18 @@ void MAVLinkParameters::do_work()
     char param_id[PARAM_ID_LEN + 1] = {};
     strncpy(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
 
+    uint8_t component_id = [&]() {
+        if (work->maybe_component_id) {
+            return work->maybe_component_id.value();
+        } else {
+            if (work->extended) {
+                return static_cast<uint8_t>(MAV_COMP_ID_CAMERA);
+            } else {
+                return _parent.get_autopilot_id();
+            }
+        }
+    }();
+
     switch (work->type) {
         case WorkItem::Type::Set: {
             if (!work->exact_type_known) {
@@ -506,7 +555,7 @@ void MAVLinkParameters::do_work()
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
-                    MAV_COMP_ID_CAMERA,
+                    component_id,
                     param_id,
                     param_value_buf,
                     work->param_value.get_mav_param_ext_type());
@@ -520,7 +569,7 @@ void MAVLinkParameters::do_work()
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
-                    _parent.get_autopilot_id(), // Param set is intended for Autopilot only.
+                    component_id,
                     param_id,
                     value_set,
                     work->param_value.get_mav_param_type());
@@ -555,7 +604,7 @@ void MAVLinkParameters::do_work()
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
-                    MAV_COMP_ID_CAMERA,
+                    component_id,
                     param_id,
                     -1);
 
@@ -572,7 +621,7 @@ void MAVLinkParameters::do_work()
                     _parent.get_own_component_id(),
                     &work->mavlink_message,
                     _parent.get_system_id(),
-                    _parent.get_autopilot_id(),
+                    component_id,
                     param_id,
                     -1);
             }
