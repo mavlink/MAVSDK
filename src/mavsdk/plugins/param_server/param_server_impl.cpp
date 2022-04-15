@@ -20,16 +20,13 @@ void ParamServerImpl::deinit() {}
 
 std::pair<ParamServer::Result, int32_t> ParamServerImpl::retrieve_param_int(std::string name) const
 {
-    // FIXME: we need parameter server class
-    // std::pair<MAVLinkParameters::Result, int> result = _parent->retrieve_server_param_int(name);
+    auto result = _server_component_impl->mavlink_parameters().retrieve_server_param_int(name);
 
-    // if (result.first == MAVLinkParameters::Result::Success) {
-    //    return {ParamServer::Result::Success, result.second};
-    //} else {
-    //    return {ParamServer::Result::NotFound, -1};
-    //}
-    UNUSED(name);
-    return {ParamServer::Result::Unknown, 0};
+    if (result.first == MAVLinkParameters::Result::Success) {
+        return {ParamServer::Result::Success, result.second};
+    } else {
+        return {ParamServer::Result::NotFound, -1};
+    }
 }
 
 ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t value)
@@ -43,17 +40,14 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
 
 std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std::string name) const
 {
-    // FIXME: we need parameter server class
-    // std::pair<MAVLinkParameters::Result, float> result =
-    // _parent->retrieve_server_param_float(name);
+    const auto result =
+        _server_component_impl->mavlink_parameters().retrieve_server_param_float(name);
 
-    // if (result.first == MAVLinkParameters::Result::Success) {
-    //    return {ParamServer::Result::Success, result.second};
-    //} else {
-    //    return {ParamServer::Result::NotFound, NAN};
-    //}
-    UNUSED(name);
-    return {ParamServer::Result::Unknown, NAN};
+    if (result.first == MAVLinkParameters::Result::Success) {
+        return {ParamServer::Result::Success, result.second};
+    } else {
+        return {ParamServer::Result::NotFound, NAN};
+    }
 }
 
 ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float value)

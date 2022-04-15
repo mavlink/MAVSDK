@@ -22,5 +22,4 @@ public:
     [[nodiscard]] virtual Autopilot autopilot() const = 0;
 };
 
-
 } // namespace mavsdk

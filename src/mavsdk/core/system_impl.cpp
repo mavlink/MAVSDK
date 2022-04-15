@@ -348,6 +348,8 @@ std::string SystemImpl::component_name(uint8_t component_id)
             return "Camera 6";
         case MAV_COMP_ID_GIMBAL:
             return "Gimbal";
+        case MAV_COMP_ID_MISSIONPLANNER:
+            return "Ground station";
         default:
             return "Unsupported component";
     }

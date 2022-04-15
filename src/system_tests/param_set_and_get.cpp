@@ -20,7 +20,7 @@ TEST(SystemTest, ParamSetAndGet)
 
     // We reduce the timeout for this test because some tests just trigger a timeout
     // and we don't want to wait forever.
-    mavsdk_groundstation.set_timeout_s(0.01);
+    mavsdk_groundstation.set_timeout_s(0.1);
 
     Mavsdk mavsdk_autopilot;
     mavsdk_autopilot.set_configuration(
@@ -42,23 +42,50 @@ TEST(SystemTest, ParamSetAndGet)
     auto param = Param{system};
 
     // First we try to get a param before it is available.
-    auto result = param.get_param_float(param_name_float);
-    EXPECT_EQ(result.first, Param::Result::Timeout);
-    result = param.get_param_int(param_name_int);
-    EXPECT_EQ(result.first, Param::Result::Timeout);
+    auto result_pair = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair.first, Param::Result::Timeout);
+    result_pair = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair.first, Param::Result::Timeout);
 
     // Then we make it available.
-    EXPECT_EQ(param_server.provide_param_float(param_name_float, param_value_float), ParamServer::Result::Success);
-    EXPECT_EQ(param_server.provide_param_int(param_name_int, param_value_int), ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int),
+        ParamServer::Result::Success);
 
     // Now it should be available
-    result = param.get_param_float(param_name_float);
-    EXPECT_EQ(result.first, Param::Result::Success);
-    EXPECT_EQ(result.second, param_value_float);
+    result_pair = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair.first, Param::Result::Success);
+    EXPECT_EQ(result_pair.second, param_value_float);
 
-    result = param.get_param_int(param_name_int);
-    //EXPECT_EQ(result.first, Param::Result::Success);
-    //EXPECT_EQ(result.second, param_value_int);
+    result_pair = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair.first, Param::Result::Success);
+    EXPECT_EQ(result_pair.second, param_value_int);
 
+    // Let's now change the values
+    auto result = param.set_param_float(param_name_float, param_value_float + 1.0f);
+    EXPECT_EQ(result, Param::Result::Success);
 
+    result = param.set_param_int(param_name_int, param_value_int + 2);
+    EXPECT_EQ(result, Param::Result::Success);
+
+    // Check if it has been changed correctly
+    result_pair = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair.first, Param::Result::Success);
+    EXPECT_EQ(result_pair.second, param_value_float + 1.0f);
+
+    result_pair = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair.first, Param::Result::Success);
+    EXPECT_EQ(result_pair.second, param_value_int + 2);
+
+    // Also check the server side
+    auto server_result_pair = param_server.retrieve_param_float(param_name_float);
+    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
+    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_float + 1.0f);
+
+    server_result_pair = param_server.retrieve_param_int(param_name_int);
+    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
+    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_int + 2);
 }

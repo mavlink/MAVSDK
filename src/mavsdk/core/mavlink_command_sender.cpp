@@ -80,8 +80,10 @@ void MavlinkCommandSender::queue_command_async(
 
     for (const auto& work : _work_queue) {
         if (work->identification == identification) {
-            LogWarn() << "Dropping command " << static_cast<int>(identification.command)
-                      << " that is already being sent";
+            if (_command_debugging) {
+                LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                           << " that is already being sent";
+            }
             auto temp_callback = callback;
             call_callback(temp_callback, Result::CommandDenied, NAN);
             return;
@@ -108,8 +110,10 @@ void MavlinkCommandSender::queue_command_async(
 
     for (const auto& work : _work_queue) {
         if (work->identification == identification) {
-            LogWarn() << "Dropping command " << static_cast<int>(identification.command)
-                      << " that is already being sent";
+            if (_command_debugging) {
+                LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                           << " that is already being sent";
+            }
             auto temp_callback = callback;
             call_callback(temp_callback, Result::CommandDenied, NAN);
             return;

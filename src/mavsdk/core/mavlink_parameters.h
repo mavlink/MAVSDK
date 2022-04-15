@@ -350,6 +350,8 @@ private:
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_ext_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);
+
+    bool _parameter_debugging{false};
 };
 
 } // namespace mavsdk
