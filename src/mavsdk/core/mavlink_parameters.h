@@ -2,6 +2,7 @@
 
 #include "log.h"
 #include "mavlink_include.h"
+#include "timeout_s_callback.h"
 #include "locked_queue.h"
 #include <array>
 #include <cstddef>
@@ -16,7 +17,9 @@
 
 namespace mavsdk {
 
-class SystemImpl;
+class Sender;
+class MavlinkMessageHandler;
+class TimeoutHandler;
 
 // std::to_string doesn't work for std::string, so we need this workaround.
 template<typename T> std::string to_string(T&& value)
@@ -32,7 +35,12 @@ inline std::string& to_string(std::string& value)
 class MAVLinkParameters {
 public:
     MAVLinkParameters() = delete;
-    explicit MAVLinkParameters(SystemImpl& parent);
+    explicit MAVLinkParameters(
+        Sender& parent,
+        MavlinkMessageHandler& message_handler,
+        TimeoutHandler& timeout_handler,
+        TimeoutSCallback timeout_s_callback,
+        bool is_server);
     ~MAVLinkParameters();
 
     class ParamValue {
@@ -285,7 +293,10 @@ private:
 
     static std::string extract_safe_param_id(const char param_id[]);
 
-    SystemImpl& _parent;
+    Sender& _sender;
+    MavlinkMessageHandler& _message_handler;
+    TimeoutHandler& _timeout_handler;
+    TimeoutSCallback _timeout_s_callback;
 
     // Params can be up to 16 chars without 0-termination.
     static constexpr size_t PARAM_ID_LEN = 16;
@@ -333,6 +344,8 @@ private:
     GetAllParamsCallback _all_params_callback;
     void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
+
+    bool _is_server;
 
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_ext_request_read(const mavlink_message_t& message);

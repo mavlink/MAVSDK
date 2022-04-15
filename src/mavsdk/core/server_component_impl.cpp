@@ -13,9 +13,13 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
         _our_sender,
         mavsdk_impl.mavlink_message_handler,
         mavsdk_impl.timeout_handler,
-        [this]() {
-            return _mavsdk_impl.timeout_s();
-        })
+        [this]() { return _mavsdk_impl.timeout_s(); }),
+    _mavlink_parameters(
+        _our_sender,
+        mavsdk_impl.mavlink_message_handler,
+        mavsdk_impl.timeout_handler,
+        [this]() { return _mavsdk_impl.timeout_s(); },
+        true)
 {}
 
 void ServerComponentImpl::register_plugin(ServerPluginImplBase* server_plugin_impl)
@@ -76,6 +80,11 @@ void ServerComponentImpl::unregister_mavlink_message_handler(uint16_t msg_id, co
 void ServerComponentImpl::unregister_all_mavlink_message_handlers(const void* cookie)
 {
     _mavsdk_impl.mavlink_message_handler.unregister_all(cookie);
+}
+
+void ServerComponentImpl::do_work()
+{
+    _mavlink_parameters.do_work();
 }
 
 uint8_t ServerComponentImpl::get_own_system_id() const
@@ -301,10 +310,11 @@ void ServerComponentImpl::send_autopilot_version()
     _mavsdk_impl.send_message(msg);
 }
 
-
-ServerComponentImpl::OurSender::OurSender(MavsdkImpl& mavsdk_impl, ServerComponentImpl& server_component_impl) :
+ServerComponentImpl::OurSender::OurSender(
+    MavsdkImpl& mavsdk_impl, ServerComponentImpl& server_component_impl) :
     _mavsdk_impl(mavsdk_impl),
-    _server_component_impl(server_component_impl) {}
+    _server_component_impl(server_component_impl)
+{}
 
 bool ServerComponentImpl::OurSender::send_message(mavlink_message_t& message)
 {

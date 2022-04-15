@@ -16,7 +16,12 @@ namespace mavsdk {
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
     Sender(),
     _parent(parent),
-    _params(*this),
+    _params(
+        *this,
+        _parent.mavlink_message_handler,
+        _parent.timeout_handler,
+        [this]() { return timeout_s(); },
+        false),
     _command_sender(*this),
     //_request_message_handler(
     //    *this,

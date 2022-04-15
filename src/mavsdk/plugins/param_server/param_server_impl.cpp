@@ -34,11 +34,11 @@ std::pair<ParamServer::Result, int32_t> ParamServerImpl::retrieve_param_int(std:
 
 ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t value)
 {
-    // FIXME: we need parameter server class
-    //_parent->provide_server_param_int(name, value);
-    UNUSED(name);
-    UNUSED(value);
-    return ParamServer::Result::Unknown;
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+    _server_component_impl->mavlink_parameters().provide_server_param_int(name, value);
+    return ParamServer::Result::Success;
 }
 
 std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std::string name) const
@@ -58,11 +58,11 @@ std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std:
 
 ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float value)
 {
-    // FIXME: we need parameter server class
-    //_parent->provide_server_param_float(name, value);
-    UNUSED(name);
-    UNUSED(value);
-    return ParamServer::Result::NoSystem;
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+    _server_component_impl->mavlink_parameters().provide_server_param_float(name, value);
+    return ParamServer::Result::Success;
 }
 
 std::pair<ParamServer::Result, std::string>

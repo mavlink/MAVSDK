@@ -6,7 +6,7 @@
 
 using namespace mavsdk;
 
-TEST(ActionTest, ArmDisarm)
+TEST(SystemTest, ActionArmDisarm)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(

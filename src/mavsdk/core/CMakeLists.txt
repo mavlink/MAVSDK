@@ -43,6 +43,7 @@ target_sources(mavsdk
     request_message.cpp
     mavsdk_time.cpp
     timesync.cpp
+    sender.cpp
 )
 
 cmake_policy(SET CMP0079 NEW)

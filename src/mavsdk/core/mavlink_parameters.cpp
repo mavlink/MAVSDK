@@ -1,4 +1,6 @@
 #include "mavlink_parameters.h"
+#include "mavlink_message_handler.h"
+#include "timeout_handler.h"
 #include "system_impl.h"
 #include <algorithm>
 #include <cstring>
@@ -6,53 +8,67 @@
 
 namespace mavsdk {
 
-MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
+MAVLinkParameters::MAVLinkParameters(
+    Sender& sender,
+    MavlinkMessageHandler& message_handler,
+    TimeoutHandler& timeout_handler,
+    TimeoutSCallback timeout_s_callback,
+    bool is_server) :
+    _sender(sender),
+    _message_handler(message_handler),
+    _timeout_handler(timeout_handler),
+    _timeout_s_callback(timeout_s_callback),
+    _is_server(is_server)
 {
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_VALUE,
-        [this](const mavlink_message_t& message) { process_param_value(message); },
-        this);
+    if (!_is_server) {
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_VALUE,
+            [this](const mavlink_message_t& message) { process_param_value(message); },
+            this);
 
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_SET,
-        [this](const mavlink_message_t& message) { process_param_set(message); },
-        this);
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_SET,
+            [this](const mavlink_message_t& message) { process_param_set(message); },
+            this);
 
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_EXT_VALUE,
-        [this](const mavlink_message_t& message) { process_param_ext_value(message); },
-        this);
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_EXT_VALUE,
+            [this](const mavlink_message_t& message) { process_param_ext_value(message); },
+            this);
 
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_EXT_ACK,
-        [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
-        this);
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_EXT_ACK,
+            [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
+            this);
 
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_EXT_SET,
-        [this](const mavlink_message_t& message) { process_param_ext_set(message); },
-        this);
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_EXT_SET,
+            [this](const mavlink_message_t& message) { process_param_ext_set(message); },
+            this);
+    }
 
-    // Parameter Server Callbacks
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_REQUEST_READ,
-        [this](const mavlink_message_t& message) { process_param_request_read(message); },
-        this);
+    if (_is_server) {
+        // Parameter Server Callbacks
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_REQUEST_READ,
+            [this](const mavlink_message_t& message) { process_param_request_read(message); },
+            this);
 
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_REQUEST_LIST,
-        [this](const mavlink_message_t& message) { process_param_request_list(message); },
-        this);
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_REQUEST_LIST,
+            [this](const mavlink_message_t& message) { process_param_request_list(message); },
+            this);
 
-    _parent.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_PARAM_EXT_REQUEST_READ,
-        [this](const mavlink_message_t& message) { process_param_ext_request_read(message); },
-        this);
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_EXT_REQUEST_READ,
+            [this](const mavlink_message_t& message) { process_param_ext_request_read(message); },
+            this);
+    }
 }
 
 MAVLinkParameters::~MAVLinkParameters()
 {
-    _parent.unregister_all_mavlink_message_handlers(this);
+    _message_handler.unregister_all(this);
 }
 
 MAVLinkParameters::Result
@@ -102,11 +118,11 @@ MAVLinkParameters::provide_server_param_custom(const std::string& name, const st
     return Result::Success;
 }
 
-MAVLinkParameters::Result MAVLinkParameters::set_param(
-    const std::string& name,
-    ParamValue value,
+MAVLinkParameters::Result
+MAVLinkParameters::set_param(const std::string& name, ParamValue value,
+
     std::optional<uint8_t> maybe_component_id,
-    bool extended)
+        bool extended)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
@@ -138,7 +154,7 @@ void MAVLinkParameters::set_param_async(
         return;
     }
 
-    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
 
     new_work->type = WorkItem::Type::Set;
     new_work->callback = callback;
@@ -169,10 +185,10 @@ void MAVLinkParameters::set_param_int_async(
 
     // PX4 only uses int32_t, so we can be sure and don't need to check the exact type first
     // by getting the param, or checking the cache.
-    const bool exact_int_type_known = (_parent.autopilot() == SystemImpl::Autopilot::Px4);
+    const bool exact_int_type_known = (_sender.autopilot() == SystemImpl::Autopilot::Px4);
 
     const auto set_step = [=]() {
-        auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
 
         MAVLinkParameters::ParamValue value_to_set;
         value_to_set.set(value);
@@ -234,7 +250,7 @@ void MAVLinkParameters::set_param_float_async(
         return;
     }
 
-    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
 
     MAVLinkParameters::ParamValue value_to_set;
     value_to_set.set_float(value);
@@ -288,7 +304,7 @@ void MAVLinkParameters::get_param_float_async(
     value_type.set(NAN);
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
     new_work->type = WorkItem::Type::Get;
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
@@ -319,7 +335,7 @@ void MAVLinkParameters::get_param_async(
     }
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
     new_work->type = WorkItem::Type::Get;
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
@@ -350,7 +366,7 @@ void MAVLinkParameters::get_param_int_async(
     }
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
     new_work->type = WorkItem::Type::Get;
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
@@ -567,20 +583,20 @@ void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callbac
     mavlink_message_t msg;
 
     mavlink_msg_param_request_list_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
+        _sender.get_own_system_id(),
+        _sender.get_own_component_id(),
         &msg,
-        _parent.get_system_id(),
-        _parent.get_autopilot_id());
+        _sender.get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1); // FIXME: what should the component be?
 
-    if (!_parent.send_message(msg)) {
+    if (!_sender.send_message(msg)) {
         LogErr() << "Failed to send param list request!";
         lock.unlock();
         callback(std::map<std::string, ParamValue>{});
     }
 
-    _parent.register_timeout_handler(
-        [this] { receive_timeout(); }, _parent.timeout_s(), &_all_params_timeout_cookie);
+    _timeout_handler.add(
+        [this] { receive_timeout(); }, _timeout_s_callback(), &_all_params_timeout_cookie);
 }
 
 std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_params()
@@ -720,31 +736,31 @@ void MAVLinkParameters::do_work()
 
                 // FIXME: extended currently always go to the camera component
                 mavlink_msg_param_ext_set_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
                     &work->mavlink_message,
-                    _parent.get_system_id(),
+                    _sender.get_system_id(),
                     component_id,
                     param_id,
                     param_value_buf.data(),
                     work->param_value.get_mav_param_ext_type());
             } else {
-                float value_set = (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
+                float value_set = (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
                                       work->param_value.get_4_float_bytes_cast() :
                                       work->param_value.get_4_float_bytes_bytewise();
 
                 mavlink_msg_param_set_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
                     &work->mavlink_message,
-                    _parent.get_system_id(),
+                    _sender.get_system_id(),
                     component_id,
                     param_id,
                     value_set,
                     work->param_value.get_mav_param_type());
             }
 
-            if (!_parent.send_message(work->mavlink_message)) {
+            if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 if (std::get_if<SetParamCallback>(&work->callback)) {
                     const auto& callback = std::get<SetParamCallback>(work->callback);
@@ -757,11 +773,10 @@ void MAVLinkParameters::do_work()
             }
 
             work->already_requested = true;
-            // _last_request_time = _parent.get_time().steady_time();
+            // _last_request_time = _sender.get_time().steady_time();
 
             // We want to get notified if a timeout happens
-            _parent.register_timeout_handler(
-                [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
+            _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
 
         } break;
 
@@ -769,33 +784,33 @@ void MAVLinkParameters::do_work()
             // LogDebug() << "now getting: " << work->param_name;
             if (work->extended) {
                 mavlink_msg_param_ext_request_read_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
                     &work->mavlink_message,
-                    _parent.get_system_id(),
+                    _sender.get_system_id(),
                     component_id,
                     param_id,
                     -1);
 
             } else {
                 // LogDebug() << "request read: "
-                //    << (int)_parent.get_own_system_id() << ":"
-                //    << (int)_parent.get_own_component_id() <<
+                //    << (int)_sender.get_own_system_id() << ":"
+                //    << (int)_sender.get_own_component_id() <<
                 //    " to "
-                //    << (int)_parent.get_system_id() << ":"
-                //    << (int)_parent.get_autopilot_id();
+                //    << (int)_sender.get_system_id() << ":"
+                //    << (int)_sender.get_autopilot_id();
 
                 mavlink_msg_param_request_read_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
                     &work->mavlink_message,
-                    _parent.get_system_id(),
+                    _sender.get_system_id(),
                     component_id,
                     param_id,
                     -1);
             }
 
-            if (!_parent.send_message(work->mavlink_message)) {
+            if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
 
                 if (std::get_if<GetParamIntCallback>(&work->callback)) {
@@ -817,11 +832,10 @@ void MAVLinkParameters::do_work()
 
             work->already_requested = true;
 
-            // _last_request_time = _parent.get_time().steady_time();
+            // _last_request_time = _sender.get_time().steady_time();
 
             // We want to get notified if a timeout happens
-            _parent.register_timeout_handler(
-                [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
+            _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
 
         } break;
 
@@ -829,8 +843,8 @@ void MAVLinkParameters::do_work()
             if (work->extended) {
                 auto buf = work->param_value.get_128_bytes();
                 mavlink_msg_param_ext_value_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
                     buf.data(),
@@ -839,14 +853,14 @@ void MAVLinkParameters::do_work()
                     work->param_index);
             } else {
                 float param_value;
-                if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+                if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
                     param_value = work->param_value.get_4_float_bytes_cast();
                 } else {
                     param_value = work->param_value.get_4_float_bytes_bytewise();
                 }
                 mavlink_msg_param_value_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
                     param_value,
@@ -855,7 +869,7 @@ void MAVLinkParameters::do_work()
                     work->param_index);
             }
 
-            if (!_parent.send_message(work->mavlink_message)) {
+            if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();
                 return;
@@ -869,8 +883,8 @@ void MAVLinkParameters::do_work()
             if (work->extended) {
                 auto buf = work->param_value.get_128_bytes();
                 mavlink_msg_param_ext_ack_pack(
-                    _parent.get_own_system_id(),
-                    _parent.get_own_component_id(),
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
                     &work->mavlink_message,
                     param_id,
                     buf.data(),
@@ -878,7 +892,7 @@ void MAVLinkParameters::do_work()
                     PARAM_ACK_ACCEPTED);
             }
 
-            if (!work->extended || !_parent.send_message(work->mavlink_message)) {
+            if (!work->extended || !_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();
                 return;
@@ -898,7 +912,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     // LogDebug() << "getting param value: " << extract_safe_param_id(param_value.param_id);
 
     ParamValue received_value;
-    if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
         received_value.set_from_mavlink_param_value_cast(param_value);
     } else {
         received_value.set_from_mavlink_param_value_bytewise(param_value);
@@ -916,11 +930,11 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
                 lock.unlock();
                 _all_params_callback(_all_params);
             } else {
-                _parent.unregister_timeout_handler(_all_params_timeout_cookie);
+                _timeout_handler.remove(_all_params_timeout_cookie);
 
-                _parent.register_timeout_handler(
+                _timeout_handler.add(
                     [this] { receive_timeout(); },
-                    _parent.timeout_s(),
+                    _timeout_s_callback(),
                     &_all_params_timeout_cookie);
             }
 
@@ -985,9 +999,9 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
                     }
                 }
             }
-            _parent.unregister_timeout_handler(_timeout_cookie);
+            _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
-            // _parent.get_time().elapsed_since_s(_last_request_time);
+            // _sender.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
         case WorkItem::Type::Set: {
@@ -999,9 +1013,9 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
                 }
             }
 
-            _parent.unregister_timeout_handler(_timeout_cookie);
+            _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
-            // _parent.get_time().elapsed_since_s(_last_request_time);
+            // _sender.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
         default:
@@ -1020,7 +1034,7 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
 
         ParamValue value;
 
-        if (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
             value.set_from_mavlink_param_value_cast(param_value);
         } else {
             value.set_from_mavlink_param_value_bytewise(param_value);
@@ -1123,9 +1137,9 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
                 }
             }
 
-            _parent.unregister_timeout_handler(_timeout_cookie);
+            _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
-            // _parent.get_time().elapsed_since_s(_last_request_time);
+            // _sender.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
         } break;
 
@@ -1175,14 +1189,14 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
                     }
                 }
 
-                _parent.unregister_timeout_handler(_timeout_cookie);
+                _timeout_handler.remove(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
-                // _parent.get_time().elapsed_since_s(_last_request_time);
+                // _sender.get_time().elapsed_since_s(_last_request_time);
                 work_queue_guard.pop_front();
 
             } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
                 // Reset timeout and wait again.
-                _parent.refresh_timeout_handler(_timeout_cookie);
+                _timeout_handler.refresh(_timeout_cookie);
 
             } else {
                 LogErr() << "Somehow we did not get an ack, we got: "
@@ -1205,9 +1219,9 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
                     }
                 }
 
-                _parent.unregister_timeout_handler(_timeout_cookie);
+                _timeout_handler.remove(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
-                // _parent.get_time().elapsed_since_s(_last_request_time);
+                // _sender.get_time().elapsed_since_s(_last_request_time);
                 work_queue_guard.pop_front();
             }
         } break;
@@ -1235,7 +1249,7 @@ void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
             _all_params[safe_param_id] = value;
         }
 
-        auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
         new_work->type = WorkItem::Type::Ack;
         new_work->param_name = safe_param_id;
         new_work->param_value = _all_params[safe_param_id];
@@ -1292,7 +1306,7 @@ void MAVLinkParameters::receive_timeout()
                 // We're not sure the command arrived, let's retransmit.
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
                           << work->param_name << ").";
-                if (!_parent.send_message(work->mavlink_message)) {
+                if (!_sender.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit (" << work->param_name << ").";
                     work_queue_guard.pop_front();
 
@@ -1314,7 +1328,7 @@ void MAVLinkParameters::receive_timeout()
                     }
                 } else {
                     --work->retries_to_do;
-                    _parent.register_timeout_handler(
+                    _timeout_handler.add(
                         [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
                 }
             } else {
@@ -1341,7 +1355,7 @@ void MAVLinkParameters::receive_timeout()
                 // We're not sure the command arrived, let's retransmit.
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
                           << work->param_name << ").";
-                if (!_parent.send_message(work->mavlink_message)) {
+                if (!_sender.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit (" << work->param_name << ").";
                     work_queue_guard.pop_front();
                     if (std::get_if<SetParamCallback>(&work->callback)) {
@@ -1352,7 +1366,7 @@ void MAVLinkParameters::receive_timeout()
                     }
                 } else {
                     --work->retries_to_do;
-                    _parent.register_timeout_handler(
+                    _timeout_handler.add(
                         [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
                 }
             } else {
@@ -1406,7 +1420,7 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
             }
             _all_params[safe_param_id] = value;
 
-            auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
             new_work->type = WorkItem::Type::Value;
             new_work->param_name = safe_param_id;
             new_work->param_value = _all_params.at(safe_param_id);
@@ -1442,9 +1456,10 @@ void MAVLinkParameters::process_param_request_read(const mavlink_message_t& mess
     if (read_request.param_index == -1) {
         auto safe_param_id = extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
+
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
             new_work->type = WorkItem::Type::Value;
             new_work->param_name = safe_param_id;
             new_work->param_value = _all_params.at(safe_param_id);
@@ -1463,7 +1478,7 @@ void MAVLinkParameters::process_param_request_list(const mavlink_message_t& mess
 
     auto idx = 0;
     for (const auto& pair : _all_params) {
-        auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
         new_work->type = WorkItem::Type::Value;
         new_work->param_name = pair.first;
         new_work->param_value = pair.second;
@@ -1486,7 +1501,7 @@ void MAVLinkParameters::process_param_ext_request_read(const mavlink_message_t& 
         LogDebug() << "Request Param " << safe_param_id;
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
             new_work->type = WorkItem::Type::Value;
             new_work->param_name = safe_param_id;
             new_work->param_value = _all_params.at(safe_param_id);

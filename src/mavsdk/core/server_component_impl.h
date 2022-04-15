@@ -3,6 +3,7 @@
 #include "mavlink_include.h"
 #include "mavlink_command_receiver.h"
 #include "mavlink_mission_transfer.h"
+#include "mavlink_parameters.h"
 #include "mavsdk_time.h"
 #include "flight_mode.h"
 #include "log.h"
@@ -42,9 +43,7 @@ public:
     };
 
     // FIXME: remove this hack again by writing the proper mission transfer server part
-    void set_our_current_target_system_id(uint8_t id) {
-        _our_sender.current_target_system_id = id;
-    }
+    void set_our_current_target_system_id(uint8_t id) { _our_sender.current_target_system_id = id; }
 
     struct AutopilotVersion {
         /** @brief MAVLink autopilot_version capabilities. */
@@ -129,6 +128,9 @@ public:
     AutopilotVersion get_autopilot_version_data();
 
     MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; }
+    MAVLinkParameters& mavlink_parameters() { return _mavlink_parameters; }
+
+    void do_work();
 
 private:
     void send_autopilot_version();
@@ -148,6 +150,7 @@ private:
     OurSender _our_sender;
     MavlinkCommandReceiver _mavlink_command_receiver;
     MavlinkMissionTransfer _mission_transfer;
+    MAVLinkParameters _mavlink_parameters;
 };
 
 } // namespace mavsdk

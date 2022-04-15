@@ -3,6 +3,7 @@ add_executable(system_tests_runner
     camera_take_photo.cpp
     action_arm_disarm.cpp
     system_tests_helper.cpp
+    param_set_and_get.cpp
 )
 
 target_include_directories(system_tests_runner

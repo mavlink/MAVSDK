@@ -623,6 +623,10 @@ void MavsdkImpl::work_thread()
         timeout_handler.run_once();
         call_every_handler.run_once();
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+        for (auto& it : _server_components) {
+            it.second->_impl->do_work();
+        }
     }
 }
 

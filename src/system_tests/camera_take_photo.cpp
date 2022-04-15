@@ -5,7 +5,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, TakePhoto)
+TEST(SystemTest, CameraTakePhoto)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
