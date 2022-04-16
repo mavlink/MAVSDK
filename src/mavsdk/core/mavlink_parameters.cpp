@@ -716,8 +716,7 @@ void MAVLinkParameters::do_work()
             }
 
             if (work->extended) {
-                char param_value_buf[128] = {};
-                work->param_value.get_128_bytes(param_value_buf);
+                auto param_value_buf = work->param_value.get_128_bytes();
 
                 // FIXME: extended currently always go to the camera component
                 mavlink_msg_param_ext_set_pack(
@@ -727,7 +726,7 @@ void MAVLinkParameters::do_work()
                     _parent.get_system_id(),
                     component_id,
                     param_id,
-                    param_value_buf,
+                    param_value_buf.data(),
                     work->param_value.get_mav_param_ext_type());
             } else {
                 float value_set = (_parent.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
@@ -828,8 +827,7 @@ void MAVLinkParameters::do_work()
 
         case WorkItem::Type::Value: {
             if (work->extended) {
-                std::array<char, 128> buf{};
-                work->param_value.get_128_bytes(buf.data());
+                auto buf = work->param_value.get_128_bytes();
                 mavlink_msg_param_ext_value_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
@@ -869,8 +867,7 @@ void MAVLinkParameters::do_work()
 
         case WorkItem::Type::Ack: {
             if (work->extended) {
-                std::array<char, 128> buf{};
-                work->param_value.get_128_bytes(buf.data());
+                auto buf = work->param_value.get_128_bytes();
                 mavlink_msg_param_ext_ack_pack(
                     _parent.get_own_system_id(),
                     _parent.get_own_component_id(),
@@ -2001,34 +1998,40 @@ void MAVLinkParameters::ParamValue::set_custom(const std::string& new_value)
     }
 }
 
-void MAVLinkParameters::ParamValue::get_128_bytes(char* bytes) const
+std::array<char, 128> MAVLinkParameters::ParamValue::get_128_bytes() const
 {
+    std::array<char, 128> bytes{};
+
     if (std::get_if<uint8_t>(&_value)) {
-        memcpy(bytes, &std::get<uint8_t>(_value), sizeof(uint8_t));
+        memcpy(bytes.data(), &std::get<uint8_t>(_value), sizeof(uint8_t));
     } else if (std::get_if<int8_t>(&_value)) {
-        memcpy(bytes, &std::get<int8_t>(_value), sizeof(int8_t));
+        memcpy(bytes.data(), &std::get<int8_t>(_value), sizeof(int8_t));
     } else if (std::get_if<uint16_t>(&_value)) {
-        memcpy(bytes, &std::get<uint16_t>(_value), sizeof(uint16_t));
+        memcpy(bytes.data(), &std::get<uint16_t>(_value), sizeof(uint16_t));
     } else if (std::get_if<int16_t>(&_value)) {
-        memcpy(bytes, &std::get<int16_t>(_value), sizeof(int16_t));
+        memcpy(bytes.data(), &std::get<int16_t>(_value), sizeof(int16_t));
     } else if (std::get_if<uint32_t>(&_value)) {
-        memcpy(bytes, &std::get<uint32_t>(_value), sizeof(uint32_t));
+        memcpy(bytes.data(), &std::get<uint32_t>(_value), sizeof(uint32_t));
     } else if (std::get_if<int32_t>(&_value)) {
-        memcpy(bytes, &std::get<int32_t>(_value), sizeof(int32_t));
+        memcpy(bytes.data(), &std::get<int32_t>(_value), sizeof(int32_t));
     } else if (std::get_if<uint64_t>(&_value)) {
-        memcpy(bytes, &std::get<uint64_t>(_value), sizeof(uint64_t));
+        memcpy(bytes.data(), &std::get<uint64_t>(_value), sizeof(uint64_t));
     } else if (std::get_if<int64_t>(&_value)) {
-        memcpy(bytes, &std::get<int64_t>(_value), sizeof(int64_t));
+        memcpy(bytes.data(), &std::get<int64_t>(_value), sizeof(int64_t));
     } else if (std::get_if<float>(&_value)) {
-        memcpy(bytes, &std::get<float>(_value), sizeof(float));
+        memcpy(bytes.data(), &std::get<float>(_value), sizeof(float));
     } else if (std::get_if<double>(&_value)) {
-        memcpy(bytes, &std::get<double>(_value), sizeof(double));
+        memcpy(bytes.data(), &std::get<double>(_value), sizeof(double));
     } else if (std::get_if<std::string>(&_value)) {
-        memcpy(bytes, (&std::get<std::string>(_value))->data(), 128);
+        auto str_ptr = &std::get<std::string>(_value);
+        // Copy all data in string, max 128 bytes
+        memcpy(bytes.data(), str_ptr->data(), std::min(bytes.size(), str_ptr->size()));
     } else {
         LogErr() << "Unknown type";
         assert(false);
     }
+
+    return bytes;
 }
 
 [[nodiscard]] std::string MAVLinkParameters::ParamValue::get_string() const

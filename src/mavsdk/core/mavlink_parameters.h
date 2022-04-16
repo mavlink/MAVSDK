@@ -3,6 +3,7 @@
 #include "log.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -60,7 +61,7 @@ public:
         void set_float(float new_value);
         void set_custom(const std::string& new_value);
 
-        void get_128_bytes(char* bytes) const;
+        std::array<char, 128> get_128_bytes() const;
 
         [[nodiscard]] std::string get_string() const;
 
