@@ -34,6 +34,18 @@ service ParamService {
      */
     rpc SetParamFloat(SetParamFloatRequest) returns(SetParamFloatResponse) { option (mavsdk.options.async_type) = SYNC; }
     /*
+     * Get a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc GetParamCustom(GetParamCustomRequest) returns(GetParamCustomResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
+     * Set a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc SetParamCustom(SetParamCustomRequest) returns(SetParamCustomResponse) { option (mavsdk.options.async_type) = SYNC; }
+    /*
      * Get all parameters.
      */
     rpc GetAllParams(GetAllParamsRequest) returns(GetAllParamsResponse) { option (mavsdk.options.async_type) = SYNC; }
@@ -72,6 +84,22 @@ message SetParamFloatResponse {
     ParamResult param_result = 1;
 }
 
+message GetParamCustomRequest {
+    string name = 1; // Name of the parameter
+}
+message GetParamCustomResponse {
+    ParamResult param_result = 1;
+    string value = 2; // Value of the requested parameter
+}
+
+message SetParamCustomRequest {
+    string name = 1; // Name of the parameter to set
+    string value = 2; // Value the parameter should be set to
+}
+message SetParamCustomResponse {
+    ParamResult param_result = 1;
+}
+
 message GetAllParamsRequest {}
 
 message GetAllParamsResponse {
@@ -95,11 +123,20 @@ message FloatParam {
 }
 
 /*
- * Type collecting all integer and float parameters.
+ * Type for custom parameters
+ */
+message CustomParam {
+    string name = 1; // Name of the parameter
+    string value = 2; // Value of the parameter (max len 128 bytes)
+}
+
+/*
+ * Type collecting all integer, float, and custom parameters.
  */
 message AllParams {
     repeated IntParam int_params = 1; // Collection of all parameter names and values of type int
     repeated FloatParam float_params = 2; // Collection of all parameter names and values of type float
+    repeated CustomParam custom_params = 3; // Collection of all parameter names and values of type custom
 }
 
 // Result type.
@@ -113,6 +150,7 @@ message ParamResult {
         RESULT_WRONG_TYPE = 4; // Wrong type
         RESULT_PARAM_NAME_TOO_LONG = 5; // Parameter name too long (> 16)
         RESULT_NO_SYSTEM = 6; // No system connected
+        RESULT_PARAM_VALUE_TOO_LONG = 7; // Param value too long (> 128)
     }
 
     Result result = 1; // Result enum value
