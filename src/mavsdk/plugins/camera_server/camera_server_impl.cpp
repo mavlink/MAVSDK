@@ -654,8 +654,9 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
     if (total_images == 1) {
         if (seq_number <= _image_capture_count) {
             LogDebug() << "received duplicate single image capture request";
+            // We know we already captured this request, so we can just ack it.
             return _server_component_impl->make_command_ack_message(
-                command, MAV_RESULT::MAV_RESULT_DENIED);
+                command, MAV_RESULT::MAV_RESULT_ACCEPTED);
         }
 
         // MAV_RESULT_ACCEPTED must be sent before CAMERA_IMAGE_CAPTURED
