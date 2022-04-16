@@ -252,6 +252,9 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
         capture_info.attitude_quaternion.z,
     };
 
+    // There needs to be enough data to be copied mavlink internal.
+    capture_info.file_url.resize(205);
+
     mavlink_message_t msg{};
     mavlink_msg_camera_image_captured_pack(
         _server_component_impl->get_own_system_id(),
@@ -457,7 +460,9 @@ std::optional<mavlink_message_t> CameraServerImpl::process_storage_information_r
     const float read_speed = 0;
     const float write_speed = 0;
     const uint8_t type = STORAGE_TYPE::STORAGE_TYPE_UNKNOWN;
-    auto name = "";
+    std::string name("");
+    // This needs to be long enough, otherwise the memcpy in mavlink overflows.
+    name.resize(32);
     const uint8_t storage_usage = 0;
 
     mavlink_message_t msg{};
@@ -475,7 +480,7 @@ std::optional<mavlink_message_t> CameraServerImpl::process_storage_information_r
         read_speed,
         write_speed,
         type,
-        name,
+        name.data(),
         storage_usage);
 
     _server_component_impl->send_message(msg);
