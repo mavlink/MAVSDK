@@ -28,6 +28,10 @@ public:
 
     Param::Result set_param_float(const std::string& name, float value);
 
+    std::pair<Param::Result, std::string> get_param_custom(const std::string& name);
+
+    Param::Result set_param_custom(const std::string& name, const std::string& value);
+
     Param::AllParams get_all_params();
 
 private:

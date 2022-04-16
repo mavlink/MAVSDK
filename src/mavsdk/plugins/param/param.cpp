@@ -11,6 +11,7 @@ namespace mavsdk {
 
 using IntParam = Param::IntParam;
 using FloatParam = Param::FloatParam;
+using CustomParam = Param::CustomParam;
 using AllParams = Param::AllParams;
 
 Param::Param(System& system) : PluginBase(), _impl{std::make_unique<ParamImpl>(system)} {}
@@ -40,6 +41,16 @@ std::pair<Param::Result, float> Param::get_param_float(std::string name) const
 Param::Result Param::set_param_float(std::string name, float value) const
 {
     return _impl->set_param_float(name, value);
+}
+
+std::pair<Param::Result, std::string> Param::get_param_custom(std::string name) const
+{
+    return _impl->get_param_custom(name);
+}
+
+Param::Result Param::set_param_custom(std::string name, std::string value) const
+{
+    return _impl->set_param_custom(name, value);
 }
 
 Param::AllParams Param::get_all_params() const
@@ -78,9 +89,25 @@ std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param
     return str;
 }
 
+bool operator==(const Param::CustomParam& lhs, const Param::CustomParam& rhs)
+{
+    return (rhs.name == lhs.name) && (rhs.value == lhs.value);
+}
+
+std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_param)
+{
+    str << std::setprecision(15);
+    str << "custom_param:" << '\n' << "{\n";
+    str << "    name: " << custom_param.name << '\n';
+    str << "    value: " << custom_param.value << '\n';
+    str << '}';
+    return str;
+}
+
 bool operator==(const Param::AllParams& lhs, const Param::AllParams& rhs)
 {
-    return (rhs.int_params == lhs.int_params) && (rhs.float_params == lhs.float_params);
+    return (rhs.int_params == lhs.int_params) && (rhs.float_params == lhs.float_params) &&
+           (rhs.custom_params == lhs.custom_params);
 }
 
 std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
@@ -96,6 +123,11 @@ std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
     for (auto it = all_params.float_params.begin(); it != all_params.float_params.end(); ++it) {
         str << *it;
         str << (it + 1 != all_params.float_params.end() ? ", " : "]\n");
+    }
+    str << "    custom_params: [";
+    for (auto it = all_params.custom_params.begin(); it != all_params.custom_params.end(); ++it) {
+        str << *it;
+        str << (it + 1 != all_params.custom_params.end() ? ", " : "]\n");
     }
     str << '}';
     return str;
@@ -118,6 +150,8 @@ std::ostream& operator<<(std::ostream& str, Param::Result const& result)
             return str << "Param Name Too Long";
         case Param::Result::NoSystem:
             return str << "No System";
+        case Param::Result::ParamValueTooLong:
+            return str << "Param Value Too Long";
         default:
             return str << "Unknown";
     }

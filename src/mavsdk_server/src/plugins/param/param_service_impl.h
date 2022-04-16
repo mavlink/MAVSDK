@@ -85,6 +85,30 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::param::CustomParam>
+    translateToRpcCustomParam(const mavsdk::Param::CustomParam& custom_param)
+    {
+        auto rpc_obj = std::make_unique<rpc::param::CustomParam>();
+
+        rpc_obj->set_name(custom_param.name);
+
+        rpc_obj->set_value(custom_param.value);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Param::CustomParam
+    translateFromRpcCustomParam(const rpc::param::CustomParam& custom_param)
+    {
+        mavsdk::Param::CustomParam obj;
+
+        obj.name = custom_param.name();
+
+        obj.value = custom_param.value();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::param::AllParams>
     translateToRpcAllParams(const mavsdk::Param::AllParams& all_params)
     {
@@ -98,6 +122,11 @@ public:
         for (const auto& elem : all_params.float_params) {
             auto* ptr = rpc_obj->add_float_params();
             ptr->CopyFrom(*translateToRpcFloatParam(elem).release());
+        }
+
+        for (const auto& elem : all_params.custom_params) {
+            auto* ptr = rpc_obj->add_custom_params();
+            ptr->CopyFrom(*translateToRpcCustomParam(elem).release());
         }
 
         return rpc_obj;
@@ -116,6 +145,11 @@ public:
         for (const auto& elem : all_params.float_params()) {
             obj.float_params.push_back(
                 translateFromRpcFloatParam(static_cast<mavsdk::rpc::param::FloatParam>(elem)));
+        }
+
+        for (const auto& elem : all_params.custom_params()) {
+            obj.custom_params.push_back(
+                translateFromRpcCustomParam(static_cast<mavsdk::rpc::param::CustomParam>(elem)));
         }
 
         return obj;
@@ -141,6 +175,8 @@ public:
                 return rpc::param::ParamResult_Result_RESULT_PARAM_NAME_TOO_LONG;
             case mavsdk::Param::Result::NoSystem:
                 return rpc::param::ParamResult_Result_RESULT_NO_SYSTEM;
+            case mavsdk::Param::Result::ParamValueTooLong:
+                return rpc::param::ParamResult_Result_RESULT_PARAM_VALUE_TOO_LONG;
         }
     }
 
@@ -165,6 +201,8 @@ public:
                 return mavsdk::Param::Result::ParamNameTooLong;
             case rpc::param::ParamResult_Result_RESULT_NO_SYSTEM:
                 return mavsdk::Param::Result::NoSystem;
+            case rpc::param::ParamResult_Result_RESULT_PARAM_VALUE_TOO_LONG:
+                return mavsdk::Param::Result::ParamValueTooLong;
         }
     }
 
@@ -277,6 +315,65 @@ public:
 
         auto result =
             _lazy_plugin.maybe_plugin()->set_param_float(request->name(), request->value());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status GetParamCustom(
+        grpc::ServerContext* /* context */,
+        const rpc::param::GetParamCustomRequest* request,
+        rpc::param::GetParamCustomResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Param::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "GetParamCustom sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_param_custom(request->name());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_value(result.second);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetParamCustom(
+        grpc::ServerContext* /* context */,
+        const rpc::param::SetParamCustomRequest* request,
+        rpc::param::SetParamCustomResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Param::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetParamCustom sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result =
+            _lazy_plugin.maybe_plugin()->set_param_custom(request->name(), request->value());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

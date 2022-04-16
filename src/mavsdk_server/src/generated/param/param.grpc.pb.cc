@@ -28,6 +28,8 @@ static const char* ParamService_method_names[] = {
   "/mavsdk.rpc.param.ParamService/SetParamInt",
   "/mavsdk.rpc.param.ParamService/GetParamFloat",
   "/mavsdk.rpc.param.ParamService/SetParamFloat",
+  "/mavsdk.rpc.param.ParamService/GetParamCustom",
+  "/mavsdk.rpc.param.ParamService/SetParamCustom",
   "/mavsdk.rpc.param.ParamService/GetAllParams",
 };
 
@@ -42,7 +44,9 @@ ParamService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chann
   , rpcmethod_SetParamInt_(ParamService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetParamFloat_(ParamService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetParamFloat_(ParamService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetAllParams_(ParamService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetParamCustom_(ParamService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetParamCustom_(ParamService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetAllParams_(ParamService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ParamService::Stub::GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest& request, ::mavsdk::rpc::param::GetParamIntResponse* response) {
@@ -137,6 +141,52 @@ void ParamService::Stub::async::SetParamFloat(::grpc::ClientContext* context, co
   return result;
 }
 
+::grpc::Status ParamService::Stub::GetParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamCustomRequest& request, ::mavsdk::rpc::param::GetParamCustomResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::GetParamCustomRequest, ::mavsdk::rpc::param::GetParamCustomResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetParamCustom_, context, request, response);
+}
+
+void ParamService::Stub::async::GetParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamCustomRequest* request, ::mavsdk::rpc::param::GetParamCustomResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::GetParamCustomRequest, ::mavsdk::rpc::param::GetParamCustomResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetParamCustom_, context, request, response, std::move(f));
+}
+
+void ParamService::Stub::async::GetParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamCustomRequest* request, ::mavsdk::rpc::param::GetParamCustomResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetParamCustom_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::GetParamCustomResponse>* ParamService::Stub::PrepareAsyncGetParamCustomRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamCustomRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::param::GetParamCustomResponse, ::mavsdk::rpc::param::GetParamCustomRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetParamCustom_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::GetParamCustomResponse>* ParamService::Stub::AsyncGetParamCustomRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamCustomRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncGetParamCustomRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status ParamService::Stub::SetParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest& request, ::mavsdk::rpc::param::SetParamCustomResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::SetParamCustomRequest, ::mavsdk::rpc::param::SetParamCustomResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetParamCustom_, context, request, response);
+}
+
+void ParamService::Stub::async::SetParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest* request, ::mavsdk::rpc::param::SetParamCustomResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::SetParamCustomRequest, ::mavsdk::rpc::param::SetParamCustomResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetParamCustom_, context, request, response, std::move(f));
+}
+
+void ParamService::Stub::async::SetParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest* request, ::mavsdk::rpc::param::SetParamCustomResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetParamCustom_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SetParamCustomResponse>* ParamService::Stub::PrepareAsyncSetParamCustomRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::param::SetParamCustomResponse, ::mavsdk::rpc::param::SetParamCustomRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetParamCustom_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SetParamCustomResponse>* ParamService::Stub::AsyncSetParamCustomRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetParamCustomRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ::grpc::Status ParamService::Stub::GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest& request, ::mavsdk::rpc::param::GetAllParamsResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetAllParams_, context, request, response);
 }
@@ -204,6 +254,26 @@ ParamService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ParamService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ParamService::Service, ::mavsdk::rpc::param::GetParamCustomRequest, ::mavsdk::rpc::param::GetParamCustomResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ParamService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::param::GetParamCustomRequest* req,
+             ::mavsdk::rpc::param::GetParamCustomResponse* resp) {
+               return service->GetParamCustom(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ParamService_method_names[5],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ParamService::Service, ::mavsdk::rpc::param::SetParamCustomRequest, ::mavsdk::rpc::param::SetParamCustomResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ParamService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::param::SetParamCustomRequest* req,
+             ::mavsdk::rpc::param::SetParamCustomResponse* resp) {
+               return service->SetParamCustom(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ParamService_method_names[6],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ParamService::Service, ::mavsdk::rpc::param::GetAllParamsRequest, ::mavsdk::rpc::param::GetAllParamsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ParamService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -238,6 +308,20 @@ ParamService::Service::~Service() {
 }
 
 ::grpc::Status ParamService::Service::SetParamFloat(::grpc::ServerContext* context, const ::mavsdk::rpc::param::SetParamFloatRequest* request, ::mavsdk::rpc::param::SetParamFloatResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ParamService::Service::GetParamCustom(::grpc::ServerContext* context, const ::mavsdk::rpc::param::GetParamCustomRequest* request, ::mavsdk::rpc::param::GetParamCustomResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ParamService::Service::SetParamCustom(::grpc::ServerContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest* request, ::mavsdk::rpc::param::SetParamCustomResponse* response) {
   (void) context;
   (void) request;
   (void) response;

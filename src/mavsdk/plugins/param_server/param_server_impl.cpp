@@ -59,6 +59,28 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
     return ParamServer::Result::Success;
 }
 
+std::pair<ParamServer::Result, std::string>
+ParamServerImpl::retrieve_param_custom(std::string name) const
+{
+    const auto result = _parent->retrieve_server_param_custom(name);
+
+    if (result.first == MAVLinkParameters::Result::Success) {
+        return {ParamServer::Result::Success, result.second};
+    } else {
+        return {ParamServer::Result::NotFound, {}};
+    }
+}
+
+ParamServer::Result
+ParamServerImpl::provide_param_custom(std::string name, const std::string& value)
+{
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+    _parent->provide_server_param_custom(name, value);
+    return ParamServer::Result::Success;
+}
+
 ParamServer::AllParams ParamServerImpl::retrieve_all_params() const
 {
     auto tmp = _parent->retrieve_all_server_params();
@@ -94,6 +116,8 @@ ParamServerImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result
             return ParamServer::Result::ParamNameTooLong;
         case MAVLinkParameters::Result::WrongType:
             return ParamServer::Result::WrongType;
+        case MAVLinkParameters::Result::ParamValueTooLong:
+            return ParamServer::Result::ParamValueTooLong;
         default:
             LogErr() << "Unknown param error";
             return ParamServer::Result::Unknown;

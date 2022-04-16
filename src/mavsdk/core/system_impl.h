@@ -175,6 +175,8 @@ public:
 
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
 
+    MAVLinkParameters::Result set_param_custom(const std::string& name, const std::string& value);
+
     using SetParamCallback = std::function<void(MAVLinkParameters::Result result)>;
 
     void set_param_float_async(
@@ -193,8 +195,16 @@ public:
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
-    void provide_server_param_float(const std::string& name, float value);
-    void provide_server_param_int(const std::string& name, int32_t value);
+    void set_param_custom_async(
+        const std::string& name,
+        const std::string& value,
+        const SetParamCallback& callback,
+        const void* cookie);
+
+    MAVLinkParameters::Result provide_server_param_float(const std::string& name, float value);
+    MAVLinkParameters::Result provide_server_param_int(const std::string& name, int32_t value);
+    MAVLinkParameters::Result
+    provide_server_param_custom(const std::string& name, const std::string& value);
     std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
 
     using SubscribeParamIntCallback = std::function<void(int)>;
@@ -245,13 +255,20 @@ public:
         std::function<void(MAVLinkParameters::Result result, float value)>;
     using GetParamIntCallback =
         std::function<void(MAVLinkParameters::Result result, int32_t value)>;
+    using GetParamCustomCallback =
+        std::function<void(MAVLinkParameters::Result result, const std::string& value)>;
 
     std::pair<MAVLinkParameters::Result, float>
     retrieve_server_param_float(const std::string& name);
     std::pair<MAVLinkParameters::Result, int> retrieve_server_param_int(const std::string& name);
+    std::pair<MAVLinkParameters::Result, std::string>
+    retrieve_server_param_custom(const std::string& name);
 
     std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
     std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
+    std::pair<MAVLinkParameters::Result, float> get_param_ext_float(const std::string& name);
+    std::pair<MAVLinkParameters::Result, int> get_param_ext_int(const std::string& name);
+    std::pair<MAVLinkParameters::Result, std::string> get_param_custom(const std::string& name);
 
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.
@@ -276,6 +293,8 @@ public:
         const void* cookie,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
+    void get_param_custom_async(
+        const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
     void set_param_async(
         const std::string& name,
