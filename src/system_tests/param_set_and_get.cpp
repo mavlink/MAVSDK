@@ -18,10 +18,6 @@ TEST(SystemTest, ParamSetAndGet)
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
 
-    // We reduce the timeout for this test because some tests just trigger a timeout
-    // and we don't want to wait forever.
-    mavsdk_groundstation.set_timeout_s(0.1);
-
     Mavsdk mavsdk_autopilot;
     mavsdk_autopilot.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Autopilot});
@@ -42,10 +38,11 @@ TEST(SystemTest, ParamSetAndGet)
     auto param = Param{system};
 
     // First we try to get a param before it is available.
-    auto result_pair = param.get_param_float(param_name_float);
-    EXPECT_EQ(result_pair.first, Param::Result::Timeout);
-    result_pair = param.get_param_int(param_name_int);
-    EXPECT_EQ(result_pair.first, Param::Result::Timeout);
+    // Disabled for now because the timeouts make it very slow to run.
+    // auto result_pair = param.get_param_float(param_name_float);
+    // EXPECT_EQ(result_pair.first, Param::Result::Timeout);
+    // result_pair = param.get_param_int(param_name_int);
+    // EXPECT_EQ(result_pair.first, Param::Result::Timeout);
 
     // Then we make it available.
     EXPECT_EQ(
@@ -56,7 +53,7 @@ TEST(SystemTest, ParamSetAndGet)
         ParamServer::Result::Success);
 
     // Now it should be available
-    result_pair = param.get_param_float(param_name_float);
+    auto result_pair = param.get_param_float(param_name_float);
     EXPECT_EQ(result_pair.first, Param::Result::Success);
     EXPECT_EQ(result_pair.second, param_value_float);
 
