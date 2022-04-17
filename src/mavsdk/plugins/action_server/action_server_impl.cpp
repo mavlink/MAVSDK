@@ -196,7 +196,10 @@ void ActionServerImpl::init()
         this);
 }
 
-void ActionServerImpl::deinit() {}
+void ActionServerImpl::deinit()
+{
+    _parent->unregister_all_mavlink_command_handlers(this);
+}
 
 void ActionServerImpl::enable() {}
 
