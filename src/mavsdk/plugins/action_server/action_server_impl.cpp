@@ -195,7 +195,7 @@ void ActionServerImpl::init()
 
 void ActionServerImpl::deinit()
 {
-    _parent->unregister_all_mavlink_command_handlers(this);
+    _server_component_impl->unregister_all_mavlink_command_handlers(this);
 }
 
 void ActionServerImpl::subscribe_arm_disarm(ActionServer::ArmDisarmCallback callback)
