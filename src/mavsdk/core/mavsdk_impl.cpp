@@ -67,7 +67,7 @@ MavsdkImpl::~MavsdkImpl()
     }
 
     {
-        std::lock_guard<std::mutex> lock(_systems_mutex);
+        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         _systems.clear();
     }
 
@@ -109,7 +109,7 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
 {
     std::vector<std::shared_ptr<System>> systems_result{};
 
-    std::lock_guard<std::mutex> lock(_systems_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
     for (auto& system : _systems) {
         // We ignore the 0 entry because it's just a null system.
         // It's only created because the older, deprecated API needs a
@@ -212,7 +212,7 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_systems_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     // The only situation where we create a system with sysid 0 is when we initialize the connection
     // to the remote.
@@ -371,7 +371,7 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
     if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
-        std::lock_guard<std::mutex> lock(_systems_mutex);
+        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         make_system_with_component(0, 0, true);
     }
     return ret;
@@ -500,7 +500,7 @@ void MavsdkImpl::make_system_with_component(
 
 void MavsdkImpl::notify_on_discover()
 {
-    std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
     if (_new_system_callback) {
         auto temp_callback = _new_system_callback;
         call_user_callback([temp_callback]() { temp_callback(); });
@@ -509,7 +509,7 @@ void MavsdkImpl::notify_on_discover()
 
 void MavsdkImpl::notify_on_timeout()
 {
-    std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
     if (_new_system_callback) {
         auto temp_callback = _new_system_callback;
         call_user_callback([temp_callback]() { temp_callback(); });
@@ -518,7 +518,7 @@ void MavsdkImpl::notify_on_timeout()
 
 void MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_new_system_callback_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
     _new_system_callback = callback;
 
     if (_new_system_callback != nullptr && is_any_system_connected()) {
