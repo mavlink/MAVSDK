@@ -89,6 +89,10 @@ void CameraImpl::deinit()
     _parent->remove_call_every(_request_missing_capture_info_cookie);
     _parent->remove_call_every(_check_connection_status_call_every_cookie);
     _parent->remove_call_every(_status.call_every_cookie);
+    _parent->remove_call_every(_camera_information_call_every_cookie);
+    _parent->remove_call_every(_flight_information_call_every_cookie);
+    _parent->remove_call_every(_mode.call_every_cookie);
+    _parent->remove_call_every(_video_stream_info.call_every_cookie);
     _parent->unregister_all_mavlink_message_handlers(this);
     _parent->cancel_all_param(this);
 
