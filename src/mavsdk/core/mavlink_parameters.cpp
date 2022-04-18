@@ -130,11 +130,12 @@ MAVLinkParameters::provide_server_param_custom(const std::string& name, const st
     return Result::Success;
 }
 
-MAVLinkParameters::Result
-MAVLinkParameters::set_param(const std::string& name, ParamValue value,
+MAVLinkParameters::Result MAVLinkParameters::set_param(
+    const std::string& name,
+    ParamValue value,
 
     std::optional<uint8_t> maybe_component_id,
-        bool extended)
+    bool extended)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
@@ -723,7 +724,7 @@ void MAVLinkParameters::do_work()
             if (work->extended) {
                 return static_cast<uint8_t>(MAV_COMP_ID_CAMERA);
             } else {
-                return _parent.get_autopilot_id();
+                return static_cast<uint8_t>(MAV_COMP_ID_AUTOPILOT1);
             }
         }
     }();
