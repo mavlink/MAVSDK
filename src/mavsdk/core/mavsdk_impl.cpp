@@ -13,14 +13,6 @@
 #include "version.h"
 #include "unused.h"
 
-static mavlink_status_t status_;
-
-mavlink_status_t* mavlink_get_channel_status(uint8_t chan)
-{
-    UNUSED(chan);
-    return &status_;
-}
-
 namespace mavsdk {
 
 MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
