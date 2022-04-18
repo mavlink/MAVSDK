@@ -4,3 +4,6 @@
 [submodule "mavsdk-proto"]
 	path = proto
 	url = https://github.com/mavlink/MAVSDK-Proto.git
+[submodule "src/third_party/mavlink"]
+	path = src/third_party/mavlink
+	url = https://github.com/mavlink/mavlink.git

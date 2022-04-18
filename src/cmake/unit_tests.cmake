@@ -1,6 +1,3 @@
-include_directories(${PROJECT_SOURCE_DIR}/mavsdk/core)
-include_directories(${PROJECT_SOURCE_DIR}/third_party/mavlink/include)
-
 find_package(jsoncpp REQUIRED)
 
 add_executable(unit_tests_runner
@@ -21,6 +18,13 @@ target_link_libraries(unit_tests_runner
     gtest_main
     gmock
 )
+
+add_dependencies(unit_tests_runner mavlink)
+
+target_include_directories(unit_tests_runner
+    SYSTEM
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/third_party/include
+    ${CMAKE_CURRENT_BINARY_DIR}/../src/mavsdk/core)
 
 if (MSVC AND BUILD_SHARED_LIBS)
     target_compile_definitions(unit_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
