@@ -17,3 +17,6 @@ CMakeLists.txt.user*
 
 tools/docs
 venv/
+
+# CLion build folder
+cmake-build-*
