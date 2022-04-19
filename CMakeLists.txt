@@ -49,7 +49,12 @@ if (BUILD_BACKEND)
 endif()
 
 set(DEPS_BUILD_PATH "${PROJECT_BINARY_DIR}/third_party" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
-set(DEPS_INSTALL_PATH "${DEPS_BUILD_PATH}/install" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
+
+if(NOT DEFINED CMAKE_INSTALL_PREFIX)
+  set(DEPS_INSTALL_PATH "${DEPS_BUILD_PATH}/install" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
+else()
+  set(DEPS_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/third_party/install" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
+endif()
 
 include(GNUInstallDirs)
 

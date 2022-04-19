@@ -2,13 +2,13 @@ include(CMakeFindDependencyMacro)
 
 if(NOT @BUILD_SHARED_LIBS@)
     if(${CMAKE_VERSION} VERSION_LESS "3.9.0")
-        find_package(CURL REQUIRED CONFIG)
+        find_package(CURL REQUIRED CONFIG PATHS @DEPS_INSTALL_PATH@ NO_DEFAULT_PATH)
     else()
-        find_dependency(CURL REQUIRED CONFIG)
+        find_dependency(CURL REQUIRED CONFIG PATHS @DEPS_INSTALL_PATH@ NO_DEFAULT_PATH)
     endif()
 
-    find_dependency(jsoncpp)
-    find_dependency(tinyxml2)
+    find_dependency(jsoncpp REQUIRED CONFIG PATHS @DEPS_INSTALL_PATH@ NO_DEFAULT_PATH)
+    find_dependency(tinyxml2 REQUIRED CONFIG PATHS @DEPS_INSTALL_PATH@ NO_DEFAULT_PATH)
 
     if(@BUILD_MAVSDK_SERVER@)
         find_dependency(gRPC)
