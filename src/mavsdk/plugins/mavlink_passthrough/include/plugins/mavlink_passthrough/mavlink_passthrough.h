@@ -136,6 +136,22 @@ public:
     Result send_command_int(const CommandInt& command);
 
     /**
+     * @brief Create a command_ack.
+     *
+     * @param target_sysid Target system ID where to send command_ack to.
+     * @param target_compid Target component ID where to send command_ack to.
+     * @param command Command to respond to.
+     * @param result Result of command.
+     *
+     * @return message to send.
+     */
+    mavlink_message_t make_command_ack_message(
+        const uint8_t target_sysid,
+        const uint8_t target_compid,
+        const uint16_t command,
+        MAV_RESULT result);
+
+    /**
      * @brief Callback type for message subscriptions.
      */
     using MessageCallback = std::function<void(const mavlink_message_t&)>;

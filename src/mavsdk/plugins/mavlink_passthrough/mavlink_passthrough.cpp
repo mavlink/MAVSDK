@@ -30,6 +30,15 @@ MavlinkPassthrough::Result MavlinkPassthrough::send_command_long(const CommandLo
     return _impl->send_command_long(command);
 }
 
+mavlink_message_t MavlinkPassthrough::make_command_ack_message(
+    const uint8_t target_sysid,
+    const uint8_t target_compid,
+    const uint16_t command,
+    MAV_RESULT result)
+{
+    return _impl->make_command_ack_message(target_sysid, target_compid, command, result);
+}
+
 MavlinkPassthrough::MessageHandle
 MavlinkPassthrough::subscribe_message(uint16_t message_id, const MessageCallback& callback)
 {
