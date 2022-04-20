@@ -702,31 +702,35 @@ void MAVLinkMissionTransfer::DownloadWorkItem::process_mission_item_int(
     mavlink_mission_item_int_t item_int;
     mavlink_msg_mission_item_int_decode(&message, &item_int);
 
-    _items.push_back(ItemInt{
-        item_int.seq,
-        item_int.frame,
-        item_int.command,
-        item_int.current,
-        item_int.autocontinue,
-        item_int.param1,
-        item_int.param2,
-        item_int.param3,
-        item_int.param4,
-        item_int.x,
-        item_int.y,
-        item_int.z,
-        item_int.mission_type});
+    // If we have already received the item previously, we have to ignore it.
+    if (_next_sequence == item_int.seq) {
+        _items.push_back(ItemInt{
+            item_int.seq,
+            item_int.frame,
+            item_int.command,
+            item_int.current,
+            item_int.autocontinue,
+            item_int.param1,
+            item_int.param2,
+            item_int.param3,
+            item_int.param4,
+            item_int.x,
+            item_int.y,
+            item_int.z,
+            item_int.mission_type});
 
-    if (_next_sequence + 1 == _expected_count) {
-        _timeout_handler.remove(_cookie);
-        update_progress(1.0f);
-        send_ack_and_finish();
+        if (_next_sequence + 1 == _expected_count) {
+            _timeout_handler.remove(_cookie);
+            update_progress(1.0f);
+            send_ack_and_finish();
 
-    } else {
-        _next_sequence = item_int.seq + 1;
-        _retries_done = 0;
-        update_progress(static_cast<float>(_next_sequence) / static_cast<float>(_expected_count));
-        request_item();
+        } else {
+            _next_sequence = item_int.seq + 1;
+            _retries_done = 0;
+            update_progress(
+                static_cast<float>(_next_sequence) / static_cast<float>(_expected_count));
+            request_item();
+        }
     }
 }
 
