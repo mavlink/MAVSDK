@@ -173,6 +173,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
       - name: Install latest cmake
         run: |
           sudo apt-get update
@@ -224,6 +228,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -Bbuild/release -H.
       - name: build
@@ -624,6 +632,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
       - name: test
         run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
         timeout-minutes: 45
@@ -652,6 +664,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
       - name: test
         run: APM_VERSION=${{ matrix.apm_version }} tools/run-sitl-tests.sh /home/user/ArduPilot
         timeout-minutes: 45
