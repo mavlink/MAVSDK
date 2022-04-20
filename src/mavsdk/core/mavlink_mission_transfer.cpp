@@ -14,7 +14,14 @@ MAVLinkMissionTransfer::MAVLinkMissionTransfer(
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
     _timeout_s_callback(std::move(timeout_s_callback))
-{}
+{
+    if (const char* env_p = std::getenv("MAVSDK_MISSION_TRANSFER_DEBUGGING")) {
+        if (std::string(env_p) == "1") {
+            LogDebug() << "Mission transfer debugging is on.";
+            _debugging = true;
+        }
+    }
+}
 
 std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_items_async(
     uint8_t type,
@@ -38,7 +45,8 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::upload_i
         items,
         _timeout_s_callback(),
         callback,
-        progress_callback);
+        progress_callback,
+        _debugging);
 
     _work_queue.push_back(ptr);
 
@@ -63,7 +71,8 @@ std::weak_ptr<MAVLinkMissionTransfer::WorkItem> MAVLinkMissionTransfer::download
         type,
         _timeout_s_callback(),
         callback,
-        progress_callback);
+        progress_callback,
+        _debugging);
 
     _work_queue.push_back(ptr);
 
@@ -90,7 +99,8 @@ MAVLinkMissionTransfer::receive_incoming_items_async(
         _timeout_s_callback(),
         callback,
         mission_count,
-        target_component);
+        target_component,
+        _debugging);
 
     _work_queue.push_back(ptr);
 
@@ -100,7 +110,13 @@ MAVLinkMissionTransfer::receive_incoming_items_async(
 void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback callback)
 {
     auto ptr = std::make_shared<ClearWorkItem>(
-        _sender, _message_handler, _timeout_handler, type, _timeout_s_callback(), callback);
+        _sender,
+        _message_handler,
+        _timeout_handler,
+        type,
+        _timeout_s_callback(),
+        callback,
+        _debugging);
 
     _work_queue.push_back(ptr);
 }
@@ -108,7 +124,13 @@ void MAVLinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback call
 void MAVLinkMissionTransfer::set_current_item_async(int current, ResultCallback callback)
 {
     auto ptr = std::make_shared<SetCurrentWorkItem>(
-        _sender, _message_handler, _timeout_handler, current, _timeout_s_callback(), callback);
+        _sender,
+        _message_handler,
+        _timeout_handler,
+        current,
+        _timeout_s_callback(),
+        callback,
+        _debugging);
 
     _work_queue.push_back(ptr);
 }
@@ -141,12 +163,14 @@ MAVLinkMissionTransfer::WorkItem::WorkItem(
     MAVLinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     uint8_t type,
-    double timeout_s) :
+    double timeout_s,
+    bool debugging) :
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
     _type(type),
-    _timeout_s(timeout_s)
+    _timeout_s(timeout_s),
+    _debugging(debugging)
 {}
 
 MAVLinkMissionTransfer::WorkItem::~WorkItem() {}
@@ -171,8 +195,9 @@ MAVLinkMissionTransfer::UploadWorkItem::UploadWorkItem(
     const std::vector<ItemInt>& items,
     double timeout_s,
     ResultCallback callback,
-    ProgressCallback progress_callback) :
-    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
+    ProgressCallback progress_callback,
+    bool debugging) :
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _items(items),
     _callback(callback),
     _progress_callback(progress_callback)
@@ -273,8 +298,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_count()
         return;
     }
 
-    // LogDebug() << "Sending send_count, count: " << _items.size() << ", retries: " <<
-    // _retries_done;
+    if (_debugging) {
+        LogDebug() << "Sending send_count, count: " << _items.size()
+                   << ", retries: " << _retries_done;
+    }
 
     ++_retries_done;
 }
@@ -355,8 +382,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_request_int(
 
     _step = Step::SendItems;
 
-    // LogDebug() << "Process mission_request_int, seq: " << request_int.seq
-    //            << ", next expected sequence: " << _next_sequence;
+    if (_debugging) {
+        LogDebug() << "Process mission_request_int, seq: " << request_int.seq
+                   << ", next expected sequence: " << _next_sequence;
+    }
 
     if (_next_sequence < request_int.seq) {
         // We should not go back to a previous one.
@@ -416,8 +445,10 @@ void MAVLinkMissionTransfer::UploadWorkItem::send_mission_item()
         _items[_next_sequence].z,
         _type);
 
-    // LogDebug() << "Sending mission_item_int seq: " << _next_sequence
-    //           << ", retry: " << _retries_done;
+    if (_debugging) {
+        LogDebug() << "Sending mission_item_int seq: " << _next_sequence
+                   << ", retry: " << _retries_done;
+    }
 
     ++_next_sequence;
 
@@ -437,7 +468,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_mission_ack(const mavlink_m
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
 
-    // LogDebug() << "Received mission_ack type: " << static_cast<int>(mission_ack.type);
+    if (_debugging) {
+        LogDebug() << "Received mission_ack type: " << static_cast<int>(mission_ack.type);
+    }
 
     _timeout_handler.remove(_cookie);
 
@@ -494,7 +527,9 @@ void MAVLinkMissionTransfer::UploadWorkItem::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    // LogDebug() << "Timeout triggered, retries: " << _retries_done;
+    if (_debugging) {
+        LogDebug() << "Timeout triggered, retries: " << _retries_done;
+    }
 
     if (_retries_done >= retries) {
         LogWarn() << "timeout: retries exceeded";
@@ -526,6 +561,13 @@ void MAVLinkMissionTransfer::UploadWorkItem::callback_and_reset(Result result)
     _done = true;
 }
 
+void MAVLinkMissionTransfer::UploadWorkItem::update_progress(float progress)
+{
+    if (_progress_callback != nullptr) {
+        _progress_callback(progress);
+    }
+}
+
 MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
     Sender& sender,
     MAVLinkMessageHandler& message_handler,
@@ -533,8 +575,9 @@ MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
     uint8_t type,
     double timeout_s,
     ResultAndItemsCallback callback,
-    ProgressCallback progress_callback) :
-    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
+    ProgressCallback progress_callback,
+    bool debugging) :
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _callback(callback),
     _progress_callback(progress_callback)
 {
@@ -549,13 +592,6 @@ MAVLinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
         MAVLINK_MSG_ID_MISSION_ITEM_INT,
         [this](const mavlink_message_t& message) { process_mission_item_int(message); },
         this);
-}
-
-void MAVLinkMissionTransfer::UploadWorkItem::update_progress(float progress)
-{
-    if (_progress_callback != nullptr) {
-        _progress_callback(progress);
-    }
 }
 
 MAVLinkMissionTransfer::DownloadWorkItem::~DownloadWorkItem()
@@ -780,8 +816,9 @@ MAVLinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
     double timeout_s,
     ResultAndItemsCallback callback,
     uint32_t mission_count,
-    uint8_t target_component) :
-    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
+    uint8_t target_component,
+    bool debugging) :
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _callback(callback),
     _mission_count(mission_count),
     _target_component(target_component)
@@ -962,8 +999,9 @@ MAVLinkMissionTransfer::ClearWorkItem::ClearWorkItem(
     TimeoutHandler& timeout_handler,
     uint8_t type,
     double timeout_s,
-    ResultCallback callback) :
-    WorkItem(sender, message_handler, timeout_handler, type, timeout_s),
+    ResultCallback callback,
+    bool debugging) :
+    WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _callback(callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -1107,8 +1145,10 @@ MAVLinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
     TimeoutHandler& timeout_handler,
     int current,
     double timeout_s,
-    ResultCallback callback) :
-    WorkItem(sender, message_handler, timeout_handler, MAV_MISSION_TYPE_MISSION, timeout_s),
+    ResultCallback callback,
+    bool debugging) :
+    WorkItem(
+        sender, message_handler, timeout_handler, MAV_MISSION_TYPE_MISSION, timeout_s, debugging),
     _current(current),
     _callback(callback)
 {

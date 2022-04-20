@@ -88,7 +88,8 @@ public:
             MAVLinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
-            double timeout_s);
+            double timeout_s,
+            bool debugging);
         virtual ~WorkItem();
         virtual void start() = 0;
         virtual void cancel() = 0;
@@ -109,6 +110,7 @@ public:
         bool _started{false};
         bool _done{false};
         std::mutex _mutex{};
+        bool _debugging;
     };
 
     class UploadWorkItem : public WorkItem {
@@ -121,7 +123,8 @@ public:
             const std::vector<ItemInt>& items,
             double timeout_s,
             ResultCallback callback,
-            ProgressCallback progress_callback);
+            ProgressCallback progress_callback,
+            bool debugging);
 
         ~UploadWorkItem() override;
         void start() override;
@@ -168,7 +171,8 @@ public:
             double timeout_s,
             ResultAndItemsCallback callback,
             uint32_t mission_count,
-            uint8_t target_component);
+            uint8_t target_component,
+            bool debugging);
         ~ReceiveIncomingMission() override;
 
         void start() override;
@@ -212,7 +216,8 @@ public:
             uint8_t type,
             double timeout_s,
             ResultAndItemsCallback callback,
-            ProgressCallback progress_callback);
+            ProgressCallback progress_callback,
+            bool debugging);
 
         ~DownloadWorkItem() override;
         void start() override;
@@ -257,7 +262,8 @@ public:
             TimeoutHandler& timeout_handler,
             uint8_t type,
             double timeout_s,
-            ResultCallback callback);
+            ResultCallback callback,
+            bool debugging);
 
         ~ClearWorkItem() override;
         void start() override;
@@ -287,7 +293,8 @@ public:
             TimeoutHandler& timeout_handler,
             int current,
             double timeout_s,
-            ResultCallback callback);
+            ResultCallback callback,
+            bool debugging);
 
         ~SetCurrentWorkItem() override;
         void start() override;
@@ -363,6 +370,7 @@ private:
     LockedQueue<WorkItem> _work_queue{};
 
     bool _int_messages_supported{true};
+    bool _debugging{false};
 };
 
 } // namespace mavsdk
