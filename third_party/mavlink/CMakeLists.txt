@@ -11,7 +11,9 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     )
 
-find_package(Python COMPONENTS Interpreter REQUIRED)
+# Without this GitHub actions picks the wrong python3 executable.
+set(Python3_FIND_REGISTRY "NEVER")
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
 ExternalProject_add(
     mavlink
@@ -19,7 +21,7 @@ ExternalProject_add(
     GIT_TAG 3b52eac09c2e37325e4bc49cd2667ea37bf1d7d2
     GIT_SHALLOW TRUE
     PREFIX mavlink
-    CONFIGURE_COMMAND Python::Interpreter
+    CONFIGURE_COMMAND Python3::Interpreter
         -m pymavlink.tools.mavgen
         --lang=C
         --wire-protocol=2.0
