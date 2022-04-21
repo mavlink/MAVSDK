@@ -5,7 +5,7 @@ namespace mavsdk {
 {% if is_server %}
 {{ plugin_name.upper_camel_case }}Impl::{{ plugin_name.upper_camel_case }}Impl(std::shared_ptr<ServerComponent> server_component) : ServerPluginImplBase(server_component)
 {
-    _server_component_impl.register_plugin(this);
+    _server_component_impl->register_plugin(this);
 }
 {% else %}
 {{ plugin_name.upper_camel_case }}Impl::{{ plugin_name.upper_camel_case }}Impl(System& system) : PluginImplBase(system)
@@ -22,7 +22,7 @@ namespace mavsdk {
 {{ plugin_name.upper_camel_case }}Impl::~{{ plugin_name.upper_camel_case }}Impl()
 {
 {% if is_server %}
-    _server_component_impl.unregister_plugin(this);
+    _server_component_impl->unregister_plugin(this);
 {% else %}
     _parent->unregister_plugin(this);
 {% endif %}
