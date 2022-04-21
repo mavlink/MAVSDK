@@ -26,6 +26,7 @@ RUN dnf -y install \
     ninja-build \
     perl-FindBin \
     python \
+    python-future \
     redhat-rpm-config \
     rpm-build \
     ruby-devel \
