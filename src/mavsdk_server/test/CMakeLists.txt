@@ -17,8 +17,9 @@ set_target_properties(unit_tests_mavsdk_server PROPERTIES COMPILE_FLAGS ${warnin
 target_include_directories(unit_tests_mavsdk_server
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/core
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../mavsdk/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mavsdk/core
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mavsdk/plugins
 )
 

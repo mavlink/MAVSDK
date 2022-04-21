@@ -1,7 +1,5 @@
 add_library(mavsdk)
 
-add_dependencies(mavsdk mavlink)
-
 cmake_policy(SET CMP0076 NEW)
 
 add_subdirectory(core)
@@ -27,7 +25,7 @@ if (NOT APPLE AND NOT ANDROID AND NOT MSVC)
 endif()
 
 target_include_directories(mavsdk
-    SYSTEM PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../third_party/include
+    SYSTEM PRIVATE ${MAVLINK_HEADERS}
 )
 
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

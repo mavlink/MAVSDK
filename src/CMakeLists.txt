@@ -54,27 +54,6 @@ else()
     set(lib_path "lib")
 endif()
 
-find_package(Python COMPONENTS Interpreter REQUIRED)
-
-if (NOT MAVLINK_DIALECT)
-    set(MAVLINK_DIALECT common)
-endif()
-
-add_custom_command( 
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/third_party/mavlink-stamp
-    COMMAND Python::Interpreter
-        -m pymavlink.tools.mavgen
-        --lang=C
-        --wire-protocol=2.0
-        --output=${CMAKE_CURRENT_BINARY_DIR}/third_party/include/mavlink/v2.0/
-        message_definitions/v1.0/${MAVLINK_DIALECT}.xml
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mavlink
-    COMMAND touch ${CMAKE_CURRENT_BINARY_DIR}/third_party/mavlink-stamp
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mavlink/message_definitions/v1.0/${MAVLINK_DIALECT}.xml
-)
-
-add_custom_target(mavlink DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/third_party/mavlink-stamp)
-
 add_subdirectory(mavsdk)
 
 include(cmake/static_analyzers.cmake)
