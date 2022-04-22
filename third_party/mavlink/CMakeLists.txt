@@ -31,9 +31,3 @@ ExternalProject_add(
     INSTALL_COMMAND ""
     BUILD_IN_SOURCE TRUE
 )
-
-#ExternalProject_Add_Step(mavlink generation
-#    WORKING_DIRECTORY <SOURCE_DIR>
-#    COMMENT "Generate mavlink headers"
-#    ALWAYS TRUE
-#)
