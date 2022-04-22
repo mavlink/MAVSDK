@@ -22,6 +22,7 @@ function(build_target TARGET_NAME)
             "-DPLATFORM=${PLATFORM}" # for iOS toolchain
             "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}" # for iOS toolchain
             "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}" # for iOS toolchain
+            "-DMAVLINK_DIALECT=${MAVLINK_DIALECT}"
             "${TARGET_SOURCE_DIR}"
         WORKING_DIRECTORY "${TARGET_BINARY_DIR}"
         RESULT_VARIABLE CONFIGURE_FAILED

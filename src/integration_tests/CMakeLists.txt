@@ -60,10 +60,11 @@ target_include_directories(integration_tests_runner
 
 # SYSTEM because we don't want warnings for gtest headers.
 target_include_directories(integration_tests_runner
-    PRIVATE
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
-    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
+    SYSTEM
+    PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
+    PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../third_party/include
+    PRIVATE ${MAVLINK_HEADERS}
 )
 
 if(MSVC)

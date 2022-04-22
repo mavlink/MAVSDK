@@ -37,6 +37,10 @@ HunterGate(
 
 project(mavsdk_superbuild)
 
+if (NOT MAVLINK_DIALECT)
+    set(MAVLINK_DIALECT common)
+endif()
+
 if (BUILD_BACKEND)
     message(FATAL_ERROR "The argument BUILD_BACKEND has been replaced by BUILD_MAVSDK_SERVER. To build mavsdk_server, use -DBUILD_MAVSDK_SERVER=ON.")
 endif()
@@ -46,8 +50,12 @@ set(DEPS_INSTALL_PATH "${DEPS_BUILD_PATH}/install" CACHE PATH "Install path for 
 
 include(GNUInstallDirs)
 
-if(SUPERBUILD)
-    add_subdirectory(third_party)
+if (MAVLINK_HEADERS)
+    get_filename_component(MAVLINK_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${MAVLINK_HEADERS} REALPATH)
+    set(MAVLINK_HEADERS ${MAVLINK_HEADERS})
+    message(STATUS "MAVLink headers for dialect ${MAVLINK_DIALECT} manually provided in ${MAVLINK_HEADERS}")
 endif()
+
+add_subdirectory(third_party)
 
 add_subdirectory(src)
