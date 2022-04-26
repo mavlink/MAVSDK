@@ -1168,7 +1168,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1199,7 +1201,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1228,7 +1232,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1262,7 +1268,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1292,7 +1300,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1322,7 +1332,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1351,7 +1363,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1380,7 +1394,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1409,7 +1425,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1438,7 +1456,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1467,7 +1487,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1495,7 +1517,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1524,7 +1548,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -1553,7 +1579,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::TelemetryServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 

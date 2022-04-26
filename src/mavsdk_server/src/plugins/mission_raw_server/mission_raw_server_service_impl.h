@@ -250,7 +250,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::mission_raw_server::IncomingMissionResponse rpc_response;
-            auto result = mavsdk::MissionRawServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::MissionRawServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
