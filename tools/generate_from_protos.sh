@@ -14,7 +14,7 @@ EOF
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 proto_dir="${script_dir}/../proto/protos"
 build_dir="${script_dir}/../build/default"
-
+repo_dir="${script_dir}/../"
 options=$(getopt -l "help,build-dir:" -o "hb:" -a -- "$@")
 
 eval set -- "$options"
@@ -151,7 +151,7 @@ for plugin in ${plugin_list_and_core}; do
         echo "-> Creating ${file_impl_h}"
     else
         # Warn if file is not checked in yet.
-        if [[ ! $(git ls-files --error-unmatch ${file_impl_h} 2> /dev/null) ]]; then
+        if [[ ! $(git -C ${repo_dir} ls-files --error-unmatch ${file_impl_h} 2> /dev/null) ]]; then
             echo "-> Not creating ${file_impl_h} because it already exists"
         fi
     fi
@@ -163,7 +163,7 @@ for plugin in ${plugin_list_and_core}; do
         echo "-> Creating ${file_impl_cpp}"
     else
         # Warn if file is not checked in yet.
-        if [[ ! $(git ls-files --error-unmatch ${file_impl_cpp} 2> /dev/null) ]]; then
+        if [[ ! $(git -C ${repo_dir} ls-files --error-unmatch ${file_impl_cpp} 2> /dev/null) ]]; then
             echo "-> Not creating ${file_impl_cpp} because it already exists"
         fi
     fi
@@ -175,7 +175,7 @@ for plugin in ${plugin_list_and_core}; do
         echo "-> Creating ${file_cmake}"
     else
         # Warn if file is not checked in yet.
-        if [[ ! $(git ls-files --error-unmatch ${file_cmake} 2> /dev/null) ]]; then
+        if [[ ! $(git -C ${repo_dir} ls-files --error-unmatch ${file_cmake} 2> /dev/null) ]]; then
             echo "-> Not creating ${file_cmake} because it already exists"
         fi
     fi
