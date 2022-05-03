@@ -216,15 +216,15 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     // Only set the vehicle type if the heartbeat is from an autopilot component
     // This check only works if the MAV_TYPE::MAV_TYPE_ENUM_END is actually the
     // last enumerator.
-    if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID &&
-        MAV_TYPE::MAV_TYPE_ENUM_END > heartbeat.type) {
+    if (MAV_TYPE::MAV_TYPE_ENUM_END < heartbeat.type) {
+        LogErr() << "type received in HEARTBEAT was not recognized";
+    } else {
         auto new_vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
-        if (_vehicle_type != new_vehicle_type)
+        if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID && _vehicle_type != new_vehicle_type) {
             LogWarn() << "Vehicle type changed! New type: " << heartbeat.type
                       << " Old type: " << static_cast<uint8_t>(_vehicle_type);
+        }
         _vehicle_type = new_vehicle_type;
-    } else {
-        LogErr() << "type received in HEARTBEAT was not recognized";
     }
 
     if (message.compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
