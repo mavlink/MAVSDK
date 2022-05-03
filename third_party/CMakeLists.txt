@@ -16,6 +16,7 @@ if (SUPERBUILD)
     endif()
 
     build_target(curl)
+    build_target(eventpp)
 
     if(BUILD_MAVSDK_SERVER)
         build_target(openssl)
