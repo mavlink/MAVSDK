@@ -219,12 +219,12 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     if (MAV_TYPE::MAV_TYPE_ENUM_END < heartbeat.type) {
         LogErr() << "type received in HEARTBEAT was not recognized";
     } else {
-        auto new_vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
+        const auto new_vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
         if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID && _vehicle_type != new_vehicle_type) {
             LogWarn() << "Vehicle type changed! New type: " << heartbeat.type
                       << " Old type: " << static_cast<uint8_t>(_vehicle_type);
+            _vehicle_type = new_vehicle_type;
         }
-        _vehicle_type = new_vehicle_type;
     }
 
     if (message.compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
