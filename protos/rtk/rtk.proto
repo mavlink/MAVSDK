@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package mavsdk.rpc.rtk;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.rtk";
+option java_outer_classname = "RtkProto";
+
+// Service to send RTK corrections to the vehicle.
+service RtkService {
+  // Send RTCM data.
+  rpc SendRtcmData(SendRtcmDataRequest) returns(SendRtcmDataResponse) { option (mavsdk.options.async_type) = SYNC; }
+}
+
+// RTCM data type
+message RtcmData {
+    string data = 1; // The data encoded as a string
+}
+
+message SendRtcmDataRequest {
+    RtcmData rtcm_data = 1; // The data
+}
+
+message SendRtcmDataResponse {
+  RtkResult rtk_result = 1;
+}
+
+message RtkResult {
+  // Possible results returned for rtk requests.
+  enum Result {
+    RESULT_UNKNOWN = 0; // Unknown result
+    RESULT_SUCCESS = 1; // Request succeeded
+    RESULT_TOO_LONG = 2; // Passed data is too long
+    RESULT_NO_SYSTEM = 5; // No system connected
+    RESULT_CONNECTION_ERROR = 6; // Connection error
+  }
+
+  Result result = 1; // Result enum value
+  string result_str = 2; // Human-readable English string describing the result
+}
