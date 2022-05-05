@@ -307,7 +307,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
             LogErr() << "Retrying failed (" << work->identification.command << ")";
 
             temp_callback = work->callback;
-            temp_result = {Result::ConnectionError, NAN};
+            temp_result = {Result::Timeout, NAN};
             _work_queue.erase(it);
             break;
         }
