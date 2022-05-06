@@ -62,7 +62,8 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
 std::pair<ParamServer::Result, std::string>
 ParamServerImpl::retrieve_param_custom(std::string name) const
 {
-    const auto result = _parent->retrieve_server_param_custom(name);
+    const auto result =
+        _server_component_impl->mavlink_parameters().retrieve_server_param_custom(name);
 
     if (result.first == MAVLinkParameters::Result::Success) {
         return {ParamServer::Result::Success, result.second};
@@ -77,7 +78,7 @@ ParamServerImpl::provide_param_custom(std::string name, const std::string& value
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
     }
-    _parent->provide_server_param_custom(name, value);
+    _server_component_impl->mavlink_parameters().provide_server_param_custom(name, value);
     return ParamServer::Result::Success;
 }
 

@@ -412,6 +412,10 @@ MAVLinkParameters::set_param_custom(const std::string& name, const std::string& 
 void MAVLinkParameters::get_param_custom_async(
     const std::string& name, const GetParamCustomCallback& callback, const void* cookie)
 {
+    if (_parameter_debugging) {
+        LogDebug() << "getting param " << name;
+    }
+
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
@@ -421,7 +425,7 @@ void MAVLinkParameters::get_param_custom_async(
     }
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
     new_work->type = WorkItem::Type::Get;
     new_work->callback = callback;
     new_work->param_name = name;
@@ -454,7 +458,7 @@ void MAVLinkParameters::set_param_custom_async(
         return;
     }
 
-    auto new_work = std::make_shared<WorkItem>(_parent.timeout_s());
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
 
     MAVLinkParameters::ParamValue value_to_set;
     value_to_set.set_custom(value);

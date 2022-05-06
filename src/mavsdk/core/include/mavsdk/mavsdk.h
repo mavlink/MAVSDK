@@ -303,6 +303,9 @@ public:
      */
     void subscribe_on_new_system(const NewSystemCallback& callback);
 
+    /**
+     * @brief High level type of a server component.
+     */
     enum class ServerComponentType {
         Autopilot, /**< @brief The component identifies as an autopilot. */
         GroundStation, /**< @brief The component identifies as a ground station. */

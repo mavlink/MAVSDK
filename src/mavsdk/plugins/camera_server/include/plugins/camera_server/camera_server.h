@@ -44,13 +44,13 @@ public:
     ~CameraServer() override;
 
     /**
-     * @brief
+     * @brief Possible results when taking a photo.
      */
     enum class TakePhotoFeedback {
-        Unknown, /**< @brief. */
-        Ok, /**< @brief. */
-        Busy, /**< @brief. */
-        Failed, /**< @brief. */
+        Unknown, /**< @brief Unknown. */
+        Ok, /**< @brief Ok. */
+        Busy, /**< @brief Busy. */
+        Failed, /**< @brief Failed. */
     };
 
     /**
@@ -68,7 +68,7 @@ public:
         std::string vendor_name{}; /**< @brief Name of the camera vendor */
         std::string model_name{}; /**< @brief Name of the camera model */
         std::string firmware_version{}; /**< @brief Camera firmware version in
-                                           <major>[.<minor>[.<patch>[.<dev>]]] format */
+                                           major[.minor[.patch[.dev]]] format */
         float focal_length_mm{}; /**< @brief Focal length */
         float horizontal_sensor_size_mm{}; /**< @brief Horizontal sensor size */
         float vertical_sensor_size_mm{}; /**< @brief Vertical sensor size */

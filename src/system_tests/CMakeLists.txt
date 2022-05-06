@@ -4,6 +4,7 @@ add_executable(system_tests_runner
     action_arm_disarm.cpp
     system_tests_helper.cpp
     param_set_and_get.cpp
+    param_custom_set_and_get.cpp
 )
 
 target_include_directories(system_tests_runner
