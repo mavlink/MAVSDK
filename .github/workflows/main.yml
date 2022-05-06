@@ -516,9 +516,9 @@ jobs:
       - name: build
         run: cmake --build build/macos -j2 --target install
       - name: unit tests
-        run: ./build/src/unit_tests_runner
+        run: ./build/macos/src/unit_tests_runner
       - name: system tests
-        run: ./build/src/system_tests/system_tests_runner
+        run: ./build/macos/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload framework as artefact
