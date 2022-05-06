@@ -25,6 +25,10 @@ public:
 
     ParamServer::Result provide_param_float(std::string name, float value);
 
+    std::pair<ParamServer::Result, std::string> retrieve_param_custom(std::string name) const;
+
+    ParamServer::Result provide_param_custom(std::string name, const std::string& value);
+
     ParamServer::AllParams retrieve_all_params() const;
 
     ParamServer::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);

@@ -51,6 +51,18 @@ Param::Result ParamImpl::set_param_float(const std::string& name, float value)
     return result_from_mavlink_parameters_result(result);
 }
 
+std::pair<Param::Result, std::string> ParamImpl::get_param_custom(const std::string& name)
+{
+    auto result = _parent->get_param_custom(name);
+    return std::make_pair<>(result_from_mavlink_parameters_result(result.first), result.second);
+}
+
+Param::Result ParamImpl::set_param_custom(const std::string& name, const std::string& value)
+{
+    auto result = _parent->set_param_custom(name, value);
+    return result_from_mavlink_parameters_result(result);
+}
+
 Param::AllParams ParamImpl::get_all_params()
 {
     auto tmp = _parent->get_all_params();
@@ -96,6 +108,8 @@ Param::Result ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters
             return Param::Result::WrongType;
         case MAVLinkParameters::Result::ConnectionError:
             return Param::Result::ConnectionError;
+        case MAVLinkParameters::Result::ParamValueTooLong:
+            return Param::Result::ParamValueTooLong;
         default:
             LogErr() << "Unknown param error";
             return Param::Result::Unknown;

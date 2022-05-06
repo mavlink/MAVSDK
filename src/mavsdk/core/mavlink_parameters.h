@@ -3,6 +3,7 @@
 #include "log.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -16,6 +17,17 @@
 namespace mavsdk {
 
 class SystemImpl;
+
+// std::to_string doesn't work for std::string, so we need this workaround.
+template<typename T> std::string to_string(T&& value)
+{
+    return std::to_string(std::forward<T>(value));
+}
+
+inline std::string& to_string(std::string& value)
+{
+    return value;
+}
 
 class MAVLinkParameters {
 public:
@@ -43,11 +55,13 @@ public:
 
         [[nodiscard]] std::optional<int> get_int() const;
         [[nodiscard]] std::optional<float> get_float() const;
+        [[nodiscard]] std::optional<std::string> get_custom() const;
 
         bool set_int(int new_value);
         void set_float(float new_value);
+        void set_custom(const std::string& new_value);
 
-        void get_128_bytes(char* bytes) const;
+        std::array<char, 128> get_128_bytes() const;
 
         [[nodiscard]] std::string get_string() const;
 
@@ -106,7 +120,8 @@ public:
             uint64_t,
             int64_t,
             float,
-            double>
+            double,
+            std::string>
             _value{};
     };
 
@@ -119,6 +134,7 @@ public:
         NotFound,
         ValueUnsupported,
         Failed,
+        ParamValueTooLong,
         UnknownError
     };
 
@@ -166,11 +182,25 @@ public:
         std::optional<uint8_t> maybe_component_id,
         bool extended = false);
 
-    void provide_server_param(const std::string& name, const ParamValue& value);
+    Result set_param_custom(const std::string& name, const std::string& value);
+
+    void set_param_custom_async(
+        const std::string& name,
+        const std::string& value,
+        const SetParamCallback& callback,
+        const void* cookie = nullptr);
+
+    // Result provide_server_param(const std::string& name, const ParamValue& value);
+    Result provide_server_param_float(const std::string& name, float value);
+    Result provide_server_param_int(const std::string& name, int value);
+    Result provide_server_param_custom(const std::string& name, const std::string& value);
     std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
 
     std::pair<Result, ParamValue>
     retrieve_server_param(const std::string& name, ParamValue value_type);
+    std::pair<Result, float> retrieve_server_param_float(const std::string& name);
+    std::pair<Result, int> retrieve_server_param_int(const std::string& name);
+    std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
     using GetParamAnyCallback = std::function<void(Result, ParamValue)>;
 
@@ -208,6 +238,13 @@ public:
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
         bool extended);
+
+    std::pair<Result, std::string> get_param_custom(const std::string& name);
+
+    using GetParamCustomCallback = std::function<void(Result, const std::string& value)>;
+
+    void get_param_custom_async(
+        const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
     using GetAllParamsCallback =
@@ -258,6 +295,7 @@ private:
         std::variant<
             GetParamFloatCallback,
             GetParamIntCallback,
+            GetParamCustomCallback,
             GetParamAnyCallback,
             SetParamCallback>
             callback{};

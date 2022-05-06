@@ -101,13 +101,37 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param);
 
     /**
-     * @brief Type collecting all integer and float parameters.
+     * @brief Type for custom parameters
+     */
+    struct CustomParam {
+        std::string name{}; /**< @brief Name of the parameter */
+        std::string value{}; /**< @brief Value of the parameter (max len 128 bytes) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Param::CustomParam` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Param::CustomParam& lhs, const Param::CustomParam& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Param::CustomParam`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_param);
+
+    /**
+     * @brief Type collecting all integer, float, and custom parameters.
      */
     struct AllParams {
         std::vector<IntParam>
             int_params{}; /**< @brief Collection of all parameter names and values of type int */
         std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and
                                                    values of type float */
+        std::vector<CustomParam> custom_params{}; /**< @brief Collection of all parameter names and
+                                                     values of type custom */
     };
 
     /**
@@ -135,6 +159,7 @@ public:
         WrongType, /**< @brief Wrong type. */
         ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
         NoSystem, /**< @brief No system connected. */
+        ParamValueTooLong, /**< @brief Param value too long (> 128). */
     };
 
     /**
@@ -192,6 +217,28 @@ public:
      * @return Result of request.
      */
     Result set_param_float(std::string name, float value) const;
+
+    /**
+     * @brief Get a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, std::string> get_param_custom(std::string name) const;
+
+    /**
+     * @brief Set a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_param_custom(std::string name, std::string value) const;
 
     /**
      * @brief Get all parameters.
