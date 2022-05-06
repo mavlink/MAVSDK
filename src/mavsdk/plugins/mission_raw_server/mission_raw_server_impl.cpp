@@ -153,13 +153,13 @@ void MissionRawServerImpl::init()
             add_task([this, target_system_id = message.sysid]() {
                 // Mission Upload Inbound
                 if (_last_download.lock()) {
-                    _server_component_impl->call_user_callback([this]() {
-                        if (_incoming_mission_callback) {
-                            MissionRawServer::MissionPlan mission_plan{};
-                            _incoming_mission_callback(
-                                MissionRawServer::Result::Busy, mission_plan);
-                        }
-                    });
+                    if (_incoming_mission_callback) {
+                        _server_component_impl->call_user_callback(
+                            [callback = _incoming_mission_callback]() {
+                                MissionRawServer::MissionPlan mission_plan{};
+                                callback(MissionRawServer::Result::Busy, mission_plan);
+                            });
+                    }
                     return;
                 }
 
@@ -176,16 +176,16 @@ void MissionRawServerImpl::init()
                             _current_mission = items;
                             auto converted_result = convert_result(result);
                             auto converted_items = convert_items(items);
-                            _server_component_impl->call_user_callback([this,
-                                                                        converted_result,
-                                                                        converted_items]() {
-                                if (_incoming_mission_callback) {
-                                    _incoming_mission_callback(converted_result, {converted_items});
-                                }
-
-                                _mission_completed = false;
-                                set_current_seq(0);
-                            });
+                            if (_incoming_mission_callback) {
+                                _server_component_impl->call_user_callback(
+                                    [callback = _incoming_mission_callback,
+                                     converted_result,
+                                     converted_items]() {
+                                        callback(converted_result, {converted_items});
+                                    });
+                            }
+                            _mission_completed = false;
+                            set_current_seq(0);
                         });
             });
         },
@@ -238,11 +238,12 @@ void MissionRawServerImpl::init()
                 clear_all.mission_type == MAV_MISSION_TYPE_MISSION) {
                 _current_mission.clear();
                 _current_seq = 0;
-                _server_component_impl->call_user_callback([this, clear_all]() {
-                    if (_clear_all_callback) {
-                        _clear_all_callback(clear_all.mission_type);
-                    }
-                });
+                if (_clear_all_callback) {
+                    _server_component_impl->call_user_callback(
+                        [callback = _clear_all_callback, clear_all]() {
+                            callback(clear_all.mission_type);
+                        });
+                }
             }
 
             // Send the MISSION_ACK
@@ -335,11 +336,12 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
     auto item = seq == _current_mission.size() ? _current_mission.back() :
                                                  _current_mission.at(_current_seq);
     auto converted_item = convert_item(item);
-    _server_component_impl->call_user_callback([this, converted_item]() {
-        if (_current_item_changed_callback) {
-            _current_item_changed_callback(converted_item);
-        }
-    });
+    if (_current_item_changed_callback) {
+        _server_component_impl->call_user_callback(
+            [callback = _current_item_changed_callback, converted_item]() {
+                callback(converted_item);
+            });
+    }
 
     mavlink_message_t mission_current;
     mavlink_msg_mission_current_pack(
