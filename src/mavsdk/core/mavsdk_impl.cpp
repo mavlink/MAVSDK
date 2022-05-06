@@ -605,7 +605,8 @@ void MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callba
     _new_system_callback = callback;
 
     if (_new_system_callback != nullptr && is_any_system_connected()) {
-        _new_system_callback();
+        auto temp_callback = _new_system_callback;
+        call_user_callback([temp_callback]() { temp_callback(); });
     }
 }
 
