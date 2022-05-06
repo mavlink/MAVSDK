@@ -28,20 +28,20 @@ TEST(CallbackList, SubscribeCallUnsubscribe)
 
     // Call both a first time.
     cl(42, 77.7);
-    EXPECT_EQ(first_called, 1);
-    EXPECT_EQ(second_called, 1);
+    EXPECT_EQ(first_called, 2);
+    EXPECT_EQ(second_called, 2);
 
     // Call both a second time.
     cl(43, 88.8);
-    EXPECT_EQ(first_called, 2);
-    EXPECT_EQ(second_called, 2);
+    EXPECT_EQ(first_called, 4);
+    EXPECT_EQ(second_called, 4);
 
     // Now we unsubscribe the first one.
     cl.unsubscribe(first_handle);
 
     cl(43, 99.9);
-    EXPECT_EQ(first_called, 2);
-    EXPECT_EQ(second_called, 3);
+    EXPECT_EQ(first_called, 4);
+    EXPECT_EQ(second_called, 6);
 
     // Unsubscribing the first once should be ignored.
     cl.unsubscribe(first_handle);
@@ -50,8 +50,8 @@ TEST(CallbackList, SubscribeCallUnsubscribe)
     cl.unsubscribe(second_handle);
 
     cl(44, 111.1);
-    EXPECT_EQ(first_called, 2);
-    EXPECT_EQ(second_called, 3);
+    EXPECT_EQ(first_called, 4);
+    EXPECT_EQ(second_called, 6);
 }
 
 TEST(CallbackList, UnsubscribeFromCallback)
