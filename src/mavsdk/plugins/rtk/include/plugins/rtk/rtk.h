@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Rtk();
+    ~Rtk() override;
 
     /**
      * @brief RTCM data type
