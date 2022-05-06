@@ -85,6 +85,7 @@ void ServerComponentImpl::unregister_all_mavlink_message_handlers(const void* co
 void ServerComponentImpl::do_work()
 {
     _mavlink_parameters.do_work();
+    _mission_transfer.do_work();
 }
 
 uint8_t ServerComponentImpl::get_own_system_id() const
