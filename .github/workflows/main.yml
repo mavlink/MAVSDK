@@ -37,8 +37,10 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=OFF -Bbuild -H.
       - name: build
         run: cmake --build build -j2
-      - name: test
+      - name: unit tests
         run: ./build/src/unit_tests_runner
+      - name: system tests
+        run: ./build/src/system_tests/system_tests_runner
       - name: run lcov
         run: lcov --capture --directory . --no-external --exclude "*/third_party/*"  --output-file lcov.info
       - name: check size of lcov.info
@@ -65,8 +67,10 @@ jobs:
         run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -DWERROR=OFF -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j2
-      - name: test
+      - name: unit tests
         run: ./build/release/src/unit_tests_runner
+      - name: system tests
+        run: ./build/release/src/system_tests/system_tests_runner
 
   ubuntu20-superbuild:
     name: ubuntu-20.04 (mavsdk_server, superbuild)
@@ -97,8 +101,10 @@ jobs:
         run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -Bbuild -H.)
       - name: build examples
         run: (cd examples && cmake --build build -j2)
-      - name: test
+      - name: unit tests
         run: ./build/release/src/unit_tests_runner
+      - name: system tests
+        run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: test FTP server
@@ -124,8 +130,10 @@ jobs:
         run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DMAVLINK_HEADERS=mavlink-headers/include -Bbuild -H.
       - name: build
         run: cmake --build build -j2
-      - name: run unit test
-        run: build/src/unit_tests_runner
+      - name: unit tests
+        run: ./build/src/unit_tests_runner
+      - name: system tests
+        run: ./build/src/system_tests/system_tests_runner
 
   ubuntu20-proto-check:
     name: ubuntu-20.04 (proto check)
@@ -367,8 +375,10 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
-      - name: test
+      - name: unit tests
         run: ./build/release/src/unit_tests_runner
+      - name: system tests
+        run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload as artefact
@@ -505,8 +515,10 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=OFF -Bbuild/macos -H.
       - name: build
         run: cmake --build build/macos -j2 --target install
-      - name: test (core)
-        run: ./build/macos/src/unit_tests_runner
+      - name: unit tests
+        run: ./build/src/unit_tests_runner
+      - name: system tests
+        run: ./build/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload framework as artefact
