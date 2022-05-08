@@ -2,6 +2,9 @@
 
 namespace mavsdk {
 
+/**
+ * @brief Base class for every server plugin.
+ */
 class ServerPluginBase {
 public:
     /**
