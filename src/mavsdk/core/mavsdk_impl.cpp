@@ -623,11 +623,15 @@ void MavsdkImpl::work_thread()
     while (!_should_exit) {
         timeout_handler.run_once();
         call_every_handler.run_once();
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        for (auto& it : _server_components) {
-            it.second->_impl->do_work();
+        {
+            std::lock_guard<std::mutex> lock(_server_components_mutex);
+            for (auto& it : _server_components) {
+                it.second->_impl->do_work();
+            }
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
@@ -707,6 +711,8 @@ void MavsdkImpl::stop_sending_heartbeats()
 
 void MavsdkImpl::send_heartbeat()
 {
+    std::lock_guard<std::mutex> lock(_server_components_mutex);
+
     for (auto& it : _server_components) {
         it.second->_impl->send_heartbeat();
     }
