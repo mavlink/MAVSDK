@@ -263,6 +263,7 @@ void MissionRawServerImpl::init()
 
 void MissionRawServerImpl::deinit()
 {
+    _server_component_impl->unregister_all_mavlink_message_handlers(this);
     _stop_work_thread = true;
     _wait_for_new_task.notify_all();
     _thread_mission.join();
