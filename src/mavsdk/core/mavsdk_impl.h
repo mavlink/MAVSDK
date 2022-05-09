@@ -80,7 +80,6 @@ public:
     void start_sending_heartbeats();
     void stop_sending_heartbeats();
 
-    std::shared_ptr<ServerComponent> server_component(uint8_t component_id); // FIXME: remove again
     std::shared_ptr<ServerComponent> server_component_by_type(
         Mavsdk::ServerComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);

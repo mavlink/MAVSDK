@@ -122,7 +122,7 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_type(
     switch (server_component_type) {
         case Mavsdk::ServerComponentType::Autopilot:
             if (instance == 0) {
-                return server_component(MAV_COMP_ID_AUTOPILOT1);
+                return server_component_by_id(MAV_COMP_ID_AUTOPILOT1);
             } else {
                 LogErr() << "Only autopilot instance 0 is valid";
                 return {};
@@ -130,7 +130,7 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_type(
 
         case Mavsdk::ServerComponentType::GroundStation:
             if (instance == 0) {
-                return server_component(MAV_COMP_ID_MISSIONPLANNER);
+                return server_component_by_id(MAV_COMP_ID_MISSIONPLANNER);
             } else {
                 LogErr() << "Only one ground station supported at this time";
                 return {};
@@ -138,13 +138,13 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_type(
 
         case Mavsdk::ServerComponentType::CompanionComputer:
             if (instance == 0) {
-                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER);
             } else if (instance == 1) {
-                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER2);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER2);
             } else if (instance == 2) {
-                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER3);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER3);
             } else if (instance == 3) {
-                return server_component(MAV_COMP_ID_ONBOARD_COMPUTER4);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER4);
             } else {
                 LogErr() << "Only companion computer 0..3 are supported";
                 return {};
@@ -152,17 +152,17 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_type(
 
         case Mavsdk::ServerComponentType::Camera:
             if (instance == 0) {
-                return server_component(MAV_COMP_ID_CAMERA);
+                return server_component_by_id(MAV_COMP_ID_CAMERA);
             } else if (instance == 1) {
-                return server_component(MAV_COMP_ID_CAMERA2);
+                return server_component_by_id(MAV_COMP_ID_CAMERA2);
             } else if (instance == 2) {
-                return server_component(MAV_COMP_ID_CAMERA3);
+                return server_component_by_id(MAV_COMP_ID_CAMERA3);
             } else if (instance == 3) {
-                return server_component(MAV_COMP_ID_CAMERA4);
+                return server_component_by_id(MAV_COMP_ID_CAMERA4);
             } else if (instance == 4) {
-                return server_component(MAV_COMP_ID_CAMERA5);
+                return server_component_by_id(MAV_COMP_ID_CAMERA5);
             } else if (instance == 5) {
-                return server_component(MAV_COMP_ID_CAMERA6);
+                return server_component_by_id(MAV_COMP_ID_CAMERA6);
             } else {
                 LogErr() << "Only camera 0..5 are supported";
                 return {};
@@ -172,11 +172,6 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_type(
             LogErr() << "Unknown server component type";
             return {};
     }
-}
-
-std::shared_ptr<ServerComponent> MavsdkImpl::server_component(uint8_t component_id)
-{
-    return server_component_by_id(component_id);
 }
 
 std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id(uint8_t component_id)
