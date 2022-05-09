@@ -34,8 +34,6 @@ MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
         }
     }
 
-    _default_server_component = server_component_by_id(_configuration.get_component_id());
-
     _work_thread = new std::thread(&MavsdkImpl::work_thread, this);
 
     _process_user_callbacks_thread =
@@ -508,6 +506,11 @@ void MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connectio
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 {
+    // We just point the default to the newly created component. This means
+    // that the previous default component will be deleted if it is not
+    // used/referenced anywhere.
+    _default_server_component = server_component_by_id(new_configuration.get_component_id());
+
     if (new_configuration.get_always_send_heartbeats() &&
         !_configuration.get_always_send_heartbeats()) {
         start_sending_heartbeats();
@@ -516,11 +519,6 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
         _configuration.get_always_send_heartbeats() && !is_any_system_connected()) {
         stop_sending_heartbeats();
     }
-
-    // We just point the default to the newly created component. This means
-    // that the previous default component will be deleted if it is not
-    // used/referenced anywhere.
-    _default_server_component = server_component_by_id(new_configuration.get_component_id());
 
     _configuration = new_configuration;
 }
@@ -700,6 +698,12 @@ void MavsdkImpl::process_user_callbacks_thread()
 
 void MavsdkImpl::start_sending_heartbeats()
 {
+    // Before sending out first heartbeats we need to make sure we have a
+    // default server component.
+    if (_default_server_component == nullptr) {
+        _default_server_component = server_component_by_id(_configuration.get_component_id());
+    }
+
     if (_heartbeat_send_cookie == nullptr) {
         call_every_handler.add(
             [this]() { send_heartbeat(); }, HEARTBEAT_SEND_INTERVAL_S, &_heartbeat_send_cookie);
