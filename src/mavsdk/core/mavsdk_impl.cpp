@@ -34,6 +34,8 @@ MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
         }
     }
 
+    _default_server_component = server_component_by_id(_configuration.get_component_id());
+
     _work_thread = new std::thread(&MavsdkImpl::work_thread, this);
 
     _process_user_callbacks_thread =
@@ -185,7 +187,11 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id(uint8_t comp
 
     for (auto& it : _server_components) {
         if (it.first == component_id) {
-            return it.second;
+            if (it.second != nullptr) {
+                return it.second;
+            } else {
+                it.second = std::make_shared<ServerComponent>(*this, component_id);
+            }
         }
     }
 
@@ -511,8 +517,10 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
         stop_sending_heartbeats();
     }
 
-    // Create default component
-    (void)server_component(new_configuration.get_component_id());
+    // We just point the default to the newly created component. This means
+    // that the previous default component will be deleted if it is not
+    // used/referenced anywhere.
+    _default_server_component = server_component_by_id(new_configuration.get_component_id());
 
     _configuration = new_configuration;
 }
@@ -622,7 +630,9 @@ void MavsdkImpl::work_thread()
         {
             std::lock_guard<std::mutex> lock(_server_components_mutex);
             for (auto& it : _server_components) {
-                it.second->_impl->do_work();
+                if (it.second != nullptr) {
+                    it.second->_impl->do_work();
+                }
             }
         }
 
@@ -709,7 +719,9 @@ void MavsdkImpl::send_heartbeat()
     std::lock_guard<std::mutex> lock(_server_components_mutex);
 
     for (auto& it : _server_components) {
-        it.second->_impl->send_heartbeat();
+        if (it.second != nullptr) {
+            it.second->_impl->send_heartbeat();
+        }
     }
 }
 
