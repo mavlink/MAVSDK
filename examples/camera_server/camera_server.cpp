@@ -83,6 +83,9 @@ int main(int argc, char** argv)
         .vertical_sensor_size_mm = 2.76,
         .horizontal_resolution_px = 3280,
         .vertical_resolution_px = 2464,
+        .lens_id = 0,
+        .definition_file_version = 0, // TODO: add this
+        .definition_file_uri = "", // TODO: implement this using MAVLink FTP
     });
 
     if (ret != CameraServer::Result::Success) {
