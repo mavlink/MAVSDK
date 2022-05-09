@@ -32,7 +32,7 @@ TEST(SystemTest, CameraTakePhoto)
 
     // Wait for systems to connect via heartbeat.
     auto fut = wait_for_first_system_detected(mavsdk_groundstation);
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     auto system = fut.get();
 
     ASSERT_TRUE(system->has_camera());
@@ -55,6 +55,6 @@ TEST(SystemTest, CameraTakePhoto)
 
     EXPECT_EQ(camera.take_photo(), Camera::Result::Success);
     ASSERT_EQ(
-        received_captured_info_fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+        received_captured_info_fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     received_captured_info_fut.get();
 }

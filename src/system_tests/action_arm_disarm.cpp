@@ -24,7 +24,7 @@ TEST(SystemTest, ActionArmDisarm)
         mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
 
     auto fut = wait_for_first_system_detected(mavsdk_groundstation);
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     auto system = fut.get();
 
     ASSERT_TRUE(system->has_autopilot());
