@@ -540,8 +540,11 @@ void SystemImpl::set_connected()
                 _parent.notify_on_discover();
             }
 
-            // Send a heartbeat back immediately.
-            _parent.start_sending_heartbeats();
+            // We call this later to avoid deadlocks on creating the server components.
+            _parent.call_user_callback([this]() {
+                // Send a heartbeat back immediately.
+                _parent.start_sending_heartbeats();
+            });
 
             if (!_always_connected) {
                 register_timeout_handler(
