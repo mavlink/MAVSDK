@@ -14,6 +14,8 @@ namespace mavsdk {
 
 class ICurlWrapper {
 public:
+    ICurlWrapper() = default;
+    virtual ~ICurlWrapper() = default;
     virtual bool download_text(const std::string& url, std::string& content) = 0;
     virtual bool download_file_to_path(
         const std::string& url,
@@ -28,6 +30,8 @@ public:
 class CurlWrapper : public ICurlWrapper {
 public:
     // ICurlWrapper
+    CurlWrapper() = default;
+    virtual ~CurlWrapper() = default;
     bool download_text(const std::string& url, std::string& content) override;
     bool download_file_to_path(
         const std::string& url,
