@@ -279,8 +279,6 @@ private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
 
-    void request_autopilot_version();
-
     void process_heartbeat(const mavlink_message_t& message);
     void process_autopilot_version(const mavlink_message_t& message);
     void process_statustext(const mavlink_message_t& message);
