@@ -85,4 +85,9 @@ TEST(SystemTest, ParamSetAndGet)
     server_result_pair = param_server.retrieve_param_int(param_name_int);
     EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
     EXPECT_FLOAT_EQ(server_result_pair.second, param_value_int + 2);
+
+    // Also try to retrieve them all at once
+    auto server_result_all_params = param_server.retrieve_all_params();
+    EXPECT_EQ(server_result_all_params.int_params.size(), 1);
+    EXPECT_EQ(server_result_all_params.float_params.size(), 1);
 }

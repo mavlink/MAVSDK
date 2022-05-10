@@ -28,7 +28,8 @@ public:
 
     ParamServer::AllParams retrieve_all_params() const;
 
-    ParamServer::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
+    static ParamServer::Result
+    result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
 
 private:
 };

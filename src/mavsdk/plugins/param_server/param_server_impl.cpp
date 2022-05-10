@@ -84,25 +84,24 @@ ParamServerImpl::provide_param_custom(std::string name, const std::string& value
 
 ParamServer::AllParams ParamServerImpl::retrieve_all_params() const
 {
-    // auto tmp = _parent->retrieve_all_server_params();
+    auto tmp = _server_component_impl->mavlink_parameters().retrieve_all_server_params();
 
     ParamServer::AllParams res{};
 
-    // for (auto const& parampair : tmp) {
-    //    if (parampair.second.is<float>()) {
-    //        ParamServer::FloatParam tmp_param;
-    //        tmp_param.name = parampair.first;
-    //        tmp_param.value = parampair.second.get<float>();
-    //        res.float_params.push_back(tmp_param);
-    //    } else if (parampair.second.is<int32_t>()) {
-    //        ParamServer::IntParam tmp_param;
-    //        tmp_param.name = parampair.first;
-    //        tmp_param.value = parampair.second.get<int32_t>();
-    //        res.int_params.push_back(tmp_param);
-    //    }
-    //}
+    for (auto const& param_pair : tmp) {
+        if (param_pair.second.is<float>()) {
+            ParamServer::FloatParam tmp_param;
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<float>();
+            res.float_params.push_back(tmp_param);
+        } else if (param_pair.second.is<int32_t>()) {
+            ParamServer::IntParam tmp_param;
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<int32_t>();
+            res.int_params.push_back(tmp_param);
+        }
+    }
 
-    // FIXME: we need parameter server class
     return res;
 }
 
