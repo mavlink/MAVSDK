@@ -648,9 +648,9 @@ void MAVLinkParameters::cancel_all_param(const void* cookie)
     }
 }
 
-void MAVLinkParameters::subscribe_param_changed(
+void MAVLinkParameters::subscribe_param_float_changed(
     const std::string& name,
-    const MAVLinkParameters::ParamChangedCallback& callback,
+    const MAVLinkParameters::ParamFloatChangedCallback& callback,
     const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
@@ -660,7 +660,10 @@ void MAVLinkParameters::subscribe_param_changed(
         subscription.param_name = name;
         subscription.callback = callback;
         subscription.cookie = cookie;
-        subscription.any_type = true;
+        subscription.any_type = false;
+        ParamValue value_type;
+        value_type.set_float(NAN);
+        subscription.value_type = value_type;
         _param_changed_subscriptions.push_back(subscription);
 
     } else {
@@ -676,10 +679,9 @@ void MAVLinkParameters::subscribe_param_changed(
     }
 }
 
-void MAVLinkParameters::subscribe_param_changed(
+void MAVLinkParameters::subscribe_param_int_changed(
     const std::string& name,
-    ParamValue value_type,
-    const MAVLinkParameters::ParamChangedCallback& callback,
+    const MAVLinkParameters::ParamIntChangedCallback& callback,
     const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
@@ -689,6 +691,40 @@ void MAVLinkParameters::subscribe_param_changed(
         subscription.param_name = name;
         subscription.callback = callback;
         subscription.cookie = cookie;
+        subscription.any_type = false;
+        ParamValue value_type;
+        value_type.set_int(0);
+        subscription.value_type = value_type;
+        _param_changed_subscriptions.push_back(subscription);
+
+    } else {
+        for (auto it = _param_changed_subscriptions.begin();
+             it != _param_changed_subscriptions.end();
+             /* ++it */) {
+            if (it->param_name == name && it->cookie == cookie) {
+                it = _param_changed_subscriptions.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
+void MAVLinkParameters::subscribe_param_custom_changed(
+    const std::string& name,
+    const MAVLinkParameters::ParamCustomChangedCallback& callback,
+    const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+    if (callback != nullptr) {
+        ParamChangedSubscription subscription{};
+        subscription.param_name = name;
+        subscription.callback = callback;
+        subscription.cookie = cookie;
+        subscription.any_type = false;
+        ParamValue value_type;
+        value_type.set_custom("");
         subscription.value_type = value_type;
         _param_changed_subscriptions.push_back(subscription);
 
@@ -1079,7 +1115,7 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
             continue;
         }
 
-        subscription.callback(value);
+        call_param_changed_callback(subscription.callback, value);
     }
 }
 
@@ -1305,12 +1341,13 @@ void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
                 continue;
             }
 
-            subscription.callback(new_work->param_value);
+            call_param_changed_callback(subscription.callback, new_work->param_value);
         }
     } else {
         LogWarn() << "Invalid Param Ext Set ID Request: " << safe_param_id;
     }
 }
+
 void MAVLinkParameters::receive_timeout()
 {
     {
@@ -1475,13 +1512,30 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
                              << subscription.param_name;
                     continue;
                 }
-                subscription.callback(value);
+
+                call_param_changed_callback(subscription.callback, value);
             }
         } else {
             LogDebug() << "Missing Param: " << safe_param_id << "(this: " << this << ")";
         }
     } else {
         LogWarn() << "Invalid Param Set ID Request: " << safe_param_id;
+    }
+}
+
+void MAVLinkParameters::call_param_changed_callback(
+    const ParamChangedCallbacks& callback, const ParamValue& value)
+{
+    if (std::get_if<ParamFloatChangedCallback>(&callback) && value.get_float()) {
+        std::get<ParamFloatChangedCallback>(callback)(value.get_float().value());
+
+    } else if (std::get_if<ParamIntChangedCallback>(&callback) && value.get_int()) {
+        std::get<ParamIntChangedCallback>(callback)(value.get_int().value());
+
+    } else if (std::get_if<ParamCustomChangedCallback>(&callback) && value.get_custom()) {
+        std::get<ParamCustomChangedCallback>(callback)(value.get_custom().value());
+    } else {
+        LogErr() << "Type and callback mismatch";
     }
 }
 

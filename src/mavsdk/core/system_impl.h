@@ -164,51 +164,6 @@ public:
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
-    void set_param_custom_async(
-        const std::string& name,
-        const std::string& value,
-        const SetParamCallback& callback,
-        const void* cookie);
-
-    MAVLinkParameters::Result provide_server_param_float(const std::string& name, float value);
-    MAVLinkParameters::Result provide_server_param_int(const std::string& name, int32_t value);
-    MAVLinkParameters::Result
-    provide_server_param_custom(const std::string& name, const std::string& value);
-    std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
-
-    using SubscribeParamIntCallback = std::function<void(int)>;
-    void subscribe_param_int(
-        const std::string& name, const SubscribeParamIntCallback& callback, const void* cookie);
-
-    template<typename Callback>
-    void subscribe_param(const std::string& name, const Callback& callback, const void* cookie)
-    {
-        _params.subscribe_param_changed(
-            name,
-            [callback](MAVLinkParameters::ParamValue value) { std::visit(callback, value._value); },
-            cookie);
-    }
-
-    template<typename Arg>
-    void subscribe_param_strict(
-        const std::string& name, const std::function<void(Arg)>& callback, const void* cookie)
-    {
-        _params.subscribe_param_changed(
-            name,
-            [callback](MAVLinkParameters::ParamValue value) {
-                if (value.is<Arg>()) {
-                    std::visit(callback, value._value);
-                } else {
-                    LogErr() << "callback argument type does not match received parameter type";
-                }
-            },
-            cookie);
-    }
-
-    using SubscribeParamFloatCallback = std::function<void(float)>;
-    void subscribe_param_float(
-        const std::string& name, const SubscribeParamFloatCallback& callback, const void* cookie);
-
     FlightMode get_flight_mode() const;
 
     MavlinkCommandSender::Result
@@ -227,16 +182,8 @@ public:
     using GetParamCustomCallback =
         std::function<void(MAVLinkParameters::Result result, const std::string& value)>;
 
-    std::pair<MAVLinkParameters::Result, float>
-    retrieve_server_param_float(const std::string& name);
-    std::pair<MAVLinkParameters::Result, int> retrieve_server_param_int(const std::string& name);
-    std::pair<MAVLinkParameters::Result, std::string>
-    retrieve_server_param_custom(const std::string& name);
-
     std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
     std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
-    std::pair<MAVLinkParameters::Result, float> get_param_ext_float(const std::string& name);
-    std::pair<MAVLinkParameters::Result, int> get_param_ext_int(const std::string& name);
     std::pair<MAVLinkParameters::Result, std::string> get_param_custom(const std::string& name);
 
     // These methods can be used to cache a parameter when a system connects. For that
@@ -272,6 +219,21 @@ public:
         const void* cookie,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
+
+    void subscribe_param_float(
+        const std::string& name,
+        const MAVLinkParameters::ParamFloatChangedCallback& callback,
+        const void* cookie);
+
+    void subscribe_param_int(
+        const std::string& name,
+        const MAVLinkParameters::ParamIntChangedCallback& callback,
+        const void* cookie);
+
+    void subscribe_param_custom(
+        const std::string& name,
+        const MAVLinkParameters::ParamCustomChangedCallback& callback,
+        const void* cookie);
 
     void cancel_all_param(const void* cookie);
 

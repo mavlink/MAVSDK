@@ -259,15 +259,17 @@ public:
         std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>;
     void get_all_params_async(const GetAllParamsCallback& callback);
 
-    using ParamChangedCallback = std::function<void(ParamValue value)>;
-    void subscribe_param_changed(
-        const std::string& name, const ParamChangedCallback& callback, const void* cookie);
+    using ParamFloatChangedCallback = std::function<void(float value)>;
+    void subscribe_param_float_changed(
+        const std::string& name, const ParamFloatChangedCallback& callback, const void* cookie);
 
-    void subscribe_param_changed(
-        const std::string& name,
-        ParamValue value_type,
-        const ParamChangedCallback& callback,
-        const void* cookie);
+    using ParamIntChangedCallback = std::function<void(int value)>;
+    void subscribe_param_int_changed(
+        const std::string& name, const ParamIntChangedCallback& callback, const void* cookie);
+
+    using ParamCustomChangedCallback = std::function<void(std::string)>;
+    void subscribe_param_custom_changed(
+        const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
 
     void cancel_all_param(const void* cookie);
 
@@ -282,6 +284,9 @@ public:
     const MAVLinkParameters& operator=(const MAVLinkParameters&) = delete;
 
 private:
+    using ParamChangedCallbacks = std::
+        variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
+
     void process_param_value(const mavlink_message_t& message);
     void process_param_set(const mavlink_message_t& message);
     void process_param_ext_set(const mavlink_message_t& message);
@@ -292,6 +297,9 @@ private:
     void notify_param_subscriptions(const mavlink_param_value_t& param_value);
 
     static std::string extract_safe_param_id(const char param_id[]);
+
+    static void
+    call_param_changed_callback(const ParamChangedCallbacks& callback, const ParamValue& value);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
@@ -331,7 +339,7 @@ private:
 
     struct ParamChangedSubscription {
         std::string param_name{};
-        ParamChangedCallback callback{};
+        ParamChangedCallbacks callback{};
         ParamValue value_type{};
         bool any_type{false};
         const void* cookie{nullptr};

@@ -66,12 +66,12 @@ ComponentInformationServerImpl::provide_float_param(ComponentInformationServer::
 
     update_json_files_with_lock();
 
-    // FIXME: requires refactoring
-    //_parent->provide_server_param_float(param.name, param.start_value);
-    //_parent->subscribe_param_float(
-    //    param.name,
-    //    [this, name = param.name](float new_value) { param_update(name, new_value); },
-    //    this);
+    _server_component_impl->mavlink_parameters().provide_server_param_float(
+        param.name, param.start_value);
+    _server_component_impl->mavlink_parameters().subscribe_param_float_changed(
+        param.name,
+        [this, name = param.name](float new_value) { param_update(name, new_value); },
+        this);
 
     return ComponentInformationServer::Result::Success;
 }
@@ -87,11 +87,10 @@ void ComponentInformationServerImpl::param_update(const std::string& name, float
 {
     std::lock_guard<std::mutex> lock(_mutex);
     ComponentInformationServer::FloatParamUpdate param_update{name, new_value};
-    // FIXME: requires refactoring
-    // if (_float_param_update_callback) {
-    //    _parent->call_user_callback(
-    //        [this, param_update]() { _float_param_update_callback(param_update); });
-    //}
+    if (_float_param_update_callback) {
+        _server_component_impl->call_user_callback(
+            [callback = _float_param_update_callback, param_update]() { callback(param_update); });
+    }
 }
 
 std::optional<MAV_RESULT> ComponentInformationServerImpl::process_component_information_requested()
