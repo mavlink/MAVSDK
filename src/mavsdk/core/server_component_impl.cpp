@@ -19,7 +19,8 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
         mavsdk_impl.mavlink_message_handler,
         mavsdk_impl.timeout_handler,
         [this]() { return _mavsdk_impl.timeout_s(); },
-        true)
+        true),
+    _mavlink_request_message_handler(mavsdk_impl, *this, _mavlink_command_receiver)
 {}
 
 void ServerComponentImpl::register_plugin(ServerPluginImplBase* server_plugin_impl)

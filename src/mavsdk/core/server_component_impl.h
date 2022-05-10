@@ -4,6 +4,7 @@
 #include "mavlink_command_receiver.h"
 #include "mavlink_mission_transfer.h"
 #include "mavlink_parameters.h"
+#include "mavlink_request_message_handler.h"
 #include "mavsdk_time.h"
 #include "flight_mode.h"
 #include "log.h"
@@ -129,6 +130,10 @@ public:
 
     MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; }
     MAVLinkParameters& mavlink_parameters() { return _mavlink_parameters; }
+    MavlinkRequestMessageHandler& mavlink_request_message_handler()
+    {
+        return _mavlink_request_message_handler;
+    }
 
     void do_work();
 
@@ -147,6 +152,7 @@ private:
     MavlinkCommandReceiver _mavlink_command_receiver;
     MavlinkMissionTransfer _mission_transfer;
     MAVLinkParameters _mavlink_parameters;
+    MavlinkRequestMessageHandler _mavlink_request_message_handler;
 };
 
 } // namespace mavsdk

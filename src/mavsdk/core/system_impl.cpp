@@ -23,11 +23,6 @@ SystemImpl::SystemImpl(MavsdkImpl& parent) :
         [this]() { return timeout_s(); },
         false),
     _command_sender(*this),
-    //_request_message_handler(
-    //    *this,
-    //    _command_sender,
-    //    _parent.mavlink_message_handler,
-    //    _parent.timeout_handler),
     _timesync(*this),
     _ping(*this),
     _mission_transfer(

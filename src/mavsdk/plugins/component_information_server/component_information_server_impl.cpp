@@ -21,19 +21,17 @@ ComponentInformationServerImpl::~ComponentInformationServerImpl()
 
 void ComponentInformationServerImpl::init()
 {
-    // FIXME: needs refactoring
-    //_server_component_impl->register_mavlink_request_message_handler(
-    //    MAVLINK_MSG_ID_COMPONENT_INFORMATION,
-    //    [this](MavlinkRequestMessageHandler::Params) {
-    //        return process_component_information_requested();
-    //    },
-    //    this);
+    _server_component_impl->mavlink_request_message_handler().register_handler(
+        MAVLINK_MSG_ID_COMPONENT_INFORMATION,
+        [this](MavlinkRequestMessageHandler::Params) {
+            return process_component_information_requested();
+        },
+        this);
 }
 
 void ComponentInformationServerImpl::deinit()
 {
-    // FIXME: needs refactoring
-    //_server_component_impl->unregister_all_mavlink_request_message_handlers(this);
+    _server_component_impl->mavlink_request_message_handler().unregister_all_handlers(this);
 }
 
 ComponentInformationServer::Result

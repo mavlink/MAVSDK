@@ -362,7 +362,6 @@ private:
 
     MAVLinkParameters _params;
     MavlinkCommandSender _command_sender;
-    // MavlinkRequestMessageHandler _request_message_handler;
 
     Timesync _timesync;
     Ping _ping;
