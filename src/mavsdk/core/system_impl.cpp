@@ -167,22 +167,6 @@ void SystemImpl::subscribe_is_connected(System::IsConnectedCallback callback)
     _is_connected_callback = std::move(callback);
 }
 
-// FIXME: fix intercept
-// void SystemImpl::process_mavlink_message(mavlink_message_t& message)
-//{
-//    // This is a low level interface where incoming messages can be tampered
-//    // with or even dropped.
-//    if (_incoming_messages_intercept_callback) {
-//        const bool keep = _incoming_messages_intercept_callback(message);
-//        if (!keep) {
-//            LogDebug() << "Dropped incoming message: " << int(message.msgid);
-//            return;
-//        }
-//    }
-//
-//    //_mavlink_message_handler.process_message(message);
-//}
-
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
 {
     _parent.call_every_handler.add(std::move(callback), static_cast<double>(interval_s), cookie);
@@ -481,19 +465,6 @@ bool SystemImpl::has_gimbal() const
 
 bool SystemImpl::send_message(mavlink_message_t& message)
 {
-    // This is a low level interface where incoming messages can be tampered
-    // with or even dropped.
-    if (_outgoing_messages_intercept_callback) {
-        const bool keep = _outgoing_messages_intercept_callback(message);
-        if (!keep) {
-            // We fake that everything was sent as instructed because
-            // a potential loss would happen later, and we would not be informed
-            // about it.
-            LogDebug() << "Dropped outgoing message: " << int(message.msgid);
-            return true;
-        }
-    }
-
     return _parent.send_message(message);
 }
 
@@ -1270,12 +1241,12 @@ void SystemImpl::unregister_param_changed_handler(const void* cookie)
 
 void SystemImpl::intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback)
 {
-    _incoming_messages_intercept_callback = std::move(callback);
+    _parent.intercept_incoming_messages(callback);
 }
 
 void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback)
 {
-    _outgoing_messages_intercept_callback = std::move(callback);
+    _parent.intercept_outgoing_messages(callback);
 }
 
 Time& SystemImpl::get_time()

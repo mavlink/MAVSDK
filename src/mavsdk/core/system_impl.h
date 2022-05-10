@@ -418,9 +418,6 @@ private:
     std::mutex _param_changed_callbacks_mutex{};
     std::unordered_map<const void*, param_changed_callback_t> _param_changed_callbacks{};
 
-    std::function<bool(mavlink_message_t&)> _incoming_messages_intercept_callback{nullptr};
-    std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
-
     MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};

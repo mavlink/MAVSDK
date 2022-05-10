@@ -243,6 +243,16 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
                    << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
     }
 
+    // This is a low level interface where incoming messages can be tampered
+    // with or even dropped.
+    if (_intercept_incoming_messages_callback != nullptr) {
+        bool keep = _intercept_incoming_messages_callback(message);
+        if (!keep) {
+            LogDebug() << "Dropped incoming message: " << int(message.msgid);
+            return;
+        }
+    }
+
     /** @note: Forward message if option is enabled and multiple interfaces are connected.
      *  Performs message forwarding checks for every messages if message forwarding
      *  is enabled on at least one connection, and in case of a single forwarding connection,
@@ -332,6 +342,19 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     if (_message_logging_on) {
         LogDebug() << "Sending message " << message.msgid << " from "
                    << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
+    }
+
+    // This is a low level interface where outgoing messages can be tampered
+    // with or even dropped.
+    if (_intercept_outgoing_messages_callback != nullptr) {
+        const bool keep = _intercept_outgoing_messages_callback(message);
+        if (!keep) {
+            // We fake that everything was sent as instructed because
+            // a potential loss would happen later, and we would not be informed
+            // about it.
+            LogDebug() << "Dropped outgoing message: " << int(message.msgid);
+            return true;
+        }
     }
 
     std::lock_guard<std::mutex> lock(_connections_mutex);
@@ -727,6 +750,16 @@ void MavsdkImpl::send_heartbeat()
             it.second->_impl->send_heartbeat();
         }
     }
+}
+
+void MavsdkImpl::intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback)
+{
+    _intercept_incoming_messages_callback = callback;
+}
+
+void MavsdkImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback)
+{
+    _intercept_outgoing_messages_callback = callback;
 }
 
 uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)

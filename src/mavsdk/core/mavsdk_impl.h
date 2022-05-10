@@ -80,6 +80,9 @@ public:
     void start_sending_heartbeats();
     void stop_sending_heartbeats();
 
+    void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
+    void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
+
     std::shared_ptr<ServerComponent> server_component_by_type(
         Mavsdk::ServerComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
@@ -147,6 +150,9 @@ private:
 
     bool _message_logging_on{false};
     bool _callback_debugging{false};
+
+    std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
+    std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
     std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
 
