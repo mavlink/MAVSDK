@@ -51,7 +51,8 @@ ActionServerImpl::~ActionServerImpl()
 
 void ActionServerImpl::init()
 {
-    enable_sending_autopilot_version();
+    _server_component_impl->add_call_every(
+        [this]() { _server_component_impl->send_autopilot_version(); }, 1.0, &_send_version_cookie);
 
     // Arming / Disarm / Kill
     _server_component_impl->register_mavlink_command_handler(
@@ -196,6 +197,7 @@ void ActionServerImpl::init()
 void ActionServerImpl::deinit()
 {
     _server_component_impl->unregister_all_mavlink_command_handlers(this);
+    _server_component_impl->remove_call_every(_send_version_cookie);
 }
 
 void ActionServerImpl::subscribe_arm_disarm(ActionServer::ArmDisarmCallback callback)
@@ -292,27 +294,6 @@ uint32_t ActionServerImpl::get_custom_mode() const
     return _server_component_impl->get_custom_mode();
 }
 
-void ActionServerImpl::enable_sending_autopilot_version()
-{
-    // FIXME: enable this again
-}
-
-// ActionServerImpl::AutopilotVersion ActionServerImpl::get_autopilot_version_data()
-//{
-//    std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
-//    return _autopilot_version;
-//}
-
-// uint8_t ActionServerImpl::get_autopilot_id() const
-//{
-//    for (auto compid : _components)
-//        if (compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
-//            return compid;
-//        }
-//    // FIXME: Not sure what should be returned if autopilot is not found
-//    return uint8_t(0);
-//}
-
 void ActionServerImpl::set_server_armed(bool armed)
 {
     uint8_t base_mode = get_base_mode();
@@ -323,15 +304,5 @@ void ActionServerImpl::set_server_armed(bool armed)
     }
     set_base_mode(base_mode);
 }
-
-bool ActionServerImpl::is_server_armed() const
-{
-    return (get_base_mode() & MAV_MODE_FLAG_SAFETY_ARMED) == MAV_MODE_FLAG_SAFETY_ARMED;
-}
-
-// void ActionServerImpl::add_capabilities(uint64_t add_capabilities)
-//{
-//    _server_component_impl->add_capabilities(add_capabilities);
-//}
 
 } // namespace mavsdk

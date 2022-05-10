@@ -41,24 +41,18 @@ public:
     ActionServer::AllowableFlightModes get_allowable_flight_modes();
 
 private:
-    void set_custom_mode(uint32_t custom_mode);
-    uint32_t get_custom_mode() const;
-
     void set_base_mode(uint8_t base_mode);
     uint8_t get_base_mode() const;
 
-    // Used when acting as autopilot!
+    void set_custom_mode(uint32_t custom_mode);
+    uint32_t get_custom_mode() const;
+
     void set_server_armed(bool armed);
-    bool is_server_armed() const;
 
-    void send_autopilot_version();
-    void enable_sending_autopilot_version();
-
+    std::mutex _callback_mutex;
     ActionServer::ArmDisarmCallback _arm_disarm_callback{nullptr};
     ActionServer::FlightModeChangeCallback _flight_mode_change_callback{nullptr};
     ActionServer::TakeoffCallback _takeoff_callback{nullptr};
-
-    std::mutex _callback_mutex;
 
     std::atomic<bool> _armable = false;
     std::atomic<bool> _force_armable = false;
@@ -78,14 +72,9 @@ private:
 
     std::mutex _flight_mode_mutex;
     ActionServer::AllowableFlightModes _allowed_flight_modes{};
-
-    // std::atomic<bool> _should_send_autopilot_version{false};
-
     std::atomic<ActionServer::FlightMode> _flight_mode{ActionServer::FlightMode::Unknown};
 
-    // std::mutex _autopilot_version_mutex{};
-    // AutopilotVersion _autopilot_version{MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0,
-    // {0}};
+    void* _send_version_cookie{nullptr};
 };
 
 } // namespace mavsdk

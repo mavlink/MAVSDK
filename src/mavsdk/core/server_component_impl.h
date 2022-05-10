@@ -125,7 +125,7 @@ public:
     void set_vendor_id(uint16_t vendor_id);
     void set_product_id(uint16_t product_id);
     bool set_uid2(std::string uid2);
-    AutopilotVersion get_autopilot_version_data();
+    void send_autopilot_version();
 
     MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; }
     MAVLinkParameters& mavlink_parameters() { return _mavlink_parameters; }
@@ -133,19 +133,15 @@ public:
     void do_work();
 
 private:
-    void send_autopilot_version();
-
     MavsdkImpl& _mavsdk_impl;
     uint8_t _own_component_id{MAV_COMP_ID_AUTOPILOT1};
 
-    std::atomic<uint8_t> _system_status{0};
+    std::atomic<MAV_STATE> _system_status{MAV_STATE_UNINIT};
     std::atomic<uint8_t> _base_mode{0};
     std::atomic<uint32_t> _custom_mode{0};
 
     std::mutex _autopilot_version_mutex{};
     AutopilotVersion _autopilot_version{};
-
-    std::atomic<bool> _should_send_autopilot_version{false};
 
     OurSender _our_sender;
     MavlinkCommandReceiver _mavlink_command_receiver;

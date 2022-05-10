@@ -192,7 +192,7 @@ void ServerComponentImpl::send_heartbeat()
 
 void ServerComponentImpl::set_system_status(uint8_t system_status)
 {
-    _system_status = system_status;
+    _system_status = static_cast<MAV_STATE>(system_status);
 }
 
 uint8_t ServerComponentImpl::get_system_status() const
@@ -228,14 +228,13 @@ void ServerComponentImpl::call_user_callback_located(
 
 void ServerComponentImpl::add_capabilities(uint64_t add_capabilities)
 {
-    std::unique_lock<std::mutex> lock(_autopilot_version_mutex);
-    _autopilot_version.capabilities |= add_capabilities;
-
-    // We need to resend capabilities...
-    lock.unlock();
-    if (_should_send_autopilot_version) {
-        send_autopilot_version();
+    {
+        std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
+        _autopilot_version.capabilities |= add_capabilities;
     }
+
+    // We need to resend capabilities.
+    send_autopilot_version();
 }
 
 void ServerComponentImpl::set_flight_sw_version(uint32_t flight_sw_version)
