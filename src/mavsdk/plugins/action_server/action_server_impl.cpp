@@ -82,11 +82,12 @@ void ActionServerImpl::init()
                               ActionServer::Result::Success :
                               ActionServer::Result::CommandDenied;
 
-            _server_component_impl->call_user_callback([this, armDisarm, result]() {
-                if (_arm_disarm_callback) {
-                    _arm_disarm_callback(result, armDisarm);
-                }
-            });
+            if (_arm_disarm_callback) {
+                _server_component_impl->call_user_callback(
+                    [callback = _arm_disarm_callback, armDisarm, result]() {
+                        callback(result, armDisarm);
+                    });
+            }
 
             return _server_component_impl->make_command_ack_message(command, request_ack);
         },
@@ -97,16 +98,17 @@ void ActionServerImpl::init()
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             if (_allow_takeoff) {
                 if (_takeoff_callback) {
-                    _server_component_impl->call_user_callback(
-                        [this]() { _takeoff_callback(ActionServer::Result::Success, true); });
+                    _server_component_impl->call_user_callback([callback = _takeoff_callback]() {
+                        callback(ActionServer::Result::Success, true);
+                    });
                 }
 
                 return _server_component_impl->make_command_ack_message(
                     command, MAV_RESULT::MAV_RESULT_ACCEPTED);
             } else {
                 if (_takeoff_callback) {
-                    _server_component_impl->call_user_callback([this]() {
-                        _takeoff_callback(ActionServer::Result::CommandDenied, false);
+                    _server_component_impl->call_user_callback([callback = _takeoff_callback]() {
+                        callback(ActionServer::Result::CommandDenied, false);
                     });
                 }
 
@@ -138,12 +140,12 @@ void ActionServerImpl::init()
             } else {
                 // TO DO: non PX4 flight modes...
                 // Just bug out now if not using PX4 modes
-                _server_component_impl->call_user_callback([this, request_flight_mode]() {
-                    if (_flight_mode_change_callback) {
-                        _flight_mode_change_callback(
-                            ActionServer::Result::ParameterError, request_flight_mode);
-                    }
-                });
+                if (_flight_mode_change_callback) {
+                    _server_component_impl->call_user_callback(
+                        [callback = _flight_mode_change_callback, request_flight_mode]() {
+                            callback(ActionServer::Result::ParameterError, request_flight_mode);
+                        });
+                }
 
                 return _server_component_impl->make_command_ack_message(
                     command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -178,14 +180,15 @@ void ActionServerImpl::init()
                 set_custom_mode(px4_mode.data);
             }
 
-            _server_component_impl->call_user_callback([this, allow_mode, request_flight_mode]() {
-                if (_flight_mode_change_callback) {
-                    _flight_mode_change_callback(
-                        allow_mode ? ActionServer::Result::Success :
-                                     ActionServer::Result::CommandDenied,
-                        request_flight_mode);
-                }
-            });
+            if (_flight_mode_change_callback) {
+                _server_component_impl->call_user_callback(
+                    [callback = _flight_mode_change_callback, allow_mode, request_flight_mode]() {
+                        callback(
+                            allow_mode ? ActionServer::Result::Success :
+                                         ActionServer::Result::CommandDenied,
+                            request_flight_mode);
+                    });
+            }
 
             return _server_component_impl->make_command_ack_message(
                 command,
