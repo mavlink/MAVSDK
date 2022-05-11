@@ -3,7 +3,9 @@
 #include <thread>
 #include <chrono>
 #include <array>
+
 #include "integration_test_helper.h"
+
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
@@ -34,7 +36,6 @@ TEST_F(SitlTest, PX4FollowMeOneLocation)
     auto telemetry = std::make_shared<Telemetry>(system);
     auto follow_me = std::make_shared<FollowMe>(system);
     auto action = std::make_shared<Action>(system);
-
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
         [telemetry]() {
@@ -151,11 +152,10 @@ TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
 
     // configure follow me behaviour
     FollowMe::Config config;
-    config.min_height_m = 12.f; // increase min height
+    config.follow_height_m = 12.f; // increase min height
     config.follow_distance_m = 20.f; // set distance b/w system and target during FollowMe mode
-    config.responsiveness = 0.2f; // set to higher responsiveness
-    config.follow_direction =
-        FollowMe::Config::FollowDirection::Front; // System follows target from FRONT side
+    config.responsiveness = 0.2f; // Make it less responsive (higher value for the setting)
+    config.follow_angle_deg = 0.0; // System follows target from FRONT side
 
     // Apply configuration
     FollowMe::Result config_result = follow_me->set_config(config);
@@ -190,10 +190,10 @@ void print(const FollowMe::Config& config)
 {
     std::cout << "Current FollowMe configuration of the system" << '\n';
     std::cout << "---------------------------" << '\n';
-    std::cout << "Min Height: " << config.min_height_m << "m" << '\n';
+    std::cout << "Height: " << config.follow_height_m << "m" << '\n';
     std::cout << "Distance: " << config.follow_distance_m << "m" << '\n';
+    std::cout << "Following angle: " << config.follow_angle_deg << "[deg]" << '\n';
     std::cout << "Responsiveness: " << config.responsiveness << '\n';
-    std::cout << "Following from: " << config.follow_direction << '\n';
     std::cout << "---------------------------" << '\n';
 }
 

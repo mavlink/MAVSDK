@@ -128,11 +128,11 @@ int main(int argc, char** argv)
     std::cout << "In Air...\n";
     sleep_for(seconds(5)); // Wait for drone to reach takeoff altitude
 
-    // Configure Min height of the drone to be "20 meters" above home & Follow direction as "Front
-    // right".
+    // Configure Follow height of the drone to be "20 meters"
+    // And Follow direction as "Behind" (180 degrees)
     FollowMe::Config config;
-    config.min_height_m = 10.0;
-    config.follow_direction = FollowMe::Config::FollowDirection::Behind;
+    config.follow_height_m = 10.0;
+    config.follow_angle_deg = 180.0f;
     FollowMe::Result follow_me_result = follow_me.set_config(config);
 
     if (follow_me_result != FollowMe::Result::Success) {

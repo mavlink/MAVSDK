@@ -41,45 +41,37 @@ public:
         response->set_allocated_follow_me_result(rpc_follow_me_result);
     }
 
-    static rpc::follow_me::Config::FollowDirection
-    translateToRpcFollowDirection(const mavsdk::FollowMe::Config::FollowDirection& follow_direction)
+    static rpc::follow_me::Config::FollowAltitudeMode translateToRpcFollowAltitudeMode(
+        const mavsdk::FollowMe::Config::FollowAltitudeMode& follow_altitude_mode)
     {
-        switch (follow_direction) {
+        switch (follow_altitude_mode) {
             default:
-                LogErr() << "Unknown follow_direction enum value: "
-                         << static_cast<int>(follow_direction);
+                LogErr() << "Unknown follow_altitude_mode enum value: "
+                         << static_cast<int>(follow_altitude_mode);
             // FALLTHROUGH
-            case mavsdk::FollowMe::Config::FollowDirection::None:
-                return rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_NONE;
-            case mavsdk::FollowMe::Config::FollowDirection::Behind:
-                return rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_BEHIND;
-            case mavsdk::FollowMe::Config::FollowDirection::Front:
-                return rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_FRONT;
-            case mavsdk::FollowMe::Config::FollowDirection::FrontRight:
-                return rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_FRONT_RIGHT;
-            case mavsdk::FollowMe::Config::FollowDirection::FrontLeft:
-                return rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_FRONT_LEFT;
+            case mavsdk::FollowMe::Config::FollowAltitudeMode::Constant:
+                return rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT;
+            case mavsdk::FollowMe::Config::FollowAltitudeMode::Terrain:
+                return rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TERRAIN;
+            case mavsdk::FollowMe::Config::FollowAltitudeMode::TargetGps:
+                return rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TARGET_GPS;
         }
     }
 
-    static mavsdk::FollowMe::Config::FollowDirection
-    translateFromRpcFollowDirection(const rpc::follow_me::Config::FollowDirection follow_direction)
+    static mavsdk::FollowMe::Config::FollowAltitudeMode translateFromRpcFollowAltitudeMode(
+        const rpc::follow_me::Config::FollowAltitudeMode follow_altitude_mode)
     {
-        switch (follow_direction) {
+        switch (follow_altitude_mode) {
             default:
-                LogErr() << "Unknown follow_direction enum value: "
-                         << static_cast<int>(follow_direction);
+                LogErr() << "Unknown follow_altitude_mode enum value: "
+                         << static_cast<int>(follow_altitude_mode);
             // FALLTHROUGH
-            case rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_NONE:
-                return mavsdk::FollowMe::Config::FollowDirection::None;
-            case rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_BEHIND:
-                return mavsdk::FollowMe::Config::FollowDirection::Behind;
-            case rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_FRONT:
-                return mavsdk::FollowMe::Config::FollowDirection::Front;
-            case rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_FRONT_RIGHT:
-                return mavsdk::FollowMe::Config::FollowDirection::FrontRight;
-            case rpc::follow_me::Config_FollowDirection_FOLLOW_DIRECTION_FRONT_LEFT:
-                return mavsdk::FollowMe::Config::FollowDirection::FrontLeft;
+            case rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT:
+                return mavsdk::FollowMe::Config::FollowAltitudeMode::Constant;
+            case rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TERRAIN:
+                return mavsdk::FollowMe::Config::FollowAltitudeMode::Terrain;
+            case rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TARGET_GPS:
+                return mavsdk::FollowMe::Config::FollowAltitudeMode::TargetGps;
         }
     }
 
@@ -88,13 +80,17 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::follow_me::Config>();
 
-        rpc_obj->set_min_height_m(config.min_height_m);
+        rpc_obj->set_follow_height_m(config.follow_height_m);
 
         rpc_obj->set_follow_distance_m(config.follow_distance_m);
 
-        rpc_obj->set_follow_direction(translateToRpcFollowDirection(config.follow_direction));
-
         rpc_obj->set_responsiveness(config.responsiveness);
+
+        rpc_obj->set_altitude_mode(translateToRpcFollowAltitudeMode(config.altitude_mode));
+
+        rpc_obj->set_max_tangential_vel_m_s(config.max_tangential_vel_m_s);
+
+        rpc_obj->set_follow_angle_deg(config.follow_angle_deg);
 
         return rpc_obj;
     }
@@ -103,13 +99,17 @@ public:
     {
         mavsdk::FollowMe::Config obj;
 
-        obj.min_height_m = config.min_height_m();
+        obj.follow_height_m = config.follow_height_m();
 
         obj.follow_distance_m = config.follow_distance_m();
 
-        obj.follow_direction = translateFromRpcFollowDirection(config.follow_direction());
-
         obj.responsiveness = config.responsiveness();
+
+        obj.altitude_mode = translateFromRpcFollowAltitudeMode(config.altitude_mode());
+
+        obj.max_tangential_vel_m_s = config.max_tangential_vel_m_s();
+
+        obj.follow_angle_deg = config.follow_angle_deg();
 
         return obj;
     }
