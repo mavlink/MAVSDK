@@ -33,11 +33,6 @@ MAVLinkParameters::MAVLinkParameters(
             [this](const mavlink_message_t& message) { process_param_value(message); },
             this);
 
-        //_message_handler.register_one(
-        //    MAVLINK_MSG_ID_PARAM_SET,
-        //    [this](const mavlink_message_t& message) { process_param_set(message); },
-        //    this);
-
         _message_handler.register_one(
             MAVLINK_MSG_ID_PARAM_EXT_VALUE,
             [this](const mavlink_message_t& message) { process_param_ext_value(message); },
