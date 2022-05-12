@@ -58,18 +58,12 @@ TEST(SystemTest, DISABLED_ComponentInformationConnect)
 
     param_client.set_param_float("ANG_RATE_ACC_MAX", 5.0f);
 
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
     auto client = ComponentInformation{system};
     client.subscribe_float_param([](ComponentInformation::FloatParamUpdate param_update) {
         LogInfo() << "Param " << param_update.name << " changed to " << param_update.value
                   << " on client side";
     });
 
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
     // Use another parameter to trigger the second callback.
     param_client.set_param_float("ANG_RATE_ACC_MAX", 6.0f);
-
-    std::this_thread::sleep_for(std::chrono::seconds(2));
 }

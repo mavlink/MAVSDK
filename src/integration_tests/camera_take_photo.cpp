@@ -43,7 +43,7 @@ TEST(CameraTest, TakePhotoSingle)
     auto camera = Camera{system};
 
     // We want to take the picture in photo mode.
-    // EXPECT_EQ(camera.set_mode(Camera::Mode::Photo), Camera::Result::Success);
+    EXPECT_EQ(camera.set_mode(Camera::Mode::Photo), Camera::Result::Success);
 
     bool received_capture_info = false;
     camera.subscribe_capture_info([&received_capture_info](Camera::CaptureInfo capture_info) {
