@@ -1,19 +1,20 @@
 #include "mavlink_command_receiver.h"
-#include "system_impl.h"
+#include "mavsdk_impl.h"
+#include "log.h"
 #include <cmath>
 #include <future>
 #include <memory>
 
 namespace mavsdk {
 
-MavlinkCommandReceiver::MavlinkCommandReceiver(SystemImpl& system_impl) : _parent(system_impl)
+MavlinkCommandReceiver::MavlinkCommandReceiver(MavsdkImpl& mavsdk_impl) : _mavsdk_impl(mavsdk_impl)
 {
-    _parent.register_mavlink_message_handler(
+    _mavsdk_impl.mavlink_message_handler.register_one(
         MAVLINK_MSG_ID_COMMAND_LONG,
         [this](const mavlink_message_t& message) { receive_command_long(message); },
         this);
 
-    _parent.register_mavlink_message_handler(
+    _mavsdk_impl.mavlink_message_handler.register_one(
         MAVLINK_MSG_ID_COMMAND_INT,
         [this](const mavlink_message_t& message) { receive_command_int(message); },
         this);
@@ -23,7 +24,7 @@ MavlinkCommandReceiver::~MavlinkCommandReceiver()
 {
     unregister_all_mavlink_command_handlers(this);
 
-    _parent.unregister_all_mavlink_message_handlers(this);
+    _mavsdk_impl.mavlink_message_handler.unregister_all(this);
 }
 
 void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& message)
@@ -37,7 +38,7 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_message = handler.callback(cmd);
             if (maybe_message) {
-                _parent.send_message(maybe_message.value());
+                _mavsdk_impl.send_message(maybe_message.value());
             }
         }
     }
@@ -54,7 +55,7 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_message = handler.callback(cmd);
             if (maybe_message) {
-                _parent.send_message(maybe_message.value());
+                _mavsdk_impl.send_message(maybe_message.value());
             }
         }
     }

@@ -6,7 +6,9 @@
 #include "plugins/param_server/param_server.h"
 
 #include "mavsdk.h"
-#include "lazy_plugin.h"
+
+#include "lazy_server_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -19,10 +21,13 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename ParamServer = ParamServer, typename LazyPlugin = LazyPlugin<ParamServer>>
+template<
+    typename ParamServer = ParamServer,
+    typename LazyServerPlugin = LazyServerPlugin<ParamServer>>
+
 class ParamServerServiceImpl final : public rpc::param_server::ParamServerService::Service {
 public:
-    ParamServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+    ParamServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ParamServer::Result& result) const
@@ -211,7 +216,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ParamServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -241,7 +248,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ParamServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -270,7 +279,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ParamServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -300,7 +311,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ParamServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -329,7 +342,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ParamServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -359,7 +374,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ParamServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -434,7 +451,8 @@ private:
         }
     }
 
-    LazyPlugin& _lazy_plugin;
+    LazyServerPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~LogFiles();
+    ~LogFiles() override;
 
     /**
      * @brief Progress data coming when downloading a log file.

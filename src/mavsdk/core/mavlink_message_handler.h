@@ -9,7 +9,7 @@
 
 namespace mavsdk {
 
-class MAVLinkMessageHandler {
+class MavlinkMessageHandler {
 public:
     using Callback = std::function<void(const mavlink_message_t&)>;
 

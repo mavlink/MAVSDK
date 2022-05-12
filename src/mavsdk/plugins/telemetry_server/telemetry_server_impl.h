@@ -1,14 +1,14 @@
 #pragma once
 
 #include "plugins/telemetry_server/telemetry_server.h"
-#include "plugin_impl_base.h"
+#include "server_plugin_impl_base.h"
 
 #include <unordered_map>
 #include <chrono>
 
 namespace mavsdk {
 
-class TelemetryServerImpl : public PluginImplBase {
+class TelemetryServerImpl : public ServerPluginImplBase {
 public:
     struct RequestMsgInterval {
         uint32_t msg_id{0};
@@ -16,15 +16,11 @@ public:
         void* cookie{nullptr};
     };
 
-    explicit TelemetryServerImpl(System& system);
-    explicit TelemetryServerImpl(std::shared_ptr<System> system);
+    explicit TelemetryServerImpl(std::shared_ptr<ServerComponent> server_component);
     ~TelemetryServerImpl() override;
 
     void init() override;
     void deinit() override;
-
-    void enable() override;
-    void disable() override;
 
     void publish_position_async(
         TelemetryServer::Position position,

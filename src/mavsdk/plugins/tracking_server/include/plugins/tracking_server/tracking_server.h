@@ -14,48 +14,35 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "mavsdk/server_plugin_base.h"
 
 namespace mavsdk {
 
-class System;
+class ServerComponent;
 class TrackingServerImpl;
 
 /**
  * @brief API for an onboard image tracking software.
  */
-class TrackingServer : public PluginBase {
+class TrackingServer : public ServerPluginBase {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific System.
+     * @brief Constructor. Creates the plugin for a ServerComponent instance.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto tracking_server = TrackingServer(system);
+     *     auto tracking_server = TrackingServer(server_component);
      *     ```
      *
-     * @param system The specific system associated with this plugin.
+     * @param server_component The ServerComponent instance associated with this server plugin.
      */
-    explicit TrackingServer(System& system); // deprecated
-
-    /**
-     * @brief Constructor. Creates the plugin for a specific System.
-     *
-     * The plugin is typically created as shown below:
-     *
-     *     ```cpp
-     *     auto tracking_server = TrackingServer(system);
-     *     ```
-     *
-     * @param system The specific system associated with this plugin.
-     */
-    explicit TrackingServer(std::shared_ptr<System> system); // new
+    explicit TrackingServer(std::shared_ptr<ServerComponent> server_component);
 
     /**
      * @brief Destructor (internal use only).
      */
-    ~TrackingServer();
+    ~TrackingServer() override;
 
     /**
      * @brief Answer to respond to an incoming command

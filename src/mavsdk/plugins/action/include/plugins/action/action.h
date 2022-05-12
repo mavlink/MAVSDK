@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Action();
+    ~Action() override;
 
     /**
      * @brief Yaw behaviour during orbit flight.

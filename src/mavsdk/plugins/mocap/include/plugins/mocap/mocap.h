@@ -57,7 +57,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Mocap();
+    ~Mocap() override;
 
     /**
      * @brief Body position type

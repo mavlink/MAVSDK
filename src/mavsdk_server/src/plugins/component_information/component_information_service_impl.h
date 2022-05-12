@@ -7,7 +7,9 @@
 #include "plugins/component_information/component_information.h"
 
 #include "mavsdk.h"
+
 #include "lazy_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -23,6 +25,7 @@ namespace mavsdk_server {
 template<
     typename ComponentInformation = ComponentInformation,
     typename LazyPlugin = LazyPlugin<ComponentInformation>>
+
 class ComponentInformationServiceImpl final
     : public rpc::component_information::ComponentInformationService::Service {
 public:
@@ -259,6 +262,7 @@ private:
     }
 
     LazyPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

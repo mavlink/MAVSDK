@@ -2,32 +2,25 @@
 
 namespace mavsdk {
 
-ParamServerImpl::ParamServerImpl(System& system) : PluginImplBase(system)
+ParamServerImpl::ParamServerImpl(std::shared_ptr<ServerComponent> server_component) :
+    ServerPluginImplBase(server_component)
 {
-    _parent->register_plugin(this);
-}
-
-ParamServerImpl::ParamServerImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
-{
-    _parent->register_plugin(this);
+    // FIXME: this plugin should support various component IDs
+    _server_component_impl->register_plugin(this);
 }
 
 ParamServerImpl::~ParamServerImpl()
 {
-    _parent->unregister_plugin(this);
+    _server_component_impl->unregister_plugin(this);
 }
 
 void ParamServerImpl::init() {}
 
 void ParamServerImpl::deinit() {}
 
-void ParamServerImpl::enable() {}
-
-void ParamServerImpl::disable() {}
-
 std::pair<ParamServer::Result, int32_t> ParamServerImpl::retrieve_param_int(std::string name) const
 {
-    std::pair<MAVLinkParameters::Result, int> result = _parent->retrieve_server_param_int(name);
+    auto result = _server_component_impl->mavlink_parameters().retrieve_server_param_int(name);
 
     if (result.first == MAVLinkParameters::Result::Success) {
         return {ParamServer::Result::Success, result.second};
@@ -38,13 +31,17 @@ std::pair<ParamServer::Result, int32_t> ParamServerImpl::retrieve_param_int(std:
 
 ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t value)
 {
-    _parent->provide_server_param_int(name, value);
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+    _server_component_impl->mavlink_parameters().provide_server_param_int(name, value);
     return ParamServer::Result::Success;
 }
 
 std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std::string name) const
 {
-    std::pair<MAVLinkParameters::Result, float> result = _parent->retrieve_server_param_float(name);
+    const auto result =
+        _server_component_impl->mavlink_parameters().retrieve_server_param_float(name);
 
     if (result.first == MAVLinkParameters::Result::Success) {
         return {ParamServer::Result::Success, result.second};
@@ -55,14 +52,18 @@ std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std:
 
 ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float value)
 {
-    _parent->provide_server_param_float(name, value);
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+    _server_component_impl->mavlink_parameters().provide_server_param_float(name, value);
     return ParamServer::Result::Success;
 }
 
 std::pair<ParamServer::Result, std::string>
 ParamServerImpl::retrieve_param_custom(std::string name) const
 {
-    const auto result = _parent->retrieve_server_param_custom(name);
+    const auto result =
+        _server_component_impl->mavlink_parameters().retrieve_server_param_custom(name);
 
     if (result.first == MAVLinkParameters::Result::Success) {
         return {ParamServer::Result::Success, result.second};
@@ -77,26 +78,26 @@ ParamServerImpl::provide_param_custom(std::string name, const std::string& value
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
     }
-    _parent->provide_server_param_custom(name, value);
+    _server_component_impl->mavlink_parameters().provide_server_param_custom(name, value);
     return ParamServer::Result::Success;
 }
 
 ParamServer::AllParams ParamServerImpl::retrieve_all_params() const
 {
-    auto tmp = _parent->retrieve_all_server_params();
+    auto tmp = _server_component_impl->mavlink_parameters().retrieve_all_server_params();
 
     ParamServer::AllParams res{};
 
-    for (auto const& parampair : tmp) {
-        if (parampair.second.is<float>()) {
+    for (auto const& param_pair : tmp) {
+        if (param_pair.second.is<float>()) {
             ParamServer::FloatParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get<float>();
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<float>();
             res.float_params.push_back(tmp_param);
-        } else if (parampair.second.is<int32_t>()) {
+        } else if (param_pair.second.is<int32_t>()) {
             ParamServer::IntParam tmp_param;
-            tmp_param.name = parampair.first;
-            tmp_param.value = parampair.second.get<int32_t>();
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<int32_t>();
             res.int_params.push_back(tmp_param);
         }
     }

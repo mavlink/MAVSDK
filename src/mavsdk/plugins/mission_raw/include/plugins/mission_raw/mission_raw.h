@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~MissionRaw();
+    ~MissionRaw() override;
 
     /**
      * @brief Mission progress type.

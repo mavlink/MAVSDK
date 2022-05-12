@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~ServerUtility();
+    ~ServerUtility() override;
 
     /**
      * @brief Status types.

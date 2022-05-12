@@ -7,7 +7,9 @@
 #include "plugins/server_utility/server_utility.h"
 
 #include "mavsdk.h"
+
 #include "lazy_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -21,6 +23,7 @@ namespace mavsdk {
 namespace mavsdk_server {
 
 template<typename ServerUtility = ServerUtility, typename LazyPlugin = LazyPlugin<ServerUtility>>
+
 class ServerUtilityServiceImpl final : public rpc::server_utility::ServerUtilityService::Service {
 public:
     ServerUtilityServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
@@ -198,6 +201,7 @@ private:
     }
 
     LazyPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

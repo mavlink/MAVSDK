@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Telemetry();
+    ~Telemetry() override;
 
     /**
      * @brief GPS fix type.

@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Transponder();
+    ~Transponder() override;
 
     /**
      * @brief ADSB classification for the type of vehicle emitting the transponder signal.

@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Shell();
+    ~Shell() override;
 
     /**
      * @brief Possible results returned for shell requests

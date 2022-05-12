@@ -15,9 +15,13 @@ using {{ struct.name.upper_camel_case }} = {{ plugin_name.upper_camel_case }}::{
     {%- endif %}
 {% endfor %}
 
+{% if is_server %}
+{{ plugin_name.upper_camel_case }}::{{ plugin_name.upper_camel_case }}(std::shared_ptr<ServerComponent> server_component) : ServerPluginBase(), _impl{std::make_unique<{{ plugin_name.upper_camel_case }}Impl>(server_component)} {}
+{% else %}
 {{ plugin_name.upper_camel_case }}::{{ plugin_name.upper_camel_case }}(System& system) : PluginBase(), _impl{std::make_unique<{{ plugin_name.upper_camel_case }}Impl>(system)} {}
 
 {{ plugin_name.upper_camel_case }}::{{ plugin_name.upper_camel_case }}(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<{{ plugin_name.upper_camel_case }}Impl>(system)} {}
+{% endif %}
 
 {{ plugin_name.upper_camel_case }}::~{{ plugin_name.upper_camel_case }}() {}
 

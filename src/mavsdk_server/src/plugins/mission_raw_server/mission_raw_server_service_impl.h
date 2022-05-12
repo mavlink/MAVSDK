@@ -7,7 +7,9 @@
 #include "plugins/mission_raw_server/mission_raw_server.h"
 
 #include "mavsdk.h"
-#include "lazy_plugin.h"
+
+#include "lazy_server_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -22,11 +24,12 @@ namespace mavsdk_server {
 
 template<
     typename MissionRawServer = MissionRawServer,
-    typename LazyPlugin = LazyPlugin<MissionRawServer>>
+    typename LazyServerPlugin = LazyServerPlugin<MissionRawServer>>
+
 class MissionRawServerServiceImpl final
     : public rpc::mission_raw_server::MissionRawServerService::Service {
 public:
-    MissionRawServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+    MissionRawServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void
@@ -247,7 +250,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::mission_raw_server::IncomingMissionResponse rpc_response;
-            auto result = mavsdk::MissionRawServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::MissionRawServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -426,7 +431,8 @@ private:
         }
     }
 
-    LazyPlugin& _lazy_plugin;
+    LazyServerPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

@@ -69,14 +69,20 @@ void Mavsdk::set_timeout_s(double timeout_s)
     _impl->set_timeout_s(timeout_s);
 }
 
-void Mavsdk::set_system_status(uint8_t system_status)
-{
-    _impl->set_system_status(system_status);
-}
-
 void Mavsdk::subscribe_on_new_system(const NewSystemCallback& callback)
 {
     _impl->subscribe_on_new_system(callback);
+}
+
+std::shared_ptr<ServerComponent>
+Mavsdk::server_component_by_type(ServerComponentType server_component_type, unsigned instance)
+{
+    return _impl->server_component_by_type(server_component_type, instance);
+}
+
+std::shared_ptr<ServerComponent> Mavsdk::server_component_by_id(uint8_t component_id)
+{
+    return _impl->server_component_by_id(component_id);
 }
 
 Mavsdk::Configuration::Configuration(

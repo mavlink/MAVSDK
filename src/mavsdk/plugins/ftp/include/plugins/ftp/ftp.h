@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Ftp();
+    ~Ftp() override;
 
     /**
      * @brief Progress data type for file transfer.

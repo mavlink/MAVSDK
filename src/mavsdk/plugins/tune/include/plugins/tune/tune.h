@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Tune();
+    ~Tune() override;
 
     /**
      * @brief An element of the tune

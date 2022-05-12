@@ -13,6 +13,7 @@ target_sources(mavsdk
     crc32.cpp
     system.cpp
     system_impl.cpp
+    flight_mode.cpp
     fs.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
@@ -30,6 +31,9 @@ target_sources(mavsdk
     ping.cpp
     plugin_impl_base.cpp
     serial_connection.cpp
+    server_component.cpp
+    server_component_impl.cpp
+    server_plugin_impl_base.cpp
     tcp_connection.cpp
     timeout_handler.cpp
     udp_connection.cpp
@@ -109,7 +113,9 @@ install(FILES
     include/mavsdk/mavsdk.h
     include/mavsdk/log_callback.h
     include/mavsdk/plugin_base.h
+    include/mavsdk/server_plugin_base.h
     include/mavsdk/geometry.h
+    include/mavsdk/server_component.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 

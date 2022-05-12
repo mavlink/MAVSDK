@@ -10,12 +10,17 @@
 
 namespace mavsdk {
 
-class SystemImpl;
+class MavsdkImpl;
+class ServerComponentImpl;
+class MavlinkCommandReceiver;
 
 class MavlinkRequestMessageHandler {
 public:
     MavlinkRequestMessageHandler() = delete;
-    explicit MavlinkRequestMessageHandler(SystemImpl& system_impl);
+    explicit MavlinkRequestMessageHandler(
+        MavsdkImpl& mavsdk_impl,
+        ServerComponentImpl& server_component_impl,
+        MavlinkCommandReceiver& mavlink_command_receiver);
     ~MavlinkRequestMessageHandler();
 
     using Params = std::array<float, 5>;
@@ -40,7 +45,9 @@ private:
     std::mutex _table_mutex{};
     std::vector<Entry> _table{};
 
-    SystemImpl& _system_impl;
+    MavsdkImpl& _mavsdk_impl;
+    ServerComponentImpl& _server_component_impl;
+    MavlinkCommandReceiver& _mavlink_command_receiver;
 };
 
 } // namespace mavsdk

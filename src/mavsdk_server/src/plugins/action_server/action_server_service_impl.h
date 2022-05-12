@@ -7,7 +7,9 @@
 #include "plugins/action_server/action_server.h"
 
 #include "mavsdk.h"
-#include "lazy_plugin.h"
+
+#include "lazy_server_plugin.h"
+
 #include "log.h"
 #include <atomic>
 #include <cmath>
@@ -20,10 +22,13 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename ActionServer = ActionServer, typename LazyPlugin = LazyPlugin<ActionServer>>
+template<
+    typename ActionServer = ActionServer,
+    typename LazyServerPlugin = LazyServerPlugin<ActionServer>>
+
 class ActionServerServiceImpl final : public rpc::action_server::ActionServerService::Service {
 public:
-    ActionServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+    ActionServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ActionServer::Result& result) const
@@ -253,7 +258,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::action_server::ArmDisarmResponse rpc_response;
-            auto result = mavsdk::ActionServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::ActionServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -307,7 +314,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::action_server::FlightModeChangeResponse rpc_response;
-            auto result = mavsdk::ActionServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::ActionServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -361,7 +370,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::action_server::TakeoffResponse rpc_response;
-            auto result = mavsdk::ActionServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::ActionServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -414,7 +425,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::action_server::LandResponse rpc_response;
-            auto result = mavsdk::ActionServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::ActionServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -467,7 +480,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::action_server::RebootResponse rpc_response;
-            auto result = mavsdk::ActionServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::ActionServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -520,7 +535,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::action_server::ShutdownResponse rpc_response;
-            auto result = mavsdk::ActionServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::ActionServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -573,7 +590,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             rpc::action_server::TerminateResponse rpc_response;
-            auto result = mavsdk::ActionServer::Result::NoSystem;
+
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::ActionServer::Result::Unknown;
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
 
@@ -626,7 +645,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ActionServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ActionServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -654,7 +675,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ActionServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ActionServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -683,7 +706,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ActionServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ActionServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -712,7 +737,9 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                auto result = mavsdk::ActionServer::Result::NoSystem;
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ActionServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
 
@@ -788,7 +815,8 @@ private:
         }
     }
 
-    LazyPlugin& _lazy_plugin;
+    LazyServerPlugin& _lazy_plugin;
+
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };

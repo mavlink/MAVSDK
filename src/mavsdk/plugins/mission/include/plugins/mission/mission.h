@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Mission();
+    ~Mission() override;
 
     /**
      * @brief Type representing a mission item.

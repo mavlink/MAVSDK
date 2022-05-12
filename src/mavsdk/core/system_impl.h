@@ -1,9 +1,9 @@
 #pragma once
 
+#include "flight_mode.h"
 #include "mavlink_address.h"
 #include "mavlink_include.h"
 #include "mavlink_parameters.h"
-#include "mavlink_command_receiver.h"
 #include "mavlink_command_sender.h"
 #include "mavlink_ftp.h"
 #include "mavlink_message_handler.h"
@@ -36,45 +36,23 @@ class PluginImplBase;
 // and functionality from the public library API.
 class SystemImpl : public Sender {
 public:
-    enum class FlightMode {
-        Unknown,
-        Ready,
-        Takeoff,
-        Hold,
-        Mission,
-        ReturnToLaunch,
-        Land,
-        Offboard,
-        FollowMe,
-        Manual,
-        Altctl,
-        Posctl,
-        Acro,
-        Rattitude,
-        Stabilized,
-    };
-
     explicit SystemImpl(MavsdkImpl& parent);
     ~SystemImpl() override;
 
     void init(uint8_t system_id, uint8_t comp_id, bool connected);
 
     void enable_timesync();
-    void enable_sending_autopilot_version();
 
     void subscribe_is_connected(System::IsConnectedCallback callback);
 
-    void process_mavlink_message(mavlink_message_t& message);
+    // void process_mavlink_message(mavlink_message_t& message);
 
-    typedef std::function<void(const mavlink_message_t&)> mavlink_message_handler_t;
+    using MavlinkMessageHandler = std::function<void(const mavlink_message_t&)>;
 
     void register_mavlink_message_handler(
-        uint16_t msg_id, const mavlink_message_handler_t& callback, const void* cookie);
+        uint16_t msg_id, const MavlinkMessageHandler& callback, const void* cookie);
     void register_mavlink_message_handler(
-        uint16_t msg_id,
-        uint8_t cmp_id,
-        const mavlink_message_handler_t& callback,
-        const void* cookie);
+        uint16_t msg_id, uint8_t cmp_id, const MavlinkMessageHandler& callback, const void* cookie);
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
@@ -95,18 +73,9 @@ public:
         std::function<void(const MavlinkStatustextHandler::Statustext&)>, void* cookie);
     void unregister_statustext_handler(void* cookie);
 
-    mavlink_message_t
-    make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);
-    mavlink_message_t
-    make_command_ack_message(const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result);
     bool send_message(mavlink_message_t& message) override;
 
     Autopilot autopilot() const override { return _autopilot; };
-
-    FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
-    static FlightMode to_flight_mode_from_px4_mode(uint32_t custom_mode);
-    static FlightMode to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode);
-    static FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode);
 
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
 
@@ -195,51 +164,6 @@ public:
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
-    void set_param_custom_async(
-        const std::string& name,
-        const std::string& value,
-        const SetParamCallback& callback,
-        const void* cookie);
-
-    MAVLinkParameters::Result provide_server_param_float(const std::string& name, float value);
-    MAVLinkParameters::Result provide_server_param_int(const std::string& name, int32_t value);
-    MAVLinkParameters::Result
-    provide_server_param_custom(const std::string& name, const std::string& value);
-    std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
-
-    using SubscribeParamIntCallback = std::function<void(int)>;
-    void subscribe_param_int(
-        const std::string& name, const SubscribeParamIntCallback& callback, const void* cookie);
-
-    template<typename Callback>
-    void subscribe_param(const std::string& name, const Callback& callback, const void* cookie)
-    {
-        _params.subscribe_param_changed(
-            name,
-            [callback](MAVLinkParameters::ParamValue value) { std::visit(callback, value._value); },
-            cookie);
-    }
-
-    template<typename Arg>
-    void subscribe_param_strict(
-        const std::string& name, const std::function<void(Arg)>& callback, const void* cookie)
-    {
-        _params.subscribe_param_changed(
-            name,
-            [callback](MAVLinkParameters::ParamValue value) {
-                if (value.is<Arg>()) {
-                    std::visit(callback, value._value);
-                } else {
-                    LogErr() << "callback argument type does not match received parameter type";
-                }
-            },
-            cookie);
-    }
-
-    using SubscribeParamFloatCallback = std::function<void(float)>;
-    void subscribe_param_float(
-        const std::string& name, const SubscribeParamFloatCallback& callback, const void* cookie);
-
     FlightMode get_flight_mode() const;
 
     MavlinkCommandSender::Result
@@ -258,16 +182,8 @@ public:
     using GetParamCustomCallback =
         std::function<void(MAVLinkParameters::Result result, const std::string& value)>;
 
-    std::pair<MAVLinkParameters::Result, float>
-    retrieve_server_param_float(const std::string& name);
-    std::pair<MAVLinkParameters::Result, int> retrieve_server_param_int(const std::string& name);
-    std::pair<MAVLinkParameters::Result, std::string>
-    retrieve_server_param_custom(const std::string& name);
-
     std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
     std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
-    std::pair<MAVLinkParameters::Result, float> get_param_ext_float(const std::string& name);
-    std::pair<MAVLinkParameters::Result, int> get_param_ext_int(const std::string& name);
     std::pair<MAVLinkParameters::Result, std::string> get_param_custom(const std::string& name);
 
     // These methods can be used to cache a parameter when a system connects. For that
@@ -304,6 +220,21 @@ public:
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
+    void subscribe_param_float(
+        const std::string& name,
+        const MAVLinkParameters::ParamFloatChangedCallback& callback,
+        const void* cookie);
+
+    void subscribe_param_int(
+        const std::string& name,
+        const MAVLinkParameters::ParamIntChangedCallback& callback,
+        const void* cookie);
+
+    void subscribe_param_custom(
+        const std::string& name,
+        const MAVLinkParameters::ParamCustomChangedCallback& callback,
+        const void* cookie);
+
     void cancel_all_param(const void* cookie);
 
     void param_changed(const std::string& name);
@@ -315,7 +246,7 @@ public:
 
     bool is_connected() const;
 
-    Time& get_time() { return _time; };
+    Time& get_time();
     AutopilotTime& get_autopilot_time() { return _autopilot_time; };
 
     double get_ping_time_s() const { return _ping.last_ping_time_s(); }
@@ -327,10 +258,9 @@ public:
         const std::string& filename, int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
-    void send_autopilot_version();
     void send_flight_information_request();
 
-    MAVLinkMissionTransfer& mission_transfer() { return _mission_transfer; };
+    MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; };
 
     MavlinkFtp& mavlink_ftp() { return _mavlink_ftp; };
 
@@ -343,48 +273,11 @@ public:
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
 
-    void register_mavlink_command_handler(
-        uint16_t cmd_id,
-        const MavlinkCommandReceiver::MavlinkCommandIntHandler& callback,
-        const void* cookie);
-    void register_mavlink_command_handler(
-        uint16_t cmd_id,
-        const MavlinkCommandReceiver::MavlinkCommandLongHandler& callback,
-        const void* cookie);
-    void unregister_mavlink_command_handler(uint16_t cmd_id, const void* cookie);
-    void unregister_all_mavlink_command_handlers(const void* cookie);
-
-    bool register_mavlink_request_message_handler(
-        uint32_t message_id,
-        const MavlinkRequestMessageHandler::Callback& callback,
-        const void* cookie);
-    void unregister_mavlink_request_message_handler(uint32_t message_id, const void* cookie);
-    void unregister_all_mavlink_request_message_handlers(const void* cookie);
-
     double timeout_s() const;
-
-    // Autopilot version data
-    void add_capabilities(uint64_t capabilities);
-    void set_flight_sw_version(uint32_t flight_sw_version);
-    void set_middleware_sw_version(uint32_t middleware_sw_version);
-    void set_os_sw_version(uint32_t os_sw_version);
-    void set_board_version(uint32_t board_version);
-    void set_vendor_id(uint16_t vendor_id);
-    void set_product_id(uint16_t product_id);
-    bool set_uid2(std::string uid2);
-    System::AutopilotVersion get_autopilot_version_data();
-
-    // Used when acting as autopilot!
-    void set_server_armed(bool armed);
-    bool is_server_armed() const;
-    void set_custom_mode(uint32_t custom_mode);
-    uint32_t get_custom_mode() const;
 
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
-
-    void request_autopilot_version();
 
     void process_heartbeat(const mavlink_message_t& message);
     void process_autopilot_version(const mavlink_message_t& message);
@@ -432,11 +325,7 @@ private:
 
     MAVLinkAddress _target_address{};
 
-    Time _time{};
     AutopilotTime _autopilot_time{};
-
-    // Needs to be before anything else because they can depend on it.
-    MAVLinkMessageHandler _message_handler{};
 
     MavlinkStatustextHandler _statustext_handler{};
 
@@ -471,13 +360,11 @@ private:
 
     MAVLinkParameters _params;
     MavlinkCommandSender _command_sender;
-    MavlinkCommandReceiver _command_receiver;
-    MavlinkRequestMessageHandler _request_message_handler;
 
     Timesync _timesync;
     Ping _ping;
 
-    MAVLinkMissionTransfer _mission_transfer;
+    MavlinkMissionTransfer _mission_transfer;
     RequestMessage _request_message;
     MavlinkFtp _mavlink_ftp;
 
@@ -490,18 +377,9 @@ private:
     std::mutex _param_changed_callbacks_mutex{};
     std::unordered_map<const void*, param_changed_callback_t> _param_changed_callbacks{};
 
-    std::function<bool(mavlink_message_t&)> _incoming_messages_intercept_callback{nullptr};
-    std::function<bool(mavlink_message_t&)> _outgoing_messages_intercept_callback{nullptr};
-
     MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
-
-    std::mutex _autopilot_version_mutex{};
-    System::AutopilotVersion _autopilot_version{
-        MAV_PROTOCOL_CAPABILITY_COMMAND_INT, 0, 0, 0, 0, 0, 0, {0}};
-
-    std::atomic<bool> _should_send_autopilot_version{false};
 
     std::mutex _mavlink_ftp_files_mutex{};
     std::unordered_map<std::string, std::string> _mavlink_ftp_files{};

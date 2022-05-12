@@ -186,8 +186,7 @@ bool FollowMeImpl::is_active() const
 
 FollowMe::Result FollowMeImpl::start()
 {
-    FollowMe::Result result =
-        to_follow_me_result(_parent->set_flight_mode(SystemImpl::FlightMode::FollowMe));
+    FollowMe::Result result = to_follow_me_result(_parent->set_flight_mode(FlightMode::FollowMe));
 
     if (result == FollowMe::Result::Success) {
         // If location was set before, lets send it to vehicle
@@ -209,7 +208,7 @@ FollowMe::Result FollowMeImpl::stop()
             stop_sending_target_location();
         }
     }
-    return to_follow_me_result(_parent->set_flight_mode(SystemImpl::FlightMode::Hold));
+    return to_follow_me_result(_parent->set_flight_mode(FlightMode::Hold));
 }
 
 bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const

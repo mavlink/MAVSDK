@@ -10,28 +10,13 @@
 #include "mavlink_include.h"
 #include "mavlink_message_handler.h"
 #include "timeout_handler.h"
+#include "timeout_s_callback.h"
 #include "locked_queue.h"
+#include "sender.h"
 
 namespace mavsdk {
 
-class Sender {
-public:
-    enum class Autopilot {
-        Unknown,
-        Px4,
-        ArduPilot,
-    };
-
-    Sender() = default;
-    virtual ~Sender() = default;
-    virtual bool send_message(mavlink_message_t& message) = 0;
-    [[nodiscard]] virtual uint8_t get_own_system_id() const = 0;
-    [[nodiscard]] virtual uint8_t get_own_component_id() const = 0;
-    [[nodiscard]] virtual uint8_t get_system_id() const = 0;
-    [[nodiscard]] virtual Autopilot autopilot() const = 0;
-};
-
-class MAVLinkMissionTransfer {
+class MavlinkMissionTransfer {
 public:
     enum class Result {
         Success,
@@ -85,7 +70,7 @@ public:
     public:
         explicit WorkItem(
             Sender& sender,
-            MAVLinkMessageHandler& message_handler,
+            MavlinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
             double timeout_s,
@@ -103,7 +88,7 @@ public:
 
     protected:
         Sender& _sender;
-        MAVLinkMessageHandler& _message_handler;
+        MavlinkMessageHandler& _message_handler;
         TimeoutHandler& _timeout_handler;
         uint8_t _type;
         double _timeout_s;
@@ -117,7 +102,7 @@ public:
     public:
         explicit UploadWorkItem(
             Sender& sender,
-            MAVLinkMessageHandler& message_handler,
+            MavlinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
             const std::vector<ItemInt>& items,
@@ -165,7 +150,7 @@ public:
     public:
         explicit ReceiveIncomingMission(
             Sender& sender,
-            MAVLinkMessageHandler& message_handler,
+            MavlinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
             double timeout_s,
@@ -211,7 +196,7 @@ public:
     public:
         explicit DownloadWorkItem(
             Sender& sender,
-            MAVLinkMessageHandler& message_handler,
+            MavlinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
             double timeout_s,
@@ -258,7 +243,7 @@ public:
     public:
         ClearWorkItem(
             Sender& sender,
-            MAVLinkMessageHandler& message_handler,
+            MavlinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             uint8_t type,
             double timeout_s,
@@ -289,7 +274,7 @@ public:
     public:
         SetCurrentWorkItem(
             Sender& sender,
-            MAVLinkMessageHandler& message_handler,
+            MavlinkMessageHandler& message_handler,
             TimeoutHandler& timeout_handler,
             int current,
             double timeout_s,
@@ -320,15 +305,13 @@ public:
 
     static constexpr unsigned retries = 5;
 
-    using TimeoutSCallback = std::function<double()>;
-
-    explicit MAVLinkMissionTransfer(
+    explicit MavlinkMissionTransfer(
         Sender& sender,
-        MAVLinkMessageHandler& message_handler,
+        MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler,
         TimeoutSCallback get_timeout_s_callback);
 
-    ~MAVLinkMissionTransfer() = default;
+    ~MavlinkMissionTransfer() = default;
 
     std::weak_ptr<WorkItem> upload_items_async(
         uint8_t type,
@@ -358,12 +341,12 @@ public:
     void set_int_messages_supported(bool supported);
 
     // Non-copyable
-    MAVLinkMissionTransfer(const MAVLinkMissionTransfer&) = delete;
-    const MAVLinkMissionTransfer& operator=(const MAVLinkMissionTransfer&) = delete;
+    MavlinkMissionTransfer(const MavlinkMissionTransfer&) = delete;
+    const MavlinkMissionTransfer& operator=(const MavlinkMissionTransfer&) = delete;
 
 private:
     Sender& _sender;
-    MAVLinkMessageHandler& _message_handler;
+    MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
 

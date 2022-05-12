@@ -3,39 +3,36 @@
 
 namespace mavsdk {
 
-TrackingServerImpl::TrackingServerImpl(System& system) : PluginImplBase(system)
+TrackingServerImpl::TrackingServerImpl(std::shared_ptr<ServerComponent> server_component) :
+    ServerPluginImplBase(server_component)
 {
-    _parent->register_plugin(this);
-}
-
-TrackingServerImpl::TrackingServerImpl(std::shared_ptr<System> system) :
-    PluginImplBase(std::move(system))
-{
-    _parent->register_plugin(this);
+    // FIXME: use other component ID?
+    _server_component_impl->register_plugin(this);
 }
 
 TrackingServerImpl::~TrackingServerImpl()
 {
-    _parent->unregister_plugin(this);
+    // FIXME: use other component ID?
+    _server_component_impl->unregister_plugin(this);
 }
 
 void TrackingServerImpl::init()
 {
-    _parent->register_mavlink_command_handler(
+    _server_component_impl->register_mavlink_command_handler(
         MAV_CMD_CAMERA_TRACK_POINT,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_track_point_command(command);
         },
         this);
 
-    _parent->register_mavlink_command_handler(
+    _server_component_impl->register_mavlink_command_handler(
         MAV_CMD_CAMERA_TRACK_RECTANGLE,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_track_rectangle_command(command);
         },
         this);
 
-    _parent->register_mavlink_command_handler(
+    _server_component_impl->register_mavlink_command_handler(
         MAV_CMD_CAMERA_STOP_TRACKING,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_track_off_command(command);
@@ -45,21 +42,18 @@ void TrackingServerImpl::init()
 
 void TrackingServerImpl::deinit()
 {
-    _parent->unregister_mavlink_command_handler(MAV_CMD_CAMERA_TRACK_POINT, this);
-    _parent->unregister_mavlink_command_handler(MAV_CMD_CAMERA_TRACK_RECTANGLE, this);
-    _parent->unregister_mavlink_command_handler(MAV_CMD_CAMERA_STOP_TRACKING, this);
+    _server_component_impl->unregister_mavlink_command_handler(MAV_CMD_CAMERA_TRACK_POINT, this);
+    _server_component_impl->unregister_mavlink_command_handler(
+        MAV_CMD_CAMERA_TRACK_RECTANGLE, this);
+    _server_component_impl->unregister_mavlink_command_handler(MAV_CMD_CAMERA_STOP_TRACKING, this);
 }
-
-void TrackingServerImpl::enable() {}
-
-void TrackingServerImpl::disable() {}
 
 void TrackingServerImpl::set_tracking_point_status(TrackingServer::TrackPoint tracked_point)
 {
     mavlink_message_t message;
     mavlink_msg_camera_tracking_image_status_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &message,
         CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
         CAMERA_TRACKING_MODE_POINT,
@@ -71,7 +65,7 @@ void TrackingServerImpl::set_tracking_point_status(TrackingServer::TrackPoint tr
         0.0f,
         0.0f,
         0.0f);
-    _parent->send_message(message);
+    _server_component_impl->send_message(message);
 }
 
 void TrackingServerImpl::set_tracking_rectangle_status(
@@ -79,8 +73,8 @@ void TrackingServerImpl::set_tracking_rectangle_status(
 {
     mavlink_message_t message;
     mavlink_msg_camera_tracking_image_status_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &message,
         CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
         CAMERA_TRACKING_MODE_RECTANGLE,
@@ -92,15 +86,15 @@ void TrackingServerImpl::set_tracking_rectangle_status(
         tracked_rectangle.top_left_corner_y,
         tracked_rectangle.bottom_right_corner_x,
         tracked_rectangle.bottom_right_corner_y);
-    _parent->send_message(message);
+    _server_component_impl->send_message(message);
 }
 
 void TrackingServerImpl::set_tracking_off_status()
 {
     mavlink_message_t message;
     mavlink_msg_camera_tracking_image_status_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &message,
         CAMERA_TRACKING_STATUS_FLAGS_IDLE,
         CAMERA_TRACKING_MODE_NONE,
@@ -112,7 +106,7 @@ void TrackingServerImpl::set_tracking_off_status()
         0.0f,
         0.0f,
         0.0f);
-    _parent->send_message(message);
+    _server_component_impl->send_message(message);
 }
 
 void TrackingServerImpl::subscribe_tracking_point_command(
@@ -143,8 +137,8 @@ TrackingServerImpl::respond_tracking_point_command(TrackingServer::CommandAnswer
 
     mavlink_message_t message;
     mavlink_msg_command_ack_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &message,
         MAV_CMD_CAMERA_TRACK_POINT,
         mav_result_from_command_answer(command_answer),
@@ -153,8 +147,8 @@ TrackingServerImpl::respond_tracking_point_command(TrackingServer::CommandAnswer
         _tracking_point_command_sysid,
         _tracking_point_command_compid);
 
-    return _parent->send_message(message) ? TrackingServer::Result::Success :
-                                            TrackingServer::Result::ConnectionError;
+    return _server_component_impl->send_message(message) ? TrackingServer::Result::Success :
+                                                           TrackingServer::Result::ConnectionError;
 }
 
 TrackingServer::Result
@@ -164,8 +158,8 @@ TrackingServerImpl::respond_tracking_rectangle_command(TrackingServer::CommandAn
 
     mavlink_message_t message;
     mavlink_msg_command_ack_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &message,
         MAV_CMD_CAMERA_TRACK_RECTANGLE,
         mav_result_from_command_answer(command_answer),
@@ -174,8 +168,8 @@ TrackingServerImpl::respond_tracking_rectangle_command(TrackingServer::CommandAn
         _tracking_rectangle_command_sysid,
         _tracking_rectangle_command_compid);
 
-    return _parent->send_message(message) ? TrackingServer::Result::Success :
-                                            TrackingServer::Result::ConnectionError;
+    return _server_component_impl->send_message(message) ? TrackingServer::Result::Success :
+                                                           TrackingServer::Result::ConnectionError;
 }
 
 TrackingServer::Result
@@ -185,8 +179,8 @@ TrackingServerImpl::respond_tracking_off_command(TrackingServer::CommandAnswer c
 
     mavlink_message_t message;
     mavlink_msg_command_ack_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
         &message,
         MAV_CMD_CAMERA_STOP_TRACKING,
         mav_result_from_command_answer(command_answer),
@@ -195,8 +189,8 @@ TrackingServerImpl::respond_tracking_off_command(TrackingServer::CommandAnswer c
         _tracking_off_command_sysid,
         _tracking_off_command_compid);
 
-    return _parent->send_message(message) ? TrackingServer::Result::Success :
-                                            TrackingServer::Result::ConnectionError;
+    return _server_component_impl->send_message(message) ? TrackingServer::Result::Success :
+                                                           TrackingServer::Result::ConnectionError;
 }
 
 std::optional<mavlink_message_t>
@@ -205,7 +199,7 @@ TrackingServerImpl::process_track_point_command(const MavlinkCommandReceiver::Co
     if (!is_command_sender_ok(command)) {
         LogWarn() << "Incoming track point command is for target sysid "
                   << int(command.target_system_id) << " instead of "
-                  << int(_parent->get_own_system_id());
+                  << int(_server_component_impl->get_own_system_id());
         return std::nullopt;
     }
 
@@ -218,7 +212,8 @@ TrackingServerImpl::process_track_point_command(const MavlinkCommandReceiver::Co
 
     auto temp_callback = _tracking_point_callback;
 
-    _parent->call_user_callback([temp_callback, track_point]() { temp_callback(track_point); });
+    _server_component_impl->call_user_callback(
+        [temp_callback, track_point]() { temp_callback(track_point); });
 
     // We don't send an ack but leave that to the user.
     return std::nullopt;
@@ -230,7 +225,7 @@ std::optional<mavlink_message_t> TrackingServerImpl::process_track_rectangle_com
     if (!is_command_sender_ok(command)) {
         LogWarn() << "Incoming track rectangle command is for target sysid "
                   << int(command.target_system_id) << " instead of "
-                  << int(_parent->get_own_system_id());
+                  << int(_server_component_impl->get_own_system_id());
         return std::nullopt;
     }
 
@@ -243,7 +238,7 @@ std::optional<mavlink_message_t> TrackingServerImpl::process_track_rectangle_com
 
     auto temp_callback = _tracking_rectangle_callback;
 
-    _parent->call_user_callback(
+    _server_component_impl->call_user_callback(
         [temp_callback, track_rectangle]() { temp_callback(track_rectangle); });
 
     // We don't send an ack but leave that to the user.
@@ -256,7 +251,7 @@ TrackingServerImpl::process_track_off_command(const MavlinkCommandReceiver::Comm
     if (!is_command_sender_ok(command)) {
         LogWarn() << "Incoming track off command is for target sysid "
                   << int(command.target_system_id) << " instead of "
-                  << int(_parent->get_own_system_id());
+                  << int(_server_component_impl->get_own_system_id());
         return std::nullopt;
     }
 
@@ -266,7 +261,7 @@ TrackingServerImpl::process_track_off_command(const MavlinkCommandReceiver::Comm
 
     auto temp_callback = _tracking_off_callback;
 
-    _parent->call_user_callback([temp_callback]() { temp_callback(0); });
+    _server_component_impl->call_user_callback([temp_callback]() { temp_callback(0); });
 
     // We don't send an ack but leave that to the user.
     return std::nullopt;
@@ -274,7 +269,8 @@ TrackingServerImpl::process_track_off_command(const MavlinkCommandReceiver::Comm
 
 bool TrackingServerImpl::is_command_sender_ok(const MavlinkCommandReceiver::CommandLong& command)
 {
-    if (command.target_system_id != 0 && command.target_system_id != _parent->get_own_system_id()) {
+    if (command.target_system_id != 0 &&
+        command.target_system_id != _server_component_impl->get_own_system_id()) {
         return false;
     } else {
         return true;

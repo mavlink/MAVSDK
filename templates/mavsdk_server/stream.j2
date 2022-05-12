@@ -3,7 +3,12 @@ grpc::Status Subscribe{{ name.upper_camel_case }}(grpc::ServerContext* /* contex
     if (_lazy_plugin.maybe_plugin() == nullptr) {
         {% if has_result %}
             rpc::{{ plugin_name.lower_snake_case }}::{{ name.upper_camel_case }}Response rpc_response;
+            {% if is_server %}
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::{{ plugin_name.upper_camel_case }}::Result::Unknown;
+            {% else -%}
             auto result = mavsdk::{{ plugin_name.upper_camel_case }}::Result::NoSystem;
+            {% endif -%}
             fillResponseWithResult(&rpc_response, result);
             writer->Write(rpc_response);
         {% endif %}

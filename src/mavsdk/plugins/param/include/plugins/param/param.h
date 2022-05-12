@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Param();
+    ~Param() override;
 
     /**
      * @brief Type for integer parameters.

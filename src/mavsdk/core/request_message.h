@@ -18,7 +18,7 @@ public:
     RequestMessage(
         SystemImpl& system_impl,
         MavlinkCommandSender& command_sender,
-        MAVLinkMessageHandler& message_handler,
+        MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler);
     RequestMessage() = delete;
 
@@ -49,7 +49,7 @@ private:
 
     SystemImpl& _system_impl;
     MavlinkCommandSender& _command_sender;
-    MAVLinkMessageHandler& _message_handler;
+    MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
 
     std::mutex _mutex{};

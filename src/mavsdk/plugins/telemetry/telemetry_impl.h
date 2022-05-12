@@ -245,8 +245,7 @@ private:
     static Telemetry::LandedState to_landed_state(mavlink_extended_sys_state_t extended_sys_state);
     static Telemetry::VtolState to_vtol_state(mavlink_extended_sys_state_t extended_sys_state);
 
-    static Telemetry::FlightMode
-    telemetry_flight_mode_from_flight_mode(SystemImpl::FlightMode flight_mode);
+    static Telemetry::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode flight_mode);
 
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in

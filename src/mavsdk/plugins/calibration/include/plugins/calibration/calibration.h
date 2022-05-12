@@ -54,7 +54,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~Calibration();
+    ~Calibration() override;
 
     /**
      * @brief Possible results returned for calibration commands

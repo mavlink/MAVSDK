@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~ComponentInformation();
+    ~ComponentInformation() override;
 
     /**
      * @brief Meta information for parameter of type float.

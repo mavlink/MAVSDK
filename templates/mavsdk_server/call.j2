@@ -6,7 +6,12 @@ grpc::Status {{ name.upper_camel_case }}(
     if (_lazy_plugin.maybe_plugin() == nullptr) {
         {% if has_result %}
         if (response != nullptr) {
+            {% if is_server %}
+            // For server plugins, this should never happen, they should always be constructible.
+            auto result = mavsdk::{{ plugin_name.upper_camel_case }}::Result::Unknown;
+            {% else -%}
             auto result = mavsdk::{{ plugin_name.upper_camel_case }}::Result::NoSystem;
+            {% endif -%}
             fillResponseWithResult(response, result);
         }
         {% endif %}

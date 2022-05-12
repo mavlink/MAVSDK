@@ -65,6 +65,8 @@ if(BUILD_TESTS)
     add_subdirectory(integration_tests)
 
     include(cmake/unit_tests.cmake)
+
+    add_subdirectory(system_tests)
 endif()
 
 if (BUILD_MAVSDK_SERVER)

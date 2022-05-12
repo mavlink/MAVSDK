@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destructor (internal use only).
      */
-    ~ManualControl();
+    ~ManualControl() override;
 
     /**
      * @brief Possible results returned for manual control requests.
