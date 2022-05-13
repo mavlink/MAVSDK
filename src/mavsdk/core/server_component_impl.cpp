@@ -40,7 +40,7 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
 
     _mavlink_request_message_handler.register_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        [this](const MavlinkRequestMessageHandler::Params&) {
+        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
             send_autopilot_version();
             return MAV_RESULT_ACCEPTED;
         },

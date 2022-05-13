@@ -23,7 +23,7 @@ void ComponentInformationServerImpl::init()
 {
     _server_component_impl->mavlink_request_message_handler().register_handler(
         MAVLINK_MSG_ID_COMPONENT_INFORMATION,
-        [this](MavlinkRequestMessageHandler::Params) {
+        [this](uint8_t, uint8_t, MavlinkRequestMessageHandler::Params) {
             return process_component_information_requested();
         },
         this);

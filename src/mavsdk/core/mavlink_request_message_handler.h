@@ -24,7 +24,8 @@ public:
     ~MavlinkRequestMessageHandler();
 
     using Params = std::array<float, 5>;
-    using Callback = std::function<std::optional<MAV_RESULT>(const Params&)>;
+    using Callback = std::function<std::optional<MAV_RESULT>(
+        uint8_t target_system_id, uint8_t target_component_id, const Params&)>;
 
     bool register_handler(uint32_t message_id, const Callback& callback, const void* cookie);
     void unregister_handler(uint32_t message_id, const void* cookie);
