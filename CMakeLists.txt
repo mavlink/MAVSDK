@@ -14,7 +14,12 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     OUTPUT_VARIABLE VERSION_STR
     OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE GITVER
 )
+if(NOT GITVER EQUAL "0")
+    message(STATUS "No git version found. Falling back to empty version no")
+    set(VERSION_STR "0.0.0")
+endif()
 
 message(STATUS "Version: ${VERSION_STR}")
 STRING(REGEX REPLACE v\([0-9]+\).[0-9]+.[0-9]+.*$ \\1 MAVSDK_VERSION_MAJOR "${VERSION_STR}")
