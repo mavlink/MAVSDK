@@ -16,7 +16,8 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     RESULT_VARIABLE GITVER
 )
-if(NOT GITVER EQUAL "0")
+
+if (NOT GITVER EQUAL "0")
     message(STATUS "No git version found. Falling back to empty version no")
     set(VERSION_STR "0.0.0")
 endif()
