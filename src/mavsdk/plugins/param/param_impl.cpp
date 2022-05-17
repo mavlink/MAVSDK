@@ -29,38 +29,41 @@ void ParamImpl::disable() {}
 
 std::pair<Param::Result, int32_t> ParamImpl::get_param_int(const std::string& name)
 {
-    std::pair<MAVLinkParameters::Result, int32_t> result = _parent->get_param_int(name);
-    return std::make_pair<>(result_from_mavlink_parameters_result(result.first), result.second);
+    std::pair<MavlinkParameterSender::Result, int32_t> result = _parent->get_param_int(name);
+    return std::make_pair<>(
+        result_from_mavlink_parameter_sender_result(result.first), result.second);
 }
 
 Param::Result ParamImpl::set_param_int(const std::string& name, int32_t value)
 {
-    MAVLinkParameters::Result result = _parent->set_param_int(name, value);
-    return result_from_mavlink_parameters_result(result);
+    MavlinkParameterSender::Result result = _parent->set_param_int(name, value);
+    return result_from_mavlink_parameter_sender_result(result);
 }
 
 std::pair<Param::Result, float> ParamImpl::get_param_float(const std::string& name)
 {
-    std::pair<MAVLinkParameters::Result, float> result = _parent->get_param_float(name);
-    return std::make_pair<>(result_from_mavlink_parameters_result(result.first), result.second);
+    std::pair<MavlinkParameterSender::Result, float> result = _parent->get_param_float(name);
+    return std::make_pair<>(
+        result_from_mavlink_parameter_sender_result(result.first), result.second);
 }
 
 Param::Result ParamImpl::set_param_float(const std::string& name, float value)
 {
-    MAVLinkParameters::Result result = _parent->set_param_float(name, value);
-    return result_from_mavlink_parameters_result(result);
+    MavlinkParameterSender::Result result = _parent->set_param_float(name, value);
+    return result_from_mavlink_parameter_sender_result(result);
 }
 
 std::pair<Param::Result, std::string> ParamImpl::get_param_custom(const std::string& name)
 {
     auto result = _parent->get_param_custom(name);
-    return std::make_pair<>(result_from_mavlink_parameters_result(result.first), result.second);
+    return std::make_pair<>(
+        result_from_mavlink_parameter_sender_result(result.first), result.second);
 }
 
 Param::Result ParamImpl::set_param_custom(const std::string& name, const std::string& value)
 {
     auto result = _parent->set_param_custom(name, value);
-    return result_from_mavlink_parameters_result(result);
+    return result_from_mavlink_parameter_sender_result(result);
 }
 
 Param::AllParams ParamImpl::get_all_params()
@@ -95,20 +98,21 @@ Param::AllParams ParamImpl::get_all_params()
     return res;
 }
 
-Param::Result ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result result)
+Param::Result
+ParamImpl::result_from_mavlink_parameter_sender_result(MavlinkParameterSender::Result result)
 {
     switch (result) {
-        case MAVLinkParameters::Result::Success:
+        case MavlinkParameterSender::Result::Success:
             return Param::Result::Success;
-        case MAVLinkParameters::Result::Timeout:
+        case MavlinkParameterSender::Result::Timeout:
             return Param::Result::Timeout;
-        case MAVLinkParameters::Result::ParamNameTooLong:
+        case MavlinkParameterSender::Result::ParamNameTooLong:
             return Param::Result::ParamNameTooLong;
-        case MAVLinkParameters::Result::WrongType:
+        case MavlinkParameterSender::Result::WrongType:
             return Param::Result::WrongType;
-        case MAVLinkParameters::Result::ConnectionError:
+        case MavlinkParameterSender::Result::ConnectionError:
             return Param::Result::ConnectionError;
-        case MAVLinkParameters::Result::ParamValueTooLong:
+        case MavlinkParameterSender::Result::ParamValueTooLong:
             return Param::Result::ParamValueTooLong;
         default:
             LogErr() << "Unknown param error";

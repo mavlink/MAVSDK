@@ -561,10 +561,10 @@ void ActionImpl::set_takeoff_altitude_async(
 Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
     _takeoff_altitude = relative_altitude_m;
-    const MAVLinkParameters::Result result =
+    const MavlinkParameterSender::Result result =
         _parent->set_param_float(TAKEOFF_ALT_PARAM, relative_altitude_m);
-    return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
-                                                            Action::Result::ParameterError;
+    return (result == MavlinkParameterSender::Result::Success) ? Action::Result::Success :
+                                                                 Action::Result::ParameterError;
 }
 
 void ActionImpl::get_takeoff_altitude_async(
@@ -581,8 +581,9 @@ std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
     } else {
         auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
         return std::make_pair<>(
-            (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
-                                                                   Action::Result::ParameterError,
+            (result.first == MavlinkParameterSender::Result::Success) ?
+                Action::Result::Success :
+                Action::Result::ParameterError,
             result.second);
     }
 }
@@ -595,9 +596,10 @@ void ActionImpl::set_maximum_speed_async(
 
 Action::Result ActionImpl::set_maximum_speed(float speed_m_s) const
 {
-    const MAVLinkParameters::Result result = _parent->set_param_float(MAX_SPEED_PARAM, speed_m_s);
-    return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
-                                                            Action::Result::ParameterError;
+    const MavlinkParameterSender::Result result =
+        _parent->set_param_float(MAX_SPEED_PARAM, speed_m_s);
+    return (result == MavlinkParameterSender::Result::Success) ? Action::Result::Success :
+                                                                 Action::Result::ParameterError;
 }
 
 void ActionImpl::get_maximum_speed_async(const Action::GetMaximumSpeedCallback& callback) const
@@ -610,8 +612,8 @@ std::pair<Action::Result, float> ActionImpl::get_maximum_speed() const
 {
     auto result = _parent->get_param_float(MAX_SPEED_PARAM);
     return std::make_pair<>(
-        (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
-                                                               Action::Result::ParameterError,
+        (result.first == MavlinkParameterSender::Result::Success) ? Action::Result::Success :
+                                                                    Action::Result::ParameterError,
         result.second);
 }
 
@@ -623,10 +625,10 @@ void ActionImpl::set_return_to_launch_altitude_async(
 
 Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_altitude_m) const
 {
-    const MAVLinkParameters::Result result =
+    const MavlinkParameterSender::Result result =
         _parent->set_param_float(RTL_RETURN_ALTITUDE_PARAM, relative_altitude_m);
-    return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
-                                                            Action::Result::ParameterError;
+    return (result == MavlinkParameterSender::Result::Success) ? Action::Result::Success :
+                                                                 Action::Result::ParameterError;
 }
 
 void ActionImpl::get_return_to_launch_altitude_async(
@@ -640,8 +642,8 @@ std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() con
 {
     auto result = _parent->get_param_float(RTL_RETURN_ALTITUDE_PARAM);
     return std::make_pair<>(
-        (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
-                                                               Action::Result::ParameterError,
+        (result.first == MavlinkParameterSender::Result::Success) ? Action::Result::Success :
+                                                                    Action::Result::ParameterError,
         result.second);
 }
 

@@ -21,16 +21,15 @@ class Sender;
 class MavlinkMessageHandler;
 class TimeoutHandler;
 
-class MAVLinkParameters {
+class MavlinkParameterSender {
 public:
-    MAVLinkParameters() = delete;
-    explicit MAVLinkParameters(
+    MavlinkParameterSender() = delete;
+    explicit MavlinkParameterSender(
         Sender& parent,
         MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler,
-        TimeoutSCallback timeout_s_callback,
-        bool is_server);
-    ~MAVLinkParameters();
+        TimeoutSCallback timeout_s_callback);
+    ~MavlinkParameterSender();
 
     enum class Result {
         Success,
@@ -96,18 +95,6 @@ public:
         const std::string& value,
         const SetParamCallback& callback,
         const void* cookie = nullptr);
-
-    // Result provide_server_param(const std::string& name, const ParamValue& value);
-    Result provide_server_param_float(const std::string& name, float value);
-    Result provide_server_param_int(const std::string& name, int value);
-    Result provide_server_param_custom(const std::string& name, const std::string& value);
-    std::map<std::string, ParamValue> retrieve_all_server_params();
-
-    std::pair<Result, ParamValue>
-    retrieve_server_param(const std::string& name, ParamValue value_type);
-    std::pair<Result, float> retrieve_server_param_float(const std::string& name);
-    std::pair<Result, int> retrieve_server_param_int(const std::string& name);
-    std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
     using GetParamAnyCallback = std::function<void(Result, ParamValue)>;
 
@@ -176,16 +163,14 @@ public:
     friend std::ostream& operator<<(std::ostream&, const Result&);
 
     // Non-copyable
-    MAVLinkParameters(const MAVLinkParameters&) = delete;
-    const MAVLinkParameters& operator=(const MAVLinkParameters&) = delete;
+    MavlinkParameterSender(const MavlinkParameterSender&) = delete;
+    const MavlinkParameterSender& operator=(const MavlinkParameterSender&) = delete;
 
 private:
     using ParamChangedCallbacks = std::
         variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
 
     void process_param_value(const mavlink_message_t& message);
-    void process_param_set(const mavlink_message_t& message);
-    void process_param_ext_set(const mavlink_message_t& message);
     void process_param_ext_value(const mavlink_message_t& message);
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
@@ -206,7 +191,7 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16;
 
     struct WorkItem {
-        enum class Type { Get, Set, Value, Ack } type{Type::Get};
+        enum class Type { Get, Set, Ack } type{Type::Get};
         std::variant<
             GetParamFloatCallback,
             GetParamIntCallback,
@@ -248,12 +233,6 @@ private:
     GetAllParamsCallback _all_params_callback;
     void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
-
-    bool _is_server;
-
-    void process_param_request_read(const mavlink_message_t& message);
-    void process_param_ext_request_read(const mavlink_message_t& message);
-    void process_param_request_list(const mavlink_message_t& message);
 
     bool _parameter_debugging{false};
 };

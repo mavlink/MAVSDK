@@ -27,8 +27,8 @@ void FailureImpl::enable()
 
     _parent->get_param_int_async(
         param_name,
-        [this](MAVLinkParameters::Result result, int32_t value) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this](MavlinkParameterSender::Result result, int32_t value) {
+            if (result == MavlinkParameterSender::Result::Success) {
                 if (value == 1) {
                     _enabled = EnabledState::Enabled;
                 } else if (value == 0) {

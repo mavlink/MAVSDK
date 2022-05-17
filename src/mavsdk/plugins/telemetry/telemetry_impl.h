@@ -209,23 +209,23 @@ private:
     void process_odometry(const mavlink_message_t& message);
     void process_distance_sensor(const mavlink_message_t& message);
     void process_scaled_pressure(const mavlink_message_t& message);
-    void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
-    void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
-    void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
+    void receive_param_cal_gyro(MavlinkParameterSender::Result result, int value);
+    void receive_param_cal_accel(MavlinkParameterSender::Result result, int value);
+    void receive_param_cal_mag(MavlinkParameterSender::Result result, int value);
 
     // Ardupilot sensor offset callbacks.
-    void receive_param_cal_gyro_offset_x(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_gyro_offset_y(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_gyro_offset_z(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_accel_offset_x(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_accel_offset_y(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_accel_offset_z(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_mag_offset_x(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_mag_offset_y(MAVLinkParameters::Result result, float value);
-    void receive_param_cal_mag_offset_z(MAVLinkParameters::Result result, float value);
+    void receive_param_cal_gyro_offset_x(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_gyro_offset_y(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_gyro_offset_z(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_accel_offset_x(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_accel_offset_y(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_accel_offset_z(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_mag_offset_x(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_mag_offset_y(MavlinkParameterSender::Result result, float value);
+    void receive_param_cal_mag_offset_z(MavlinkParameterSender::Result result, float value);
 
     void process_parameter_update(const std::string& name);
-    void receive_param_hitl(MAVLinkParameters::Result result, int value);
+    void receive_param_hitl(MavlinkParameterSender::Result result, int value);
 
     void receive_rc_channels_timeout();
     void receive_gps_raw_timeout();

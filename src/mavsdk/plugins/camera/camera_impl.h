@@ -117,7 +117,7 @@ private:
     static Camera::Result
     camera_result_from_command_result(const MavlinkCommandSender::Result command_result);
     static Camera::Result
-    camera_result_from_parameter_result(const MAVLinkParameters::Result parameter_result);
+    camera_result_from_parameter_result(const MavlinkParameterSender::Result parameter_result);
 
     void receive_command_result(
         MavlinkCommandSender::Result command_result, const Camera::ResultCallback& callback);

@@ -396,18 +396,18 @@ void CalibrationImpl::receive_statustext(const MavlinkStatustextHandler::Statust
                 case State::None:
                     break;
                 case State::GyroCalibration:
-                    _parent->param_changed("CAL_GYRO0_ID");
+                    //_parent->param_changed("CAL_GYRO0_ID");
                     break;
                 case State::AccelerometerCalibration:
-                    _parent->param_changed("CAL_ACC0_ID");
+                    //_parent->param_changed("CAL_ACC0_ID");
                     break;
                 case State::MagnetometerCalibration:
-                    _parent->param_changed("CAL_MAG0_ID");
+                    //_parent->param_changed("CAL_MAG0_ID");
                     break;
                 case State::LevelHorizonCalibration:
-                    _parent->param_changed("SENS_BOARD_X_OFF");
-                    _parent->param_changed("SENS_BOARD_Y_OFF");
-                    _parent->param_changed("SENS_BOARD_Z_OFF");
+                    //_parent->param_changed("SENS_BOARD_X_OFF");
+                    //_parent->param_changed("SENS_BOARD_Y_OFF");
+                    //_parent->param_changed("SENS_BOARD_Z_OFF");
                     break;
                 case State::GimbalAccelerometerCalibration:
                     break;

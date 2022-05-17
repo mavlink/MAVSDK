@@ -684,27 +684,27 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
     }
 }
 
-Camera::Result
-CameraImpl::camera_result_from_parameter_result(const MAVLinkParameters::Result parameter_result)
+Camera::Result CameraImpl::camera_result_from_parameter_result(
+    const MavlinkParameterSender::Result parameter_result)
 {
     switch (parameter_result) {
-        case MAVLinkParameters::Result::Success:
+        case MavlinkParameterSender::Result::Success:
             return Camera::Result::Success;
-        case MAVLinkParameters::Result::Timeout:
+        case MavlinkParameterSender::Result::Timeout:
             return Camera::Result::Timeout;
-        case MAVLinkParameters::Result::ConnectionError:
+        case MavlinkParameterSender::Result::ConnectionError:
             return Camera::Result::Error;
-        case MAVLinkParameters::Result::WrongType:
+        case MavlinkParameterSender::Result::WrongType:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::ParamNameTooLong:
+        case MavlinkParameterSender::Result::ParamNameTooLong:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::NotFound:
+        case MavlinkParameterSender::Result::NotFound:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::ValueUnsupported:
+        case MavlinkParameterSender::Result::ValueUnsupported:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::Failed:
+        case MavlinkParameterSender::Result::Failed:
             return Camera::Result::Error;
-        case MAVLinkParameters::Result::UnknownError:
+        case MavlinkParameterSender::Result::UnknownError:
             return Camera::Result::Error;
         default:
             return Camera::Result::Unknown;
@@ -1543,8 +1543,8 @@ void CameraImpl::set_option_async(
     _parent->set_param_async(
         setting_id,
         value,
-        [this, callback, setting_id, value](MAVLinkParameters::Result result) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this, callback, setting_id, value](MavlinkParameterSender::Result result) {
+            if (result == MavlinkParameterSender::Result::Success) {
                 if (!this->_camera_definition) {
                     if (callback) {
                         const auto temp_callback = callback;
@@ -1811,8 +1811,8 @@ void CameraImpl::refresh_params()
         _parent->get_param_async(
             param_name,
             param_value_type,
-            [param_name, is_last, this](MAVLinkParameters::Result result, ParamValue value) {
-                if (result != MAVLinkParameters::Result::Success) {
+            [param_name, is_last, this](MavlinkParameterSender::Result result, ParamValue value) {
+                if (result != MavlinkParameterSender::Result::Success) {
                     return;
                 }
                 // We need to check again by the time this callback runs

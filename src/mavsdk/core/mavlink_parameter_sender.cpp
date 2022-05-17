@@ -1,4 +1,4 @@
-#include "mavlink_parameters.h"
+#include "mavlink_parameter_sender.h"
 #include "mavlink_message_handler.h"
 #include "timeout_handler.h"
 #include "system_impl.h"
@@ -8,17 +8,15 @@
 
 namespace mavsdk {
 
-MAVLinkParameters::MAVLinkParameters(
+MavlinkParameterSender::MavlinkParameterSender(
     Sender& sender,
     MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
-    TimeoutSCallback timeout_s_callback,
-    bool is_server) :
+    TimeoutSCallback timeout_s_callback) :
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
-    _timeout_s_callback(timeout_s_callback),
-    _is_server(is_server)
+    _timeout_s_callback(timeout_s_callback)
 {
     if (const char* env_p = std::getenv("MAVSDK_PARAMETER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -27,105 +25,28 @@ MAVLinkParameters::MAVLinkParameters(
         }
     }
 
-    if (!_is_server) {
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_VALUE,
-            [this](const mavlink_message_t& message) { process_param_value(message); },
-            this);
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_PARAM_VALUE,
+        [this](const mavlink_message_t& message) { process_param_value(message); },
+        this);
 
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_EXT_VALUE,
-            [this](const mavlink_message_t& message) { process_param_ext_value(message); },
-            this);
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_PARAM_EXT_VALUE,
+        [this](const mavlink_message_t& message) { process_param_ext_value(message); },
+        this);
 
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_EXT_ACK,
-            [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
-            this);
-    }
-
-    if (_is_server) {
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_SET,
-            [this](const mavlink_message_t& message) { process_param_set(message); },
-            this);
-
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_EXT_SET,
-            [this](const mavlink_message_t& message) { process_param_ext_set(message); },
-            this);
-
-        // Parameter Server Callbacks
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_REQUEST_READ,
-            [this](const mavlink_message_t& message) { process_param_request_read(message); },
-            this);
-
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_REQUEST_LIST,
-            [this](const mavlink_message_t& message) { process_param_request_list(message); },
-            this);
-
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_EXT_REQUEST_READ,
-            [this](const mavlink_message_t& message) { process_param_ext_request_read(message); },
-            this);
-    }
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_PARAM_EXT_ACK,
+        [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
+        this);
 }
 
-MAVLinkParameters::~MAVLinkParameters()
+MavlinkParameterSender::~MavlinkParameterSender()
 {
     _message_handler.unregister_all(this);
 }
 
-MAVLinkParameters::Result
-MAVLinkParameters::provide_server_param_float(const std::string& name, float value)
-{
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        return Result::ParamNameTooLong;
-    }
-
-    ParamValue param_value;
-    param_value.set(value);
-    _all_params.insert_or_assign(name, param_value);
-    return Result::Success;
-}
-
-MAVLinkParameters::Result
-MAVLinkParameters::provide_server_param_int(const std::string& name, int value)
-{
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        return Result::ParamNameTooLong;
-    }
-
-    ParamValue param_value;
-    param_value.set(value);
-    _all_params.insert_or_assign(name, param_value);
-    return Result::Success;
-}
-
-MAVLinkParameters::Result
-MAVLinkParameters::provide_server_param_custom(const std::string& name, const std::string& value)
-{
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        return Result::ParamNameTooLong;
-    }
-
-    if (value.size() > sizeof(mavlink_param_ext_set_t::param_value)) {
-        LogErr() << "Error: param value too long";
-        return Result::ParamValueTooLong;
-    }
-
-    ParamValue param_value;
-    param_value.set(value);
-    _all_params.insert_or_assign(name, param_value);
-    return Result::Success;
-}
-
-MAVLinkParameters::Result MAVLinkParameters::set_param(
+MavlinkParameterSender::Result MavlinkParameterSender::set_param(
     const std::string& name,
     ParamValue value,
 
@@ -146,7 +67,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param(
     return res.get();
 }
 
-void MAVLinkParameters::set_param_async(
+void MavlinkParameterSender::set_param_async(
     const std::string& name,
     ParamValue value,
     const SetParamCallback& callback,
@@ -175,7 +96,7 @@ void MAVLinkParameters::set_param_async(
     _work_queue.push_back(new_work);
 }
 
-void MAVLinkParameters::set_param_int_async(
+void MavlinkParameterSender::set_param_int_async(
     const std::string& name,
     int32_t value,
     const SetParamCallback& callback,
@@ -222,7 +143,7 @@ void MAVLinkParameters::set_param_int_async(
     }
 }
 
-MAVLinkParameters::Result MAVLinkParameters::set_param_int(
+MavlinkParameterSender::Result MavlinkParameterSender::set_param_int(
     const std::string& name,
     int32_t value,
     std::optional<uint8_t> maybe_component_id,
@@ -242,7 +163,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param_int(
     return res.get();
 }
 
-void MAVLinkParameters::set_param_float_async(
+void MavlinkParameterSender::set_param_float_async(
     const std::string& name,
     float value,
     const SetParamCallback& callback,
@@ -274,7 +195,7 @@ void MAVLinkParameters::set_param_float_async(
     _work_queue.push_back(new_work);
 }
 
-MAVLinkParameters::Result MAVLinkParameters::set_param_float(
+MavlinkParameterSender::Result MavlinkParameterSender::set_param_float(
     const std::string& name, float value, std::optional<uint8_t> maybe_component_id, bool extended)
 {
     auto prom = std::promise<Result>();
@@ -291,7 +212,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param_float(
     return res.get();
 }
 
-void MAVLinkParameters::get_param_float_async(
+void MavlinkParameterSender::get_param_float_async(
     const std::string& name,
     const GetParamFloatCallback& callback,
     const void* cookie,
@@ -305,7 +226,7 @@ void MAVLinkParameters::get_param_float_async(
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
-            callback(MAVLinkParameters::Result::ParamNameTooLong, NAN);
+            callback(MavlinkParameterSender::Result::ParamNameTooLong, NAN);
         }
         return;
     }
@@ -326,7 +247,7 @@ void MAVLinkParameters::get_param_float_async(
     _work_queue.push_back(new_work);
 }
 
-void MAVLinkParameters::get_param_async(
+void MavlinkParameterSender::get_param_async(
     const std::string& name,
     ParamValue value,
     const GetParamAnyCallback& callback,
@@ -360,7 +281,7 @@ void MAVLinkParameters::get_param_async(
     _work_queue.push_back(new_work);
 }
 
-void MAVLinkParameters::get_param_int_async(
+void MavlinkParameterSender::get_param_int_async(
     const std::string& name,
     const GetParamIntCallback& callback,
     const void* cookie,
@@ -374,7 +295,7 @@ void MAVLinkParameters::get_param_int_async(
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
-            callback(MAVLinkParameters::Result::ParamNameTooLong, 0);
+            callback(MavlinkParameterSender::Result::ParamNameTooLong, 0);
         }
         return;
     }
@@ -392,8 +313,8 @@ void MAVLinkParameters::get_param_int_async(
     _work_queue.push_back(new_work);
 }
 
-MAVLinkParameters::Result
-MAVLinkParameters::set_param_custom(const std::string& name, const std::string& value)
+MavlinkParameterSender::Result
+MavlinkParameterSender::set_param_custom(const std::string& name, const std::string& value)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
@@ -404,7 +325,7 @@ MAVLinkParameters::set_param_custom(const std::string& name, const std::string& 
     return res.get();
 }
 
-void MAVLinkParameters::get_param_custom_async(
+void MavlinkParameterSender::get_param_custom_async(
     const std::string& name, const GetParamCustomCallback& callback, const void* cookie)
 {
     if (_parameter_debugging) {
@@ -414,7 +335,7 @@ void MAVLinkParameters::get_param_custom_async(
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
-            callback(MAVLinkParameters::Result::ParamNameTooLong, 0);
+            callback(MavlinkParameterSender::Result::ParamNameTooLong, 0);
         }
         return;
     }
@@ -431,7 +352,7 @@ void MAVLinkParameters::get_param_custom_async(
     _work_queue.push_back(new_work);
 }
 
-void MAVLinkParameters::set_param_custom_async(
+void MavlinkParameterSender::set_param_custom_async(
     const std::string& name,
     const std::string& value,
     const SetParamCallback& callback,
@@ -468,66 +389,8 @@ void MAVLinkParameters::set_param_custom_async(
     _work_queue.push_back(new_work);
 }
 
-std::map<std::string, ParamValue> MAVLinkParameters::retrieve_all_server_params()
-{
-    std::lock_guard<std::mutex> lock(_all_params_mutex);
-    return _all_params;
-}
-
-std::pair<MAVLinkParameters::Result, ParamValue>
-MAVLinkParameters::retrieve_server_param(const std::string& name, ParamValue value_type)
-{
-    if (_all_params.find(name) != _all_params.end()) {
-        auto value = _all_params.at(name);
-        if (value.is_same_type(value_type))
-            return {MAVLinkParameters::Result::Success, value};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
-    }
-    return {MAVLinkParameters::Result::NotFound, {}};
-}
-
-std::pair<MAVLinkParameters::Result, float>
-MAVLinkParameters::retrieve_server_param_float(const std::string& name)
-{
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_float();
-        if (maybe_value)
-            return {MAVLinkParameters::Result::Success, maybe_value.value()};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
-    }
-    return {MAVLinkParameters::Result::NotFound, {}};
-}
-
-std::pair<MAVLinkParameters::Result, std::string>
-MAVLinkParameters::retrieve_server_param_custom(const std::string& name)
-{
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_custom();
-        if (maybe_value)
-            return {MAVLinkParameters::Result::Success, maybe_value.value()};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
-    }
-    return {MAVLinkParameters::Result::NotFound, {}};
-}
-
-std::pair<MAVLinkParameters::Result, int>
-MAVLinkParameters::retrieve_server_param_int(const std::string& name)
-{
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_int();
-        if (maybe_value)
-            return {MAVLinkParameters::Result::Success, maybe_value.value()};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
-    }
-    return {MAVLinkParameters::Result::NotFound, {}};
-}
-
-std::pair<MAVLinkParameters::Result, ParamValue>
-MAVLinkParameters::get_param(const std::string& name, ParamValue value, bool extended)
+std::pair<MavlinkParameterSender::Result, ParamValue>
+MavlinkParameterSender::get_param(const std::string& name, ParamValue value, bool extended)
 {
     auto prom = std::promise<std::pair<Result, ParamValue>>();
     auto res = prom.get_future();
@@ -544,7 +407,7 @@ MAVLinkParameters::get_param(const std::string& name, ParamValue value, bool ext
     return res.get();
 }
 
-std::pair<MAVLinkParameters::Result, int32_t> MAVLinkParameters::get_param_int(
+std::pair<MavlinkParameterSender::Result, int32_t> MavlinkParameterSender::get_param_int(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
     auto prom = std::promise<std::pair<Result, int32_t>>();
@@ -560,7 +423,7 @@ std::pair<MAVLinkParameters::Result, int32_t> MAVLinkParameters::get_param_int(
     return res.get();
 }
 
-std::pair<MAVLinkParameters::Result, float> MAVLinkParameters::get_param_float(
+std::pair<MavlinkParameterSender::Result, float> MavlinkParameterSender::get_param_float(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
     auto prom = std::promise<std::pair<Result, float>>();
@@ -576,8 +439,8 @@ std::pair<MAVLinkParameters::Result, float> MAVLinkParameters::get_param_float(
     return res.get();
 }
 
-std::pair<MAVLinkParameters::Result, std::string>
-MAVLinkParameters::get_param_custom(const std::string& name)
+std::pair<MavlinkParameterSender::Result, std::string>
+MavlinkParameterSender::get_param_custom(const std::string& name)
 {
     auto prom = std::promise<std::pair<Result, std::string>>();
     auto res = prom.get_future();
@@ -592,7 +455,7 @@ MAVLinkParameters::get_param_custom(const std::string& name)
     return res.get();
 }
 
-void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callback)
+void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& callback)
 {
     std::unique_lock<std::mutex> lock(_all_params_mutex);
 
@@ -617,7 +480,7 @@ void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callbac
         [this] { receive_timeout(); }, _timeout_s_callback(), &_all_params_timeout_cookie);
 }
 
-std::map<std::string, ParamValue> MAVLinkParameters::get_all_params()
+std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params()
 {
     std::promise<std::map<std::string, ParamValue>> prom;
     auto res = prom.get_future();
@@ -629,7 +492,7 @@ std::map<std::string, ParamValue> MAVLinkParameters::get_all_params()
     return res.get();
 }
 
-void MAVLinkParameters::cancel_all_param(const void* cookie)
+void MavlinkParameterSender::cancel_all_param(const void* cookie)
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
 
@@ -642,9 +505,9 @@ void MAVLinkParameters::cancel_all_param(const void* cookie)
     }
 }
 
-void MAVLinkParameters::subscribe_param_float_changed(
+void MavlinkParameterSender::subscribe_param_float_changed(
     const std::string& name,
-    const MAVLinkParameters::ParamFloatChangedCallback& callback,
+    const MavlinkParameterSender::ParamFloatChangedCallback& callback,
     const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
@@ -673,9 +536,9 @@ void MAVLinkParameters::subscribe_param_float_changed(
     }
 }
 
-void MAVLinkParameters::subscribe_param_int_changed(
+void MavlinkParameterSender::subscribe_param_int_changed(
     const std::string& name,
-    const MAVLinkParameters::ParamIntChangedCallback& callback,
+    const MavlinkParameterSender::ParamIntChangedCallback& callback,
     const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
@@ -704,9 +567,9 @@ void MAVLinkParameters::subscribe_param_int_changed(
     }
 }
 
-void MAVLinkParameters::subscribe_param_custom_changed(
+void MavlinkParameterSender::subscribe_param_custom_changed(
     const std::string& name,
-    const MAVLinkParameters::ParamCustomChangedCallback& callback,
+    const MavlinkParameterSender::ParamCustomChangedCallback& callback,
     const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
@@ -735,7 +598,7 @@ void MAVLinkParameters::subscribe_param_custom_changed(
     }
 }
 
-void MAVLinkParameters::do_work()
+void MavlinkParameterSender::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -774,7 +637,7 @@ void MAVLinkParameters::do_work()
                     if (std::get_if<SetParamCallback>(&work->callback)) {
                         const auto& callback = std::get<SetParamCallback>(work->callback);
                         if (callback) {
-                            callback(MAVLinkParameters::Result::Failed);
+                            callback(MavlinkParameterSender::Result::Failed);
                         }
                     }
                     work_queue_guard.pop_front();
@@ -827,7 +690,7 @@ void MAVLinkParameters::do_work()
                 if (std::get_if<SetParamCallback>(&work->callback)) {
                     const auto& callback = std::get<SetParamCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::ConnectionError);
+                        callback(MavlinkParameterSender::Result::ConnectionError);
                     }
                 }
                 work_queue_guard.pop_front();
@@ -900,73 +763,10 @@ void MAVLinkParameters::do_work()
             _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
 
         } break;
-
-        case WorkItem::Type::Value: {
-            if (work->extended) {
-                auto buf = work->param_value.get_128_bytes();
-                mavlink_msg_param_ext_value_pack(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
-                    &work->mavlink_message,
-                    param_id,
-                    buf.data(),
-                    work->param_value.get_mav_param_ext_type(),
-                    work->param_count,
-                    work->param_index);
-            } else {
-                float param_value;
-                if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
-                    param_value = work->param_value.get_4_float_bytes_cast();
-                } else {
-                    param_value = work->param_value.get_4_float_bytes_bytewise();
-                }
-                mavlink_msg_param_value_pack(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
-                    &work->mavlink_message,
-                    param_id,
-                    param_value,
-                    work->param_value.get_mav_param_type(),
-                    work->param_count,
-                    work->param_index);
-            }
-
-            if (!_sender.send_message(work->mavlink_message)) {
-                LogErr() << "Error: Send message failed";
-                work_queue_guard.pop_front();
-                return;
-            }
-
-            // As we're a server in this case we don't need any response
-            work_queue_guard.pop_front();
-        } break;
-
-        case WorkItem::Type::Ack: {
-            if (work->extended) {
-                auto buf = work->param_value.get_128_bytes();
-                mavlink_msg_param_ext_ack_pack(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
-                    &work->mavlink_message,
-                    param_id,
-                    buf.data(),
-                    work->param_value.get_mav_param_ext_type(),
-                    PARAM_ACK_ACCEPTED);
-            }
-
-            if (!work->extended || !_sender.send_message(work->mavlink_message)) {
-                LogErr() << "Error: Send message failed";
-                work_queue_guard.pop_front();
-                return;
-            }
-
-            // As we're a server in this case we don't need any response
-            work_queue_guard.pop_front();
-        } break;
     }
 }
 
-void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
+void MavlinkParameterSender::process_param_value(const mavlink_message_t& message)
 {
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
@@ -1073,7 +873,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             if (std::get_if<SetParamCallback>(&work->callback)) {
                 const auto& callback = std::get<SetParamCallback>(work->callback);
                 if (callback) {
-                    callback(MAVLinkParameters::Result::Success);
+                    callback(MavlinkParameterSender::Result::Success);
                 }
             }
 
@@ -1087,7 +887,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     }
 }
 
-void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& param_value)
+void MavlinkParameterSender::notify_param_subscriptions(const mavlink_param_value_t& param_value)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
 
@@ -1113,7 +913,7 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
     }
 }
 
-void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message)
+void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& message)
 {
     if (_parameter_debugging) {
         LogDebug() << "getting param ext value";
@@ -1147,18 +947,20 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
                     const auto& callback = std::get<GetParamFloatCallback>(work->callback);
                     if (callback) {
                         if (value.get_float()) {
-                            callback(MAVLinkParameters::Result::Success, value.get_float().value());
+                            callback(
+                                MavlinkParameterSender::Result::Success, value.get_float().value());
                         } else {
-                            callback(MAVLinkParameters::Result::WrongType, NAN);
+                            callback(MavlinkParameterSender::Result::WrongType, NAN);
                         }
                     }
                 } else if (std::get_if<GetParamIntCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamIntCallback>(work->callback);
                     if (callback) {
                         if (value.get_int()) {
-                            callback(MAVLinkParameters::Result::Success, value.get_int().value());
+                            callback(
+                                MavlinkParameterSender::Result::Success, value.get_int().value());
                         } else {
-                            callback(MAVLinkParameters::Result::WrongType, 0);
+                            callback(MavlinkParameterSender::Result::WrongType, 0);
                         }
                     }
                 } else if (std::get_if<GetParamCustomCallback>(&work->callback)) {
@@ -1166,15 +968,16 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
                     if (callback) {
                         if (value.get_custom()) {
                             callback(
-                                MAVLinkParameters::Result::Success, value.get_custom().value());
+                                MavlinkParameterSender::Result::Success,
+                                value.get_custom().value());
                         } else {
-                            callback(MAVLinkParameters::Result::WrongType, 0);
+                            callback(MavlinkParameterSender::Result::WrongType, 0);
                         }
                     }
                 } else if (std::get_if<GetParamAnyCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamAnyCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::Success, value);
+                        callback(MavlinkParameterSender::Result::Success, value);
                     }
                 }
             } else {
@@ -1183,22 +986,22 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
                 if (std::get_if<GetParamFloatCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamFloatCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, NAN);
+                        callback(MavlinkParameterSender::Result::WrongType, NAN);
                     }
                 } else if (std::get_if<GetParamIntCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamIntCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, 0);
+                        callback(MavlinkParameterSender::Result::WrongType, 0);
                     }
                 } else if (std::get_if<GetParamCustomCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamCustomCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, {});
+                        callback(MavlinkParameterSender::Result::WrongType, {});
                     }
                 } else if (std::get_if<GetParamAnyCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamAnyCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, ParamValue{});
+                        callback(MavlinkParameterSender::Result::WrongType, ParamValue{});
                     }
                 }
             }
@@ -1217,7 +1020,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
     }
 }
 
-void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
+void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& message)
 {
     // LogDebug() << "getting param ext ack";
 
@@ -1251,7 +1054,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
                 if (std::get_if<SetParamCallback>(&work->callback)) {
                     const auto& callback = std::get<SetParamCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::Success);
+                        callback(MavlinkParameterSender::Result::Success);
                     }
                 }
 
@@ -1274,11 +1077,11 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
                         auto result = [&]() {
                             switch (param_ext_ack.param_result) {
                                 case PARAM_ACK_FAILED:
-                                    return MAVLinkParameters::Result::Failed;
+                                    return MavlinkParameterSender::Result::Failed;
                                 case PARAM_ACK_VALUE_UNSUPPORTED:
-                                    return MAVLinkParameters::Result::ValueUnsupported;
+                                    return MavlinkParameterSender::Result::ValueUnsupported;
                                 default:
-                                    return MAVLinkParameters::Result::UnknownError;
+                                    return MavlinkParameterSender::Result::UnknownError;
                             }
                         }();
                         callback(result);
@@ -1296,53 +1099,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
     }
 }
 
-void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
-{
-    mavlink_param_ext_set_t set_request{};
-    mavlink_msg_param_ext_set_decode(&message, &set_request);
-
-    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
-    if (!safe_param_id.empty()) {
-        LogDebug() << "Set Param Request: " << safe_param_id;
-        {
-            // Use the ID
-            std::lock_guard<std::mutex> lock(_all_params_mutex);
-            ParamValue value{};
-            if (!value.set_from_mavlink_param_ext_set(set_request)) {
-                LogWarn() << "Invalid Param Ext Set Request: " << safe_param_id;
-                return;
-            }
-            _all_params[safe_param_id] = value;
-        }
-
-        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-        new_work->type = WorkItem::Type::Ack;
-        new_work->param_name = safe_param_id;
-        new_work->param_value = _all_params[safe_param_id];
-        new_work->extended = true;
-        _work_queue.push_back(new_work);
-        std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-        for (const auto& subscription : _param_changed_subscriptions) {
-            if (subscription.param_name != safe_param_id) {
-                continue;
-            }
-
-            if (!subscription.any_type &&
-                !subscription.value_type.is_same_type(new_work->param_value)) {
-                LogErr() << "Received wrong param type in subscription for "
-                         << subscription.param_name;
-                continue;
-            }
-
-            call_param_changed_callback(subscription.callback, new_work->param_value);
-        }
-    } else {
-        LogWarn() << "Invalid Param Ext Set ID Request: " << safe_param_id;
-    }
-}
-
-void MAVLinkParameters::receive_timeout()
+void MavlinkParameterSender::receive_timeout()
 {
     {
         std::unique_lock<std::mutex> lock(_all_params_mutex);
@@ -1407,12 +1164,12 @@ void MAVLinkParameters::receive_timeout()
                 if (std::get_if<GetParamFloatCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamFloatCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::Timeout, NAN);
+                        callback(MavlinkParameterSender::Result::Timeout, NAN);
                     }
                 } else if (std::get_if<GetParamIntCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamIntCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::Timeout, 0);
+                        callback(MavlinkParameterSender::Result::Timeout, 0);
                     }
                 }
             }
@@ -1428,7 +1185,7 @@ void MAVLinkParameters::receive_timeout()
                     if (std::get_if<SetParamCallback>(&work->callback)) {
                         const auto& callback = std::get<SetParamCallback>(work->callback);
                         if (callback) {
-                            callback(MAVLinkParameters::Result::ConnectionError);
+                            callback(MavlinkParameterSender::Result::ConnectionError);
                         }
                     }
                 } else {
@@ -1444,7 +1201,7 @@ void MAVLinkParameters::receive_timeout()
                 if (std::get_if<SetParamCallback>(&work->callback)) {
                     const auto& callback = std::get<SetParamCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::Timeout);
+                        callback(MavlinkParameterSender::Result::Timeout);
                     }
                 }
             }
@@ -1454,7 +1211,7 @@ void MAVLinkParameters::receive_timeout()
     }
 }
 
-std::string MAVLinkParameters::extract_safe_param_id(const char param_id[])
+std::string MavlinkParameterSender::extract_safe_param_id(const char param_id[])
 {
     // The param_id field of the MAVLink struct has length 16 and is not 0 terminated.
     // Therefore, we make a 0 terminated copy first.
@@ -1463,55 +1220,7 @@ std::string MAVLinkParameters::extract_safe_param_id(const char param_id[])
     return {param_id_long_enough};
 }
 
-void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
-{
-    mavlink_param_set_t set_request{};
-    mavlink_msg_param_set_decode(&message, &set_request);
-
-    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
-    if (!safe_param_id.empty()) {
-        LogDebug() << "Set Param Request: " << safe_param_id << " with value "
-                   << *(int32_t*)(&set_request.param_value);
-
-        // Use the ID
-        if (_all_params.find(safe_param_id) != _all_params.end()) {
-            ParamValue value{};
-            if (!value.set_from_mavlink_param_set_bytewise(set_request)) {
-                LogWarn() << "Invalid Param Set Request: " << safe_param_id;
-                return;
-            }
-
-            LogDebug() << "Changing param from " << _all_params[safe_param_id] << " to " << value;
-            _all_params[safe_param_id] = value;
-
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
-            new_work->param_value = _all_params.at(safe_param_id);
-            new_work->extended = false;
-            _work_queue.push_back(new_work);
-            std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-            for (const auto& subscription : _param_changed_subscriptions) {
-                if (subscription.param_name != safe_param_id) {
-                    continue;
-                }
-                if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
-                    LogErr() << "Received wrong param type in subscription for "
-                             << subscription.param_name;
-                    continue;
-                }
-
-                call_param_changed_callback(subscription.callback, value);
-            }
-        } else {
-            LogDebug() << "Missing Param: " << safe_param_id << "(this: " << this << ")";
-        }
-    } else {
-        LogWarn() << "Invalid Param Set ID Request: " << safe_param_id;
-    }
-}
-
-void MAVLinkParameters::call_param_changed_callback(
+void MavlinkParameterSender::call_param_changed_callback(
     const ParamChangedCallbacks& callback, const ParamValue& value)
 {
     if (std::get_if<ParamFloatChangedCallback>(&callback) && value.get_float()) {
@@ -1527,93 +1236,26 @@ void MAVLinkParameters::call_param_changed_callback(
     }
 }
 
-void MAVLinkParameters::process_param_request_read(const mavlink_message_t& message)
-{
-    mavlink_param_request_read_t read_request{};
-    mavlink_msg_param_request_read_decode(&message, &read_request);
-
-    std::string param_id = extract_safe_param_id(read_request.param_id);
-
-    if (read_request.param_index == -1) {
-        auto safe_param_id = extract_safe_param_id(read_request.param_id);
-        LogDebug() << "Request Param " << safe_param_id;
-
-        // Use the ID
-        if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
-            new_work->param_value = _all_params.at(safe_param_id);
-            new_work->extended = false;
-            _work_queue.push_back(new_work);
-        } else {
-            LogDebug() << "Missing Param " << safe_param_id;
-        }
-    }
-}
-
-void MAVLinkParameters::process_param_request_list(const mavlink_message_t& message)
-{
-    mavlink_param_request_list_t list_request{};
-    mavlink_msg_param_request_list_decode(&message, &list_request);
-
-    auto idx = 0;
-    for (const auto& pair : _all_params) {
-        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-        new_work->type = WorkItem::Type::Value;
-        new_work->param_name = pair.first;
-        new_work->param_value = pair.second;
-        new_work->extended = false;
-        new_work->param_count = static_cast<int>(_all_params.size());
-        new_work->param_index = idx++;
-        _work_queue.push_back(new_work);
-    }
-}
-
-void MAVLinkParameters::process_param_ext_request_read(const mavlink_message_t& message)
-{
-    mavlink_param_request_read_t read_request{};
-    mavlink_msg_param_request_read_decode(&message, &read_request);
-
-    std::string param_id = extract_safe_param_id(read_request.param_id);
-
-    if (read_request.param_index == -1) {
-        auto safe_param_id = extract_safe_param_id(read_request.param_id);
-        LogDebug() << "Request Param " << safe_param_id;
-        // Use the ID
-        if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
-            new_work->param_value = _all_params.at(safe_param_id);
-            new_work->extended = true;
-            _work_queue.push_back(new_work);
-        } else {
-            LogDebug() << "Missing Param " << safe_param_id;
-        }
-    }
-}
-
-std::ostream& operator<<(std::ostream& str, const MAVLinkParameters::Result& result)
+std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::Result& result)
 {
     switch (result) {
-        case MAVLinkParameters::Result::Success:
+        case MavlinkParameterSender::Result::Success:
             return str << "Success";
-        case MAVLinkParameters::Result::Timeout:
+        case MavlinkParameterSender::Result::Timeout:
             return str << "Timeout";
-        case MAVLinkParameters::Result::ConnectionError:
+        case MavlinkParameterSender::Result::ConnectionError:
             return str << "ConnectionError";
-        case MAVLinkParameters::Result::WrongType:
+        case MavlinkParameterSender::Result::WrongType:
             return str << "WrongType";
-        case MAVLinkParameters::Result::ParamNameTooLong:
+        case MavlinkParameterSender::Result::ParamNameTooLong:
             return str << "ParamNameTooLong";
-        case MAVLinkParameters::Result::NotFound:
+        case MavlinkParameterSender::Result::NotFound:
             return str << "NotFound";
-        case MAVLinkParameters::Result::ValueUnsupported:
+        case MavlinkParameterSender::Result::ValueUnsupported:
             return str << "ValueUnsupported";
-        case MAVLinkParameters::Result::Failed:
+        case MavlinkParameterSender::Result::Failed:
             return str << "Failed";
-        case MAVLinkParameters::Result::UnknownError:
+        case MavlinkParameterSender::Result::UnknownError:
             // Fallthrough
         default:
             return str << "UnknownError";

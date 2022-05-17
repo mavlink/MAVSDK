@@ -193,7 +193,7 @@ void ComponentInformationImpl::parse_parameter_file(const std::string& path)
 
             _parent->get_param_float_async(
                 name,
-                [this, name](MAVLinkParameters::Result result, float value) {
+                [this, name](MavlinkParameterSender::Result result, float value) {
                     get_float_param_result(name, result, value);
                 },
                 this);
@@ -208,9 +208,9 @@ void ComponentInformationImpl::parse_parameter_file(const std::string& path)
 }
 
 void ComponentInformationImpl::get_float_param_result(
-    const std::string& name, MAVLinkParameters::Result result, float value)
+    const std::string& name, MavlinkParameterSender::Result result, float value)
 {
-    if (result != MAVLinkParameters::Result::Success) {
+    if (result != MavlinkParameterSender::Result::Success) {
         LogWarn() << "Getting float param result: " << static_cast<int>(result);
         return;
     }

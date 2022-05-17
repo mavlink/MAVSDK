@@ -35,7 +35,8 @@ public:
     Param::AllParams get_all_params();
 
 private:
-    static Param::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
+    static Param::Result
+    result_from_mavlink_parameter_sender_result(MavlinkParameterSender::Result result);
 };
 
 } // namespace mavsdk

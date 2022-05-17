@@ -64,9 +64,9 @@ ComponentInformationServerImpl::provide_float_param(ComponentInformationServer::
 
     update_json_files_with_lock();
 
-    _server_component_impl->mavlink_parameters().provide_server_param_float(
+    _server_component_impl->mavlink_parameter_receiver().provide_server_param_float(
         param.name, param.start_value);
-    _server_component_impl->mavlink_parameters().subscribe_param_float_changed(
+    _server_component_impl->mavlink_parameter_receiver().subscribe_param_float_changed(
         param.name,
         [this, name = param.name](float new_value) { param_update(name, new_value); },
         this);

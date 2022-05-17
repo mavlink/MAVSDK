@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mavlink_parameters.h"
+#include "mavlink_parameter_sender.h"
 #include <tinyxml2.h>
 #include <vector>
 #include <memory>
