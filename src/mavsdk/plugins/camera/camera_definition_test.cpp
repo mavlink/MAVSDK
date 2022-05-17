@@ -42,7 +42,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     cd.assume_default_settings();
 
     {
-        std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
+        std::unordered_map<std::string, ParamValue> settings{};
         EXPECT_TRUE(cd.get_all_settings(settings));
         EXPECT_EQ(settings.size(), 17);
 
@@ -67,13 +67,13 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
 
     // Get only settings for video mode.
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(1);
         EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
     }
 
     {
-        std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
+        std::unordered_map<std::string, ParamValue> settings{};
         EXPECT_TRUE(cd.get_possible_settings(settings));
         EXPECT_EQ(settings.size(), 6);
         // LogDebug() << "Found settings:";
@@ -84,13 +84,13 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
 
     // Get only settings for photo mode.
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(0);
         EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
     }
 
     {
-        std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
+        std::unordered_map<std::string, ParamValue> settings{};
         EXPECT_TRUE(cd.get_possible_settings(settings));
         EXPECT_EQ(settings.size(), 9);
         // LogDebug() << "Found settings:";
@@ -110,70 +110,70 @@ TEST(CameraDefinition, E90ChangeSettings)
 
     {
         // Check default
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 0);
     }
 
     {
         // We can only set CAM_COLORMODE in photo mode
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(0);
         ASSERT_TRUE(cd.set_setting("CAM_MODE", value));
     }
 
     {
         // Set WBMODE to 1
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(1);
         EXPECT_TRUE(cd.set_setting("CAM_WBMODE", value));
     }
 
     {
         // Check if WBMODE was correctly set
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 1);
     }
 
     {
         // Interleave COLORMODE, first check default
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         ASSERT_TRUE(cd.get_setting("CAM_COLORMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 1);
     }
 
     {
         // Then set COLORMODE to 5
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(5);
         ASSERT_TRUE(cd.set_setting("CAM_COLORMODE", value));
     }
 
     {
         // COLORMODE should now be 5
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         ASSERT_TRUE(cd.get_setting("CAM_COLORMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 5);
     }
 
     {
         // WBMODE should still be 1
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 1);
     }
 
     {
         // Change WBMODE to 7
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(7);
         ASSERT_TRUE(cd.set_setting("CAM_WBMODE", value));
     }
 
     {
         // And check WBMODE again
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         ASSERT_TRUE(cd.get_setting("CAM_WBMODE", value));
         EXPECT_EQ(value.get<uint32_t>(), 7);
     }
@@ -188,88 +188,88 @@ TEST(CameraDefinition, E90ShowOptions)
     cd.assume_default_settings();
 
     {
-        std::vector<MAVLinkParameters::ParamValue> values;
+        std::vector<ParamValue> values;
         EXPECT_TRUE(cd.get_all_options("CAM_WBMODE", values));
         EXPECT_EQ(values.size(), 8);
     }
 
     {
-        std::vector<MAVLinkParameters::ParamValue> values;
+        std::vector<ParamValue> values;
         EXPECT_TRUE(cd.get_all_options("CAM_SHUTTERSPD", values));
         EXPECT_EQ(values.size(), 19);
     }
 
     {
         // Currently not applicable because exposure mode is in Auto.
-        std::vector<MAVLinkParameters::ParamValue> values;
+        std::vector<ParamValue> values;
         EXPECT_FALSE(cd.get_possible_options("CAM_SHUTTERSPD", values));
         EXPECT_EQ(values.size(), 0);
     }
 
     {
         // Set exposure mode to manual
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(1);
         EXPECT_TRUE(cd.set_setting("CAM_EXPMODE", value));
 
         // Currently not applicable because exposure mode is in Auto.
-        std::vector<MAVLinkParameters::ParamValue> values;
+        std::vector<ParamValue> values;
         EXPECT_TRUE(cd.get_possible_options("CAM_SHUTTERSPD", values));
         EXPECT_EQ(values.size(), 12);
     }
 
     {
         // Test VIDRES without range restrictions in h.264.
-        std::vector<MAVLinkParameters::ParamValue> values;
+        std::vector<ParamValue> values;
         EXPECT_TRUE(cd.get_possible_options("CAM_VIDRES", values));
         EXPECT_EQ(values.size(), 32);
     }
 
     {
         // Set it to one that is allowed.
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(3);
         EXPECT_TRUE(cd.set_setting("CAM_VIDRES", value));
     }
 
     {
         // Now switch to HEVC
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(3);
         EXPECT_TRUE(cd.set_setting("CAM_VIDFMT", value));
     }
 
     {
         // Test VIDRES with range restrictions in HEVC.
-        std::vector<MAVLinkParameters::ParamValue> values;
+        std::vector<ParamValue> values;
         EXPECT_TRUE(cd.get_possible_options("CAM_VIDRES", values));
         EXPECT_EQ(values.size(), 26);
     }
 
     {
         // Then one that is allowed.
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(5);
         EXPECT_TRUE(cd.set_setting("CAM_VIDRES", value));
     }
 
     {
         // Back to h.264
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(1);
         EXPECT_TRUE(cd.set_setting("CAM_VIDFMT", value));
     }
 
     {
         // Test VIDRES without range restrictions in h.264.
-        std::vector<MAVLinkParameters::ParamValue> values;
+        std::vector<ParamValue> values;
         EXPECT_TRUE(cd.get_possible_options("CAM_VIDRES", values));
         EXPECT_EQ(values.size(), 32);
     }
 
     {
         // And 4K 60 Hz is now allowed again.
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(0);
         EXPECT_TRUE(cd.set_setting("CAM_VIDRES", value));
     }
@@ -282,20 +282,20 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
     {
-        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
+        std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 17);
     }
 
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(1);
         EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
     }
 
     // Now that we set one param it should be less that we need to fetch.
     {
-        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
+        std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 16);
     }
@@ -303,7 +303,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     cd.set_all_params_unknown();
 
     {
-        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
+        std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 17);
     }
@@ -318,7 +318,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
     cd.assume_default_settings();
 
     {
-        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
+        std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 0);
         for (const auto& param : params) {
@@ -327,14 +327,14 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
     }
 
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<uint32_t>(0);
         EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
     }
 
     // Now that we set one param it should be less that we need to fetch.
     {
-        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
+        std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 4);
 
@@ -378,10 +378,10 @@ TEST(CameraDefinition, E90OptionValues)
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
-    MAVLinkParameters::ParamValue value1;
+    ParamValue value1;
     value1.set<float>(0.02f);
 
-    MAVLinkParameters::ParamValue value2;
+    ParamValue value2;
 
     // First try the invalid case.
     EXPECT_FALSE(cd.get_option_value("CAM_BLABLA", "0.02", value2));
@@ -517,7 +517,7 @@ TEST(CameraDefinition, UVCCheckDefaultSettings)
 
     cd.assume_default_settings();
 
-    std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
+    std::unordered_map<std::string, ParamValue> settings{};
     EXPECT_TRUE(cd.get_all_settings(settings));
     EXPECT_EQ(settings.size(), 13);
 
@@ -549,25 +549,25 @@ TEST(CameraDefinition, UVCCheckPossibleSettings)
 
     // Get only settings for WB mode Auto.
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<int32_t>(1);
         EXPECT_TRUE(cd.set_setting("wb-mode", value));
     }
 
     // And exposure mode aperture priority.
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<int32_t>(3);
         EXPECT_TRUE(cd.set_setting("exp-mode", value));
     }
 
-    std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings{};
+    std::unordered_map<std::string, ParamValue> settings{};
     EXPECT_TRUE(cd.get_possible_settings(settings));
     EXPECT_EQ(settings.size(), 10);
 
     // With exposure mode manual we will have one more setting.
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<int32_t>(1);
         EXPECT_TRUE(cd.set_setting("exp-mode", value));
     }
@@ -583,21 +583,21 @@ TEST(CameraDefinition, UVCSetRangeSetting)
     ASSERT_TRUE(cd.load_file(uvc_unit_test_file));
 
     {
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<int32_t>(200);
         EXPECT_TRUE(cd.set_setting("brightness", value));
     }
 
     {
         // Try too big.
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<int32_t>(400);
         EXPECT_FALSE(cd.set_setting("brightness", value));
     }
 
     {
         // Try too small.
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         value.set<int32_t>(-100);
         EXPECT_FALSE(cd.set_setting("brightness", value));
     }

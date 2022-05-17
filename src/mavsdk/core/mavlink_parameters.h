@@ -4,12 +4,12 @@
 #include "mavlink_include.h"
 #include "timeout_s_callback.h"
 #include "locked_queue.h"
+#include "param_value.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <string>
 #include <functional>
-#include <cassert>
 #include <vector>
 #include <map>
 #include <optional>
@@ -21,17 +21,6 @@ class Sender;
 class MavlinkMessageHandler;
 class TimeoutHandler;
 
-// std::to_string doesn't work for std::string, so we need this workaround.
-template<typename T> std::string to_string(T&& value)
-{
-    return std::to_string(std::forward<T>(value));
-}
-
-inline std::string& to_string(std::string& value)
-{
-    return value;
-}
-
 class MAVLinkParameters {
 public:
     MAVLinkParameters() = delete;
@@ -42,96 +31,6 @@ public:
         TimeoutSCallback timeout_s_callback,
         bool is_server);
     ~MAVLinkParameters();
-
-    class ParamValue {
-    public:
-        bool set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value);
-        bool set_from_mavlink_param_value_cast(const mavlink_param_value_t& mavlink_value);
-        bool set_from_mavlink_param_set_bytewise(const mavlink_param_set_t& mavlink_set);
-        bool set_from_mavlink_param_ext_set(const mavlink_param_ext_set_t& mavlink_ext_set);
-        bool set_from_mavlink_param_ext_value(const mavlink_param_ext_value_t& mavlink_ext_value);
-        bool set_from_xml(const std::string& type_str, const std::string& value_str);
-        bool set_empty_type_from_xml(const std::string& type_str);
-
-        [[nodiscard]] MAV_PARAM_TYPE get_mav_param_type() const;
-        [[nodiscard]] MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const;
-
-        bool set_as_same_type(const std::string& value_str);
-
-        [[nodiscard]] float get_4_float_bytes_bytewise() const;
-        [[nodiscard]] float get_4_float_bytes_cast() const;
-
-        [[nodiscard]] std::optional<int> get_int() const;
-        [[nodiscard]] std::optional<float> get_float() const;
-        [[nodiscard]] std::optional<std::string> get_custom() const;
-
-        bool set_int(int new_value);
-        void set_float(float new_value);
-        void set_custom(const std::string& new_value);
-
-        std::array<char, 128> get_128_bytes() const;
-
-        [[nodiscard]] std::string get_string() const;
-
-        template<typename T>[[nodiscard]] bool is() const
-        {
-            return (std::get_if<T>(&_value) != nullptr);
-        }
-
-        template<typename T> T get() const { return std::get<T>(_value); }
-
-        template<typename T> void set(T new_value) { _value = new_value; }
-
-        [[nodiscard]] bool is_same_type(const ParamValue& rhs) const;
-
-        bool operator==(const ParamValue& rhs) const
-        {
-            if (!is_same_type(rhs)) {
-                LogWarn() << "Trying to compare different types.";
-                return false;
-            }
-
-            return _value == rhs._value;
-        }
-
-        bool operator<(const ParamValue& rhs) const
-        {
-            if (!is_same_type(rhs)) {
-                LogWarn() << "Trying to compare different types.";
-                return false;
-            }
-
-            return _value < rhs._value;
-        }
-
-        bool operator>(const ParamValue& rhs) const
-        {
-            if (!is_same_type(rhs)) {
-                LogWarn() << "Trying to compare different types.";
-                return false;
-            }
-
-            return _value > rhs._value;
-        }
-
-        bool operator==(const std::string& value_str) const;
-
-        [[nodiscard]] std::string typestr() const;
-
-        std::variant<
-            uint8_t,
-            int8_t,
-            uint16_t,
-            int16_t,
-            uint32_t,
-            int32_t,
-            uint64_t,
-            int64_t,
-            float,
-            double,
-            std::string>
-            _value{};
-    };
 
     enum class Result {
         Success,
@@ -202,7 +101,7 @@ public:
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int value);
     Result provide_server_param_custom(const std::string& name, const std::string& value);
-    std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
+    std::map<std::string, ParamValue> retrieve_all_server_params();
 
     std::pair<Result, ParamValue>
     retrieve_server_param(const std::string& name, ParamValue value_type);
@@ -254,9 +153,8 @@ public:
     void get_param_custom_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
-    std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
-    using GetAllParamsCallback =
-        std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>;
+    std::map<std::string, ParamValue> get_all_params();
+    using GetAllParamsCallback = std::function<void(std::map<std::string, ParamValue>)>;
     void get_all_params_async(const GetAllParamsCallback& callback);
 
     using ParamFloatChangedCallback = std::function<void(float value)>;
@@ -274,8 +172,6 @@ public:
     void cancel_all_param(const void* cookie);
 
     void do_work();
-
-    friend std::ostream& operator<<(std::ostream&, const ParamValue&);
 
     friend std::ostream& operator<<(std::ostream&, const Result&);
 

@@ -28,6 +28,7 @@ target_sources(mavsdk
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp
     mavlink_message_handler.cpp
+    param_value.cpp
     ping.cpp
     plugin_impl_base.cpp
     serial_connection.cpp

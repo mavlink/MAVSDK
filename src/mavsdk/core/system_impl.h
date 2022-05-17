@@ -126,7 +126,7 @@ public:
 
     MAVLinkParameters::Result set_param(
         const std::string& name,
-        MAVLinkParameters::ParamValue value,
+        ParamValue value,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
@@ -142,7 +142,7 @@ public:
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
-    std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
+    std::map<std::string, ParamValue> get_all_params();
 
     MAVLinkParameters::Result set_param_custom(const std::string& name, const std::string& value);
 
@@ -174,7 +174,7 @@ public:
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     using GetParamAnyCallback =
-        std::function<void(MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value)>;
+        std::function<void(MAVLinkParameters::Result result, ParamValue value)>;
     using GetParamFloatCallback =
         std::function<void(MAVLinkParameters::Result result, float value)>;
     using GetParamIntCallback =
@@ -190,7 +190,7 @@ public:
     // the callback can just be set to nullptr.
     void get_param_async(
         const std::string& name,
-        MAVLinkParameters::ParamValue value,
+        ParamValue value,
         const GetParamAnyCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id = {},
@@ -214,7 +214,7 @@ public:
 
     void set_param_async(
         const std::string& name,
-        MAVLinkParameters::ParamValue value,
+        ParamValue value,
         const SetParamCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id = {},
@@ -311,13 +311,9 @@ private:
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
     static void receive_float_param(
-        MAVLinkParameters::Result result,
-        MAVLinkParameters::ParamValue value,
-        const GetParamFloatCallback& callback);
+        MAVLinkParameters::Result result, ParamValue value, const GetParamFloatCallback& callback);
     static void receive_int_param(
-        MAVLinkParameters::Result result,
-        MAVLinkParameters::ParamValue value,
-        const GetParamIntCallback& callback);
+        MAVLinkParameters::Result result, ParamValue value, const GetParamIntCallback& callback);
 
     std::mutex _component_discovered_callback_mutex{};
     System::DiscoverCallback _component_discovered_callback{nullptr};
