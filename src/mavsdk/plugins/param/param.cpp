@@ -58,6 +58,11 @@ Param::AllParams Param::get_all_params() const
     return _impl->get_all_params();
 }
 
+Param::Result Param::select_component(int32_t component_id, ProtocolVersion protocol_version) const
+{
+    return _impl->select_component(component_id, protocol_version);
+}
+
 bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
@@ -152,6 +157,20 @@ std::ostream& operator<<(std::ostream& str, Param::Result const& result)
             return str << "No System";
         case Param::Result::ParamValueTooLong:
             return str << "Param Value Too Long";
+        case Param::Result::Failed:
+            return str << "Failed";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Param::ProtocolVersion const& protocol_version)
+{
+    switch (protocol_version) {
+        case Param::ProtocolVersion::V1:
+            return str << "V1";
+        case Param::ProtocolVersion::Ext:
+            return str << "Ext";
         default:
             return str << "Unknown";
     }

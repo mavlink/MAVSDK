@@ -11,7 +11,6 @@
 #include "serial_connection.h"
 #include "cli_arg.h"
 #include "version.h"
-#include "unused.h"
 #include "server_component_impl.h"
 #include "callback_list.tpp"
 

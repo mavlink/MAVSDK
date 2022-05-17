@@ -2,7 +2,7 @@
 
 #include "plugins/param_server/param_server.h"
 #include "server_plugin_impl_base.h"
-#include "mavlink_parameters.h"
+#include "mavlink_parameter_server.h"
 
 namespace mavsdk {
 
@@ -29,7 +29,7 @@ public:
     ParamServer::AllParams retrieve_all_params() const;
 
     static ParamServer::Result
-    result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
+    result_from_mavlink_parameter_server_result(MavlinkParameterServer::Result result);
 
 private:
 };

@@ -25,11 +25,16 @@ target_sources(mavsdk
     mavlink_command_sender.cpp
     mavlink_ftp.cpp
     mavlink_mission_transfer.cpp
-    mavlink_parameters.cpp
+    mavlink_parameter_cache.cpp
+    mavlink_parameter_client.cpp
+    mavlink_parameter_server.cpp
+    mavlink_parameter_subscription.cpp
+    mavlink_parameter_helper.cpp
     mavlink_receiver.cpp
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp
     mavlink_message_handler.cpp
+    param_value.cpp
     ping.cpp
     plugin_impl_base.cpp
     serial_connection.cpp
@@ -145,5 +150,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/safe_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/timeout_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_cache_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

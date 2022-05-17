@@ -158,30 +158,30 @@ MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_resu
 
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_params_result(
-    MAVLinkParameters::Result result)
+    MavlinkParameterClient::Result result)
 {
     switch (result) {
-        case MAVLinkParameters::Result::Success:
+        case MavlinkParameterClient::Result::Success:
             return MavlinkPassthrough::Result::Success;
-        case MAVLinkParameters::Result::Timeout:
+        case MavlinkParameterClient::Result::Timeout:
             return MavlinkPassthrough::Result::CommandTimeout;
-        case MAVLinkParameters::Result::ConnectionError:
+        case MavlinkParameterClient::Result::ConnectionError:
             return MavlinkPassthrough::Result::ConnectionError;
-        case MAVLinkParameters::Result::WrongType:
+        case MavlinkParameterClient::Result::WrongType:
             return MavlinkPassthrough::Result::ParamWrongType;
-        case MAVLinkParameters::Result::ParamNameTooLong:
+        case MavlinkParameterClient::Result::ParamNameTooLong:
             return MavlinkPassthrough::Result::ParamNameTooLong;
-        case MAVLinkParameters::Result::ParamValueTooLong:
+        case MavlinkParameterClient::Result::ParamValueTooLong:
             return MavlinkPassthrough::Result::ParamValueTooLong;
-        case MAVLinkParameters::Result::NotFound:
+        case MavlinkParameterClient::Result::NotFound:
             return MavlinkPassthrough::Result::ParamNotFound;
-        case MAVLinkParameters::Result::ValueUnsupported:
+        case MavlinkParameterClient::Result::ValueUnsupported:
             return MavlinkPassthrough::Result::ParamValueUnsupported;
-        case MAVLinkParameters::Result::Failed:
+        case MavlinkParameterClient::Result::Failed:
             return MavlinkPassthrough::Result::CommandFailed;
         default:
             // FALLTHROUGH
-        case MAVLinkParameters::Result::UnknownError:
+        case MavlinkParameterClient::Result::UnknownError:
             return MavlinkPassthrough::Result::Unknown;
     }
 }

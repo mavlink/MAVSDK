@@ -31,6 +31,7 @@ static const char* ParamService_method_names[] = {
   "/mavsdk.rpc.param.ParamService/GetParamCustom",
   "/mavsdk.rpc.param.ParamService/SetParamCustom",
   "/mavsdk.rpc.param.ParamService/GetAllParams",
+  "/mavsdk.rpc.param.ParamService/SelectComponent",
 };
 
 std::unique_ptr< ParamService::Stub> ParamService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -47,6 +48,7 @@ ParamService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chann
   , rpcmethod_GetParamCustom_(ParamService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetParamCustom_(ParamService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetAllParams_(ParamService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SelectComponent_(ParamService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ParamService::Stub::GetParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest& request, ::mavsdk::rpc::param::GetParamIntResponse* response) {
@@ -210,6 +212,29 @@ void ParamService::Stub::async::GetAllParams(::grpc::ClientContext* context, con
   return result;
 }
 
+::grpc::Status ParamService::Stub::SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::mavsdk::rpc::param::SelectComponentResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SelectComponent_, context, request, response);
+}
+
+void ParamService::Stub::async::SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SelectComponent_, context, request, response, std::move(f));
+}
+
+void ParamService::Stub::async::SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SelectComponent_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>* ParamService::Stub::PrepareAsyncSelectComponentRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::param::SelectComponentResponse, ::mavsdk::rpc::param::SelectComponentRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SelectComponent_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>* ParamService::Stub::AsyncSelectComponentRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSelectComponentRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ParamService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ParamService_method_names[0],
@@ -281,6 +306,16 @@ ParamService::Service::Service() {
              ::mavsdk::rpc::param::GetAllParamsResponse* resp) {
                return service->GetAllParams(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ParamService_method_names[7],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ParamService::Service, ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ParamService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::param::SelectComponentRequest* req,
+             ::mavsdk::rpc::param::SelectComponentResponse* resp) {
+               return service->SelectComponent(ctx, req, resp);
+             }, this)));
 }
 
 ParamService::Service::~Service() {
@@ -329,6 +364,13 @@ ParamService::Service::~Service() {
 }
 
 ::grpc::Status ParamService::Service::GetAllParams(::grpc::ServerContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ParamService::Service::SelectComponent(::grpc::ServerContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response) {
   (void) context;
   (void) request;
   (void) response;

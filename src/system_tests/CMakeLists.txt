@@ -7,6 +7,7 @@ add_executable(system_tests_runner
     param_set_and_get.cpp
     param_get_all.cpp
     param_custom_set_and_get.cpp
+    param_get_all.cpp
     mission_raw_upload.cpp
     telemetry_subscription.cpp
 )
