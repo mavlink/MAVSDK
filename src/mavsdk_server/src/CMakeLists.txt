@@ -1,35 +1,6 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-set(COMPONENTS_LIST
-    action
-    action_server
-    calibration
-    camera
-    camera_server
-    core
-    failure
-    follow_me
-    ftp
-    geofence
-    gimbal
-    info log_files
-    manual_control
-    mission
-    mission_raw
-    mission_raw_server
-    mocap offboard
-    param
-    param_server
-    server_utility
-    shell
-    telemetry
-    telemetry_server
-    tracking_server
-    tune
-    transponder
-)
-
-foreach(COMPONENT_NAME ${COMPONENTS_LIST})
+foreach(COMPONENT_NAME ${ENABLED_PLUGINS})
     add_library(${COMPONENT_NAME}_proto_gens STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
         ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc
@@ -75,6 +46,16 @@ target_link_libraries(mavsdk_server
     gRPC::grpc++
     ${COMPONENTS_PROTOGENS}
 )
+
+
+foreach(plugin ${ENABLED_PLUGINS})
+    string(TOUPPER ${plugin} plugin_uppercase)
+    target_compile_options(mavsdk_server
+        PRIVATE
+        "-D${plugin_uppercase}_ENABLED"
+    )
+endforeach()
+
 
 set_target_properties(mavsdk_server
     PROPERTIES COMPILE_FLAGS ${warnings}
