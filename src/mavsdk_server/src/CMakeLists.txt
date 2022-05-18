@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-foreach(COMPONENT_NAME ${ENABLED_PLUGINS})
+set(COMPONENTS_LIST ${ENABLED_PLUGINS})
+list(APPEND COMPONENTS_LIST core)
+
+foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     add_library(${COMPONENT_NAME}_proto_gens STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
         ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc
@@ -48,7 +51,7 @@ target_link_libraries(mavsdk_server
 )
 
 
-foreach(plugin ${ENABLED_PLUGINS})
+foreach(plugin ${COMPONENTS_LIST})
     string(TOUPPER ${plugin} plugin_uppercase)
     target_compile_options(mavsdk_server
         PRIVATE
