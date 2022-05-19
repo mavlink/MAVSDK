@@ -1130,16 +1130,14 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
         // If the flag is not supported yet, we fall back to the param.
     }
 
-    {
-        std::lock_guard<std::mutex> lock(_subscription_mutex);
-        if (_rc_status_subscription) {
-            auto callback = _rc_status_subscription;
-            auto arg = rc_status();
-            _parent->call_user_callback([callback, arg]() { callback(arg); });
-        }
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    if (_rc_status_subscription) {
+        auto callback = _rc_status_subscription;
+        auto arg = rc_status();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
-    const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
 
+    const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
     set_health_armable(armable);
     if (_health_all_ok_subscription) {
         auto callback = _health_all_ok_subscription;
