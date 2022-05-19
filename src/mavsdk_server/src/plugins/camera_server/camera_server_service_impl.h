@@ -8,7 +8,7 @@
 
 #include "mavsdk.h"
 
-#include "lazy_server_plugin.h"
+#include "lazy_plugin.h"
 
 #include "log.h"
 #include <atomic>
@@ -22,13 +22,11 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<
-    typename CameraServer = CameraServer,
-    typename LazyServerPlugin = LazyServerPlugin<CameraServer>>
+template<typename CameraServer = CameraServer, typename LazyPlugin = LazyPlugin<CameraServer>>
 
 class CameraServerServiceImpl final : public rpc::camera_server::CameraServerService::Service {
 public:
-    CameraServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+    CameraServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::CameraServer::Result& result) const
@@ -310,9 +308,7 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
-                auto result = mavsdk::CameraServer::Result::Unknown;
+                auto result = mavsdk::CameraServer::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
 
@@ -341,9 +337,7 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
-                auto result = mavsdk::CameraServer::Result::Unknown;
+                auto result = mavsdk::CameraServer::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
 
@@ -411,9 +405,7 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
-                auto result = mavsdk::CameraServer::Result::Unknown;
+                auto result = mavsdk::CameraServer::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
 
@@ -471,7 +463,7 @@ private:
         }
     }
 
-    LazyServerPlugin& _lazy_plugin;
+    LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};

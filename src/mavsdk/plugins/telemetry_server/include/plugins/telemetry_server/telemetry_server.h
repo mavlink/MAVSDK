@@ -14,31 +14,44 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/server_plugin_base.h"
+#include "mavsdk/plugin_base.h"
 
 namespace mavsdk {
 
-class ServerComponent;
+class System;
 class TelemetryServerImpl;
 
 /**
  * @brief Allow users to provide vehicle telemetry and state information
  * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
  */
-class TelemetryServer : public ServerPluginBase {
+class TelemetryServer : public PluginBase {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a ServerComponent instance.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto telemetry_server = TelemetryServer(server_component);
+     *     auto telemetry_server = TelemetryServer(system);
      *     ```
      *
-     * @param server_component The ServerComponent instance associated with this server plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit TelemetryServer(std::shared_ptr<ServerComponent> server_component);
+    explicit TelemetryServer(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto telemetry_server = TelemetryServer(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit TelemetryServer(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).

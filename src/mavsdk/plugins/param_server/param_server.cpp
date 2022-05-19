@@ -14,9 +14,14 @@ using FloatParam = ParamServer::FloatParam;
 using CustomParam = ParamServer::CustomParam;
 using AllParams = ParamServer::AllParams;
 
-ParamServer::ParamServer(std::shared_ptr<ServerComponent> server_component) :
-    ServerPluginBase(),
-    _impl{std::make_unique<ParamServerImpl>(server_component)}
+ParamServer::ParamServer(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<ParamServerImpl>(system)}
+{}
+
+ParamServer::ParamServer(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<ParamServerImpl>(system)}
 {}
 
 ParamServer::~ParamServer() {}

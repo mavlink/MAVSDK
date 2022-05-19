@@ -13,30 +13,43 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/server_plugin_base.h"
+#include "mavsdk/plugin_base.h"
 
 namespace mavsdk {
 
-class ServerComponent;
+class System;
 class ParamServerImpl;
 
 /**
  * @brief Provide raw access to retrieve and provide server parameters.
  */
-class ParamServer : public ServerPluginBase {
+class ParamServer : public PluginBase {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a ServerComponent instance.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto param_server = ParamServer(server_component);
+     *     auto param_server = ParamServer(system);
      *     ```
      *
-     * @param server_component The ServerComponent instance associated with this server plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit ParamServer(std::shared_ptr<ServerComponent> server_component);
+    explicit ParamServer(System& system); // deprecated
+
+    /**
+     * @brief Constructor. Creates the plugin for a specific System.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto param_server = ParamServer(system);
+     *     ```
+     *
+     * @param system The specific system associated with this plugin.
+     */
+    explicit ParamServer(std::shared_ptr<System> system); // new
 
     /**
      * @brief Destructor (internal use only).

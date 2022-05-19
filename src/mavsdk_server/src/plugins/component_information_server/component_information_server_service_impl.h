@@ -8,7 +8,7 @@
 
 #include "mavsdk.h"
 
-#include "lazy_server_plugin.h"
+#include "lazy_plugin.h"
 
 #include "log.h"
 #include <atomic>
@@ -24,13 +24,12 @@ namespace mavsdk_server {
 
 template<
     typename ComponentInformationServer = ComponentInformationServer,
-    typename LazyServerPlugin = LazyServerPlugin<ComponentInformationServer>>
+    typename LazyPlugin = LazyPlugin<ComponentInformationServer>>
 
 class ComponentInformationServerServiceImpl final
     : public rpc::component_information_server::ComponentInformationServerService::Service {
 public:
-    ComponentInformationServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin)
-    {}
+    ComponentInformationServerServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
 
     template<typename ResponseType>
     void fillResponseWithResult(
@@ -195,9 +194,7 @@ public:
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
-                auto result = mavsdk::ComponentInformationServer::Result::Unknown;
+                auto result = mavsdk::ComponentInformationServer::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
 
@@ -295,7 +292,7 @@ private:
         }
     }
 
-    LazyServerPlugin& _lazy_plugin;
+    LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};

@@ -38,9 +38,14 @@ using AngularVelocityFrd = TelemetryServer::AngularVelocityFrd;
 using MagneticFieldFrd = TelemetryServer::MagneticFieldFrd;
 using Imu = TelemetryServer::Imu;
 
-TelemetryServer::TelemetryServer(std::shared_ptr<ServerComponent> server_component) :
-    ServerPluginBase(),
-    _impl{std::make_unique<TelemetryServerImpl>(server_component)}
+TelemetryServer::TelemetryServer(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<TelemetryServerImpl>(system)}
+{}
+
+TelemetryServer::TelemetryServer(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<TelemetryServerImpl>(system)}
 {}
 
 TelemetryServer::~TelemetryServer() {}

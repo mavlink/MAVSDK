@@ -13,9 +13,14 @@ namespace mavsdk {
 using AllowableFlightModes = ActionServer::AllowableFlightModes;
 using ArmDisarm = ActionServer::ArmDisarm;
 
-ActionServer::ActionServer(std::shared_ptr<ServerComponent> server_component) :
-    ServerPluginBase(),
-    _impl{std::make_unique<ActionServerImpl>(server_component)}
+ActionServer::ActionServer(System& system) :
+    PluginBase(),
+    _impl{std::make_unique<ActionServerImpl>(system)}
+{}
+
+ActionServer::ActionServer(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<ActionServerImpl>(system)}
 {}
 
 ActionServer::~ActionServer() {}
