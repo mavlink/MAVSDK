@@ -300,10 +300,17 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    // If we have a system with sysid 0, it is the "fake" system we built to initialize the
-    // connection to the remote. We can remove it now that a remote system is discovered.
+    // The only situation where we create a system with sysid 0 is when we initialize the connection
+    // to the remote.
     if (_systems.size() == 1 && _systems[0].first == 0) {
-        _systems.clear();
+        LogDebug() << "New: System ID: " << static_cast<int>(message.sysid)
+                   << " Comp ID: " << static_cast<int>(message.compid);
+        _systems[0].first = message.sysid;
+        _systems[0].second->system_impl()->set_system_id(message.sysid);
+
+        // Even though the fake system was already discovered, we can now
+        // send a notification, now that it seems to really actually exist.
+        notify_on_discover();
     }
 
     bool found_system = false;
