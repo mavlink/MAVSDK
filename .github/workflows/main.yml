@@ -488,7 +488,7 @@ jobs:
 
   macOS:
     name: ${{ matrix.name }}
-    runs-on: macos-latest
+    runs-on: osx-arm64
     strategy:
       matrix:
         include:
