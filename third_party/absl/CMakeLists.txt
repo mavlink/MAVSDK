@@ -27,7 +27,7 @@ endforeach()
 ExternalProject_add(
     absl
     GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-    GIT_TAG 20210324.2
+    GIT_TAG 20211102.0
     PREFIX absl
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
