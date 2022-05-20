@@ -15,10 +15,10 @@ if (SUPERBUILD)
         build_target(zlib)
     endif()
 
+    build_target(openssl)
     build_target(curl)
 
     if(BUILD_MAVSDK_SERVER)
-        build_target(openssl)
         build_target(cares)
         build_target(protobuf)
         build_target(absl)
