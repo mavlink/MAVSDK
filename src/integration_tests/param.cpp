@@ -162,6 +162,8 @@ TEST_F(SitlTest, GetAllParams)
     for (const auto& mixed_param : all_mixed) {
         std::cout << mixed_param.first << " : " << mixed_param.second << '\n';
     }
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 TEST_F(SitlTest, APParam)

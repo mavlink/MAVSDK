@@ -913,6 +913,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
         // check if we are looking for param list
         if (_all_params_callback) {
             if (param_value.param_index + 1 == param_value.param_count) {
+                _parent.unregister_timeout_handler(_all_params_timeout_cookie);
                 lock.unlock();
                 _all_params_callback(_all_params);
             } else {
