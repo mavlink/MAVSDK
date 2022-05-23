@@ -21,7 +21,37 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
         [this]() { return _mavsdk_impl.timeout_s(); },
         true),
     _mavlink_request_message_handler(mavsdk_impl, *this, _mavlink_command_receiver)
-{}
+{
+    register_mavlink_command_handler(
+        MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            send_autopilot_version();
+            return make_command_ack_message(command, MAV_RESULT_ACCEPTED);
+        },
+        this);
+
+    register_mavlink_command_handler(
+        MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
+        [this](const MavlinkCommandReceiver::CommandInt& command) {
+            send_autopilot_version();
+            return make_command_ack_message(command, MAV_RESULT_ACCEPTED);
+        },
+        this);
+
+    _mavlink_request_message_handler.register_handler(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        [this](const MavlinkRequestMessageHandler::Params&) {
+            send_autopilot_version();
+            return MAV_RESULT_ACCEPTED;
+        },
+        this);
+}
+
+ServerComponentImpl::~ServerComponentImpl()
+{
+    unregister_all_mavlink_command_handlers(this);
+    _mavlink_request_message_handler.unregister_all_handlers(this);
+}
 
 void ServerComponentImpl::register_plugin(ServerPluginImplBase* server_plugin_impl)
 {

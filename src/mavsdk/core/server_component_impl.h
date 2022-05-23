@@ -21,7 +21,7 @@ class ServerPluginImplBase;
 class ServerComponentImpl {
 public:
     ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id);
-    ~ServerComponentImpl() = default;
+    ~ServerComponentImpl();
 
     void register_plugin(ServerPluginImplBase* server_plugin_impl);
     void unregister_plugin(ServerPluginImplBase* server_plugin_impl);
