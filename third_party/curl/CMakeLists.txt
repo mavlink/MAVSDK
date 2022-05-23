@@ -42,6 +42,5 @@ ExternalProject_add(
     GIT_TAG curl-7_83_1
     GIT_SHALLOW ON
     PREFIX curl
-    PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/curl.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
