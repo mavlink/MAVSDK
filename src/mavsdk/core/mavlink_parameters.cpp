@@ -992,6 +992,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             if (param_value.param_index + 1 == param_value.param_count) {
                 _timeout_handler.remove(_all_params_timeout_cookie);
                 _all_params_callback(_all_params);
+                _all_params_callback = nullptr;
             } else {
                 _timeout_handler.remove(_all_params_timeout_cookie);
 
