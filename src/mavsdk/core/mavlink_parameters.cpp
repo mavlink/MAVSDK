@@ -594,7 +594,7 @@ MAVLinkParameters::get_param_custom(const std::string& name)
 
 void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callback)
 {
-    std::unique_lock<std::mutex> lock(_all_params_mutex);
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
 
     _all_params_callback = callback;
 
@@ -609,7 +609,6 @@ void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callbac
 
     if (!_sender.send_message(msg)) {
         LogErr() << "Failed to send param list request!";
-        lock.unlock();
         callback(std::map<std::string, ParamValue>{});
     }
 
@@ -767,11 +766,10 @@ void MAVLinkParameters::do_work()
     switch (work->type) {
         case WorkItem::Type::Set: {
             if (!work->exact_type_known) {
-                std::unique_lock<std::mutex> lock(_all_params_mutex);
+                std::lock_guard<std::mutex> lock(_all_params_mutex);
                 const auto it = _all_params.find(work->param_name);
                 if (it == _all_params.end()) {
                     LogErr() << "Don't know the type of param_set";
-                    lock.unlock();
                     if (std::get_if<SetParamCallback>(&work->callback)) {
                         const auto& callback = std::get<SetParamCallback>(work->callback);
                         if (callback) {
@@ -986,14 +984,13 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     std::string param_id = extract_safe_param_id(param_value.param_id);
 
     {
-        std::unique_lock<std::mutex> lock(_all_params_mutex);
+        std::lock_guard<std::mutex> lock(_all_params_mutex);
         _all_params[param_id] = received_value;
 
         // check if we are looking for param list
         if (_all_params_callback) {
             if (param_value.param_index + 1 == param_value.param_count) {
                 _timeout_handler.remove(_all_params_timeout_cookie);
-                lock.unlock();
                 _all_params_callback(_all_params);
             } else {
                 _timeout_handler.remove(_all_params_timeout_cookie);
@@ -1347,10 +1344,9 @@ void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
 void MAVLinkParameters::receive_timeout()
 {
     {
-        std::unique_lock<std::mutex> lock(_all_params_mutex);
+        std::lock_guard<std::mutex> lock(_all_params_mutex);
         // first check if we are waiting for param list response
         if (_all_params_callback) {
-            lock.unlock();
             _all_params_callback({});
             return;
         }
