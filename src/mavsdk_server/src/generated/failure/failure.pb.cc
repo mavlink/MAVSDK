@@ -16,64 +16,69 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+
+namespace _pb = ::PROTOBUF_NAMESPACE_ID;
+namespace _pbi = _pb::internal;
+
 namespace mavsdk {
 namespace rpc {
 namespace failure {
-constexpr InjectRequest::InjectRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_CONSTEXPR InjectRequest::InjectRequest(
+    ::_pbi::ConstantInitialized)
   : failure_unit_(0)
 
   , failure_type_(0)
 
   , instance_(0){}
 struct InjectRequestDefaultTypeInternal {
-  constexpr InjectRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR InjectRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~InjectRequestDefaultTypeInternal() {}
   union {
     InjectRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT InjectRequestDefaultTypeInternal _InjectRequest_default_instance_;
-constexpr InjectResponse::InjectResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InjectRequestDefaultTypeInternal _InjectRequest_default_instance_;
+PROTOBUF_CONSTEXPR InjectResponse::InjectResponse(
+    ::_pbi::ConstantInitialized)
   : failure_result_(nullptr){}
 struct InjectResponseDefaultTypeInternal {
-  constexpr InjectResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR InjectResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~InjectResponseDefaultTypeInternal() {}
   union {
     InjectResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT InjectResponseDefaultTypeInternal _InjectResponse_default_instance_;
-constexpr FailureResult::FailureResult(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InjectResponseDefaultTypeInternal _InjectResponse_default_instance_;
+PROTOBUF_CONSTEXPR FailureResult::FailureResult(
+    ::_pbi::ConstantInitialized)
+  : result_str_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , result_(0)
 {}
 struct FailureResultDefaultTypeInternal {
-  constexpr FailureResultDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR FailureResultDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~FailureResultDefaultTypeInternal() {}
   union {
     FailureResult _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FailureResultDefaultTypeInternal _FailureResult_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FailureResultDefaultTypeInternal _FailureResult_default_instance_;
 }  // namespace failure
 }  // namespace rpc
 }  // namespace mavsdk
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_failure_2ffailure_2eproto[3];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_failure_2ffailure_2eproto[3];
-static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_failure_2ffailure_2eproto = nullptr;
+static ::_pb::Metadata file_level_metadata_failure_2ffailure_2eproto[3];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_failure_2ffailure_2eproto[3];
+static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_failure_2ffailure_2eproto = nullptr;
 
-const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_failure_2ffailure_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+const uint32_t TableStruct_failure_2ffailure_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, failure_unit_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, failure_type_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, instance_),
@@ -82,25 +87,27 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_failure_2ffailure_2eproto::off
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectResponse, failure_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, result_str_),
 };
-static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::mavsdk::rpc::failure::InjectRequest)},
-  { 8, -1, sizeof(::mavsdk::rpc::failure::InjectResponse)},
-  { 14, -1, sizeof(::mavsdk::rpc::failure::FailureResult)},
+static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, -1, -1, sizeof(::mavsdk::rpc::failure::InjectRequest)},
+  { 9, -1, -1, sizeof(::mavsdk::rpc::failure::InjectResponse)},
+  { 16, -1, -1, sizeof(::mavsdk::rpc::failure::FailureResult)},
 };
 
-static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::failure::_InjectRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::failure::_InjectResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::failure::_FailureResult_default_instance_),
+static const ::_pb::Message* const file_default_instances[] = {
+  &::mavsdk::rpc::failure::_InjectRequest_default_instance_._instance,
+  &::mavsdk::rpc::failure::_InjectResponse_default_instance_._instance,
+  &::mavsdk::rpc::failure::_FailureResult_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_failure_2ffailure_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -142,22 +149,24 @@ const char descriptor_table_protodef_failure_2ffailure_2eproto[] PROTOBUF_SECTIO
   "B!\n\021io.mavsdk.failureB\014FailureProtob\006pro"
   "to3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_failure_2ffailure_2eproto_deps[1] = {
+static const ::_pbi::DescriptorTable* const descriptor_table_failure_2ffailure_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_failure_2ffailure_2eproto_once;
-const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_failure_2ffailure_2eproto = {
-  false, false, 1443, descriptor_table_protodef_failure_2ffailure_2eproto, "failure/failure.proto", 
-  &descriptor_table_failure_2ffailure_2eproto_once, descriptor_table_failure_2ffailure_2eproto_deps, 1, 3,
-  schemas, file_default_instances, TableStruct_failure_2ffailure_2eproto::offsets,
-  file_level_metadata_failure_2ffailure_2eproto, file_level_enum_descriptors_failure_2ffailure_2eproto, file_level_service_descriptors_failure_2ffailure_2eproto,
+static ::_pbi::once_flag descriptor_table_failure_2ffailure_2eproto_once;
+const ::_pbi::DescriptorTable descriptor_table_failure_2ffailure_2eproto = {
+    false, false, 1443, descriptor_table_protodef_failure_2ffailure_2eproto,
+    "failure/failure.proto",
+    &descriptor_table_failure_2ffailure_2eproto_once, descriptor_table_failure_2ffailure_2eproto_deps, 1, 3,
+    schemas, file_default_instances, TableStruct_failure_2ffailure_2eproto::offsets,
+    file_level_metadata_failure_2ffailure_2eproto, file_level_enum_descriptors_failure_2ffailure_2eproto,
+    file_level_service_descriptors_failure_2ffailure_2eproto,
 };
-PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable* descriptor_table_failure_2ffailure_2eproto_getter() {
+PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_failure_2ffailure_2eproto_getter() {
   return &descriptor_table_failure_2ffailure_2eproto;
 }
 
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_failure_2ffailure_2eproto(&descriptor_table_failure_2ffailure_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_failure_2ffailure_2eproto(&descriptor_table_failure_2ffailure_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace failure {
@@ -181,7 +190,7 @@ bool FailureResult_Result_IsValid(int value) {
   }
 }
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr FailureResult_Result FailureResult::RESULT_UNKNOWN;
 constexpr FailureResult_Result FailureResult::RESULT_SUCCESS;
 constexpr FailureResult_Result FailureResult::RESULT_NO_SYSTEM;
@@ -193,7 +202,7 @@ constexpr FailureResult_Result FailureResult::RESULT_TIMEOUT;
 constexpr FailureResult_Result FailureResult::Result_MIN;
 constexpr FailureResult_Result FailureResult::Result_MAX;
 constexpr int FailureResult::Result_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FailureUnit_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_failure_2ffailure_2eproto);
   return file_level_enum_descriptors_failure_2ffailure_2eproto[1];
@@ -252,9 +261,6 @@ InjectRequest::InjectRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.InjectRequest)
 }
 InjectRequest::InjectRequest(const InjectRequest& from)
@@ -275,28 +281,24 @@ inline void InjectRequest::SharedCtor() {
 
 InjectRequest::~InjectRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.InjectRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void InjectRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
-void InjectRequest::ArenaDtor(void* object) {
-  InjectRequest* _this = reinterpret_cast< InjectRequest* >(object);
-  (void)_this;
-}
-void InjectRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void InjectRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void InjectRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.InjectRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -306,86 +308,89 @@ void InjectRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* InjectRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* InjectRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_failure_unit(static_cast<::mavsdk::rpc::failure::FailureUnit>(val));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .mavsdk.rpc.failure.FailureType failure_type = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_failure_type(static_cast<::mavsdk::rpc::failure::FailureType>(val));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // int32 instance = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* InjectRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* InjectRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.InjectRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
   if (this->_internal_failure_unit() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
       1, this->_internal_failure_unit(), target);
   }
 
   // .mavsdk.rpc.failure.FailureType failure_type = 2;
   if (this->_internal_failure_type() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
       2, this->_internal_failure_type(), target);
   }
 
   // int32 instance = 3;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.InjectRequest)
@@ -396,36 +401,28 @@ size_t InjectRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.InjectRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
   if (this->_internal_failure_unit() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_failure_unit());
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_failure_unit());
   }
 
   // .mavsdk.rpc.failure.FailureType failure_type = 2;
   if (this->_internal_failure_type() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_failure_type());
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_failure_type());
   }
 
   // int32 instance = 3;
   if (this->_internal_instance() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_instance());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData InjectRequest::_class_data_ = {
@@ -434,8 +431,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData InjectRequest::_class_data_ = 
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*InjectRequest::GetClassData() const { return &_class_data_; }
 
-void InjectRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void InjectRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<InjectRequest *>(to)->MergeFrom(
       static_cast<const InjectRequest &>(from));
 }
@@ -444,7 +441,7 @@ void InjectRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void InjectRequest::MergeFrom(const InjectRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.InjectRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_failure_unit() != 0) {
@@ -482,7 +479,7 @@ void InjectRequest::InternalSwap(InjectRequest* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata InjectRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_failure_2ffailure_2eproto_getter, &descriptor_table_failure_2ffailure_2eproto_once,
       file_level_metadata_failure_2ffailure_2eproto[0]);
 }
@@ -502,9 +499,6 @@ InjectResponse::InjectResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.InjectResponse)
 }
 InjectResponse::InjectResponse(const InjectResponse& from)
@@ -524,9 +518,11 @@ failure_result_ = nullptr;
 
 InjectResponse::~InjectResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.InjectResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void InjectResponse::SharedDtor() {
@@ -534,19 +530,13 @@ inline void InjectResponse::SharedDtor() {
   if (this != internal_default_instance()) delete failure_result_;
 }
 
-void InjectResponse::ArenaDtor(void* object) {
-  InjectResponse* _this = reinterpret_cast< InjectResponse* >(object);
-  (void)_this;
-}
-void InjectResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void InjectResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void InjectResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.InjectResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -557,58 +547,58 @@ void InjectResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* InjectResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* InjectResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.failure.FailureResult failure_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_failure_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* InjectResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* InjectResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.InjectResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.failure.FailureResult failure_result = 1;
   if (this->_internal_has_failure_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::failure_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::failure_result(this),
+        _Internal::failure_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.InjectResponse)
@@ -619,7 +609,7 @@ size_t InjectResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.InjectResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -630,13 +620,7 @@ size_t InjectResponse::ByteSizeLong() const {
         *failure_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData InjectResponse::_class_data_ = {
@@ -645,8 +629,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData InjectResponse::_class_data_ =
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*InjectResponse::GetClassData() const { return &_class_data_; }
 
-void InjectResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void InjectResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<InjectResponse *>(to)->MergeFrom(
       static_cast<const InjectResponse &>(from));
 }
@@ -655,7 +639,7 @@ void InjectResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void InjectResponse::MergeFrom(const InjectResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.InjectResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_failure_result()) {
@@ -682,7 +666,7 @@ void InjectResponse::InternalSwap(InjectResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata InjectResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_failure_2ffailure_2eproto_getter, &descriptor_table_failure_2ffailure_2eproto_once,
       file_level_metadata_failure_2ffailure_2eproto[1]);
 }
@@ -697,17 +681,17 @@ FailureResult::FailureResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.FailureResult)
 }
 FailureResult::FailureResult(const FailureResult& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  result_str_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    result_str_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
+    result_str_.Set(from._internal_result_str(), 
       GetArenaForAllocation());
   }
   result_ = from.result_;
@@ -715,35 +699,34 @@ FailureResult::FailureResult(const FailureResult& from)
 }
 
 inline void FailureResult::SharedCtor() {
-result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_str_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  result_str_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 result_ = 0;
 }
 
 FailureResult::~FailureResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.FailureResult)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void FailureResult::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  result_str_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  result_str_.Destroy();
 }
 
-void FailureResult::ArenaDtor(void* object) {
-  FailureResult* _this = reinterpret_cast< FailureResult* >(object);
-  (void)_this;
-}
-void FailureResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void FailureResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void FailureResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.FailureResult)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -752,62 +735,64 @@ void FailureResult::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* FailureResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* FailureResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.failure.FailureResult.Result result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::failure::FailureResult_Result>(val));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string result_str = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_result_str();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.failure.FailureResult.result_str"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.failure.FailureResult.result_str"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* FailureResult::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* FailureResult::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.FailureResult)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.failure.FailureResult.Result result = 1;
   if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
       1, this->_internal_result(), target);
   }
 
@@ -822,7 +807,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.FailureResult)
@@ -833,7 +818,7 @@ size_t FailureResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.FailureResult)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -847,16 +832,10 @@ size_t FailureResult::ByteSizeLong() const {
   // .mavsdk.rpc.failure.FailureResult.Result result = 1;
   if (this->_internal_result() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_result());
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FailureResult::_class_data_ = {
@@ -865,8 +844,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FailureResult::_class_data_ = 
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FailureResult::GetClassData() const { return &_class_data_; }
 
-void FailureResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void FailureResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<FailureResult *>(to)->MergeFrom(
       static_cast<const FailureResult &>(from));
 }
@@ -875,7 +854,7 @@ void FailureResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void FailureResult::MergeFrom(const FailureResult& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.FailureResult)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_result_str().empty()) {
@@ -900,17 +879,18 @@ bool FailureResult::IsInitialized() const {
 
 void FailureResult::InternalSwap(FailureResult* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &result_str_, GetArenaForAllocation(),
-      &other->result_str_, other->GetArenaForAllocation()
+      &result_str_, lhs_arena,
+      &other->result_str_, rhs_arena
   );
   swap(result_, other->result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata FailureResult::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_failure_2ffailure_2eproto_getter, &descriptor_table_failure_2ffailure_2eproto_once,
       file_level_metadata_failure_2ffailure_2eproto[2]);
 }
@@ -920,13 +900,16 @@ void FailureResult::InternalSwap(FailureResult* other) {
 }  // namespace rpc
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::failure::InjectRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::failure::InjectRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::failure::InjectRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::failure::InjectRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::failure::InjectRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::failure::InjectResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::failure::InjectResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::failure::InjectResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::failure::InjectResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::failure::InjectResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::failure::FailureResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::failure::FailureResult >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::failure::FailureResult*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::failure::FailureResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::failure::FailureResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE

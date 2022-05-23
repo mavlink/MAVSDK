@@ -102,7 +102,7 @@ class ManualControlService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* AsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::manual_control::StartPositionControlResponse>* PrepareAsyncStartPositionControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartPositionControlRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::manual_control::StartAltitudeControlResponse>* AsyncStartAltitudeControlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::manual_control::StartAltitudeControlRequest& request, ::grpc::CompletionQueue* cq) = 0;

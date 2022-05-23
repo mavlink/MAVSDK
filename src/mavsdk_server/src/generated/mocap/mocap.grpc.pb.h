@@ -81,7 +81,7 @@ class MocapService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>* AsyncSetVisionPositionEstimateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>* PrepareAsyncSetVisionPositionEstimateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse>* AsyncSetAttitudePositionMocapRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest& request, ::grpc::CompletionQueue* cq) = 0;

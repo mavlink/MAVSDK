@@ -72,7 +72,7 @@ class ComponentInformationServerService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* AsyncProvideFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::component_information_server::ProvideFloatParamResponse>* PrepareAsyncProvideFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::ProvideFloatParamRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::component_information_server::FloatParamResponse>* SubscribeFloatParamRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::component_information_server::SubscribeFloatParamRequest& request) = 0;

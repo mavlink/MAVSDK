@@ -205,7 +205,7 @@ class GimbalService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* AsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>* PrepareAsyncSetPitchAndYawRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>* AsyncSetPitchRateAndYawRateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest& request, ::grpc::CompletionQueue* cq) = 0;

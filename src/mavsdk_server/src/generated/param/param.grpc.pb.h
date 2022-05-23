@@ -160,7 +160,7 @@ class ParamService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::GetParamIntResponse>* AsyncGetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::GetParamIntResponse>* PrepareAsyncGetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SetParamIntResponse>* AsyncSetParamIntRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamIntRequest& request, ::grpc::CompletionQueue* cq) = 0;

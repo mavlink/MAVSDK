@@ -116,7 +116,7 @@ class CalibrationService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* SubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* AsyncSubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* PrepareAsyncSubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request, ::grpc::CompletionQueue* cq) = 0;

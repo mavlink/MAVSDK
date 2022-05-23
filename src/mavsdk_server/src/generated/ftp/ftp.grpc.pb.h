@@ -204,7 +204,7 @@ class FtpService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp::ResetResponse>* AsyncResetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp::ResetResponse>* PrepareAsyncResetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::ResetRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::ftp::DownloadResponse>* SubscribeDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp::SubscribeDownloadRequest& request) = 0;

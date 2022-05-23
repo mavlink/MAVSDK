@@ -16,354 +16,361 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+
+namespace _pb = ::PROTOBUF_NAMESPACE_ID;
+namespace _pbi = _pb::internal;
+
 namespace mavsdk {
 namespace rpc {
 namespace ftp {
-constexpr ResetRequest::ResetRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+PROTOBUF_CONSTEXPR ResetRequest::ResetRequest(
+    ::_pbi::ConstantInitialized){}
 struct ResetRequestDefaultTypeInternal {
-  constexpr ResetRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ResetRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~ResetRequestDefaultTypeInternal() {}
   union {
     ResetRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ResetRequestDefaultTypeInternal _ResetRequest_default_instance_;
-constexpr ResetResponse::ResetResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ResetRequestDefaultTypeInternal _ResetRequest_default_instance_;
+PROTOBUF_CONSTEXPR ResetResponse::ResetResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr){}
 struct ResetResponseDefaultTypeInternal {
-  constexpr ResetResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ResetResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~ResetResponseDefaultTypeInternal() {}
   union {
     ResetResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ResetResponseDefaultTypeInternal _ResetResponse_default_instance_;
-constexpr SubscribeDownloadRequest::SubscribeDownloadRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : remote_file_path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , local_dir_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ResetResponseDefaultTypeInternal _ResetResponse_default_instance_;
+PROTOBUF_CONSTEXPR SubscribeDownloadRequest::SubscribeDownloadRequest(
+    ::_pbi::ConstantInitialized)
+  : remote_file_path_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , local_dir_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct SubscribeDownloadRequestDefaultTypeInternal {
-  constexpr SubscribeDownloadRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SubscribeDownloadRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~SubscribeDownloadRequestDefaultTypeInternal() {}
   union {
     SubscribeDownloadRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeDownloadRequestDefaultTypeInternal _SubscribeDownloadRequest_default_instance_;
-constexpr DownloadResponse::DownloadResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeDownloadRequestDefaultTypeInternal _SubscribeDownloadRequest_default_instance_;
+PROTOBUF_CONSTEXPR DownloadResponse::DownloadResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr)
   , progress_data_(nullptr){}
 struct DownloadResponseDefaultTypeInternal {
-  constexpr DownloadResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR DownloadResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~DownloadResponseDefaultTypeInternal() {}
   union {
     DownloadResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DownloadResponseDefaultTypeInternal _DownloadResponse_default_instance_;
-constexpr SubscribeUploadRequest::SubscribeUploadRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : local_file_path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , remote_dir_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DownloadResponseDefaultTypeInternal _DownloadResponse_default_instance_;
+PROTOBUF_CONSTEXPR SubscribeUploadRequest::SubscribeUploadRequest(
+    ::_pbi::ConstantInitialized)
+  : local_file_path_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , remote_dir_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct SubscribeUploadRequestDefaultTypeInternal {
-  constexpr SubscribeUploadRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SubscribeUploadRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~SubscribeUploadRequestDefaultTypeInternal() {}
   union {
     SubscribeUploadRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubscribeUploadRequestDefaultTypeInternal _SubscribeUploadRequest_default_instance_;
-constexpr UploadResponse::UploadResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeUploadRequestDefaultTypeInternal _SubscribeUploadRequest_default_instance_;
+PROTOBUF_CONSTEXPR UploadResponse::UploadResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr)
   , progress_data_(nullptr){}
 struct UploadResponseDefaultTypeInternal {
-  constexpr UploadResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR UploadResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~UploadResponseDefaultTypeInternal() {}
   union {
     UploadResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UploadResponseDefaultTypeInternal _UploadResponse_default_instance_;
-constexpr ListDirectoryRequest::ListDirectoryRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : remote_dir_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UploadResponseDefaultTypeInternal _UploadResponse_default_instance_;
+PROTOBUF_CONSTEXPR ListDirectoryRequest::ListDirectoryRequest(
+    ::_pbi::ConstantInitialized)
+  : remote_dir_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct ListDirectoryRequestDefaultTypeInternal {
-  constexpr ListDirectoryRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ListDirectoryRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~ListDirectoryRequestDefaultTypeInternal() {}
   union {
     ListDirectoryRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ListDirectoryRequestDefaultTypeInternal _ListDirectoryRequest_default_instance_;
-constexpr ListDirectoryResponse::ListDirectoryResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListDirectoryRequestDefaultTypeInternal _ListDirectoryRequest_default_instance_;
+PROTOBUF_CONSTEXPR ListDirectoryResponse::ListDirectoryResponse(
+    ::_pbi::ConstantInitialized)
   : paths_()
   , ftp_result_(nullptr){}
 struct ListDirectoryResponseDefaultTypeInternal {
-  constexpr ListDirectoryResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ListDirectoryResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~ListDirectoryResponseDefaultTypeInternal() {}
   union {
     ListDirectoryResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ListDirectoryResponseDefaultTypeInternal _ListDirectoryResponse_default_instance_;
-constexpr CreateDirectoryRequest::CreateDirectoryRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : remote_dir_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListDirectoryResponseDefaultTypeInternal _ListDirectoryResponse_default_instance_;
+PROTOBUF_CONSTEXPR CreateDirectoryRequest::CreateDirectoryRequest(
+    ::_pbi::ConstantInitialized)
+  : remote_dir_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct CreateDirectoryRequestDefaultTypeInternal {
-  constexpr CreateDirectoryRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR CreateDirectoryRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~CreateDirectoryRequestDefaultTypeInternal() {}
   union {
     CreateDirectoryRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CreateDirectoryRequestDefaultTypeInternal _CreateDirectoryRequest_default_instance_;
-constexpr CreateDirectoryResponse::CreateDirectoryResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateDirectoryRequestDefaultTypeInternal _CreateDirectoryRequest_default_instance_;
+PROTOBUF_CONSTEXPR CreateDirectoryResponse::CreateDirectoryResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr){}
 struct CreateDirectoryResponseDefaultTypeInternal {
-  constexpr CreateDirectoryResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR CreateDirectoryResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~CreateDirectoryResponseDefaultTypeInternal() {}
   union {
     CreateDirectoryResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CreateDirectoryResponseDefaultTypeInternal _CreateDirectoryResponse_default_instance_;
-constexpr RemoveDirectoryRequest::RemoveDirectoryRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : remote_dir_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateDirectoryResponseDefaultTypeInternal _CreateDirectoryResponse_default_instance_;
+PROTOBUF_CONSTEXPR RemoveDirectoryRequest::RemoveDirectoryRequest(
+    ::_pbi::ConstantInitialized)
+  : remote_dir_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct RemoveDirectoryRequestDefaultTypeInternal {
-  constexpr RemoveDirectoryRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RemoveDirectoryRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~RemoveDirectoryRequestDefaultTypeInternal() {}
   union {
     RemoveDirectoryRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RemoveDirectoryRequestDefaultTypeInternal _RemoveDirectoryRequest_default_instance_;
-constexpr RemoveDirectoryResponse::RemoveDirectoryResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RemoveDirectoryRequestDefaultTypeInternal _RemoveDirectoryRequest_default_instance_;
+PROTOBUF_CONSTEXPR RemoveDirectoryResponse::RemoveDirectoryResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr){}
 struct RemoveDirectoryResponseDefaultTypeInternal {
-  constexpr RemoveDirectoryResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RemoveDirectoryResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~RemoveDirectoryResponseDefaultTypeInternal() {}
   union {
     RemoveDirectoryResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RemoveDirectoryResponseDefaultTypeInternal _RemoveDirectoryResponse_default_instance_;
-constexpr RemoveFileRequest::RemoveFileRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : remote_file_path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RemoveDirectoryResponseDefaultTypeInternal _RemoveDirectoryResponse_default_instance_;
+PROTOBUF_CONSTEXPR RemoveFileRequest::RemoveFileRequest(
+    ::_pbi::ConstantInitialized)
+  : remote_file_path_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct RemoveFileRequestDefaultTypeInternal {
-  constexpr RemoveFileRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RemoveFileRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~RemoveFileRequestDefaultTypeInternal() {}
   union {
     RemoveFileRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RemoveFileRequestDefaultTypeInternal _RemoveFileRequest_default_instance_;
-constexpr RemoveFileResponse::RemoveFileResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RemoveFileRequestDefaultTypeInternal _RemoveFileRequest_default_instance_;
+PROTOBUF_CONSTEXPR RemoveFileResponse::RemoveFileResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr){}
 struct RemoveFileResponseDefaultTypeInternal {
-  constexpr RemoveFileResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RemoveFileResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~RemoveFileResponseDefaultTypeInternal() {}
   union {
     RemoveFileResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RemoveFileResponseDefaultTypeInternal _RemoveFileResponse_default_instance_;
-constexpr RenameRequest::RenameRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : remote_from_path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , remote_to_path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RemoveFileResponseDefaultTypeInternal _RemoveFileResponse_default_instance_;
+PROTOBUF_CONSTEXPR RenameRequest::RenameRequest(
+    ::_pbi::ConstantInitialized)
+  : remote_from_path_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , remote_to_path_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct RenameRequestDefaultTypeInternal {
-  constexpr RenameRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RenameRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~RenameRequestDefaultTypeInternal() {}
   union {
     RenameRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RenameRequestDefaultTypeInternal _RenameRequest_default_instance_;
-constexpr RenameResponse::RenameResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RenameRequestDefaultTypeInternal _RenameRequest_default_instance_;
+PROTOBUF_CONSTEXPR RenameResponse::RenameResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr){}
 struct RenameResponseDefaultTypeInternal {
-  constexpr RenameResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RenameResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~RenameResponseDefaultTypeInternal() {}
   union {
     RenameResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT RenameResponseDefaultTypeInternal _RenameResponse_default_instance_;
-constexpr AreFilesIdenticalRequest::AreFilesIdenticalRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : local_file_path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , remote_file_path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RenameResponseDefaultTypeInternal _RenameResponse_default_instance_;
+PROTOBUF_CONSTEXPR AreFilesIdenticalRequest::AreFilesIdenticalRequest(
+    ::_pbi::ConstantInitialized)
+  : local_file_path_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , remote_file_path_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct AreFilesIdenticalRequestDefaultTypeInternal {
-  constexpr AreFilesIdenticalRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR AreFilesIdenticalRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~AreFilesIdenticalRequestDefaultTypeInternal() {}
   union {
     AreFilesIdenticalRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AreFilesIdenticalRequestDefaultTypeInternal _AreFilesIdenticalRequest_default_instance_;
-constexpr AreFilesIdenticalResponse::AreFilesIdenticalResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AreFilesIdenticalRequestDefaultTypeInternal _AreFilesIdenticalRequest_default_instance_;
+PROTOBUF_CONSTEXPR AreFilesIdenticalResponse::AreFilesIdenticalResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr)
   , are_identical_(false){}
 struct AreFilesIdenticalResponseDefaultTypeInternal {
-  constexpr AreFilesIdenticalResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR AreFilesIdenticalResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~AreFilesIdenticalResponseDefaultTypeInternal() {}
   union {
     AreFilesIdenticalResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AreFilesIdenticalResponseDefaultTypeInternal _AreFilesIdenticalResponse_default_instance_;
-constexpr SetRootDirectoryRequest::SetRootDirectoryRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : root_dir_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AreFilesIdenticalResponseDefaultTypeInternal _AreFilesIdenticalResponse_default_instance_;
+PROTOBUF_CONSTEXPR SetRootDirectoryRequest::SetRootDirectoryRequest(
+    ::_pbi::ConstantInitialized)
+  : root_dir_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
 struct SetRootDirectoryRequestDefaultTypeInternal {
-  constexpr SetRootDirectoryRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetRootDirectoryRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetRootDirectoryRequestDefaultTypeInternal() {}
   union {
     SetRootDirectoryRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetRootDirectoryRequestDefaultTypeInternal _SetRootDirectoryRequest_default_instance_;
-constexpr SetRootDirectoryResponse::SetRootDirectoryResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRootDirectoryRequestDefaultTypeInternal _SetRootDirectoryRequest_default_instance_;
+PROTOBUF_CONSTEXPR SetRootDirectoryResponse::SetRootDirectoryResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr){}
 struct SetRootDirectoryResponseDefaultTypeInternal {
-  constexpr SetRootDirectoryResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetRootDirectoryResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetRootDirectoryResponseDefaultTypeInternal() {}
   union {
     SetRootDirectoryResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetRootDirectoryResponseDefaultTypeInternal _SetRootDirectoryResponse_default_instance_;
-constexpr SetTargetCompidRequest::SetTargetCompidRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRootDirectoryResponseDefaultTypeInternal _SetRootDirectoryResponse_default_instance_;
+PROTOBUF_CONSTEXPR SetTargetCompidRequest::SetTargetCompidRequest(
+    ::_pbi::ConstantInitialized)
   : compid_(0u){}
 struct SetTargetCompidRequestDefaultTypeInternal {
-  constexpr SetTargetCompidRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetTargetCompidRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetTargetCompidRequestDefaultTypeInternal() {}
   union {
     SetTargetCompidRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTargetCompidRequestDefaultTypeInternal _SetTargetCompidRequest_default_instance_;
-constexpr SetTargetCompidResponse::SetTargetCompidResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetTargetCompidRequestDefaultTypeInternal _SetTargetCompidRequest_default_instance_;
+PROTOBUF_CONSTEXPR SetTargetCompidResponse::SetTargetCompidResponse(
+    ::_pbi::ConstantInitialized)
   : ftp_result_(nullptr){}
 struct SetTargetCompidResponseDefaultTypeInternal {
-  constexpr SetTargetCompidResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetTargetCompidResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetTargetCompidResponseDefaultTypeInternal() {}
   union {
     SetTargetCompidResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SetTargetCompidResponseDefaultTypeInternal _SetTargetCompidResponse_default_instance_;
-constexpr GetOurCompidRequest::GetOurCompidRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetTargetCompidResponseDefaultTypeInternal _SetTargetCompidResponse_default_instance_;
+PROTOBUF_CONSTEXPR GetOurCompidRequest::GetOurCompidRequest(
+    ::_pbi::ConstantInitialized){}
 struct GetOurCompidRequestDefaultTypeInternal {
-  constexpr GetOurCompidRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR GetOurCompidRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~GetOurCompidRequestDefaultTypeInternal() {}
   union {
     GetOurCompidRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetOurCompidRequestDefaultTypeInternal _GetOurCompidRequest_default_instance_;
-constexpr GetOurCompidResponse::GetOurCompidResponse(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetOurCompidRequestDefaultTypeInternal _GetOurCompidRequest_default_instance_;
+PROTOBUF_CONSTEXPR GetOurCompidResponse::GetOurCompidResponse(
+    ::_pbi::ConstantInitialized)
   : compid_(0u){}
 struct GetOurCompidResponseDefaultTypeInternal {
-  constexpr GetOurCompidResponseDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR GetOurCompidResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~GetOurCompidResponseDefaultTypeInternal() {}
   union {
     GetOurCompidResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetOurCompidResponseDefaultTypeInternal _GetOurCompidResponse_default_instance_;
-constexpr ProgressData::ProgressData(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetOurCompidResponseDefaultTypeInternal _GetOurCompidResponse_default_instance_;
+PROTOBUF_CONSTEXPR ProgressData::ProgressData(
+    ::_pbi::ConstantInitialized)
   : bytes_transferred_(0u)
   , total_bytes_(0u){}
 struct ProgressDataDefaultTypeInternal {
-  constexpr ProgressDataDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ProgressDataDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~ProgressDataDefaultTypeInternal() {}
   union {
     ProgressData _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ProgressDataDefaultTypeInternal _ProgressData_default_instance_;
-constexpr FtpResult::FtpResult(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : result_str_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProgressDataDefaultTypeInternal _ProgressData_default_instance_;
+PROTOBUF_CONSTEXPR FtpResult::FtpResult(
+    ::_pbi::ConstantInitialized)
+  : result_str_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , result_(0)
 {}
 struct FtpResultDefaultTypeInternal {
-  constexpr FtpResultDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR FtpResultDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
   ~FtpResultDefaultTypeInternal() {}
   union {
     FtpResult _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FtpResultDefaultTypeInternal _FtpResult_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FtpResultDefaultTypeInternal _FtpResult_default_instance_;
 }  // namespace ftp
 }  // namespace rpc
 }  // namespace mavsdk
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_ftp_2fftp_2eproto[26];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_ftp_2fftp_2eproto[1];
-static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_ftp_2fftp_2eproto = nullptr;
+static ::_pb::Metadata file_level_metadata_ftp_2fftp_2eproto[26];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_ftp_2fftp_2eproto[1];
+static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_ftp_2fftp_2eproto = nullptr;
 
-const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+const uint32_t TableStruct_ftp_2fftp_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ResetRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ResetResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ResetResponse, ftp_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SubscribeDownloadRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SubscribeDownloadRequest, remote_file_path_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SubscribeDownloadRequest, local_dir_),
   ~0u,  // no _has_bits_
@@ -371,6 +378,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::DownloadResponse, ftp_result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::DownloadResponse, progress_data_),
   ~0u,  // no _has_bits_
@@ -378,6 +386,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SubscribeUploadRequest, local_file_path_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SubscribeUploadRequest, remote_dir_),
   ~0u,  // no _has_bits_
@@ -385,6 +394,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::UploadResponse, ftp_result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::UploadResponse, progress_data_),
   ~0u,  // no _has_bits_
@@ -392,12 +402,14 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryRequest, remote_dir_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, ftp_result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, paths_),
   ~0u,  // no _has_bits_
@@ -405,42 +417,49 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::CreateDirectoryRequest, remote_dir_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::CreateDirectoryResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::CreateDirectoryResponse, ftp_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveDirectoryRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveDirectoryRequest, remote_dir_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveDirectoryResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveDirectoryResponse, ftp_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveFileRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveFileRequest, remote_file_path_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveFileResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RemoveFileResponse, ftp_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RenameRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RenameRequest, remote_from_path_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RenameRequest, remote_to_path_),
   ~0u,  // no _has_bits_
@@ -448,12 +467,14 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::RenameResponse, ftp_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::AreFilesIdenticalRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::AreFilesIdenticalRequest, local_file_path_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::AreFilesIdenticalRequest, remote_file_path_),
   ~0u,  // no _has_bits_
@@ -461,6 +482,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::AreFilesIdenticalResponse, ftp_result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::AreFilesIdenticalResponse, are_identical_),
   ~0u,  // no _has_bits_
@@ -468,41 +490,48 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SetRootDirectoryRequest, root_dir_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SetRootDirectoryResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SetRootDirectoryResponse, ftp_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SetTargetCompidRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SetTargetCompidRequest, compid_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SetTargetCompidResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::SetTargetCompidResponse, ftp_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::GetOurCompidRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::GetOurCompidResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::GetOurCompidResponse, compid_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ProgressData, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ProgressData, bytes_transferred_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ProgressData, total_bytes_),
   ~0u,  // no _has_bits_
@@ -510,65 +539,66 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_ftp_2fftp_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::FtpResult, result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::FtpResult, result_str_),
 };
-static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::mavsdk::rpc::ftp::ResetRequest)},
-  { 5, -1, sizeof(::mavsdk::rpc::ftp::ResetResponse)},
-  { 11, -1, sizeof(::mavsdk::rpc::ftp::SubscribeDownloadRequest)},
-  { 18, -1, sizeof(::mavsdk::rpc::ftp::DownloadResponse)},
-  { 25, -1, sizeof(::mavsdk::rpc::ftp::SubscribeUploadRequest)},
-  { 32, -1, sizeof(::mavsdk::rpc::ftp::UploadResponse)},
-  { 39, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryRequest)},
-  { 45, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryResponse)},
-  { 52, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryRequest)},
-  { 58, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryResponse)},
-  { 64, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryRequest)},
-  { 70, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryResponse)},
-  { 76, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileRequest)},
-  { 82, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileResponse)},
-  { 88, -1, sizeof(::mavsdk::rpc::ftp::RenameRequest)},
-  { 95, -1, sizeof(::mavsdk::rpc::ftp::RenameResponse)},
-  { 101, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalRequest)},
-  { 108, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalResponse)},
-  { 115, -1, sizeof(::mavsdk::rpc::ftp::SetRootDirectoryRequest)},
-  { 121, -1, sizeof(::mavsdk::rpc::ftp::SetRootDirectoryResponse)},
-  { 127, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidRequest)},
-  { 133, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidResponse)},
-  { 139, -1, sizeof(::mavsdk::rpc::ftp::GetOurCompidRequest)},
-  { 144, -1, sizeof(::mavsdk::rpc::ftp::GetOurCompidResponse)},
-  { 150, -1, sizeof(::mavsdk::rpc::ftp::ProgressData)},
-  { 157, -1, sizeof(::mavsdk::rpc::ftp::FtpResult)},
+static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, -1, -1, sizeof(::mavsdk::rpc::ftp::ResetRequest)},
+  { 6, -1, -1, sizeof(::mavsdk::rpc::ftp::ResetResponse)},
+  { 13, -1, -1, sizeof(::mavsdk::rpc::ftp::SubscribeDownloadRequest)},
+  { 21, -1, -1, sizeof(::mavsdk::rpc::ftp::DownloadResponse)},
+  { 29, -1, -1, sizeof(::mavsdk::rpc::ftp::SubscribeUploadRequest)},
+  { 37, -1, -1, sizeof(::mavsdk::rpc::ftp::UploadResponse)},
+  { 45, -1, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryRequest)},
+  { 52, -1, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryResponse)},
+  { 60, -1, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryRequest)},
+  { 67, -1, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryResponse)},
+  { 74, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryRequest)},
+  { 81, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryResponse)},
+  { 88, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileRequest)},
+  { 95, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileResponse)},
+  { 102, -1, -1, sizeof(::mavsdk::rpc::ftp::RenameRequest)},
+  { 110, -1, -1, sizeof(::mavsdk::rpc::ftp::RenameResponse)},
+  { 117, -1, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalRequest)},
+  { 125, -1, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalResponse)},
+  { 133, -1, -1, sizeof(::mavsdk::rpc::ftp::SetRootDirectoryRequest)},
+  { 140, -1, -1, sizeof(::mavsdk::rpc::ftp::SetRootDirectoryResponse)},
+  { 147, -1, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidRequest)},
+  { 154, -1, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidResponse)},
+  { 161, -1, -1, sizeof(::mavsdk::rpc::ftp::GetOurCompidRequest)},
+  { 167, -1, -1, sizeof(::mavsdk::rpc::ftp::GetOurCompidResponse)},
+  { 174, -1, -1, sizeof(::mavsdk::rpc::ftp::ProgressData)},
+  { 182, -1, -1, sizeof(::mavsdk::rpc::ftp::FtpResult)},
 };
 
-static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_ResetRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_ResetResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_SubscribeDownloadRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_DownloadResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_SubscribeUploadRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_UploadResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_ListDirectoryRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_ListDirectoryResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_CreateDirectoryRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_CreateDirectoryResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_RemoveDirectoryRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_RemoveDirectoryResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_RemoveFileRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_RemoveFileResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_RenameRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_RenameResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_AreFilesIdenticalRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_AreFilesIdenticalResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_SetRootDirectoryRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_SetRootDirectoryResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_SetTargetCompidRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_SetTargetCompidResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_GetOurCompidRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_GetOurCompidResponse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_ProgressData_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::ftp::_FtpResult_default_instance_),
+static const ::_pb::Message* const file_default_instances[] = {
+  &::mavsdk::rpc::ftp::_ResetRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_ResetResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_SubscribeDownloadRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_DownloadResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_SubscribeUploadRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_UploadResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_ListDirectoryRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_ListDirectoryResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_CreateDirectoryRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_CreateDirectoryResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_RemoveDirectoryRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_RemoveDirectoryResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_RemoveFileRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_RemoveFileResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_RenameRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_RenameResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_AreFilesIdenticalRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_AreFilesIdenticalResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_SetRootDirectoryRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_SetRootDirectoryResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_SetTargetCompidRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_SetTargetCompidResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_GetOurCompidRequest_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_GetOurCompidResponse_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_ProgressData_default_instance_._instance,
+  &::mavsdk::rpc::ftp::_FtpResult_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_ftp_2fftp_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -656,22 +686,24 @@ const char descriptor_table_protodef_ftp_2fftp_2eproto[] PROTOBUF_SECTION_VARIAB
   "rCompidResponse\"\004\200\265\030\001B\031\n\rio.mavsdk.ftpB\010"
   "FtpProtob\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_ftp_2fftp_2eproto_deps[1] = {
+static const ::_pbi::DescriptorTable* const descriptor_table_ftp_2fftp_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_ftp_2fftp_2eproto_once;
-const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_ftp_2fftp_2eproto = {
-  false, false, 3296, descriptor_table_protodef_ftp_2fftp_2eproto, "ftp/ftp.proto", 
-  &descriptor_table_ftp_2fftp_2eproto_once, descriptor_table_ftp_2fftp_2eproto_deps, 1, 26,
-  schemas, file_default_instances, TableStruct_ftp_2fftp_2eproto::offsets,
-  file_level_metadata_ftp_2fftp_2eproto, file_level_enum_descriptors_ftp_2fftp_2eproto, file_level_service_descriptors_ftp_2fftp_2eproto,
+static ::_pbi::once_flag descriptor_table_ftp_2fftp_2eproto_once;
+const ::_pbi::DescriptorTable descriptor_table_ftp_2fftp_2eproto = {
+    false, false, 3296, descriptor_table_protodef_ftp_2fftp_2eproto,
+    "ftp/ftp.proto",
+    &descriptor_table_ftp_2fftp_2eproto_once, descriptor_table_ftp_2fftp_2eproto_deps, 1, 26,
+    schemas, file_default_instances, TableStruct_ftp_2fftp_2eproto::offsets,
+    file_level_metadata_ftp_2fftp_2eproto, file_level_enum_descriptors_ftp_2fftp_2eproto,
+    file_level_service_descriptors_ftp_2fftp_2eproto,
 };
-PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable* descriptor_table_ftp_2fftp_2eproto_getter() {
+PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_ftp_2fftp_2eproto_getter() {
   return &descriptor_table_ftp_2fftp_2eproto;
 }
 
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_ftp_2fftp_2eproto(&descriptor_table_ftp_2fftp_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_ftp_2fftp_2eproto(&descriptor_table_ftp_2fftp_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace ftp {
@@ -700,7 +732,7 @@ bool FtpResult_Result_IsValid(int value) {
   }
 }
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr FtpResult_Result FtpResult::RESULT_UNKNOWN;
 constexpr FtpResult_Result FtpResult::RESULT_SUCCESS;
 constexpr FtpResult_Result FtpResult::RESULT_NEXT;
@@ -717,7 +749,7 @@ constexpr FtpResult_Result FtpResult::RESULT_NO_SYSTEM;
 constexpr FtpResult_Result FtpResult::Result_MIN;
 constexpr FtpResult_Result FtpResult::Result_MAX;
 constexpr int FtpResult::Result_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 // ===================================================================
 
@@ -727,147 +759,33 @@ class ResetRequest::_Internal {
 
 ResetRequest::ResetRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.ResetRequest)
 }
 ResetRequest::ResetRequest(const ResetRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.ResetRequest)
 }
 
-inline void ResetRequest::SharedCtor() {
-}
 
-ResetRequest::~ResetRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.ResetRequest)
-  if (GetArenaForAllocation() != nullptr) return;
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
 
-inline void ResetRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-}
 
-void ResetRequest::ArenaDtor(void* object) {
-  ResetRequest* _this = reinterpret_cast< ResetRequest* >(object);
-  (void)_this;
-}
-void ResetRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void ResetRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void ResetRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.ResetRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* ResetRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* ResetRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.ResetRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.ResetRequest)
-  return target;
-}
-
-size_t ResetRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.ResetRequest)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ResetRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    ResetRequest::MergeImpl
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ResetRequest::GetClassData() const { return &_class_data_; }
 
-void ResetRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<ResetRequest *>(to)->MergeFrom(
-      static_cast<const ResetRequest &>(from));
-}
 
 
-void ResetRequest::MergeFrom(const ResetRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.ResetRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
 
-void ResetRequest::CopyFrom(const ResetRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.ftp.ResetRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
-bool ResetRequest::IsInitialized() const {
-  return true;
-}
-
-void ResetRequest::InternalSwap(ResetRequest* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-}
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ResetRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[0]);
 }
@@ -887,9 +805,6 @@ ResetResponse::ResetResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.ResetResponse)
 }
 ResetResponse::ResetResponse(const ResetResponse& from)
@@ -909,9 +824,11 @@ ftp_result_ = nullptr;
 
 ResetResponse::~ResetResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.ResetResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void ResetResponse::SharedDtor() {
@@ -919,19 +836,13 @@ inline void ResetResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void ResetResponse::ArenaDtor(void* object) {
-  ResetResponse* _this = reinterpret_cast< ResetResponse* >(object);
-  (void)_this;
-}
-void ResetResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void ResetResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void ResetResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.ResetResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -942,58 +853,58 @@ void ResetResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* ResetResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* ResetResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* ResetResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* ResetResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.ResetResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.ResetResponse)
@@ -1004,7 +915,7 @@ size_t ResetResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.ResetResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1015,13 +926,7 @@ size_t ResetResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ResetResponse::_class_data_ = {
@@ -1030,8 +935,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ResetResponse::_class_data_ = 
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ResetResponse::GetClassData() const { return &_class_data_; }
 
-void ResetResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void ResetResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<ResetResponse *>(to)->MergeFrom(
       static_cast<const ResetResponse &>(from));
 }
@@ -1040,7 +945,7 @@ void ResetResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void ResetResponse::MergeFrom(const ResetResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.ResetResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -1067,7 +972,7 @@ void ResetResponse::InternalSwap(ResetResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ResetResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[1]);
 }
@@ -1082,58 +987,63 @@ SubscribeDownloadRequest::SubscribeDownloadRequest(::PROTOBUF_NAMESPACE_ID::Aren
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.SubscribeDownloadRequest)
 }
 SubscribeDownloadRequest::SubscribeDownloadRequest(const SubscribeDownloadRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  remote_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_file_path_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_file_path_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_file_path().empty()) {
-    remote_file_path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_file_path(), 
+    remote_file_path_.Set(from._internal_remote_file_path(), 
       GetArenaForAllocation());
   }
-  local_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  local_dir_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    local_dir_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_local_dir().empty()) {
-    local_dir_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_local_dir(), 
+    local_dir_.Set(from._internal_local_dir(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.SubscribeDownloadRequest)
 }
 
 inline void SubscribeDownloadRequest::SharedCtor() {
-remote_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-local_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+remote_file_path_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_file_path_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+local_dir_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  local_dir_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 SubscribeDownloadRequest::~SubscribeDownloadRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.SubscribeDownloadRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void SubscribeDownloadRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  remote_file_path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  local_dir_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_file_path_.Destroy();
+  local_dir_.Destroy();
 }
 
-void SubscribeDownloadRequest::ArenaDtor(void* object) {
-  SubscribeDownloadRequest* _this = reinterpret_cast< SubscribeDownloadRequest* >(object);
-  (void)_this;
-}
-void SubscribeDownloadRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void SubscribeDownloadRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void SubscribeDownloadRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.SubscribeDownloadRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1142,57 +1052,59 @@ void SubscribeDownloadRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SubscribeDownloadRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SubscribeDownloadRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string remote_file_path = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_remote_file_path();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path"));
+        } else
+          goto handle_unusual;
         continue;
       // string local_dir = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_local_dir();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribeDownloadRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* SubscribeDownloadRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.SubscribeDownloadRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string remote_file_path = 1;
@@ -1216,7 +1128,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.SubscribeDownloadRequest)
@@ -1227,7 +1139,7 @@ size_t SubscribeDownloadRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.SubscribeDownloadRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1245,13 +1157,7 @@ size_t SubscribeDownloadRequest::ByteSizeLong() const {
         this->_internal_local_dir());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SubscribeDownloadRequest::_class_data_ = {
@@ -1260,8 +1166,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SubscribeDownloadRequest::_cla
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeDownloadRequest::GetClassData() const { return &_class_data_; }
 
-void SubscribeDownloadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void SubscribeDownloadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<SubscribeDownloadRequest *>(to)->MergeFrom(
       static_cast<const SubscribeDownloadRequest &>(from));
 }
@@ -1270,7 +1176,7 @@ void SubscribeDownloadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void SubscribeDownloadRequest::MergeFrom(const SubscribeDownloadRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.SubscribeDownloadRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_remote_file_path().empty()) {
@@ -1295,21 +1201,21 @@ bool SubscribeDownloadRequest::IsInitialized() const {
 
 void SubscribeDownloadRequest::InternalSwap(SubscribeDownloadRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_file_path_, GetArenaForAllocation(),
-      &other->remote_file_path_, other->GetArenaForAllocation()
+      &remote_file_path_, lhs_arena,
+      &other->remote_file_path_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &local_dir_, GetArenaForAllocation(),
-      &other->local_dir_, other->GetArenaForAllocation()
+      &local_dir_, lhs_arena,
+      &other->local_dir_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeDownloadRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[2]);
 }
@@ -1334,9 +1240,6 @@ DownloadResponse::DownloadResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.DownloadResponse)
 }
 DownloadResponse::DownloadResponse(const DownloadResponse& from)
@@ -1364,9 +1267,11 @@ inline void DownloadResponse::SharedCtor() {
 
 DownloadResponse::~DownloadResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.DownloadResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void DownloadResponse::SharedDtor() {
@@ -1375,19 +1280,13 @@ inline void DownloadResponse::SharedDtor() {
   if (this != internal_default_instance()) delete progress_data_;
 }
 
-void DownloadResponse::ArenaDtor(void* object) {
-  DownloadResponse* _this = reinterpret_cast< DownloadResponse* >(object);
-  (void)_this;
-}
-void DownloadResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void DownloadResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void DownloadResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.DownloadResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1402,73 +1301,73 @@ void DownloadResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* DownloadResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* DownloadResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_progress_data(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DownloadResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DownloadResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.DownloadResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
   if (this->_internal_has_progress_data()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        2, _Internal::progress_data(this), target, stream);
+      InternalWriteMessage(2, _Internal::progress_data(this),
+        _Internal::progress_data(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.DownloadResponse)
@@ -1479,7 +1378,7 @@ size_t DownloadResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.DownloadResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1497,13 +1396,7 @@ size_t DownloadResponse::ByteSizeLong() const {
         *progress_data_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DownloadResponse::_class_data_ = {
@@ -1512,8 +1405,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DownloadResponse::_class_data_
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DownloadResponse::GetClassData() const { return &_class_data_; }
 
-void DownloadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void DownloadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<DownloadResponse *>(to)->MergeFrom(
       static_cast<const DownloadResponse &>(from));
 }
@@ -1522,7 +1415,7 @@ void DownloadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void DownloadResponse::MergeFrom(const DownloadResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.DownloadResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -1557,7 +1450,7 @@ void DownloadResponse::InternalSwap(DownloadResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata DownloadResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[3]);
 }
@@ -1572,58 +1465,63 @@ SubscribeUploadRequest::SubscribeUploadRequest(::PROTOBUF_NAMESPACE_ID::Arena* a
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.SubscribeUploadRequest)
 }
 SubscribeUploadRequest::SubscribeUploadRequest(const SubscribeUploadRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  local_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  local_file_path_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    local_file_path_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_local_file_path().empty()) {
-    local_file_path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_local_file_path(), 
+    local_file_path_.Set(from._internal_local_file_path(), 
       GetArenaForAllocation());
   }
-  remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_dir_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_dir_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_dir().empty()) {
-    remote_dir_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_dir(), 
+    remote_dir_.Set(from._internal_remote_dir(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.SubscribeUploadRequest)
 }
 
 inline void SubscribeUploadRequest::SharedCtor() {
-local_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+local_file_path_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  local_file_path_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+remote_dir_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_dir_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 SubscribeUploadRequest::~SubscribeUploadRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.SubscribeUploadRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void SubscribeUploadRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  local_file_path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  remote_dir_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  local_file_path_.Destroy();
+  remote_dir_.Destroy();
 }
 
-void SubscribeUploadRequest::ArenaDtor(void* object) {
-  SubscribeUploadRequest* _this = reinterpret_cast< SubscribeUploadRequest* >(object);
-  (void)_this;
-}
-void SubscribeUploadRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void SubscribeUploadRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void SubscribeUploadRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.SubscribeUploadRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1632,57 +1530,59 @@ void SubscribeUploadRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SubscribeUploadRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SubscribeUploadRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string local_file_path = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_local_file_path();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path"));
+        } else
+          goto handle_unusual;
         continue;
       // string remote_dir = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_remote_dir();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SubscribeUploadRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* SubscribeUploadRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.SubscribeUploadRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string local_file_path = 1;
@@ -1706,7 +1606,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.SubscribeUploadRequest)
@@ -1717,7 +1617,7 @@ size_t SubscribeUploadRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.SubscribeUploadRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1735,13 +1635,7 @@ size_t SubscribeUploadRequest::ByteSizeLong() const {
         this->_internal_remote_dir());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SubscribeUploadRequest::_class_data_ = {
@@ -1750,8 +1644,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SubscribeUploadRequest::_class
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeUploadRequest::GetClassData() const { return &_class_data_; }
 
-void SubscribeUploadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void SubscribeUploadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<SubscribeUploadRequest *>(to)->MergeFrom(
       static_cast<const SubscribeUploadRequest &>(from));
 }
@@ -1760,7 +1654,7 @@ void SubscribeUploadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void SubscribeUploadRequest::MergeFrom(const SubscribeUploadRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.SubscribeUploadRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_local_file_path().empty()) {
@@ -1785,21 +1679,21 @@ bool SubscribeUploadRequest::IsInitialized() const {
 
 void SubscribeUploadRequest::InternalSwap(SubscribeUploadRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &local_file_path_, GetArenaForAllocation(),
-      &other->local_file_path_, other->GetArenaForAllocation()
+      &local_file_path_, lhs_arena,
+      &other->local_file_path_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_dir_, GetArenaForAllocation(),
-      &other->remote_dir_, other->GetArenaForAllocation()
+      &remote_dir_, lhs_arena,
+      &other->remote_dir_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeUploadRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[4]);
 }
@@ -1824,9 +1718,6 @@ UploadResponse::UploadResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.UploadResponse)
 }
 UploadResponse::UploadResponse(const UploadResponse& from)
@@ -1854,9 +1745,11 @@ inline void UploadResponse::SharedCtor() {
 
 UploadResponse::~UploadResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.UploadResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void UploadResponse::SharedDtor() {
@@ -1865,19 +1758,13 @@ inline void UploadResponse::SharedDtor() {
   if (this != internal_default_instance()) delete progress_data_;
 }
 
-void UploadResponse::ArenaDtor(void* object) {
-  UploadResponse* _this = reinterpret_cast< UploadResponse* >(object);
-  (void)_this;
-}
-void UploadResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void UploadResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void UploadResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.UploadResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1892,73 +1779,73 @@ void UploadResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* UploadResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* UploadResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_progress_data(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* UploadResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* UploadResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.UploadResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
   if (this->_internal_has_progress_data()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        2, _Internal::progress_data(this), target, stream);
+      InternalWriteMessage(2, _Internal::progress_data(this),
+        _Internal::progress_data(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.UploadResponse)
@@ -1969,7 +1856,7 @@ size_t UploadResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.UploadResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1987,13 +1874,7 @@ size_t UploadResponse::ByteSizeLong() const {
         *progress_data_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadResponse::_class_data_ = {
@@ -2002,8 +1883,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadResponse::_class_data_ =
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UploadResponse::GetClassData() const { return &_class_data_; }
 
-void UploadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void UploadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<UploadResponse *>(to)->MergeFrom(
       static_cast<const UploadResponse &>(from));
 }
@@ -2012,7 +1893,7 @@ void UploadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void UploadResponse::MergeFrom(const UploadResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.UploadResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -2047,7 +1928,7 @@ void UploadResponse::InternalSwap(UploadResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata UploadResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[5]);
 }
@@ -2062,51 +1943,50 @@ ListDirectoryRequest::ListDirectoryRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.ListDirectoryRequest)
 }
 ListDirectoryRequest::ListDirectoryRequest(const ListDirectoryRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_dir_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_dir_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_dir().empty()) {
-    remote_dir_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_dir(), 
+    remote_dir_.Set(from._internal_remote_dir(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.ListDirectoryRequest)
 }
 
 inline void ListDirectoryRequest::SharedCtor() {
-remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+remote_dir_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_dir_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ListDirectoryRequest::~ListDirectoryRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.ListDirectoryRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void ListDirectoryRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  remote_dir_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_dir_.Destroy();
 }
 
-void ListDirectoryRequest::ArenaDtor(void* object) {
-  ListDirectoryRequest* _this = reinterpret_cast< ListDirectoryRequest* >(object);
-  (void)_this;
-}
-void ListDirectoryRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void ListDirectoryRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void ListDirectoryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.ListDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2114,48 +1994,49 @@ void ListDirectoryRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* ListDirectoryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* ListDirectoryRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string remote_dir = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_remote_dir();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* ListDirectoryRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* ListDirectoryRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.ListDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string remote_dir = 1;
@@ -2169,7 +2050,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.ListDirectoryRequest)
@@ -2180,7 +2061,7 @@ size_t ListDirectoryRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.ListDirectoryRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2191,13 +2072,7 @@ size_t ListDirectoryRequest::ByteSizeLong() const {
         this->_internal_remote_dir());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ListDirectoryRequest::_class_data_ = {
@@ -2206,8 +2081,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ListDirectoryRequest::_class_d
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ListDirectoryRequest::GetClassData() const { return &_class_data_; }
 
-void ListDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void ListDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<ListDirectoryRequest *>(to)->MergeFrom(
       static_cast<const ListDirectoryRequest &>(from));
 }
@@ -2216,7 +2091,7 @@ void ListDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void ListDirectoryRequest::MergeFrom(const ListDirectoryRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.ListDirectoryRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_remote_dir().empty()) {
@@ -2238,16 +2113,17 @@ bool ListDirectoryRequest::IsInitialized() const {
 
 void ListDirectoryRequest::InternalSwap(ListDirectoryRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_dir_, GetArenaForAllocation(),
-      &other->remote_dir_, other->GetArenaForAllocation()
+      &remote_dir_, lhs_arena,
+      &other->remote_dir_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ListDirectoryRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[6]);
 }
@@ -2268,9 +2144,6 @@ ListDirectoryResponse::ListDirectoryResponse(::PROTOBUF_NAMESPACE_ID::Arena* are
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
   paths_(arena) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.ListDirectoryResponse)
 }
 ListDirectoryResponse::ListDirectoryResponse(const ListDirectoryResponse& from)
@@ -2291,9 +2164,11 @@ ftp_result_ = nullptr;
 
 ListDirectoryResponse::~ListDirectoryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.ListDirectoryResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void ListDirectoryResponse::SharedDtor() {
@@ -2301,19 +2176,13 @@ inline void ListDirectoryResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void ListDirectoryResponse::ArenaDtor(void* object) {
-  ListDirectoryResponse* _this = reinterpret_cast< ListDirectoryResponse* >(object);
-  (void)_this;
-}
-void ListDirectoryResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void ListDirectoryResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void ListDirectoryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.ListDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2325,68 +2194,69 @@ void ListDirectoryResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* ListDirectoryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* ListDirectoryResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated string paths = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
           do {
             ptr += 1;
             auto str = _internal_add_paths();
-            ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-            CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.ListDirectoryResponse.paths"));
+            ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
             CHK_(ptr);
+            CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.ListDirectoryResponse.paths"));
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* ListDirectoryResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* ListDirectoryResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.ListDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   // repeated string paths = 2;
@@ -2400,7 +2270,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.ListDirectoryResponse)
@@ -2411,7 +2281,7 @@ size_t ListDirectoryResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.ListDirectoryResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2430,13 +2300,7 @@ size_t ListDirectoryResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ListDirectoryResponse::_class_data_ = {
@@ -2445,8 +2309,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ListDirectoryResponse::_class_
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ListDirectoryResponse::GetClassData() const { return &_class_data_; }
 
-void ListDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void ListDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<ListDirectoryResponse *>(to)->MergeFrom(
       static_cast<const ListDirectoryResponse &>(from));
 }
@@ -2455,7 +2319,7 @@ void ListDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void ListDirectoryResponse::MergeFrom(const ListDirectoryResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.ListDirectoryResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   paths_.MergeFrom(from.paths_);
@@ -2484,7 +2348,7 @@ void ListDirectoryResponse::InternalSwap(ListDirectoryResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ListDirectoryResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[7]);
 }
@@ -2499,51 +2363,50 @@ CreateDirectoryRequest::CreateDirectoryRequest(::PROTOBUF_NAMESPACE_ID::Arena* a
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.CreateDirectoryRequest)
 }
 CreateDirectoryRequest::CreateDirectoryRequest(const CreateDirectoryRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_dir_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_dir_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_dir().empty()) {
-    remote_dir_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_dir(), 
+    remote_dir_.Set(from._internal_remote_dir(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.CreateDirectoryRequest)
 }
 
 inline void CreateDirectoryRequest::SharedCtor() {
-remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+remote_dir_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_dir_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 CreateDirectoryRequest::~CreateDirectoryRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.CreateDirectoryRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void CreateDirectoryRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  remote_dir_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_dir_.Destroy();
 }
 
-void CreateDirectoryRequest::ArenaDtor(void* object) {
-  CreateDirectoryRequest* _this = reinterpret_cast< CreateDirectoryRequest* >(object);
-  (void)_this;
-}
-void CreateDirectoryRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void CreateDirectoryRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void CreateDirectoryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.CreateDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2551,48 +2414,49 @@ void CreateDirectoryRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* CreateDirectoryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* CreateDirectoryRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string remote_dir = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_remote_dir();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* CreateDirectoryRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* CreateDirectoryRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.CreateDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string remote_dir = 1;
@@ -2606,7 +2470,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.CreateDirectoryRequest)
@@ -2617,7 +2481,7 @@ size_t CreateDirectoryRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.CreateDirectoryRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2628,13 +2492,7 @@ size_t CreateDirectoryRequest::ByteSizeLong() const {
         this->_internal_remote_dir());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CreateDirectoryRequest::_class_data_ = {
@@ -2643,8 +2501,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CreateDirectoryRequest::_class
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CreateDirectoryRequest::GetClassData() const { return &_class_data_; }
 
-void CreateDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void CreateDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<CreateDirectoryRequest *>(to)->MergeFrom(
       static_cast<const CreateDirectoryRequest &>(from));
 }
@@ -2653,7 +2511,7 @@ void CreateDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void CreateDirectoryRequest::MergeFrom(const CreateDirectoryRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.CreateDirectoryRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_remote_dir().empty()) {
@@ -2675,16 +2533,17 @@ bool CreateDirectoryRequest::IsInitialized() const {
 
 void CreateDirectoryRequest::InternalSwap(CreateDirectoryRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_dir_, GetArenaForAllocation(),
-      &other->remote_dir_, other->GetArenaForAllocation()
+      &remote_dir_, lhs_arena,
+      &other->remote_dir_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CreateDirectoryRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[8]);
 }
@@ -2704,9 +2563,6 @@ CreateDirectoryResponse::CreateDirectoryResponse(::PROTOBUF_NAMESPACE_ID::Arena*
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.CreateDirectoryResponse)
 }
 CreateDirectoryResponse::CreateDirectoryResponse(const CreateDirectoryResponse& from)
@@ -2726,9 +2582,11 @@ ftp_result_ = nullptr;
 
 CreateDirectoryResponse::~CreateDirectoryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.CreateDirectoryResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void CreateDirectoryResponse::SharedDtor() {
@@ -2736,19 +2594,13 @@ inline void CreateDirectoryResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void CreateDirectoryResponse::ArenaDtor(void* object) {
-  CreateDirectoryResponse* _this = reinterpret_cast< CreateDirectoryResponse* >(object);
-  (void)_this;
-}
-void CreateDirectoryResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void CreateDirectoryResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void CreateDirectoryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.CreateDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2759,58 +2611,58 @@ void CreateDirectoryResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* CreateDirectoryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* CreateDirectoryResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* CreateDirectoryResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* CreateDirectoryResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.CreateDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.CreateDirectoryResponse)
@@ -2821,7 +2673,7 @@ size_t CreateDirectoryResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.CreateDirectoryResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2832,13 +2684,7 @@ size_t CreateDirectoryResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CreateDirectoryResponse::_class_data_ = {
@@ -2847,8 +2693,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CreateDirectoryResponse::_clas
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CreateDirectoryResponse::GetClassData() const { return &_class_data_; }
 
-void CreateDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void CreateDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<CreateDirectoryResponse *>(to)->MergeFrom(
       static_cast<const CreateDirectoryResponse &>(from));
 }
@@ -2857,7 +2703,7 @@ void CreateDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void CreateDirectoryResponse::MergeFrom(const CreateDirectoryResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.CreateDirectoryResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -2884,7 +2730,7 @@ void CreateDirectoryResponse::InternalSwap(CreateDirectoryResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CreateDirectoryResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[9]);
 }
@@ -2899,51 +2745,50 @@ RemoveDirectoryRequest::RemoveDirectoryRequest(::PROTOBUF_NAMESPACE_ID::Arena* a
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.RemoveDirectoryRequest)
 }
 RemoveDirectoryRequest::RemoveDirectoryRequest(const RemoveDirectoryRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_dir_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_dir_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_dir().empty()) {
-    remote_dir_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_dir(), 
+    remote_dir_.Set(from._internal_remote_dir(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.RemoveDirectoryRequest)
 }
 
 inline void RemoveDirectoryRequest::SharedCtor() {
-remote_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+remote_dir_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_dir_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RemoveDirectoryRequest::~RemoveDirectoryRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.RemoveDirectoryRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void RemoveDirectoryRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  remote_dir_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_dir_.Destroy();
 }
 
-void RemoveDirectoryRequest::ArenaDtor(void* object) {
-  RemoveDirectoryRequest* _this = reinterpret_cast< RemoveDirectoryRequest* >(object);
-  (void)_this;
-}
-void RemoveDirectoryRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void RemoveDirectoryRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void RemoveDirectoryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.RemoveDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2951,48 +2796,49 @@ void RemoveDirectoryRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* RemoveDirectoryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RemoveDirectoryRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string remote_dir = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_remote_dir();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* RemoveDirectoryRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* RemoveDirectoryRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.RemoveDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string remote_dir = 1;
@@ -3006,7 +2852,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.RemoveDirectoryRequest)
@@ -3017,7 +2863,7 @@ size_t RemoveDirectoryRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.RemoveDirectoryRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3028,13 +2874,7 @@ size_t RemoveDirectoryRequest::ByteSizeLong() const {
         this->_internal_remote_dir());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveDirectoryRequest::_class_data_ = {
@@ -3043,8 +2883,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveDirectoryRequest::_class
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RemoveDirectoryRequest::GetClassData() const { return &_class_data_; }
 
-void RemoveDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void RemoveDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<RemoveDirectoryRequest *>(to)->MergeFrom(
       static_cast<const RemoveDirectoryRequest &>(from));
 }
@@ -3053,7 +2893,7 @@ void RemoveDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void RemoveDirectoryRequest::MergeFrom(const RemoveDirectoryRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.RemoveDirectoryRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_remote_dir().empty()) {
@@ -3075,16 +2915,17 @@ bool RemoveDirectoryRequest::IsInitialized() const {
 
 void RemoveDirectoryRequest::InternalSwap(RemoveDirectoryRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_dir_, GetArenaForAllocation(),
-      &other->remote_dir_, other->GetArenaForAllocation()
+      &remote_dir_, lhs_arena,
+      &other->remote_dir_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RemoveDirectoryRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[10]);
 }
@@ -3104,9 +2945,6 @@ RemoveDirectoryResponse::RemoveDirectoryResponse(::PROTOBUF_NAMESPACE_ID::Arena*
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.RemoveDirectoryResponse)
 }
 RemoveDirectoryResponse::RemoveDirectoryResponse(const RemoveDirectoryResponse& from)
@@ -3126,9 +2964,11 @@ ftp_result_ = nullptr;
 
 RemoveDirectoryResponse::~RemoveDirectoryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.RemoveDirectoryResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void RemoveDirectoryResponse::SharedDtor() {
@@ -3136,19 +2976,13 @@ inline void RemoveDirectoryResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void RemoveDirectoryResponse::ArenaDtor(void* object) {
-  RemoveDirectoryResponse* _this = reinterpret_cast< RemoveDirectoryResponse* >(object);
-  (void)_this;
-}
-void RemoveDirectoryResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void RemoveDirectoryResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void RemoveDirectoryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.RemoveDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3159,58 +2993,58 @@ void RemoveDirectoryResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* RemoveDirectoryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RemoveDirectoryResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* RemoveDirectoryResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* RemoveDirectoryResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.RemoveDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.RemoveDirectoryResponse)
@@ -3221,7 +3055,7 @@ size_t RemoveDirectoryResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.RemoveDirectoryResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3232,13 +3066,7 @@ size_t RemoveDirectoryResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveDirectoryResponse::_class_data_ = {
@@ -3247,8 +3075,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveDirectoryResponse::_clas
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RemoveDirectoryResponse::GetClassData() const { return &_class_data_; }
 
-void RemoveDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void RemoveDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<RemoveDirectoryResponse *>(to)->MergeFrom(
       static_cast<const RemoveDirectoryResponse &>(from));
 }
@@ -3257,7 +3085,7 @@ void RemoveDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void RemoveDirectoryResponse::MergeFrom(const RemoveDirectoryResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.RemoveDirectoryResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -3284,7 +3112,7 @@ void RemoveDirectoryResponse::InternalSwap(RemoveDirectoryResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RemoveDirectoryResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[11]);
 }
@@ -3299,51 +3127,50 @@ RemoveFileRequest::RemoveFileRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.RemoveFileRequest)
 }
 RemoveFileRequest::RemoveFileRequest(const RemoveFileRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  remote_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_file_path_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_file_path_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_file_path().empty()) {
-    remote_file_path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_file_path(), 
+    remote_file_path_.Set(from._internal_remote_file_path(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.RemoveFileRequest)
 }
 
 inline void RemoveFileRequest::SharedCtor() {
-remote_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+remote_file_path_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_file_path_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RemoveFileRequest::~RemoveFileRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.RemoveFileRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void RemoveFileRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  remote_file_path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_file_path_.Destroy();
 }
 
-void RemoveFileRequest::ArenaDtor(void* object) {
-  RemoveFileRequest* _this = reinterpret_cast< RemoveFileRequest* >(object);
-  (void)_this;
-}
-void RemoveFileRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void RemoveFileRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void RemoveFileRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.RemoveFileRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3351,48 +3178,49 @@ void RemoveFileRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* RemoveFileRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RemoveFileRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string remote_file_path = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_remote_file_path();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* RemoveFileRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* RemoveFileRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.RemoveFileRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string remote_file_path = 1;
@@ -3406,7 +3234,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.RemoveFileRequest)
@@ -3417,7 +3245,7 @@ size_t RemoveFileRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.RemoveFileRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3428,13 +3256,7 @@ size_t RemoveFileRequest::ByteSizeLong() const {
         this->_internal_remote_file_path());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveFileRequest::_class_data_ = {
@@ -3443,8 +3265,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveFileRequest::_class_data
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RemoveFileRequest::GetClassData() const { return &_class_data_; }
 
-void RemoveFileRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void RemoveFileRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<RemoveFileRequest *>(to)->MergeFrom(
       static_cast<const RemoveFileRequest &>(from));
 }
@@ -3453,7 +3275,7 @@ void RemoveFileRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void RemoveFileRequest::MergeFrom(const RemoveFileRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.RemoveFileRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_remote_file_path().empty()) {
@@ -3475,16 +3297,17 @@ bool RemoveFileRequest::IsInitialized() const {
 
 void RemoveFileRequest::InternalSwap(RemoveFileRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_file_path_, GetArenaForAllocation(),
-      &other->remote_file_path_, other->GetArenaForAllocation()
+      &remote_file_path_, lhs_arena,
+      &other->remote_file_path_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RemoveFileRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[12]);
 }
@@ -3504,9 +3327,6 @@ RemoveFileResponse::RemoveFileResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.RemoveFileResponse)
 }
 RemoveFileResponse::RemoveFileResponse(const RemoveFileResponse& from)
@@ -3526,9 +3346,11 @@ ftp_result_ = nullptr;
 
 RemoveFileResponse::~RemoveFileResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.RemoveFileResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void RemoveFileResponse::SharedDtor() {
@@ -3536,19 +3358,13 @@ inline void RemoveFileResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void RemoveFileResponse::ArenaDtor(void* object) {
-  RemoveFileResponse* _this = reinterpret_cast< RemoveFileResponse* >(object);
-  (void)_this;
-}
-void RemoveFileResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void RemoveFileResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void RemoveFileResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.RemoveFileResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3559,58 +3375,58 @@ void RemoveFileResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* RemoveFileResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RemoveFileResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* RemoveFileResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* RemoveFileResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.RemoveFileResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.RemoveFileResponse)
@@ -3621,7 +3437,7 @@ size_t RemoveFileResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.RemoveFileResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3632,13 +3448,7 @@ size_t RemoveFileResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveFileResponse::_class_data_ = {
@@ -3647,8 +3457,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RemoveFileResponse::_class_dat
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RemoveFileResponse::GetClassData() const { return &_class_data_; }
 
-void RemoveFileResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void RemoveFileResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<RemoveFileResponse *>(to)->MergeFrom(
       static_cast<const RemoveFileResponse &>(from));
 }
@@ -3657,7 +3467,7 @@ void RemoveFileResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void RemoveFileResponse::MergeFrom(const RemoveFileResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.RemoveFileResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -3684,7 +3494,7 @@ void RemoveFileResponse::InternalSwap(RemoveFileResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RemoveFileResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[13]);
 }
@@ -3699,58 +3509,63 @@ RenameRequest::RenameRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.RenameRequest)
 }
 RenameRequest::RenameRequest(const RenameRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  remote_from_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_from_path_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_from_path_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_from_path().empty()) {
-    remote_from_path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_from_path(), 
+    remote_from_path_.Set(from._internal_remote_from_path(), 
       GetArenaForAllocation());
   }
-  remote_to_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_to_path_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_to_path_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_to_path().empty()) {
-    remote_to_path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_to_path(), 
+    remote_to_path_.Set(from._internal_remote_to_path(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.RenameRequest)
 }
 
 inline void RenameRequest::SharedCtor() {
-remote_from_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-remote_to_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+remote_from_path_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_from_path_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+remote_to_path_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_to_path_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RenameRequest::~RenameRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.RenameRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void RenameRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  remote_from_path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  remote_to_path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_from_path_.Destroy();
+  remote_to_path_.Destroy();
 }
 
-void RenameRequest::ArenaDtor(void* object) {
-  RenameRequest* _this = reinterpret_cast< RenameRequest* >(object);
-  (void)_this;
-}
-void RenameRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void RenameRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void RenameRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.RenameRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3759,57 +3574,59 @@ void RenameRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* RenameRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RenameRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string remote_from_path = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_remote_from_path();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.RenameRequest.remote_from_path"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.RenameRequest.remote_from_path"));
+        } else
+          goto handle_unusual;
         continue;
       // string remote_to_path = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_remote_to_path();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.RenameRequest.remote_to_path"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.RenameRequest.remote_to_path"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* RenameRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* RenameRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.RenameRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string remote_from_path = 1;
@@ -3833,7 +3650,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.RenameRequest)
@@ -3844,7 +3661,7 @@ size_t RenameRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.RenameRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3862,13 +3679,7 @@ size_t RenameRequest::ByteSizeLong() const {
         this->_internal_remote_to_path());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RenameRequest::_class_data_ = {
@@ -3877,8 +3688,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RenameRequest::_class_data_ = 
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RenameRequest::GetClassData() const { return &_class_data_; }
 
-void RenameRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void RenameRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<RenameRequest *>(to)->MergeFrom(
       static_cast<const RenameRequest &>(from));
 }
@@ -3887,7 +3698,7 @@ void RenameRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void RenameRequest::MergeFrom(const RenameRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.RenameRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_remote_from_path().empty()) {
@@ -3912,21 +3723,21 @@ bool RenameRequest::IsInitialized() const {
 
 void RenameRequest::InternalSwap(RenameRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_from_path_, GetArenaForAllocation(),
-      &other->remote_from_path_, other->GetArenaForAllocation()
+      &remote_from_path_, lhs_arena,
+      &other->remote_from_path_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_to_path_, GetArenaForAllocation(),
-      &other->remote_to_path_, other->GetArenaForAllocation()
+      &remote_to_path_, lhs_arena,
+      &other->remote_to_path_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RenameRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[14]);
 }
@@ -3946,9 +3757,6 @@ RenameResponse::RenameResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.RenameResponse)
 }
 RenameResponse::RenameResponse(const RenameResponse& from)
@@ -3968,9 +3776,11 @@ ftp_result_ = nullptr;
 
 RenameResponse::~RenameResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.RenameResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void RenameResponse::SharedDtor() {
@@ -3978,19 +3788,13 @@ inline void RenameResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void RenameResponse::ArenaDtor(void* object) {
-  RenameResponse* _this = reinterpret_cast< RenameResponse* >(object);
-  (void)_this;
-}
-void RenameResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void RenameResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void RenameResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.RenameResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4001,58 +3805,58 @@ void RenameResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* RenameResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* RenameResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* RenameResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* RenameResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.RenameResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.RenameResponse)
@@ -4063,7 +3867,7 @@ size_t RenameResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.RenameResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4074,13 +3878,7 @@ size_t RenameResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RenameResponse::_class_data_ = {
@@ -4089,8 +3887,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RenameResponse::_class_data_ =
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RenameResponse::GetClassData() const { return &_class_data_; }
 
-void RenameResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void RenameResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<RenameResponse *>(to)->MergeFrom(
       static_cast<const RenameResponse &>(from));
 }
@@ -4099,7 +3897,7 @@ void RenameResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void RenameResponse::MergeFrom(const RenameResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.RenameResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -4126,7 +3924,7 @@ void RenameResponse::InternalSwap(RenameResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RenameResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[15]);
 }
@@ -4141,58 +3939,63 @@ AreFilesIdenticalRequest::AreFilesIdenticalRequest(::PROTOBUF_NAMESPACE_ID::Aren
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
 }
 AreFilesIdenticalRequest::AreFilesIdenticalRequest(const AreFilesIdenticalRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  local_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  local_file_path_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    local_file_path_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_local_file_path().empty()) {
-    local_file_path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_local_file_path(), 
+    local_file_path_.Set(from._internal_local_file_path(), 
       GetArenaForAllocation());
   }
-  remote_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  remote_file_path_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    remote_file_path_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_remote_file_path().empty()) {
-    remote_file_path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_remote_file_path(), 
+    remote_file_path_.Set(from._internal_remote_file_path(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
 }
 
 inline void AreFilesIdenticalRequest::SharedCtor() {
-local_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-remote_file_path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+local_file_path_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  local_file_path_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+remote_file_path_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  remote_file_path_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 AreFilesIdenticalRequest::~AreFilesIdenticalRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void AreFilesIdenticalRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  local_file_path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  remote_file_path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  local_file_path_.Destroy();
+  remote_file_path_.Destroy();
 }
 
-void AreFilesIdenticalRequest::ArenaDtor(void* object) {
-  AreFilesIdenticalRequest* _this = reinterpret_cast< AreFilesIdenticalRequest* >(object);
-  (void)_this;
-}
-void AreFilesIdenticalRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void AreFilesIdenticalRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void AreFilesIdenticalRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4201,57 +4004,59 @@ void AreFilesIdenticalRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* AreFilesIdenticalRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* AreFilesIdenticalRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string local_file_path = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_local_file_path();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path"));
+        } else
+          goto handle_unusual;
         continue;
       // string remote_file_path = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_remote_file_path();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* AreFilesIdenticalRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* AreFilesIdenticalRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string local_file_path = 1;
@@ -4275,7 +4080,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
@@ -4286,7 +4091,7 @@ size_t AreFilesIdenticalRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4304,13 +4109,7 @@ size_t AreFilesIdenticalRequest::ByteSizeLong() const {
         this->_internal_remote_file_path());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AreFilesIdenticalRequest::_class_data_ = {
@@ -4319,8 +4118,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AreFilesIdenticalRequest::_cla
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AreFilesIdenticalRequest::GetClassData() const { return &_class_data_; }
 
-void AreFilesIdenticalRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void AreFilesIdenticalRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<AreFilesIdenticalRequest *>(to)->MergeFrom(
       static_cast<const AreFilesIdenticalRequest &>(from));
 }
@@ -4329,7 +4128,7 @@ void AreFilesIdenticalRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void AreFilesIdenticalRequest::MergeFrom(const AreFilesIdenticalRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_local_file_path().empty()) {
@@ -4354,21 +4153,21 @@ bool AreFilesIdenticalRequest::IsInitialized() const {
 
 void AreFilesIdenticalRequest::InternalSwap(AreFilesIdenticalRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &local_file_path_, GetArenaForAllocation(),
-      &other->local_file_path_, other->GetArenaForAllocation()
+      &local_file_path_, lhs_arena,
+      &other->local_file_path_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &remote_file_path_, GetArenaForAllocation(),
-      &other->remote_file_path_, other->GetArenaForAllocation()
+      &remote_file_path_, lhs_arena,
+      &other->remote_file_path_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AreFilesIdenticalRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[16]);
 }
@@ -4388,9 +4187,6 @@ AreFilesIdenticalResponse::AreFilesIdenticalResponse(::PROTOBUF_NAMESPACE_ID::Ar
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
 }
 AreFilesIdenticalResponse::AreFilesIdenticalResponse(const AreFilesIdenticalResponse& from)
@@ -4414,9 +4210,11 @@ inline void AreFilesIdenticalResponse::SharedCtor() {
 
 AreFilesIdenticalResponse::~AreFilesIdenticalResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void AreFilesIdenticalResponse::SharedDtor() {
@@ -4424,19 +4222,13 @@ inline void AreFilesIdenticalResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void AreFilesIdenticalResponse::ArenaDtor(void* object) {
-  AreFilesIdenticalResponse* _this = reinterpret_cast< AreFilesIdenticalResponse* >(object);
-  (void)_this;
-}
-void AreFilesIdenticalResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void AreFilesIdenticalResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void AreFilesIdenticalResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4448,71 +4240,72 @@ void AreFilesIdenticalResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* AreFilesIdenticalResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* AreFilesIdenticalResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // bool are_identical = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           are_identical_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* AreFilesIdenticalResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* AreFilesIdenticalResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   // bool are_identical = 2;
   if (this->_internal_are_identical() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_are_identical(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(2, this->_internal_are_identical(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
@@ -4523,7 +4316,7 @@ size_t AreFilesIdenticalResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4539,13 +4332,7 @@ size_t AreFilesIdenticalResponse::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AreFilesIdenticalResponse::_class_data_ = {
@@ -4554,8 +4341,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AreFilesIdenticalResponse::_cl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AreFilesIdenticalResponse::GetClassData() const { return &_class_data_; }
 
-void AreFilesIdenticalResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void AreFilesIdenticalResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<AreFilesIdenticalResponse *>(to)->MergeFrom(
       static_cast<const AreFilesIdenticalResponse &>(from));
 }
@@ -4564,7 +4351,7 @@ void AreFilesIdenticalResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void AreFilesIdenticalResponse::MergeFrom(const AreFilesIdenticalResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -4599,7 +4386,7 @@ void AreFilesIdenticalResponse::InternalSwap(AreFilesIdenticalResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AreFilesIdenticalResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[17]);
 }
@@ -4614,51 +4401,50 @@ SetRootDirectoryRequest::SetRootDirectoryRequest(::PROTOBUF_NAMESPACE_ID::Arena*
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.SetRootDirectoryRequest)
 }
 SetRootDirectoryRequest::SetRootDirectoryRequest(const SetRootDirectoryRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  root_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  root_dir_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    root_dir_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_root_dir().empty()) {
-    root_dir_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_root_dir(), 
+    root_dir_.Set(from._internal_root_dir(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.SetRootDirectoryRequest)
 }
 
 inline void SetRootDirectoryRequest::SharedCtor() {
-root_dir_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+root_dir_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  root_dir_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 SetRootDirectoryRequest::~SetRootDirectoryRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.SetRootDirectoryRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void SetRootDirectoryRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  root_dir_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  root_dir_.Destroy();
 }
 
-void SetRootDirectoryRequest::ArenaDtor(void* object) {
-  SetRootDirectoryRequest* _this = reinterpret_cast< SetRootDirectoryRequest* >(object);
-  (void)_this;
-}
-void SetRootDirectoryRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void SetRootDirectoryRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void SetRootDirectoryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.SetRootDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4666,48 +4452,49 @@ void SetRootDirectoryRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SetRootDirectoryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SetRootDirectoryRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string root_dir = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_root_dir();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.SetRootDirectoryRequest.root_dir"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.SetRootDirectoryRequest.root_dir"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SetRootDirectoryRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* SetRootDirectoryRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.SetRootDirectoryRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string root_dir = 1;
@@ -4721,7 +4508,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.SetRootDirectoryRequest)
@@ -4732,7 +4519,7 @@ size_t SetRootDirectoryRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.SetRootDirectoryRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4743,13 +4530,7 @@ size_t SetRootDirectoryRequest::ByteSizeLong() const {
         this->_internal_root_dir());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRootDirectoryRequest::_class_data_ = {
@@ -4758,8 +4539,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRootDirectoryRequest::_clas
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRootDirectoryRequest::GetClassData() const { return &_class_data_; }
 
-void SetRootDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void SetRootDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<SetRootDirectoryRequest *>(to)->MergeFrom(
       static_cast<const SetRootDirectoryRequest &>(from));
 }
@@ -4768,7 +4549,7 @@ void SetRootDirectoryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void SetRootDirectoryRequest::MergeFrom(const SetRootDirectoryRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.SetRootDirectoryRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_root_dir().empty()) {
@@ -4790,16 +4571,17 @@ bool SetRootDirectoryRequest::IsInitialized() const {
 
 void SetRootDirectoryRequest::InternalSwap(SetRootDirectoryRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &root_dir_, GetArenaForAllocation(),
-      &other->root_dir_, other->GetArenaForAllocation()
+      &root_dir_, lhs_arena,
+      &other->root_dir_, rhs_arena
   );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRootDirectoryRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[18]);
 }
@@ -4819,9 +4601,6 @@ SetRootDirectoryResponse::SetRootDirectoryResponse(::PROTOBUF_NAMESPACE_ID::Aren
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.SetRootDirectoryResponse)
 }
 SetRootDirectoryResponse::SetRootDirectoryResponse(const SetRootDirectoryResponse& from)
@@ -4841,9 +4620,11 @@ ftp_result_ = nullptr;
 
 SetRootDirectoryResponse::~SetRootDirectoryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.SetRootDirectoryResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void SetRootDirectoryResponse::SharedDtor() {
@@ -4851,19 +4632,13 @@ inline void SetRootDirectoryResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void SetRootDirectoryResponse::ArenaDtor(void* object) {
-  SetRootDirectoryResponse* _this = reinterpret_cast< SetRootDirectoryResponse* >(object);
-  (void)_this;
-}
-void SetRootDirectoryResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void SetRootDirectoryResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void SetRootDirectoryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.SetRootDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4874,58 +4649,58 @@ void SetRootDirectoryResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SetRootDirectoryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SetRootDirectoryResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SetRootDirectoryResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* SetRootDirectoryResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.SetRootDirectoryResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.SetRootDirectoryResponse)
@@ -4936,7 +4711,7 @@ size_t SetRootDirectoryResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.SetRootDirectoryResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4947,13 +4722,7 @@ size_t SetRootDirectoryResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRootDirectoryResponse::_class_data_ = {
@@ -4962,8 +4731,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRootDirectoryResponse::_cla
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRootDirectoryResponse::GetClassData() const { return &_class_data_; }
 
-void SetRootDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void SetRootDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<SetRootDirectoryResponse *>(to)->MergeFrom(
       static_cast<const SetRootDirectoryResponse &>(from));
 }
@@ -4972,7 +4741,7 @@ void SetRootDirectoryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void SetRootDirectoryResponse::MergeFrom(const SetRootDirectoryResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.SetRootDirectoryResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -4999,7 +4768,7 @@ void SetRootDirectoryResponse::InternalSwap(SetRootDirectoryResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRootDirectoryResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[19]);
 }
@@ -5014,9 +4783,6 @@ SetTargetCompidRequest::SetTargetCompidRequest(::PROTOBUF_NAMESPACE_ID::Arena* a
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.SetTargetCompidRequest)
 }
 SetTargetCompidRequest::SetTargetCompidRequest(const SetTargetCompidRequest& from)
@@ -5032,28 +4798,24 @@ compid_ = 0u;
 
 SetTargetCompidRequest::~SetTargetCompidRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.SetTargetCompidRequest)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void SetTargetCompidRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
-void SetTargetCompidRequest::ArenaDtor(void* object) {
-  SetTargetCompidRequest* _this = reinterpret_cast< SetTargetCompidRequest* >(object);
-  (void)_this;
-}
-void SetTargetCompidRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void SetTargetCompidRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void SetTargetCompidRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.SetTargetCompidRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5061,56 +4823,57 @@ void SetTargetCompidRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SetTargetCompidRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SetTargetCompidRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 compid = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           compid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SetTargetCompidRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* SetTargetCompidRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.SetTargetCompidRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 compid = 1;
   if (this->_internal_compid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_compid(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_compid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.SetTargetCompidRequest)
@@ -5121,24 +4884,16 @@ size_t SetTargetCompidRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.SetTargetCompidRequest)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 compid = 1;
   if (this->_internal_compid() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_compid());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_compid());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetTargetCompidRequest::_class_data_ = {
@@ -5147,8 +4902,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetTargetCompidRequest::_class
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetTargetCompidRequest::GetClassData() const { return &_class_data_; }
 
-void SetTargetCompidRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void SetTargetCompidRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<SetTargetCompidRequest *>(to)->MergeFrom(
       static_cast<const SetTargetCompidRequest &>(from));
 }
@@ -5157,7 +4912,7 @@ void SetTargetCompidRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void SetTargetCompidRequest::MergeFrom(const SetTargetCompidRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.SetTargetCompidRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_compid() != 0) {
@@ -5184,7 +4939,7 @@ void SetTargetCompidRequest::InternalSwap(SetTargetCompidRequest* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetTargetCompidRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[20]);
 }
@@ -5204,9 +4959,6 @@ SetTargetCompidResponse::SetTargetCompidResponse(::PROTOBUF_NAMESPACE_ID::Arena*
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.SetTargetCompidResponse)
 }
 SetTargetCompidResponse::SetTargetCompidResponse(const SetTargetCompidResponse& from)
@@ -5226,9 +4978,11 @@ ftp_result_ = nullptr;
 
 SetTargetCompidResponse::~SetTargetCompidResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.SetTargetCompidResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void SetTargetCompidResponse::SharedDtor() {
@@ -5236,19 +4990,13 @@ inline void SetTargetCompidResponse::SharedDtor() {
   if (this != internal_default_instance()) delete ftp_result_;
 }
 
-void SetTargetCompidResponse::ArenaDtor(void* object) {
-  SetTargetCompidResponse* _this = reinterpret_cast< SetTargetCompidResponse* >(object);
-  (void)_this;
-}
-void SetTargetCompidResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void SetTargetCompidResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void SetTargetCompidResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.SetTargetCompidResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5259,58 +5007,58 @@ void SetTargetCompidResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SetTargetCompidResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SetTargetCompidResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_ftp_result(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SetTargetCompidResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* SetTargetCompidResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.SetTargetCompidResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   if (this->_internal_has_ftp_result()) {
-    target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::ftp_result(this), target, stream);
+      InternalWriteMessage(1, _Internal::ftp_result(this),
+        _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.SetTargetCompidResponse)
@@ -5321,7 +5069,7 @@ size_t SetTargetCompidResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.SetTargetCompidResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5332,13 +5080,7 @@ size_t SetTargetCompidResponse::ByteSizeLong() const {
         *ftp_result_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetTargetCompidResponse::_class_data_ = {
@@ -5347,8 +5089,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetTargetCompidResponse::_clas
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetTargetCompidResponse::GetClassData() const { return &_class_data_; }
 
-void SetTargetCompidResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void SetTargetCompidResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<SetTargetCompidResponse *>(to)->MergeFrom(
       static_cast<const SetTargetCompidResponse &>(from));
 }
@@ -5357,7 +5099,7 @@ void SetTargetCompidResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void SetTargetCompidResponse::MergeFrom(const SetTargetCompidResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.SetTargetCompidResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_ftp_result()) {
@@ -5384,7 +5126,7 @@ void SetTargetCompidResponse::InternalSwap(SetTargetCompidResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetTargetCompidResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[21]);
 }
@@ -5397,147 +5139,33 @@ class GetOurCompidRequest::_Internal {
 
 GetOurCompidRequest::GetOurCompidRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.GetOurCompidRequest)
 }
 GetOurCompidRequest::GetOurCompidRequest(const GetOurCompidRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.GetOurCompidRequest)
 }
 
-inline void GetOurCompidRequest::SharedCtor() {
-}
 
-GetOurCompidRequest::~GetOurCompidRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.GetOurCompidRequest)
-  if (GetArenaForAllocation() != nullptr) return;
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
 
-inline void GetOurCompidRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-}
 
-void GetOurCompidRequest::ArenaDtor(void* object) {
-  GetOurCompidRequest* _this = reinterpret_cast< GetOurCompidRequest* >(object);
-  (void)_this;
-}
-void GetOurCompidRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void GetOurCompidRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void GetOurCompidRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.GetOurCompidRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* GetOurCompidRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* GetOurCompidRequest::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.GetOurCompidRequest)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.GetOurCompidRequest)
-  return target;
-}
-
-size_t GetOurCompidRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.GetOurCompidRequest)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetOurCompidRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    GetOurCompidRequest::MergeImpl
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetOurCompidRequest::GetClassData() const { return &_class_data_; }
 
-void GetOurCompidRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<GetOurCompidRequest *>(to)->MergeFrom(
-      static_cast<const GetOurCompidRequest &>(from));
-}
 
 
-void GetOurCompidRequest::MergeFrom(const GetOurCompidRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.GetOurCompidRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
 
-void GetOurCompidRequest::CopyFrom(const GetOurCompidRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.ftp.GetOurCompidRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
-bool GetOurCompidRequest::IsInitialized() const {
-  return true;
-}
-
-void GetOurCompidRequest::InternalSwap(GetOurCompidRequest* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-}
 
 ::PROTOBUF_NAMESPACE_ID::Metadata GetOurCompidRequest::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[22]);
 }
@@ -5552,9 +5180,6 @@ GetOurCompidResponse::GetOurCompidResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.GetOurCompidResponse)
 }
 GetOurCompidResponse::GetOurCompidResponse(const GetOurCompidResponse& from)
@@ -5570,28 +5195,24 @@ compid_ = 0u;
 
 GetOurCompidResponse::~GetOurCompidResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.GetOurCompidResponse)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void GetOurCompidResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
-void GetOurCompidResponse::ArenaDtor(void* object) {
-  GetOurCompidResponse* _this = reinterpret_cast< GetOurCompidResponse* >(object);
-  (void)_this;
-}
-void GetOurCompidResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void GetOurCompidResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void GetOurCompidResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.GetOurCompidResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5599,56 +5220,57 @@ void GetOurCompidResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* GetOurCompidResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* GetOurCompidResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 compid = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           compid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* GetOurCompidResponse::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* GetOurCompidResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.GetOurCompidResponse)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 compid = 1;
   if (this->_internal_compid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_compid(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_compid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.GetOurCompidResponse)
@@ -5659,24 +5281,16 @@ size_t GetOurCompidResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.GetOurCompidResponse)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 compid = 1;
   if (this->_internal_compid() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_compid());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_compid());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetOurCompidResponse::_class_data_ = {
@@ -5685,8 +5299,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetOurCompidResponse::_class_d
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetOurCompidResponse::GetClassData() const { return &_class_data_; }
 
-void GetOurCompidResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void GetOurCompidResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<GetOurCompidResponse *>(to)->MergeFrom(
       static_cast<const GetOurCompidResponse &>(from));
 }
@@ -5695,7 +5309,7 @@ void GetOurCompidResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void GetOurCompidResponse::MergeFrom(const GetOurCompidResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.GetOurCompidResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_compid() != 0) {
@@ -5722,7 +5336,7 @@ void GetOurCompidResponse::InternalSwap(GetOurCompidResponse* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata GetOurCompidResponse::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[23]);
 }
@@ -5737,9 +5351,6 @@ ProgressData::ProgressData(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.ProgressData)
 }
 ProgressData::ProgressData(const ProgressData& from)
@@ -5760,28 +5371,24 @@ inline void ProgressData::SharedCtor() {
 
 ProgressData::~ProgressData() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.ProgressData)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void ProgressData::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
-void ProgressData::ArenaDtor(void* object) {
-  ProgressData* _this = reinterpret_cast< ProgressData* >(object);
-  (void)_this;
-}
-void ProgressData::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void ProgressData::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void ProgressData::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.ProgressData)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5791,69 +5398,71 @@ void ProgressData::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* ProgressData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* ProgressData::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 bytes_transferred = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           bytes_transferred_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 total_bytes = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           total_bytes_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* ProgressData::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* ProgressData::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.ProgressData)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 bytes_transferred = 1;
   if (this->_internal_bytes_transferred() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_bytes_transferred(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_bytes_transferred(), target);
   }
 
   // uint32 total_bytes = 2;
   if (this->_internal_total_bytes() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_total_bytes(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(2, this->_internal_total_bytes(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.ProgressData)
@@ -5864,31 +5473,21 @@ size_t ProgressData::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.ProgressData)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 bytes_transferred = 1;
   if (this->_internal_bytes_transferred() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_bytes_transferred());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_bytes_transferred());
   }
 
   // uint32 total_bytes = 2;
   if (this->_internal_total_bytes() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_total_bytes());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_total_bytes());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProgressData::_class_data_ = {
@@ -5897,8 +5496,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProgressData::_class_data_ = {
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProgressData::GetClassData() const { return &_class_data_; }
 
-void ProgressData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void ProgressData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<ProgressData *>(to)->MergeFrom(
       static_cast<const ProgressData &>(from));
 }
@@ -5907,7 +5506,7 @@ void ProgressData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void ProgressData::MergeFrom(const ProgressData& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.ProgressData)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_bytes_transferred() != 0) {
@@ -5942,7 +5541,7 @@ void ProgressData::InternalSwap(ProgressData* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProgressData::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[24]);
 }
@@ -5957,17 +5556,17 @@ FtpResult::FtpResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.FtpResult)
 }
 FtpResult::FtpResult(const FtpResult& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  result_str_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    result_str_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_result_str(), 
+    result_str_.Set(from._internal_result_str(), 
       GetArenaForAllocation());
   }
   result_ = from.result_;
@@ -5975,35 +5574,34 @@ FtpResult::FtpResult(const FtpResult& from)
 }
 
 inline void FtpResult::SharedCtor() {
-result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+result_str_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  result_str_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 result_ = 0;
 }
 
 FtpResult::~FtpResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.FtpResult)
-  if (GetArenaForAllocation() != nullptr) return;
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 inline void FtpResult::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  result_str_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  result_str_.Destroy();
 }
 
-void FtpResult::ArenaDtor(void* object) {
-  FtpResult* _this = reinterpret_cast< FtpResult* >(object);
-  (void)_this;
-}
-void FtpResult::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void FtpResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
 void FtpResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.FtpResult)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6012,62 +5610,64 @@ void FtpResult::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* FtpResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* FtpResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.ftp.FtpResult.Result result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::ftp::FtpResult_Result>(val));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string result_str = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_result_str();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "mavsdk.rpc.ftp.FtpResult.result_str"));
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.ftp.FtpResult.result_str"));
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag == 0) || ((tag & 7) == 4)) {
-          CHK_(ptr);
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* FtpResult::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* FtpResult::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.FtpResult)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.ftp.FtpResult.Result result = 1;
   if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
       1, this->_internal_result(), target);
   }
 
@@ -6082,7 +5682,7 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.FtpResult)
@@ -6093,7 +5693,7 @@ size_t FtpResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.FtpResult)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6107,16 +5707,10 @@ size_t FtpResult::ByteSizeLong() const {
   // .mavsdk.rpc.ftp.FtpResult.Result result = 1;
   if (this->_internal_result() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_result());
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FtpResult::_class_data_ = {
@@ -6125,8 +5719,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FtpResult::_class_data_ = {
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FtpResult::GetClassData() const { return &_class_data_; }
 
-void FtpResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message&from) {
+void FtpResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
   static_cast<FtpResult *>(to)->MergeFrom(
       static_cast<const FtpResult &>(from));
 }
@@ -6135,7 +5729,7 @@ void FtpResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
 void FtpResult::MergeFrom(const FtpResult& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.FtpResult)
   GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_result_str().empty()) {
@@ -6160,17 +5754,18 @@ bool FtpResult::IsInitialized() const {
 
 void FtpResult::InternalSwap(FtpResult* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &result_str_, GetArenaForAllocation(),
-      &other->result_str_, other->GetArenaForAllocation()
+      &result_str_, lhs_arena,
+      &other->result_str_, rhs_arena
   );
   swap(result_, other->result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata FtpResult::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+  return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
       file_level_metadata_ftp_2fftp_2eproto[25]);
 }
@@ -6180,82 +5775,108 @@ void FtpResult::InternalSwap(FtpResult* other) {
 }  // namespace rpc
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ResetRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ResetRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ResetRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ResetRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::ResetRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ResetResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ResetResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ResetResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ResetResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::ResetResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SubscribeDownloadRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SubscribeDownloadRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SubscribeDownloadRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SubscribeDownloadRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::SubscribeDownloadRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::DownloadResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::DownloadResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::DownloadResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::DownloadResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::DownloadResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SubscribeUploadRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SubscribeUploadRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SubscribeUploadRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SubscribeUploadRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::SubscribeUploadRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::UploadResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::UploadResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::UploadResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::UploadResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::UploadResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ListDirectoryRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ListDirectoryRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ListDirectoryRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ListDirectoryRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::ListDirectoryRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ListDirectoryResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ListDirectoryResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ListDirectoryResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ListDirectoryResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::ListDirectoryResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::CreateDirectoryRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::CreateDirectoryRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::CreateDirectoryRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::CreateDirectoryRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::CreateDirectoryRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::CreateDirectoryResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::CreateDirectoryResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::CreateDirectoryResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::CreateDirectoryResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::CreateDirectoryResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveDirectoryRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveDirectoryRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveDirectoryRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveDirectoryRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::RemoveDirectoryRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveDirectoryResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveDirectoryResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveDirectoryResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveDirectoryResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::RemoveDirectoryResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveFileRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveFileRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveFileRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveFileRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::RemoveFileRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveFileResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveFileResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RemoveFileResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RemoveFileResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::RemoveFileResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RenameRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RenameRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RenameRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RenameRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::RenameRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RenameResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RenameResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::RenameResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::RenameResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::RenameResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::AreFilesIdenticalRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::AreFilesIdenticalRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::AreFilesIdenticalRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::AreFilesIdenticalRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::AreFilesIdenticalRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::AreFilesIdenticalResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::AreFilesIdenticalResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::AreFilesIdenticalResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::AreFilesIdenticalResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::AreFilesIdenticalResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetRootDirectoryRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetRootDirectoryRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetRootDirectoryRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetRootDirectoryRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::SetRootDirectoryRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetRootDirectoryResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetRootDirectoryResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetRootDirectoryResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetRootDirectoryResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::SetRootDirectoryResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetTargetCompidRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetTargetCompidRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetTargetCompidRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetTargetCompidRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::SetTargetCompidRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetTargetCompidResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetTargetCompidResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::SetTargetCompidResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::SetTargetCompidResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::SetTargetCompidResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::GetOurCompidRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::GetOurCompidRequest >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::GetOurCompidRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::GetOurCompidRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::GetOurCompidRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::GetOurCompidResponse* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::GetOurCompidResponse >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::GetOurCompidResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::GetOurCompidResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::GetOurCompidResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ProgressData* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ProgressData >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::ProgressData*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::ProgressData >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::ProgressData >(arena);
 }
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::FtpResult* Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::FtpResult >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::ftp::FtpResult*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::ftp::FtpResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::ftp::FtpResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
