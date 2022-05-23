@@ -3,6 +3,10 @@
 #include "system_tests_helper.h"
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
+#include <chrono>
+#include <utility>
+#include <vector>
+#include <thread>
 
 using namespace mavsdk;
 
