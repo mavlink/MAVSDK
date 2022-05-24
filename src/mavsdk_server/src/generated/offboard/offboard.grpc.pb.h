@@ -225,7 +225,7 @@ class OffboardService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::StartResponse>* AsyncStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::StartResponse>* PrepareAsyncStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::StopResponse>* AsyncStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest& request, ::grpc::CompletionQueue* cq) = 0;

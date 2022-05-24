@@ -147,7 +147,7 @@ class TrackingServerService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* AsyncSetTrackingPointStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::tracking_server::SetTrackingPointStatusResponse>* PrepareAsyncSetTrackingPointStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingPointStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusResponse>* AsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::tracking_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;

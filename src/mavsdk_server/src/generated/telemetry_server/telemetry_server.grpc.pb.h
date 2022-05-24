@@ -201,7 +201,7 @@ class TelemetryServerService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishPositionResponse>* AsyncPublishPositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishPositionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishPositionResponse>* PrepareAsyncPublishPositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishPositionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishHomeResponse>* AsyncPublishHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishHomeRequest& request, ::grpc::CompletionQueue* cq) = 0;

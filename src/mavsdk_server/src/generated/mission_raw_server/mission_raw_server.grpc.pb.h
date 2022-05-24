@@ -101,7 +101,7 @@ class MissionRawServerService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission_raw_server::IncomingMissionResponse>* SubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw_server::SubscribeIncomingMissionRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_raw_server::IncomingMissionResponse>* AsyncSubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_raw_server::IncomingMissionResponse>* PrepareAsyncSubscribeIncomingMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw_server::SubscribeIncomingMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;

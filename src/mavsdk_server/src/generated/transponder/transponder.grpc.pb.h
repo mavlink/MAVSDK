@@ -70,7 +70,7 @@ class TransponderService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::transponder::TransponderResponse>* SubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::transponder::TransponderResponse>* AsyncSubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::transponder::TransponderResponse>* PrepareAsyncSubscribeTransponderRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::transponder::SubscribeTransponderRequest& request, ::grpc::CompletionQueue* cq) = 0;

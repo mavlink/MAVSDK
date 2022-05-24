@@ -16,15 +16,19 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
+
+namespace _pb = ::PROTOBUF_NAMESPACE_ID;
+namespace _pbi = _pb::internal;
+
 namespace mavsdk {
 namespace options {
 }  // namespace options
 }  // namespace mavsdk
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_mavsdk_5foptions_2eproto[1];
-static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_mavsdk_5foptions_2eproto = nullptr;
-const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_mavsdk_5foptions_2eproto::offsets[1] = {};
-static constexpr ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema* schemas = nullptr;
-static constexpr ::PROTOBUF_NAMESPACE_ID::Message* const* file_default_instances = nullptr;
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_mavsdk_5foptions_2eproto[1];
+static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_mavsdk_5foptions_2eproto = nullptr;
+const uint32_t TableStruct_mavsdk_5foptions_2eproto::offsets[1] = {};
+static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
+static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_mavsdk_5foptions_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\024mavsdk_options.proto\022\016mavsdk.options\032 "
@@ -38,22 +42,24 @@ const char descriptor_table_protodef_mavsdk_5foptions_2eproto[] PROTOBUF_SECTION
   "oogle.protobuf.MethodOptions\030\321\206\003 \001(\010B\020\n\016"
   "options.mavsdkb\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_mavsdk_5foptions_2eproto_deps[1] = {
+static const ::_pbi::DescriptorTable* const descriptor_table_mavsdk_5foptions_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fdescriptor_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_mavsdk_5foptions_2eproto_once;
-const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_mavsdk_5foptions_2eproto = {
-  false, false, 382, descriptor_table_protodef_mavsdk_5foptions_2eproto, "mavsdk_options.proto", 
-  &descriptor_table_mavsdk_5foptions_2eproto_once, descriptor_table_mavsdk_5foptions_2eproto_deps, 1, 0,
-  schemas, file_default_instances, TableStruct_mavsdk_5foptions_2eproto::offsets,
-  nullptr, file_level_enum_descriptors_mavsdk_5foptions_2eproto, file_level_service_descriptors_mavsdk_5foptions_2eproto,
+static ::_pbi::once_flag descriptor_table_mavsdk_5foptions_2eproto_once;
+const ::_pbi::DescriptorTable descriptor_table_mavsdk_5foptions_2eproto = {
+    false, false, 382, descriptor_table_protodef_mavsdk_5foptions_2eproto,
+    "mavsdk_options.proto",
+    &descriptor_table_mavsdk_5foptions_2eproto_once, descriptor_table_mavsdk_5foptions_2eproto_deps, 1, 0,
+    schemas, file_default_instances, TableStruct_mavsdk_5foptions_2eproto::offsets,
+    nullptr, file_level_enum_descriptors_mavsdk_5foptions_2eproto,
+    file_level_service_descriptors_mavsdk_5foptions_2eproto,
 };
-PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable* descriptor_table_mavsdk_5foptions_2eproto_getter() {
+PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_mavsdk_5foptions_2eproto_getter() {
   return &descriptor_table_mavsdk_5foptions_2eproto;
 }
 
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_mavsdk_5foptions_2eproto(&descriptor_table_mavsdk_5foptions_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_mavsdk_5foptions_2eproto(&descriptor_table_mavsdk_5foptions_2eproto);
 namespace mavsdk {
 namespace options {
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AsyncType_descriptor() {
@@ -72,18 +78,18 @@ bool AsyncType_IsValid(int value) {
 }
 
 const std::string default_value_default("");
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::StringTypeTraits, 9, false >
-  default_value(kDefaultValueFieldNumber, default_value_default);
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< double >, 1, false >
-  epsilon(kEpsilonFieldNumber, 0);
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>, 14, false >
-  async_type(kAsyncTypeFieldNumber, static_cast< ::mavsdk::options::AsyncType >(0));
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< bool >, 8, false >
-  is_finite(kIsFiniteFieldNumber, false);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::FieldOptions,
+    ::PROTOBUF_NAMESPACE_ID::internal::StringTypeTraits, 9, false>
+  default_value(kDefaultValueFieldNumber, default_value_default, nullptr);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::FieldOptions,
+    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< double >, 1, false>
+  epsilon(kEpsilonFieldNumber, 0, nullptr);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::MethodOptions,
+    ::PROTOBUF_NAMESPACE_ID::internal::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>, 14, false>
+  async_type(kAsyncTypeFieldNumber, static_cast< ::mavsdk::options::AsyncType >(0), nullptr);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::MethodOptions,
+    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< bool >, 8, false>
+  is_finite(kIsFiniteFieldNumber, false, nullptr);
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace options

@@ -91,7 +91,7 @@ class LogFilesService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::GetEntriesResponse>* AsyncGetEntriesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::GetEntriesResponse>* PrepareAsyncGetEntriesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* SubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request) = 0;

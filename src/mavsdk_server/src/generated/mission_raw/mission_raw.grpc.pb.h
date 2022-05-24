@@ -238,7 +238,7 @@ class MissionRawService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::UploadMissionResponse>* AsyncUploadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::UploadMissionResponse>* PrepareAsyncUploadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse>* AsyncCancelMissionUploadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) = 0;

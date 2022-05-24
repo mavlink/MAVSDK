@@ -90,7 +90,7 @@ class CameraServerService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInformationResponse>* AsyncSetInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInformationResponse>* PrepareAsyncSetInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetInProgressResponse>* AsyncSetInProgressRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInProgressRequest& request, ::grpc::CompletionQueue* cq) = 0;

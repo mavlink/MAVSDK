@@ -77,7 +77,7 @@ class GeofenceService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* PrepareAsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* AsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;

@@ -184,7 +184,7 @@ class ActionServerService final {
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
-  private:
+   private:
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::action_server::ArmDisarmResponse>* SubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::action_server::ArmDisarmResponse>* AsyncSubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::action_server::ArmDisarmResponse>* PrepareAsyncSubscribeArmDisarmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request, ::grpc::CompletionQueue* cq) = 0;
