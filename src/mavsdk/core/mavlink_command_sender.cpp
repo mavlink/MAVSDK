@@ -293,6 +293,10 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
                       << " s, retries to do: " << work->retries_to_do << "  ("
                       << work->identification.command << ").";
 
+            if (work->identification.command == MAV_CMD_REQUEST_MESSAGE) {
+                LogWarn() << "Request was for msg ID: " << work->identification.maybe_param1;
+            }
+
             mavlink_message_t message = create_mavlink_message(work->command);
             if (!_parent.send_message(message)) {
                 LogErr() << "connection send error in retransmit (" << work->identification.command
