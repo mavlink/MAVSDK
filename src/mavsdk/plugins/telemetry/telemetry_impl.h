@@ -201,6 +201,7 @@ private:
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
     void process_battery_status(const mavlink_message_t& message);
+    void process_battery_status_v2(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
     void process_unix_epoch_time(const mavlink_message_t& message);

@@ -86,6 +86,11 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_BATTERY_STATUS_V2,
+        [this](const mavlink_message_t& message) { process_battery_status_v2(message); },
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
@@ -1163,6 +1168,42 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     }
     // FIXME: it is strange calling it percent when the range goes from 0 to 1.
     new_battery.remaining_percent = bat_status.battery_remaining * 1e-2f;
+
+    set_battery(new_battery);
+
+    {
+        std::lock_guard<std::mutex> lock(_subscription_mutex);
+        if (_battery_subscription) {
+            auto callback = _battery_subscription;
+            auto arg = battery();
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
+        }
+    }
+}
+
+void TelemetryImpl::process_battery_status_v2(const mavlink_message_t& message)
+{
+    mavlink_battery_status_v2_t bat_status;
+    mavlink_msg_battery_status_v2_decode(&message, &bat_status);
+
+    _has_bat_status = true;
+
+    Telemetry::Battery new_battery;
+    new_battery.id = bat_status.id;
+    new_battery.voltage_v = bat_status.voltage; 
+    //Is it correct to set this to NaN for UINT32_MAX? HOw do you specify = NaN?
+
+    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
+    // Can we fix this? What about if value not provided?
+    new_battery.remaining_percent = bat_status.percent_remaining; // to test * 1e-2f;
+
+    //bat_status also has:
+    //uint32_t current; /*< [mA] Battery current (through all cells/loads). UINT32_MAX: field not provided.*/
+    // uint32_t current_consumed; /*< [mAh] Consumed charge (since vehicle powered on). UINT32_MAX: field not provided. Note: For power modules the expectation is that batteries are fully charged before turning on the vehicle.*/
+    // uint32_t current_remaining; /*< [mAh] Remaining charge (until empty). UINT32_MAX: field not provided. Note: Power monitors should not set this value.*/
+    // uint32_t status_flags; /*<  Fault, health, and readiness status indications.*/
+    // int16_t temperature; /*< [cdegC] Temperature of the whole battery pack (not internal electronics). INT16_MAX field not provided.*/
+
 
     set_battery(new_battery);
 
