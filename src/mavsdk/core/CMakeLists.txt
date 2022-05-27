@@ -6,7 +6,6 @@ configure_file(mavlink_include.h.in mavlink_include.h)
 
 target_sources(mavsdk
     PRIVATE
-    callback_list.cpp
     call_every_handler.cpp
     connection.cpp
     connection_result.cpp
@@ -126,7 +125,6 @@ install(DIRECTORY
 )
 
 list(APPEND UNIT_TEST_SOURCES
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/callback_list.myType.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/callback_list_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
