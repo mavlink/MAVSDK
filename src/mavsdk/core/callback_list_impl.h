@@ -12,7 +12,7 @@ namespace mavsdk {
 
 template<typename... Args> class CallbackListImpl {
 public:
-    Handle<Args...> subscribe(const std::function<void(Args...)> callback)
+    Handle<Args...> subscribe(const std::function<void(Args...)>&& callback)
     {
         check_removals();
 

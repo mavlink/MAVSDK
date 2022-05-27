@@ -8,8 +8,11 @@
 #include <array>
 #include <cassert>
 #include <unused.h>
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<Telemetry::StatusText>;
 
 TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
 {
@@ -1314,11 +1317,9 @@ void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustex
     set_status_text(new_status_text);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    if (_status_text_subscription) {
-        auto callback = _status_text_subscription;
-        auto arg = status_text();
-        _parent->call_user_callback([callback, arg]() { callback(arg); });
-    }
+    // FIXME: this will fail on destruction when `this` is no longer available.
+    auto arg = status_text();
+    _parent->call_user_callback([this, arg]() { _status_text_subscriptions(arg); });
 }
 
 void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
@@ -2233,10 +2234,12 @@ void TelemetryImpl::subscribe_in_air(Telemetry::InAirCallback& callback)
     _in_air_subscription = callback;
 }
 
-void TelemetryImpl::subscribe_status_text(Telemetry::StatusTextCallback& callback)
+Handle<Telemetry::StatusText>
+TelemetryImpl::subscribe_status_text(Telemetry::StatusTextCallback&& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _status_text_subscription = callback;
+    return _status_text_subscriptions.subscribe(
+        std::forward<Telemetry::StatusTextCallback&&>(callback));
 }
 
 void TelemetryImpl::subscribe_armed(Telemetry::ArmedCallback& callback)

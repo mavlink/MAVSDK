@@ -230,9 +230,9 @@ Telemetry::RcStatus Telemetry::rc_status() const
     return _impl->rc_status();
 }
 
-void Telemetry::subscribe_status_text(StatusTextCallback callback)
+Handle<StatusText> Telemetry::subscribe_status_text(StatusTextCallback&& callback)
 {
-    _impl->subscribe_status_text(callback);
+    return _impl->subscribe_status_text(std::forward<StatusTextCallback&&>(callback));
 }
 
 Telemetry::StatusText Telemetry::status_text() const

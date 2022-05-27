@@ -114,7 +114,7 @@ public:
     void subscribe_position(Telemetry::PositionCallback& callback);
     void subscribe_home(Telemetry::PositionCallback& callback);
     void subscribe_in_air(Telemetry::InAirCallback& callback);
-    void subscribe_status_text(Telemetry::StatusTextCallback& callback);
+    Handle<Telemetry::StatusText> subscribe_status_text(Telemetry::StatusTextCallback&& callback);
     void subscribe_armed(Telemetry::ArmedCallback& callback);
     void subscribe_attitude_quaternion(Telemetry::AttitudeQuaternionCallback& callback);
     void subscribe_attitude_euler(Telemetry::AttitudeEulerCallback& callback);
@@ -348,7 +348,7 @@ private:
     Telemetry::PositionCallback _position_subscription{nullptr};
     Telemetry::PositionCallback _home_position_subscription{nullptr};
     Telemetry::InAirCallback _in_air_subscription{nullptr};
-    Telemetry::StatusTextCallback _status_text_subscription{nullptr};
+    CallbackList<Telemetry::StatusText> _status_text_subscriptions{};
     Telemetry::ArmedCallback _armed_subscription{nullptr};
     Telemetry::AttitudeQuaternionCallback _attitude_quaternion_angle_subscription{nullptr};
     Telemetry::AttitudeAngularVelocityBodyCallback _attitude_angular_velocity_body_subscription{

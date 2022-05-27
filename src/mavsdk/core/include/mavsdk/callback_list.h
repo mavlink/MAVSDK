@@ -30,13 +30,13 @@ public:
     CallbackList();
     ~CallbackList() = default;
 
-    Handle<Args...> subscribe(const std::function<void(Args...)>&& callback);
+    Handle<Args...> subscribe(const std::function<void(Args...)>& callback);
     void unsubscribe(Handle<Args...> handle);
     void operator()(Args... args);
 
 private:
     std::shared_ptr<CallbackListImpl<Args...>> _impl;
-    std::shared_ptr<CallbackListImplEpp<Args...>> _impl_epp;
+    //std::shared_ptr<CallbackListImplEpp<Args...>> _impl_epp;
 };
 
 } // namespace mavsdk

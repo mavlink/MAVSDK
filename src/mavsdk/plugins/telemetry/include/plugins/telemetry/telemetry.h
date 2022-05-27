@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "mavsdk/plugin_base.h"
+#include "mavsdk/callback_list.h"
 
 namespace mavsdk {
 
@@ -1314,7 +1315,7 @@ public:
     /**
      * @brief Subscribe to 'status text' updates.
      */
-    void subscribe_status_text(StatusTextCallback callback);
+    Handle<StatusText> subscribe_status_text(StatusTextCallback&& callback);
 
     /**
      * @brief Poll for 'StatusText' (blocking).
