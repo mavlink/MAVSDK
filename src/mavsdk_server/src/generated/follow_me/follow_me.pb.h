@@ -345,7 +345,7 @@ class Config final :
     kMaxTangentialVelMSFieldNumber = 6,
     kFollowAngleDegFieldNumber = 7,
   };
-  // float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0"];
+  // float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0f"];
   void clear_follow_height_m();
   float follow_height_m() const;
   void set_follow_height_m(float value);
@@ -354,7 +354,7 @@ class Config final :
   void _internal_set_follow_height_m(float value);
   public:
 
-  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0"];
+  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0f"];
   void clear_follow_distance_m();
   float follow_distance_m() const;
   void set_follow_distance_m(float value);
@@ -363,7 +363,7 @@ class Config final :
   void _internal_set_follow_distance_m(float value);
   public:
 
-  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1"];
+  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1f"];
   void clear_responsiveness();
   float responsiveness() const;
   void set_responsiveness(float value);
@@ -381,7 +381,7 @@ class Config final :
   void _internal_set_altitude_mode(::mavsdk::rpc::follow_me::Config_FollowAltitudeMode value);
   public:
 
-  // float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0"];
+  // float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0f"];
   void clear_max_tangential_vel_m_s();
   float max_tangential_vel_m_s() const;
   void set_max_tangential_vel_m_s(float value);
@@ -390,7 +390,7 @@ class Config final :
   void _internal_set_max_tangential_vel_m_s(float value);
   public:
 
-  // float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0"];
+  // float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0f"];
   void clear_follow_angle_deg();
   float follow_angle_deg() const;
   void set_follow_angle_deg(float value);
@@ -2766,7 +2766,7 @@ class FollowMeResult final :
 #endif  // __GNUC__
 // Config
 
-// float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0"];
+// float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0f"];
 inline void Config::clear_follow_height_m() {
   follow_height_m_ = 0;
 }
@@ -2786,7 +2786,7 @@ inline void Config::set_follow_height_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.follow_height_m)
 }
 
-// float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0"];
+// float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0f"];
 inline void Config::clear_follow_distance_m() {
   follow_distance_m_ = 0;
 }
@@ -2806,7 +2806,7 @@ inline void Config::set_follow_distance_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.follow_distance_m)
 }
 
-// float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1"];
+// float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1f"];
 inline void Config::clear_responsiveness() {
   responsiveness_ = 0;
 }
@@ -2846,7 +2846,7 @@ inline void Config::set_altitude_mode(::mavsdk::rpc::follow_me::Config_FollowAlt
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.altitude_mode)
 }
 
-// float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0"];
+// float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0f"];
 inline void Config::clear_max_tangential_vel_m_s() {
   max_tangential_vel_m_s_ = 0;
 }
@@ -2866,7 +2866,7 @@ inline void Config::set_max_tangential_vel_m_s(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.max_tangential_vel_m_s)
 }
 
-// float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0"];
+// float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0f"];
 inline void Config::clear_follow_angle_deg() {
   follow_angle_deg_ = 0;
 }

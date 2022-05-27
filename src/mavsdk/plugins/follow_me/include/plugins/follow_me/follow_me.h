@@ -82,20 +82,20 @@ public:
             std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode);
 
         float follow_height_m{
-            8.0}; /**< @brief [m] Follow height in meters (recommended minimum 8 meters) */
-        float follow_distance_m{8.0}; /**< @brief [m] Follow distance to target in meters
-                                         (recommended minimum 4 meter) */
-        float responsiveness{0.1}; /**< @brief How responsive the vehicle is to the motion of the
-                                      target, Lower value = More responsive (range 0.0 to 1.0) */
+            8.0f}; /**< @brief [m] Follow height in meters (recommended minimum 8 meters) */
+        float follow_distance_m{8.0f}; /**< @brief [m] Follow distance to target in meters
+                                          (recommended minimum 4 meter) */
+        float responsiveness{0.1f}; /**< @brief How responsive the vehicle is to the motion of the
+                                       target, Lower value = More responsive (range 0.0 to 1.0) */
         FollowAltitudeMode altitude_mode{}; /**< @brief Follow Altitude control mode */
         float max_tangential_vel_m_s{
-            8.0}; /**< @brief [m/s] Maximum orbit tangential velocity relative to the target, in
-                     meters per second. Higher value = More aggressive follow angle tracking. */
+            8.0f}; /**< @brief [m/s] Maximum orbit tangential velocity relative to the target, in
+                      meters per second. Higher value = More aggressive follow angle tracking. */
         float follow_angle_deg{
-            180.0}; /**< @brief [deg] Follow Angle relative to the target. 0 equals following in
-                       front of the target's direction. Angle increases in Clockwise direction, so
-                       following from right would be 90 degrees, from the left is -90 degrees, and
-                       so on. */
+            180.0f}; /**< @brief [deg] Follow Angle relative to the target. 0 equals following in
+                        front of the target's direction. Angle increases in Clockwise direction, so
+                        following from right would be 90 degrees, from the left is -90 degrees, and
+                        so on. */
     };
 
     /**
