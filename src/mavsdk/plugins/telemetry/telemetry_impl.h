@@ -236,6 +236,9 @@ private:
     void request_home_position_async();
     void check_calibration();
 
+    static bool sys_status_present_enabled_health(
+        const mavlink_sys_status_t& sys_status, MAV_SYS_STATUS_SENSOR flag);
+
     static Telemetry::Result
     telemetry_result_from_command_result(MavlinkCommandSender::Result command_result);
 
@@ -417,5 +420,12 @@ private:
         OffsetStatus gyro_offset;
 
     } _ap_calibration{};
+
+    enum class SysStatusUsed {
+        Unknown,
+        Yes,
+        No,
+    };
+    std::atomic<SysStatusUsed> _sys_status_used_for_position{SysStatusUsed::Unknown};
 };
 } // namespace mavsdk
