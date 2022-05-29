@@ -122,15 +122,21 @@ void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSe
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::ConnectionError:
                 // FALLTHROUGH
-            case MavlinkCommandSender::Result::UnknownError:
+            case MavlinkCommandSender::Result::Busy:
+                // FALLTHROUGH
+            case MavlinkCommandSender::Result::Denied:
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Unsupported:
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Timeout:
                 // FALLTHROUGH
-            case MavlinkCommandSender::Result::Busy:
+            case MavlinkCommandSender::Result::TemporarilyRejected:
                 // FALLTHROUGH
-            case MavlinkCommandSender::Result::CommandDenied: {
+            case MavlinkCommandSender::Result::Failed:
+                // FALLTHROUGH
+            case MavlinkCommandSender::Result::Cancelled:
+                // FALLTHROUGH
+            case MavlinkCommandSender::Result::UnknownError: {
                 // It looks like this did not work, and we can report the error
                 // No need to try again.
                 auto temp_callback = it->callback;
