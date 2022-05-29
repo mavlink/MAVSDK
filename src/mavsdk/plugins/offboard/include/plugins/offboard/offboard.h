@@ -341,6 +341,7 @@ public:
         CommandDenied, /**< @brief Command denied. */
         Timeout, /**< @brief Request timed out. */
         NoSetpointSet, /**< @brief Cannot start without setpoint set. */
+        Failed, /**< @brief Request failed. */
     };
 
     /**

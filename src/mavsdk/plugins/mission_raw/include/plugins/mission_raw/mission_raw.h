@@ -159,6 +159,7 @@ public:
         FailedToOpenQgcPlan, /**< @brief Failed to open the QGroundControl plan. */
         FailedToParseQgcPlan, /**< @brief Failed to parse the QGroundControl plan. */
         NoSystem, /**< @brief No system connected. */
+        Denied, /**< @brief Request denied. */
     };
 
     /**

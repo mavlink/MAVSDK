@@ -156,7 +156,9 @@ FailureImpl::failure_result_from_command_result(MavlinkCommandSender::Result com
             return Failure::Result::NoSystem;
         case MavlinkCommandSender::Result::ConnectionError:
             return Failure::Result::ConnectionError;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // Fallthrough
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return Failure::Result::Denied;
         case MavlinkCommandSender::Result::Unsupported:
             return Failure::Result::Unsupported;

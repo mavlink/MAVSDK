@@ -806,17 +806,19 @@ Mission::Result MissionImpl::command_result_to_mission_result(MavlinkCommandSend
         case MavlinkCommandSender::Result::Success:
             return Mission::Result::Success;
         case MavlinkCommandSender::Result::NoSystem:
-            return Mission::Result::Error; // FIXME
+            return Mission::Result::NoSystem;
         case MavlinkCommandSender::Result::ConnectionError:
-            return Mission::Result::Error; // FIXME
+            return Mission::Result::Error;
         case MavlinkCommandSender::Result::Busy:
             return Mission::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
-            return Mission::Result::Error; // FIXME
+        case MavlinkCommandSender::Result::TemporarilyRejected:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::Denied:
+            return Mission::Result::Denied;
         case MavlinkCommandSender::Result::Timeout:
             return Mission::Result::Timeout;
         case MavlinkCommandSender::Result::InProgress:
-            return Mission::Result::Busy; // FIXME
+            return Mission::Result::Busy;
         case MavlinkCommandSender::Result::UnknownError:
             return Mission::Result::Unknown;
         default:

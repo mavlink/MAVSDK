@@ -177,12 +177,13 @@ enum MissionRawResult_Result : int {
   MissionRawResult_Result_RESULT_FAILED_TO_OPEN_QGC_PLAN = 10,
   MissionRawResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN = 11,
   MissionRawResult_Result_RESULT_NO_SYSTEM = 12,
+  MissionRawResult_Result_RESULT_DENIED = 13,
   MissionRawResult_Result_MissionRawResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   MissionRawResult_Result_MissionRawResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool MissionRawResult_Result_IsValid(int value);
 constexpr MissionRawResult_Result MissionRawResult_Result_Result_MIN = MissionRawResult_Result_RESULT_UNKNOWN;
-constexpr MissionRawResult_Result MissionRawResult_Result_Result_MAX = MissionRawResult_Result_RESULT_NO_SYSTEM;
+constexpr MissionRawResult_Result MissionRawResult_Result_Result_MAX = MissionRawResult_Result_RESULT_DENIED;
 constexpr int MissionRawResult_Result_Result_ARRAYSIZE = MissionRawResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionRawResult_Result_descriptor();
@@ -4039,6 +4040,8 @@ class MissionRawResult final :
     MissionRawResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN;
   static constexpr Result RESULT_NO_SYSTEM =
     MissionRawResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_DENIED =
+    MissionRawResult_Result_RESULT_DENIED;
   static inline bool Result_IsValid(int value) {
     return MissionRawResult_Result_IsValid(value);
   }

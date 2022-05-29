@@ -331,6 +331,8 @@ std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
             return str << "Timeout";
         case Offboard::Result::NoSetpointSet:
             return str << "No Setpoint Set";
+        case Offboard::Result::Failed:
+            return str << "Failed";
         default:
             return str << "Unknown";
     }

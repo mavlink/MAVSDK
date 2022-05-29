@@ -230,12 +230,13 @@ enum OffboardResult_Result : int {
   OffboardResult_Result_RESULT_COMMAND_DENIED = 5,
   OffboardResult_Result_RESULT_TIMEOUT = 6,
   OffboardResult_Result_RESULT_NO_SETPOINT_SET = 7,
+  OffboardResult_Result_RESULT_FAILED = 8,
   OffboardResult_Result_OffboardResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   OffboardResult_Result_OffboardResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool OffboardResult_Result_IsValid(int value);
 constexpr OffboardResult_Result OffboardResult_Result_Result_MIN = OffboardResult_Result_RESULT_UNKNOWN;
-constexpr OffboardResult_Result OffboardResult_Result_Result_MAX = OffboardResult_Result_RESULT_NO_SETPOINT_SET;
+constexpr OffboardResult_Result OffboardResult_Result_Result_MAX = OffboardResult_Result_RESULT_FAILED;
 constexpr int OffboardResult_Result_Result_ARRAYSIZE = OffboardResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* OffboardResult_Result_descriptor();
@@ -5510,6 +5511,8 @@ class OffboardResult final :
     OffboardResult_Result_RESULT_TIMEOUT;
   static constexpr Result RESULT_NO_SETPOINT_SET =
     OffboardResult_Result_RESULT_NO_SETPOINT_SET;
+  static constexpr Result RESULT_FAILED =
+    OffboardResult_Result_RESULT_FAILED;
   static inline bool Result_IsValid(int value) {
     return OffboardResult_Result_IsValid(value);
   }

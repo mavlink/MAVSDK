@@ -370,6 +370,8 @@ public:
                 return rpc::offboard::OffboardResult_Result_RESULT_TIMEOUT;
             case mavsdk::Offboard::Result::NoSetpointSet:
                 return rpc::offboard::OffboardResult_Result_RESULT_NO_SETPOINT_SET;
+            case mavsdk::Offboard::Result::Failed:
+                return rpc::offboard::OffboardResult_Result_RESULT_FAILED;
         }
     }
 
@@ -396,6 +398,8 @@ public:
                 return mavsdk::Offboard::Result::Timeout;
             case rpc::offboard::OffboardResult_Result_RESULT_NO_SETPOINT_SET:
                 return mavsdk::Offboard::Result::NoSetpointSet;
+            case rpc::offboard::OffboardResult_Result_RESULT_FAILED:
+                return mavsdk::Offboard::Result::Failed;
         }
     }
 

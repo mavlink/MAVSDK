@@ -212,6 +212,8 @@ public:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_PARSE_QGC_PLAN;
             case mavsdk::MissionRaw::Result::NoSystem:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_NO_SYSTEM;
+            case mavsdk::MissionRaw::Result::Denied:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_DENIED;
         }
     }
 
@@ -248,6 +250,8 @@ public:
                 return mavsdk::MissionRaw::Result::FailedToParseQgcPlan;
             case rpc::mission_raw::MissionRawResult_Result_RESULT_NO_SYSTEM:
                 return mavsdk::MissionRaw::Result::NoSystem;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_DENIED:
+                return mavsdk::MissionRaw::Result::Denied;
         }
     }
 

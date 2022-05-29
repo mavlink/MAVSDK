@@ -93,10 +93,14 @@ MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_resu
             return MavlinkPassthrough::Result::ConnectionError;
         case MavlinkCommandSender::Result::Busy:
             return MavlinkPassthrough::Result::CommandBusy;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
             return MavlinkPassthrough::Result::CommandDenied;
+        case MavlinkCommandSender::Result::TemporarilyRejected:
+            return MavlinkPassthrough::Result::CommandTemporarilyRejected;
         case MavlinkCommandSender::Result::Unsupported:
             return MavlinkPassthrough::Result::CommandUnsupported;
+        case MavlinkCommandSender::Result::Failed:
+            return MavlinkPassthrough::Result::CommandFailed;
         case MavlinkCommandSender::Result::Timeout:
             return MavlinkPassthrough::Result::CommandTimeout;
         default:

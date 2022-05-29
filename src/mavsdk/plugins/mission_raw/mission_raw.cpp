@@ -232,6 +232,8 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
             return str << "Failed To Parse Qgc Plan";
         case MissionRaw::Result::NoSystem:
             return str << "No System";
+        case MissionRaw::Result::Denied:
+            return str << "Denied";
         default:
             return str << "Unknown";
     }

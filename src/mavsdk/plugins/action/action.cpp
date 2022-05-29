@@ -295,6 +295,8 @@ std::ostream& operator<<(std::ostream& str, Action::Result const& result)
             return str << "Parameter Error";
         case Action::Result::Unsupported:
             return str << "Unsupported";
+        case Action::Result::Failed:
+            return str << "Failed";
         default:
             return str << "Unknown";
     }

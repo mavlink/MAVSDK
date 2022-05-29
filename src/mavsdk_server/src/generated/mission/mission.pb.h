@@ -240,12 +240,13 @@ enum MissionResult_Result : int {
   MissionResult_Result_RESULT_TRANSFER_CANCELLED = 12,
   MissionResult_Result_RESULT_NO_SYSTEM = 13,
   MissionResult_Result_RESULT_NEXT = 14,
+  MissionResult_Result_RESULT_DENIED = 15,
   MissionResult_Result_MissionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   MissionResult_Result_MissionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool MissionResult_Result_IsValid(int value);
 constexpr MissionResult_Result MissionResult_Result_Result_MIN = MissionResult_Result_RESULT_UNKNOWN;
-constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_NEXT;
+constexpr MissionResult_Result MissionResult_Result_Result_MAX = MissionResult_Result_RESULT_DENIED;
 constexpr int MissionResult_Result_Result_ARRAYSIZE = MissionResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionResult_Result_descriptor();
@@ -4990,6 +4991,8 @@ class MissionResult final :
     MissionResult_Result_RESULT_NO_SYSTEM;
   static constexpr Result RESULT_NEXT =
     MissionResult_Result_RESULT_NEXT;
+  static constexpr Result RESULT_DENIED =
+    MissionResult_Result_RESULT_DENIED;
   static inline bool Result_IsValid(int value) {
     return MissionResult_Result_IsValid(value);
   }

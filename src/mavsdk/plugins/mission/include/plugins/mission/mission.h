@@ -186,6 +186,7 @@ public:
         TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
         NoSystem, /**< @brief No system connected. */
         Next, /**< @brief Intermediate message showing progress. */
+        Denied, /**< @brief Request denied. */
     };
 
     /**

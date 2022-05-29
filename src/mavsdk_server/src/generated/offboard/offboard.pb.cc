@@ -867,57 +867,57 @@ const char descriptor_table_protodef_offboard_2foffboard_2eproto[] PROTOBUF_SECT
   "tyNedYaw\022\021\n\tnorth_m_s\030\001 \001(\002\022\020\n\010east_m_s\030"
   "\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002"
   "\"K\n\017AccelerationNed\022\022\n\nnorth_m_s2\030\001 \001(\002\022"
-  "\021\n\teast_m_s2\030\002 \001(\002\022\021\n\tdown_m_s2\030\003 \001(\002\"\242\002"
+  "\021\n\teast_m_s2\030\002 \001(\002\022\021\n\tdown_m_s2\030\003 \001(\002\"\265\002"
   "\n\016OffboardResult\022:\n\006result\030\001 \001(\0162*.mavsd"
   "k.rpc.offboard.OffboardResult.Result\022\022\n\n"
-  "result_str\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016RESULT_UN"
+  "result_str\030\002 \001(\t\"\322\001\n\006Result\022\022\n\016RESULT_UN"
   "KNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO"
   "_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017"
   "\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED"
   "\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\032\n\026RESULT_NO_SETP"
-  "OINT_SET\020\0072\301\n\n\017OffboardService\022P\n\005Start\022"
-  "!.mavsdk.rpc.offboard.StartRequest\032\".mav"
-  "sdk.rpc.offboard.StartResponse\"\000\022M\n\004Stop"
-  "\022 .mavsdk.rpc.offboard.StopRequest\032!.mav"
-  "sdk.rpc.offboard.StopResponse\"\000\022]\n\010IsAct"
-  "ive\022$.mavsdk.rpc.offboard.IsActiveReques"
-  "t\032%.mavsdk.rpc.offboard.IsActiveResponse"
-  "\"\004\200\265\030\001\022f\n\013SetAttitude\022\'.mavsdk.rpc.offbo"
-  "ard.SetAttitudeRequest\032(.mavsdk.rpc.offb"
-  "oard.SetAttitudeResponse\"\004\200\265\030\001\022{\n\022SetAct"
-  "uatorControl\022..mavsdk.rpc.offboard.SetAc"
-  "tuatorControlRequest\032/.mavsdk.rpc.offboa"
-  "rd.SetActuatorControlResponse\"\004\200\265\030\001\022r\n\017S"
-  "etAttitudeRate\022+.mavsdk.rpc.offboard.Set"
-  "AttitudeRateRequest\032,.mavsdk.rpc.offboar"
-  "d.SetAttitudeRateResponse\"\004\200\265\030\001\022o\n\016SetPo"
-  "sitionNed\022*.mavsdk.rpc.offboard.SetPosit"
-  "ionNedRequest\032+.mavsdk.rpc.offboard.SetP"
-  "ositionNedResponse\"\004\200\265\030\001\022x\n\021SetPositionG"
-  "lobal\022-.mavsdk.rpc.offboard.SetPositionG"
-  "lobalRequest\032..mavsdk.rpc.offboard.SetPo"
-  "sitionGlobalResponse\"\004\200\265\030\001\022r\n\017SetVelocit"
-  "yBody\022+.mavsdk.rpc.offboard.SetVelocityB"
-  "odyRequest\032,.mavsdk.rpc.offboard.SetVelo"
-  "cityBodyResponse\"\004\200\265\030\001\022o\n\016SetVelocityNed"
-  "\022*.mavsdk.rpc.offboard.SetVelocityNedReq"
-  "uest\032+.mavsdk.rpc.offboard.SetVelocityNe"
-  "dResponse\"\004\200\265\030\001\022\207\001\n\026SetPositionVelocityN"
-  "ed\0222.mavsdk.rpc.offboard.SetPositionVelo"
-  "cityNedRequest\0323.mavsdk.rpc.offboard.Set"
-  "PositionVelocityNedResponse\"\004\200\265\030\001\022{\n\022Set"
-  "AccelerationNed\022..mavsdk.rpc.offboard.Se"
-  "tAccelerationNedRequest\032/.mavsdk.rpc.off"
-  "board.SetAccelerationNedResponse\"\004\200\265\030\001B#"
-  "\n\022io.mavsdk.offboardB\rOffboardProtob\006pro"
-  "to3"
+  "OINT_SET\020\007\022\021\n\rRESULT_FAILED\020\0102\301\n\n\017Offboa"
+  "rdService\022P\n\005Start\022!.mavsdk.rpc.offboard"
+  ".StartRequest\032\".mavsdk.rpc.offboard.Star"
+  "tResponse\"\000\022M\n\004Stop\022 .mavsdk.rpc.offboar"
+  "d.StopRequest\032!.mavsdk.rpc.offboard.Stop"
+  "Response\"\000\022]\n\010IsActive\022$.mavsdk.rpc.offb"
+  "oard.IsActiveRequest\032%.mavsdk.rpc.offboa"
+  "rd.IsActiveResponse\"\004\200\265\030\001\022f\n\013SetAttitude"
+  "\022\'.mavsdk.rpc.offboard.SetAttitudeReques"
+  "t\032(.mavsdk.rpc.offboard.SetAttitudeRespo"
+  "nse\"\004\200\265\030\001\022{\n\022SetActuatorControl\022..mavsdk"
+  ".rpc.offboard.SetActuatorControlRequest\032"
+  "/.mavsdk.rpc.offboard.SetActuatorControl"
+  "Response\"\004\200\265\030\001\022r\n\017SetAttitudeRate\022+.mavs"
+  "dk.rpc.offboard.SetAttitudeRateRequest\032,"
+  ".mavsdk.rpc.offboard.SetAttitudeRateResp"
+  "onse\"\004\200\265\030\001\022o\n\016SetPositionNed\022*.mavsdk.rp"
+  "c.offboard.SetPositionNedRequest\032+.mavsd"
+  "k.rpc.offboard.SetPositionNedResponse\"\004\200"
+  "\265\030\001\022x\n\021SetPositionGlobal\022-.mavsdk.rpc.of"
+  "fboard.SetPositionGlobalRequest\032..mavsdk"
+  ".rpc.offboard.SetPositionGlobalResponse\""
+  "\004\200\265\030\001\022r\n\017SetVelocityBody\022+.mavsdk.rpc.of"
+  "fboard.SetVelocityBodyRequest\032,.mavsdk.r"
+  "pc.offboard.SetVelocityBodyResponse\"\004\200\265\030"
+  "\001\022o\n\016SetVelocityNed\022*.mavsdk.rpc.offboar"
+  "d.SetVelocityNedRequest\032+.mavsdk.rpc.off"
+  "board.SetVelocityNedResponse\"\004\200\265\030\001\022\207\001\n\026S"
+  "etPositionVelocityNed\0222.mavsdk.rpc.offbo"
+  "ard.SetPositionVelocityNedRequest\0323.mavs"
+  "dk.rpc.offboard.SetPositionVelocityNedRe"
+  "sponse\"\004\200\265\030\001\022{\n\022SetAccelerationNed\022..mav"
+  "sdk.rpc.offboard.SetAccelerationNedReque"
+  "st\032/.mavsdk.rpc.offboard.SetAcceleration"
+  "NedResponse\"\004\200\265\030\001B#\n\022io.mavsdk.offboardB"
+  "\rOffboardProtob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_offboard_2foffboard_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_offboard_2foffboard_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_offboard_2foffboard_2eproto = {
-    false, false, 4603, descriptor_table_protodef_offboard_2foffboard_2eproto,
+    false, false, 4622, descriptor_table_protodef_offboard_2foffboard_2eproto,
     "offboard/offboard.proto",
     &descriptor_table_offboard_2foffboard_2eproto_once, descriptor_table_offboard_2foffboard_2eproto_deps, 1, 34,
     schemas, file_default_instances, TableStruct_offboard_2foffboard_2eproto::offsets,
@@ -970,6 +970,7 @@ bool OffboardResult_Result_IsValid(int value) {
     case 5:
     case 6:
     case 7:
+    case 8:
       return true;
     default:
       return false;
@@ -985,6 +986,7 @@ constexpr OffboardResult_Result OffboardResult::RESULT_BUSY;
 constexpr OffboardResult_Result OffboardResult::RESULT_COMMAND_DENIED;
 constexpr OffboardResult_Result OffboardResult::RESULT_TIMEOUT;
 constexpr OffboardResult_Result OffboardResult::RESULT_NO_SETPOINT_SET;
+constexpr OffboardResult_Result OffboardResult::RESULT_FAILED;
 constexpr OffboardResult_Result OffboardResult::Result_MIN;
 constexpr OffboardResult_Result OffboardResult::Result_MAX;
 constexpr int OffboardResult::Result_ARRAYSIZE;
