@@ -79,13 +79,11 @@ void MavlinkCommandSender::queue_command_async(
     CommandIdentification identification = identification_from_command(command);
 
     for (const auto& work : _work_queue) {
-        if (work->identification == identification) {
+        if (work->identification == identification && callback == nullptr) {
             if (_command_debugging) {
                 LogDebug() << "Dropping command " << static_cast<int>(identification.command)
                            << " that is already being sent";
             }
-            auto temp_callback = callback;
-            call_callback(temp_callback, Result::CommandDenied, NAN);
             return;
         }
     }
