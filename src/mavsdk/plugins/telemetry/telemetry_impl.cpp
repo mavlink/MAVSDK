@@ -177,6 +177,8 @@ void TelemetryImpl::deinit()
         std::lock_guard<std::mutex> lock(_ap_calibration_mutex);
         _ap_calibration = {};
     }
+
+    _sys_status_used_for_position = SysStatusUsed::Unknown;
 }
 
 void TelemetryImpl::enable()
@@ -976,12 +978,12 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     raw_gps_info.yaw_deg = static_cast<float>(gps_raw_int.yaw) * 1e-2f;
     set_raw_gps(raw_gps_info);
 
-    // TODO: This is just an interim hack, we will have to look at
-    //       estimator flags in order to decide if the position
-    //       estimate is good enough.
-    const bool gps_ok = ((gps_raw_int.fix_type >= 3) && (gps_raw_int.satellites_visible >= 8));
+    if (_sys_status_used_for_position == SysStatusUsed::No) {
+        // This is just a fallback if sys_status does not contain the appropriate flags yet.
+        const bool gps_ok = ((gps_raw_int.fix_type >= 3) && (gps_raw_int.satellites_visible >= 8));
 
-    set_health_global_position(gps_ok);
+        set_health_global_position(gps_ok);
+    }
 
     {
         std::lock_guard<std::mutex> lock(_subscription_mutex);
@@ -1130,6 +1132,32 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
         // If the flag is not supported yet, we fall back to the param.
     }
 
+    const bool global_position_ok =
+        sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_GPS);
+
+    // FIXME: There is nothing really set in PX4 for local position from what I can tell,
+    //        so the best we can do for now is to set it based on GPS as a fallback.
+
+    const bool local_position_ok =
+        global_position_ok ||
+        sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_OPTICAL_FLOW) ||
+        sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_VISION_POSITION);
+
+    set_health_local_position(local_position_ok);
+    set_health_global_position(global_position_ok);
+
+    // If any of these sensors were marked present, we don't have to fall back to check for
+    // satellite count.
+    _sys_status_used_for_position =
+        ((sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_GPS) != 0 ||
+         (sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_OPTICAL_FLOW) != 0 ||
+         (sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_VISION_POSITION) !=
+             0) ?
+            SysStatusUsed::Yes :
+            SysStatusUsed::No;
+
+    set_rc_status({rc_ok}, std::nullopt);
+
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     if (_rc_status_subscription) {
         auto callback = _rc_status_subscription;
@@ -1144,6 +1172,14 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
         auto arg = health_all_ok();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
+}
+
+bool TelemetryImpl::sys_status_present_enabled_health(
+    const mavlink_sys_status_t& sys_status, MAV_SYS_STATUS_SENSOR flag)
+{
+    return (sys_status.onboard_control_sensors_present & flag) != 0 &&
+           (sys_status.onboard_control_sensors_enabled & flag) != 0 &&
+           (sys_status.onboard_control_sensors_health & flag) != 0;
 }
 
 void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
@@ -1705,9 +1741,11 @@ void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int val
 
 void TelemetryImpl::receive_gps_raw_timeout()
 {
-    const bool position_ok = false;
-    set_health_local_position(position_ok);
-    set_health_global_position(position_ok);
+    if (_sys_status_used_for_position == SysStatusUsed::No) {
+        const bool position_ok = false;
+        set_health_local_position(position_ok);
+        set_health_global_position(position_ok);
+    }
 }
 
 void TelemetryImpl::receive_unix_epoch_timeout()
