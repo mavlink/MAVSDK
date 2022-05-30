@@ -2242,6 +2242,12 @@ TelemetryImpl::subscribe_status_text(Telemetry::StatusTextCallback&& callback)
         std::forward<Telemetry::StatusTextCallback&&>(callback));
 }
 
+void TelemetryImpl::unsubscribe_status_text(Handle<Telemetry::StatusText> handle)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _status_text_subscriptions.unsubscribe(handle);
+}
+
 void TelemetryImpl::subscribe_armed(Telemetry::ArmedCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);

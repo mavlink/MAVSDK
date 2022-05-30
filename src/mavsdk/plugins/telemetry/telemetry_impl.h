@@ -115,6 +115,8 @@ public:
     void subscribe_home(Telemetry::PositionCallback& callback);
     void subscribe_in_air(Telemetry::InAirCallback& callback);
     Handle<Telemetry::StatusText> subscribe_status_text(Telemetry::StatusTextCallback&& callback);
+    void unsubscribe_status_text(Handle<Telemetry::StatusText> handle);
+
     void subscribe_armed(Telemetry::ArmedCallback& callback);
     void subscribe_attitude_quaternion(Telemetry::AttitudeQuaternionCallback& callback);
     void subscribe_attitude_euler(Telemetry::AttitudeEulerCallback& callback);

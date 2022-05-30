@@ -235,6 +235,11 @@ Handle<StatusText> Telemetry::subscribe_status_text(StatusTextCallback&& callbac
     return _impl->subscribe_status_text(std::forward<StatusTextCallback&&>(callback));
 }
 
+void Telemetry::unsubscribe_status_text(Handle<Telemetry::StatusText> handle)
+{
+    _impl->unsubscribe_status_text(handle);
+}
+
 Telemetry::StatusText Telemetry::status_text() const
 {
     return _impl->status_text();

@@ -35,7 +35,7 @@ TEST(SystemTest, TelemetrySubscription)
     auto prom1 = std::promise<void>{};
     auto fut1 = prom1.get_future();
     unsigned num_subscription1_called = 0;
-    telemetry.subscribe_status_text([&](const Telemetry::StatusText& status_text) {
+    auto handle1 = telemetry.subscribe_status_text([&](const Telemetry::StatusText& status_text) {
         LogInfo() << "Received: " << status_text.text;
         ++num_subscription1_called;
         if (num_subscription1_called == 2) {
@@ -46,13 +46,17 @@ TEST(SystemTest, TelemetrySubscription)
     auto prom2 = std::promise<void>{};
     auto fut2 = prom2.get_future();
     unsigned num_subscription2_called = 0;
-    telemetry.subscribe_status_text([&](const Telemetry::StatusText& status_text) {
-        LogInfo() << "Also received: " << status_text.text;
-        ++num_subscription2_called;
-        if (num_subscription2_called == 2) {
-            prom2.set_value();
-        }
-    });
+
+    std::function<void(Telemetry::StatusText)> callback =
+        [&](const Telemetry::StatusText& status_text) {
+            LogInfo() << "Also received: " << status_text.text;
+            ++num_subscription2_called;
+            if (num_subscription2_called == 3) {
+                prom2.set_value();
+            }
+        };
+
+    telemetry.subscribe_status_text(std::move(callback));
 
     telemetry_server.publish_status_text(
         {TelemetryServer::StatusTextType::Info, "I'm a test message"});
@@ -60,8 +64,14 @@ TEST(SystemTest, TelemetrySubscription)
         {TelemetryServer::StatusTextType::Info, "I'm the second one"});
 
     EXPECT_EQ(fut1.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    telemetry.unsubscribe_status_text(handle1);
+
+    telemetry_server.publish_status_text(
+        {TelemetryServer::StatusTextType::Info, "I'm the third one"});
+
     EXPECT_EQ(fut2.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     EXPECT_EQ(num_subscription1_called, 2);
-    EXPECT_EQ(num_subscription2_called, 2);
+    EXPECT_EQ(num_subscription2_called, 3);
 }

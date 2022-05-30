@@ -1317,6 +1317,8 @@ public:
      */
     Handle<StatusText> subscribe_status_text(StatusTextCallback&& callback);
 
+    void unsubscribe_status_text(Handle<Telemetry::StatusText> handle);
+
     /**
      * @brief Poll for 'StatusText' (blocking).
      *
