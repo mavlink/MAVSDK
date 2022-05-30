@@ -79,13 +79,11 @@ void MavlinkCommandSender::queue_command_async(
     CommandIdentification identification = identification_from_command(command);
 
     for (const auto& work : _work_queue) {
-        if (work->identification == identification) {
+        if (work->identification == identification && callback == nullptr) {
             if (_command_debugging) {
                 LogDebug() << "Dropping command " << static_cast<int>(identification.command)
                            << " that is already being sent";
             }
-            auto temp_callback = callback;
-            call_callback(temp_callback, Result::CommandDenied, NAN);
             return;
         }
     }
@@ -115,7 +113,7 @@ void MavlinkCommandSender::queue_command_async(
                            << " that is already being sent";
             }
             auto temp_callback = callback;
-            call_callback(temp_callback, Result::CommandDenied, NAN);
+            call_callback(temp_callback, Result::Denied, NAN);
             return;
         }
     }
@@ -194,35 +192,44 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             case MAV_RESULT_DENIED:
                 LogWarn() << "command denied (" << work->identification.command << ").";
                 _parent.unregister_timeout_handler(work->timeout_cookie);
-                temp_result = {Result::CommandDenied, NAN};
+                temp_result = {Result::Denied, NAN};
                 _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_UNSUPPORTED:
-                LogWarn() << "command unsupported (" << work->identification.command << ").";
+                if (_command_debugging) {
+                    LogDebug() << "command unsupported (" << work->identification.command << ").";
+                }
                 _parent.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Unsupported, NAN};
                 _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_TEMPORARILY_REJECTED:
-                LogWarn() << "command temporarily rejected (" << work->identification.command
-                          << ").";
+                if (_command_debugging) {
+                    LogDebug() << "command temporarily rejected (" << work->identification.command
+                               << ").";
+                }
                 _parent.unregister_timeout_handler(work->timeout_cookie);
-                temp_result = {Result::CommandDenied, NAN};
+                temp_result = {Result::TemporarilyRejected, NAN};
                 _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_FAILED:
+                if (_command_debugging) {
+                    LogDebug() << "command failed (" << work->identification.command << ").";
+                }
                 _parent.unregister_timeout_handler(work->timeout_cookie);
-                temp_result = {Result::CommandDenied, NAN};
+                temp_result = {Result::Failed, NAN};
                 _work_queue.erase(it);
                 break;
 
             case MAV_RESULT_IN_PROGRESS:
-                if (static_cast<int>(command_ack.progress) != 255) {
-                    LogInfo() << "progress: " << static_cast<int>(command_ack.progress) << " % ("
-                              << work->identification.command << ").";
+                if (_command_debugging) {
+                    if (static_cast<int>(command_ack.progress) != 255) {
+                        LogDebug() << "progress: " << static_cast<int>(command_ack.progress)
+                                   << " % (" << work->identification.command << ").";
+                    }
                 }
                 // If we get a progress update, we can raise the timeout
                 // to something higher because we know the initial command
@@ -239,6 +246,15 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
 
                 temp_result = {
                     Result::InProgress, static_cast<float>(command_ack.progress) / 100.0f};
+                break;
+
+            case MAV_RESULT_CANCELLED:
+                if (_command_debugging) {
+                    LogDebug() << "command cancelled (" << work->identification.command << ").";
+                }
+                _parent.unregister_timeout_handler(work->timeout_cookie);
+                temp_result = {Result::Cancelled, NAN};
+                _work_queue.erase(it);
                 break;
 
             default:

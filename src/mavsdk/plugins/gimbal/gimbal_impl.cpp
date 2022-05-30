@@ -202,7 +202,8 @@ GimbalImpl::gimbal_result_from_command_result(MavlinkCommandSender::Result comma
         case MavlinkCommandSender::Result::NoSystem:
         case MavlinkCommandSender::Result::ConnectionError:
         case MavlinkCommandSender::Result::Busy:
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+        case MavlinkCommandSender::Result::TemporarilyRejected:
         default:
             return Gimbal::Result::Error;
     }

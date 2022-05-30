@@ -245,7 +245,9 @@ FollowMe::Result FollowMeImpl::to_follow_me_result(MavlinkCommandSender::Result 
             return FollowMe::Result::ConnectionError;
         case MavlinkCommandSender::Result::Busy:
             return FollowMe::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // Fallthrough
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return FollowMe::Result::CommandDenied;
         case MavlinkCommandSender::Result::Timeout:
             return FollowMe::Result::Timeout;

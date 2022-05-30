@@ -244,6 +244,8 @@ public:
                 return rpc::mission::MissionResult_Result_RESULT_NO_SYSTEM;
             case mavsdk::Mission::Result::Next:
                 return rpc::mission::MissionResult_Result_RESULT_NEXT;
+            case mavsdk::Mission::Result::Denied:
+                return rpc::mission::MissionResult_Result_RESULT_DENIED;
         }
     }
 
@@ -280,6 +282,8 @@ public:
                 return mavsdk::Mission::Result::NoSystem;
             case rpc::mission::MissionResult_Result_RESULT_NEXT:
                 return mavsdk::Mission::Result::Next;
+            case rpc::mission::MissionResult_Result_RESULT_DENIED:
+                return mavsdk::Mission::Result::Denied;
         }
     }
 

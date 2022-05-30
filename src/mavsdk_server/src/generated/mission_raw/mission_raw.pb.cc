@@ -659,10 +659,10 @@ const char descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto[] PRO
   "_raw.MissionItem\022;\n\016geofence_items\030\002 \003(\013"
   "2#.mavsdk.rpc.mission_raw.MissionItem\0228\n"
   "\013rally_items\030\003 \003(\0132#.mavsdk.rpc.mission_"
-  "raw.MissionItem\"\310\003\n\020MissionRawResult\022\?\n\006"
+  "raw.MissionItem\"\333\003\n\020MissionRawResult\022\?\n\006"
   "result\030\001 \001(\0162/.mavsdk.rpc.mission_raw.Mi"
   "ssionRawResult.Result\022\022\n\nresult_str\030\002 \001("
-  "\t\"\336\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESU"
+  "\t\"\361\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESU"
   "LT_SUCCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022!\n\035RESULT"
   "_TOO_MANY_MISSION_ITEMS\020\003\022\017\n\013RESULT_BUSY"
   "\020\004\022\022\n\016RESULT_TIMEOUT\020\005\022\033\n\027RESULT_INVALID"
@@ -670,51 +670,52 @@ const char descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto[] PRO
   "ESULT_NO_MISSION_AVAILABLE\020\010\022\035\n\031RESULT_T"
   "RANSFER_CANCELLED\020\t\022\"\n\036RESULT_FAILED_TO_"
   "OPEN_QGC_PLAN\020\n\022#\n\037RESULT_FAILED_TO_PARS"
-  "E_QGC_PLAN\020\013\022\024\n\020RESULT_NO_SYSTEM\020\0142\223\013\n\021M"
-  "issionRawService\022n\n\rUploadMission\022,.mavs"
-  "dk.rpc.mission_raw.UploadMissionRequest\032"
-  "-.mavsdk.rpc.mission_raw.UploadMissionRe"
-  "sponse\"\000\022\204\001\n\023CancelMissionUpload\0222.mavsd"
-  "k.rpc.mission_raw.CancelMissionUploadReq"
-  "uest\0323.mavsdk.rpc.mission_raw.CancelMiss"
-  "ionUploadResponse\"\004\200\265\030\001\022t\n\017DownloadMissi"
-  "on\022..mavsdk.rpc.mission_raw.DownloadMiss"
-  "ionRequest\032/.mavsdk.rpc.mission_raw.Down"
-  "loadMissionResponse\"\000\022\212\001\n\025CancelMissionD"
-  "ownload\0224.mavsdk.rpc.mission_raw.CancelM"
-  "issionDownloadRequest\0325.mavsdk.rpc.missi"
-  "on_raw.CancelMissionDownloadResponse\"\004\200\265"
-  "\030\001\022k\n\014StartMission\022+.mavsdk.rpc.mission_"
-  "raw.StartMissionRequest\032,.mavsdk.rpc.mis"
-  "sion_raw.StartMissionResponse\"\000\022k\n\014Pause"
-  "Mission\022+.mavsdk.rpc.mission_raw.PauseMi"
-  "ssionRequest\032,.mavsdk.rpc.mission_raw.Pa"
-  "useMissionResponse\"\000\022k\n\014ClearMission\022+.m"
-  "avsdk.rpc.mission_raw.ClearMissionReques"
-  "t\032,.mavsdk.rpc.mission_raw.ClearMissionR"
-  "esponse\"\000\022\206\001\n\025SetCurrentMissionItem\0224.ma"
-  "vsdk.rpc.mission_raw.SetCurrentMissionIt"
-  "emRequest\0325.mavsdk.rpc.mission_raw.SetCu"
-  "rrentMissionItemResponse\"\000\022\210\001\n\030Subscribe"
-  "MissionProgress\0227.mavsdk.rpc.mission_raw"
-  ".SubscribeMissionProgressRequest\032/.mavsd"
-  "k.rpc.mission_raw.MissionProgressRespons"
-  "e\"\0000\001\022\211\001\n\027SubscribeMissionChanged\0226.mavs"
-  "dk.rpc.mission_raw.SubscribeMissionChang"
-  "edRequest\032..mavsdk.rpc.mission_raw.Missi"
-  "onChangedResponse\"\004\200\265\030\0000\001\022\234\001\n\033ImportQgro"
-  "undcontrolMission\022:.mavsdk.rpc.mission_r"
-  "aw.ImportQgroundcontrolMissionRequest\032;."
-  "mavsdk.rpc.mission_raw.ImportQgroundcont"
-  "rolMissionResponse\"\004\200\265\030\001B(\n\025io.mavsdk.mi"
-  "ssion_rawB\017MissionRawProtob\006proto3"
+  "E_QGC_PLAN\020\013\022\024\n\020RESULT_NO_SYSTEM\020\014\022\021\n\rRE"
+  "SULT_DENIED\020\r2\223\013\n\021MissionRawService\022n\n\rU"
+  "ploadMission\022,.mavsdk.rpc.mission_raw.Up"
+  "loadMissionRequest\032-.mavsdk.rpc.mission_"
+  "raw.UploadMissionResponse\"\000\022\204\001\n\023CancelMi"
+  "ssionUpload\0222.mavsdk.rpc.mission_raw.Can"
+  "celMissionUploadRequest\0323.mavsdk.rpc.mis"
+  "sion_raw.CancelMissionUploadResponse\"\004\200\265"
+  "\030\001\022t\n\017DownloadMission\022..mavsdk.rpc.missi"
+  "on_raw.DownloadMissionRequest\032/.mavsdk.r"
+  "pc.mission_raw.DownloadMissionResponse\"\000"
+  "\022\212\001\n\025CancelMissionDownload\0224.mavsdk.rpc."
+  "mission_raw.CancelMissionDownloadRequest"
+  "\0325.mavsdk.rpc.mission_raw.CancelMissionD"
+  "ownloadResponse\"\004\200\265\030\001\022k\n\014StartMission\022+."
+  "mavsdk.rpc.mission_raw.StartMissionReque"
+  "st\032,.mavsdk.rpc.mission_raw.StartMission"
+  "Response\"\000\022k\n\014PauseMission\022+.mavsdk.rpc."
+  "mission_raw.PauseMissionRequest\032,.mavsdk"
+  ".rpc.mission_raw.PauseMissionResponse\"\000\022"
+  "k\n\014ClearMission\022+.mavsdk.rpc.mission_raw"
+  ".ClearMissionRequest\032,.mavsdk.rpc.missio"
+  "n_raw.ClearMissionResponse\"\000\022\206\001\n\025SetCurr"
+  "entMissionItem\0224.mavsdk.rpc.mission_raw."
+  "SetCurrentMissionItemRequest\0325.mavsdk.rp"
+  "c.mission_raw.SetCurrentMissionItemRespo"
+  "nse\"\000\022\210\001\n\030SubscribeMissionProgress\0227.mav"
+  "sdk.rpc.mission_raw.SubscribeMissionProg"
+  "ressRequest\032/.mavsdk.rpc.mission_raw.Mis"
+  "sionProgressResponse\"\0000\001\022\211\001\n\027SubscribeMi"
+  "ssionChanged\0226.mavsdk.rpc.mission_raw.Su"
+  "bscribeMissionChangedRequest\032..mavsdk.rp"
+  "c.mission_raw.MissionChangedResponse\"\004\200\265"
+  "\030\0000\001\022\234\001\n\033ImportQgroundcontrolMission\022:.m"
+  "avsdk.rpc.mission_raw.ImportQgroundcontr"
+  "olMissionRequest\032;.mavsdk.rpc.mission_ra"
+  "w.ImportQgroundcontrolMissionResponse\"\004\200"
+  "\265\030\001B(\n\025io.mavsdk.mission_rawB\017MissionRaw"
+  "Protob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_mission_5fraw_2fmission_5fraw_2eproto = {
-    false, false, 4074, descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto,
+    false, false, 4093, descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto,
     "mission_raw/mission_raw.proto",
     &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once, descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps, 1, 26,
     schemas, file_default_instances, TableStruct_mission_5fraw_2fmission_5fraw_2eproto::offsets,
@@ -749,6 +750,7 @@ bool MissionRawResult_Result_IsValid(int value) {
     case 10:
     case 11:
     case 12:
+    case 13:
       return true;
     default:
       return false;
@@ -769,6 +771,7 @@ constexpr MissionRawResult_Result MissionRawResult::RESULT_TRANSFER_CANCELLED;
 constexpr MissionRawResult_Result MissionRawResult::RESULT_FAILED_TO_OPEN_QGC_PLAN;
 constexpr MissionRawResult_Result MissionRawResult::RESULT_FAILED_TO_PARSE_QGC_PLAN;
 constexpr MissionRawResult_Result MissionRawResult::RESULT_NO_SYSTEM;
+constexpr MissionRawResult_Result MissionRawResult::RESULT_DENIED;
 constexpr MissionRawResult_Result MissionRawResult::Result_MIN;
 constexpr MissionRawResult_Result MissionRawResult::Result_MAX;
 constexpr int MissionRawResult::Result_ARRAYSIZE;

@@ -26,10 +26,13 @@ public:
         NoSystem,
         ConnectionError,
         Busy,
-        CommandDenied,
+        Denied,
         Unsupported,
         Timeout,
         InProgress,
+        TemporarilyRejected,
+        Failed,
+        Cancelled,
         UnknownError
     };
 

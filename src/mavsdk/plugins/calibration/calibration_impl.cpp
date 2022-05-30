@@ -297,13 +297,19 @@ void CalibrationImpl::command_result_callback(
             // FALLTHROUGH
         case MavlinkCommandSender::Result::Busy:
             // FALLTHROUGH
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
             // FALLTHROUGH
         case MavlinkCommandSender::Result::Unsupported:
             // FALLTHROUGH
-        case MavlinkCommandSender::Result::UnknownError:
+        case MavlinkCommandSender::Result::Timeout:
             // FALLTHROUGH
-        case MavlinkCommandSender::Result::Timeout: {
+        case MavlinkCommandSender::Result::TemporarilyRejected:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::Failed:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::Cancelled:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::UnknownError: {
             // Report all error cases.
             const auto timeout_result = calibration_result_from_command_result(command_result);
             call_callback(_calibration_callback, timeout_result, Calibration::ProgressData());
@@ -336,8 +342,14 @@ CalibrationImpl::calibration_result_from_command_result(MavlinkCommandSender::Re
             return Calibration::Result::ConnectionError;
         case MavlinkCommandSender::Result::Busy:
             return Calibration::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // Fallthrough
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return Calibration::Result::CommandDenied;
+        case MavlinkCommandSender::Result::Failed:
+            return Calibration::Result::Failed;
+        case MavlinkCommandSender::Result::Cancelled:
+            return Calibration::Result::Cancelled;
         case MavlinkCommandSender::Result::Timeout:
             return Calibration::Result::Timeout;
         case MavlinkCommandSender::Result::InProgress:

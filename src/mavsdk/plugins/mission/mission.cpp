@@ -265,6 +265,8 @@ std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
             return str << "No System";
         case Mission::Result::Next:
             return str << "Next";
+        case Mission::Result::Denied:
+            return str << "Denied";
         default:
             return str << "Unknown";
     }

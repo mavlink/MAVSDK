@@ -65,6 +65,8 @@ public:
         CommandDenied, /**< @brief Command has been denied. */
         CommandUnsupported, /**< @brief Command is not supported. */
         CommandTimeout, /**< @brief A timeout happened. */
+        CommandTemporarilyRejected, /**< @brief Command has been rejected for now. */
+        CommandFailed, /**< @brief Command has failed. */
     };
 
     /**

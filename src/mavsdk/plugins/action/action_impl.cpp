@@ -683,8 +683,12 @@ Action::Result ActionImpl::action_result_from_command_result(MavlinkCommandSende
             return Action::Result::ConnectionError;
         case MavlinkCommandSender::Result::Busy:
             return Action::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // Fallthrough
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return Action::Result::CommandDenied;
+        case MavlinkCommandSender::Result::Failed:
+            return Action::Result::Failed;
         case MavlinkCommandSender::Result::Timeout:
             return Action::Result::Timeout;
         case MavlinkCommandSender::Result::Unsupported:

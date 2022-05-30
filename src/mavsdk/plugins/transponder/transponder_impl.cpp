@@ -109,7 +109,9 @@ TransponderImpl::transponder_result_from_command_result(MavlinkCommandSender::Re
             return Transponder::Result::ConnectionError;
         case MavlinkCommandSender::Result::Busy:
             return Transponder::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return Transponder::Result::CommandDenied;
         case MavlinkCommandSender::Result::Timeout:
             return Transponder::Result::Timeout;

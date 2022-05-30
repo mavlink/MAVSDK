@@ -670,12 +670,14 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
         case MavlinkCommandSender::Result::Success:
             return Camera::Result::Success;
         case MavlinkCommandSender::Result::NoSystem:
-        // FALLTHROUGH
+            // FALLTHROUGH
         case MavlinkCommandSender::Result::ConnectionError:
-        // FALLTHROUGH
+            // FALLTHROUGH
         case MavlinkCommandSender::Result::Busy:
             return Camera::Result::Error;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return Camera::Result::Denied;
         case MavlinkCommandSender::Result::Timeout:
             return Camera::Result::Timeout;

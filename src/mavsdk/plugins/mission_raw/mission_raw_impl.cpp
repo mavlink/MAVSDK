@@ -345,17 +345,19 @@ MissionRawImpl::command_result_to_mission_result(MavlinkCommandSender::Result re
         case MavlinkCommandSender::Result::Success:
             return MissionRaw::Result::Success;
         case MavlinkCommandSender::Result::NoSystem:
-            return MissionRaw::Result::Error; // FIXME
+            return MissionRaw::Result::NoSystem;
         case MavlinkCommandSender::Result::ConnectionError:
-            return MissionRaw::Result::Error; // FIXME
+            return MissionRaw::Result::Error;
         case MavlinkCommandSender::Result::Busy:
             return MissionRaw::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
-            return MissionRaw::Result::Error; // FIXME
+        case MavlinkCommandSender::Result::Denied:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::TemporarilyRejected:
+            return MissionRaw::Result::Denied;
         case MavlinkCommandSender::Result::Timeout:
             return MissionRaw::Result::Timeout;
         case MavlinkCommandSender::Result::InProgress:
-            return MissionRaw::Result::Busy; // FIXME
+            return MissionRaw::Result::Busy;
         case MavlinkCommandSender::Result::UnknownError:
             return MissionRaw::Result::Unknown;
         default:

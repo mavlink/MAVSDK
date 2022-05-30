@@ -116,6 +116,8 @@ public:
                 return rpc::action::ActionResult_Result_RESULT_PARAMETER_ERROR;
             case mavsdk::Action::Result::Unsupported:
                 return rpc::action::ActionResult_Result_RESULT_UNSUPPORTED;
+            case mavsdk::Action::Result::Failed:
+                return rpc::action::ActionResult_Result_RESULT_FAILED;
         }
     }
 
@@ -152,6 +154,8 @@ public:
                 return mavsdk::Action::Result::ParameterError;
             case rpc::action::ActionResult_Result_RESULT_UNSUPPORTED:
                 return mavsdk::Action::Result::Unsupported;
+            case rpc::action::ActionResult_Result_RESULT_FAILED:
+                return mavsdk::Action::Result::Failed;
         }
     }
 

@@ -136,7 +136,9 @@ ManualControlImpl::manual_control_result_from_command_result(MavlinkCommandSende
             return ManualControl::Result::ConnectionError;
         case MavlinkCommandSender::Result::Busy:
             return ManualControl::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return ManualControl::Result::CommandDenied;
         case MavlinkCommandSender::Result::Timeout:
             return ManualControl::Result::Timeout;

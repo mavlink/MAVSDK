@@ -581,7 +581,9 @@ TelemetryImpl::telemetry_result_from_command_result(MavlinkCommandSender::Result
             return Telemetry::Result::ConnectionError;
         case MavlinkCommandSender::Result::Busy:
             return Telemetry::Result::Busy;
-        case MavlinkCommandSender::Result::CommandDenied:
+        case MavlinkCommandSender::Result::Denied:
+            // FALLTHROUGH
+        case MavlinkCommandSender::Result::TemporarilyRejected:
             return Telemetry::Result::CommandDenied;
         case MavlinkCommandSender::Result::Timeout:
             return Telemetry::Result::Timeout;
