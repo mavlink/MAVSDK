@@ -120,6 +120,7 @@ install(FILES
 )
 
 list(APPEND UNIT_TEST_SOURCES
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/callback_list_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
