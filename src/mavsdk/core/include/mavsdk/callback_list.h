@@ -28,7 +28,7 @@ public:
     CallbackList();
     ~CallbackList() = default;
 
-    Handle<Args...> subscribe(const std::function<void(Args...)>&& callback);
+    Handle<Args...> subscribe(const std::function<void(Args...)>& callback);
     void unsubscribe(Handle<Args...> handle);
     void operator()(Args... args);
 

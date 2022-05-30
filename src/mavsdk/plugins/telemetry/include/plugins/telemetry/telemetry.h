@@ -1315,7 +1315,7 @@ public:
     /**
      * @brief Subscribe to 'status text' updates.
      */
-    Handle<StatusText> subscribe_status_text(StatusTextCallback&& callback);
+    Handle<StatusText> subscribe_status_text(const StatusTextCallback& callback);
 
     void unsubscribe_status_text(Handle<Telemetry::StatusText> handle);
 

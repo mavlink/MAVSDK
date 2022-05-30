@@ -5,15 +5,16 @@
 #include "callback_list_impl.h"
 
 namespace mavsdk {
+
 template<typename... Args>
 CallbackList<Args...>::CallbackList() :
     _impl(std::make_shared<CallbackListImpl<Args...>>())
 {}
 
 template<typename... Args>
-Handle<Args...> CallbackList<Args...>::subscribe(const std::function<void(Args...)>&& callback)
+Handle<Args...> CallbackList<Args...>::subscribe(const std::function<void(Args...)>& callback)
 {
-    return _impl->subscribe(std::forward<const std::function<void(Args...)>&&>(callback));
+    return _impl->subscribe(callback);
 }
 
 template<typename... Args> void CallbackList<Args...>::unsubscribe(Handle<Args...> handle)

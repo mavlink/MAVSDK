@@ -2235,11 +2235,10 @@ void TelemetryImpl::subscribe_in_air(Telemetry::InAirCallback& callback)
 }
 
 Handle<Telemetry::StatusText>
-TelemetryImpl::subscribe_status_text(Telemetry::StatusTextCallback&& callback)
+TelemetryImpl::subscribe_status_text(const Telemetry::StatusTextCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    return _status_text_subscriptions.subscribe(
-        std::forward<Telemetry::StatusTextCallback&&>(callback));
+    return _status_text_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_status_text(Handle<Telemetry::StatusText> handle)
