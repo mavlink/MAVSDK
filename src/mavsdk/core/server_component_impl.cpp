@@ -40,7 +40,7 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
 
     _mavlink_request_message_handler.register_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        [this](const MavlinkRequestMessageHandler::Params&) {
+        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
             send_autopilot_version();
             return MAV_RESULT_ACCEPTED;
         },
@@ -255,6 +255,22 @@ void ServerComponentImpl::call_user_callback_located(
     const std::string& filename, const int linenumber, const std::function<void()>& func)
 {
     _mavsdk_impl.call_user_callback_located(filename, linenumber, func);
+}
+
+void ServerComponentImpl::register_timeout_handler(
+    const std::function<void()>& callback, double duration_s, void** cookie)
+{
+    _mavsdk_impl.timeout_handler.add(callback, duration_s, cookie);
+}
+
+void ServerComponentImpl::refresh_timeout_handler(const void* cookie)
+{
+    _mavsdk_impl.timeout_handler.refresh(cookie);
+}
+
+void ServerComponentImpl::unregister_timeout_handler(const void* cookie)
+{
+    _mavsdk_impl.timeout_handler.remove(cookie);
 }
 
 void ServerComponentImpl::add_capabilities(uint64_t add_capabilities)

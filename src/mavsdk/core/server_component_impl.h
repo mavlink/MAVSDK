@@ -86,6 +86,11 @@ public:
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
 
+    void register_timeout_handler(
+        const std::function<void()>& callback, double duration_s, void** cookie);
+    void refresh_timeout_handler(const void* cookie);
+    void unregister_timeout_handler(const void* cookie);
+
     [[nodiscard]] uint8_t get_own_system_id() const;
 
     void set_own_component_id(uint8_t own_component_id);

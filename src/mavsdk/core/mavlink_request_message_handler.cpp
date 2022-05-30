@@ -78,6 +78,8 @@ std::optional<mavlink_message_t> MavlinkRequestMessageHandler::handle_command_lo
         if (entry.message_id == static_cast<uint32_t>(std::round(command.params.param1))) {
             if (entry.callback != nullptr) {
                 const auto result = entry.callback(
+                    command.origin_system_id,
+                    command.origin_component_id,
                     {command.params.param2,
                      command.params.param3,
                      command.params.param4,
@@ -107,6 +109,8 @@ MavlinkRequestMessageHandler::handle_command_int(const MavlinkCommandReceiver::C
         if (entry.message_id == static_cast<uint32_t>(std::round(command.params.param1))) {
             if (entry.callback != nullptr) {
                 const auto result = entry.callback(
+                    command.origin_system_id,
+                    command.origin_component_id,
                     {command.params.param2,
                      command.params.param3,
                      command.params.param4,
