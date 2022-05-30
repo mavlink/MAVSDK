@@ -114,9 +114,9 @@ public:
     void subscribe_position(Telemetry::PositionCallback& callback);
     void subscribe_home(Telemetry::PositionCallback& callback);
     void subscribe_in_air(Telemetry::InAirCallback& callback);
-    Handle<Telemetry::StatusText>
+    Telemetry::StatusTextHandle
     subscribe_status_text(const Telemetry::StatusTextCallback& callback);
-    void unsubscribe_status_text(Handle<Telemetry::StatusText> handle);
+    void unsubscribe_status_text(Telemetry::StatusTextHandle handle);
 
     void subscribe_armed(Telemetry::ArmedCallback& callback);
     void subscribe_attitude_quaternion(Telemetry::AttitudeQuaternionCallback& callback);

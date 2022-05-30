@@ -1311,13 +1311,14 @@ public:
      */
 
     using StatusTextCallback = std::function<void(StatusText)>;
+    using StatusTextHandle = Handle<StatusText>;
 
     /**
      * @brief Subscribe to 'status text' updates.
      */
-    Handle<StatusText> subscribe_status_text(const StatusTextCallback& callback);
+    StatusTextHandle subscribe_status_text(const StatusTextCallback& callback);
 
-    void unsubscribe_status_text(Handle<Telemetry::StatusText> handle);
+    void unsubscribe_status_text(StatusTextHandle handle);
 
     /**
      * @brief Poll for 'StatusText' (blocking).
