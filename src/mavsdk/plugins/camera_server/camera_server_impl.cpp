@@ -1,7 +1,11 @@
 #include "camera_server_impl.h"
+#include "callback_list.tpp"
+
 #include <thread> // FIXME: remove me
 
 namespace mavsdk {
+
+template class CallbackList<int32_t>;
 
 CameraServerImpl::CameraServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)
@@ -190,9 +194,14 @@ CameraServer::Result CameraServerImpl::set_in_progress(bool in_progress)
     return CameraServer::Result::Success;
 }
 
-void CameraServerImpl::subscribe_take_photo(CameraServer::TakePhotoCallback callback)
+ CameraServer::TakePhotoHandle CameraServerImpl::subscribe_take_photo(const CameraServer::TakePhotoCallback& callback)
 {
-    _take_photo_callback = callback;
+    return _take_photo_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_take_photo(CameraServer::TakePhotoHandle handle)
+{
+    _take_photo_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_take_photo(
@@ -295,8 +304,8 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
         [this, remaining, index]() {
             LogDebug() << "capture image timer triggered";
 
-            if (_take_photo_callback) {
-                _take_photo_callback(index);
+            if (!_take_photo_callbacks.empty()) {
+                _take_photo_callbacks(index);
                 (*remaining)--;
             }
 
@@ -358,7 +367,7 @@ std::optional<mavlink_message_t> CameraServerImpl::process_camera_information_re
     // capability flags are determined by subscriptions
     uint32_t capability_flags{};
 
-    if (_take_photo_callback) {
+    if (!_take_photo_callbacks.empty()) {
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
     }
 
@@ -644,7 +653,7 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
 
     stop_image_capture_interval();
 
-    if (!_take_photo_callback) {
+    if (_take_photo_callbacks.empty()) {
         LogDebug() << "image capture requested with no take photo subscriber";
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -669,7 +678,7 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
         // FIXME: why is this needed to prevent dropping messages?
         // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-        _take_photo_callback(seq_number);
+        _take_photo_callbacks(seq_number);
 
         return std::nullopt;
     }

@@ -56,9 +56,7 @@ public:
     void queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
     {
         for (const auto& pair : _list) {
-            queue_func([callback = pair.second, args...]() {
-                callback(args...);
-            });
+            queue_func([callback = pair.second, args...]() { callback(args...); });
         }
     }
 

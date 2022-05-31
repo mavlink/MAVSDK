@@ -5,11 +5,19 @@
 #include "http_loader.h"
 #include "camera_definition_files.h"
 #include "unused.h"
+#include "callback_list.tpp"
+
 #include <functional>
 #include <cmath>
 #include <sstream>
 
 namespace mavsdk {
+
+template class CallbackList<Camera::Mode>;
+template class CallbackList<std::vector<Camera::Setting>>;
+template class CallbackList<Camera::CaptureInfo>;
+template class CallbackList<Camera::VideoStreamInfo>;
+template class CallbackList<Camera::Status>;
 
 CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
 {
@@ -98,37 +106,37 @@ void CameraImpl::deinit()
 
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
-        _status.subscription_callback = nullptr;
+        _status.subscription_callbacks.clear();
     }
 
     {
         std::lock_guard<std::mutex> lock(_mode.mutex);
-        _mode.subscription_callback = nullptr;
+        _mode.subscription_callbacks.clear();
     }
 
     {
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
-        _capture_info.callback = nullptr;
+        _capture_info.callbacks.clear();
     }
 
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.subscription_callback = nullptr;
+        _video_stream_info.subscription_callbacks.clear();
     }
 
     {
         std::lock_guard<std::mutex> lock(_information.mutex);
-        _information.subscription_callback = nullptr;
+        _information.subscription_callbacks.clear();
     }
 
     {
         std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
-        _subscribe_current_settings.callback = nullptr;
+        _subscribe_current_settings.callbacks.clear();
     }
 
     {
         std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
-        _subscribe_possible_setting_options.callback = nullptr;
+        _subscribe_possible_setting_options.callbacks.clear();
     }
 
     _camera_found = false;
@@ -578,10 +586,10 @@ Camera::Information CameraImpl::information() const
     return _information.data;
 }
 
-void CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
+Camera::InformationHandle CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_information.mutex);
-    _information.subscription_callback = callback;
+    auto handle = _information.subscription_callbacks.subscribe(callback);
 
     // If there was already a subscription, cancel the call
     if (_status.call_every_cookie) {
@@ -597,6 +605,14 @@ void CameraImpl::subscribe_information(const Camera::InformationCallback& callba
         _parent->remove_call_every(_status.call_every_cookie);
         _status.call_every_cookie = nullptr;
     }
+
+    return handle;
+}
+
+void CameraImpl::unsubscribe_information(Camera::InformationHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_information.mutex);
+    _information.subscription_callbacks.unsubscribe(handle);
 }
 
 Camera::Result CameraImpl::start_video_streaming()
@@ -649,11 +665,11 @@ Camera::VideoStreamInfo CameraImpl::video_stream_info()
     return _video_stream_info.data;
 }
 
-void CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback callback)
+Camera::VideoStreamInfoHandle CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
-    _video_stream_info.subscription_callback = callback;
+    auto handle = _video_stream_info.subscription_callbacks.subscribe(callback);
 
     if (callback) {
         _parent->add_call_every(
@@ -661,6 +677,14 @@ void CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallba
     } else {
         _parent->remove_call_every(_video_stream_info.call_every_cookie);
     }
+
+    return handle;
+}
+
+void CameraImpl::unsubscribe_video_stream_info(Camera::VideoStreamInfoHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+    _video_stream_info.subscription_callbacks.unsubscribe(handle);
 }
 
 Camera::Result
@@ -814,12 +838,11 @@ Camera::Mode CameraImpl::mode()
     return _mode.data;
 }
 
-void CameraImpl::subscribe_mode(const Camera::ModeCallback callback)
+Camera::ModeHandle CameraImpl::subscribe_mode(const Camera::ModeCallback& callback)
 {
-    {
-        std::lock_guard<std::mutex> lock(_mode.mutex);
-        _mode.subscription_callback = callback;
-    }
+    std::unique_lock<std::mutex> lock(_mode.mutex);
+    auto handle = _mode.subscription_callbacks.subscribe(callback);
+    lock.unlock();
 
     notify_mode();
 
@@ -829,6 +852,14 @@ void CameraImpl::subscribe_mode(const Camera::ModeCallback callback)
     } else {
         _parent->remove_call_every(_mode.call_every_cookie);
     }
+
+    return handle;
+}
+
+void CameraImpl::unsubscribe_mode(Camera::ModeHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mode.mutex);
+    _mode.subscription_callbacks.unsubscribe(handle);
 }
 
 bool CameraImpl::interval_valid(float interval_s)
@@ -848,11 +879,11 @@ void CameraImpl::request_status()
     _parent->send_command_async(make_command_request_storage_info(), nullptr);
 }
 
-void CameraImpl::subscribe_status(const Camera::StatusCallback callback)
+Camera::StatusHandle CameraImpl::subscribe_status(const Camera::StatusCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_status.mutex);
 
-    _status.subscription_callback = callback;
+    auto handle = _status.subscription_callbacks.subscribe(callback);
 
     if (callback) {
         if (_status.call_every_cookie == nullptr) {
@@ -863,6 +894,14 @@ void CameraImpl::subscribe_status(const Camera::StatusCallback callback)
         _parent->remove_call_every(_status.call_every_cookie);
         _status.call_every_cookie = nullptr;
     }
+
+    return handle;
+}
+
+void CameraImpl::unsubscribe_status(Camera::StatusHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_status.mutex);
+    _status.subscription_callbacks.unsubscribe(handle);
 }
 
 Camera::Status CameraImpl::status()
@@ -871,10 +910,16 @@ Camera::Status CameraImpl::status()
     return _status.data;
 }
 
-void CameraImpl::subscribe_capture_info(Camera::CaptureInfoCallback callback)
+Camera::CaptureInfoHandle CameraImpl::subscribe_capture_info(const Camera::CaptureInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_capture_info.mutex);
-    _capture_info.callback = callback;
+    return _capture_info.callbacks.subscribe(callback);
+}
+
+void CameraImpl::unsubscribe_capture_info(Camera::CaptureInfoHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_capture_info.mutex);
+    _capture_info.callbacks.unsubscribe(handle);
 }
 
 void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
@@ -979,11 +1024,9 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         std::lock_guard<std::mutex> lock(_capture_info.mutex);
         // Notify user if a new image has been captured.
         if (_capture_info.last_advertised_image_index < capture_info.index) {
-            if (_capture_info.callback) {
-                const auto temp_callback = _capture_info.callback;
-                _parent->call_user_callback(
-                    [temp_callback, capture_info]() { temp_callback(capture_info); });
-            }
+            _capture_info.callbacks.queue(
+                capture_info,
+                [this](const auto& func) {_parent->call_user_callback(func); });
 
             if (_capture_info.last_advertised_image_index != -1) {
                 // Save captured indices that have been dropped to request later, however, don't
@@ -1003,11 +1046,10 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
 
         else if (auto it = _capture_info.missing_image_retries.find(capture_info.index);
                  it != _capture_info.missing_image_retries.end()) {
-            if (_capture_info.callback) {
-                const auto temp_callback = _capture_info.callback;
-                _parent->call_user_callback(
-                    [temp_callback, capture_info]() { temp_callback(capture_info); });
-            }
+
+            _capture_info.callbacks.queue(
+                capture_info,
+                [this](const auto& func) {_parent->call_user_callback(func); });
             _capture_info.missing_image_retries.erase(it);
         }
     }
@@ -1096,12 +1138,9 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     _information.data.horizontal_resolution_px = camera_information.resolution_h;
     _information.data.vertical_resolution_px = camera_information.resolution_v;
 
-    if (_information.subscription_callback) {
-        const auto temp_callback = _information.subscription_callback;
-        const auto temp_information = _information.data;
-        _parent->call_user_callback(
-            [temp_callback, temp_information]() { temp_callback(temp_information); });
-    }
+    _information.subscription_callbacks.queue(
+        _information.data,
+        [this](const auto& func) {_parent->call_user_callback(func); });
 
     if (should_fetch_camera_definition(camera_information.cam_definition_uri)) {
         _is_fetching_camera_definition = true;
@@ -1307,11 +1346,10 @@ void CameraImpl::process_flight_information(const mavlink_message_t& message)
 void CameraImpl::notify_video_stream_info()
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-    if (_video_stream_info.subscription_callback) {
-        const auto temp_callback = _video_stream_info.subscription_callback;
-        const auto temp_info = _video_stream_info.data;
-        _parent->call_user_callback([temp_callback, temp_info]() { temp_callback(temp_info); });
-    }
+
+    _video_stream_info.subscription_callbacks.queue(
+        _video_stream_info.data,
+        [this](const auto& func) {_parent->call_user_callback(func); });
 }
 
 void CameraImpl::check_status()
@@ -1319,11 +1357,9 @@ void CameraImpl::check_status()
     std::lock_guard<std::mutex> lock(_status.mutex);
 
     if (_status.received_camera_capture_status && _status.received_storage_information) {
-        if (_status.subscription_callback) {
-            const auto temp_callback = _status.subscription_callback;
-            const auto temp_data = _status.data;
-            _parent->call_user_callback([temp_callback, temp_data]() { temp_callback(temp_data); });
-        }
+        _status.subscription_callbacks.queue(
+            _status.data,
+            [this](const auto& func) {_parent->call_user_callback(func); });
 
         _status.received_camera_capture_status = false;
         _status.received_storage_information = false;
@@ -1374,16 +1410,11 @@ void CameraImpl::receive_set_mode_command_result(
 
 void CameraImpl::notify_mode()
 {
-    // Make a copy because it is passed to the thread pool
-    const auto temp_callback = _mode.subscription_callback;
-
-    if (temp_callback == nullptr) {
-        return;
-    }
-
     std::lock_guard<std::mutex> lock(_mode.mutex);
-    auto mode = _mode.data;
-    _parent->call_user_callback([mode, temp_callback]() { temp_callback(mode); });
+
+    _mode.subscription_callbacks.queue(
+        _mode.data,
+        [this](const auto& func) {_parent->call_user_callback(func); });
 }
 
 bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings)
@@ -1681,30 +1712,44 @@ void CameraImpl::get_option_async(
     }
 }
 
-void CameraImpl::subscribe_current_settings(const Camera::CurrentSettingsCallback& callback)
+Camera::CurrentSettingsHandle CameraImpl::subscribe_current_settings(const Camera::CurrentSettingsCallback& callback)
 {
-    {
-        std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
-        _subscribe_current_settings.callback = callback;
-    }
+    std::unique_lock<std::mutex> lock(_subscribe_current_settings.mutex);
+    auto handle = _subscribe_current_settings.callbacks.subscribe(callback);
+    lock.unlock();
+
     notify_current_settings();
+    return handle;
 }
 
-void CameraImpl::subscribe_possible_setting_options(
+void CameraImpl::unsubscribe_current_settings(Camera::CurrentSettingsHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
+    _subscribe_current_settings.callbacks.unsubscribe(handle);
+}
+
+Camera::PossibleSettingOptionsHandle CameraImpl::subscribe_possible_setting_options(
     const Camera::PossibleSettingOptionsCallback& callback)
 {
-    {
-        std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
-        _subscribe_possible_setting_options.callback = callback;
-    }
+    std::unique_lock<std::mutex> lock(_subscribe_possible_setting_options.mutex);
+    auto handle = _subscribe_possible_setting_options.callbacks.subscribe(callback);
+    lock.unlock();
+
     notify_possible_setting_options();
+    return handle;
+}
+
+void CameraImpl::unsubscribe_possible_setting_options(Camera::PossibleSettingOptionsHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
+    _subscribe_possible_setting_options.callbacks.unsubscribe(handle);
 }
 
 void CameraImpl::notify_current_settings()
 {
     std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
 
-    if (!_subscribe_current_settings.callback) {
+    if (_subscribe_current_settings.callbacks.empty()) {
         return;
     }
 
@@ -1739,16 +1784,16 @@ void CameraImpl::notify_current_settings()
         }
     }
 
-    _parent->call_user_callback(
-        [temp_callback = _subscribe_current_settings.callback,
-         temp_settings = std::move(current_settings)]() { temp_callback(temp_settings); });
+    _subscribe_current_settings.callbacks.queue(
+        current_settings,
+        [this](const auto& func) {_parent->call_user_callback(func); });
 }
 
 void CameraImpl::notify_possible_setting_options()
 {
     std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
 
-    if (!_subscribe_possible_setting_options.callback) {
+    if (_subscribe_possible_setting_options.callbacks.empty()) {
         return;
     }
 
@@ -1762,8 +1807,9 @@ void CameraImpl::notify_possible_setting_options()
         return;
     }
 
-    _parent->call_user_callback([temp_callback = _subscribe_possible_setting_options.callback,
-                                 setting_options]() { temp_callback(setting_options); });
+    _subscribe_possible_setting_options.callbacks.queue(
+        setting_options,
+        [this](const auto& func) {_parent->call_user_callback(func); });
 }
 
 std::vector<Camera::SettingOptions> CameraImpl::possible_setting_options()

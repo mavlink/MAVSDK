@@ -16,7 +16,8 @@ public:
     CameraServer::Result set_information(CameraServer::Information information);
     CameraServer::Result set_in_progress(bool in_progress);
 
-    void subscribe_take_photo(CameraServer::TakePhotoCallback callback);
+    CameraServer::TakePhotoHandle subscribe_take_photo(const CameraServer::TakePhotoCallback& callback);
+    void unsubscribe_take_photo(CameraServer::TakePhotoHandle handle);
 
     CameraServer::Result respond_take_photo(
         CameraServer::TakePhotoFeedback take_photo_feedback,
@@ -45,7 +46,7 @@ private:
     void* _image_capture_timer_cookie{};
     int32_t _image_capture_count{};
 
-    CameraServer::TakePhotoCallback _take_photo_callback{};
+    CallbackList<int32_t> _take_photo_callbacks{};
 
     MavlinkCommandReceiver::CommandLong _last_take_photo_command;
 
