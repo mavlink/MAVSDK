@@ -20,39 +20,75 @@ ActionServer::ActionServer(std::shared_ptr<ServerComponent> server_component) :
 
 ActionServer::~ActionServer() {}
 
-void ActionServer::subscribe_arm_disarm(ArmDisarmCallback callback)
+ActionServer::ArmDisarmHandle ActionServer::subscribe_arm_disarm(const ArmDisarmCallback& callback)
 {
-    _impl->subscribe_arm_disarm(callback);
+    return _impl->subscribe_arm_disarm(callback);
 }
 
-void ActionServer::subscribe_flight_mode_change(FlightModeChangeCallback callback)
+void ActionServer::unsubscribe_arm_disarm(ArmDisarmHandle handle)
 {
-    _impl->subscribe_flight_mode_change(callback);
+    _impl->unsubscribe_arm_disarm(handle);
 }
 
-void ActionServer::subscribe_takeoff(TakeoffCallback callback)
+ActionServer::FlightModeChangeHandle
+ActionServer::subscribe_flight_mode_change(const FlightModeChangeCallback& callback)
 {
-    _impl->subscribe_takeoff(callback);
+    return _impl->subscribe_flight_mode_change(callback);
 }
 
-void ActionServer::subscribe_land(LandCallback callback)
+void ActionServer::unsubscribe_flight_mode_change(FlightModeChangeHandle handle)
 {
-    _impl->subscribe_land(callback);
+    _impl->unsubscribe_flight_mode_change(handle);
 }
 
-void ActionServer::subscribe_reboot(RebootCallback callback)
+ActionServer::TakeoffHandle ActionServer::subscribe_takeoff(const TakeoffCallback& callback)
 {
-    _impl->subscribe_reboot(callback);
+    return _impl->subscribe_takeoff(callback);
 }
 
-void ActionServer::subscribe_shutdown(ShutdownCallback callback)
+void ActionServer::unsubscribe_takeoff(TakeoffHandle handle)
 {
-    _impl->subscribe_shutdown(callback);
+    _impl->unsubscribe_takeoff(handle);
 }
 
-void ActionServer::subscribe_terminate(TerminateCallback callback)
+ActionServer::LandHandle ActionServer::subscribe_land(const LandCallback& callback)
 {
-    _impl->subscribe_terminate(callback);
+    return _impl->subscribe_land(callback);
+}
+
+void ActionServer::unsubscribe_land(LandHandle handle)
+{
+    _impl->unsubscribe_land(handle);
+}
+
+ActionServer::RebootHandle ActionServer::subscribe_reboot(const RebootCallback& callback)
+{
+    return _impl->subscribe_reboot(callback);
+}
+
+void ActionServer::unsubscribe_reboot(RebootHandle handle)
+{
+    _impl->unsubscribe_reboot(handle);
+}
+
+ActionServer::ShutdownHandle ActionServer::subscribe_shutdown(const ShutdownCallback& callback)
+{
+    return _impl->subscribe_shutdown(callback);
+}
+
+void ActionServer::unsubscribe_shutdown(ShutdownHandle handle)
+{
+    _impl->unsubscribe_shutdown(handle);
+}
+
+ActionServer::TerminateHandle ActionServer::subscribe_terminate(const TerminateCallback& callback)
+{
+    return _impl->subscribe_terminate(callback);
+}
+
+void ActionServer::unsubscribe_terminate(TerminateHandle handle)
+{
+    _impl->unsubscribe_terminate(handle);
 }
 
 ActionServer::Result ActionServer::set_allow_takeoff(bool allow_takeoff) const

@@ -15,6 +15,8 @@
 
 #include "mavsdk/plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class System;
@@ -300,8 +302,12 @@ public:
     /**
      * @brief Callback type for subscribe_control.
      */
-
     using ControlCallback = std::function<void(ControlStatus)>;
+
+    /**
+     * @brief Handle type for subscribe_control.
+     */
+    using ControlHandle = Handle<ControlStatus>;
 
     /**
      * @brief Subscribe to control status updates.
@@ -310,7 +316,12 @@ public:
      * no control over the gimbal. Also, it gives the system and component ids
      * of the other components in control (if any).
      */
-    void subscribe_control(ControlCallback callback);
+    ControlHandle subscribe_control(const ControlCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_control
+     */
+    void unsubscribe_control(ControlHandle handle);
 
     /**
      * @brief Poll for 'ControlStatus' (blocking).

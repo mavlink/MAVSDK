@@ -16,6 +16,8 @@
 
 #include "mavsdk/server_plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class ServerComponent;

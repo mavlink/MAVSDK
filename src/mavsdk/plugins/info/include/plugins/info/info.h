@@ -15,6 +15,8 @@
 
 #include "mavsdk/plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class System;

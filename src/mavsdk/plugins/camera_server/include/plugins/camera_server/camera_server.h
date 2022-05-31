@@ -15,6 +15,8 @@
 
 #include "mavsdk/server_plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class ServerComponent;
@@ -232,14 +234,23 @@ public:
     /**
      * @brief Callback type for subscribe_take_photo.
      */
-
     using TakePhotoCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_take_photo.
+     */
+    using TakePhotoHandle = Handle<int32_t>;
 
     /**
      * @brief Subscribe to image capture requests. Each request received should respond to using
      * RespondTakePhoto.
      */
-    void subscribe_take_photo(TakePhotoCallback callback);
+    TakePhotoHandle subscribe_take_photo(const TakePhotoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_take_photo
+     */
+    void unsubscribe_take_photo(TakePhotoHandle handle);
 
     /**
      * @brief Respond to an image capture request from SubscribeTakePhoto.

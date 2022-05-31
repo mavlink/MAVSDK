@@ -16,6 +16,8 @@
 
 #include "mavsdk/server_plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class ServerComponent;
@@ -166,13 +168,22 @@ public:
     /**
      * @brief Callback type for subscribe_incoming_mission.
      */
-
     using IncomingMissionCallback = std::function<void(Result, MissionPlan)>;
+
+    /**
+     * @brief Handle type for subscribe_incoming_mission.
+     */
+    using IncomingMissionHandle = Handle<Result, MissionPlan>;
 
     /**
      * @brief Subscribe to when a new mission is uploaded (asynchronous).
      */
-    void subscribe_incoming_mission(IncomingMissionCallback callback);
+    IncomingMissionHandle subscribe_incoming_mission(const IncomingMissionCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_incoming_mission
+     */
+    void unsubscribe_incoming_mission(IncomingMissionHandle handle);
 
     /**
      * @brief Poll for 'MissionPlan' (blocking).
@@ -184,13 +195,23 @@ public:
     /**
      * @brief Callback type for subscribe_current_item_changed.
      */
-
     using CurrentItemChangedCallback = std::function<void(MissionItem)>;
+
+    /**
+     * @brief Handle type for subscribe_current_item_changed.
+     */
+    using CurrentItemChangedHandle = Handle<MissionItem>;
 
     /**
      * @brief Subscribe to when a new current item is set
      */
-    void subscribe_current_item_changed(CurrentItemChangedCallback callback);
+    CurrentItemChangedHandle
+    subscribe_current_item_changed(const CurrentItemChangedCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_current_item_changed
+     */
+    void unsubscribe_current_item_changed(CurrentItemChangedHandle handle);
 
     /**
      * @brief Poll for 'MissionItem' (blocking).
@@ -211,13 +232,22 @@ public:
     /**
      * @brief Callback type for subscribe_clear_all.
      */
-
     using ClearAllCallback = std::function<void(uint32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_clear_all.
+     */
+    using ClearAllHandle = Handle<uint32_t>;
 
     /**
      * @brief Subscribe when a MISSION_CLEAR_ALL is received
      */
-    void subscribe_clear_all(ClearAllCallback callback);
+    ClearAllHandle subscribe_clear_all(const ClearAllCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_clear_all
+     */
+    void unsubscribe_clear_all(ClearAllHandle handle);
 
     /**
      * @brief Poll for 'uint32_t' (blocking).

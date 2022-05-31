@@ -31,9 +31,15 @@ ComponentInformation::access_float_params() const
     return _impl->access_float_params();
 }
 
-void ComponentInformation::subscribe_float_param(FloatParamCallback callback)
+ComponentInformation::FloatParamHandle
+ComponentInformation::subscribe_float_param(const FloatParamCallback& callback)
 {
-    _impl->subscribe_float_param(callback);
+    return _impl->subscribe_float_param(callback);
+}
+
+void ComponentInformation::unsubscribe_float_param(FloatParamHandle handle)
+{
+    _impl->unsubscribe_float_param(handle);
 }
 
 bool operator==(

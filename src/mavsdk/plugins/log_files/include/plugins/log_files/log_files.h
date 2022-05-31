@@ -15,6 +15,8 @@
 
 #include "mavsdk/plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class System;
@@ -152,13 +154,13 @@ public:
     /**
      * @brief Callback type for download_log_file_async.
      */
-
     using DownloadLogFileCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Download log file.
      */
-    void download_log_file_async(Entry entry, std::string path, DownloadLogFileCallback callback);
+    void
+    download_log_file_async(Entry entry, std::string path, const DownloadLogFileCallback& callback);
 
     /**
      * @brief Download log file synchronously.

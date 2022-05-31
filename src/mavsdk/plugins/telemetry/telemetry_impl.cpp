@@ -2,13 +2,14 @@
 #include "system.h"
 #include "math_conversions.h"
 #include "mavsdk_math.h"
+#include "callback_list.tpp"
+
 #include <cmath>
 #include <functional>
 #include <string>
 #include <array>
 #include <cassert>
 #include <unused.h>
-#include "callback_list.tpp"
 
 namespace mavsdk {
 

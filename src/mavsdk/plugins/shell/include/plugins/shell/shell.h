@@ -15,6 +15,8 @@
 
 #include "mavsdk/plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class System;
@@ -93,8 +95,12 @@ public:
     /**
      * @brief Callback type for subscribe_receive.
      */
-
     using ReceiveCallback = std::function<void(std::string)>;
+
+    /**
+     * @brief Handle type for subscribe_receive.
+     */
+    using ReceiveHandle = Handle<std::string>;
 
     /**
      * @brief Receive feedback from a sent command line.
@@ -102,7 +108,12 @@ public:
      * This subscription needs to be made before a command line is sent, otherwise, no response will
      * be sent.
      */
-    void subscribe_receive(ReceiveCallback callback);
+    ReceiveHandle subscribe_receive(const ReceiveCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_receive
+     */
+    void unsubscribe_receive(ReceiveHandle handle);
 
     /**
      * @brief Copy constructor.

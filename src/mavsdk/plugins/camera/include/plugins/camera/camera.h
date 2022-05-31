@@ -15,6 +15,8 @@
 
 #include "mavsdk/plugin_base.h"
 
+#include "mavsdk/callback_list.h"
+
 namespace mavsdk {
 
 class System;
@@ -647,13 +649,22 @@ public:
     /**
      * @brief Callback type for subscribe_mode.
      */
-
     using ModeCallback = std::function<void(Mode)>;
+
+    /**
+     * @brief Handle type for subscribe_mode.
+     */
+    using ModeHandle = Handle<Mode>;
 
     /**
      * @brief Subscribe to camera mode updates.
      */
-    void subscribe_mode(ModeCallback callback);
+    ModeHandle subscribe_mode(const ModeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_mode
+     */
+    void unsubscribe_mode(ModeHandle handle);
 
     /**
      * @brief Poll for 'Mode' (blocking).
@@ -665,13 +676,22 @@ public:
     /**
      * @brief Callback type for subscribe_information.
      */
-
     using InformationCallback = std::function<void(Information)>;
+
+    /**
+     * @brief Handle type for subscribe_information.
+     */
+    using InformationHandle = Handle<Information>;
 
     /**
      * @brief Subscribe to camera information updates.
      */
-    void subscribe_information(InformationCallback callback);
+    InformationHandle subscribe_information(const InformationCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_information
+     */
+    void unsubscribe_information(InformationHandle handle);
 
     /**
      * @brief Poll for 'Information' (blocking).
@@ -683,13 +703,22 @@ public:
     /**
      * @brief Callback type for subscribe_video_stream_info.
      */
-
     using VideoStreamInfoCallback = std::function<void(VideoStreamInfo)>;
+
+    /**
+     * @brief Handle type for subscribe_video_stream_info.
+     */
+    using VideoStreamInfoHandle = Handle<VideoStreamInfo>;
 
     /**
      * @brief Subscribe to video stream info updates.
      */
-    void subscribe_video_stream_info(VideoStreamInfoCallback callback);
+    VideoStreamInfoHandle subscribe_video_stream_info(const VideoStreamInfoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_video_stream_info
+     */
+    void unsubscribe_video_stream_info(VideoStreamInfoHandle handle);
 
     /**
      * @brief Poll for 'VideoStreamInfo' (blocking).
@@ -701,24 +730,42 @@ public:
     /**
      * @brief Callback type for subscribe_capture_info.
      */
-
     using CaptureInfoCallback = std::function<void(CaptureInfo)>;
+
+    /**
+     * @brief Handle type for subscribe_capture_info.
+     */
+    using CaptureInfoHandle = Handle<CaptureInfo>;
 
     /**
      * @brief Subscribe to capture info updates.
      */
-    void subscribe_capture_info(CaptureInfoCallback callback);
+    CaptureInfoHandle subscribe_capture_info(const CaptureInfoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_capture_info
+     */
+    void unsubscribe_capture_info(CaptureInfoHandle handle);
 
     /**
      * @brief Callback type for subscribe_status.
      */
-
     using StatusCallback = std::function<void(Status)>;
+
+    /**
+     * @brief Handle type for subscribe_status.
+     */
+    using StatusHandle = Handle<Status>;
 
     /**
      * @brief Subscribe to camera status updates.
      */
-    void subscribe_status(StatusCallback callback);
+    StatusHandle subscribe_status(const StatusCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_status
+     */
+    void unsubscribe_status(StatusHandle handle);
 
     /**
      * @brief Poll for 'Status' (blocking).
@@ -730,24 +777,43 @@ public:
     /**
      * @brief Callback type for subscribe_current_settings.
      */
-
     using CurrentSettingsCallback = std::function<void(std::vector<Setting>)>;
+
+    /**
+     * @brief Handle type for subscribe_current_settings.
+     */
+    using CurrentSettingsHandle = Handle<std::vector<Setting>>;
 
     /**
      * @brief Get the list of current camera settings.
      */
-    void subscribe_current_settings(CurrentSettingsCallback callback);
+    CurrentSettingsHandle subscribe_current_settings(const CurrentSettingsCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_current_settings
+     */
+    void unsubscribe_current_settings(CurrentSettingsHandle handle);
 
     /**
      * @brief Callback type for subscribe_possible_setting_options.
      */
-
     using PossibleSettingOptionsCallback = std::function<void(std::vector<SettingOptions>)>;
+
+    /**
+     * @brief Handle type for subscribe_possible_setting_options.
+     */
+    using PossibleSettingOptionsHandle = Handle<std::vector<SettingOptions>>;
 
     /**
      * @brief Get the list of settings that can be changed.
      */
-    void subscribe_possible_setting_options(PossibleSettingOptionsCallback callback);
+    PossibleSettingOptionsHandle
+    subscribe_possible_setting_options(const PossibleSettingOptionsCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_possible_setting_options
+     */
+    void unsubscribe_possible_setting_options(PossibleSettingOptionsHandle handle);
 
     /**
      * @brief Poll for 'std::vector<SettingOptions>' (blocking).

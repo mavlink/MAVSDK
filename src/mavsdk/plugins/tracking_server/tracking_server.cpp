@@ -35,19 +35,37 @@ void TrackingServer::set_tracking_off_status() const
     _impl->set_tracking_off_status();
 }
 
-void TrackingServer::subscribe_tracking_point_command(TrackingPointCommandCallback callback)
+TrackingServer::TrackingPointCommandHandle
+TrackingServer::subscribe_tracking_point_command(const TrackingPointCommandCallback& callback)
 {
-    _impl->subscribe_tracking_point_command(callback);
+    return _impl->subscribe_tracking_point_command(callback);
 }
 
-void TrackingServer::subscribe_tracking_rectangle_command(TrackingRectangleCommandCallback callback)
+void TrackingServer::unsubscribe_tracking_point_command(TrackingPointCommandHandle handle)
 {
-    _impl->subscribe_tracking_rectangle_command(callback);
+    _impl->unsubscribe_tracking_point_command(handle);
 }
 
-void TrackingServer::subscribe_tracking_off_command(TrackingOffCommandCallback callback)
+TrackingServer::TrackingRectangleCommandHandle TrackingServer::subscribe_tracking_rectangle_command(
+    const TrackingRectangleCommandCallback& callback)
 {
-    _impl->subscribe_tracking_off_command(callback);
+    return _impl->subscribe_tracking_rectangle_command(callback);
+}
+
+void TrackingServer::unsubscribe_tracking_rectangle_command(TrackingRectangleCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_rectangle_command(handle);
+}
+
+TrackingServer::TrackingOffCommandHandle
+TrackingServer::subscribe_tracking_off_command(const TrackingOffCommandCallback& callback)
+{
+    return _impl->subscribe_tracking_off_command(callback);
+}
+
+void TrackingServer::unsubscribe_tracking_off_command(TrackingOffCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_off_command(handle);
 }
 
 TrackingServer::Result

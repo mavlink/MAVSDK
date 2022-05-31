@@ -23,9 +23,14 @@ Shell::Result Shell::send(std::string command) const
     return _impl->send(command);
 }
 
-void Shell::subscribe_receive(ReceiveCallback callback)
+Shell::ReceiveHandle Shell::subscribe_receive(const ReceiveCallback& callback)
 {
-    _impl->subscribe_receive(callback);
+    return _impl->subscribe_receive(callback);
+}
+
+void Shell::unsubscribe_receive(ReceiveHandle handle)
+{
+    _impl->unsubscribe_receive(handle);
 }
 
 std::ostream& operator<<(std::ostream& str, Shell::Result const& result)

@@ -49,9 +49,14 @@ Telemetry::Telemetry(std::shared_ptr<System> system) :
 
 Telemetry::~Telemetry() {}
 
-void Telemetry::subscribe_position(PositionCallback callback)
+Telemetry::PositionHandle Telemetry::subscribe_position(const PositionCallback& callback)
 {
-    _impl->subscribe_position(callback);
+    return _impl->subscribe_position(callback);
+}
+
+void Telemetry::unsubscribe_position(PositionHandle handle)
+{
+    _impl->unsubscribe_position(handle);
 }
 
 Telemetry::Position Telemetry::position() const
@@ -59,9 +64,14 @@ Telemetry::Position Telemetry::position() const
     return _impl->position();
 }
 
-void Telemetry::subscribe_home(HomeCallback callback)
+Telemetry::HomeHandle Telemetry::subscribe_home(const HomeCallback& callback)
 {
-    _impl->subscribe_home(callback);
+    return _impl->subscribe_home(callback);
+}
+
+void Telemetry::unsubscribe_home(HomeHandle handle)
+{
+    _impl->unsubscribe_home(handle);
 }
 
 Telemetry::Position Telemetry::home() const
@@ -69,9 +79,14 @@ Telemetry::Position Telemetry::home() const
     return _impl->home();
 }
 
-void Telemetry::subscribe_in_air(InAirCallback callback)
+Telemetry::InAirHandle Telemetry::subscribe_in_air(const InAirCallback& callback)
 {
-    _impl->subscribe_in_air(callback);
+    return _impl->subscribe_in_air(callback);
+}
+
+void Telemetry::unsubscribe_in_air(InAirHandle handle)
+{
+    _impl->unsubscribe_in_air(handle);
 }
 
 bool Telemetry::in_air() const
@@ -79,9 +94,14 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
-void Telemetry::subscribe_landed_state(LandedStateCallback callback)
+Telemetry::LandedStateHandle Telemetry::subscribe_landed_state(const LandedStateCallback& callback)
 {
-    _impl->subscribe_landed_state(callback);
+    return _impl->subscribe_landed_state(callback);
+}
+
+void Telemetry::unsubscribe_landed_state(LandedStateHandle handle)
+{
+    _impl->unsubscribe_landed_state(handle);
 }
 
 Telemetry::LandedState Telemetry::landed_state() const
@@ -89,9 +109,14 @@ Telemetry::LandedState Telemetry::landed_state() const
     return _impl->landed_state();
 }
 
-void Telemetry::subscribe_armed(ArmedCallback callback)
+Telemetry::ArmedHandle Telemetry::subscribe_armed(const ArmedCallback& callback)
 {
-    _impl->subscribe_armed(callback);
+    return _impl->subscribe_armed(callback);
+}
+
+void Telemetry::unsubscribe_armed(ArmedHandle handle)
+{
+    _impl->unsubscribe_armed(handle);
 }
 
 bool Telemetry::armed() const
@@ -99,9 +124,14 @@ bool Telemetry::armed() const
     return _impl->armed();
 }
 
-void Telemetry::subscribe_vtol_state(VtolStateCallback callback)
+Telemetry::VtolStateHandle Telemetry::subscribe_vtol_state(const VtolStateCallback& callback)
 {
-    _impl->subscribe_vtol_state(callback);
+    return _impl->subscribe_vtol_state(callback);
+}
+
+void Telemetry::unsubscribe_vtol_state(VtolStateHandle handle)
+{
+    _impl->unsubscribe_vtol_state(handle);
 }
 
 Telemetry::VtolState Telemetry::vtol_state() const
@@ -109,9 +139,15 @@ Telemetry::VtolState Telemetry::vtol_state() const
     return _impl->vtol_state();
 }
 
-void Telemetry::subscribe_attitude_quaternion(AttitudeQuaternionCallback callback)
+Telemetry::AttitudeQuaternionHandle
+Telemetry::subscribe_attitude_quaternion(const AttitudeQuaternionCallback& callback)
 {
-    _impl->subscribe_attitude_quaternion(callback);
+    return _impl->subscribe_attitude_quaternion(callback);
+}
+
+void Telemetry::unsubscribe_attitude_quaternion(AttitudeQuaternionHandle handle)
+{
+    _impl->unsubscribe_attitude_quaternion(handle);
 }
 
 Telemetry::Quaternion Telemetry::attitude_quaternion() const
@@ -119,9 +155,15 @@ Telemetry::Quaternion Telemetry::attitude_quaternion() const
     return _impl->attitude_quaternion();
 }
 
-void Telemetry::subscribe_attitude_euler(AttitudeEulerCallback callback)
+Telemetry::AttitudeEulerHandle
+Telemetry::subscribe_attitude_euler(const AttitudeEulerCallback& callback)
 {
-    _impl->subscribe_attitude_euler(callback);
+    return _impl->subscribe_attitude_euler(callback);
+}
+
+void Telemetry::unsubscribe_attitude_euler(AttitudeEulerHandle handle)
+{
+    _impl->unsubscribe_attitude_euler(handle);
 }
 
 Telemetry::EulerAngle Telemetry::attitude_euler() const
@@ -129,10 +171,15 @@ Telemetry::EulerAngle Telemetry::attitude_euler() const
     return _impl->attitude_euler();
 }
 
-void Telemetry::subscribe_attitude_angular_velocity_body(
-    AttitudeAngularVelocityBodyCallback callback)
+Telemetry::AttitudeAngularVelocityBodyHandle Telemetry::subscribe_attitude_angular_velocity_body(
+    const AttitudeAngularVelocityBodyCallback& callback)
 {
-    _impl->subscribe_attitude_angular_velocity_body(callback);
+    return _impl->subscribe_attitude_angular_velocity_body(callback);
+}
+
+void Telemetry::unsubscribe_attitude_angular_velocity_body(AttitudeAngularVelocityBodyHandle handle)
+{
+    _impl->unsubscribe_attitude_angular_velocity_body(handle);
 }
 
 Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
@@ -140,9 +187,15 @@ Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
     return _impl->attitude_angular_velocity_body();
 }
 
-void Telemetry::subscribe_camera_attitude_quaternion(CameraAttitudeQuaternionCallback callback)
+Telemetry::CameraAttitudeQuaternionHandle
+Telemetry::subscribe_camera_attitude_quaternion(const CameraAttitudeQuaternionCallback& callback)
 {
-    _impl->subscribe_camera_attitude_quaternion(callback);
+    return _impl->subscribe_camera_attitude_quaternion(callback);
+}
+
+void Telemetry::unsubscribe_camera_attitude_quaternion(CameraAttitudeQuaternionHandle handle)
+{
+    _impl->unsubscribe_camera_attitude_quaternion(handle);
 }
 
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
@@ -150,9 +203,15 @@ Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
     return _impl->camera_attitude_quaternion();
 }
 
-void Telemetry::subscribe_camera_attitude_euler(CameraAttitudeEulerCallback callback)
+Telemetry::CameraAttitudeEulerHandle
+Telemetry::subscribe_camera_attitude_euler(const CameraAttitudeEulerCallback& callback)
 {
-    _impl->subscribe_camera_attitude_euler(callback);
+    return _impl->subscribe_camera_attitude_euler(callback);
+}
+
+void Telemetry::unsubscribe_camera_attitude_euler(CameraAttitudeEulerHandle handle)
+{
+    _impl->unsubscribe_camera_attitude_euler(handle);
 }
 
 Telemetry::EulerAngle Telemetry::camera_attitude_euler() const
@@ -160,9 +219,14 @@ Telemetry::EulerAngle Telemetry::camera_attitude_euler() const
     return _impl->camera_attitude_euler();
 }
 
-void Telemetry::subscribe_velocity_ned(VelocityNedCallback callback)
+Telemetry::VelocityNedHandle Telemetry::subscribe_velocity_ned(const VelocityNedCallback& callback)
 {
-    _impl->subscribe_velocity_ned(callback);
+    return _impl->subscribe_velocity_ned(callback);
+}
+
+void Telemetry::unsubscribe_velocity_ned(VelocityNedHandle handle)
+{
+    _impl->unsubscribe_velocity_ned(handle);
 }
 
 Telemetry::VelocityNed Telemetry::velocity_ned() const
@@ -170,9 +234,14 @@ Telemetry::VelocityNed Telemetry::velocity_ned() const
     return _impl->velocity_ned();
 }
 
-void Telemetry::subscribe_gps_info(GpsInfoCallback callback)
+Telemetry::GpsInfoHandle Telemetry::subscribe_gps_info(const GpsInfoCallback& callback)
 {
-    _impl->subscribe_gps_info(callback);
+    return _impl->subscribe_gps_info(callback);
+}
+
+void Telemetry::unsubscribe_gps_info(GpsInfoHandle handle)
+{
+    _impl->unsubscribe_gps_info(handle);
 }
 
 Telemetry::GpsInfo Telemetry::gps_info() const
@@ -180,9 +249,14 @@ Telemetry::GpsInfo Telemetry::gps_info() const
     return _impl->gps_info();
 }
 
-void Telemetry::subscribe_raw_gps(RawGpsCallback callback)
+Telemetry::RawGpsHandle Telemetry::subscribe_raw_gps(const RawGpsCallback& callback)
 {
-    _impl->subscribe_raw_gps(callback);
+    return _impl->subscribe_raw_gps(callback);
+}
+
+void Telemetry::unsubscribe_raw_gps(RawGpsHandle handle)
+{
+    _impl->unsubscribe_raw_gps(handle);
 }
 
 Telemetry::RawGps Telemetry::raw_gps() const
@@ -190,9 +264,14 @@ Telemetry::RawGps Telemetry::raw_gps() const
     return _impl->raw_gps();
 }
 
-void Telemetry::subscribe_battery(BatteryCallback callback)
+Telemetry::BatteryHandle Telemetry::subscribe_battery(const BatteryCallback& callback)
 {
-    _impl->subscribe_battery(callback);
+    return _impl->subscribe_battery(callback);
+}
+
+void Telemetry::unsubscribe_battery(BatteryHandle handle)
+{
+    _impl->unsubscribe_battery(handle);
 }
 
 Telemetry::Battery Telemetry::battery() const
@@ -200,9 +279,14 @@ Telemetry::Battery Telemetry::battery() const
     return _impl->battery();
 }
 
-void Telemetry::subscribe_flight_mode(FlightModeCallback callback)
+Telemetry::FlightModeHandle Telemetry::subscribe_flight_mode(const FlightModeCallback& callback)
 {
-    _impl->subscribe_flight_mode(callback);
+    return _impl->subscribe_flight_mode(callback);
+}
+
+void Telemetry::unsubscribe_flight_mode(FlightModeHandle handle)
+{
+    _impl->unsubscribe_flight_mode(handle);
 }
 
 Telemetry::FlightMode Telemetry::flight_mode() const
@@ -210,9 +294,14 @@ Telemetry::FlightMode Telemetry::flight_mode() const
     return _impl->flight_mode();
 }
 
-void Telemetry::subscribe_health(HealthCallback callback)
+Telemetry::HealthHandle Telemetry::subscribe_health(const HealthCallback& callback)
 {
-    _impl->subscribe_health(callback);
+    return _impl->subscribe_health(callback);
+}
+
+void Telemetry::unsubscribe_health(HealthHandle handle)
+{
+    _impl->unsubscribe_health(handle);
 }
 
 Telemetry::Health Telemetry::health() const
@@ -220,9 +309,14 @@ Telemetry::Health Telemetry::health() const
     return _impl->health();
 }
 
-void Telemetry::subscribe_rc_status(RcStatusCallback callback)
+Telemetry::RcStatusHandle Telemetry::subscribe_rc_status(const RcStatusCallback& callback)
 {
-    _impl->subscribe_rc_status(callback);
+    return _impl->subscribe_rc_status(callback);
+}
+
+void Telemetry::unsubscribe_rc_status(RcStatusHandle handle)
+{
+    _impl->unsubscribe_rc_status(handle);
 }
 
 Telemetry::RcStatus Telemetry::rc_status() const
@@ -245,9 +339,15 @@ Telemetry::StatusText Telemetry::status_text() const
     return _impl->status_text();
 }
 
-void Telemetry::subscribe_actuator_control_target(ActuatorControlTargetCallback callback)
+Telemetry::ActuatorControlTargetHandle
+Telemetry::subscribe_actuator_control_target(const ActuatorControlTargetCallback& callback)
 {
-    _impl->subscribe_actuator_control_target(callback);
+    return _impl->subscribe_actuator_control_target(callback);
+}
+
+void Telemetry::unsubscribe_actuator_control_target(ActuatorControlTargetHandle handle)
+{
+    _impl->unsubscribe_actuator_control_target(handle);
 }
 
 Telemetry::ActuatorControlTarget Telemetry::actuator_control_target() const
@@ -255,9 +355,15 @@ Telemetry::ActuatorControlTarget Telemetry::actuator_control_target() const
     return _impl->actuator_control_target();
 }
 
-void Telemetry::subscribe_actuator_output_status(ActuatorOutputStatusCallback callback)
+Telemetry::ActuatorOutputStatusHandle
+Telemetry::subscribe_actuator_output_status(const ActuatorOutputStatusCallback& callback)
 {
-    _impl->subscribe_actuator_output_status(callback);
+    return _impl->subscribe_actuator_output_status(callback);
+}
+
+void Telemetry::unsubscribe_actuator_output_status(ActuatorOutputStatusHandle handle)
+{
+    _impl->unsubscribe_actuator_output_status(handle);
 }
 
 Telemetry::ActuatorOutputStatus Telemetry::actuator_output_status() const
@@ -265,9 +371,14 @@ Telemetry::ActuatorOutputStatus Telemetry::actuator_output_status() const
     return _impl->actuator_output_status();
 }
 
-void Telemetry::subscribe_odometry(OdometryCallback callback)
+Telemetry::OdometryHandle Telemetry::subscribe_odometry(const OdometryCallback& callback)
 {
-    _impl->subscribe_odometry(callback);
+    return _impl->subscribe_odometry(callback);
+}
+
+void Telemetry::unsubscribe_odometry(OdometryHandle handle)
+{
+    _impl->unsubscribe_odometry(handle);
 }
 
 Telemetry::Odometry Telemetry::odometry() const
@@ -275,9 +386,15 @@ Telemetry::Odometry Telemetry::odometry() const
     return _impl->odometry();
 }
 
-void Telemetry::subscribe_position_velocity_ned(PositionVelocityNedCallback callback)
+Telemetry::PositionVelocityNedHandle
+Telemetry::subscribe_position_velocity_ned(const PositionVelocityNedCallback& callback)
 {
-    _impl->subscribe_position_velocity_ned(callback);
+    return _impl->subscribe_position_velocity_ned(callback);
+}
+
+void Telemetry::unsubscribe_position_velocity_ned(PositionVelocityNedHandle handle)
+{
+    _impl->unsubscribe_position_velocity_ned(handle);
 }
 
 Telemetry::PositionVelocityNed Telemetry::position_velocity_ned() const
@@ -285,9 +402,14 @@ Telemetry::PositionVelocityNed Telemetry::position_velocity_ned() const
     return _impl->position_velocity_ned();
 }
 
-void Telemetry::subscribe_ground_truth(GroundTruthCallback callback)
+Telemetry::GroundTruthHandle Telemetry::subscribe_ground_truth(const GroundTruthCallback& callback)
 {
-    _impl->subscribe_ground_truth(callback);
+    return _impl->subscribe_ground_truth(callback);
+}
+
+void Telemetry::unsubscribe_ground_truth(GroundTruthHandle handle)
+{
+    _impl->unsubscribe_ground_truth(handle);
 }
 
 Telemetry::GroundTruth Telemetry::ground_truth() const
@@ -295,9 +417,15 @@ Telemetry::GroundTruth Telemetry::ground_truth() const
     return _impl->ground_truth();
 }
 
-void Telemetry::subscribe_fixedwing_metrics(FixedwingMetricsCallback callback)
+Telemetry::FixedwingMetricsHandle
+Telemetry::subscribe_fixedwing_metrics(const FixedwingMetricsCallback& callback)
 {
-    _impl->subscribe_fixedwing_metrics(callback);
+    return _impl->subscribe_fixedwing_metrics(callback);
+}
+
+void Telemetry::unsubscribe_fixedwing_metrics(FixedwingMetricsHandle handle)
+{
+    _impl->unsubscribe_fixedwing_metrics(handle);
 }
 
 Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
@@ -305,9 +433,14 @@ Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
     return _impl->fixedwing_metrics();
 }
 
-void Telemetry::subscribe_imu(ImuCallback callback)
+Telemetry::ImuHandle Telemetry::subscribe_imu(const ImuCallback& callback)
 {
-    _impl->subscribe_imu(callback);
+    return _impl->subscribe_imu(callback);
+}
+
+void Telemetry::unsubscribe_imu(ImuHandle handle)
+{
+    _impl->unsubscribe_imu(handle);
 }
 
 Telemetry::Imu Telemetry::imu() const
@@ -315,9 +448,14 @@ Telemetry::Imu Telemetry::imu() const
     return _impl->imu();
 }
 
-void Telemetry::subscribe_scaled_imu(ScaledImuCallback callback)
+Telemetry::ScaledImuHandle Telemetry::subscribe_scaled_imu(const ScaledImuCallback& callback)
 {
-    _impl->subscribe_scaled_imu(callback);
+    return _impl->subscribe_scaled_imu(callback);
+}
+
+void Telemetry::unsubscribe_scaled_imu(ScaledImuHandle handle)
+{
+    _impl->unsubscribe_scaled_imu(handle);
 }
 
 Telemetry::Imu Telemetry::scaled_imu() const
@@ -325,9 +463,14 @@ Telemetry::Imu Telemetry::scaled_imu() const
     return _impl->scaled_imu();
 }
 
-void Telemetry::subscribe_raw_imu(RawImuCallback callback)
+Telemetry::RawImuHandle Telemetry::subscribe_raw_imu(const RawImuCallback& callback)
 {
-    _impl->subscribe_raw_imu(callback);
+    return _impl->subscribe_raw_imu(callback);
+}
+
+void Telemetry::unsubscribe_raw_imu(RawImuHandle handle)
+{
+    _impl->unsubscribe_raw_imu(handle);
 }
 
 Telemetry::Imu Telemetry::raw_imu() const
@@ -335,9 +478,14 @@ Telemetry::Imu Telemetry::raw_imu() const
     return _impl->raw_imu();
 }
 
-void Telemetry::subscribe_health_all_ok(HealthAllOkCallback callback)
+Telemetry::HealthAllOkHandle Telemetry::subscribe_health_all_ok(const HealthAllOkCallback& callback)
 {
-    _impl->subscribe_health_all_ok(callback);
+    return _impl->subscribe_health_all_ok(callback);
+}
+
+void Telemetry::unsubscribe_health_all_ok(HealthAllOkHandle handle)
+{
+    _impl->unsubscribe_health_all_ok(handle);
 }
 
 bool Telemetry::health_all_ok() const
@@ -345,9 +493,15 @@ bool Telemetry::health_all_ok() const
     return _impl->health_all_ok();
 }
 
-void Telemetry::subscribe_unix_epoch_time(UnixEpochTimeCallback callback)
+Telemetry::UnixEpochTimeHandle
+Telemetry::subscribe_unix_epoch_time(const UnixEpochTimeCallback& callback)
 {
-    _impl->subscribe_unix_epoch_time(callback);
+    return _impl->subscribe_unix_epoch_time(callback);
+}
+
+void Telemetry::unsubscribe_unix_epoch_time(UnixEpochTimeHandle handle)
+{
+    _impl->unsubscribe_unix_epoch_time(handle);
 }
 
 uint64_t Telemetry::unix_epoch_time() const
@@ -355,9 +509,15 @@ uint64_t Telemetry::unix_epoch_time() const
     return _impl->unix_epoch_time();
 }
 
-void Telemetry::subscribe_distance_sensor(DistanceSensorCallback callback)
+Telemetry::DistanceSensorHandle
+Telemetry::subscribe_distance_sensor(const DistanceSensorCallback& callback)
 {
-    _impl->subscribe_distance_sensor(callback);
+    return _impl->subscribe_distance_sensor(callback);
+}
+
+void Telemetry::unsubscribe_distance_sensor(DistanceSensorHandle handle)
+{
+    _impl->unsubscribe_distance_sensor(handle);
 }
 
 Telemetry::DistanceSensor Telemetry::distance_sensor() const
@@ -365,9 +525,15 @@ Telemetry::DistanceSensor Telemetry::distance_sensor() const
     return _impl->distance_sensor();
 }
 
-void Telemetry::subscribe_scaled_pressure(ScaledPressureCallback callback)
+Telemetry::ScaledPressureHandle
+Telemetry::subscribe_scaled_pressure(const ScaledPressureCallback& callback)
 {
-    _impl->subscribe_scaled_pressure(callback);
+    return _impl->subscribe_scaled_pressure(callback);
+}
+
+void Telemetry::unsubscribe_scaled_pressure(ScaledPressureHandle handle)
+{
+    _impl->unsubscribe_scaled_pressure(handle);
 }
 
 Telemetry::ScaledPressure Telemetry::scaled_pressure() const
@@ -375,9 +541,14 @@ Telemetry::ScaledPressure Telemetry::scaled_pressure() const
     return _impl->scaled_pressure();
 }
 
-void Telemetry::subscribe_heading(HeadingCallback callback)
+Telemetry::HeadingHandle Telemetry::subscribe_heading(const HeadingCallback& callback)
 {
-    _impl->subscribe_heading(callback);
+    return _impl->subscribe_heading(callback);
+}
+
+void Telemetry::unsubscribe_heading(HeadingHandle handle)
+{
+    _impl->unsubscribe_heading(handle);
 }
 
 Telemetry::Heading Telemetry::heading() const

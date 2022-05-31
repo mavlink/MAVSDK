@@ -84,9 +84,14 @@ Gimbal::Result Gimbal::release_control() const
     return _impl->release_control();
 }
 
-void Gimbal::subscribe_control(ControlCallback callback)
+Gimbal::ControlHandle Gimbal::subscribe_control(const ControlCallback& callback)
 {
-    _impl->subscribe_control(callback);
+    return _impl->subscribe_control(callback);
+}
+
+void Gimbal::unsubscribe_control(ControlHandle handle)
+{
+    _impl->unsubscribe_control(handle);
 }
 
 Gimbal::ControlStatus Gimbal::control() const

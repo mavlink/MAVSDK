@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "mavsdk/plugin_base.h"
+
 #include "mavsdk/callback_list.h"
 
 namespace mavsdk {
@@ -985,13 +986,22 @@ public:
     /**
      * @brief Callback type for subscribe_position.
      */
-
     using PositionCallback = std::function<void(Position)>;
+
+    /**
+     * @brief Handle type for subscribe_position.
+     */
+    using PositionHandle = Handle<Position>;
 
     /**
      * @brief Subscribe to 'position' updates.
      */
-    void subscribe_position(PositionCallback callback);
+    PositionHandle subscribe_position(const PositionCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_position
+     */
+    void unsubscribe_position(PositionHandle handle);
 
     /**
      * @brief Poll for 'Position' (blocking).
@@ -1003,13 +1013,22 @@ public:
     /**
      * @brief Callback type for subscribe_home.
      */
-
     using HomeCallback = std::function<void(Position)>;
+
+    /**
+     * @brief Handle type for subscribe_home.
+     */
+    using HomeHandle = Handle<Position>;
 
     /**
      * @brief Subscribe to 'home position' updates.
      */
-    void subscribe_home(HomeCallback callback);
+    HomeHandle subscribe_home(const HomeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_home
+     */
+    void unsubscribe_home(HomeHandle handle);
 
     /**
      * @brief Poll for 'Position' (blocking).
@@ -1021,13 +1040,22 @@ public:
     /**
      * @brief Callback type for subscribe_in_air.
      */
-
     using InAirCallback = std::function<void(bool)>;
+
+    /**
+     * @brief Handle type for subscribe_in_air.
+     */
+    using InAirHandle = Handle<bool>;
 
     /**
      * @brief Subscribe to in-air updates.
      */
-    void subscribe_in_air(InAirCallback callback);
+    InAirHandle subscribe_in_air(const InAirCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_in_air
+     */
+    void unsubscribe_in_air(InAirHandle handle);
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -1039,13 +1067,22 @@ public:
     /**
      * @brief Callback type for subscribe_landed_state.
      */
-
     using LandedStateCallback = std::function<void(LandedState)>;
+
+    /**
+     * @brief Handle type for subscribe_landed_state.
+     */
+    using LandedStateHandle = Handle<LandedState>;
 
     /**
      * @brief Subscribe to landed state updates
      */
-    void subscribe_landed_state(LandedStateCallback callback);
+    LandedStateHandle subscribe_landed_state(const LandedStateCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_landed_state
+     */
+    void unsubscribe_landed_state(LandedStateHandle handle);
 
     /**
      * @brief Poll for 'LandedState' (blocking).
@@ -1057,13 +1094,22 @@ public:
     /**
      * @brief Callback type for subscribe_armed.
      */
-
     using ArmedCallback = std::function<void(bool)>;
+
+    /**
+     * @brief Handle type for subscribe_armed.
+     */
+    using ArmedHandle = Handle<bool>;
 
     /**
      * @brief Subscribe to armed updates.
      */
-    void subscribe_armed(ArmedCallback callback);
+    ArmedHandle subscribe_armed(const ArmedCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_armed
+     */
+    void unsubscribe_armed(ArmedHandle handle);
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -1075,13 +1121,22 @@ public:
     /**
      * @brief Callback type for subscribe_vtol_state.
      */
-
     using VtolStateCallback = std::function<void(VtolState)>;
+
+    /**
+     * @brief Handle type for subscribe_vtol_state.
+     */
+    using VtolStateHandle = Handle<VtolState>;
 
     /**
      * @brief subscribe to vtol state Updates
      */
-    void subscribe_vtol_state(VtolStateCallback callback);
+    VtolStateHandle subscribe_vtol_state(const VtolStateCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_vtol_state
+     */
+    void unsubscribe_vtol_state(VtolStateHandle handle);
 
     /**
      * @brief Poll for 'VtolState' (blocking).
@@ -1093,13 +1148,23 @@ public:
     /**
      * @brief Callback type for subscribe_attitude_quaternion.
      */
-
     using AttitudeQuaternionCallback = std::function<void(Quaternion)>;
+
+    /**
+     * @brief Handle type for subscribe_attitude_quaternion.
+     */
+    using AttitudeQuaternionHandle = Handle<Quaternion>;
 
     /**
      * @brief Subscribe to 'attitude' updates (quaternion).
      */
-    void subscribe_attitude_quaternion(AttitudeQuaternionCallback callback);
+    AttitudeQuaternionHandle
+    subscribe_attitude_quaternion(const AttitudeQuaternionCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_attitude_quaternion
+     */
+    void unsubscribe_attitude_quaternion(AttitudeQuaternionHandle handle);
 
     /**
      * @brief Poll for 'Quaternion' (blocking).
@@ -1111,13 +1176,22 @@ public:
     /**
      * @brief Callback type for subscribe_attitude_euler.
      */
-
     using AttitudeEulerCallback = std::function<void(EulerAngle)>;
+
+    /**
+     * @brief Handle type for subscribe_attitude_euler.
+     */
+    using AttitudeEulerHandle = Handle<EulerAngle>;
 
     /**
      * @brief Subscribe to 'attitude' updates (Euler).
      */
-    void subscribe_attitude_euler(AttitudeEulerCallback callback);
+    AttitudeEulerHandle subscribe_attitude_euler(const AttitudeEulerCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_attitude_euler
+     */
+    void unsubscribe_attitude_euler(AttitudeEulerHandle handle);
 
     /**
      * @brief Poll for 'EulerAngle' (blocking).
@@ -1129,13 +1203,23 @@ public:
     /**
      * @brief Callback type for subscribe_attitude_angular_velocity_body.
      */
-
     using AttitudeAngularVelocityBodyCallback = std::function<void(AngularVelocityBody)>;
+
+    /**
+     * @brief Handle type for subscribe_attitude_angular_velocity_body.
+     */
+    using AttitudeAngularVelocityBodyHandle = Handle<AngularVelocityBody>;
 
     /**
      * @brief Subscribe to 'attitude' updates (angular velocity)
      */
-    void subscribe_attitude_angular_velocity_body(AttitudeAngularVelocityBodyCallback callback);
+    AttitudeAngularVelocityBodyHandle
+    subscribe_attitude_angular_velocity_body(const AttitudeAngularVelocityBodyCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_attitude_angular_velocity_body
+     */
+    void unsubscribe_attitude_angular_velocity_body(AttitudeAngularVelocityBodyHandle handle);
 
     /**
      * @brief Poll for 'AngularVelocityBody' (blocking).
@@ -1147,13 +1231,23 @@ public:
     /**
      * @brief Callback type for subscribe_camera_attitude_quaternion.
      */
-
     using CameraAttitudeQuaternionCallback = std::function<void(Quaternion)>;
+
+    /**
+     * @brief Handle type for subscribe_camera_attitude_quaternion.
+     */
+    using CameraAttitudeQuaternionHandle = Handle<Quaternion>;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (quaternion).
      */
-    void subscribe_camera_attitude_quaternion(CameraAttitudeQuaternionCallback callback);
+    CameraAttitudeQuaternionHandle
+    subscribe_camera_attitude_quaternion(const CameraAttitudeQuaternionCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_camera_attitude_quaternion
+     */
+    void unsubscribe_camera_attitude_quaternion(CameraAttitudeQuaternionHandle handle);
 
     /**
      * @brief Poll for 'Quaternion' (blocking).
@@ -1165,13 +1259,23 @@ public:
     /**
      * @brief Callback type for subscribe_camera_attitude_euler.
      */
-
     using CameraAttitudeEulerCallback = std::function<void(EulerAngle)>;
+
+    /**
+     * @brief Handle type for subscribe_camera_attitude_euler.
+     */
+    using CameraAttitudeEulerHandle = Handle<EulerAngle>;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (Euler).
      */
-    void subscribe_camera_attitude_euler(CameraAttitudeEulerCallback callback);
+    CameraAttitudeEulerHandle
+    subscribe_camera_attitude_euler(const CameraAttitudeEulerCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_camera_attitude_euler
+     */
+    void unsubscribe_camera_attitude_euler(CameraAttitudeEulerHandle handle);
 
     /**
      * @brief Poll for 'EulerAngle' (blocking).
@@ -1183,13 +1287,22 @@ public:
     /**
      * @brief Callback type for subscribe_velocity_ned.
      */
-
     using VelocityNedCallback = std::function<void(VelocityNed)>;
+
+    /**
+     * @brief Handle type for subscribe_velocity_ned.
+     */
+    using VelocityNedHandle = Handle<VelocityNed>;
 
     /**
      * @brief Subscribe to 'ground speed' updates (NED).
      */
-    void subscribe_velocity_ned(VelocityNedCallback callback);
+    VelocityNedHandle subscribe_velocity_ned(const VelocityNedCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_velocity_ned
+     */
+    void unsubscribe_velocity_ned(VelocityNedHandle handle);
 
     /**
      * @brief Poll for 'VelocityNed' (blocking).
@@ -1201,13 +1314,22 @@ public:
     /**
      * @brief Callback type for subscribe_gps_info.
      */
-
     using GpsInfoCallback = std::function<void(GpsInfo)>;
+
+    /**
+     * @brief Handle type for subscribe_gps_info.
+     */
+    using GpsInfoHandle = Handle<GpsInfo>;
 
     /**
      * @brief Subscribe to 'GPS info' updates.
      */
-    void subscribe_gps_info(GpsInfoCallback callback);
+    GpsInfoHandle subscribe_gps_info(const GpsInfoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_gps_info
+     */
+    void unsubscribe_gps_info(GpsInfoHandle handle);
 
     /**
      * @brief Poll for 'GpsInfo' (blocking).
@@ -1219,13 +1341,22 @@ public:
     /**
      * @brief Callback type for subscribe_raw_gps.
      */
-
     using RawGpsCallback = std::function<void(RawGps)>;
+
+    /**
+     * @brief Handle type for subscribe_raw_gps.
+     */
+    using RawGpsHandle = Handle<RawGps>;
 
     /**
      * @brief Subscribe to 'Raw GPS' updates.
      */
-    void subscribe_raw_gps(RawGpsCallback callback);
+    RawGpsHandle subscribe_raw_gps(const RawGpsCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_raw_gps
+     */
+    void unsubscribe_raw_gps(RawGpsHandle handle);
 
     /**
      * @brief Poll for 'RawGps' (blocking).
@@ -1237,13 +1368,22 @@ public:
     /**
      * @brief Callback type for subscribe_battery.
      */
-
     using BatteryCallback = std::function<void(Battery)>;
+
+    /**
+     * @brief Handle type for subscribe_battery.
+     */
+    using BatteryHandle = Handle<Battery>;
 
     /**
      * @brief Subscribe to 'battery' updates.
      */
-    void subscribe_battery(BatteryCallback callback);
+    BatteryHandle subscribe_battery(const BatteryCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_battery
+     */
+    void unsubscribe_battery(BatteryHandle handle);
 
     /**
      * @brief Poll for 'Battery' (blocking).
@@ -1255,13 +1395,22 @@ public:
     /**
      * @brief Callback type for subscribe_flight_mode.
      */
-
     using FlightModeCallback = std::function<void(FlightMode)>;
+
+    /**
+     * @brief Handle type for subscribe_flight_mode.
+     */
+    using FlightModeHandle = Handle<FlightMode>;
 
     /**
      * @brief Subscribe to 'flight mode' updates.
      */
-    void subscribe_flight_mode(FlightModeCallback callback);
+    FlightModeHandle subscribe_flight_mode(const FlightModeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_flight_mode
+     */
+    void unsubscribe_flight_mode(FlightModeHandle handle);
 
     /**
      * @brief Poll for 'FlightMode' (blocking).
@@ -1273,13 +1422,22 @@ public:
     /**
      * @brief Callback type for subscribe_health.
      */
-
     using HealthCallback = std::function<void(Health)>;
+
+    /**
+     * @brief Handle type for subscribe_health.
+     */
+    using HealthHandle = Handle<Health>;
 
     /**
      * @brief Subscribe to 'health' updates.
      */
-    void subscribe_health(HealthCallback callback);
+    HealthHandle subscribe_health(const HealthCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_health
+     */
+    void unsubscribe_health(HealthHandle handle);
 
     /**
      * @brief Poll for 'Health' (blocking).
@@ -1291,13 +1449,22 @@ public:
     /**
      * @brief Callback type for subscribe_rc_status.
      */
-
     using RcStatusCallback = std::function<void(RcStatus)>;
+
+    /**
+     * @brief Handle type for subscribe_rc_status.
+     */
+    using RcStatusHandle = Handle<RcStatus>;
 
     /**
      * @brief Subscribe to 'RC status' updates.
      */
-    void subscribe_rc_status(RcStatusCallback callback);
+    RcStatusHandle subscribe_rc_status(const RcStatusCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_rc_status
+     */
+    void unsubscribe_rc_status(RcStatusHandle handle);
 
     /**
      * @brief Poll for 'RcStatus' (blocking).
@@ -1309,8 +1476,11 @@ public:
     /**
      * @brief Callback type for subscribe_status_text.
      */
-
     using StatusTextCallback = std::function<void(StatusText)>;
+
+    /**
+     * @brief Handle type for subscribe_status_text.
+     */
     using StatusTextHandle = Handle<StatusText>;
 
     /**
@@ -1318,6 +1488,9 @@ public:
      */
     StatusTextHandle subscribe_status_text(const StatusTextCallback& callback);
 
+    /**
+     * @brief Unsubscribe from subscribe_status_text
+     */
     void unsubscribe_status_text(StatusTextHandle handle);
 
     /**
@@ -1330,13 +1503,23 @@ public:
     /**
      * @brief Callback type for subscribe_actuator_control_target.
      */
-
     using ActuatorControlTargetCallback = std::function<void(ActuatorControlTarget)>;
+
+    /**
+     * @brief Handle type for subscribe_actuator_control_target.
+     */
+    using ActuatorControlTargetHandle = Handle<ActuatorControlTarget>;
 
     /**
      * @brief Subscribe to 'actuator control target' updates.
      */
-    void subscribe_actuator_control_target(ActuatorControlTargetCallback callback);
+    ActuatorControlTargetHandle
+    subscribe_actuator_control_target(const ActuatorControlTargetCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_actuator_control_target
+     */
+    void unsubscribe_actuator_control_target(ActuatorControlTargetHandle handle);
 
     /**
      * @brief Poll for 'ActuatorControlTarget' (blocking).
@@ -1348,13 +1531,23 @@ public:
     /**
      * @brief Callback type for subscribe_actuator_output_status.
      */
-
     using ActuatorOutputStatusCallback = std::function<void(ActuatorOutputStatus)>;
+
+    /**
+     * @brief Handle type for subscribe_actuator_output_status.
+     */
+    using ActuatorOutputStatusHandle = Handle<ActuatorOutputStatus>;
 
     /**
      * @brief Subscribe to 'actuator output status' updates.
      */
-    void subscribe_actuator_output_status(ActuatorOutputStatusCallback callback);
+    ActuatorOutputStatusHandle
+    subscribe_actuator_output_status(const ActuatorOutputStatusCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_actuator_output_status
+     */
+    void unsubscribe_actuator_output_status(ActuatorOutputStatusHandle handle);
 
     /**
      * @brief Poll for 'ActuatorOutputStatus' (blocking).
@@ -1366,13 +1559,22 @@ public:
     /**
      * @brief Callback type for subscribe_odometry.
      */
-
     using OdometryCallback = std::function<void(Odometry)>;
+
+    /**
+     * @brief Handle type for subscribe_odometry.
+     */
+    using OdometryHandle = Handle<Odometry>;
 
     /**
      * @brief Subscribe to 'odometry' updates.
      */
-    void subscribe_odometry(OdometryCallback callback);
+    OdometryHandle subscribe_odometry(const OdometryCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_odometry
+     */
+    void unsubscribe_odometry(OdometryHandle handle);
 
     /**
      * @brief Poll for 'Odometry' (blocking).
@@ -1384,13 +1586,23 @@ public:
     /**
      * @brief Callback type for subscribe_position_velocity_ned.
      */
-
     using PositionVelocityNedCallback = std::function<void(PositionVelocityNed)>;
+
+    /**
+     * @brief Handle type for subscribe_position_velocity_ned.
+     */
+    using PositionVelocityNedHandle = Handle<PositionVelocityNed>;
 
     /**
      * @brief Subscribe to 'position velocity' updates.
      */
-    void subscribe_position_velocity_ned(PositionVelocityNedCallback callback);
+    PositionVelocityNedHandle
+    subscribe_position_velocity_ned(const PositionVelocityNedCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_position_velocity_ned
+     */
+    void unsubscribe_position_velocity_ned(PositionVelocityNedHandle handle);
 
     /**
      * @brief Poll for 'PositionVelocityNed' (blocking).
@@ -1402,13 +1614,22 @@ public:
     /**
      * @brief Callback type for subscribe_ground_truth.
      */
-
     using GroundTruthCallback = std::function<void(GroundTruth)>;
+
+    /**
+     * @brief Handle type for subscribe_ground_truth.
+     */
+    using GroundTruthHandle = Handle<GroundTruth>;
 
     /**
      * @brief Subscribe to 'ground truth' updates.
      */
-    void subscribe_ground_truth(GroundTruthCallback callback);
+    GroundTruthHandle subscribe_ground_truth(const GroundTruthCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_ground_truth
+     */
+    void unsubscribe_ground_truth(GroundTruthHandle handle);
 
     /**
      * @brief Poll for 'GroundTruth' (blocking).
@@ -1420,13 +1641,22 @@ public:
     /**
      * @brief Callback type for subscribe_fixedwing_metrics.
      */
-
     using FixedwingMetricsCallback = std::function<void(FixedwingMetrics)>;
+
+    /**
+     * @brief Handle type for subscribe_fixedwing_metrics.
+     */
+    using FixedwingMetricsHandle = Handle<FixedwingMetrics>;
 
     /**
      * @brief Subscribe to 'fixedwing metrics' updates.
      */
-    void subscribe_fixedwing_metrics(FixedwingMetricsCallback callback);
+    FixedwingMetricsHandle subscribe_fixedwing_metrics(const FixedwingMetricsCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_fixedwing_metrics
+     */
+    void unsubscribe_fixedwing_metrics(FixedwingMetricsHandle handle);
 
     /**
      * @brief Poll for 'FixedwingMetrics' (blocking).
@@ -1438,13 +1668,22 @@ public:
     /**
      * @brief Callback type for subscribe_imu.
      */
-
     using ImuCallback = std::function<void(Imu)>;
+
+    /**
+     * @brief Handle type for subscribe_imu.
+     */
+    using ImuHandle = Handle<Imu>;
 
     /**
      * @brief Subscribe to 'IMU' updates (in SI units in NED body frame).
      */
-    void subscribe_imu(ImuCallback callback);
+    ImuHandle subscribe_imu(const ImuCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_imu
+     */
+    void unsubscribe_imu(ImuHandle handle);
 
     /**
      * @brief Poll for 'Imu' (blocking).
@@ -1456,13 +1695,22 @@ public:
     /**
      * @brief Callback type for subscribe_scaled_imu.
      */
-
     using ScaledImuCallback = std::function<void(Imu)>;
+
+    /**
+     * @brief Handle type for subscribe_scaled_imu.
+     */
+    using ScaledImuHandle = Handle<Imu>;
 
     /**
      * @brief Subscribe to 'Scaled IMU' updates.
      */
-    void subscribe_scaled_imu(ScaledImuCallback callback);
+    ScaledImuHandle subscribe_scaled_imu(const ScaledImuCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_scaled_imu
+     */
+    void unsubscribe_scaled_imu(ScaledImuHandle handle);
 
     /**
      * @brief Poll for 'Imu' (blocking).
@@ -1474,13 +1722,22 @@ public:
     /**
      * @brief Callback type for subscribe_raw_imu.
      */
-
     using RawImuCallback = std::function<void(Imu)>;
+
+    /**
+     * @brief Handle type for subscribe_raw_imu.
+     */
+    using RawImuHandle = Handle<Imu>;
 
     /**
      * @brief Subscribe to 'Raw IMU' updates.
      */
-    void subscribe_raw_imu(RawImuCallback callback);
+    RawImuHandle subscribe_raw_imu(const RawImuCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_raw_imu
+     */
+    void unsubscribe_raw_imu(RawImuHandle handle);
 
     /**
      * @brief Poll for 'Imu' (blocking).
@@ -1492,13 +1749,22 @@ public:
     /**
      * @brief Callback type for subscribe_health_all_ok.
      */
-
     using HealthAllOkCallback = std::function<void(bool)>;
+
+    /**
+     * @brief Handle type for subscribe_health_all_ok.
+     */
+    using HealthAllOkHandle = Handle<bool>;
 
     /**
      * @brief Subscribe to 'HealthAllOk' updates.
      */
-    void subscribe_health_all_ok(HealthAllOkCallback callback);
+    HealthAllOkHandle subscribe_health_all_ok(const HealthAllOkCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_health_all_ok
+     */
+    void unsubscribe_health_all_ok(HealthAllOkHandle handle);
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -1510,13 +1776,22 @@ public:
     /**
      * @brief Callback type for subscribe_unix_epoch_time.
      */
-
     using UnixEpochTimeCallback = std::function<void(uint64_t)>;
+
+    /**
+     * @brief Handle type for subscribe_unix_epoch_time.
+     */
+    using UnixEpochTimeHandle = Handle<uint64_t>;
 
     /**
      * @brief Subscribe to 'unix epoch time' updates.
      */
-    void subscribe_unix_epoch_time(UnixEpochTimeCallback callback);
+    UnixEpochTimeHandle subscribe_unix_epoch_time(const UnixEpochTimeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_unix_epoch_time
+     */
+    void unsubscribe_unix_epoch_time(UnixEpochTimeHandle handle);
 
     /**
      * @brief Poll for 'uint64_t' (blocking).
@@ -1528,13 +1803,22 @@ public:
     /**
      * @brief Callback type for subscribe_distance_sensor.
      */
-
     using DistanceSensorCallback = std::function<void(DistanceSensor)>;
+
+    /**
+     * @brief Handle type for subscribe_distance_sensor.
+     */
+    using DistanceSensorHandle = Handle<DistanceSensor>;
 
     /**
      * @brief Subscribe to 'Distance Sensor' updates.
      */
-    void subscribe_distance_sensor(DistanceSensorCallback callback);
+    DistanceSensorHandle subscribe_distance_sensor(const DistanceSensorCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_distance_sensor
+     */
+    void unsubscribe_distance_sensor(DistanceSensorHandle handle);
 
     /**
      * @brief Poll for 'DistanceSensor' (blocking).
@@ -1546,13 +1830,22 @@ public:
     /**
      * @brief Callback type for subscribe_scaled_pressure.
      */
-
     using ScaledPressureCallback = std::function<void(ScaledPressure)>;
+
+    /**
+     * @brief Handle type for subscribe_scaled_pressure.
+     */
+    using ScaledPressureHandle = Handle<ScaledPressure>;
 
     /**
      * @brief Subscribe to 'Scaled Pressure' updates.
      */
-    void subscribe_scaled_pressure(ScaledPressureCallback callback);
+    ScaledPressureHandle subscribe_scaled_pressure(const ScaledPressureCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_scaled_pressure
+     */
+    void unsubscribe_scaled_pressure(ScaledPressureHandle handle);
 
     /**
      * @brief Poll for 'ScaledPressure' (blocking).
@@ -1564,13 +1857,22 @@ public:
     /**
      * @brief Callback type for subscribe_heading.
      */
-
     using HeadingCallback = std::function<void(Heading)>;
+
+    /**
+     * @brief Handle type for subscribe_heading.
+     */
+    using HeadingHandle = Handle<Heading>;
 
     /**
      * @brief Subscribe to 'Heading' updates.
      */
-    void subscribe_heading(HeadingCallback callback);
+    HeadingHandle subscribe_heading(const HeadingCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_heading
+     */
+    void unsubscribe_heading(HeadingHandle handle);
 
     /**
      * @brief Poll for 'Heading' (blocking).
