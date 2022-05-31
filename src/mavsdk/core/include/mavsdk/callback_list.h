@@ -26,14 +26,17 @@ private:
 template<typename... Args> class CallbackList {
 public:
     CallbackList();
-    ~CallbackList() = default;
+    ~CallbackList();
 
     Handle<Args...> subscribe(const std::function<void(Args...)>& callback);
     void unsubscribe(Handle<Args...> handle);
     void operator()(Args... args);
+    [[nodiscard]] bool empty();
+    void clear();
+    void queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func);
 
 private:
-    std::shared_ptr<CallbackListImpl<Args...>> _impl;
+    std::unique_ptr<CallbackListImpl<Args...>> _impl;
 };
 
 } // namespace mavsdk

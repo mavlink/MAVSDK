@@ -53,6 +53,29 @@ public:
         }
     }
 
+    void queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
+    {
+        for (const auto& pair : _list) {
+            queue_func([callback = pair.second, args...]() {
+                callback(args...);
+            });
+        }
+    }
+
+    bool empty()
+    {
+        check_removals();
+
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _list.empty();
+    }
+
+    void clear()
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _list.clear();
+    }
+
 private:
     void check_removals()
     {
