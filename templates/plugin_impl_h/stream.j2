@@ -1,5 +1,11 @@
 {% if is_async %}
-void {% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback callback);
+    {% if is_finite %}
+void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback& callback);
+    {% else %}
+{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Handle subscribe_{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback& callback);
+
+void unsubscribe_{{ name.lower_snake_case }}({{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Handle handle);
+    {% endif %}
 {% endif %}
 
 {% if is_sync %}

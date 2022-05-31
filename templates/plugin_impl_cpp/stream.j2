@@ -1,11 +1,26 @@
 {% if is_async %}
-void {{ plugin_name.upper_camel_case }}Impl::{% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{{ plugin_name.upper_camel_case }}::{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback callback)
+    {% if is_finite %}
+void {{ plugin_name.upper_camel_case }}Impl::{{ name.lower_snake_case }}_async({% for param in params %}{{ plugin_name.upper_camel_case }}::{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback& callback)
 {
     {% for param in params %}
     UNUSED({{ param.name.lower_snake_case }});
     {% endfor %}
     UNUSED(callback);
 }
+    {% else %}
+{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Handle {{ plugin_name.upper_camel_case }}Impl::subscribe_{{ name.lower_snake_case }}({% for param in params %}{{ plugin_name.upper_camel_case }}::{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Callback& callback)
+{
+    {% for param in params %}
+    UNUSED({{ param.name.lower_snake_case }});
+    {% endfor %}
+    UNUSED(callback);
+}
+
+void {{ plugin_name.upper_camel_case }}Impl::unsubscribe_{{ name.lower_snake_case }}({{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Handle handle)
+{
+    UNUSED(handle);
+}
+    {% endif %}
 {% endif %}
 
 {% if is_sync %}

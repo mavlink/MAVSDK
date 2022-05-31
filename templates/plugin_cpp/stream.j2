@@ -1,8 +1,20 @@
 {% if is_async %}
-void {{ plugin_name.upper_camel_case }}::{% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}{{ name.upper_camel_case }}Callback callback)
+    {% if is_finite %}
+void {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback& callback)
 {
-    _impl->{% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{{ param.name.lower_snake_case }}, {% endfor %}callback);
+    _impl->{{ name.lower_snake_case }}_async({% for param in params %}{{ param.name.lower_snake_case }}, {% endfor %}callback);
 }
+    {% else %}
+{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Handle {{ plugin_name.upper_camel_case }}::subscribe_{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback& callback)
+{
+    return _impl->subscribe_{{ name.lower_snake_case }}({% for param in params %}{{ param.name.lower_snake_case }}, {% endfor %}callback);
+}
+
+void {{ plugin_name.upper_camel_case }}::unsubscribe_{{ name.lower_snake_case }}({{ name.upper_camel_case }}Handle handle)
+{
+    _impl->unsubscribe_{{ name.lower_snake_case }}(handle);
+}
+    {% endif %}
 {% endif %}
 
 {% if is_sync %}
