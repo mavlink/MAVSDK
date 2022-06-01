@@ -64,7 +64,9 @@ public:
     int total_mission_items() const;
 
     Mission::MissionProgress mission_progress();
-    void subscribe_mission_progress(Mission::MissionProgressCallback callback);
+    Mission::MissionProgressHandle
+    subscribe_mission_progress(const Mission::MissionProgressCallback& callback);
+    void unsubscribe_mission_progress(Mission::MissionProgressHandle handle);
 
     // Non-copyable
     MissionImpl(const MissionImpl&) = delete;
@@ -125,7 +127,7 @@ private:
         int last_current_mavlink_mission_item{-1};
         int last_reached_mavlink_mission_item{-1};
         std::vector<int> mavlink_mission_item_to_mission_item_indices{};
-        Mission::MissionProgressCallback mission_progress_callback{nullptr};
+        CallbackList<Mission::MissionProgress> mission_progress_callbacks{};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
         std::weak_ptr<MavlinkMissionTransfer::WorkItem> last_upload{};

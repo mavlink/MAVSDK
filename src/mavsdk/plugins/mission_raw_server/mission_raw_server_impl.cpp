@@ -1,6 +1,11 @@
 #include "mission_raw_server_impl.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>;
+template class CallbackList<MissionRawServer::MissionItem>;
+template class CallbackList<uint32_t>;
 
 MissionRawServerImpl::MissionRawServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)
@@ -153,13 +158,12 @@ void MissionRawServerImpl::init()
             add_task([this, target_system_id = message.sysid]() {
                 // Mission Upload Inbound
                 if (_last_download.lock()) {
-                    if (_incoming_mission_callback) {
-                        _server_component_impl->call_user_callback(
-                            [callback = _incoming_mission_callback]() {
-                                MissionRawServer::MissionPlan mission_plan{};
-                                callback(MissionRawServer::Result::Busy, mission_plan);
-                            });
-                    }
+                    _incoming_mission_callbacks.queue(
+                        MissionRawServer::Result::Busy,
+                        MissionRawServer::MissionPlan{},
+                        [this](const auto& func) {
+                            _server_component_impl->call_user_callback(func);
+                        });
                     return;
                 }
 
@@ -176,14 +180,10 @@ void MissionRawServerImpl::init()
                             _current_mission = items;
                             auto converted_result = convert_result(result);
                             auto converted_items = convert_items(items);
-                            if (_incoming_mission_callback) {
-                                _server_component_impl->call_user_callback(
-                                    [callback = _incoming_mission_callback,
-                                     converted_result,
-                                     converted_items]() {
-                                        callback(converted_result, {converted_items});
-                                    });
-                            }
+                            _incoming_mission_callbacks.queue(
+                                converted_result, {converted_items}, [this](const auto& func) {
+                                    _server_component_impl->call_user_callback(func);
+                                });
                             _mission_completed = false;
                             set_current_seq(0);
                         });
@@ -238,12 +238,9 @@ void MissionRawServerImpl::init()
                 clear_all.mission_type == MAV_MISSION_TYPE_MISSION) {
                 _current_mission.clear();
                 _current_seq = 0;
-                if (_clear_all_callback) {
-                    _server_component_impl->call_user_callback(
-                        [callback = _clear_all_callback, clear_all]() {
-                            callback(clear_all.mission_type);
-                        });
-                }
+                _clear_all_callbacks.queue(clear_all.mission_type, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
             }
 
             // Send the MISSION_ACK
@@ -269,26 +266,45 @@ void MissionRawServerImpl::deinit()
     _thread_mission.join();
 }
 
-void MissionRawServerImpl::subscribe_incoming_mission(
-    const MissionRawServer::IncomingMissionCallback callback)
+MissionRawServer::IncomingMissionHandle MissionRawServerImpl::subscribe_incoming_mission(
+    const MissionRawServer::IncomingMissionCallback& callback)
 {
-    _incoming_mission_callback = callback;
+    return _incoming_mission_callbacks.subscribe(callback);
+}
+
+void MissionRawServerImpl::unsubscribe_incoming_mission(
+    MissionRawServer::IncomingMissionHandle handle)
+{
+    _incoming_mission_callbacks.unsubscribe(handle);
 }
 
 MissionRawServer::MissionPlan MissionRawServerImpl::incoming_mission() const
 {
+    // FIXME: this doesn't look right.
     return {};
 }
 
-void MissionRawServerImpl::subscribe_current_item_changed(
-    MissionRawServer::CurrentItemChangedCallback callback)
+MissionRawServer::CurrentItemChangedHandle MissionRawServerImpl::subscribe_current_item_changed(
+    const MissionRawServer::CurrentItemChangedCallback& callback)
 {
-    _current_item_changed_callback = callback;
+    return _current_item_changed_callbacks.subscribe(callback);
 }
 
-void MissionRawServerImpl::subscribe_clear_all(MissionRawServer::ClearAllCallback callback)
+void MissionRawServerImpl::unsubscribe_current_item_changed(
+    MissionRawServer::CurrentItemChangedHandle handle)
 {
-    _clear_all_callback = callback;
+    _current_item_changed_callbacks.unsubscribe(handle);
+}
+
+MissionRawServer::ClearAllHandle
+MissionRawServerImpl::subscribe_clear_all(const MissionRawServer::ClearAllCallback& callback)
+{
+    return _clear_all_callbacks.subscribe(callback);
+}
+
+void MissionRawServerImpl::unsubscribe_clear_all(MissionRawServer::ClearAllHandle handle)
+{
+    _clear_all_callbacks.unsubscribe(handle);
 }
 
 uint32_t MissionRawServerImpl::clear_all() const
@@ -337,12 +353,9 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
     auto item = seq == _current_mission.size() ? _current_mission.back() :
                                                  _current_mission.at(_current_seq);
     auto converted_item = convert_item(item);
-    if (_current_item_changed_callback) {
-        _server_component_impl->call_user_callback(
-            [callback = _current_item_changed_callback, converted_item]() {
-                callback(converted_item);
-            });
-    }
+    _current_item_changed_callbacks.queue(converted_item, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
 
     mavlink_message_t mission_current;
     mavlink_msg_mission_current_pack(

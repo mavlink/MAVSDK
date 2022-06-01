@@ -1,10 +1,13 @@
 #include "mission_impl.h"
 #include "system.h"
 #include "unused.h"
+#include "callback_list.tpp"
 #include <algorithm>
 #include <cmath>
 
 namespace mavsdk {
+
+template class CallbackList<Mission::MissionProgress>;
 
 using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
@@ -904,8 +907,7 @@ void MissionImpl::set_current_mission_item_async(
 
 void MissionImpl::report_progress_locked()
 {
-    const auto temp_callback = _mission_data.mission_progress_callback;
-    if (temp_callback == nullptr) {
+    if (_mission_data.mission_progress_callbacks.empty()) {
         return;
     }
 
@@ -928,13 +930,9 @@ void MissionImpl::report_progress_locked()
     }
 
     if (should_report) {
-        _parent->call_user_callback([temp_callback, current, total]() {
-            LogDebug() << "current: " << current << ", total: " << total;
-            Mission::MissionProgress mission_progress;
-            mission_progress.current = current;
-            mission_progress.total = total;
-            temp_callback(mission_progress);
-        });
+        _mission_data.mission_progress_callbacks.queue(
+            {current, total}, [this](const auto& func) { _parent->call_user_callback(func); });
+        LogDebug() << "current: " << current << ", total: " << total;
     }
 }
 
@@ -1021,10 +1019,17 @@ Mission::MissionProgress MissionImpl::mission_progress()
     return mission_progress;
 }
 
-void MissionImpl::subscribe_mission_progress(Mission::MissionProgressCallback callback)
+Mission::MissionProgressHandle
+MissionImpl::subscribe_mission_progress(const Mission::MissionProgressCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_mission_data.mutex);
-    _mission_data.mission_progress_callback = callback;
+    return _mission_data.mission_progress_callbacks.subscribe(callback);
+}
+
+void MissionImpl::unsubscribe_mission_progress(Mission::MissionProgressHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mission_data.mutex);
+    _mission_data.mission_progress_callbacks.unsubscribe(handle);
 }
 
 Mission::Result MissionImpl::convert_result(MavlinkMissionTransfer::Result result)
