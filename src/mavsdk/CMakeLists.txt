@@ -15,6 +15,8 @@ target_link_libraries(mavsdk
     PRIVATE
     JsonCpp::JsonCpp
     tinyxml2::tinyxml2
+    crypto
+    ssl
 )
 
 if (NOT APPLE AND NOT ANDROID AND NOT MSVC)
