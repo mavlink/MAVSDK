@@ -1,12 +1,15 @@
 #include "gimbal_impl.h"
 #include "gimbal_protocol_v1.h"
 #include "gimbal_protocol_v2.h"
+#include "callback_list.tpp"
 #include <chrono>
 #include <cmath>
 #include <functional>
 #include <thread>
 
 namespace mavsdk {
+
+template class CallbackList<Gimbal::ControlStatus>;
 
 GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system)
 {
@@ -163,9 +166,32 @@ Gimbal::ControlStatus GimbalImpl::control()
     return _gimbal_protocol->control();
 }
 
-void GimbalImpl::subscribe_control(Gimbal::ControlCallback callback)
+Gimbal::ControlHandle GimbalImpl::subscribe_control(const Gimbal::ControlCallback& callback)
 {
-    wait_for_protocol_async([=]() { _gimbal_protocol->control_async(callback); });
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    bool need_to_register_callback = _control_subscriptions.empty();
+    auto handle = _control_subscriptions.subscribe(callback);
+
+    if (need_to_register_callback) {
+        wait_for_protocol_async([=]() {
+            _gimbal_protocol->control_async([this](Gimbal::ControlStatus status) {
+                _control_subscriptions.queue(
+                    status, [this](const auto& func) { _parent->call_user_callback(func); });
+            });
+        });
+    }
+    return handle;
+}
+
+void GimbalImpl::unsubscribe_control(Gimbal::ControlHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _control_subscriptions.unsubscribe(handle);
+
+    if (_control_subscriptions.empty()) {
+        wait_for_protocol_async([=]() { _gimbal_protocol->control_async(nullptr); });
+    }
 }
 
 void GimbalImpl::wait_for_protocol()
