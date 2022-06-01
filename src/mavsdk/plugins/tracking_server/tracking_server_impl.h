@@ -20,12 +20,18 @@ public:
 
     void set_tracking_off_status();
 
-    void subscribe_tracking_point_command(TrackingServer::TrackingPointCommandCallback callback);
+    TrackingServer::TrackingPointCommandHandle
+    subscribe_tracking_point_command(const TrackingServer::TrackingPointCommandCallback& callback);
+    void unsubscribe_tracking_point_command(TrackingServer::TrackingPointCommandHandle handle);
 
+    TrackingServer::TrackingRectangleCommandHandle subscribe_tracking_rectangle_command(
+        const TrackingServer::TrackingRectangleCommandCallback& callback);
     void
-    subscribe_tracking_rectangle_command(TrackingServer::TrackingRectangleCommandCallback callback);
+    unsubscribe_tracking_rectangle_command(TrackingServer::TrackingRectangleCommandHandle handle);
 
-    void subscribe_tracking_off_command(TrackingServer::TrackingOffCommandCallback callback);
+    TrackingServer::TrackingOffCommandHandle
+    subscribe_tracking_off_command(const TrackingServer::TrackingOffCommandCallback& callback);
+    void unsubscribe_tracking_off_command(TrackingServer::TrackingOffCommandHandle handle);
 
     TrackingServer::Result
     respond_tracking_point_command(TrackingServer::CommandAnswer command_answer);
@@ -48,9 +54,9 @@ private:
     MAV_RESULT mav_result_from_command_answer(TrackingServer::CommandAnswer command_answer);
 
     std::mutex _mutex{};
-    TrackingServer::TrackingPointCommandCallback _tracking_point_callback{nullptr};
-    TrackingServer::TrackingRectangleCommandCallback _tracking_rectangle_callback{nullptr};
-    TrackingServer::TrackingOffCommandCallback _tracking_off_callback{nullptr};
+    CallbackList<TrackingServer::TrackPoint> _tracking_point_callbacks{};
+    CallbackList<TrackingServer::TrackRectangle> _tracking_rectangle_callbacks{};
+    CallbackList<int32_t> _tracking_off_callbacks{};
 
     uint8_t _tracking_point_command_sysid{0};
     uint8_t _tracking_point_command_compid{0};
