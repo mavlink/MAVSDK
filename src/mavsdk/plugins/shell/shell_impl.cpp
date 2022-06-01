@@ -1,7 +1,10 @@
 #include "shell_impl.h"
 #include "system.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<std::string>;
 
 void ShellImpl::init()
 {
@@ -53,10 +56,16 @@ Shell::Result ShellImpl::send(std::string command)
     return Shell::Result::Success;
 }
 
-void ShellImpl::subscribe_receive(Shell::ReceiveCallback callback)
+Shell::ReceiveHandle ShellImpl::subscribe_receive(const Shell::ReceiveCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_receive.mutex);
-    _receive.callback = callback;
+    return _receive.callbacks.subscribe(callback);
+}
+
+void ShellImpl::unsubscribe_receive(Shell::ReceiveHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_receive.mutex);
+    _receive.callbacks.unsubscribe(handle);
 }
 
 bool ShellImpl::send_command_message(std::string command)
@@ -84,9 +93,9 @@ bool ShellImpl::send_command_message(std::string command)
 
     uint8_t flags = 0;
     {
-        // We only ask for a reponse if we have subscribed to a response.
+        // We only ask for a response if we have subscribed to a response.
         std::lock_guard<std::mutex> lock(_receive.mutex);
-        if (_receive.callback != nullptr) {
+        if (!_receive.callbacks.empty()) {
             flags |= SERIAL_CONTROL_FLAG_RESPOND;
         }
     }
@@ -133,10 +142,8 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
     }
 
     std::lock_guard<std::mutex> lock(_receive.mutex);
-    if (_receive.callback) {
-        const auto temp_callback = _receive.callback;
-        _parent->call_user_callback([temp_callback, response]() { temp_callback(response); });
-    }
+    _receive.callbacks.queue(
+        response, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 } // namespace mavsdk

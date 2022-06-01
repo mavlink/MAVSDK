@@ -24,7 +24,8 @@ public:
     void disable() override;
 
     Shell::Result send(std::string command);
-    void subscribe_receive(Shell::ReceiveCallback callback);
+    Shell::ReceiveHandle subscribe_receive(const Shell::ReceiveCallback& callback);
+    void unsubscribe_receive(Shell::ReceiveHandle handle);
 
     ShellImpl(const ShellImpl&) = delete;
     ShellImpl& operator=(const ShellImpl&) = delete;
@@ -37,7 +38,7 @@ private:
 
     struct {
         std::mutex mutex{};
-        Shell::ReceiveCallback callback{nullptr};
+        CallbackList<std::string> callbacks{};
     } _receive{};
 };
 } // namespace mavsdk
