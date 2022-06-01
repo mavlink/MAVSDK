@@ -16,7 +16,8 @@ public:
     CameraServer::Result set_information(CameraServer::Information information);
     CameraServer::Result set_in_progress(bool in_progress);
 
-    CameraServer::TakePhotoHandle subscribe_take_photo(const CameraServer::TakePhotoCallback& callback);
+    CameraServer::TakePhotoHandle
+    subscribe_take_photo(const CameraServer::TakePhotoCallback& callback);
     void unsubscribe_take_photo(CameraServer::TakePhotoHandle handle);
 
     CameraServer::Result respond_take_photo(

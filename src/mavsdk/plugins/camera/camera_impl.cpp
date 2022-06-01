@@ -586,7 +586,8 @@ Camera::Information CameraImpl::information() const
     return _information.data;
 }
 
-Camera::InformationHandle CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
+Camera::InformationHandle
+CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_information.mutex);
     auto handle = _information.subscription_callbacks.subscribe(callback);
@@ -665,7 +666,8 @@ Camera::VideoStreamInfo CameraImpl::video_stream_info()
     return _video_stream_info.data;
 }
 
-Camera::VideoStreamInfoHandle CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback)
+Camera::VideoStreamInfoHandle
+CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
@@ -910,7 +912,8 @@ Camera::Status CameraImpl::status()
     return _status.data;
 }
 
-Camera::CaptureInfoHandle CameraImpl::subscribe_capture_info(const Camera::CaptureInfoCallback& callback)
+Camera::CaptureInfoHandle
+CameraImpl::subscribe_capture_info(const Camera::CaptureInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_capture_info.mutex);
     return _capture_info.callbacks.subscribe(callback);
@@ -1025,8 +1028,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         // Notify user if a new image has been captured.
         if (_capture_info.last_advertised_image_index < capture_info.index) {
             _capture_info.callbacks.queue(
-                capture_info,
-                [this](const auto& func) {_parent->call_user_callback(func); });
+                capture_info, [this](const auto& func) { _parent->call_user_callback(func); });
 
             if (_capture_info.last_advertised_image_index != -1) {
                 // Save captured indices that have been dropped to request later, however, don't
@@ -1046,10 +1048,8 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
 
         else if (auto it = _capture_info.missing_image_retries.find(capture_info.index);
                  it != _capture_info.missing_image_retries.end()) {
-
             _capture_info.callbacks.queue(
-                capture_info,
-                [this](const auto& func) {_parent->call_user_callback(func); });
+                capture_info, [this](const auto& func) { _parent->call_user_callback(func); });
             _capture_info.missing_image_retries.erase(it);
         }
     }
@@ -1139,8 +1139,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     _information.data.vertical_resolution_px = camera_information.resolution_v;
 
     _information.subscription_callbacks.queue(
-        _information.data,
-        [this](const auto& func) {_parent->call_user_callback(func); });
+        _information.data, [this](const auto& func) { _parent->call_user_callback(func); });
 
     if (should_fetch_camera_definition(camera_information.cam_definition_uri)) {
         _is_fetching_camera_definition = true;
@@ -1348,8 +1347,7 @@ void CameraImpl::notify_video_stream_info()
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
     _video_stream_info.subscription_callbacks.queue(
-        _video_stream_info.data,
-        [this](const auto& func) {_parent->call_user_callback(func); });
+        _video_stream_info.data, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 void CameraImpl::check_status()
@@ -1358,8 +1356,7 @@ void CameraImpl::check_status()
 
     if (_status.received_camera_capture_status && _status.received_storage_information) {
         _status.subscription_callbacks.queue(
-            _status.data,
-            [this](const auto& func) {_parent->call_user_callback(func); });
+            _status.data, [this](const auto& func) { _parent->call_user_callback(func); });
 
         _status.received_camera_capture_status = false;
         _status.received_storage_information = false;
@@ -1413,8 +1410,7 @@ void CameraImpl::notify_mode()
     std::lock_guard<std::mutex> lock(_mode.mutex);
 
     _mode.subscription_callbacks.queue(
-        _mode.data,
-        [this](const auto& func) {_parent->call_user_callback(func); });
+        _mode.data, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings)
@@ -1712,7 +1708,8 @@ void CameraImpl::get_option_async(
     }
 }
 
-Camera::CurrentSettingsHandle CameraImpl::subscribe_current_settings(const Camera::CurrentSettingsCallback& callback)
+Camera::CurrentSettingsHandle
+CameraImpl::subscribe_current_settings(const Camera::CurrentSettingsCallback& callback)
 {
     std::unique_lock<std::mutex> lock(_subscribe_current_settings.mutex);
     auto handle = _subscribe_current_settings.callbacks.subscribe(callback);
@@ -1785,8 +1782,7 @@ void CameraImpl::notify_current_settings()
     }
 
     _subscribe_current_settings.callbacks.queue(
-        current_settings,
-        [this](const auto& func) {_parent->call_user_callback(func); });
+        current_settings, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 void CameraImpl::notify_possible_setting_options()
@@ -1808,8 +1804,7 @@ void CameraImpl::notify_possible_setting_options()
     }
 
     _subscribe_possible_setting_options.callbacks.queue(
-        setting_options,
-        [this](const auto& func) {_parent->call_user_callback(func); });
+        setting_options, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 std::vector<Camera::SettingOptions> CameraImpl::possible_setting_options()

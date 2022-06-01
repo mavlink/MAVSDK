@@ -47,7 +47,8 @@ public:
     std::pair<Camera::Result, Camera::VideoStreamInfo> get_video_stream_info();
 
     Camera::VideoStreamInfo video_stream_info();
-    Camera::VideoStreamInfoHandle subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback);
+    Camera::VideoStreamInfoHandle
+    subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback);
     void unsubscribe_video_stream_info(Camera::VideoStreamInfoHandle handle);
 
     Camera::Result start_video_streaming();
@@ -77,9 +78,11 @@ public:
 
     bool is_setting_range(const std::string& setting_id);
 
-    Camera::CurrentSettingsHandle subscribe_current_settings(const Camera::CurrentSettingsCallback& callback);
+    Camera::CurrentSettingsHandle
+    subscribe_current_settings(const Camera::CurrentSettingsCallback& callback);
     void unsubscribe_current_settings(Camera::CurrentSettingsHandle handle);
-    Camera::PossibleSettingOptionsHandle subscribe_possible_setting_options(const Camera::PossibleSettingOptionsCallback& callback);
+    Camera::PossibleSettingOptionsHandle
+    subscribe_possible_setting_options(const Camera::PossibleSettingOptionsCallback& callback);
     void unsubscribe_possible_setting_options(Camera::PossibleSettingOptionsHandle handle);
 
     Camera::Result format_storage();

@@ -194,7 +194,8 @@ CameraServer::Result CameraServerImpl::set_in_progress(bool in_progress)
     return CameraServer::Result::Success;
 }
 
- CameraServer::TakePhotoHandle CameraServerImpl::subscribe_take_photo(const CameraServer::TakePhotoCallback& callback)
+CameraServer::TakePhotoHandle
+CameraServerImpl::subscribe_take_photo(const CameraServer::TakePhotoCallback& callback)
 {
     return _take_photo_callbacks.subscribe(callback);
 }
