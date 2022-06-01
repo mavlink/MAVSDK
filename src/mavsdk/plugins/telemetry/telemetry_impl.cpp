@@ -1177,8 +1177,9 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 bool TelemetryImpl::sys_status_present_enabled_health(
     const mavlink_sys_status_t& sys_status, MAV_SYS_STATUS_SENSOR flag)
 {
+    // FIXME: it doesn't look like PX4 sets enabled for GPS
     return (sys_status.onboard_control_sensors_present & flag) != 0 &&
-           (sys_status.onboard_control_sensors_enabled & flag) != 0 &&
+           // (sys_status.onboard_control_sensors_enabled & flag) != 0 &&
            (sys_status.onboard_control_sensors_health & flag) != 0;
 }
 
