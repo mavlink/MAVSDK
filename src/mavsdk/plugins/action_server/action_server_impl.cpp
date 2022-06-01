@@ -1,8 +1,13 @@
 #include "action_server_impl.h"
 #include "unused.h"
 #include "flight_mode.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<ActionServer::Result, ActionServer::ArmDisarm>;
+template class CallbackList<ActionServer::Result, ActionServer::FlightMode>;
+template class CallbackList<ActionServer::Result, bool>;
 
 ActionServer::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode flight_mode)
 {
@@ -82,12 +87,9 @@ void ActionServerImpl::init()
                               ActionServer::Result::Success :
                               ActionServer::Result::CommandDenied;
 
-            if (_arm_disarm_callback) {
-                _server_component_impl->call_user_callback(
-                    [callback = _arm_disarm_callback, armDisarm, result]() {
-                        callback(result, armDisarm);
-                    });
-            }
+            _arm_disarm_callbacks.queue(result, armDisarm, [this](const auto& func) {
+                _server_component_impl->call_user_callback(func);
+            });
 
             return _server_component_impl->make_command_ack_message(command, request_ack);
         },
@@ -97,20 +99,18 @@ void ActionServerImpl::init()
         MAV_CMD_NAV_TAKEOFF,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             if (_allow_takeoff) {
-                if (_takeoff_callback) {
-                    _server_component_impl->call_user_callback([callback = _takeoff_callback]() {
-                        callback(ActionServer::Result::Success, true);
+                _takeoff_callbacks.queue(
+                    ActionServer::Result::Success, true, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
                     });
-                }
 
                 return _server_component_impl->make_command_ack_message(
                     command, MAV_RESULT::MAV_RESULT_ACCEPTED);
             } else {
-                if (_takeoff_callback) {
-                    _server_component_impl->call_user_callback([callback = _takeoff_callback]() {
-                        callback(ActionServer::Result::CommandDenied, false);
+                _takeoff_callbacks.queue(
+                    ActionServer::Result::CommandDenied, false, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
                     });
-                }
 
                 return _server_component_impl->make_command_ack_message(
                     command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -140,12 +140,10 @@ void ActionServerImpl::init()
             } else {
                 // TO DO: non PX4 flight modes...
                 // Just bug out now if not using PX4 modes
-                if (_flight_mode_change_callback) {
-                    _server_component_impl->call_user_callback(
-                        [callback = _flight_mode_change_callback, request_flight_mode]() {
-                            callback(ActionServer::Result::ParameterError, request_flight_mode);
-                        });
-                }
+                _flight_mode_change_callbacks.queue(
+                    ActionServer::Result::ParameterError,
+                    request_flight_mode,
+                    [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
                 return _server_component_impl->make_command_ack_message(
                     command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -180,15 +178,10 @@ void ActionServerImpl::init()
                 set_custom_mode(px4_mode.data);
             }
 
-            if (_flight_mode_change_callback) {
-                _server_component_impl->call_user_callback(
-                    [callback = _flight_mode_change_callback, allow_mode, request_flight_mode]() {
-                        callback(
-                            allow_mode ? ActionServer::Result::Success :
-                                         ActionServer::Result::CommandDenied,
-                            request_flight_mode);
-                    });
-            }
+            _flight_mode_change_callbacks.queue(
+                allow_mode ? ActionServer::Result::Success : ActionServer::Result::CommandDenied,
+                request_flight_mode,
+                [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
             return _server_component_impl->make_command_ack_message(
                 command,
@@ -203,42 +196,99 @@ void ActionServerImpl::deinit()
     _server_component_impl->remove_call_every(_send_version_cookie);
 }
 
-void ActionServerImpl::subscribe_arm_disarm(ActionServer::ArmDisarmCallback callback)
+ActionServer::ArmDisarmHandle
+ActionServerImpl::subscribe_arm_disarm(const ActionServer::ArmDisarmCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_callback_mutex);
-    _arm_disarm_callback = callback;
+    return _arm_disarm_callbacks.subscribe(callback);
 }
 
-void ActionServerImpl::subscribe_flight_mode_change(ActionServer::FlightModeChangeCallback callback)
+void ActionServerImpl::unsubscribe_arm_disarm(ActionServer::ArmDisarmHandle handle)
 {
     std::lock_guard<std::mutex> lock(_callback_mutex);
-    _flight_mode_change_callback = callback;
+    _arm_disarm_callbacks.unsubscribe(handle);
 }
 
-void ActionServerImpl::subscribe_takeoff(ActionServer::TakeoffCallback callback)
+ActionServer::FlightModeChangeHandle ActionServerImpl::subscribe_flight_mode_change(
+    const ActionServer::FlightModeChangeCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_callback_mutex);
-    _takeoff_callback = callback;
+    return _flight_mode_change_callbacks.subscribe(callback);
 }
 
-void ActionServerImpl::subscribe_land(ActionServer::LandCallback callback)
+void ActionServerImpl::unsubscribe_flight_mode_change(ActionServer::FlightModeChangeHandle handle)
 {
-    UNUSED(callback);
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _flight_mode_change_callbacks.unsubscribe(handle);
 }
 
-void ActionServerImpl::subscribe_reboot(ActionServer::RebootCallback callback)
+ActionServer::TakeoffHandle
+ActionServerImpl::subscribe_takeoff(const ActionServer::TakeoffCallback& callback)
 {
-    UNUSED(callback);
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    return _takeoff_callbacks.subscribe(callback);
 }
 
-void ActionServerImpl::subscribe_shutdown(ActionServer::ShutdownCallback callback)
+void ActionServerImpl::unsubscribe_takeoff(ActionServer::TakeoffHandle handle)
 {
-    UNUSED(callback);
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _takeoff_callbacks.unsubscribe(handle);
 }
 
-void ActionServerImpl::subscribe_terminate(ActionServer::TerminateCallback callback)
+ActionServer::LandHandle
+ActionServerImpl::subscribe_land(const ActionServer::LandCallback& callback)
 {
-    UNUSED(callback);
+    // TODO: implement
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    return _land_callbacks.subscribe(callback);
+}
+
+void ActionServerImpl::unsubscribe_land(ActionServer::LandHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _land_callbacks.unsubscribe(handle);
+}
+
+ActionServer::RebootHandle
+ActionServerImpl::subscribe_reboot(const ActionServer::RebootCallback& callback)
+{
+    // TODO: implement
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    return _reboot_callbacks.subscribe(callback);
+}
+
+void ActionServerImpl::unsubscribe_reboot(ActionServer::RebootHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _reboot_callbacks.unsubscribe(handle);
+}
+
+ActionServer::ShutdownHandle
+ActionServerImpl::subscribe_shutdown(const ActionServer::ShutdownCallback& callback)
+{
+    // TODO: implement
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    return _shutdown_callbacks.subscribe(callback);
+}
+
+void ActionServerImpl::unsubscribe_shutdown(ActionServer::ShutdownHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _shutdown_callbacks.unsubscribe(handle);
+}
+
+ActionServer::TerminateHandle
+ActionServerImpl::subscribe_terminate(const ActionServer::TerminateCallback& callback)
+{
+    // TODO: implement
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    return _terminate_callbacks.subscribe(callback);
+}
+
+void ActionServerImpl::unsubscribe_terminate(ActionServer::TerminateHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    _terminate_callbacks.unsubscribe(handle);
 }
 
 ActionServer::Result ActionServerImpl::set_allow_takeoff(bool allow_takeoff)

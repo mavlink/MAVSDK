@@ -15,19 +15,29 @@ public:
     void init() override;
     void deinit() override;
 
-    void subscribe_arm_disarm(ActionServer::ArmDisarmCallback callback);
+    ActionServer::ArmDisarmHandle
+    subscribe_arm_disarm(const ActionServer::ArmDisarmCallback& callback);
+    void unsubscribe_arm_disarm(ActionServer::ArmDisarmHandle handle);
 
-    void subscribe_flight_mode_change(ActionServer::FlightModeChangeCallback callback);
+    ActionServer::FlightModeChangeHandle
+    subscribe_flight_mode_change(const ActionServer::FlightModeChangeCallback& callback);
+    void unsubscribe_flight_mode_change(ActionServer::FlightModeChangeHandle handle);
 
-    void subscribe_takeoff(ActionServer::TakeoffCallback callback);
+    ActionServer::TakeoffHandle subscribe_takeoff(const ActionServer::TakeoffCallback& callback);
+    void unsubscribe_takeoff(ActionServer::TakeoffHandle handle);
 
-    void subscribe_land(ActionServer::LandCallback callback);
+    ActionServer::LandHandle subscribe_land(const ActionServer::LandCallback& callback);
+    void unsubscribe_land(ActionServer::LandHandle handle);
 
-    void subscribe_reboot(ActionServer::RebootCallback callback);
+    ActionServer::RebootHandle subscribe_reboot(const ActionServer::RebootCallback& callback);
+    void unsubscribe_reboot(ActionServer::RebootHandle handle);
 
-    void subscribe_shutdown(ActionServer::ShutdownCallback callback);
+    ActionServer::ShutdownHandle subscribe_shutdown(const ActionServer::ShutdownCallback& callback);
+    void unsubscribe_shutdown(ActionServer::ShutdownHandle handle);
 
-    void subscribe_terminate(ActionServer::TerminateCallback callback);
+    ActionServer::TerminateHandle
+    subscribe_terminate(const ActionServer::TerminateCallback& callback);
+    void unsubscribe_terminate(ActionServer::TerminateHandle handle);
 
     ActionServer::Result set_allow_takeoff(bool allow_takeoff);
 
@@ -50,9 +60,13 @@ private:
     void set_server_armed(bool armed);
 
     std::mutex _callback_mutex;
-    ActionServer::ArmDisarmCallback _arm_disarm_callback{nullptr};
-    ActionServer::FlightModeChangeCallback _flight_mode_change_callback{nullptr};
-    ActionServer::TakeoffCallback _takeoff_callback{nullptr};
+    CallbackList<ActionServer::Result, ActionServer::ArmDisarm> _arm_disarm_callbacks{};
+    CallbackList<ActionServer::Result, ActionServer::FlightMode> _flight_mode_change_callbacks{};
+    CallbackList<ActionServer::Result, bool> _takeoff_callbacks{};
+    CallbackList<ActionServer::Result, bool> _land_callbacks{};
+    CallbackList<ActionServer::Result, bool> _reboot_callbacks{};
+    CallbackList<ActionServer::Result, bool> _shutdown_callbacks{};
+    CallbackList<ActionServer::Result, bool> _terminate_callbacks{};
 
     std::atomic<bool> _armable = false;
     std::atomic<bool> _force_armable = false;
