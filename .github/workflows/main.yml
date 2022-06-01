@@ -72,9 +72,12 @@ jobs:
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
 
-  ubuntu20-superbuild:
-    name: ubuntu-20.04 (mavsdk_server, superbuild)
-    runs-on: ubuntu-20.04
+  ubuntu-superbuild:
+    name: ${{ matrix.ubuntu_image }} (mavsdk_server, superbuild)
+    runs-on: ${{ matrix.ubuntu_image }}
+    strategy:
+      matrix:
+        ubuntu_image: [ubuntu-20.04, ubuntu-22.04]
     steps:
       - uses: actions/checkout@v2
         with:
