@@ -1,11 +1,14 @@
 #include "component_information_impl.h"
 #include "fs.h"
+#include "callback_list.tpp"
 
 #include <utility>
 #include <fstream>
 #include <json/json.h>
 
 namespace mavsdk {
+
+template class CallbackList<ComponentInformation::FloatParamUpdate>;
 
 ComponentInformationImpl::ComponentInformationImpl(System& system) : PluginImplBase(system)
 {
@@ -237,9 +240,8 @@ void ComponentInformationImpl::param_update(const std::string& name, float new_v
 
     const auto param_update = ComponentInformation::FloatParamUpdate{name, new_value};
 
-    _parent->call_user_callback([this, param_update, callback = _float_param_update_callback]() {
-        callback(param_update);
-    });
+    _float_param_update_callbacks.queue(
+        param_update, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 std::pair<ComponentInformation::Result, std::vector<ComponentInformation::FloatParam>>
@@ -248,11 +250,18 @@ ComponentInformationImpl::access_float_params()
     return {ComponentInformation::Result::Success, _float_params};
 }
 
-void ComponentInformationImpl::subscribe_float_param(
-    ComponentInformation::FloatParamCallback callback)
+ComponentInformation::FloatParamHandle ComponentInformationImpl::subscribe_float_param(
+    const ComponentInformation::FloatParamCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    _float_param_update_callback = callback;
+    return _float_param_update_callbacks.subscribe(callback);
+}
+
+void ComponentInformationImpl::unsubscribe_float_param(
+    ComponentInformation::FloatParamHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _float_param_update_callbacks.unsubscribe(handle);
 }
 
 } // namespace mavsdk

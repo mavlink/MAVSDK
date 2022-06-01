@@ -18,7 +18,9 @@ public:
     ComponentInformationServer::Result
     provide_float_param(ComponentInformationServer::FloatParam param);
 
-    void subscribe_float_param(ComponentInformationServer::FloatParamCallback callback);
+    ComponentInformationServer::FloatParamHandle
+    subscribe_float_param(const ComponentInformationServer::FloatParamCallback& callback);
+    void unsubscribe_float_param(ComponentInformationServer::FloatParamHandle handle);
 
 private:
     void update_json_files_with_lock();
@@ -32,7 +34,7 @@ private:
     std::mutex _mutex{};
     std::vector<ComponentInformationServer::FloatParam> _float_params{};
     std::string _our_ip{};
-    ComponentInformationServer::FloatParamCallback _float_param_update_callback{};
+    CallbackList<ComponentInformationServer::FloatParamUpdate> _float_param_update_callbacks{};
 };
 
 } // namespace mavsdk

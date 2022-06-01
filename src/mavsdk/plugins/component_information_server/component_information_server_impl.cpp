@@ -1,10 +1,14 @@
 #include "component_information_server_impl.h"
 #include "mavlink_request_message_handler.h"
+#include "callback_list.tpp"
+
 #include <algorithm>
 #include <string>
 #include <json/json.h>
 
 namespace mavsdk {
+
+template class CallbackList<ComponentInformationServer::FloatParamUpdate>;
 
 ComponentInformationServerImpl::ComponentInformationServerImpl(
     std::shared_ptr<ServerComponent> server_component) :
@@ -74,21 +78,27 @@ ComponentInformationServerImpl::provide_float_param(ComponentInformationServer::
     return ComponentInformationServer::Result::Success;
 }
 
-void ComponentInformationServerImpl::subscribe_float_param(
-    ComponentInformationServer::FloatParamCallback callback)
+ComponentInformationServer::FloatParamHandle ComponentInformationServerImpl::subscribe_float_param(
+    const ComponentInformationServer::FloatParamCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    _float_param_update_callback = callback;
+    return _float_param_update_callbacks.subscribe(callback);
+}
+
+void ComponentInformationServerImpl::unsubscribe_float_param(
+    ComponentInformationServer::FloatParamHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _float_param_update_callbacks.unsubscribe(handle);
 }
 
 void ComponentInformationServerImpl::param_update(const std::string& name, float new_value)
 {
     std::lock_guard<std::mutex> lock(_mutex);
     ComponentInformationServer::FloatParamUpdate param_update{name, new_value};
-    if (_float_param_update_callback) {
-        _server_component_impl->call_user_callback(
-            [callback = _float_param_update_callback, param_update]() { callback(param_update); });
-    }
+    _float_param_update_callbacks.queue(param_update, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
 }
 
 std::optional<MAV_RESULT> ComponentInformationServerImpl::process_component_information_requested()
