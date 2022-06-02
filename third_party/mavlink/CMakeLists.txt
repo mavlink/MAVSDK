@@ -18,9 +18,9 @@ find_package(Python3 COMPONENTS Interpreter REQUIRED)
 ExternalProject_add(
     mavlink
     GIT_REPOSITORY https://github.com/mavlink/mavlink
-    GIT_TAG a5556816af29e348875cbcc26a1d36b42dc5e921
+    GIT_TAG daabb9a54d1fc3b8cc6a4f3517168d381d278678
     # This GIT_TAG will need to update as it is for a temporary branch containing the new battery
-    # https://github.com/mavlink/mavlink/commit/a5556816af29e348875cbcc26a1d36b42dc5e921
+    # https://github.com/mavlink/mavlink/commit/daabb9a54d1fc3b8cc6a4f3517168d381d278678
     PREFIX mavlink
     CONFIGURE_COMMAND Python3::Interpreter
         -m pymavlink.tools.mavgen
