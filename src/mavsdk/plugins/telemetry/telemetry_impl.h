@@ -110,43 +110,91 @@ public:
     uint64_t unix_epoch_time() const;
     Telemetry::Heading heading() const;
 
-    void subscribe_position_velocity_ned(Telemetry::PositionVelocityNedCallback& callback);
-    void subscribe_position(Telemetry::PositionCallback& callback);
-    void subscribe_home(Telemetry::PositionCallback& callback);
-    void subscribe_in_air(Telemetry::InAirCallback& callback);
+    Telemetry::PositionVelocityNedHandle
+    subscribe_position_velocity_ned(const Telemetry::PositionVelocityNedCallback& callback);
+    void unsubscribe_position_velocity_ned(Telemetry::PositionVelocityNedHandle handle);
+    Telemetry::PositionHandle subscribe_position(const Telemetry::PositionCallback& callback);
+    void unsubscribe_position(Telemetry::PositionHandle handle);
+    Telemetry::HomeHandle subscribe_home(const Telemetry::PositionCallback& callback);
+    void unsubscribe_home(Telemetry::HomeHandle handle);
+    Telemetry::InAirHandle subscribe_in_air(const Telemetry::InAirCallback& callback);
+    void unsubscribe_in_air(Telemetry::InAirHandle handle);
     Telemetry::StatusTextHandle
     subscribe_status_text(const Telemetry::StatusTextCallback& callback);
     void unsubscribe_status_text(Telemetry::StatusTextHandle handle);
-
-    void subscribe_armed(Telemetry::ArmedCallback& callback);
-    void subscribe_attitude_quaternion(Telemetry::AttitudeQuaternionCallback& callback);
-    void subscribe_attitude_euler(Telemetry::AttitudeEulerCallback& callback);
-    void subscribe_attitude_angular_velocity_body(
-        Telemetry::AttitudeAngularVelocityBodyCallback& callback);
-    void subscribe_fixedwing_metrics(Telemetry::FixedwingMetricsCallback& callback);
-    void subscribe_ground_truth(Telemetry::GroundTruthCallback& callback);
-    void subscribe_camera_attitude_quaternion(Telemetry::AttitudeQuaternionCallback& callback);
-    void subscribe_camera_attitude_euler(Telemetry::AttitudeEulerCallback& callback);
-    void subscribe_velocity_ned(Telemetry::VelocityNedCallback& callback);
-    void subscribe_imu(Telemetry::ImuCallback& callback);
-    void subscribe_scaled_imu(Telemetry::ScaledImuCallback& callback);
-    void subscribe_raw_imu(Telemetry::RawImuCallback& callback);
-    void subscribe_gps_info(Telemetry::GpsInfoCallback& callback);
-    void subscribe_raw_gps(Telemetry::RawGpsCallback& callback);
-    void subscribe_battery(Telemetry::BatteryCallback& callback);
-    void subscribe_flight_mode(Telemetry::FlightModeCallback& callback);
-    void subscribe_health(Telemetry::HealthCallback& callback);
-    void subscribe_health_all_ok(Telemetry::HealthAllOkCallback& callback);
-    void subscribe_vtol_state(Telemetry::VtolStateCallback& callback);
-    void subscribe_landed_state(Telemetry::LandedStateCallback& callback);
-    void subscribe_rc_status(Telemetry::RcStatusCallback& callback);
-    void subscribe_unix_epoch_time(Telemetry::UnixEpochTimeCallback& callback);
-    void subscribe_actuator_control_target(Telemetry::ActuatorControlTargetCallback& callback);
-    void subscribe_actuator_output_status(Telemetry::ActuatorOutputStatusCallback& callback);
-    void subscribe_odometry(Telemetry::OdometryCallback& callback);
-    void subscribe_distance_sensor(Telemetry::DistanceSensorCallback& callback);
-    void subscribe_scaled_pressure(Telemetry::ScaledPressureCallback& callback);
-    void subscribe_heading(Telemetry::HeadingCallback& callback);
+    Telemetry::ArmedHandle subscribe_armed(const Telemetry::ArmedCallback& callback);
+    void unsubscribe_armed(Telemetry::ArmedHandle handle);
+    Telemetry::AttitudeQuaternionHandle
+    subscribe_attitude_quaternion(const Telemetry::AttitudeQuaternionCallback& callback);
+    void unsubscribe_attitude_quaternion(Telemetry::AttitudeQuaternionHandle handle);
+    Telemetry::AttitudeEulerHandle
+    subscribe_attitude_euler(const Telemetry::AttitudeEulerCallback& callback);
+    void unsubscribe_attitude_euler(Telemetry::AttitudeEulerHandle handle);
+    Telemetry::AttitudeAngularVelocityBodyHandle subscribe_attitude_angular_velocity_body(
+        const Telemetry::AttitudeAngularVelocityBodyCallback& callback);
+    void
+    unsubscribe_attitude_angular_velocity_body(Telemetry::AttitudeAngularVelocityBodyHandle handle);
+    Telemetry::FixedwingMetricsHandle
+    subscribe_fixedwing_metrics(const Telemetry::FixedwingMetricsCallback& callback);
+    void unsubscribe_fixedwing_metrics(Telemetry::FixedwingMetricsHandle handle);
+    Telemetry::GroundTruthHandle
+    subscribe_ground_truth(const Telemetry::GroundTruthCallback& callback);
+    void unsubscribe_ground_truth(Telemetry::GroundTruthHandle handle);
+    Telemetry::AttitudeQuaternionHandle
+    subscribe_camera_attitude_quaternion(const Telemetry::AttitudeQuaternionCallback& callback);
+    void unsubscribe_camera_attitude_quaternion(Telemetry::AttitudeQuaternionHandle handle);
+    Telemetry::AttitudeEulerHandle
+    subscribe_camera_attitude_euler(const Telemetry::AttitudeEulerCallback& callback);
+    void unsubscribe_camera_attitude_euler(Telemetry::AttitudeEulerHandle handle);
+    Telemetry::VelocityNedHandle
+    subscribe_velocity_ned(const Telemetry::VelocityNedCallback& callback);
+    void unsubscribe_velocity_ned(Telemetry::VelocityNedHandle handle);
+    Telemetry::ImuHandle subscribe_imu(const Telemetry::ImuCallback& callback);
+    void unsubscribe_imu(Telemetry::ImuHandle handle);
+    Telemetry::ScaledImuHandle subscribe_scaled_imu(const Telemetry::ScaledImuCallback& callback);
+    void unsubscribe_scaled_imu(Telemetry::ScaledImuHandle handle);
+    Telemetry::RawImuHandle subscribe_raw_imu(const Telemetry::RawImuCallback& callback);
+    void unsubscribe_raw_imu(Telemetry::RawImuHandle handle);
+    Telemetry::GpsInfoHandle subscribe_gps_info(const Telemetry::GpsInfoCallback& callback);
+    void unsubscribe_gps_info(Telemetry::GpsInfoHandle handle);
+    Telemetry::RawGpsHandle subscribe_raw_gps(const Telemetry::RawGpsCallback& callback);
+    void unsubscribe_raw_gps(Telemetry::RawGpsHandle handle);
+    Telemetry::BatteryHandle subscribe_battery(const Telemetry::BatteryCallback& callback);
+    void unsubscribe_battery(Telemetry::BatteryHandle handle);
+    Telemetry::FlightModeHandle
+    subscribe_flight_mode(const Telemetry::FlightModeCallback& callback);
+    void unsubscribe_flight_mode(Telemetry::FlightModeHandle handle);
+    Telemetry::HealthHandle subscribe_health(const Telemetry::HealthCallback& callback);
+    void unsubscribe_health(Telemetry::HealthHandle handle);
+    Telemetry::HealthAllOkHandle
+    subscribe_health_all_ok(const Telemetry::HealthAllOkCallback& callback);
+    void unsubscribe_health_all_ok(Telemetry::HealthAllOkHandle handle);
+    Telemetry::VtolStateHandle subscribe_vtol_state(const Telemetry::VtolStateCallback& callback);
+    void unsubscribe_vtol_state(Telemetry::VtolStateHandle handle);
+    Telemetry::LandedStateHandle
+    subscribe_landed_state(const Telemetry::LandedStateCallback& callback);
+    void unsubscribe_landed_state(Telemetry::LandedStateHandle handle);
+    Telemetry::RcStatusHandle subscribe_rc_status(const Telemetry::RcStatusCallback& callback);
+    void unsubscribe_rc_status(Telemetry::RcStatusHandle handle);
+    Telemetry::UnixEpochTimeHandle
+    subscribe_unix_epoch_time(const Telemetry::UnixEpochTimeCallback& callback);
+    void unsubscribe_unix_epoch_time(Telemetry::UnixEpochTimeHandle handle);
+    Telemetry::ActuatorControlTargetHandle
+    subscribe_actuator_control_target(const Telemetry::ActuatorControlTargetCallback& callback);
+    void unsubscribe_actuator_control_target(Telemetry::ActuatorControlTargetHandle handle);
+    Telemetry::ActuatorOutputStatusHandle
+    subscribe_actuator_output_status(const Telemetry::ActuatorOutputStatusCallback& callback);
+    void unsubscribe_actuator_output_status(Telemetry::ActuatorOutputStatusHandle handle);
+    Telemetry::OdometryHandle subscribe_odometry(const Telemetry::OdometryCallback& callback);
+    void unsubscribe_odometry(Telemetry::OdometryHandle handle);
+    Telemetry::DistanceSensorHandle
+    subscribe_distance_sensor(const Telemetry::DistanceSensorCallback& callback);
+    void unsubscribe_distance_sensor(Telemetry::DistanceSensorHandle handle);
+    Telemetry::ScaledPressureHandle
+    subscribe_scaled_pressure(const Telemetry::ScaledPressureCallback& callback);
+    void unsubscribe_scaled_pressure(Telemetry::ScaledPressureHandle handle);
+    Telemetry::HeadingHandle subscribe_heading(const Telemetry::HeadingCallback& callback);
+    void unsubscribe_heading(Telemetry::HeadingHandle handle);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
@@ -347,40 +395,39 @@ private:
     std::atomic<bool> _hitl_enabled{false};
 
     std::mutex _subscription_mutex{};
-    Telemetry::PositionVelocityNedCallback _position_velocity_ned_subscription{nullptr};
-    Telemetry::PositionCallback _position_subscription{nullptr};
-    Telemetry::PositionCallback _home_position_subscription{nullptr};
-    Telemetry::InAirCallback _in_air_subscription{nullptr};
+    CallbackList<Telemetry::PositionVelocityNed> _position_velocity_ned_subscriptions{};
+    CallbackList<Telemetry::Position> _position_subscriptions{};
+    CallbackList<Telemetry::Position> _home_position_subscriptions{};
+    CallbackList<bool> _in_air_subscriptions{};
     CallbackList<Telemetry::StatusText> _status_text_subscriptions{};
-    Telemetry::ArmedCallback _armed_subscription{nullptr};
-    Telemetry::AttitudeQuaternionCallback _attitude_quaternion_angle_subscription{nullptr};
-    Telemetry::AttitudeAngularVelocityBodyCallback _attitude_angular_velocity_body_subscription{
-        nullptr};
-    Telemetry::GroundTruthCallback _ground_truth_subscription{nullptr};
-    Telemetry::FixedwingMetricsCallback _fixedwing_metrics_subscription{nullptr};
-    Telemetry::AttitudeEulerCallback _attitude_euler_angle_subscription{nullptr};
-    Telemetry::AttitudeQuaternionCallback _camera_attitude_quaternion_subscription{nullptr};
-    Telemetry::AttitudeEulerCallback _camera_attitude_euler_angle_subscription{nullptr};
-    Telemetry::VelocityNedCallback _velocity_ned_subscription{nullptr};
-    Telemetry::ImuCallback _imu_reading_ned_subscription{nullptr};
-    Telemetry::ScaledImuCallback _scaled_imu_subscription{nullptr};
-    Telemetry::RawImuCallback _raw_imu_subscription{nullptr};
-    Telemetry::GpsInfoCallback _gps_info_subscription{nullptr};
-    Telemetry::RawGpsCallback _raw_gps_subscription{nullptr};
-    Telemetry::BatteryCallback _battery_subscription{nullptr};
-    Telemetry::FlightModeCallback _flight_mode_subscription{nullptr};
-    Telemetry::HealthCallback _health_subscription{nullptr};
-    Telemetry::HealthAllOkCallback _health_all_ok_subscription{nullptr};
-    Telemetry::VtolStateCallback _votl_state_subscription{nullptr};
-    Telemetry::LandedStateCallback _landed_state_subscription{nullptr};
-    Telemetry::RcStatusCallback _rc_status_subscription{nullptr};
-    Telemetry::UnixEpochTimeCallback _unix_epoch_time_subscription{nullptr};
-    Telemetry::ActuatorControlTargetCallback _actuator_control_target_subscription{nullptr};
-    Telemetry::ActuatorOutputStatusCallback _actuator_output_status_subscription{nullptr};
-    Telemetry::OdometryCallback _odometry_subscription{nullptr};
-    Telemetry::DistanceSensorCallback _distance_sensor_subscription{nullptr};
-    Telemetry::ScaledPressureCallback _scaled_pressure_subscription{nullptr};
-    Telemetry::HeadingCallback _heading_subscription{nullptr};
+    CallbackList<bool> _armed_subscriptions{};
+    CallbackList<Telemetry::Quaternion> _attitude_quaternion_angle_subscriptions{};
+    CallbackList<Telemetry::AngularVelocityBody> _attitude_angular_velocity_body_subscriptions{};
+    CallbackList<Telemetry::GroundTruth> _ground_truth_subscriptions{};
+    CallbackList<Telemetry::FixedwingMetrics> _fixedwing_metrics_subscriptions{};
+    CallbackList<Telemetry::EulerAngle> _attitude_euler_angle_subscriptions{};
+    CallbackList<Telemetry::Quaternion> _camera_attitude_quaternion_subscriptions{};
+    CallbackList<Telemetry::EulerAngle> _camera_attitude_euler_angle_subscriptions{};
+    CallbackList<Telemetry::VelocityNed> _velocity_ned_subscriptions{};
+    CallbackList<Telemetry::Imu> _imu_reading_ned_subscriptions{};
+    CallbackList<Telemetry::Imu> _scaled_imu_subscriptions{};
+    CallbackList<Telemetry::Imu> _raw_imu_subscriptions{};
+    CallbackList<Telemetry::GpsInfo> _gps_info_subscriptions{};
+    CallbackList<Telemetry::RawGps> _raw_gps_subscriptions{};
+    CallbackList<Telemetry::Battery> _battery_subscriptions{};
+    CallbackList<Telemetry::FlightMode> _flight_mode_subscriptions{};
+    CallbackList<Telemetry::Health> _health_subscriptions{};
+    CallbackList<bool> _health_all_ok_subscriptions{};
+    CallbackList<Telemetry::VtolState> _vtol_state_subscriptions{};
+    CallbackList<Telemetry::LandedState> _landed_state_subscriptions{};
+    CallbackList<Telemetry::RcStatus> _rc_status_subscriptions{};
+    CallbackList<uint64_t> _unix_epoch_time_subscriptions{};
+    CallbackList<Telemetry::ActuatorControlTarget> _actuator_control_target_subscriptions{};
+    CallbackList<Telemetry::ActuatorOutputStatus> _actuator_output_status_subscriptions{};
+    CallbackList<Telemetry::Odometry> _odometry_subscriptions{};
+    CallbackList<Telemetry::DistanceSensor> _distance_sensor_subscriptions{};
+    CallbackList<Telemetry::ScaledPressure> _scaled_pressure_subscriptions{};
+    CallbackList<Telemetry::Heading> _heading_subscriptions{};
 
     // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // we just use the faster between the two.
