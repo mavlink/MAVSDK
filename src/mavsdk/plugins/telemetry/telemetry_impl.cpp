@@ -1191,19 +1191,13 @@ void TelemetryImpl::process_battery_status_v2(const mavlink_message_t& message)
     Telemetry::Battery new_battery;
     new_battery.id = bat_status.id;
     new_battery.voltage_v = (std::numeric_limits<uint32_t>::max() == bat_status.voltage) ? NAN : bat_status.voltage * 1e-3f;
-    //Is it correct to set this to NaN for UINT32_MAX? HOw do you specify = NaN?
-
-    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
-    // Can we fix this? What about if value not provided?
-    new_battery.remaining_percent = bat_status.percent_remaining; // to test * 1e-2f;
-
-    //bat_status also has:
-    //uint32_t current; /*< [mA] Battery current (through all cells/loads). UINT32_MAX: field not provided.*/
-    // uint32_t current_consumed; /*< [mAh] Consumed charge (since vehicle powered on). UINT32_MAX: field not provided. Note: For power modules the expectation is that batteries are fully charged before turning on the vehicle.*/
-    // uint32_t current_remaining; /*< [mAh] Remaining charge (until empty). UINT32_MAX: field not provided. Note: Power monitors should not set this value.*/
+    new_battery.remaining_percent = (std::numeric_limits<uint8_t>::max() == bat_status.percent_remaining) ? NAN : bat_status.percent_remaining;
+    
+    // To be added
+    // uint32_t current; /*< [mA] Battery current (through all cells/loads). UINT32_MAX: field not provided.*/
     // uint32_t status_flags; /*<  Fault, health, and readiness status indications.*/
-    // int16_t temperature; /*< [cdegC] Temperature of the whole battery pack (not internal electronics). INT16_MAX field not provided.*/
-
+    
+    // Not exposed: temperature, capacity_remaining, capacity_consumed
 
     set_battery(new_battery);
 
