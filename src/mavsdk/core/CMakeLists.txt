@@ -108,6 +108,7 @@ install(TARGETS mavsdk
     )
 
 install(FILES
+    include/mavsdk/callback_list.h
     include/mavsdk/connection_result.h
     include/mavsdk/deprecated.h
     include/mavsdk/system.h

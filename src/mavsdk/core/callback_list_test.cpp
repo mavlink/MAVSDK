@@ -3,10 +3,14 @@
 #include "log.h"
 #include <gtest/gtest.h>
 
-using namespace mavsdk;
+namespace mavsdk {
 
 template class CallbackList<int, double>;
 template class CallbackList<>;
+
+} // namespace mavsdk
+
+using namespace mavsdk;
 
 TEST(CallbackList, SubscribeCallUnsubscribe)
 {
