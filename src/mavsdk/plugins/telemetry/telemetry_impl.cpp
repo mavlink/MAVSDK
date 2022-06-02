@@ -1190,7 +1190,7 @@ void TelemetryImpl::process_battery_status_v2(const mavlink_message_t& message)
 
     Telemetry::Battery new_battery;
     new_battery.id = bat_status.id;
-    new_battery.voltage_v = bat_status.voltage; 
+    new_battery.voltage_v = (std::numeric_limits<uint32_t>::max() == bat_status.voltage) ? NAN : bat_status.voltage * 1e-3f;
     //Is it correct to set this to NaN for UINT32_MAX? HOw do you specify = NaN?
 
     // FIXME: it is strange calling it percent when the range goes from 0 to 1.
