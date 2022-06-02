@@ -6,6 +6,7 @@
 #include <mutex>
 #include <utility>
 #include <vector>
+#include "log.h"
 #include "callback_list.h"
 
 namespace mavsdk {
@@ -16,9 +17,19 @@ public:
     {
         check_removals();
 
-        std::lock_guard<std::mutex> lock(_mutex);
+        // We need to return a handle, even if the callback is nullptr to
+        // unsubscribe. That's fine, the handle just won't remove anything
+        // when/if used later.
         auto handle = Handle<Args...>(_last_id++);
-        _list.emplace_back(handle, callback);
+
+        if (callback != nullptr) {
+            std::lock_guard<std::mutex> lock(_mutex);
+            _list.emplace_back(handle, callback);
+        } else {
+            LogErr() << "Use new unsubscribe methods instead of subscribe(nullptr)\n"
+                     << "See: https://mavsdk.mavlink.io/main/en/cpp/api_changes.html#unsubscribe";
+            try_clear();
+        }
 
         return handle;
     }
@@ -55,6 +66,10 @@ public:
 
     void queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
     {
+        check_removals();
+
+        std::lock_guard<std::mutex> lock(_mutex);
+
         for (const auto& pair : _list) {
             queue_func([callback = pair.second, args...]() { callback(args...); });
         }
@@ -82,6 +97,12 @@ private:
         // We could probably just grab the lock here but it's safer not to
         // acquire both locks to avoid deadlocks.
         if (_mutex.try_lock()) {
+            if (_remove_all_later) {
+                _remove_all_later = false;
+                _list.clear();
+                _remove_later.clear();
+            }
+
             for (auto& id : _remove_later) {
                 _list.erase(
                     std::remove_if(
@@ -94,12 +115,24 @@ private:
         }
     }
 
+    void try_clear()
+    {
+        std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
+        if (lock.owns_lock()) {
+            _list.clear();
+        } else {
+            std::lock_guard<std::mutex> remove_later_lock(_remove_later_mutex);
+            _remove_all_later = true;
+        }
+    }
+
     mutable std::mutex _mutex{};
     uint64_t _last_id{0};
     std::vector<std::pair<Handle<Args...>, std::function<void(Args...)>>> _list{};
 
     mutable std::mutex _remove_later_mutex{};
     std::vector<uint64_t> _remove_later{};
+    bool _remove_all_later{false};
 };
 
 } // namespace mavsdk
