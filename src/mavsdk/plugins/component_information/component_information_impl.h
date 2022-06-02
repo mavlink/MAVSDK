@@ -2,6 +2,7 @@
 
 #include "plugins/component_information/component_information.h"
 #include "plugin_impl_base.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 

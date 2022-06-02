@@ -4,6 +4,7 @@
 #include "gimbal_protocol_base.h"
 #include "plugin_impl_base.h"
 #include "system.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 

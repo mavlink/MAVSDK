@@ -10,6 +10,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 #include "mavlink_mission_transfer.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 

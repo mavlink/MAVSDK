@@ -2,6 +2,8 @@
 
 #include "plugins/tracking_server/tracking_server.h"
 #include "server_plugin_impl_base.h"
+#include "callback_list.h"
+
 #include <optional>
 
 namespace mavsdk {

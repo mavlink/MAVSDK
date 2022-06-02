@@ -4,6 +4,7 @@
 
 #include "plugins/action_server/action_server.h"
 #include "server_plugin_impl_base.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 

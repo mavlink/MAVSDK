@@ -2,6 +2,7 @@
 
 #include "plugins/transponder/transponder.h"
 #include "plugin_impl_base.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 

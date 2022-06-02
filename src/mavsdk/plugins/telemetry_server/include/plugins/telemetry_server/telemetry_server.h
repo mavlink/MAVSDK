@@ -16,7 +16,7 @@
 
 #include "mavsdk/server_plugin_base.h"
 
-#include "mavsdk/callback_list.h"
+#include "mavsdk/handle.h"
 
 namespace mavsdk {
 

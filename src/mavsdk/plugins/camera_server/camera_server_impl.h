@@ -2,6 +2,7 @@
 
 #include "plugins/camera_server/camera_server.h"
 #include "server_plugin_impl_base.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 

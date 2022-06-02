@@ -6,22 +6,9 @@
 #include <mutex>
 #include <utility>
 #include <vector>
+#include "handle.h"
 
 namespace mavsdk {
-
-template<typename... Args> class CallbackListImpl;
-template<typename... Args> class CallbackList;
-
-template<typename... Args> class Handle {
-public:
-    explicit Handle(uint64_t id) : _id(id) {}
-
-protected:
-    uint64_t _id;
-
-private:
-    friend CallbackListImpl<Args...>;
-};
 
 template<typename... Args> class CallbackList {
 public:

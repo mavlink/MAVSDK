@@ -6,6 +6,7 @@
 #include "plugins/mission_raw/mission_raw.h"
 #include "plugin_impl_base.h"
 #include "system.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
