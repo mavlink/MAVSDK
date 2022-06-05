@@ -47,6 +47,7 @@ int GrpcServer::run()
     builder.RegisterService(&_transponder_service);
     builder.RegisterService(&_tune_service);
 
+    grpc::EnableDefaultHealthCheckService(true);
     _server = builder.BuildAndStart();
 
     if (_bound_port != 0) {
