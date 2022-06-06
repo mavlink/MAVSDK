@@ -468,6 +468,19 @@ void SystemImpl::send_autopilot_version_request()
     auto prom = std::promise<MavlinkCommandSender::Result>();
     auto fut = prom.get_future();
 
+    send_autopilot_version_request_async(
+        [&prom](MavlinkCommandSender::Result result, float _val) { prom.set_value(result); });
+
+    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
+        _old_message_520_supported = false;
+        LogWarn() << "Trying alternative command (512).";
+        send_autopilot_version_request();
+    }
+}
+
+void SystemImpl::send_autopilot_version_request_async(
+    const MavlinkCommandSender::CommandResultCallback& callback)
+{
     MavlinkCommandSender::CommandLong command{};
     command.target_component_id = get_autopilot_id();
 
@@ -481,14 +494,7 @@ void SystemImpl::send_autopilot_version_request()
         command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_AUTOPILOT_VERSION)};
     }
 
-    send_command_async(command, [&prom](MavlinkCommandSender::Result result, float _val) {
-        prom.set_value(result);
-    });
-    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_520_supported = false;
-        LogWarn() << "Trying alternative command (512).";
-        send_autopilot_version_request();
-    }
+    send_command_async(command, callback);
 }
 
 void SystemImpl::send_flight_information_request()
@@ -564,7 +570,7 @@ void SystemImpl::set_connected()
     }
     if (enable_needed) {
         if (has_autopilot()) {
-            // send_autopilot_version_request();
+            send_autopilot_version_request_async(nullptr);
         }
 
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
