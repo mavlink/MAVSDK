@@ -975,8 +975,8 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_mode(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+        const mavsdk::Camera::ModeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_mode(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
                 const mavsdk::Camera::Mode mode) {
                 rpc::camera::ModeResponse rpc_response;
 
@@ -984,7 +984,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_mode(nullptr);
+                    _lazy_plugin.maybe_plugin()->unsubscribe_mode(handle);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1015,23 +1015,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_information(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Camera::Information information) {
-                rpc::camera::InformationResponse rpc_response;
+        const mavsdk::Camera::InformationHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_information(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Camera::Information information) {
+                    rpc::camera::InformationResponse rpc_response;
 
-                rpc_response.set_allocated_information(
-                    translateToRpcInformation(information).release());
+                    rpc_response.set_allocated_information(
+                        translateToRpcInformation(information).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_information(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_information(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1056,23 +1057,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Camera::VideoStreamInfo video_stream_info) {
-                rpc::camera::VideoStreamInfoResponse rpc_response;
+        const mavsdk::Camera::VideoStreamInfoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Camera::VideoStreamInfo video_stream_info) {
+                    rpc::camera::VideoStreamInfoResponse rpc_response;
 
-                rpc_response.set_allocated_video_stream_info(
-                    translateToRpcVideoStreamInfo(video_stream_info).release());
+                    rpc_response.set_allocated_video_stream_info(
+                        translateToRpcVideoStreamInfo(video_stream_info).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_video_stream_info(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1097,23 +1099,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_capture_info(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Camera::CaptureInfo capture_info) {
-                rpc::camera::CaptureInfoResponse rpc_response;
+        const mavsdk::Camera::CaptureInfoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_capture_info(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Camera::CaptureInfo capture_info) {
+                    rpc::camera::CaptureInfoResponse rpc_response;
 
-                rpc_response.set_allocated_capture_info(
-                    translateToRpcCaptureInfo(capture_info).release());
+                    rpc_response.set_allocated_capture_info(
+                        translateToRpcCaptureInfo(capture_info).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_capture_info(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_capture_info(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1138,8 +1141,8 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_status(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+        const mavsdk::Camera::StatusHandle handle = _lazy_plugin.maybe_plugin()->subscribe_status(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
                 const mavsdk::Camera::Status status) {
                 rpc::camera::StatusResponse rpc_response;
 
@@ -1147,7 +1150,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_status(nullptr);
+                    _lazy_plugin.maybe_plugin()->unsubscribe_status(handle);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1178,25 +1181,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_current_settings(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const std::vector<mavsdk::Camera::Setting> current_settings) {
-                rpc::camera::CurrentSettingsResponse rpc_response;
+        const mavsdk::Camera::CurrentSettingsHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_current_settings(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const std::vector<mavsdk::Camera::Setting> current_settings) {
+                    rpc::camera::CurrentSettingsResponse rpc_response;
 
-                for (const auto& elem : current_settings) {
-                    auto* ptr = rpc_response.add_current_settings();
-                    ptr->CopyFrom(*translateToRpcSetting(elem).release());
-                }
+                    for (const auto& elem : current_settings) {
+                        auto* ptr = rpc_response.add_current_settings();
+                        ptr->CopyFrom(*translateToRpcSetting(elem).release());
+                    }
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_current_settings(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_current_settings(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1221,25 +1225,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const std::vector<mavsdk::Camera::SettingOptions> possible_setting_options) {
-                rpc::camera::PossibleSettingOptionsResponse rpc_response;
+        const mavsdk::Camera::PossibleSettingOptionsHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const std::vector<mavsdk::Camera::SettingOptions> possible_setting_options) {
+                    rpc::camera::PossibleSettingOptionsResponse rpc_response;
 
-                for (const auto& elem : possible_setting_options) {
-                    auto* ptr = rpc_response.add_setting_options();
-                    ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
-                }
+                    for (const auto& elem : possible_setting_options) {
+                        auto* ptr = rpc_response.add_setting_options();
+                        ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
+                    }
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_possible_setting_options(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);

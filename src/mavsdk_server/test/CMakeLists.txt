@@ -14,6 +14,9 @@ add_executable(unit_tests_mavsdk_server
 
 set_target_properties(unit_tests_mavsdk_server PROPERTIES COMPILE_FLAGS ${warnings})
 
+# We don't return Handle's in the mocks for now, so we need to disable the warning.
+set_target_properties(unit_tests_mavsdk_server PROPERTIES COMPILE_FLAGS -Wno-return-type)
+
 target_include_directories(unit_tests_mavsdk_server
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src

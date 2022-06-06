@@ -33,7 +33,10 @@ public:
     MOCK_CONST_METHOD0(current_mission_item, int()){};
     MOCK_CONST_METHOD0(total_mission_items, int()){};
     MOCK_CONST_METHOD0(is_mission_finished, std::pair<Mission::Result, bool>()){};
-    MOCK_CONST_METHOD1(subscribe_mission_progress, void(Mission::MissionProgressCallback)){};
+    MOCK_CONST_METHOD1(
+        subscribe_mission_progress,
+        Mission::MissionProgressHandle(Mission::MissionProgressCallback)){};
+    MOCK_CONST_METHOD1(unsubscribe_mission_progress, void(Mission::MissionProgressHandle)){};
     MOCK_CONST_METHOD0(get_return_to_launch_after_mission, std::pair<Mission::Result, bool>()){};
     MOCK_CONST_METHOD1(set_return_to_launch_after_mission, Mission::Result(bool)){};
 

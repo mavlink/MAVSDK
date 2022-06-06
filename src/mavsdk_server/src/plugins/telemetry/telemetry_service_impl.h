@@ -1320,22 +1320,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_position(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Position position) {
-                rpc::telemetry::PositionResponse rpc_response;
+        const mavsdk::Telemetry::PositionHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_position(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Position position) {
+                    rpc::telemetry::PositionResponse rpc_response;
 
-                rpc_response.set_allocated_position(translateToRpcPosition(position).release());
+                    rpc_response.set_allocated_position(translateToRpcPosition(position).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_position(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_position(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1360,8 +1361,8 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_home(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+        const mavsdk::Telemetry::HomeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_home(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
                 const mavsdk::Telemetry::Position home) {
                 rpc::telemetry::HomeResponse rpc_response;
 
@@ -1369,7 +1370,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_home(nullptr);
+                    _lazy_plugin.maybe_plugin()->unsubscribe_home(handle);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1400,8 +1401,8 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_in_air(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+        const mavsdk::Telemetry::InAirHandle handle = _lazy_plugin.maybe_plugin()->subscribe_in_air(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
                 const bool in_air) {
                 rpc::telemetry::InAirResponse rpc_response;
 
@@ -1409,7 +1410,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_in_air(nullptr);
+                    _lazy_plugin.maybe_plugin()->unsubscribe_in_air(handle);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1440,22 +1441,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_landed_state(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::LandedState landed_state) {
-                rpc::telemetry::LandedStateResponse rpc_response;
+        const mavsdk::Telemetry::LandedStateHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_landed_state(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::LandedState landed_state) {
+                    rpc::telemetry::LandedStateResponse rpc_response;
 
-                rpc_response.set_landed_state(translateToRpcLandedState(landed_state));
+                    rpc_response.set_landed_state(translateToRpcLandedState(landed_state));
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_landed_state(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_landed_state(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1480,8 +1482,8 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_armed(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+        const mavsdk::Telemetry::ArmedHandle handle = _lazy_plugin.maybe_plugin()->subscribe_armed(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
                 const bool armed) {
                 rpc::telemetry::ArmedResponse rpc_response;
 
@@ -1489,7 +1491,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_armed(nullptr);
+                    _lazy_plugin.maybe_plugin()->unsubscribe_armed(handle);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -1520,22 +1522,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_vtol_state(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::VtolState vtol_state) {
-                rpc::telemetry::VtolStateResponse rpc_response;
+        const mavsdk::Telemetry::VtolStateHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_vtol_state(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::VtolState vtol_state) {
+                    rpc::telemetry::VtolStateResponse rpc_response;
 
-                rpc_response.set_vtol_state(translateToRpcVtolState(vtol_state));
+                    rpc_response.set_vtol_state(translateToRpcVtolState(vtol_state));
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_vtol_state(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_vtol_state(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1560,23 +1563,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_attitude_quaternion(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Quaternion attitude_quaternion) {
-                rpc::telemetry::AttitudeQuaternionResponse rpc_response;
+        const mavsdk::Telemetry::AttitudeQuaternionHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_attitude_quaternion(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Quaternion attitude_quaternion) {
+                    rpc::telemetry::AttitudeQuaternionResponse rpc_response;
 
-                rpc_response.set_allocated_attitude_quaternion(
-                    translateToRpcQuaternion(attitude_quaternion).release());
+                    rpc_response.set_allocated_attitude_quaternion(
+                        translateToRpcQuaternion(attitude_quaternion).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_attitude_quaternion(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude_quaternion(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1601,23 +1605,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_attitude_euler(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::EulerAngle attitude_euler) {
-                rpc::telemetry::AttitudeEulerResponse rpc_response;
+        const mavsdk::Telemetry::AttitudeEulerHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_attitude_euler(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::EulerAngle attitude_euler) {
+                    rpc::telemetry::AttitudeEulerResponse rpc_response;
 
-                rpc_response.set_allocated_attitude_euler(
-                    translateToRpcEulerAngle(attitude_euler).release());
+                    rpc_response.set_allocated_attitude_euler(
+                        translateToRpcEulerAngle(attitude_euler).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_attitude_euler(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude_euler(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1642,23 +1647,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_attitude_angular_velocity_body(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
-                rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
+        const mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_attitude_angular_velocity_body(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
+                    rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
 
-                rpc_response.set_allocated_attitude_angular_velocity_body(
-                    translateToRpcAngularVelocityBody(attitude_angular_velocity_body).release());
+                    rpc_response.set_allocated_attitude_angular_velocity_body(
+                        translateToRpcAngularVelocityBody(attitude_angular_velocity_body)
+                            .release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_attitude_angular_velocity_body(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude_angular_velocity_body(
+                            handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1683,23 +1691,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_quaternion(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
-                rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
+        const mavsdk::Telemetry::CameraAttitudeQuaternionHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_quaternion(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
+                    rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
 
-                rpc_response.set_allocated_attitude_quaternion(
-                    translateToRpcQuaternion(camera_attitude_quaternion).release());
+                    rpc_response.set_allocated_attitude_quaternion(
+                        translateToRpcQuaternion(camera_attitude_quaternion).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_quaternion(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_camera_attitude_quaternion(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1724,23 +1733,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_euler(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
-                rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
+        const mavsdk::Telemetry::CameraAttitudeEulerHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_euler(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
+                    rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
 
-                rpc_response.set_allocated_attitude_euler(
-                    translateToRpcEulerAngle(camera_attitude_euler).release());
+                    rpc_response.set_allocated_attitude_euler(
+                        translateToRpcEulerAngle(camera_attitude_euler).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_euler(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_camera_attitude_euler(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1765,23 +1775,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_velocity_ned(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::VelocityNed velocity_ned) {
-                rpc::telemetry::VelocityNedResponse rpc_response;
+        const mavsdk::Telemetry::VelocityNedHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_velocity_ned(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::VelocityNed velocity_ned) {
+                    rpc::telemetry::VelocityNedResponse rpc_response;
 
-                rpc_response.set_allocated_velocity_ned(
-                    translateToRpcVelocityNed(velocity_ned).release());
+                    rpc_response.set_allocated_velocity_ned(
+                        translateToRpcVelocityNed(velocity_ned).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_velocity_ned(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_velocity_ned(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1806,22 +1817,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_gps_info(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::GpsInfo gps_info) {
-                rpc::telemetry::GpsInfoResponse rpc_response;
+        const mavsdk::Telemetry::GpsInfoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_gps_info(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::GpsInfo gps_info) {
+                    rpc::telemetry::GpsInfoResponse rpc_response;
 
-                rpc_response.set_allocated_gps_info(translateToRpcGpsInfo(gps_info).release());
+                    rpc_response.set_allocated_gps_info(translateToRpcGpsInfo(gps_info).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_gps_info(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_gps_info(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1846,22 +1858,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_raw_gps(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::RawGps raw_gps) {
-                rpc::telemetry::RawGpsResponse rpc_response;
+        const mavsdk::Telemetry::RawGpsHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_raw_gps(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::RawGps raw_gps) {
+                    rpc::telemetry::RawGpsResponse rpc_response;
 
-                rpc_response.set_allocated_raw_gps(translateToRpcRawGps(raw_gps).release());
+                    rpc_response.set_allocated_raw_gps(translateToRpcRawGps(raw_gps).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_raw_gps(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_raw_gps(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1886,22 +1899,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_battery(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Battery battery) {
-                rpc::telemetry::BatteryResponse rpc_response;
+        const mavsdk::Telemetry::BatteryHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_battery(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Battery battery) {
+                    rpc::telemetry::BatteryResponse rpc_response;
 
-                rpc_response.set_allocated_battery(translateToRpcBattery(battery).release());
+                    rpc_response.set_allocated_battery(translateToRpcBattery(battery).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_battery(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_battery(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1926,22 +1940,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_flight_mode(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::FlightMode flight_mode) {
-                rpc::telemetry::FlightModeResponse rpc_response;
+        const mavsdk::Telemetry::FlightModeHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_flight_mode(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::FlightMode flight_mode) {
+                    rpc::telemetry::FlightModeResponse rpc_response;
 
-                rpc_response.set_flight_mode(translateToRpcFlightMode(flight_mode));
+                    rpc_response.set_flight_mode(translateToRpcFlightMode(flight_mode));
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_flight_mode(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_flight_mode(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1966,22 +1981,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_health(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Health health) {
-                rpc::telemetry::HealthResponse rpc_response;
+        const mavsdk::Telemetry::HealthHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_health(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Health health) {
+                    rpc::telemetry::HealthResponse rpc_response;
 
-                rpc_response.set_allocated_health(translateToRpcHealth(health).release());
+                    rpc_response.set_allocated_health(translateToRpcHealth(health).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_health(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_health(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2006,22 +2022,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_rc_status(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::RcStatus rc_status) {
-                rpc::telemetry::RcStatusResponse rpc_response;
+        const mavsdk::Telemetry::RcStatusHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_rc_status(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::RcStatus rc_status) {
+                    rpc::telemetry::RcStatusResponse rpc_response;
 
-                rpc_response.set_allocated_rc_status(translateToRpcRcStatus(rc_status).release());
+                    rpc_response.set_allocated_rc_status(
+                        translateToRpcRcStatus(rc_status).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_rc_status(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_rc_status(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2046,23 +2064,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_status_text(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::StatusText status_text) {
-                rpc::telemetry::StatusTextResponse rpc_response;
+        const mavsdk::Telemetry::StatusTextHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_status_text(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::StatusText status_text) {
+                    rpc::telemetry::StatusTextResponse rpc_response;
 
-                rpc_response.set_allocated_status_text(
-                    translateToRpcStatusText(status_text).release());
+                    rpc_response.set_allocated_status_text(
+                        translateToRpcStatusText(status_text).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_status_text(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_status_text(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2087,23 +2106,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_actuator_control_target(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
-                rpc::telemetry::ActuatorControlTargetResponse rpc_response;
+        const mavsdk::Telemetry::ActuatorControlTargetHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_actuator_control_target(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
+                    rpc::telemetry::ActuatorControlTargetResponse rpc_response;
 
-                rpc_response.set_allocated_actuator_control_target(
-                    translateToRpcActuatorControlTarget(actuator_control_target).release());
+                    rpc_response.set_allocated_actuator_control_target(
+                        translateToRpcActuatorControlTarget(actuator_control_target).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_actuator_control_target(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_actuator_control_target(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2128,23 +2148,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_actuator_output_status(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
-                rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
+        const mavsdk::Telemetry::ActuatorOutputStatusHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_actuator_output_status(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
+                    rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
 
-                rpc_response.set_allocated_actuator_output_status(
-                    translateToRpcActuatorOutputStatus(actuator_output_status).release());
+                    rpc_response.set_allocated_actuator_output_status(
+                        translateToRpcActuatorOutputStatus(actuator_output_status).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_actuator_output_status(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_actuator_output_status(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2169,22 +2190,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_odometry(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Odometry odometry) {
-                rpc::telemetry::OdometryResponse rpc_response;
+        const mavsdk::Telemetry::OdometryHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_odometry(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Odometry odometry) {
+                    rpc::telemetry::OdometryResponse rpc_response;
 
-                rpc_response.set_allocated_odometry(translateToRpcOdometry(odometry).release());
+                    rpc_response.set_allocated_odometry(translateToRpcOdometry(odometry).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_odometry(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_odometry(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2209,23 +2231,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_position_velocity_ned(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
-                rpc::telemetry::PositionVelocityNedResponse rpc_response;
+        const mavsdk::Telemetry::PositionVelocityNedHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_position_velocity_ned(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
+                    rpc::telemetry::PositionVelocityNedResponse rpc_response;
 
-                rpc_response.set_allocated_position_velocity_ned(
-                    translateToRpcPositionVelocityNed(position_velocity_ned).release());
+                    rpc_response.set_allocated_position_velocity_ned(
+                        translateToRpcPositionVelocityNed(position_velocity_ned).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_position_velocity_ned(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_position_velocity_ned(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2250,23 +2273,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_ground_truth(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::GroundTruth ground_truth) {
-                rpc::telemetry::GroundTruthResponse rpc_response;
+        const mavsdk::Telemetry::GroundTruthHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_ground_truth(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::GroundTruth ground_truth) {
+                    rpc::telemetry::GroundTruthResponse rpc_response;
 
-                rpc_response.set_allocated_ground_truth(
-                    translateToRpcGroundTruth(ground_truth).release());
+                    rpc_response.set_allocated_ground_truth(
+                        translateToRpcGroundTruth(ground_truth).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_ground_truth(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_ground_truth(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2291,23 +2315,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_fixedwing_metrics(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
-                rpc::telemetry::FixedwingMetricsResponse rpc_response;
+        const mavsdk::Telemetry::FixedwingMetricsHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_fixedwing_metrics(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
+                    rpc::telemetry::FixedwingMetricsResponse rpc_response;
 
-                rpc_response.set_allocated_fixedwing_metrics(
-                    translateToRpcFixedwingMetrics(fixedwing_metrics).release());
+                    rpc_response.set_allocated_fixedwing_metrics(
+                        translateToRpcFixedwingMetrics(fixedwing_metrics).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_fixedwing_metrics(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_fixedwing_metrics(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2332,8 +2357,8 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_imu(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+        const mavsdk::Telemetry::ImuHandle handle = _lazy_plugin.maybe_plugin()->subscribe_imu(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
                 const mavsdk::Telemetry::Imu imu) {
                 rpc::telemetry::ImuResponse rpc_response;
 
@@ -2341,7 +2366,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_imu(nullptr);
+                    _lazy_plugin.maybe_plugin()->unsubscribe_imu(handle);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);
@@ -2372,22 +2397,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_scaled_imu(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Imu scaled_imu) {
-                rpc::telemetry::ScaledImuResponse rpc_response;
+        const mavsdk::Telemetry::ScaledImuHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_scaled_imu(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Imu scaled_imu) {
+                    rpc::telemetry::ScaledImuResponse rpc_response;
 
-                rpc_response.set_allocated_imu(translateToRpcImu(scaled_imu).release());
+                    rpc_response.set_allocated_imu(translateToRpcImu(scaled_imu).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_scaled_imu(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_scaled_imu(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2412,22 +2438,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_raw_imu(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Imu raw_imu) {
-                rpc::telemetry::RawImuResponse rpc_response;
+        const mavsdk::Telemetry::RawImuHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_raw_imu(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Imu raw_imu) {
+                    rpc::telemetry::RawImuResponse rpc_response;
 
-                rpc_response.set_allocated_imu(translateToRpcImu(raw_imu).release());
+                    rpc_response.set_allocated_imu(translateToRpcImu(raw_imu).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_raw_imu(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_raw_imu(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2452,22 +2479,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_health_all_ok(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const bool health_all_ok) {
-                rpc::telemetry::HealthAllOkResponse rpc_response;
+        const mavsdk::Telemetry::HealthAllOkHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_health_all_ok(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const bool health_all_ok) {
+                    rpc::telemetry::HealthAllOkResponse rpc_response;
 
-                rpc_response.set_is_health_all_ok(health_all_ok);
+                    rpc_response.set_is_health_all_ok(health_all_ok);
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_health_all_ok(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_health_all_ok(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2492,22 +2520,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_unix_epoch_time(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const uint64_t unix_epoch_time) {
-                rpc::telemetry::UnixEpochTimeResponse rpc_response;
+        const mavsdk::Telemetry::UnixEpochTimeHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_unix_epoch_time(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const uint64_t unix_epoch_time) {
+                    rpc::telemetry::UnixEpochTimeResponse rpc_response;
 
-                rpc_response.set_time_us(unix_epoch_time);
+                    rpc_response.set_time_us(unix_epoch_time);
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_unix_epoch_time(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_unix_epoch_time(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2532,23 +2561,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_distance_sensor(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::DistanceSensor distance_sensor) {
-                rpc::telemetry::DistanceSensorResponse rpc_response;
+        const mavsdk::Telemetry::DistanceSensorHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_distance_sensor(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::DistanceSensor distance_sensor) {
+                    rpc::telemetry::DistanceSensorResponse rpc_response;
 
-                rpc_response.set_allocated_distance_sensor(
-                    translateToRpcDistanceSensor(distance_sensor).release());
+                    rpc_response.set_allocated_distance_sensor(
+                        translateToRpcDistanceSensor(distance_sensor).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_distance_sensor(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_distance_sensor(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2573,23 +2603,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_scaled_pressure(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::ScaledPressure scaled_pressure) {
-                rpc::telemetry::ScaledPressureResponse rpc_response;
+        const mavsdk::Telemetry::ScaledPressureHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_scaled_pressure(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::ScaledPressure scaled_pressure) {
+                    rpc::telemetry::ScaledPressureResponse rpc_response;
 
-                rpc_response.set_allocated_scaled_pressure(
-                    translateToRpcScaledPressure(scaled_pressure).release());
+                    rpc_response.set_allocated_scaled_pressure(
+                        translateToRpcScaledPressure(scaled_pressure).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_scaled_pressure(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_scaled_pressure(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2614,22 +2645,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_heading(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Telemetry::Heading heading) {
-                rpc::telemetry::HeadingResponse rpc_response;
+        const mavsdk::Telemetry::HeadingHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_heading(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Telemetry::Heading heading) {
+                    rpc::telemetry::HeadingResponse rpc_response;
 
-                rpc_response.set_allocated_heading_deg(translateToRpcHeading(heading).release());
+                    rpc_response.set_allocated_heading_deg(
+                        translateToRpcHeading(heading).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_heading(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_heading(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
