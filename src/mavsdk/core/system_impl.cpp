@@ -6,12 +6,17 @@
 #include "px4_custom_mode.h"
 #include "ardupilot_custom_mode.h"
 #include "request_message.h"
+#include <callback_list.tpp>
 #include <cstdlib>
 #include <functional>
 #include <future>
 #include <utility>
 
 namespace mavsdk {
+
+template class CallbackList<bool>;
+template class CallbackList<System::ComponentType>;
+template class CallbackList<System::ComponentType, uint8_t>;
 
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
     Sender(),
@@ -156,10 +161,16 @@ void SystemImpl::enable_timesync()
     _timesync.enable();
 }
 
-void SystemImpl::subscribe_is_connected(System::IsConnectedCallback callback)
+System::IsConnectedHandle
+SystemImpl::subscribe_is_connected(const System::IsConnectedCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_connection_mutex);
-    _is_connected_callback = std::move(callback);
+    return _is_connected_callbacks.subscribe(callback);
+}
+
+void SystemImpl::unsubscribe_is_connected(System::IsConnectedHandle handle)
+{
+    _is_connected_callbacks.unsubscribe(handle);
 }
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
@@ -362,17 +373,12 @@ void SystemImpl::add_new_component(uint8_t component_id)
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
         std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
-        if (_component_discovered_callback != nullptr) {
-            const System::ComponentType type = component_type(component_id);
-            auto temp_callback = _component_discovered_callback;
-            call_user_callback([temp_callback, type]() { temp_callback(type); });
-        }
-        if (_component_discovered_id_callback != nullptr) {
-            const System::ComponentType type = component_type(component_id);
-            auto temp_callback = _component_discovered_id_callback;
-            call_user_callback(
-                [temp_callback, type, component_id]() { temp_callback(type, component_id); });
-        }
+        _component_discovered_callbacks.queue(
+            component_type(component_id), [this](const auto& func) { call_user_callback(func); });
+        _component_discovered_id_callbacks.queue(
+            component_type(component_id), component_id, [this](const auto& func) {
+                call_user_callback(func);
+            });
         LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
                    << ") added.";
     }
@@ -383,36 +389,46 @@ size_t SystemImpl::total_components() const
     return _components.size();
 }
 
-void SystemImpl::register_component_discovered_callback(System::DiscoverCallback callback)
+System::ComponentDiscoveredHandle
+SystemImpl::subscribe_component_discovered(const System::ComponentDiscoveredCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
-    _component_discovered_callback = std::move(callback);
+    const auto handle = _component_discovered_callbacks.subscribe(callback);
 
     if (total_components() > 0) {
         for (const auto& elem : _components) {
-            const System::ComponentType type = component_type(elem);
-            if (_component_discovered_callback) {
-                auto temp_callback = _component_discovered_callback;
-                call_user_callback([temp_callback, type]() { temp_callback(type); });
-            }
+            _component_discovered_callbacks.queue(
+                component_type(elem), [this](const auto& func) { call_user_callback(func); });
         }
     }
+    return handle;
 }
 
-void SystemImpl::register_component_discovered_id_callback(System::DiscoverIdCallback callback)
+void SystemImpl::unsubscribe_component_discovered(System::ComponentDiscoveredHandle handle)
 {
     std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
-    _component_discovered_id_callback = std::move(callback);
+    _component_discovered_callbacks.unsubscribe(handle);
+}
+
+System::ComponentDiscoveredIdHandle
+SystemImpl::subscribe_component_discovered_id(const System::ComponentDiscoveredIdCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
+    const auto handle = _component_discovered_id_callbacks.subscribe(callback);
 
     if (total_components() > 0) {
         for (const auto& elem : _components) {
-            const System::ComponentType type = component_type(elem);
-            if (_component_discovered_id_callback) {
-                auto temp_callback = _component_discovered_id_callback;
-                call_user_callback([temp_callback, type, elem]() { temp_callback(type, elem); });
-            }
+            _component_discovered_id_callbacks.queue(
+                component_type(elem), elem, [this](const auto& func) { call_user_callback(func); });
         }
     }
+    return handle;
+}
+
+void SystemImpl::unsubscribe_component_discovered_id(System::ComponentDiscoveredIdHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
+    _component_discovered_id_callbacks.unsubscribe(handle);
 }
 
 bool SystemImpl::is_standalone() const
@@ -520,10 +536,8 @@ void SystemImpl::set_connected()
             }
             enable_needed = true;
 
-            if (_is_connected_callback) {
-                const auto temp_callback = _is_connected_callback;
-                _parent.call_user_callback([temp_callback]() { temp_callback(true); });
-            }
+            _is_connected_callbacks.queue(
+                true, [this](const auto& func) { _parent.call_user_callback(func); });
 
         } else if (_connected && !_always_connected) {
             refresh_timeout_handler(_heartbeat_timeout_cookie);
@@ -554,10 +568,8 @@ void SystemImpl::set_disconnected()
 
         _connected = false;
         _parent.notify_on_timeout();
-        if (_is_connected_callback) {
-            const auto temp_callback = _is_connected_callback;
-            _parent.call_user_callback([temp_callback]() { temp_callback(false); });
-        }
+        _is_connected_callbacks.queue(
+            false, [this](const auto& func) { _parent.call_user_callback(func); });
     }
 
     _parent.stop_sending_heartbeats();
