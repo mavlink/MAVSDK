@@ -487,6 +487,7 @@ void SystemImpl::send_autopilot_version_request()
     if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
         _old_message_520_supported = false;
         LogWarn() << "Trying alternative command (512).";
+        send_autopilot_version_request();
     }
 }
 
@@ -514,6 +515,7 @@ void SystemImpl::send_flight_information_request()
     if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
         _old_message_528_supported = false;
         LogWarn() << "Trying alternative command (512)..";
+        send_flight_information_request();
     }
 }
 
