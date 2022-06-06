@@ -6,6 +6,7 @@
 #include <functional>
 
 #include "deprecated.h"
+#include "handle.h"
 #include "system.h"
 #include "server_component.h"
 #include "connection_result.h"
@@ -292,6 +293,11 @@ public:
     using NewSystemCallback = std::function<void()>;
 
     /**
+     * @brief Handle type to unsubscribe from subscribe_on_new_system.
+     */
+    using NewSystemHandle = Handle<>;
+
+    /**
      * @brief Get notification about a change in systems.
      *
      * This gets called whenever a system is added.
@@ -301,7 +307,12 @@ public:
      *
      * @param callback Callback to subscribe.
      */
-    void subscribe_on_new_system(const NewSystemCallback& callback);
+    NewSystemHandle subscribe_on_new_system(const NewSystemCallback& callback);
+
+    /**
+     * @brief unsubscribe from subscribe_on_new_system.
+     */
+    void unsubscribe_on_new_system(NewSystemHandle handle);
 
     /**
      * @brief High level type of a server component.
