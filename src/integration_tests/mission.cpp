@@ -45,7 +45,7 @@ TEST_F(SitlTest, PX4MissionAddWaypointsAndFly)
         auto future_result = prom->get_future();
 
         LogInfo() << "Waiting to discover system...";
-        mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
+        Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, prom]() {
             const auto system = mavsdk.systems().at(0);
 
             if (system->is_connected()) {
@@ -61,7 +61,7 @@ TEST_F(SitlTest, PX4MissionAddWaypointsAndFly)
         ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
         // FIXME: This hack is to prevent that the promise is set twice.
-        mavsdk.subscribe_on_new_system(nullptr);
+        mavsdk.unsubscribe_on_new_system(handle);
     }
 
     auto system = mavsdk.systems().at(0);

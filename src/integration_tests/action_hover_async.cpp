@@ -40,13 +40,14 @@ TEST_F(SitlTest, ActionHoverAsync)
         LogDebug() << "Waiting to be ready...";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        telemetry->subscribe_health_all_ok([&telemetry, &prom](bool all_ok) {
-            if (all_ok) {
-                // Unregister to prevent fulfilling promise twice.
-                telemetry->subscribe_health_all_ok(nullptr);
-                prom.set_value();
-            }
-        });
+        Telemetry::HealthAllOkHandle handle =
+            telemetry->subscribe_health_all_ok([&telemetry, &prom, &handle](bool all_ok) {
+                if (all_ok) {
+                    // Unregister to prevent fulfilling promise twice.
+                    telemetry->unsubscribe_health_all_ok(handle);
+                    prom.set_value();
+                }
+            });
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
@@ -93,13 +94,14 @@ TEST_F(SitlTest, ActionHoverAsync)
         LogInfo() << "Waiting to be landed...";
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        telemetry->subscribe_in_air([&telemetry, &prom](bool in_air) {
-            if (!in_air) {
-                // Unregister to prevent fulfilling promise twice.
-                telemetry->subscribe_in_air(nullptr);
-                prom.set_value();
-            }
-        });
+        Telemetry::InAirHandle handle =
+            telemetry->subscribe_in_air([&telemetry, &prom, &handle](bool in_air) {
+                if (!in_air) {
+                    // Unregister to prevent fulfilling promise twice.
+                    telemetry->unsubscribe_in_air(handle);
+                    prom.set_value();
+                }
+            });
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(20)), std::future_status::ready);
     }
 

@@ -93,9 +93,6 @@ TEST_F(SitlTest, PX4FollowMeOneLocation)
         std::cout << "waiting for system to disarm" << '\n';
         sleep_for(seconds(1));
     }
-
-    // Unsubscribe to avoid races on destruction.
-    telemetry->subscribe_flight_mode(nullptr);
 }
 
 TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
@@ -181,9 +178,6 @@ TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
         std::cout << "waiting for system to disarm" << '\n';
         sleep_for(seconds(1));
     }
-
-    // Unsubscribe to avoid races on destruction.
-    telemetry->subscribe_flight_mode(nullptr);
 }
 
 void print(const FollowMe::Config& config)

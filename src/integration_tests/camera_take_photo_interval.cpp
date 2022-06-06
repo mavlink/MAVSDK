@@ -70,11 +70,12 @@ void check_interval_on(std::shared_ptr<Camera> camera, bool on)
     auto ret = prom->get_future();
 
     // Check if status is correct
-    camera->subscribe_status([prom, on, camera](Camera::Status status) {
-        camera->subscribe_status(nullptr);
-        EXPECT_EQ(status.photo_interval_on, on);
-        prom->set_value();
-    });
+    Camera::StatusHandle handle =
+        camera->subscribe_status([prom, on, camera, handle](Camera::Status status) {
+            camera->unsubscribe_status(handle);
+            EXPECT_EQ(status.photo_interval_on, on);
+            prom->set_value();
+        });
 
     // Block now for a while to wait for result.
     auto status = ret.wait_for(std::chrono::seconds(2));

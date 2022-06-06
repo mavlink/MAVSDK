@@ -76,13 +76,14 @@ TEST_F(SitlTest, PX4MissionSetCurrent)
     {
         auto prom = std::promise<void>{};
         auto fut = prom.get_future();
-        telemetry->subscribe_position([&prom, &telemetry](Telemetry::Position position) {
-            if (position.relative_altitude_m > 2.0f) {
-                LogInfo() << "Reached 2 meters, jumping ahead to third mission item";
-                telemetry->subscribe_position(nullptr);
-                prom.set_value();
-            }
-        });
+        const Telemetry::PositionHandle handle = telemetry->subscribe_position(
+            [&prom, &telemetry, &handle](Telemetry::Position position) {
+                if (position.relative_altitude_m > 2.0f) {
+                    LogInfo() << "Reached 2 meters, jumping ahead to third mission item";
+                    telemetry->unsubscribe_position(handle);
+                    prom.set_value();
+                }
+            });
         auto fut_status = fut.wait_for(std::chrono::seconds(10));
         ASSERT_EQ(fut_status, std::future_status::ready);
     }
