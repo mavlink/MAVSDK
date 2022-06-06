@@ -99,14 +99,14 @@ int main(int argc, char* argv[])
 
     // We wait for new systems to be discovered, once we find one that has an
     // autopilot, we decide to use it.
-    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+    Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, &prom, &handle]() {
         auto system = mavsdk.systems().back();
 
         if (system->has_autopilot()) {
             std::cout << "Discovered autopilot\n";
 
             // Unsubscribe again as we only want to find one system.
-            mavsdk.subscribe_on_new_system(nullptr);
+            mavsdk.unsubscribe_on_new_system(handle);
             prom.set_value(system);
         }
     });
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
     // Instantiate plugins.
     auto mavlink_passthrough = MavlinkPassthrough{system};
 
-    mavlink_passthrough.subscribe_message_async(
+    mavlink_passthrough.subscribe_message(
         MAVLINK_MSG_ID_COMMAND_LONG, [&our_sysid](const mavlink_message_t& message) {
             process_command_long(message, our_sysid);
         });

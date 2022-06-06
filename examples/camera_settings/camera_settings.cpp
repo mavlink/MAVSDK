@@ -211,14 +211,14 @@ int main(int argc, char** argv)
 
     // We wait for new systems to be discovered, once we find one that has a
     // camera, we decide to use it.
-    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+    Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, &prom, &handle]() {
         auto system = mavsdk.systems().back();
 
         if (system->has_camera()) {
             std::cout << "Discovered camera\n";
 
             // Unsubscribe again as we only want to find one system.
-            mavsdk.subscribe_on_new_system(nullptr);
+            mavsdk.unsubscribe_on_new_system(handle);
             prom.set_value(system);
         }
     });
