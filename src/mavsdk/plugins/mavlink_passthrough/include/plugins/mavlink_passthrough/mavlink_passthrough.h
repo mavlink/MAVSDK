@@ -7,6 +7,7 @@
 // This plugin provides/includes the mavlink 2.0 header files.
 #include "mavlink_include.h"
 #include "mavsdk/plugin_base.h"
+#include "mavsdk/handle.h"
 
 namespace mavsdk {
 
@@ -135,6 +136,16 @@ public:
     Result send_command_int(const CommandInt& command);
 
     /**
+     * @brief Callback type for message subscriptions.
+     */
+    using MessageCallback = std::function<void(const mavlink_message_t&)>;
+
+    /**
+     * @brief Handle type for subscribe_message_async.
+     */
+    using MessageHandle = Handle<const mavlink_message_t&>;
+
+    /**
      * @brief Subscribe to messages using message ID.
      *
      * This means that all future messages being received will trigger the
@@ -144,8 +155,12 @@ public:
      * @param message_id The MAVLink message ID.
      * @param callback Callback to be called for message subscription.
      */
-    void subscribe_message_async(
-        uint16_t message_id, std::function<void(const mavlink_message_t&)> callback);
+    MessageHandle subscribe_message(uint16_t message_id, const MessageCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_message.
+     */
+    void unsubscribe_message(MessageHandle handle);
 
     /**
      * @brief Get our own system ID.

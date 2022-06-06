@@ -30,10 +30,15 @@ MavlinkPassthrough::Result MavlinkPassthrough::send_command_long(const CommandLo
     return _impl->send_command_long(command);
 }
 
-void MavlinkPassthrough::subscribe_message_async(
-    uint16_t message_id, std::function<void(const mavlink_message_t&)> callback)
+MavlinkPassthrough::MessageHandle
+MavlinkPassthrough::subscribe_message(uint16_t message_id, const MessageCallback& callback)
 {
-    _impl->subscribe_message_async(message_id, callback);
+    return _impl->subscribe_message(message_id, callback);
+}
+
+void MavlinkPassthrough::unsubscribe_message(MessageHandle handle)
+{
+    _impl->unsubscribe_message(handle);
 }
 
 std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& result)

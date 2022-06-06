@@ -53,7 +53,7 @@ TEST_F(SitlTest, PX4MavlinkPassthrough)
     {
         auto counter = std::make_shared<unsigned>(0);
 
-        mavlink_passthrough->subscribe_message_async(
+        mavlink_passthrough->subscribe_message(
             MAVLINK_MSG_ID_HIGHRES_IMU, [counter](const mavlink_message_t& message) {
                 mavlink_highres_imu_t highres_imu;
                 mavlink_msg_highres_imu_decode(&message, &highres_imu);

@@ -1,8 +1,11 @@
 #include <functional>
 #include "mavlink_passthrough_impl.h"
 #include "system.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<void(const mavlink_message_t&)>;
 
 MavlinkPassthroughImpl::MavlinkPassthroughImpl(System& system) : PluginImplBase(system)
 {
@@ -27,6 +30,7 @@ void MavlinkPassthroughImpl::deinit()
     _parent->intercept_incoming_messages(nullptr);
     _parent->intercept_outgoing_messages(nullptr);
     _parent->unregister_all_mavlink_message_handlers(this);
+    _message_subscriptions.clear();
 }
 
 void MavlinkPassthroughImpl::enable() {}
@@ -112,20 +116,32 @@ MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_resu
     }
 }
 
-void MavlinkPassthroughImpl::subscribe_message_async(
-    uint16_t message_id, std::function<void(const mavlink_message_t&)> callback)
+MavlinkPassthrough::MessageHandle MavlinkPassthroughImpl::subscribe_message(
+    uint16_t message_id, const MavlinkPassthrough::MessageCallback& callback)
 {
-    if (callback == nullptr) {
-        _parent->unregister_mavlink_message_handler(message_id, this);
-    } else {
-        auto temp_callback = callback;
+    if (_message_subscriptions.find(message_id) == _message_subscriptions.end()) {
         _parent->register_mavlink_message_handler(
             message_id,
-            [this, temp_callback](const mavlink_message_t& message) {
-                _parent->call_user_callback([temp_callback, message]() { temp_callback(message); });
-            },
+            [this](const mavlink_message_t& message) { receive_mavlink_message(message); },
             this);
     }
+
+    return _message_subscriptions[message_id].subscribe(callback);
+}
+
+void MavlinkPassthroughImpl::unsubscribe_message(MavlinkPassthrough::MessageHandle handle)
+{
+    // We don't know which subscription holds the handle, so we have to go
+    // through all of them.
+    for (auto& subscription : _message_subscriptions) {
+        subscription.second.unsubscribe(handle);
+    }
+}
+
+void MavlinkPassthroughImpl::receive_mavlink_message(const mavlink_message_t& message)
+{
+    _message_subscriptions[message.msgid].queue(
+        message, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 uint8_t MavlinkPassthroughImpl::get_our_sysid() const

@@ -5,6 +5,7 @@
 #include "mavlink_include.h"
 #include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "plugin_impl_base.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -24,8 +25,10 @@ public:
     MavlinkPassthrough::Result send_command_long(const MavlinkPassthrough::CommandLong& command);
     MavlinkPassthrough::Result send_command_int(const MavlinkPassthrough::CommandInt& command);
 
-    void subscribe_message_async(
-        uint16_t message_id, std::function<void(const mavlink_message_t&)> callback);
+    MavlinkPassthrough::MessageHandle
+    subscribe_message(uint16_t message_id, const MavlinkPassthrough::MessageCallback& callback);
+
+    void unsubscribe_message(MavlinkPassthrough::MessageHandle handle);
 
     uint8_t get_our_sysid() const;
     uint8_t get_our_compid() const;
@@ -36,8 +39,12 @@ public:
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
 private:
+    void receive_mavlink_message(const mavlink_message_t& message);
+
     static MavlinkPassthrough::Result
     to_mavlink_passthrough_result_from_mavlink_commands_result(MavlinkCommandSender::Result result);
+
+    std::unordered_map<uint16_t, CallbackList<const mavlink_message_t&>> _message_subscriptions{};
 };
 
 } // namespace mavsdk
