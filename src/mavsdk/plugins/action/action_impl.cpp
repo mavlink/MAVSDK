@@ -237,9 +237,7 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
             });
     };
 
-    if (_parent->get_flight_mode() == FlightMode::Mission ||
-        _parent->get_flight_mode() == FlightMode::ReturnToLaunch ||
-        _parent->get_flight_mode() == FlightMode::Land) { // Needed for APM
+    if (need_hold_before_arm()) {
         _parent->set_flight_mode_async(
             FlightMode::Hold,
             [callback, send_arm_command](MavlinkCommandSender::Result result, float) {
@@ -252,9 +250,39 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
                 send_arm_command();
             });
         return;
+    } else {
+        send_arm_command();
     }
+}
 
-    send_arm_command();
+bool ActionImpl::need_hold_before_arm() const
+{
+    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
+        return need_hold_before_arm_px4();
+    } else {
+        return need_hold_before_arm_apm();
+    }
+}
+
+bool ActionImpl::need_hold_before_arm_px4() const
+{
+    if (_parent->get_flight_mode() == FlightMode::Mission ||
+        _parent->get_flight_mode() == FlightMode::ReturnToLaunch) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool ActionImpl::need_hold_before_arm_apm() const
+{
+    if (_parent->get_flight_mode() == FlightMode::Mission ||
+        _parent->get_flight_mode() == FlightMode::ReturnToLaunch ||
+        _parent->get_flight_mode() == FlightMode::Land) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void ActionImpl::disarm_async(const Action::ResultCallback& callback) const

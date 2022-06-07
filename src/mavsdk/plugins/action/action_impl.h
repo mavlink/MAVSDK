@@ -53,8 +53,6 @@ public:
     void reboot_async(const Action::ResultCallback& callback) const;
     void shutdown_async(const Action::ResultCallback& callback) const;
     void takeoff_async(const Action::ResultCallback& callback) const;
-    void takeoff_async_px4(const Action::ResultCallback& callback) const;
-    void takeoff_async_apm(const Action::ResultCallback& callback) const;
     void land_async(const Action::ResultCallback& callback) const;
     void return_to_launch_async(const Action::ResultCallback& callback) const;
     void goto_location_async(
@@ -82,8 +80,6 @@ public:
     void get_takeoff_altitude_async(const Action::GetTakeoffAltitudeCallback& callback) const;
 
     Action::Result set_takeoff_altitude(float relative_altitude_m);
-    Action::Result set_takeoff_altitude_px4(float relative_altitude_m);
-    Action::Result set_takeoff_altitude_apm(float relative_altitude_m);
     std::pair<Action::Result, float> get_takeoff_altitude() const;
 
     void
@@ -111,6 +107,16 @@ private:
 
     void command_result_callback(
         MavlinkCommandSender::Result command_result, const Action::ResultCallback& callback) const;
+
+    bool need_hold_before_arm() const;
+    bool need_hold_before_arm_px4() const;
+    bool need_hold_before_arm_apm() const;
+
+    void takeoff_async_px4(const Action::ResultCallback& callback) const;
+    void takeoff_async_apm(const Action::ResultCallback& callback) const;
+
+    Action::Result set_takeoff_altitude_px4(float relative_altitude_m);
+    Action::Result set_takeoff_altitude_apm(float relative_altitude_m);
 
     std::atomic<bool> _vtol_transition_support_known{false};
     std::atomic<bool> _vtol_transition_possible{false};

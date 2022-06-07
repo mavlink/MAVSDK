@@ -856,19 +856,18 @@ ardupilot::CopterMode SystemImpl::flight_mode_to_ardupilot_copter_mode(FlightMod
             return ardupilot::CopterMode::Stabilize;
         case FlightMode::FollowMe:
             return ardupilot::CopterMode::Follow;
-        case FlightMode::Unknown:
-            return ardupilot::CopterMode::Unknown;
-        // case FlightMode::Ready:
-        // case FlightMode::Takeoff:
         case FlightMode::Offboard:
             return ardupilot::CopterMode::Guided;
         case FlightMode::Altctl:
             return ardupilot::CopterMode::Alt_Hold;
         case FlightMode::Posctl:
             return ardupilot::CopterMode::POS_HOLD;
-        // case FlightMode::Rattitude:
         case FlightMode::Stabilized:
             return ardupilot::CopterMode::Stabilize;
+        case FlightMode::Unknown:
+        case FlightMode::Ready:
+        case FlightMode::Takeoff:
+        case FlightMode::Rattitude:
         default:
             return ardupilot::CopterMode::Unknown;
     }
