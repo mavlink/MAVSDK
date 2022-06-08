@@ -217,7 +217,7 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     } else {
         const auto new_vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
         if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID && _vehicle_type != new_vehicle_type &&
-            _new_vehicle_type != MAV_TYPE_GENERIC) {
+            new_vehicle_type != MAV_TYPE_GENERIC) {
             LogWarn() << "Vehicle type changed (new type: " << static_cast<unsigned>(heartbeat.type)
                       << ", old type: " << static_cast<unsigned>(_vehicle_type) << ")";
             _vehicle_type = new_vehicle_type;
