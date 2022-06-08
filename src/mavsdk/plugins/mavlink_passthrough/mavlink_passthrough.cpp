@@ -74,16 +74,4 @@ uint8_t MavlinkPassthrough::get_target_compid() const
     return _impl->get_target_compid();
 }
 
-void MavlinkPassthrough::intercept_incoming_messages_async(
-    std::function<bool(mavlink_message_t&)> callback)
-{
-    _impl->intercept_incoming_messages_async(callback);
-}
-
-void MavlinkPassthrough::intercept_outgoing_messages_async(
-    std::function<bool(mavlink_message_t&)> callback)
-{
-    _impl->intercept_outgoing_messages_async(callback);
-}
-
 } // namespace mavsdk

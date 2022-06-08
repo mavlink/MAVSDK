@@ -82,8 +82,8 @@ public:
     void start_sending_heartbeats();
     void stop_sending_heartbeats();
 
-    void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
-    void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
+    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
+    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
     std::shared_ptr<ServerComponent> server_component_by_type(
         Mavsdk::ServerComponentType server_component_type, unsigned instance = 0);

@@ -760,12 +760,12 @@ void MavsdkImpl::send_heartbeat()
     }
 }
 
-void MavsdkImpl::intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback)
+void MavsdkImpl::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
     _intercept_incoming_messages_callback = callback;
 }
 
-void MavsdkImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback)
+void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
     _intercept_outgoing_messages_callback = callback;
 }

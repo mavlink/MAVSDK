@@ -273,9 +273,6 @@ public:
 
     RequestMessage& request_message() { return _request_message; };
 
-    void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
-    void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
-
     // Non-copyable
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;

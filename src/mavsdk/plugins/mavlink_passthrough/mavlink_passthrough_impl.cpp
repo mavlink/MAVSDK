@@ -27,8 +27,6 @@ void MavlinkPassthroughImpl::init() {}
 
 void MavlinkPassthroughImpl::deinit()
 {
-    _parent->intercept_incoming_messages(nullptr);
-    _parent->intercept_outgoing_messages(nullptr);
     _parent->unregister_all_mavlink_message_handlers(this);
     _message_subscriptions.clear();
 }
@@ -162,18 +160,6 @@ uint8_t MavlinkPassthroughImpl::get_target_sysid() const
 uint8_t MavlinkPassthroughImpl::get_target_compid() const
 {
     return _parent->get_autopilot_id();
-}
-
-void MavlinkPassthroughImpl::intercept_incoming_messages_async(
-    std::function<bool(mavlink_message_t&)> callback)
-{
-    _parent->intercept_incoming_messages(callback);
-}
-
-void MavlinkPassthroughImpl::intercept_outgoing_messages_async(
-    std::function<bool(mavlink_message_t&)> callback)
-{
-    _parent->intercept_outgoing_messages(callback);
 }
 
 } // namespace mavsdk

@@ -1185,16 +1185,6 @@ void SystemImpl::unregister_param_changed_handler(const void* cookie)
     _param_changed_callbacks.erase(it);
 }
 
-void SystemImpl::intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback)
-{
-    _parent.intercept_incoming_messages(callback);
-}
-
-void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback)
-{
-    _parent.intercept_outgoing_messages(callback);
-}
-
 Time& SystemImpl::get_time()
 {
     return _parent.time;

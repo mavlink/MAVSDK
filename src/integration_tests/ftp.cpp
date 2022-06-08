@@ -201,13 +201,13 @@ TEST(FtpTest, DownloadFile)
     reset_server(ftp);
 
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
-    mavlink_passthrough->intercept_incoming_messages_async([](const mavlink_message_t& message) {
+    mavsdk.intercept_incoming_messages_async([](const mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
             return true;
         }
         return (distribution(random_engine) > 0.01);
     });
-    mavlink_passthrough->intercept_outgoing_messages_async([](const mavlink_message_t& message) {
+    mavsdk.intercept_outgoing_messages_async([](const mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
             return true;
         }
@@ -236,13 +236,13 @@ TEST(FtpTest, UploadFiles)
     reset_server(ftp);
 
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
-    mavlink_passthrough->intercept_incoming_messages_async([](const mavlink_message_t& message) {
+    mavsdk.intercept_incoming_messages_async([](const mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
             return true;
         }
         return (distribution(random_engine) > 0.01);
     });
-    mavlink_passthrough->intercept_outgoing_messages_async([](const mavlink_message_t& message) {
+    mavsdk.intercept_outgoing_messages_async([](const mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
             return true;
         }
@@ -300,13 +300,13 @@ TEST(FtpTest, TestServer)
     auto system_cc = mavsdk_cc.systems().at(0);
 
     auto mavlink_passthrough_cc = std::make_shared<MavlinkPassthrough>(system_cc);
-    mavlink_passthrough_cc->intercept_incoming_messages_async([](const mavlink_message_t& message) {
+    mavsdk_cc.intercept_incoming_messages_async([](const mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
             return true;
         }
         return (distribution(random_engine) > 0.1);
     });
-    mavlink_passthrough_cc->intercept_outgoing_messages_async([](const mavlink_message_t& message) {
+    mavsdk_cc.intercept_outgoing_messages_async([](const mavlink_message_t& message) {
         if (message.msgid != MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
             return true;
         }

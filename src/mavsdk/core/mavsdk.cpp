@@ -188,4 +188,14 @@ void Mavsdk::Configuration::set_usage_type(Mavsdk::Configuration::UsageType usag
     _usage_type = usage_type;
 }
 
+void Mavsdk::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
+{
+    _impl->intercept_incoming_messages_async(callback);
+}
+
+void Mavsdk::intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback)
+{
+    _impl->intercept_outgoing_messages_async(callback);
+}
+
 } // namespace mavsdk

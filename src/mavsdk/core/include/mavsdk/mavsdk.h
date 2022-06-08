@@ -351,6 +351,35 @@ public:
      */
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
 
+    /**
+     * @brief Intercept incoming messages.
+     *
+     * This is a hook which allows to change or drop MAVLink messages as they
+     * are received before they get forwarded any subscribers.
+     *
+     * @note This functionality is provided primarily for testing in order to
+     * simulate packet drops or actors not adhering to the MAVLink protocols.
+     *
+     * @param callback Callback to be called for each incoming message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
+
+    /**
+     * @brief Intercept outgoing messages.
+     *
+     * This is a hook which allows to change or drop MAVLink messages before
+     * they are sent.
+     *
+     * @note This functionality is provided primarily for testing in order to
+     * simulate packet drops or actors not adhering to the MAVLink protocols.
+     *
+     * @param callback Callback to be called for each outgoing message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
+
+
 private:
     /* @private. */
     std::shared_ptr<MavsdkImpl> _impl{};

@@ -35,9 +35,6 @@ public:
     uint8_t get_target_sysid() const;
     uint8_t get_target_compid() const;
 
-    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
-    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
-
 private:
     void receive_mavlink_message(const mavlink_message_t& message);
 
