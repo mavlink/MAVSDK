@@ -2,7 +2,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 configure_file(version.h.in version.h)
-configure_file(mavlink_include.h.in mavlink_include.h)
+configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
 
 target_sources(mavsdk
     PRIVATE
@@ -92,12 +92,10 @@ set_target_properties(mavsdk
 target_include_directories(mavsdk
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/mavsdk>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     PRIVATE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>/third_party/include
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     )
 
 install(TARGETS mavsdk
@@ -118,6 +116,7 @@ install(FILES
     include/mavsdk/server_plugin_base.h
     include/mavsdk/geometry.h
     include/mavsdk/server_component.h
+    ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 

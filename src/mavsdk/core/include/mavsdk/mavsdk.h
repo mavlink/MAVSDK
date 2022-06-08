@@ -10,6 +10,7 @@
 #include "system.h"
 #include "server_component.h"
 #include "connection_result.h"
+#include "mavlink_include.h"
 
 namespace mavsdk {
 

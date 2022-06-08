@@ -5,7 +5,7 @@
 #include <functional>
 
 // This plugin provides/includes the mavlink 2.0 header files.
-#include "mavlink_include.h"
+#include "mavsdk/mavlink_include.h"
 #include "mavsdk/plugin_base.h"
 #include "mavsdk/handle.h"
 
