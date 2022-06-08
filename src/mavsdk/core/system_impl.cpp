@@ -6,7 +6,7 @@
 #include "px4_custom_mode.h"
 #include "ardupilot_custom_mode.h"
 #include "request_message.h"
-#include <callback_list.tpp>
+#include "callback_list.tpp"
 #include <cstdlib>
 #include <functional>
 #include <future>
