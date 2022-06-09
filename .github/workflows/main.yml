@@ -26,7 +26,7 @@ jobs:
       - name: install pymavlink dependencies
         run: sudo apt-get update && sudo apt-get install -y python3-future
       - name: install stuff to debug
-        run: sudo apt-get install -y autoconf automake autotools-dev build-essential ca-certificates ccache cmake colordiff git libcurl4-openssl-dev libltdl-dev libtinyxml2-dev libtool libz-dev
+        run: sudo apt-get install -y autoconf automake autotools-dev build-essential ca-certificates ccache cmake colordiff git libcurl4-openssl-dev libltdl-dev libtinyxml2-dev libtool libz-dev ninja-build python3 python3-pip python3-future ruby-dev software-properties-common sudo wget
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/release -H.
       - name: build
