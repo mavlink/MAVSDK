@@ -84,6 +84,8 @@ int main(int argc, char** argv)
         paramServer.provide_param_int("MIS_TAKEOFF_ALT", 0);
         // Add a custom param
         paramServer.provide_param_int("my_param", 1);
+		//Consti10 show bug 1:
+	  	paramServer.provide_param_custom("OHD_UART_NAME","/dev/ttyUSB0");
 
         // Allow the vehicle to change modes, takeoff and arm
         actionServer.set_allowable_flight_modes({true, true, true});
@@ -185,6 +187,9 @@ int main(int argc, char** argv)
     auto action = mavsdk::Action{system};
     auto param = mavsdk::Param{system};
     auto telemetry = mavsdk::Telemetry{system};
+
+  	//Consti10 show bug part 2.
+  	param.get_all_params();
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
     auto mission = mavsdk::Mission{system};
