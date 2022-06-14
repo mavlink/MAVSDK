@@ -74,4 +74,7 @@ TEST(SystemTest, ParamCustomSetAndGet)
     auto server_result_pair = param_server.retrieve_param_custom(param_name);
     EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
     EXPECT_EQ(server_result_pair.second, data_shorter);
+
+	// this is just to make sure the get_all() doesn't crash
+	//const auto res_get_all=param.get_all_params();
 }

@@ -59,21 +59,30 @@ TEST(SystemTest, ParamGetAll)
 
     auto param = Param{system};
 
+	const auto test_float_params=generate_float_params();
+	const auto test_int_params=generate_int_params();
     // Add many params
-    for (const auto& float_param : generate_float_params()) {
+    for (const auto& float_param : test_float_params) {
         EXPECT_EQ(
             param_server.provide_param_float(float_param.first, float_param.second),
             ParamServer::Result::Success);
     }
-    for (const auto& int_param : generate_int_params()) {
+    for (const auto& int_param :  test_int_params) {
         EXPECT_EQ(
             param_server.provide_param_int(int_param.first, int_param.second),
             ParamServer::Result::Success);
     }
 
-    auto all_params = param.get_all_params();
+    const auto all_params = param.get_all_params();
 
-    EXPECT_EQ(all_params.float_params.size(), generate_float_params().size());
-    EXPECT_EQ(all_params.int_params.size(), generate_int_params().size());
+    EXPECT_EQ(all_params.float_params.size(), test_float_params.size());
+    EXPECT_EQ(all_params.int_params.size(), test_int_params.size());
+	// Note: the order is not necessarily a requirement
+	for(int i=0;i<test_float_params.size();i++){
+		EXPECT_EQ(all_params.float_params.at(i), test_float_params.at(i));
+	}
+	for(int i=0;i<test_int_params.size();i++){
+		EXPECT_EQ(all_params.int_params.at(i), test_int_params.at(i));
+	}
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
