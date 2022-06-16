@@ -26,6 +26,8 @@ MAVLinkParameters::MAVLinkParameters(
             _parameter_debugging = true;
         }
     }
+	// tmp debug always on
+	_parameter_debugging=true;
 
     if (!_is_server) {
         _message_handler.register_one(
@@ -622,10 +624,13 @@ std::map<std::string, MAVLinkParameters::ParamValue> MAVLinkParameters::get_all_
     auto res = prom.get_future();
 
     get_all_params_async(
-        [&prom](const std::map<std::string, MAVLinkParameters::ParamValue>& all_params) {
+		// Consti10: all_params used to be passed in here as a reference - that is a bug.
+		// Since for example on a receive timeout, the empty all_params result is constructed in-place and then
+		// goes out of scope when the callback returns. So don't use a reference here, pass by value or refactor the code to use
+		// a std::shared_ptr.
+        [&prom](std::map<std::string, MAVLinkParameters::ParamValue> all_params) {
             prom.set_value(all_params);
         });
-
     return res.get();
 }
 
@@ -806,6 +811,7 @@ void MAVLinkParameters::do_work()
                     param_value_buf.data(),
                     work->param_value.get_mav_param_ext_type());
             } else {
+			  	//LogErr() << "X1";
                 float value_set = (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
                                       work->param_value.get_4_float_bytes_cast() :
                                       work->param_value.get_4_float_bytes_bytewise();
@@ -917,6 +923,7 @@ void MAVLinkParameters::do_work()
                 if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
                     param_value = work->param_value.get_4_float_bytes_cast();
                 } else {
+				  	//LogErr() << "X2";
                     param_value = work->param_value.get_4_float_bytes_bytewise();
                 }
                 mavlink_msg_param_value_pack(
@@ -988,6 +995,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
         _all_params[param_id] = received_value;
 
         // check if we are looking for param list
+		// Consti10 - now this is broken since the n of parameters is different for ext and non-ext use cases.
         if (_all_params_callback) {
             if (param_value.param_index + 1 == param_value.param_count) {
                 _timeout_handler.remove(_all_params_timeout_cookie);
@@ -1348,6 +1356,7 @@ void MAVLinkParameters::receive_timeout()
         std::lock_guard<std::mutex> lock(_all_params_mutex);
         // first check if we are waiting for param list response
         if (_all_params_callback) {
+		  	LogDebug()<<"All params receive timeout";
             _all_params_callback({});
             return;
         }
@@ -1537,14 +1546,18 @@ void MAVLinkParameters::process_param_request_read(const mavlink_message_t& mess
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
 
-    std::string param_id = extract_safe_param_id(read_request.param_id);
-
     if (read_request.param_index == -1) {
-        auto safe_param_id = extract_safe_param_id(read_request.param_id);
+        const auto safe_param_id = extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
 
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
+		   // Make sure we are not forwarding an extended param via the "normal" param messages.
+		   const auto param_value= _all_params.at(safe_param_id);
+			if(param_value.needs_extended()){
+			  LogDebug()<<"Not forwarding param"<<safe_param_id<<" since it needs extended";
+			  return;
+			}
             auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
             new_work->type = WorkItem::Type::Value;
             new_work->param_name = safe_param_id;
@@ -1564,12 +1577,21 @@ void MAVLinkParameters::process_param_request_list(const mavlink_message_t& mess
 
     auto idx = 0;
     for (const auto& pair : _all_params) {
+	  	// make sure extended parameters never make it out via the param request list
+		// (use param extended list)
+		if(pair.second.needs_extended()){
+		  LogDebug()<<"Not forwarding param"<<pair.first<<" since it needs extended";
+		  continue;
+		}
         auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
         new_work->type = WorkItem::Type::Value;
         new_work->param_name = pair.first;
         new_work->param_value = pair.second;
         new_work->extended = false;
-        new_work->param_count = static_cast<int>(_all_params.size());
+		// Consti10 - the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
+		// that need the extended protocol
+        //new_work->param_count = static_cast<int>(_all_params.size());
+		new_work->param_count = get_current_parameters_count(false);
         new_work->param_index = idx++;
         _work_queue.push_back(new_work);
     }

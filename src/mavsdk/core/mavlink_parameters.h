@@ -131,6 +131,13 @@ public:
             double,
             std::string>
             _value{};
+
+		// Consti10: hacky, returns true if this parameter needs the extended parameters' protocol
+		// (which is the case when its value is represented by a string)
+		bool needs_extended()const{
+		  // true if it is a string, false otherwise.
+		  return is<std::string>();
+		}
     };
 
     enum class Result {
@@ -254,6 +261,8 @@ public:
     void get_param_custom_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
+	// Note: this one only returns non-extended parameters right now, since the extended params need their own
+	// independent mavlink param request message.
     std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
     using GetAllParamsCallback =
         std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>;
@@ -353,13 +362,30 @@ private:
     void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
 
-    bool _is_server;
+    const bool _is_server;
 
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_ext_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);
 
     bool _parameter_debugging{false};
+
+	// Return the n of parameters, either from an extended or non-extended perspective.
+	// ( we need to hide parameters that need extended from non-extended queries).
+	int get_current_parameters_count(bool extended)const{
+	  if(extended){
+		// easy, we can do all parameters
+		return static_cast<int>(_all_params.size());
+	  }
+	  // a bit messy, we need to loop through all params and only count the ones that are non-extended
+	  int count=0;
+	  for (auto const& [key, val] : _all_params){
+		if(!val.needs_extended()){
+		  count++;
+		}
+	  }
+	  return count;
+	}
 };
 
 } // namespace mavsdk
