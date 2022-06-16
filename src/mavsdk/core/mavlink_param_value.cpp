@@ -4,8 +4,6 @@
 
 #include "mavlink_param_value.h"
 
-#include "mavlink_message_handler.h"
-#include "timeout_handler.h"
 #include "system_impl.h"
 #include <algorithm>
 #include <cstring>

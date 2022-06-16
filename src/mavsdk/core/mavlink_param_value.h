@@ -5,11 +5,8 @@
 #ifndef MAVSDK_SRC_MAVSDK_CORE_MAVLINK_PARAM_VALUE_H_
 #define MAVSDK_SRC_MAVSDK_CORE_MAVLINK_PARAM_VALUE_H_
 
-#include "log.h"
 #include "mavlink_include.h"
-#include "mavlink_param_value.h"
-#include "timeout_s_callback.h"
-#include "locked_queue.h"
+#include "log.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -17,7 +14,6 @@
 #include <functional>
 #include <cassert>
 #include <vector>
-#include <map>
 #include <optional>
 #include <variant>
 
@@ -110,6 +106,14 @@ class ParamValue {
 
   [[nodiscard]] std::string typestr() const;
 
+  // Consti10: hacky, returns true if this parameter needs the extended parameters' protocol
+  // (which is the case when its value is represented by a string)
+  bool needs_extended() const {
+	// true if it is a string, false otherwise.
+	return is<std::string>();
+  }
+  friend std::ostream& operator<<(std::ostream&, const parameters::ParamValue&);
+ private:
   std::variant<
 	  uint8_t,
 	  int8_t,
@@ -123,14 +127,6 @@ class ParamValue {
 	  double,
 	  std::string>
 	  _value{};
-
-  // Consti10: hacky, returns true if this parameter needs the extended parameters' protocol
-  // (which is the case when its value is represented by a string)
-  bool needs_extended() const {
-	// true if it is a string, false otherwise.
-	return is<std::string>();
-  }
-  friend std::ostream& operator<<(std::ostream&, const parameters::ParamValue&);
 };
 
 }
