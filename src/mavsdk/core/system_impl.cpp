@@ -607,7 +607,7 @@ uint8_t SystemImpl::get_own_mav_type() const
 
 MAVLinkParameters::Result SystemImpl::set_param(
     const std::string& name,
-    MAVLinkParameters::ParamValue value,
+    parameters::ParamValue value,
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
@@ -635,14 +635,14 @@ SystemImpl::set_param_custom(const std::string& name, const std::string& value)
     return _params.set_param_custom(name, value);
 }
 
-std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::get_all_params()
+std::map<std::string, parameters::ParamValue> SystemImpl::get_all_params()
 {
     return _params.get_all_params();
 }
 
 void SystemImpl::set_param_async(
     const std::string& name,
-    MAVLinkParameters::ParamValue value,
+	parameters::ParamValue value,
     const SetParamCallback& callback,
     const void* cookie,
     std::optional<uint8_t> maybe_component_id,
@@ -691,7 +691,7 @@ SystemImpl::get_param_custom(const std::string& name)
 
 void SystemImpl::get_param_async(
     const std::string& name,
-    MAVLinkParameters::ParamValue value,
+	parameters::ParamValue value,
     const GetParamAnyCallback& callback,
     const void* cookie,
     std::optional<uint8_t> maybe_component_id,
@@ -944,7 +944,7 @@ FlightMode SystemImpl::get_flight_mode() const
 
 void SystemImpl::receive_float_param(
     MAVLinkParameters::Result result,
-    MAVLinkParameters::ParamValue value,
+	parameters::ParamValue value,
     const GetParamFloatCallback& callback)
 {
     if (callback) {
@@ -958,7 +958,7 @@ void SystemImpl::receive_float_param(
 
 void SystemImpl::receive_int_param(
     MAVLinkParameters::Result result,
-    MAVLinkParameters::ParamValue value,
+	parameters::ParamValue value,
     const GetParamIntCallback& callback)
 {
     if (callback) {

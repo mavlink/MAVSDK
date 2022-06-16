@@ -307,7 +307,7 @@ CameraDefinition::parse_options(
                         return std::make_pair<>(false, options);
                     }
 
-                    MAVLinkParameters::ParamValue new_param_value;
+				  	parameters::ParamValue new_param_value;
                     new_param_value.set_from_xml(
                         type_map[roption_parameter_str], roption_value_str);
                     new_parameter_range[roption_name_str] = new_param_value;
@@ -345,7 +345,7 @@ CameraDefinition::parse_range_options(
         return std::make_tuple<>(false, options, default_option);
     }
 
-    MAVLinkParameters::ParamValue min_value;
+  	parameters::ParamValue min_value;
     min_value.set_from_xml(type_map[param_name], min_str);
 
     const char* max_str = param_handle->Attribute("max");
@@ -358,7 +358,7 @@ CameraDefinition::parse_range_options(
     min_option->name = "min";
     min_option->value = min_value;
 
-    MAVLinkParameters::ParamValue max_value;
+  parameters::ParamValue max_value;
     max_value.set_from_xml(type_map[param_name], max_str);
 
     auto max_option = std::make_shared<Option>();
@@ -371,7 +371,7 @@ CameraDefinition::parse_range_options(
     }
 
     if (step_str) {
-        MAVLinkParameters::ParamValue step_value;
+	  parameters::ParamValue step_value;
         step_value.set_from_xml(type_map[param_name], step_str);
 
         auto step_option = std::make_shared<Option>();
@@ -392,7 +392,7 @@ CameraDefinition::parse_range_options(
         return std::make_tuple<>(false, options, default_option);
     }
 
-    MAVLinkParameters::ParamValue default_value;
+  parameters::ParamValue default_value;
     default_value.set_from_xml(type_map[param_name], default_str);
 
     default_option.name = default_str;
@@ -460,7 +460,7 @@ void CameraDefinition::assume_default_settings()
 }
 
 bool CameraDefinition::get_all_settings(
-    std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings)
+    std::unordered_map<std::string, parameters::ParamValue>& settings)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -473,7 +473,7 @@ bool CameraDefinition::get_all_settings(
 }
 
 bool CameraDefinition::get_possible_settings(
-    std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings)
+    std::unordered_map<std::string, parameters::ParamValue>& settings)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -481,7 +481,7 @@ bool CameraDefinition::get_possible_settings(
 }
 
 bool CameraDefinition::get_possible_settings_locked(
-    std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings)
+    std::unordered_map<std::string, parameters::ParamValue>& settings)
 {
     settings.clear();
 
@@ -522,7 +522,7 @@ bool CameraDefinition::get_possible_settings_locked(
 }
 
 bool CameraDefinition::set_setting(
-    const std::string& name, const MAVLinkParameters::ParamValue& value)
+    const std::string& name, const parameters::ParamValue& value)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -564,7 +564,7 @@ bool CameraDefinition::set_setting(
     return true;
 }
 
-bool CameraDefinition::get_setting(const std::string& name, MAVLinkParameters::ParamValue& value)
+bool CameraDefinition::get_setting(const std::string& name, parameters::ParamValue& value)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -584,7 +584,7 @@ bool CameraDefinition::get_setting(const std::string& name, MAVLinkParameters::P
 bool CameraDefinition::get_option_value(
     const std::string& param_name,
     const std::string& option_value,
-    MAVLinkParameters::ParamValue& value)
+	parameters::ParamValue& value)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -604,7 +604,7 @@ bool CameraDefinition::get_option_value(
 }
 
 bool CameraDefinition::get_all_options(
-    const std::string& name, std::vector<MAVLinkParameters::ParamValue>& values)
+    const std::string& name, std::vector<parameters::ParamValue>& values)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -623,7 +623,7 @@ bool CameraDefinition::get_all_options(
 }
 
 bool CameraDefinition::get_possible_options(
-    const std::string& name, std::vector<MAVLinkParameters::ParamValue>& values)
+    const std::string& name, std::vector<parameters::ParamValue>& values)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -634,7 +634,7 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
 
-    std::unordered_map<std::string, MAVLinkParameters::ParamValue> settings;
+    std::unordered_map<std::string, parameters::ParamValue> settings;
     if (!get_possible_settings_locked(settings)) {
         return false;
     }
@@ -665,7 +665,7 @@ bool CameraDefinition::get_possible_options(
     }
 
     // TODO: use set instead of vector for this
-    std::vector<MAVLinkParameters::ParamValue> allowed_ranges{};
+    std::vector<parameters::ParamValue> allowed_ranges{};
 
     // Check allowed ranges.
     for (const auto& parameter : _parameter_map) {
@@ -718,7 +718,7 @@ bool CameraDefinition::get_possible_options(
 }
 
 void CameraDefinition::get_unknown_params(
-    std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>>& params)
+    std::vector<std::pair<std::string, parameters::ParamValue>>& params)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 

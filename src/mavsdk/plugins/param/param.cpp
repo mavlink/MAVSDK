@@ -55,7 +55,7 @@ Param::Result Param::set_param_custom(std::string name, std::string value) const
 
 Param::AllParams Param::get_all_params() const
 {
-    return _impl->get_all_params();
+    return _impl->get_all_params(false);
 }
 
 bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs)

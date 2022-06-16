@@ -2,6 +2,7 @@
 
 #include "log.h"
 #include "mavlink_include.h"
+#include "mavlink_param_value.h"
 #include "timeout_s_callback.h"
 #include "locked_queue.h"
 #include <array>
@@ -43,103 +44,6 @@ public:
         bool is_server);
     ~MAVLinkParameters();
 
-    class ParamValue {
-    public:
-        bool set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value);
-        bool set_from_mavlink_param_value_cast(const mavlink_param_value_t& mavlink_value);
-        bool set_from_mavlink_param_set_bytewise(const mavlink_param_set_t& mavlink_set);
-        bool set_from_mavlink_param_ext_set(const mavlink_param_ext_set_t& mavlink_ext_set);
-        bool set_from_mavlink_param_ext_value(const mavlink_param_ext_value_t& mavlink_ext_value);
-        bool set_from_xml(const std::string& type_str, const std::string& value_str);
-        bool set_empty_type_from_xml(const std::string& type_str);
-
-        [[nodiscard]] MAV_PARAM_TYPE get_mav_param_type() const;
-        [[nodiscard]] MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const;
-
-        bool set_as_same_type(const std::string& value_str);
-
-        [[nodiscard]] float get_4_float_bytes_bytewise() const;
-        [[nodiscard]] float get_4_float_bytes_cast() const;
-
-        [[nodiscard]] std::optional<int> get_int() const;
-        [[nodiscard]] std::optional<float> get_float() const;
-        [[nodiscard]] std::optional<std::string> get_custom() const;
-
-        bool set_int(int new_value);
-        void set_float(float new_value);
-        void set_custom(const std::string& new_value);
-
-        std::array<char, 128> get_128_bytes() const;
-
-        [[nodiscard]] std::string get_string() const;
-
-        template<typename T>[[nodiscard]] bool is() const
-        {
-            return (std::get_if<T>(&_value) != nullptr);
-        }
-
-        template<typename T> T get() const { return std::get<T>(_value); }
-
-        template<typename T> void set(T new_value) { _value = new_value; }
-
-        [[nodiscard]] bool is_same_type(const ParamValue& rhs) const;
-
-        bool operator==(const ParamValue& rhs) const
-        {
-            if (!is_same_type(rhs)) {
-                LogWarn() << "Trying to compare different types.";
-                return false;
-            }
-
-            return _value == rhs._value;
-        }
-
-        bool operator<(const ParamValue& rhs) const
-        {
-            if (!is_same_type(rhs)) {
-                LogWarn() << "Trying to compare different types.";
-                return false;
-            }
-
-            return _value < rhs._value;
-        }
-
-        bool operator>(const ParamValue& rhs) const
-        {
-            if (!is_same_type(rhs)) {
-                LogWarn() << "Trying to compare different types.";
-                return false;
-            }
-
-            return _value > rhs._value;
-        }
-
-        bool operator==(const std::string& value_str) const;
-
-        [[nodiscard]] std::string typestr() const;
-
-        std::variant<
-            uint8_t,
-            int8_t,
-            uint16_t,
-            int16_t,
-            uint32_t,
-            int32_t,
-            uint64_t,
-            int64_t,
-            float,
-            double,
-            std::string>
-            _value{};
-
-		// Consti10: hacky, returns true if this parameter needs the extended parameters' protocol
-		// (which is the case when its value is represented by a string)
-		bool needs_extended()const{
-		  // true if it is a string, false otherwise.
-		  return is<std::string>();
-		}
-    };
-
     enum class Result {
         Success,
         Timeout,
@@ -155,7 +59,7 @@ public:
 
     Result set_param(
         const std::string& name,
-        ParamValue value,
+		parameters::ParamValue value,
         std::optional<uint8_t> maybe_component_id,
         bool extended = false);
 
@@ -163,7 +67,7 @@ public:
 
     void set_param_async(
         const std::string& name,
-        ParamValue value,
+		parameters::ParamValue value,
         const SetParamCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
@@ -209,22 +113,22 @@ public:
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int value);
     Result provide_server_param_custom(const std::string& name, const std::string& value);
-    std::map<std::string, MAVLinkParameters::ParamValue> retrieve_all_server_params();
+    std::map<std::string, parameters::ParamValue> retrieve_all_server_params();
 
-    std::pair<Result, ParamValue>
-    retrieve_server_param(const std::string& name, ParamValue value_type);
+    std::pair<Result, parameters::ParamValue>
+    retrieve_server_param(const std::string& name, parameters::ParamValue value_type);
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
-    using GetParamAnyCallback = std::function<void(Result, ParamValue)>;
+    using GetParamAnyCallback = std::function<void(Result, parameters::ParamValue)>;
 
-    std::pair<Result, ParamValue>
-    get_param(const std::string& name, ParamValue value_type, bool extended = false);
+    std::pair<Result, parameters::ParamValue>
+    get_param(const std::string& name, parameters::ParamValue value_type, bool extended = false);
 
     void get_param_async(
         const std::string& name,
-        ParamValue value,
+		parameters::ParamValue value,
         const GetParamAnyCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
@@ -261,12 +165,12 @@ public:
     void get_param_custom_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
-	// Note: this one only returns non-extended parameters right now, since the extended params need their own
-	// independent mavlink param request message.
-    std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
+	// Note: When use_extended == false, this won't return any parameters that use a string as param value,
+	// since the non-extended protocol is incapable of doing so.
+    std::map<std::string, parameters::ParamValue> get_all_params(bool use_extended=false);
     using GetAllParamsCallback =
-        std::function<void(std::map<std::string, MAVLinkParameters::ParamValue>)>;
-    void get_all_params_async(const GetAllParamsCallback& callback);
+        std::function<void(std::map<std::string, parameters::ParamValue>)>;
+    void get_all_params_async(const GetAllParamsCallback& callback,bool use_extended=false);
 
     using ParamFloatChangedCallback = std::function<void(float value)>;
     void subscribe_param_float_changed(
@@ -283,8 +187,6 @@ public:
     void cancel_all_param(const void* cookie);
 
     void do_work();
-
-    friend std::ostream& operator<<(std::ostream&, const ParamValue&);
 
     friend std::ostream& operator<<(std::ostream&, const Result&);
 
@@ -308,7 +210,7 @@ private:
     static std::string extract_safe_param_id(const char param_id[]);
 
     static void
-    call_param_changed_callback(const ParamChangedCallbacks& callback, const ParamValue& value);
+    call_param_changed_callback(const ParamChangedCallbacks& callback, const parameters::ParamValue& value);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
@@ -328,7 +230,7 @@ private:
             SetParamCallback>
             callback{};
         std::string param_name{};
-        ParamValue param_value{};
+	  	parameters::ParamValue param_value{};
         std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
         bool already_requested{false};
@@ -349,7 +251,7 @@ private:
     struct ParamChangedSubscription {
         std::string param_name{};
         ParamChangedCallbacks callback{};
-        ParamValue value_type{};
+	  	parameters::ParamValue value_type{};
         bool any_type{false};
         const void* cookie{nullptr};
     };
@@ -360,13 +262,15 @@ private:
     std::mutex _all_params_mutex{};
     GetAllParamsCallback _all_params_callback;
     void* _all_params_timeout_cookie{nullptr};
-    std::map<std::string, ParamValue> _all_params{};
+    std::map<std::string, parameters::ParamValue> _all_params{};
 
     const bool _is_server;
 
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_ext_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);
+	// request list from a component that wants to also do strings and therefore has to use the extended parameter protocol).
+  	void process_param_ext_request_list(const mavlink_message_t& message);
 
     bool _parameter_debugging{false};
 
@@ -374,7 +278,7 @@ private:
 	// ( we need to hide parameters that need extended from non-extended queries).
 	int get_current_parameters_count(bool extended)const{
 	  if(extended){
-		// easy, we can do all parameters
+		// easy, we can do all parameters.
 		return static_cast<int>(_all_params.size());
 	  }
 	  // a bit messy, we need to loop through all params and only count the ones that are non-extended

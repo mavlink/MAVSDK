@@ -63,10 +63,9 @@ Param::Result ParamImpl::set_param_custom(const std::string& name, const std::st
     return result_from_mavlink_parameters_result(result);
 }
 
-Param::AllParams ParamImpl::get_all_params()
+Param::AllParams ParamImpl::get_all_params(const bool use_extended)
 {
     auto tmp = _parent->get_all_params();
-
     Param::AllParams res{};
     for (auto const& param_pair : tmp) {
         if (param_pair.second.is<float>()) {

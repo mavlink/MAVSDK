@@ -24,6 +24,7 @@ target_sources(mavsdk
     mavlink_ftp.cpp
     mavlink_mission_transfer.cpp
     mavlink_parameters.cpp
+    mavlink_param_value.cpp
     mavlink_receiver.cpp
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp

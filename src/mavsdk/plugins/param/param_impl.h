@@ -32,7 +32,11 @@ public:
 
     Param::Result set_param_custom(const std::string& name, const std::string& value);
 
-    Param::AllParams get_all_params();
+	/**
+	 * @param use_extended When not using the extended protocol, this cannot return any parameters where
+	 * value is of type string.
+	 */
+    Param::AllParams get_all_params(const bool use_extended=false);
 
 private:
     static Param::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);

@@ -27,23 +27,23 @@ public:
 
     struct Setting {
         std::string name;
-        MAVLinkParameters::ParamValue value;
+	  	parameters::ParamValue value;
     };
 
-    bool set_setting(const std::string& name, const MAVLinkParameters::ParamValue& value);
-    bool get_setting(const std::string& name, MAVLinkParameters::ParamValue& value);
-    bool get_all_settings(std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings);
+    bool set_setting(const std::string& name, const parameters::ParamValue& value);
+    bool get_setting(const std::string& name, parameters::ParamValue& value);
+    bool get_all_settings(std::unordered_map<std::string, parameters::ParamValue>& settings);
     bool
-    get_possible_settings(std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings);
+    get_possible_settings(std::unordered_map<std::string, parameters::ParamValue>& settings);
 
     bool get_option_value(
         const std::string& param_name,
         const std::string& option_value,
-        MAVLinkParameters::ParamValue& value);
+		parameters::ParamValue& value);
     bool
-    get_all_options(const std::string& name, std::vector<MAVLinkParameters::ParamValue>& values);
+    get_all_options(const std::string& name, std::vector<parameters::ParamValue>& values);
     bool get_possible_options(
-        const std::string& name, std::vector<MAVLinkParameters::ParamValue>& values);
+        const std::string& name, std::vector<parameters::ParamValue>& values);
 
     bool is_setting_range(const std::string& name);
 
@@ -52,7 +52,7 @@ public:
         const std::string& setting_name, const std::string& option_name, std::string& description);
 
     void
-    get_unknown_params(std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>>& params);
+    get_unknown_params(std::vector<std::pair<std::string, parameters::ParamValue>>& params);
     void set_all_params_unknown();
 
     // Non-copyable
@@ -61,13 +61,13 @@ public:
 
 private:
     bool get_possible_settings_locked(
-        std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings);
+        std::unordered_map<std::string, parameters::ParamValue>& settings);
 
-    typedef std::unordered_map<std::string, MAVLinkParameters::ParamValue> parameter_range_t;
+    typedef std::unordered_map<std::string, parameters::ParamValue> parameter_range_t;
 
     struct Option {
         std::string name{};
-        MAVLinkParameters::ParamValue value{};
+	  parameters::ParamValue value{};
         std::vector<std::string> exclusions{};
         std::unordered_map<std::string, parameter_range_t> parameter_ranges{};
     };
@@ -77,7 +77,7 @@ private:
         bool is_control{false};
         bool is_readonly{false};
         bool is_writeonly{false};
-        MAVLinkParameters::ParamValue type{}; // for type only, doesn't hold a value
+	  	parameters::ParamValue type{}; // for type only, doesn't hold a value
         std::vector<std::string> updates{};
         std::vector<std::shared_ptr<Option>> options{};
         Option default_option{};
@@ -106,7 +106,7 @@ private:
     std::unordered_map<std::string, std::shared_ptr<Parameter>> _parameter_map{};
 
     struct InternalCurrentSetting {
-        MAVLinkParameters::ParamValue value{};
+	  	parameters::ParamValue value{};
         bool needs_updating{false};
     };
 
