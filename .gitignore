@@ -22,7 +22,7 @@ venv/
 cmake-build-*
 
 # Build folder when using the command line (as recommended from the tutorial)
-build
+build/*
 
 # mavlink repo to generate mavlink-headers
 mavlink
