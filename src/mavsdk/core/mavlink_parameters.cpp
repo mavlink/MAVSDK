@@ -935,7 +935,6 @@ void MAVLinkParameters::do_work()
                 if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
                     param_value = work->param_value.get_4_float_bytes_cast();
                 } else {
-				  	//LogErr() << "X2";
                     param_value = work->param_value.get_4_float_bytes_bytewise();
                 }
                 mavlink_msg_param_value_pack(
@@ -1324,7 +1323,7 @@ void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
     mavlink_param_ext_set_t set_request{};
     mavlink_msg_param_ext_set_decode(&message, &set_request);
 
-    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
     if (!safe_param_id.empty()) {
         LogDebug() << "Set Param Request: " << safe_param_id;
         {
@@ -1491,7 +1490,7 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
     mavlink_param_set_t set_request{};
     mavlink_msg_param_set_decode(&message, &set_request);
 
-    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
     if (!safe_param_id.empty()) {
         LogDebug() << "Set Param Request: " << safe_param_id << " with value "
                    << *(int32_t*)(&set_request.param_value);
@@ -1556,7 +1555,7 @@ void MAVLinkParameters::process_param_request_read(const mavlink_message_t& mess
     mavlink_msg_param_request_read_decode(&message, &read_request);
 
     if (read_request.param_index == -1) {
-        const auto safe_param_id = extract_safe_param_id(read_request.param_id);
+        const auto safe_param_id= extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
 
         // Use the ID
@@ -1627,10 +1626,8 @@ void MAVLinkParameters::process_param_ext_request_read(const mavlink_message_t& 
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
 
-    std::string param_id = extract_safe_param_id(read_request.param_id);
-
     if (read_request.param_index == -1) {
-        auto safe_param_id = extract_safe_param_id(read_request.param_id);
+        const auto safe_param_id = extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
@@ -1670,6 +1667,21 @@ std::ostream& operator<<(std::ostream& str, const MAVLinkParameters::Result& res
         default:
             return str << "UnknownError";
     }
+}
+
+int MAVLinkParameters::get_current_parameters_count(bool extended)const{
+  if(extended){
+	// easy, we can do all parameters.
+	return static_cast<int>(_all_params.size());
+  }
+  // a bit messy, we need to loop through all params and only count the ones that are non-extended
+  int count=0;
+  for (auto const& [key, val] : _all_params){
+	if(!val.needs_extended()){
+	  count++;
+	}
+  }
+  return count;
 }
 
 } // namespace mavsdk

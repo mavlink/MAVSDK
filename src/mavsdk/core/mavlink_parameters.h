@@ -276,20 +276,7 @@ private:
 
 	// Return the n of parameters, either from an extended or non-extended perspective.
 	// ( we need to hide parameters that need extended from non-extended queries).
-	int get_current_parameters_count(bool extended)const{
-	  if(extended){
-		// easy, we can do all parameters.
-		return static_cast<int>(_all_params.size());
-	  }
-	  // a bit messy, we need to loop through all params and only count the ones that are non-extended
-	  int count=0;
-	  for (auto const& [key, val] : _all_params){
-		if(!val.needs_extended()){
-		  count++;
-		}
-	  }
-	  return count;
-	}
+	int get_current_parameters_count(bool extended)const;
 };
 
 } // namespace mavsdk

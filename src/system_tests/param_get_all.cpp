@@ -92,16 +92,26 @@ TEST(SystemTest, ParamGetAll)
 			ParamServer::Result::Success);
 	}
 
-    const auto all_params = param.get_all_params();
+	{
+	  // Here we use the non-extended protocol
+	  const auto all_params = param.get_all_params();
+	  EXPECT_EQ(all_params.float_params.size(), test_float_params.size());
+	  EXPECT_EQ(all_params.int_params.size(), test_int_params.size());
+	  // check that all the parameters we got have the right param value
+	  for(const auto& param: all_params.float_params){
+		  EXPECT_EQ(param.value, test_float_params.find(param.name)->second);
+	  }
+	  for(const auto& param: all_params.int_params){
+		  EXPECT_EQ(param.value, test_int_params.find(param.name)->second);
+	  }
+	}
+	/*{
+		// now we do the same, but this time with the extended protocol
+		const auto all_params = param.get_all_params(true);
+		EXPECT_EQ(all_params.float_params.size(), test_float_params.size());
+		EXPECT_EQ(all_params.int_params.size(), test_int_params.size());
+		EXPECT_EQ(all_params.custom_params.size(), test_string_params.size());
+	}*/
 
-    EXPECT_EQ(all_params.float_params.size(), test_float_params.size());
-    EXPECT_EQ(all_params.int_params.size(), test_int_params.size());
-	// check that all the parameters we got have the right param value
-	for(const auto& param: all_params.float_params){
-		EXPECT_EQ(param.value, test_float_params.find(param.name)->second);
-	}
-	for(const auto& param: all_params.int_params){
-	  	EXPECT_EQ(param.value, test_int_params.find(param.name)->second);
-	}
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
