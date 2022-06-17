@@ -79,7 +79,6 @@ TEST(SystemTest, ParamGetAll)
     EXPECT_EQ(all_params.float_params.size(), test_float_params.size());
     EXPECT_EQ(all_params.int_params.size(), test_int_params.size());
 	// check that all the parameters we got have the right param value
-	// Note: the order is not necessarily a requirement
 	for(const auto& param: all_params.float_params){
 		EXPECT_EQ(param.value, test_float_params.find(param.name)->second);
 	}
