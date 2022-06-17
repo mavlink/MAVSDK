@@ -34,6 +34,9 @@ namespace parameters {
  */
 class ParamValue {
  public:
+  // These set_xxx are convenient ways to change the value (parameter) by using the
+  // different mavlink message payload's of the extended and non-extended protocol.
+  // TODO I think r.n it is possible they mutate the type, should that be allowed ?
   bool set_from_mavlink_param_value_bytewise(const mavlink_param_value_t &mavlink_value);
   bool set_from_mavlink_param_value_cast(const mavlink_param_value_t &mavlink_value);
   bool set_from_mavlink_param_set_bytewise(const mavlink_param_set_t &mavlink_set);
@@ -42,9 +45,11 @@ class ParamValue {
   bool set_from_xml(const std::string &type_str, const std::string &value_str);
   bool set_empty_type_from_xml(const std::string &type_str);
 
+  // These return the proper mavlink parameter type for the current generic type of the stored parameter.
   [[nodiscard]] MAV_PARAM_TYPE get_mav_param_type() const;
   [[nodiscard]] MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const;
 
+  // WARNING, this mutates the internally stored type
   bool set_as_same_type(const std::string &value_str);
 
   [[nodiscard]] float get_4_float_bytes_bytewise() const;
@@ -114,6 +119,9 @@ class ParamValue {
   }
   friend std::ostream& operator<<(std::ostream&, const parameters::ParamValue&);
  private:
+  // Log a warning if the internal data type is different than the new one provded.
+  void log_if_type_is_different(MAV_PARAM_TYPE newType)const;
+  void log_if_type_is_different_ext(MAV_PARAM_EXT_TYPE newType)const;
   std::variant<
 	  uint8_t,
 	  int8_t,
@@ -125,7 +133,7 @@ class ParamValue {
 	  int64_t,
 	  float,
 	  double,
-	  std::string>
+	  std::string> // Note: std::string is only supported on extended parameters protocol
 	  _value{};
 };
 

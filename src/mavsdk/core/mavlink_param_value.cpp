@@ -14,6 +14,7 @@ namespace parameters {
 
 bool ParamValue::set_from_mavlink_param_value_bytewise(
 	const mavlink_param_value_t &mavlink_value) {
+  log_if_type_is_different(static_cast<MAV_PARAM_TYPE>(mavlink_value.param_type));
   switch (mavlink_value.param_type) {
 	case MAV_PARAM_TYPE_UINT8: {
 	  uint8_t temp;
@@ -73,6 +74,7 @@ bool ParamValue::set_from_mavlink_param_value_bytewise(
 
 bool ParamValue::set_from_mavlink_param_value_cast(
 	const mavlink_param_value_t &mavlink_value) {
+  log_if_type_is_different(static_cast<MAV_PARAM_TYPE>(mavlink_value.param_type));
   switch (mavlink_value.param_type) {
 	case MAV_PARAM_TYPE_UINT8: {
 	  _value = static_cast<uint8_t>(mavlink_value.param_value);
@@ -124,12 +126,12 @@ bool ParamValue::set_from_mavlink_param_set_bytewise(
   mavlink_param_value_t mavlink_value{};
   mavlink_value.param_value = mavlink_set.param_value;
   mavlink_value.param_type = mavlink_set.param_type;
-
   return set_from_mavlink_param_value_bytewise(mavlink_value);
 }
 
 bool ParamValue::set_from_mavlink_param_ext_set(
 	const mavlink_param_ext_set_t &mavlink_ext_set) {
+  log_if_type_is_different_ext(static_cast<MAV_PARAM_EXT_TYPE>(mavlink_ext_set.param_type));
   switch (mavlink_ext_set.param_type) {
 	case MAV_PARAM_EXT_TYPE_UINT8: {
 	  uint8_t temp;
@@ -208,6 +210,7 @@ bool ParamValue::set_from_mavlink_param_ext_set(
 // FIXME: this function can collapse with the one above.
 bool ParamValue::set_from_mavlink_param_ext_value(
 	const mavlink_param_ext_value_t &mavlink_ext_value) {
+  log_if_type_is_different_ext(static_cast<MAV_PARAM_EXT_TYPE>(mavlink_ext_value.param_type));
   switch (mavlink_ext_value.param_type) {
 	case MAV_PARAM_EXT_TYPE_UINT8: {
 	  uint8_t temp;
@@ -648,6 +651,20 @@ std::ostream& operator<<(std::ostream& strm, const parameters::ParamValue& obj)
 {
   strm << obj.get_string();
   return strm;
+}
+
+void ParamValue::log_if_type_is_different(MAV_PARAM_TYPE newType)const{
+  const auto current_type=get_mav_param_type();
+  if(newType!=current_type){
+	LogDebug()<<"Changing data type from "<<current_type<<" to "<<newType;
+  }
+}
+
+void ParamValue::log_if_type_is_different_ext(MAV_PARAM_EXT_TYPE newType)const{
+  const auto current_type_ext=get_mav_param_ext_type();
+  if(newType!=current_type_ext){
+	LogDebug()<<"Changing data type (ext) from "<<current_type_ext<<" to "<<newType;
+  }
 }
 
 }

@@ -1646,8 +1646,6 @@ void MAVLinkParameters::process_param_ext_request_read(const mavlink_message_t& 
     }
 }
 
-
-
 std::ostream& operator<<(std::ostream& str, const MAVLinkParameters::Result& result)
 {
     switch (result) {
