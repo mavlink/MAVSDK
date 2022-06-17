@@ -88,6 +88,7 @@ MAVLinkParameters::~MAVLinkParameters()
 MAVLinkParameters::Result
 MAVLinkParameters::provide_server_param_float(const std::string& name, float value)
 {
+  	assert(_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         return Result::ParamNameTooLong;
@@ -102,6 +103,7 @@ MAVLinkParameters::provide_server_param_float(const std::string& name, float val
 MAVLinkParameters::Result
 MAVLinkParameters::provide_server_param_int(const std::string& name, int value)
 {
+  	assert(_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         return Result::ParamNameTooLong;
@@ -116,6 +118,7 @@ MAVLinkParameters::provide_server_param_int(const std::string& name, int value)
 MAVLinkParameters::Result
 MAVLinkParameters::provide_server_param_custom(const std::string& name, const std::string& value)
 {
+  	assert(_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         return Result::ParamNameTooLong;
@@ -135,10 +138,10 @@ MAVLinkParameters::provide_server_param_custom(const std::string& name, const st
 MAVLinkParameters::Result MAVLinkParameters::set_param(
     const std::string& name,
     ParamValue value,
-
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
@@ -161,6 +164,7 @@ void MAVLinkParameters::set_param_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
@@ -190,6 +194,7 @@ void MAVLinkParameters::set_param_int_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
@@ -235,6 +240,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param_int(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
@@ -257,6 +263,7 @@ void MAVLinkParameters::set_param_float_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
@@ -284,6 +291,7 @@ void MAVLinkParameters::set_param_float_async(
 MAVLinkParameters::Result MAVLinkParameters::set_param_float(
     const std::string& name, float value, std::optional<uint8_t> maybe_component_id, bool extended)
 {
+  	assert(!_is_server);
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
@@ -305,6 +313,7 @@ void MAVLinkParameters::get_param_float_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     if (_parameter_debugging) {
         LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
     }
@@ -341,6 +350,7 @@ void MAVLinkParameters::get_param_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     if (_parameter_debugging) {
         LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
     }
@@ -374,6 +384,7 @@ void MAVLinkParameters::get_param_int_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
+  	assert(!_is_server);
     if (_parameter_debugging) {
         LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
     }
@@ -402,6 +413,7 @@ void MAVLinkParameters::get_param_int_async(
 MAVLinkParameters::Result
 MAVLinkParameters::set_param_custom(const std::string& name, const std::string& value)
 {
+  	assert(!_is_server);
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
@@ -414,6 +426,7 @@ MAVLinkParameters::set_param_custom(const std::string& name, const std::string& 
 void MAVLinkParameters::get_param_custom_async(
     const std::string& name, const GetParamCustomCallback& callback, const void* cookie)
 {
+  	assert(!_is_server);
     if (_parameter_debugging) {
         LogDebug() << "getting param " << name;
     }
