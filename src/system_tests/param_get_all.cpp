@@ -13,7 +13,7 @@ using namespace mavsdk;
 
 static constexpr unsigned num_params_per_type = 100;
 
-std::map<std::string, float> generate_float_params()
+static std::map<std::string, float> generate_float_params()
 {
   	std::map<std::string, float> params;
     for (unsigned i = 0; i < num_params_per_type; ++i) {
@@ -24,7 +24,7 @@ std::map<std::string, float> generate_float_params()
     return params;
 }
 
-std::map<std::string,int> generate_int_params()
+static std::map<std::string,int> generate_int_params()
 {
   	std::map<std::string,int> params;
     for (unsigned i = 0; i < num_params_per_type; ++i) {
@@ -33,6 +33,17 @@ std::map<std::string,int> generate_int_params()
 	  	params[id]=value;
     }
     return params;
+}
+
+static std::map<std::string,std::string> generate_string_params()
+{
+  std::map<std::string,std::string> params;
+  for (unsigned i = 0; i < num_params_per_type; ++i) {
+	const auto id=std::string("TEST_STRING") + std::to_string(i);
+	const std::string value= std::to_string(i);
+	params[id]=value;
+  }
+  return params;
 }
 
 TEST(SystemTest, ParamGetAll)
@@ -62,7 +73,8 @@ TEST(SystemTest, ParamGetAll)
 
 	const auto test_float_params=generate_float_params();
 	const auto test_int_params=generate_int_params();
-    // Add many params
+	const auto test_string_params=generate_string_params();
+    // Add many params (these don't need extended)
 	for (auto const& [key, val] : test_float_params){
 		EXPECT_EQ(
 			param_server.provide_param_float(key,val),
@@ -73,6 +85,12 @@ TEST(SystemTest, ParamGetAll)
             param_server.provide_param_int(key,val),
             ParamServer::Result::Success);
     }
+	// We also add a couple of std::string parameters - note that they won't show up in get_all_params() when using the non-extended version
+	for (auto const& [key, val] : test_string_params){
+		EXPECT_EQ(
+			param_server.provide_param_custom(key,val),
+			ParamServer::Result::Success);
+	}
 
     const auto all_params = param.get_all_params();
 
