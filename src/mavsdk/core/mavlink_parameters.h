@@ -59,7 +59,7 @@ public:
 
     Result set_param(
         const std::string& name,
-		parameters::ParamValue value,
+        parameters::ParamValue value,
         std::optional<uint8_t> maybe_component_id,
         bool extended = false);
 
@@ -67,7 +67,7 @@ public:
 
     void set_param_async(
         const std::string& name,
-		parameters::ParamValue value,
+	parameters::ParamValue value,
         const SetParamCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
@@ -138,7 +138,7 @@ public:
 
     void get_param_async(
         const std::string& name,
-		parameters::ParamValue value,
+	parameters::ParamValue value,
         const GetParamAnyCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
@@ -175,8 +175,8 @@ public:
     void get_param_custom_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
-	// Note: When use_extended == false, this won't return any parameters that use a string as param value,
-	// since the non-extended protocol is incapable of doing so.
+    // Note: When use_extended == false, this won't return any parameters that use a string as param value,
+    // since the non-extended protocol is incapable of doing so.
     std::map<std::string, parameters::ParamValue> get_all_params(bool use_extended=false);
     using GetAllParamsCallback =
         std::function<void(std::map<std::string, parameters::ParamValue>)>;

@@ -340,7 +340,7 @@ void MAVLinkParameters::get_param_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-  	assert(!_is_server);
+    assert(!_is_server);
     if (_parameter_debugging) {
         LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
     }
