@@ -125,8 +125,8 @@ public:
     Result provide_server_param_custom(const std::string& name, const std::string& value);
     std::map<std::string, parameters::ParamValue> retrieve_all_server_params();
 
-    std::pair<Result, parameters::ParamValue>
-    retrieve_server_param(const std::string& name,const parameters::ParamValue& value_type);
+    template<class T>
+    std::pair<Result,T> retrieve_server_param(const std::string& name);
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
@@ -279,8 +279,8 @@ private:
     void process_param_request_read(const mavlink_message_t& message);
     void process_param_ext_request_read(const mavlink_message_t& message);
     void process_param_request_list(const mavlink_message_t& message);
-	// request list from a component that wants to also do strings and therefore has to use the extended parameter protocol).
-  	void process_param_ext_request_list(const mavlink_message_t& message);
+    // request list from a component that wants to also do strings and therefore has to use the extended parameter protocol).
+    void process_param_ext_request_list(const mavlink_message_t& message);
 
     bool _parameter_debugging{false};
 

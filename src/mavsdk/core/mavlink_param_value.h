@@ -100,6 +100,15 @@ class ParamValue {
 
   [[nodiscard]] bool is_same_type(const ParamValue &rhs) const;
 
+  // Note: the implementation here needs to stay in the header,unfortunately.
+  template<class T>
+  [[nodiscard]] bool is_same_type_x()const{
+      if (std::holds_alternative<T>(_value)) {
+          return true;
+      }
+      return false;
+  }
+
   bool operator==(const ParamValue &rhs) const {
 	if (!is_same_type(rhs)) {
 	  LogWarn() << "Trying to compare different types.";

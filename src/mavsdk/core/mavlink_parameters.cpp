@@ -484,15 +484,16 @@ std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_se
     return _all_params;
 }
 
-std::pair<MAVLinkParameters::Result, parameters::ParamValue>
-MAVLinkParameters::retrieve_server_param(const std::string& name,const parameters::ParamValue& value_type)
+template<class T>
+std::pair<MAVLinkParameters::Result, T> MAVLinkParameters::retrieve_server_param(const std::string& name)
 {
     if (_all_params.find(name) != _all_params.end()) {
-        auto value = _all_params.at(name);
-        if (value.is_same_type(value_type))
-            return {MAVLinkParameters::Result::Success, value};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
+        // This parameter exists, check its type
+        const auto value = _all_params.at(name);
+        if(value.is_same_type_x<T>()){
+            return {MAVLinkParameters::Result::Success, value.get<T>()};
+        }
+        return {MAVLinkParameters::Result::WrongType, {}};
     }
     return {MAVLinkParameters::Result::NotFound, {}};
 }
@@ -500,40 +501,19 @@ MAVLinkParameters::retrieve_server_param(const std::string& name,const parameter
 std::pair<MAVLinkParameters::Result, float>
 MAVLinkParameters::retrieve_server_param_float(const std::string& name)
 {
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_float();
-        if (maybe_value)
-            return {MAVLinkParameters::Result::Success, maybe_value.value()};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
-    }
-    return {MAVLinkParameters::Result::NotFound, {}};
+    return retrieve_server_param<float>(name);
 }
 
 std::pair<MAVLinkParameters::Result, std::string>
 MAVLinkParameters::retrieve_server_param_custom(const std::string& name)
 {
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_custom();
-        if (maybe_value)
-            return {MAVLinkParameters::Result::Success, maybe_value.value()};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
-    }
-    return {MAVLinkParameters::Result::NotFound, {}};
+    return retrieve_server_param<std::string>(name);
 }
 
 std::pair<MAVLinkParameters::Result, int>
 MAVLinkParameters::retrieve_server_param_int(const std::string& name)
 {
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_int();
-        if (maybe_value)
-            return {MAVLinkParameters::Result::Success, maybe_value.value()};
-        else
-            return {MAVLinkParameters::Result::WrongType, {}};
-    }
-    return {MAVLinkParameters::Result::NotFound, {}};
+    return retrieve_server_param<int>(name);
 }
 
 std::pair<MAVLinkParameters::Result, parameters::ParamValue> MAVLinkParameters::get_param(
@@ -1686,5 +1666,6 @@ int MAVLinkParameters::get_current_parameters_count(bool extended)const{
   }
   return count;
 }
+
 
 } // namespace mavsdk
