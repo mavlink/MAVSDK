@@ -20,6 +20,8 @@ venv/
 
 # CLion build folder
 cmake-build-*
+# Clion local files folder
+.idea/*
 
 # Build folder when using the command line (as recommended from the tutorial)
 build/*
