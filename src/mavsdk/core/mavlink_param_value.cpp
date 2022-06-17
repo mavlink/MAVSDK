@@ -12,102 +12,114 @@
 namespace mavsdk {
 namespace parameters {
 
-bool ParamValue::set_from_mavlink_param_value_bytewise(
-	const mavlink_param_value_t &mavlink_value) {
-  log_if_type_is_different(static_cast<MAV_PARAM_TYPE>(mavlink_value.param_type));
-  switch (mavlink_value.param_type) {
+// The mavlink specification does not say what the content is when CUSTOM is used. However, it is much more convenient for the user
+// To assume that custom type is of type std::string. This is a generic way of converting a std::array into std::string, adding the null
+// terminator if needed.
+template<std::size_t S>
+static std::string safe_convert_to_string(const std::array<char,S>& param_ext_value)
+{
+  // Make a 0 terminated copy first.
+  char param_id_long_enough[S + 1] = {};
+  std::memcpy(param_id_long_enough, param_ext_value.data(), S);
+  // and construct a std::string from it
+  return {param_id_long_enough};
+}
+
+
+bool ParamValue::set_from_mavlink_param_type_bytewise(MAV_PARAM_TYPE mav_param_type,float param_value){
+  log_if_type_is_different(mav_param_type);
+  switch (mav_param_type) {
 	case MAV_PARAM_TYPE_UINT8: {
 	  uint8_t temp;
-	  memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+	  memcpy(&temp, &param_value, sizeof(temp));
 	  _value = temp;
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_INT8: {
 	  int8_t temp;
-	  memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+	  memcpy(&temp, &param_value, sizeof(temp));
 	  _value = temp;
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_UINT16: {
 	  uint16_t temp;
-	  memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+	  memcpy(&temp, &param_value, sizeof(temp));
 	  _value = temp;
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_INT16: {
 	  int16_t temp;
-	  memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+	  memcpy(&temp, &param_value, sizeof(temp));
 	  _value = temp;
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_UINT32: {
 	  uint32_t temp;
-	  memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+	  memcpy(&temp, &param_value, sizeof(temp));
 	  _value = temp;
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_INT32: {
 	  int32_t temp;
-	  memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+	  memcpy(&temp, &param_value, sizeof(temp));
 	  _value = temp;
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_REAL32: {
-	  _value = mavlink_value.param_value;
+	  _value = param_value;
 	}
 	  break;
 
 	default:
 	  // This would be worrying
 	  LogErr() << "Error: unknown mavlink param type: "
-			   << std::to_string(mavlink_value.param_type);
+			   << std::to_string(param_value);
 	  return false;
   }
   return true;
 }
 
-bool ParamValue::set_from_mavlink_param_value_cast(
-	const mavlink_param_value_t &mavlink_value) {
-  log_if_type_is_different(static_cast<MAV_PARAM_TYPE>(mavlink_value.param_type));
-  switch (mavlink_value.param_type) {
+bool ParamValue::set_from_mavlink_param_type_value_cast(MAV_PARAM_TYPE mav_param_type,float param_value){
+  log_if_type_is_different(mav_param_type);
+  switch (mav_param_type) {
 	case MAV_PARAM_TYPE_UINT8: {
-	  _value = static_cast<uint8_t>(mavlink_value.param_value);
+	  _value = static_cast<uint8_t>(param_value);
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_INT8: {
-	  _value = static_cast<int8_t>(mavlink_value.param_value);
+	  _value = static_cast<int8_t>(param_value);
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_UINT16: {
-	  _value = static_cast<uint16_t>(mavlink_value.param_value);
+	  _value = static_cast<uint16_t>(param_value);
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_INT16: {
-	  _value = static_cast<int16_t>(mavlink_value.param_value);
+	  _value = static_cast<int16_t>(param_value);
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_UINT32: {
-	  _value = static_cast<uint32_t>(mavlink_value.param_value);
+	  _value = static_cast<uint32_t>(param_value);
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_INT32: {
-	  _value = static_cast<int32_t>(mavlink_value.param_value);
+	  _value = static_cast<int32_t>(param_value);
 	}
 	  break;
 
 	case MAV_PARAM_TYPE_REAL32: {
-	  float temp = mavlink_value.param_value;
+	  float temp = param_value;
 	  _value = temp;
 	}
 	  break;
@@ -115,10 +127,99 @@ bool ParamValue::set_from_mavlink_param_value_cast(
 	default:
 	  // This would be worrying
 	  LogErr() << "Error: unknown mavlink param type: "
-			   << std::to_string(mavlink_value.param_type);
+			   << std::to_string(param_value);
 	  return false;
   }
   return true;
+}
+
+bool ParamValue::set_from_mavlink_param_type_ext(MAV_PARAM_EXT_TYPE mav_param_ext_type,const std::array<char, 128>& param_value){
+  log_if_type_is_different_ext(mav_param_ext_type);
+  switch (mav_param_ext_type) {
+	case MAV_PARAM_EXT_TYPE_UINT8: {
+	  uint8_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_INT8: {
+	  int8_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_UINT16: {
+	  uint16_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_INT16: {
+	  int16_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_UINT32: {
+	  uint32_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_INT32: {
+	  int32_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_UINT64: {
+	  uint64_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_INT64: {
+	  int64_t temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_REAL32: {
+	  float temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_REAL64: {
+	  double temp;
+	  memcpy(&temp, &param_value[0], sizeof(temp));
+	  _value = temp;
+	}
+	  break;
+	case MAV_PARAM_EXT_TYPE_CUSTOM: {
+	  // TODO I do not know if this is the best way, here we assume that for custom the content is always a std::string.
+	  //std::size_t len = std::min(std::size_t(128), strlen(param_value));
+	  //_value = std::string(param_value, param_value + len);
+	  _value = safe_convert_to_string(param_value);
+	}
+	  break;
+	default:
+	  // This would be worrying
+	  LogErr() << "Error: unknown mavlink ext param type";
+	  assert(false);
+	  return false;
+  }
+  return true;
+}
+
+bool ParamValue::set_from_mavlink_param_value_bytewise(
+	const mavlink_param_value_t &mavlink_value) {
+  return set_from_mavlink_param_type_bytewise(static_cast<MAV_PARAM_TYPE>(mavlink_value.param_type),mavlink_value.param_value);
+}
+
+bool ParamValue::set_from_mavlink_param_value_cast(
+	const mavlink_param_value_t &mavlink_value) {
+  return set_from_mavlink_param_type_value_cast(static_cast<MAV_PARAM_TYPE>(mavlink_value.param_type),mavlink_value.param_value);
 }
 
 bool ParamValue::set_from_mavlink_param_set_bytewise(
@@ -131,160 +232,18 @@ bool ParamValue::set_from_mavlink_param_set_bytewise(
 
 bool ParamValue::set_from_mavlink_param_ext_set(
 	const mavlink_param_ext_set_t &mavlink_ext_set) {
-  log_if_type_is_different_ext(static_cast<MAV_PARAM_EXT_TYPE>(mavlink_ext_set.param_type));
-  switch (mavlink_ext_set.param_type) {
-	case MAV_PARAM_EXT_TYPE_UINT8: {
-	  uint8_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT8: {
-	  int8_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_UINT16: {
-	  uint16_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT16: {
-	  int16_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_UINT32: {
-	  uint32_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT32: {
-	  int32_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_UINT64: {
-	  uint64_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT64: {
-	  int64_t temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_REAL32: {
-	  float temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_REAL64: {
-	  double temp;
-	  memcpy(&temp, &mavlink_ext_set.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_CUSTOM: {
-	  std::size_t len = std::min(std::size_t(128), strlen(mavlink_ext_set.param_value));
-	  _value = std::string(mavlink_ext_set.param_value, mavlink_ext_set.param_value + len);
-	}
-	  break;
-	default:
-	  // This would be worrying
-	  LogErr() << "Error: unknown mavlink ext param type";
-	  assert(false);
-	  return false;
-  }
-  return true;
+  // Without c++20 there is no to_std::array function.
+  std::array<char,128> tmp;
+  std::copy(std::begin(mavlink_ext_set.param_value), std::end(mavlink_ext_set.param_value), std::begin(tmp));
+  return set_from_mavlink_param_type_ext(static_cast<MAV_PARAM_EXT_TYPE>(mavlink_ext_set.param_type),tmp);
 }
 
-// FIXME: this function can collapse with the one above.
 bool ParamValue::set_from_mavlink_param_ext_value(
 	const mavlink_param_ext_value_t &mavlink_ext_value) {
-  log_if_type_is_different_ext(static_cast<MAV_PARAM_EXT_TYPE>(mavlink_ext_value.param_type));
-  switch (mavlink_ext_value.param_type) {
-	case MAV_PARAM_EXT_TYPE_UINT8: {
-	  uint8_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT8: {
-	  int8_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_UINT16: {
-	  uint16_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT16: {
-	  int16_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_UINT32: {
-	  uint32_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT32: {
-	  int32_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_UINT64: {
-	  uint64_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_INT64: {
-	  int64_t temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_REAL32: {
-	  float temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_REAL64: {
-	  double temp;
-	  memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-	  _value = temp;
-	}
-	  break;
-	case MAV_PARAM_EXT_TYPE_CUSTOM: {
-	  std::size_t len = std::min(std::size_t(128), strlen(mavlink_ext_value.param_value));
-	  _value =
-		  std::string(mavlink_ext_value.param_value, mavlink_ext_value.param_value + len);
-	}
-	  break;
-	default:
-	  // This would be worrying
-	  LogErr() << "Error: unknown mavlink ext param type";
-	  assert(false);
-	  return false;
-  }
-  return true;
+  // Without c++20 there is no to_std::array function.
+  std::array<char,128> tmp;
+  std::copy(std::begin(mavlink_ext_value.param_value), std::end(mavlink_ext_value.param_value), std::begin(tmp));
+  return set_from_mavlink_param_type_ext(static_cast<MAV_PARAM_EXT_TYPE>(mavlink_ext_value.param_type),tmp);
 }
 
 bool ParamValue::set_from_xml(

@@ -34,6 +34,25 @@ namespace parameters {
  */
 class ParamValue {
  public:
+  /**
+   * The mavlink parameters protocol uses a float to store the data type, but that doesn't mean the value is actually of type float
+   * (See https://mavlink.io/en/services/parameter.html#parameter-encoding).
+   * This method first logs a warning if the type of the internal value is not the expected @param mav_param_type, then updates the internal
+   * value by extracting the specified data type from @param param_value using byte-wise encoding.
+   * See https://mavlink.io/en/services/parameter.html#parameter-encoding for an explanation on byte-wise / c-style
+   */
+  bool set_from_mavlink_param_type_bytewise(MAV_PARAM_TYPE mav_param_type,float param_value);
+  /**
+   * Same as above, but uses value cast to extract the data type.
+   */
+  bool set_from_mavlink_param_type_value_cast(MAV_PARAM_TYPE mav_param_type,float param_value);
+
+  /**
+   * Same as above, but since the extended protocol only uses byte-wise encoding, we don't need
+   * two different flavours for it.
+   */
+  bool set_from_mavlink_param_type_ext(MAV_PARAM_EXT_TYPE mav_param_ext_type,const std::array<char, 128>& param_value);
+
   // These set_xxx are convenient ways to change the value (parameter) by using the
   // different mavlink message payload's of the extended and non-extended protocol.
   // TODO I think r.n it is possible they mutate the type, should that be allowed ?
