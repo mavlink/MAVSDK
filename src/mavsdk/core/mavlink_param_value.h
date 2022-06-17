@@ -68,7 +68,8 @@ class ParamValue {
   [[nodiscard]] MAV_PARAM_TYPE get_mav_param_type() const;
   [[nodiscard]] MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const;
 
-  // WARNING, this mutates the internally stored type
+  // This parses the given value string into the type that is currently stored.
+  // It does not mutate the internal type
   bool set_as_same_type(const std::string &value_str);
 
   [[nodiscard]] float get_4_float_bytes_bytewise() const;
