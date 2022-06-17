@@ -21,6 +21,9 @@ venv/
 # CLion build folder
 cmake-build-*
 
+# Build folder when using the command line (as recommended from the tutorial)
+build
+
 # mavlink repo to generate mavlink-headers
 mavlink
 mavlink-headers
