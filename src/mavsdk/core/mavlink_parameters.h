@@ -109,14 +109,24 @@ public:
         const SetParamCallback& callback,
         const void* cookie = nullptr);
 
-    // Result provide_server_param(const std::string& name, const ParamValue& value);
+    /**
+     * Add a new parameter to the parameter set (only for the server/providing side).
+     * It is recommended to not change the parameter set after first communicating with any client.
+     * (https://mavlink.io/en/services/parameter_ext.html#parameters_invariant)
+     * @param name the unique id for this parameter
+     * @param param_value the value for this parameter
+     * @return Result::ParamNameTooLong if the parameter name is too long,
+     * Result::Success otherwise.
+     */
+    Result provide_server_param(const std::string& name,parameters::ParamValue param_value);
+    // convenient implementations for the most commonly used types
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int value);
     Result provide_server_param_custom(const std::string& name, const std::string& value);
     std::map<std::string, parameters::ParamValue> retrieve_all_server_params();
 
     std::pair<Result, parameters::ParamValue>
-    retrieve_server_param(const std::string& name, parameters::ParamValue value_type);
+    retrieve_server_param(const std::string& name,const parameters::ParamValue& value_type);
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
@@ -274,9 +284,9 @@ private:
 
     bool _parameter_debugging{false};
 
-	// Return the n of parameters, either from an extended or non-extended perspective.
-	// ( we need to hide parameters that need extended from non-extended queries).
-	int get_current_parameters_count(bool extended)const;
+    // Return the n of parameters, either from an extended or non-extended perspective.
+    // ( we need to hide parameters that need extended from non-extended queries).
+    [[nodiscard]] int get_current_parameters_count(bool extended)const;
 };
 
 } // namespace mavsdk

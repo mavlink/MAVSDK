@@ -63,20 +63,19 @@ MAVLinkParameters::MAVLinkParameters(
             MAVLINK_MSG_ID_PARAM_REQUEST_READ,
             [this](const mavlink_message_t& message) { process_param_request_read(message); },
             this);
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_EXT_REQUEST_READ,
+            [this](const mavlink_message_t& message) { process_param_ext_request_read(message); },
+            this);
 
         _message_handler.register_one(
             MAVLINK_MSG_ID_PARAM_REQUEST_LIST,
             [this](const mavlink_message_t& message) { process_param_request_list(message); },
             this);
-		_message_handler.register_one(
-			MAVLINK_MSG_ID_PARAM_EXT_REQUEST_LIST,
-			[this](const mavlink_message_t& message) { process_param_ext_request_list(message); },
-			this);
-
         _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_EXT_REQUEST_READ,
-            [this](const mavlink_message_t& message) { process_param_ext_request_read(message); },
-            this);
+                MAVLINK_MSG_ID_PARAM_EXT_REQUEST_LIST,
+                [this](const mavlink_message_t& message) { process_param_ext_request_list(message); },
+                this);
     }
 }
 
@@ -86,53 +85,44 @@ MAVLinkParameters::~MAVLinkParameters()
 }
 
 MAVLinkParameters::Result
-MAVLinkParameters::provide_server_param_float(const std::string& name, float value)
+MAVLinkParameters::provide_server_param(const std::string& name,ParamValue param_value)
 {
-  	assert(_is_server);
+    assert(_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         return Result::ParamNameTooLong;
     }
-
-    ParamValue param_value;
-    param_value.set(value);
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
     _all_params.insert_or_assign(name, param_value);
     return Result::Success;
+}
+
+MAVLinkParameters::Result
+MAVLinkParameters::provide_server_param_float(const std::string& name, float value)
+{
+    ParamValue param_value;
+    param_value.set(value);
+    return provide_server_param(name,param_value);
 }
 
 MAVLinkParameters::Result
 MAVLinkParameters::provide_server_param_int(const std::string& name, int value)
 {
-  	assert(_is_server);
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        return Result::ParamNameTooLong;
-    }
-
     ParamValue param_value;
     param_value.set(value);
-    _all_params.insert_or_assign(name, param_value);
-    return Result::Success;
+    return provide_server_param(name,param_value);
 }
 
 MAVLinkParameters::Result
 MAVLinkParameters::provide_server_param_custom(const std::string& name, const std::string& value)
 {
-  	assert(_is_server);
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        return Result::ParamNameTooLong;
-    }
-
     if (value.size() > sizeof(mavlink_param_ext_set_t::param_value)) {
         LogErr() << "Error: param value too long";
         return Result::ParamValueTooLong;
     }
-
     ParamValue param_value;
     param_value.set(value);
-    _all_params.insert_or_assign(name, param_value);
-    return Result::Success;
+    return provide_server_param(name,param_value);
 }
 
 MAVLinkParameters::Result MAVLinkParameters::set_param(
@@ -495,7 +485,7 @@ std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_se
 }
 
 std::pair<MAVLinkParameters::Result, parameters::ParamValue>
-MAVLinkParameters::retrieve_server_param(const std::string& name, ParamValue value_type)
+MAVLinkParameters::retrieve_server_param(const std::string& name,const parameters::ParamValue& value_type)
 {
     if (_all_params.find(name) != _all_params.end()) {
         auto value = _all_params.at(name);
