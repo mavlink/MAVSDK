@@ -7,30 +7,31 @@
 #include <utility>
 #include <vector>
 #include <thread>
+#include <map>
 
 using namespace mavsdk;
 
 static constexpr unsigned num_params_per_type = 100;
 
-std::vector<std::pair<std::string, float>> generate_float_params()
+std::map<std::string, float> generate_float_params()
 {
-    std::vector<std::pair<std::string, float>> params;
-
+  	std::map<std::string, float> params;
     for (unsigned i = 0; i < num_params_per_type; ++i) {
-        params.emplace_back(std::string("TEST_BLA") + std::to_string(i), 42.0f + i);
+	    const auto id=std::string("TEST_FLOAT") + std::to_string(i);
+		const float value=42.0f + i;
+	  	params[id]=value;
     }
-
     return params;
 }
 
-std::vector<std::pair<std::string, int>> generate_int_params()
+std::map<std::string,int> generate_int_params()
 {
-    std::vector<std::pair<std::string, int>> params;
-
+  	std::map<std::string,int> params;
     for (unsigned i = 0; i < num_params_per_type; ++i) {
-        params.emplace_back(std::string("TEST_FOO") + std::to_string(i), 42.0f + i);
+	  	const auto id=std::string("TEST_INT") + std::to_string(i);
+		const int value=42 + i;
+	  	params[id]=value;
     }
-
     return params;
 }
 
@@ -62,14 +63,14 @@ TEST(SystemTest, ParamGetAll)
 	const auto test_float_params=generate_float_params();
 	const auto test_int_params=generate_int_params();
     // Add many params
-    for (const auto& float_param : test_float_params) {
+	for (auto const& [key, val] : test_float_params){
+		EXPECT_EQ(
+			param_server.provide_param_float(key,val),
+			ParamServer::Result::Success);
+	}
+	for (auto const& [key, val] : test_int_params){
         EXPECT_EQ(
-            param_server.provide_param_float(float_param.first, float_param.second),
-            ParamServer::Result::Success);
-    }
-    for (const auto& int_param :  test_int_params) {
-        EXPECT_EQ(
-            param_server.provide_param_int(int_param.first, int_param.second),
+            param_server.provide_param_int(key,val),
             ParamServer::Result::Success);
     }
 
@@ -77,12 +78,13 @@ TEST(SystemTest, ParamGetAll)
 
     EXPECT_EQ(all_params.float_params.size(), test_float_params.size());
     EXPECT_EQ(all_params.int_params.size(), test_int_params.size());
+	// check that all the parameters we got have the right param value
 	// Note: the order is not necessarily a requirement
-	for(int i=0;i<test_float_params.size();i++){
-		EXPECT_EQ(all_params.float_params.at(i), test_float_params.at(i));
+	for(const auto& param: all_params.float_params){
+		EXPECT_EQ(param.value, test_float_params.find(param.name)->second);
 	}
-	for(int i=0;i<test_int_params.size();i++){
-		EXPECT_EQ(all_params.int_params.at(i), test_int_params.at(i));
+	for(const auto& param: all_params.int_params){
+	  	EXPECT_EQ(param.value, test_int_params.find(param.name)->second);
 	}
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
