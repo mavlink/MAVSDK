@@ -154,7 +154,7 @@ void MAVLinkParameters::set_param_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-  	assert(!_is_server);
+    assert(!_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
@@ -162,9 +162,7 @@ void MAVLinkParameters::set_param_async(
         }
         return;
     }
-
     auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-
     new_work->type = WorkItem::Type::Set;
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
@@ -184,7 +182,7 @@ void MAVLinkParameters::set_param_int_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-  	assert(!_is_server);
+    assert(!_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
@@ -199,8 +197,7 @@ void MAVLinkParameters::set_param_int_async(
 
     const auto set_step = [=]() {
         auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-
-	  	parameters::ParamValue value_to_set;
+        parameters::ParamValue value_to_set;
         value_to_set.set(value);
 
         new_work->type = WorkItem::Type::Set;
@@ -230,7 +227,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param_int(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-  	assert(!_is_server);
+    assert(!_is_server);
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
@@ -487,6 +484,7 @@ std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_se
 template<class T>
 std::pair<MAVLinkParameters::Result, T> MAVLinkParameters::retrieve_server_param(const std::string& name)
 {
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
     if (_all_params.find(name) != _all_params.end()) {
         // This parameter exists, check its type
         const auto value = _all_params.at(name);

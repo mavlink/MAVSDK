@@ -178,8 +178,7 @@ public:
     // Note: When use_extended == false, this won't return any parameters that use a string as param value,
     // since the non-extended protocol is incapable of doing so.
     std::map<std::string, parameters::ParamValue> get_all_params(bool use_extended=false);
-    using GetAllParamsCallback =
-        std::function<void(std::map<std::string, parameters::ParamValue>)>;
+    using GetAllParamsCallback = std::function<void(std::map<std::string, parameters::ParamValue>)>;
     void get_all_params_async(const GetAllParamsCallback& callback,bool use_extended=false);
 
     using ParamFloatChangedCallback = std::function<void(float value)>;
@@ -205,8 +204,7 @@ public:
     const MAVLinkParameters& operator=(const MAVLinkParameters&) = delete;
 
 private:
-    using ParamChangedCallbacks = std::
-        variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
+    using ParamChangedCallbacks = std::variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
 
     void process_param_value(const mavlink_message_t& message);
     void process_param_set(const mavlink_message_t& message);
@@ -240,7 +238,7 @@ private:
             SetParamCallback>
             callback{};
         std::string param_name{};
-	  	parameters::ParamValue param_value{};
+        parameters::ParamValue param_value{};
         std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
         bool already_requested{false};
@@ -261,7 +259,7 @@ private:
     struct ParamChangedSubscription {
         std::string param_name{};
         ParamChangedCallbacks callback{};
-	  	parameters::ParamValue value_type{};
+	parameters::ParamValue value_type{};
         bool any_type{false};
         const void* cookie{nullptr};
     };
