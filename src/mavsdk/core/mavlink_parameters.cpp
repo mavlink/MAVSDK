@@ -93,6 +93,14 @@ MAVLinkParameters::provide_server_param(const std::string& name,ParamValue param
         return Result::ParamNameTooLong;
     }
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+    // TODO: should we make these undefined / error cases errors ?
+    if(_all_params.find(name) != _all_params.end()){
+        LogDebug()<<" Providing same parameter twice:"<<name;
+        const auto curr_value = _all_params.at(name);
+        if(!curr_value.is_same_type(param_value)){
+            LogDebug()<<"WARNING Changing type of parameter "<<name<<" from "<<curr_value.typestr()<<" to "<<param_value.typestr();
+        }
+    }
     _all_params.insert_or_assign(name, param_value);
     return Result::Success;
 }
