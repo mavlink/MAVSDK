@@ -83,7 +83,7 @@ class ParamValue {
   void set_float(float new_value);
   void set_custom(const std::string &new_value);
 
-  std::array<char, 128> get_128_bytes() const;
+  [[nodiscard]] std::array<char, 128> get_128_bytes() const;
 
   [[nodiscard]] std::string get_string() const;
 
@@ -142,13 +142,13 @@ class ParamValue {
 
   // Consti10: hacky, returns true if this parameter needs the extended parameters' protocol
   // (which is the case when its value is represented by a string)
-  bool needs_extended() const {
+  [[nodiscard]] bool needs_extended() const {
 	// true if it is a string, false otherwise.
 	return is<std::string>();
   }
   friend std::ostream& operator<<(std::ostream&, const parameters::ParamValue&);
  private:
-  // Log a warning if the internal data type is different than the new one provded.
+  // Log a warning if the internal data type is different than the new one provided.
   void log_if_type_is_different(MAV_PARAM_TYPE newType)const;
   void log_if_type_is_different_ext(MAV_PARAM_EXT_TYPE newType)const;
   std::variant<

@@ -139,7 +139,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-  	assert(!_is_server);
+    assert(!_is_server);
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
@@ -452,6 +452,7 @@ void MAVLinkParameters::set_param_custom_async(
     const SetParamCallback& callback,
     const void* cookie)
 {
+    assert(!_is_server);
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
@@ -485,6 +486,7 @@ void MAVLinkParameters::set_param_custom_async(
 
 std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_server_params()
 {
+    assert(_is_server);
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     return _all_params;
 }
@@ -492,6 +494,7 @@ std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_se
 template<class T>
 std::pair<MAVLinkParameters::Result, T> MAVLinkParameters::retrieve_server_param(const std::string& name)
 {
+    assert(_is_server);
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if (_all_params.find(name) != _all_params.end()) {
         // This parameter exists, check its type
@@ -525,6 +528,7 @@ MAVLinkParameters::retrieve_server_param_int(const std::string& name)
 std::pair<MAVLinkParameters::Result, parameters::ParamValue> MAVLinkParameters::get_param(
     const std::string& name, parameters::ParamValue value, bool extended)
 {
+    assert(!_is_server);
     auto prom = std::promise<std::pair<Result, ParamValue>>();
     auto res = prom.get_future();
 
@@ -543,6 +547,7 @@ std::pair<MAVLinkParameters::Result, parameters::ParamValue> MAVLinkParameters::
 std::pair<MAVLinkParameters::Result, int32_t> MAVLinkParameters::get_param_int(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
+    assert(!_is_server);
     auto prom = std::promise<std::pair<Result, int32_t>>();
     auto res = prom.get_future();
 
@@ -559,6 +564,7 @@ std::pair<MAVLinkParameters::Result, int32_t> MAVLinkParameters::get_param_int(
 std::pair<MAVLinkParameters::Result, float> MAVLinkParameters::get_param_float(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
+    assert(!_is_server);
     auto prom = std::promise<std::pair<Result, float>>();
     auto res = prom.get_future();
 
@@ -575,6 +581,7 @@ std::pair<MAVLinkParameters::Result, float> MAVLinkParameters::get_param_float(
 std::pair<MAVLinkParameters::Result, std::string>
 MAVLinkParameters::get_param_custom(const std::string& name)
 {
+    assert(!_is_server);
     auto prom = std::promise<std::pair<Result, std::string>>();
     auto res = prom.get_future();
 
@@ -590,6 +597,7 @@ MAVLinkParameters::get_param_custom(const std::string& name)
 
 void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callback,const bool use_extended)
 {
+    assert(!_is_server);
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     _all_params_callback = callback;
     mavlink_message_t msg;
@@ -623,7 +631,6 @@ std::map<std::string, parameters::ParamValue> MAVLinkParameters::get_all_params(
 {
     std::promise<std::map<std::string, ParamValue>> prom;
     auto res = prom.get_future();
-
     get_all_params_async(
 		// Consti10: all_params used to be passed in here as a reference - that is a bug.
 		// Since for example on a receive timeout, the empty all_params result is constructed in-place and then
