@@ -170,15 +170,23 @@ void MAVLinkParameters::set_param_async(
         }
         return;
     }
+    if(value.is_same_type_x<std::string>() && !extended){
+        LogErr()<<"std::string needs extended protocol";
+        if(callback){
+            callback(Result::UnknownError);
+        }
+        return;
+    }
     auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
     new_work->param_value = value;
     new_work->extended = extended;
-    new_work->exact_type_known = true;
     new_work->cookie = cookie;
     _work_queue.push_back(new_work);
 }
+
+
 
 void MAVLinkParameters::set_param_int_async(
     const std::string& name,
@@ -186,7 +194,7 @@ void MAVLinkParameters::set_param_int_async(
     const SetParamCallback& callback,
     const void* cookie,
     std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    bool extended,bool adhere_to_mavlink_specs)
 {
     assert(!_is_server);
     if (name.size() > PARAM_ID_LEN) {
@@ -196,31 +204,75 @@ void MAVLinkParameters::set_param_int_async(
         }
         return;
     }
-
+    if(adhere_to_mavlink_specs){
+        // Lol so much easier - but assumes that the user meant int32_t when saying int ;)
+        parameters::ParamValue value_to_set;
+        value_to_set.set(static_cast<int32_t>(value));
+        set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+        return;
+    }
     // PX4 only uses int32_t, so we can be sure and don't need to check the exact type first
     // by getting the param, or checking the cache.
-    const bool exact_int_type_known = (_sender.autopilot() == SystemImpl::Autopilot::Px4);
-
-    const auto set_step = [=]() {
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
+    if(_sender.autopilot() == SystemImpl::Autopilot::Px4){
         parameters::ParamValue value_to_set;
-        value_to_set.set(value);
-        new_work->callback = callback;
-        new_work->param_value = value_to_set;
-        new_work->extended = extended;
-        new_work->exact_type_known = exact_int_type_known;
-        new_work->cookie = cookie;
-        _work_queue.push_back(new_work);
-    };
+        value_to_set.set(static_cast<int32_t>(value));
+        set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+    }else{
+        // Here I implemented the same behaviour as the original author, but by using the same "do the checking in the callback" - trick
+        // the duplicated code can be reduced nicely.
+        // NOTE that his behaviour is not exactly to the mavlink specifications.
+        // The issue here is: The user of the parameters library called set_int - the expected behaviour here would be to just send
+        // a set - message with type==int aka int32_t. However, in this case, if the server actually stores (for example) and int8_t we will
+        // get a invalid value back from the server, and the parameter is not changed. To work around this issue, here we try and find out what
+        // the server stores, then cast the user-provided int parameter into this exact type and send that instead. Not to the specs, but I didn't want to
+        // break things here.
 
-    // We need to know the exact int type first.
-    if (exact_int_type_known || _all_params.find(name) != _all_params.end()) {
-        // We are sure about the type, or we have it cached, we'll be able to use it.
-        set_step();
-    } else {
-        // We don't know the exact type, so we need to get it first.
-        get_param_int_async(name, nullptr, cookie, maybe_component_id, extended);
-        set_step();
+        // Action to perform once we know the exact type, as we have the parameter cached.
+        auto send_message_once_type_is_known=[this,name,value,callback,cookie,maybe_component_id,extended](){
+            //std::lock_guard<std::mutex> lock(_all_params_mutex);
+            assert(_all_params.find(name) != _all_params.end());
+            auto copy= _all_params.at(name);
+            const auto is_any_int=copy.set_int(value);
+            if(is_any_int){
+                LogDebug()<<"set_int() casted the type to whatever is cached internally";
+                set_param_async(name,copy,callback,cookie,maybe_component_id,extended);
+            }else{
+                // Now if we have pre-cached the value already, and the user calls set_int() with a key that is not for an int, we could say
+                // Hey, we know that this is not an int, and give the response of invalid value immediately back to the user. However, to keep things
+                // consistently, here we just send out the message for an int32_t , perhaps the server allows changing the type of a parameter ?
+                // This really goes to show how messy the workaround above is, though.
+                LogDebug()<<"Weird case on set_int() read the documentation in code";
+                parameters::ParamValue value_to_set;
+                value_to_set.set(static_cast<int32_t>(value));
+                set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+            }
+        };
+        // we need to be carefully with the mutex here
+        _all_params_mutex.lock();
+        const bool is_parameter_cached=_all_params.find(name) != _all_params.end();
+        _all_params_mutex.unlock();
+        // Now the parameter might change, but that doesn't matter, we never remove elements from the map.
+        if(is_parameter_cached){
+            send_message_once_type_is_known();
+        }else{
+            auto cb=[this,send_message_once_type_is_known,name,value,cookie,callback,maybe_component_id,extended]
+                (Result result, parameters::ParamValue param_value){
+                    if(result!=Result::Success){
+                        // we didn't get the expected response from the server, but now send the message out anyways.
+                        parameters::ParamValue value_to_set;
+                        value_to_set.set(static_cast<int32_t>(value));
+                        set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+                    }else{
+                        // Now we have it cached, apply the same logic as above
+                        send_message_once_type_is_known();
+                    }
+                };
+            get_param_async(name, cb,cookie,maybe_component_id,extended);
+        }
+        // We do a get_param_async to find out the actual type, then cast the user-provided int value
+        // to the int value the server side uses. This results in the same behaviour as implemented by the original author,
+        // but I changed the code to
+        get_param_async(name,nullptr,cookie,maybe_component_id,extended);
     }
 }
 
@@ -228,7 +280,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param_int(
     const std::string& name,
     int32_t value,
     std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    bool extended,bool adhere_to_mavlink_specs)
 {
     assert(!_is_server);
     auto prom = std::promise<Result>();
@@ -240,7 +292,7 @@ MAVLinkParameters::Result MAVLinkParameters::set_param_int(
         [&prom](Result result) { prom.set_value(result); },
         this,
         maybe_component_id,
-        extended);
+        extended,adhere_to_mavlink_specs);
 
     return res.get();
 }
@@ -253,31 +305,15 @@ void MAVLinkParameters::set_param_float_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-  	assert(!_is_server);
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        if (callback) {
-            callback(Result::ParamNameTooLong);
-        }
-        return;
-    }
-
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
     parameters::ParamValue value_to_set;
     value_to_set.set_float(value);
-    new_work->callback = callback;
-    new_work->maybe_component_id = maybe_component_id;
-    new_work->param_value = value_to_set;
-    new_work->extended = extended;
-    new_work->exact_type_known = true;
-    new_work->cookie = cookie;
-    _work_queue.push_back(new_work);
+    set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
 }
 
 MAVLinkParameters::Result MAVLinkParameters::set_param_float(
     const std::string& name, float value, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-  	assert(!_is_server);
+    assert(!_is_server);
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
@@ -314,16 +350,9 @@ void MAVLinkParameters::set_param_custom_async(
         }
         return;
     }
-
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
     parameters::ParamValue value_to_set;
     value_to_set.set_custom(value);
-    new_work->callback = callback;
-    new_work->param_value = value_to_set;
-    new_work->extended = true;
-    new_work->exact_type_known = true;
-    new_work->cookie = cookie;
-    _work_queue.push_back(new_work);
+    set_param_async(name,value_to_set,callback,cookie,std::nullopt, true);
 }
 
 MAVLinkParameters::Result
@@ -366,7 +395,6 @@ void MAVLinkParameters::get_param_async(
     // the proper error codes, it just needs to delay these checks until a response from the server has been received.
     //new_work->param_value = value;
     new_work->extended = extended;
-    new_work->exact_type_known = false;
     new_work->cookie = cookie;
     _work_queue.push_back(new_work);
 }
@@ -732,36 +760,8 @@ void MAVLinkParameters::do_work()
 
     switch (work->type) {
         case WorkItem::Type::Set: {
-            if (!work->exact_type_known) {
-                std::lock_guard<std::mutex> lock(_all_params_mutex);
-                const auto it = _all_params.find(work->param_name);
-                if (it == _all_params.end()) {
-                    LogErr() << "Don't know the type of param_set";
-                    if (std::get_if<SetParamCallback>(&work->callback)) {
-                        const auto& callback = std::get<SetParamCallback>(work->callback);
-                        if (callback) {
-                            callback(MAVLinkParameters::Result::Failed);
-                        }
-                    }
-                    work_queue_guard.pop_front();
-                    return;
-                }
-
-                auto maybe_temp_int = work->param_value.get_int();
-                if (!maybe_temp_int) {
-                    // Not sure what to think when this happens.
-                    LogErr() << "Error: this should definitely be an int";
-                } else {
-                    // First we copy over the type
-                    work->param_value = it->second;
-                    // And then fill in the value.
-                    work->param_value.set_int(maybe_temp_int.value());
-                }
-            }
-
             if (work->extended) {
-                auto param_value_buf = work->param_value.get_128_bytes();
-
+                const auto param_value_buf = work->param_value.get_128_bytes();
                 // FIXME: extended currently always go to the camera component
                 mavlink_msg_param_ext_set_pack(
                     _sender.get_own_system_id(),
@@ -773,8 +773,7 @@ void MAVLinkParameters::do_work()
                     param_value_buf.data(),
                     work->param_value.get_mav_param_ext_type());
             } else {
-			  	//LogErr() << "X1";
-                float value_set = (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
+                const float value_set = (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
                                       work->param_value.get_4_float_bytes_cast() :
                                       work->param_value.get_4_float_bytes_bytewise();
 
@@ -788,7 +787,6 @@ void MAVLinkParameters::do_work()
                     value_set,
                     work->param_value.get_mav_param_type());
             }
-
             if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 if (std::get_if<SetParamCallback>(&work->callback)) {
@@ -800,13 +798,10 @@ void MAVLinkParameters::do_work()
                 work_queue_guard.pop_front();
                 return;
             }
-
             work->already_requested = true;
             // _last_request_time = _sender.get_time().steady_time();
-
             // We want to get notified if a timeout happens
             _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
-
         } break;
 
         case WorkItem::Type::Get: {

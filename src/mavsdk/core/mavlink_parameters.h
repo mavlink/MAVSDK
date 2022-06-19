@@ -65,6 +65,11 @@ public:
 
     using SetParamCallback = std::function<void(Result result)>;
 
+    /**
+     * Send a message to the server to change the parameter indexed by name to the specified value.
+     * Once the result of this operation is known, the user-specified callback is called with the result of this (set value) operation.
+     * Note that to change a server parameter, one needs to know not only the value to set, but also the exact type this value has.
+     */
     void set_param_async(
         const std::string& name,
 	parameters::ParamValue value,
@@ -77,7 +82,7 @@ public:
         const std::string& name,
         int32_t value,
         std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        bool extended = false,bool adhere_to_mavlink_specs= false);
 
     void set_param_int_async(
         const std::string& name,
@@ -85,7 +90,7 @@ public:
         const SetParamCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        bool extended = false,bool adhere_to_mavlink_specs= false);
 
     Result set_param_float(
         const std::string& name,
@@ -213,7 +218,8 @@ public:
         const GetParamIntCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
-        bool extended);
+        bool extended); // Needs to be false by default, I don't know where people using the library assume the internal
+    // type hack is applied
 
     std::pair<Result, std::string> get_param_custom(const std::string& name);
 
@@ -287,8 +293,6 @@ private:
         std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
         bool already_requested{false};
-        // This is only for set commands
-        bool exact_type_known{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
         double timeout_s;
