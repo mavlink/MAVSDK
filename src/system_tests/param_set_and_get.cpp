@@ -39,10 +39,12 @@ TEST(SystemTest, ParamSetAndGet)
 
     // First we try to get a param before it is available.
     // Disabled for now because the timeouts make it very slow to run.
-    // auto result_pair = param.get_param_float(param_name_float);
-    // EXPECT_EQ(result_pair.first, Param::Result::Timeout);
-    // result_pair = param.get_param_int(param_name_int);
-    // EXPECT_EQ(result_pair.first, Param::Result::Timeout);
+    {
+        auto result_pair = param.get_param_float(param_name_float);
+        EXPECT_EQ(result_pair.first, Param::Result::Timeout);
+        auto result_pair2 = param.get_param_int(param_name_int);
+        EXPECT_EQ(result_pair2.first, Param::Result::Timeout);
+    }
 
     // Then we make it available.
     EXPECT_EQ(
@@ -90,4 +92,6 @@ TEST(SystemTest, ParamSetAndGet)
     auto server_result_all_params = param_server.retrieve_all_params();
     EXPECT_EQ(server_result_all_params.int_params.size(), 1);
     EXPECT_EQ(server_result_all_params.float_params.size(), 1);
+    EXPECT_EQ(server_result_all_params.float_params[0].value, param_value_float + 1.0f);
+    EXPECT_EQ(server_result_all_params.int_params[0].value, param_value_int + 2);
 }
