@@ -550,6 +550,9 @@ void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callbac
 {
     assert(!_is_server);
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+    if(_all_params_callback!= nullptr){
+        LogDebug()<<"Give get_all_params_async time to complete before requesting again";
+    }
     _all_params_callback = callback;
     mavlink_message_t msg;
 	if(use_extended){
@@ -571,9 +574,9 @@ void MAVLinkParameters::get_all_params_async(const GetAllParamsCallback& callbac
         LogErr() << "Failed to send param list request!";
         callback(std::map<std::string, ParamValue>{});
     }
-	// There are 2 possible cases - we get all the messages in time - in this case, the
-	// _all_params_callback member is called. Otherwise, we get a timeout at some point, which then calls
-	// the _all_params_callback member with an empty result.
+    // There are 2 possible cases - we get all the messages in time - in this case, the
+    // _all_params_callback member is called. Otherwise, we get a timeout at some point, which then calls
+    // the _all_params_callback member with an empty result.
     _timeout_handler.add(
         [this] { receive_timeout(); }, _timeout_s_callback(), &_all_params_timeout_cookie);
 }
@@ -1220,8 +1223,9 @@ void MAVLinkParameters::receive_timeout()
         std::lock_guard<std::mutex> lock(_all_params_mutex);
         // first check if we are waiting for param list response
         if (_all_params_callback) {
-		  	LogDebug()<<"All params receive timeout";
+            LogDebug()<<"All params receive timeout";
             _all_params_callback({});
+            _all_params_callback= nullptr;
             return;
         }
     }
