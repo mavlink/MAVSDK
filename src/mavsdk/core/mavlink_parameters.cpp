@@ -353,7 +353,7 @@ void MAVLinkParameters::get_param_async(
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
-            callback(Result::ParamNameTooLong, ParamValue{});
+            callback(Result::ParamNameTooLong, {});
         }
         return;
     }
@@ -441,18 +441,6 @@ void MAVLinkParameters::get_param_int_async(
 void MAVLinkParameters::get_param_custom_async(
     const std::string& name, const GetParamCustomCallback& callback, const void* cookie,std::optional<uint8_t> maybe_component_id)
 {
-    assert(!_is_server);
-    if (_parameter_debugging) {
-        LogDebug() << "getting param " << name;
-    }
-
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        if (callback) {
-            callback(MAVLinkParameters::Result::ParamNameTooLong, 0);
-        }
-        return;
-    }
     get_param_async_typesafe<std::string>(name,callback,cookie,maybe_component_id,true);
 }
 
