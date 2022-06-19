@@ -119,27 +119,73 @@ public:
      * Result::Success otherwise.
      */
     Result provide_server_param(const std::string& name,parameters::ParamValue param_value);
-    // convenient implementations for the most commonly used types
+    // convenient implementations for the 3 most commonly used types
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int value);
     Result provide_server_param_custom(const std::string& name, const std::string& value);
+    /**
+     * @return a copy of the current parameter set of the server.
+     */
     std::map<std::string, parameters::ParamValue> retrieve_all_server_params();
 
+    /**
+     * Retrieve the current value for a parameter from the server parameter set.
+     * @tparam T the type of the parameter to retrieve, if the parameter from the parameter set does not match this type,
+     * the method will return MAVLinkParameters::Result::WrongType  and the value is default constructed.
+     * @param name the name of the parameter to retrieve, if the parameter set does not contain this name key
+     * MAVLinkParameters::Result::NotFound is returned and the value is default constructed
+     * @return MAVLinkParameters::Result::Success if the name is a valid key for the parameter set, AND the type matches the value in the set.
+     * Otherwise,one of the error codes above.
+     */
     template<class T>
     std::pair<Result,T> retrieve_server_param(const std::string& name);
+    // Convenient methods for the 3 commonly used types.
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
     using GetParamAnyCallback = std::function<void(Result, parameters::ParamValue)>;
-
-    std::pair<Result, parameters::ParamValue>
-    get_param(const std::string& name, parameters::ParamValue value_type, bool extended = false);
-
+    /**
+     * This is the only type of communication from client to server that is possible in regard to type safety -
+     * Ask the server for a parameter (when asking, the parameter type is still unknown) and then, once we got
+     * a successful response from the server we know the parameter type and its value.
+     * @param name name of the parameter to get.
+     * @param callback callback that is called with the response from the server (type and value for this key are now known from the response)
+     */
     void get_param_async(
         const std::string& name,
-	parameters::ParamValue value,
+        GetParamAnyCallback callback,
+        const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
+        bool extended = false);
+    // Blocking wrapper around get_param_async()
+    std::pair<Result, parameters::ParamValue>
+    get_param(const std::string& name, bool extended = false);
+
+    /**
+     * This is legacy code, the original implementation takes a parameters::ParamValue to check and infer the type.
+     * If the type returned by get_param_async( typeless) matches the type provided by @param value_type, the callback is called with
+     * Result::Success, one of the error codes otherwise.
+     * TODO: In my opinion, this is not the most verbose implementation, since a parameters::ParamValue is constructed just to infer the type.
+     */
+    void get_param_async(
+        const std::string& name,
+        parameters::ParamValue value_type,
         const GetParamAnyCallback& callback,
+        const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
+        bool extended = false);
+
+    /**
+     * This could replace the code above. We use get_param_async to get the current type and value for a parameter, then check the type
+     * of the returned parameter and return the result with the appropriate error codes via the callback.
+     */
+    template<class T>
+    using GetParamTypesafeCallback = std::function<void(Result,T value)>;
+    template<class T>
+    void get_param_async_typesafe(
+        const std::string& name,
+        GetParamTypesafeCallback<T> callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
         bool extended = false);
@@ -173,7 +219,7 @@ public:
     using GetParamCustomCallback = std::function<void(Result, const std::string& value)>;
 
     void get_param_custom_async(
-        const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
+        const std::string& name, const GetParamCustomCallback& callback, const void* cookie,std::optional<uint8_t> maybe_component_id=std::nullopt);
 
     // Note: When use_extended == false, this won't return any parameters that use a string as param value,
     // since the non-extended protocol is incapable of doing so.
@@ -233,9 +279,6 @@ private:
         const Type type;
         const std::string param_name;
         using VariantCallback=std::variant<
-            GetParamFloatCallback,
-            GetParamIntCallback,
-            GetParamCustomCallback,
             GetParamAnyCallback,
             SetParamCallback>;
         VariantCallback callback{};

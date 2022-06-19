@@ -292,143 +292,6 @@ MAVLinkParameters::Result MAVLinkParameters::set_param_float(
     return res.get();
 }
 
-void MAVLinkParameters::get_param_float_async(
-    const std::string& name,
-    const GetParamFloatCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
-{
-  	assert(!_is_server);
-    if (_parameter_debugging) {
-        LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
-    }
-
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        if (callback) {
-            callback(MAVLinkParameters::Result::ParamNameTooLong, NAN);
-        }
-        return;
-    }
-
-    ParamValue value_type;
-    value_type.set(NAN);
-
-    // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
-    new_work->callback = callback;
-    new_work->maybe_component_id = maybe_component_id;
-    new_work->param_value = value_type;
-    new_work->extended = extended;
-    new_work->cookie = cookie;
-
-    _work_queue.push_back(new_work);
-}
-
-void MAVLinkParameters::get_param_async(
-    const std::string& name,
-    ParamValue value,
-    const GetParamAnyCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
-{
-    assert(!_is_server);
-    if (_parameter_debugging) {
-        LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
-    }
-
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        if (callback) {
-            callback(Result::ParamNameTooLong, ParamValue{});
-        }
-        return;
-    }
-
-    // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
-    new_work->callback = callback;
-    new_work->maybe_component_id = maybe_component_id;
-    new_work->param_value = value;
-    new_work->extended = extended;
-    new_work->exact_type_known = true;
-    new_work->cookie = cookie;
-
-    _work_queue.push_back(new_work);
-}
-
-void MAVLinkParameters::get_param_int_async(
-    const std::string& name,
-    const GetParamIntCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
-{
-  	assert(!_is_server);
-    if (_parameter_debugging) {
-        LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
-    }
-
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        if (callback) {
-            callback(MAVLinkParameters::Result::ParamNameTooLong, 0);
-        }
-        return;
-    }
-
-    // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
-    new_work->callback = callback;
-    new_work->maybe_component_id = maybe_component_id;
-    new_work->param_value = {};
-    new_work->extended = extended;
-    new_work->cookie = cookie;
-
-    _work_queue.push_back(new_work);
-}
-
-MAVLinkParameters::Result
-MAVLinkParameters::set_param_custom(const std::string& name, const std::string& value)
-{
-  	assert(!_is_server);
-    auto prom = std::promise<Result>();
-    auto res = prom.get_future();
-
-    set_param_custom_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
-
-    return res.get();
-}
-
-void MAVLinkParameters::get_param_custom_async(
-    const std::string& name, const GetParamCustomCallback& callback, const void* cookie)
-{
-  	assert(!_is_server);
-    if (_parameter_debugging) {
-        LogDebug() << "getting param " << name;
-    }
-
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        if (callback) {
-            callback(MAVLinkParameters::Result::ParamNameTooLong, 0);
-        }
-        return;
-    }
-
-    // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
-    new_work->callback = callback;
-    new_work->param_value.set_custom(std::string());
-    new_work->extended = true;
-    new_work->cookie = cookie;
-
-    _work_queue.push_back(new_work);
-}
-
 void MAVLinkParameters::set_param_custom_async(
     const std::string& name,
     const std::string& value,
@@ -461,6 +324,136 @@ void MAVLinkParameters::set_param_custom_async(
     new_work->exact_type_known = true;
     new_work->cookie = cookie;
     _work_queue.push_back(new_work);
+}
+
+MAVLinkParameters::Result
+MAVLinkParameters::set_param_custom(const std::string& name, const std::string& value)
+{
+    assert(!_is_server);
+    auto prom = std::promise<Result>();
+    auto res = prom.get_future();
+
+    set_param_custom_async(
+        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+
+    return res.get();
+}
+
+void MAVLinkParameters::get_param_async(
+    const std::string& name,
+    GetParamAnyCallback callback,
+    const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
+{
+    assert(!_is_server);
+    if (_parameter_debugging) {
+        LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
+    }
+    if (name.size() > PARAM_ID_LEN) {
+        LogErr() << "Error: param name too long";
+        if (callback) {
+            callback(Result::ParamNameTooLong, ParamValue{});
+        }
+        return;
+    }
+    // Otherwise, push work onto queue.
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
+    new_work->callback = callback;
+    new_work->maybe_component_id = maybe_component_id;
+    // We don't need to know the exact type when getting a value - neither extended or non-extended protocol mavlink messages
+    // specify the exact type on a "get_xxx" message. This makes total sense. The client still can reason about the type and return
+    // the proper error codes, it just needs to delay these checks until a response from the server has been received.
+    //new_work->param_value = value;
+    new_work->extended = extended;
+    new_work->exact_type_known = false;
+    new_work->cookie = cookie;
+    _work_queue.push_back(new_work);
+}
+
+void MAVLinkParameters::get_param_async(
+    const std::string& name,
+    parameters::ParamValue value_type,
+    const MAVLinkParameters::GetParamAnyCallback& callback,
+    const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
+{
+    // We need to delay the type checking until we get a response from the server.
+    GetParamAnyCallback callback_future_result=[callback,value_type](Result result, parameters::ParamValue value){
+        if(result==Result::Success){
+            if(value.is_same_type(value_type)){
+                callback(Result::Success,std::move(value));
+            }else{
+                callback(Result::WrongType,{});
+            }
+        }else{
+            callback(result,{});
+        }
+    };
+    get_param_async(name,callback,cookie,maybe_component_id,extended);
+}
+
+template<class T>
+void MAVLinkParameters::get_param_async_typesafe(
+    const std::string& name,
+    const GetParamTypesafeCallback<T> callback,
+    const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
+{
+    // We need to delay the type checking until we get a response from the server.
+    GetParamAnyCallback callback_future_result=[callback](Result result, parameters::ParamValue value){
+        if(result==Result::Success){
+            if(value.is_same_type_x<T>()){
+                callback(Result::Success,value.get<T>());
+            }else{
+                callback(Result::WrongType,{});
+            }
+        }else{
+            callback(result,{});
+        }
+    };
+    get_param_async(name,callback_future_result,cookie,maybe_component_id,extended);
+}
+
+void MAVLinkParameters::get_param_float_async(
+    const std::string& name,
+    const GetParamFloatCallback& callback,
+    const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
+{
+    get_param_async_typesafe<float>(name,callback,cookie,maybe_component_id,extended);
+}
+
+
+void MAVLinkParameters::get_param_int_async(
+    const std::string& name,
+    const GetParamIntCallback& callback,
+    const void* cookie,
+    std::optional<uint8_t> maybe_component_id,
+    bool extended)
+{
+    get_param_async_typesafe<int32_t>(name,callback,cookie,maybe_component_id,extended);
+}
+
+void MAVLinkParameters::get_param_custom_async(
+    const std::string& name, const GetParamCustomCallback& callback, const void* cookie,std::optional<uint8_t> maybe_component_id)
+{
+    assert(!_is_server);
+    if (_parameter_debugging) {
+        LogDebug() << "getting param " << name;
+    }
+
+    if (name.size() > PARAM_ID_LEN) {
+        LogErr() << "Error: param name too long";
+        if (callback) {
+            callback(MAVLinkParameters::Result::ParamNameTooLong, 0);
+        }
+        return;
+    }
+    get_param_async_typesafe<std::string>(name,callback,cookie,maybe_component_id,true);
 }
 
 std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_server_params()
@@ -505,21 +498,18 @@ MAVLinkParameters::retrieve_server_param_int(const std::string& name)
 }
 
 std::pair<MAVLinkParameters::Result, parameters::ParamValue> MAVLinkParameters::get_param(
-    const std::string& name, parameters::ParamValue value, bool extended)
+    const std::string& name,bool extended)
 {
     assert(!_is_server);
     auto prom = std::promise<std::pair<Result, ParamValue>>();
     auto res = prom.get_future();
-
     get_param_async(
         name,
-        value,
         [&prom](Result result, ParamValue new_value) {
-            prom.set_value(std::make_pair<>(result, new_value));
+            prom.set_value(std::make_pair<>(result, std::move(new_value)));
         },
         this,
         extended);
-
     return res.get();
 }
 
@@ -529,14 +519,12 @@ std::pair<MAVLinkParameters::Result, int32_t> MAVLinkParameters::get_param_int(
     assert(!_is_server);
     auto prom = std::promise<std::pair<Result, int32_t>>();
     auto res = prom.get_future();
-
     get_param_int_async(
         name,
         [&prom](Result result, int32_t value) { prom.set_value(std::make_pair<>(result, value)); },
         this,
         maybe_component_id,
         extended);
-
     return res.get();
 }
 
@@ -546,14 +534,12 @@ std::pair<MAVLinkParameters::Result, float> MAVLinkParameters::get_param_float(
     assert(!_is_server);
     auto prom = std::promise<std::pair<Result, float>>();
     auto res = prom.get_future();
-
     get_param_float_async(
         name,
         [&prom](Result result, float value) { prom.set_value(std::make_pair<>(result, value)); },
         this,
         maybe_component_id,
         extended);
-
     return res.get();
 }
 
@@ -563,14 +549,12 @@ MAVLinkParameters::get_param_custom(const std::string& name)
     assert(!_is_server);
     auto prom = std::promise<std::pair<Result, std::string>>();
     auto res = prom.get_future();
-
     get_param_custom_async(
         name,
         [&prom](Result result, const std::string& value) {
             prom.set_value(std::make_pair<>(result, value));
         },
         this);
-
     return res.get();
 }
 
@@ -866,17 +850,9 @@ void MAVLinkParameters::do_work()
 
             if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
-
-                if (std::get_if<GetParamIntCallback>(&work->callback)) {
-                    if (const auto& callback = std::get<GetParamIntCallback>(work->callback)) {
-                        callback(Result::ConnectionError, 0);
-                    }
-                } else if (std::get_if<GetParamFloatCallback>(&work->callback)) {
-                    if (const auto& callback = std::get<GetParamFloatCallback>(work->callback)) {
-                        (callback)(Result::ConnectionError, NAN);
-                    }
-                } else if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                    if (const auto& callback = std::get<GetParamAnyCallback>(work->callback)) {
+               if (std::get_if<GetParamAnyCallback>(&work->callback)) {
+                   const auto& callback = std::get<GetParamAnyCallback>(work->callback);
+                    if (callback) {
                         (callback)(Result::ConnectionError, ParamValue{});
                     }
                 }
@@ -1023,41 +999,10 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
 
     switch (work->type) {
         case WorkItem::Type::Get: {
-            if (std::get_if<GetParamIntCallback>(&work->callback)) {
-                const auto& callback = std::get<GetParamIntCallback>(work->callback);
-                if (received_value.get_int()) {
-                    if (callback) {
-                        callback(Result::Success, received_value.get_int().value());
-                    }
-                } else {
-                    LogErr() << "Wrong get callback type";
-                    if (callback) {
-                        callback(Result::WrongType, 0);
-                    }
-                }
-            } else if (std::get<GetParamFloatCallback>(work->callback)) {
-                const auto& callback = std::get<GetParamFloatCallback>(work->callback);
-                if (received_value.get_float()) {
-                    if (callback) {
-                        callback(Result::Success, received_value.get_float().value());
-                    }
-                } else {
-                    LogErr() << "Wrong get callback type";
-                    if (callback) {
-                        callback(Result::WrongType, NAN);
-                    }
-                }
-            } else if (std::get<GetParamCustomCallback>(work->callback)) {
-                const auto& callback = std::get<GetParamCustomCallback>(work->callback);
-                if (received_value.get_custom()) {
-                    if (callback) {
-                        callback(Result::Success, received_value.get_custom().value());
-                    }
-                } else {
-                    LogErr() << "Wrong get callback type";
-                    if (callback) {
-                        callback(Result::WrongType, {});
-                    }
+            if (std::get_if<GetParamAnyCallback>(&work->callback)) {
+                const auto& callback = std::get<GetParamAnyCallback>(work->callback);
+                if (callback) {
+                    callback(Result::Success, received_value);
                 }
             }
             _timeout_handler.remove(_timeout_cookie);
@@ -1138,68 +1083,12 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
         case WorkItem::Type::Get: {
             ParamValue value;
             value.set_from_mavlink_param_ext_value(param_ext_value);
-
-            if (value.is_same_type(work->param_value)) {
-                if (std::get_if<GetParamFloatCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamFloatCallback>(work->callback);
-                    if (callback) {
-                        if (value.get_float()) {
-                            callback(MAVLinkParameters::Result::Success, value.get_float().value());
-                        } else {
-                            callback(MAVLinkParameters::Result::WrongType, NAN);
-                        }
-                    }
-                } else if (std::get_if<GetParamIntCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamIntCallback>(work->callback);
-                    if (callback) {
-                        if (value.get_int()) {
-                            callback(MAVLinkParameters::Result::Success, value.get_int().value());
-                        } else {
-                            callback(MAVLinkParameters::Result::WrongType, 0);
-                        }
-                    }
-                } else if (std::get_if<GetParamCustomCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamCustomCallback>(work->callback);
-                    if (callback) {
-                        if (value.get_custom()) {
-                            callback(
-                                MAVLinkParameters::Result::Success, value.get_custom().value());
-                        } else {
-                            callback(MAVLinkParameters::Result::WrongType, 0);
-                        }
-                    }
-                } else if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                    if (callback) {
-                        callback(MAVLinkParameters::Result::Success, value);
-                    }
-                }
-            } else {
-                LogErr() << "Param types don't match for " << work->param_name;
-
-                if (std::get_if<GetParamFloatCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamFloatCallback>(work->callback);
-                    if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, NAN);
-                    }
-                } else if (std::get_if<GetParamIntCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamIntCallback>(work->callback);
-                    if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, 0);
-                    }
-                } else if (std::get_if<GetParamCustomCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamCustomCallback>(work->callback);
-                    if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, {});
-                    }
-                } else if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                    if (callback) {
-                        callback(MAVLinkParameters::Result::WrongType, ParamValue{});
-                    }
+            if (std::get_if<GetParamAnyCallback>(&work->callback)) {
+                const auto& callback = std::get<GetParamAnyCallback>(work->callback);
+                if (callback) {
+                    callback(Result::Success,value);
                 }
             }
-
             _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _sender.get_time().elapsed_since_s(_last_request_time);
@@ -1363,7 +1252,7 @@ void MAVLinkParameters::receive_timeout()
 
     switch (work->type) {
         case WorkItem::Type::Get: {
-		  	parameters::ParamValue empty_value;
+            parameters::ParamValue empty_value;
             if (work->retries_to_do > 0) {
                 // We're not sure the command arrived, let's retransmit.
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
@@ -1372,20 +1261,10 @@ void MAVLinkParameters::receive_timeout()
                     LogErr() << "connection send error in retransmit (" << work->param_name << ").";
                     work_queue_guard.pop_front();
 
-                    if (std::get_if<GetParamFloatCallback>(&work->callback)) {
-                        const auto& callback = std::get<GetParamFloatCallback>(work->callback);
-                        if (callback) {
-                            callback(Result::ConnectionError, NAN);
-                        }
-                    } else if (std::get_if<GetParamIntCallback>(&work->callback)) {
-                        const auto& callback = std::get<GetParamIntCallback>(work->callback);
-                        if (callback) {
-                            callback(Result::ConnectionError, 0);
-                        }
-                    } else if (std::get_if<GetParamAnyCallback>(&work->callback)) {
+                    if (std::get_if<GetParamAnyCallback>(&work->callback)) {
                         const auto& callback = std::get<GetParamAnyCallback>(work->callback);
                         if (callback) {
-                            callback(Result::ConnectionError, parameters::ParamValue{});
+                            callback(Result::ConnectionError, {});
                         }
                     }
                 } else {
@@ -1399,15 +1278,10 @@ void MAVLinkParameters::receive_timeout()
 
                 work_queue_guard.pop_front();
 
-                if (std::get_if<GetParamFloatCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamFloatCallback>(work->callback);
+                if (std::get_if<GetParamAnyCallback>(&work->callback)) {
+                    const auto& callback = std::get<GetParamAnyCallback>(work->callback);
                     if (callback) {
-                        callback(MAVLinkParameters::Result::Timeout, NAN);
-                    }
-                } else if (std::get_if<GetParamIntCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamIntCallback>(work->callback);
-                    if (callback) {
-                        callback(MAVLinkParameters::Result::Timeout, 0);
+                        callback(Result::Timeout, {});
                     }
                 }
             }
