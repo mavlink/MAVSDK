@@ -1019,6 +1019,50 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     }
 }
 
+void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message)
+{
+    if (_parameter_debugging) {
+        LogDebug() << "getting param ext value";
+    }
+    mavlink_param_ext_value_t param_ext_value{};
+    mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
+    const auto safe_param_id=extract_safe_param_id(param_ext_value.param_id);
+
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
+    auto work = work_queue_guard.get_front();
+
+    if (!work) {
+        return;
+    }
+    if (!work->already_requested) {
+        return;
+    }
+    if (work->param_name != safe_param_id) {
+        return;
+    }
+
+    switch (work->type) {
+        case WorkItem::Type::Get: {
+            ParamValue value;
+            value.set_from_mavlink_param_ext_value(param_ext_value);
+            if (std::get_if<GetParamAnyCallback>(&work->callback)) {
+                const auto& callback = std::get<GetParamAnyCallback>(work->callback);
+                if (callback) {
+                    callback(Result::Success,value);
+                }
+            }
+            _timeout_handler.remove(_timeout_cookie);
+            // LogDebug() << "time taken: " <<
+            // _sender.get_time().elapsed_since_s(_last_request_time);
+            work_queue_guard.pop_front();
+        } break;
+        // According to the mavlink spec, PARAM_EXT_VALUE is only emitted in response to a PARAM_EXT_REQUEST_LIST or PARAM_EXT_REQUEST_READ.
+        default:
+            LogWarn() << "Unexpected ParamExtValue response";
+            break;
+    }
+}
+
 void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& param_value)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
@@ -1042,55 +1086,6 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
         }
 
         call_param_changed_callback(subscription.callback, value);
-    }
-}
-
-void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message)
-{
-    if (_parameter_debugging) {
-        LogDebug() << "getting param ext value";
-    }
-
-    mavlink_param_ext_value_t param_ext_value{};
-    mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
-    const auto safe_param_id=extract_safe_param_id(param_ext_value.param_id);
-
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
-
-    if (!work) {
-        return;
-    }
-
-    if (!work->already_requested) {
-        return;
-    }
-
-    if (work->param_name != safe_param_id) {
-        return;
-    }
-
-    switch (work->type) {
-        case WorkItem::Type::Get: {
-            ParamValue value;
-            value.set_from_mavlink_param_ext_value(param_ext_value);
-            if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                if (callback) {
-                    callback(Result::Success,value);
-                }
-            }
-            _timeout_handler.remove(_timeout_cookie);
-            // LogDebug() << "time taken: " <<
-            // _sender.get_time().elapsed_since_s(_last_request_time);
-            work_queue_guard.pop_front();
-        } break;
-
-        case WorkItem::Type::Set:
-            LogWarn() << "Unexpected ParamExtValue response";
-            break;
-        default:
-            break;
     }
 }
 
