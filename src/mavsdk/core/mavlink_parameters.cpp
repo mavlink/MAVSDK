@@ -929,9 +929,10 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
 {
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
+    const std::string param_id = extract_safe_param_id(param_value.param_id);
 
     if (_parameter_debugging) {
-        LogDebug() << "getting param value: " << extract_safe_param_id(param_value.param_id);
+        LogDebug() << "getting param value: " << param_id;
     }
 
     ParamValue received_value;
@@ -940,8 +941,6 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     } else {
         received_value.set_from_mavlink_param_value_bytewise(param_value);
     }
-
-    const std::string param_id = extract_safe_param_id(param_value.param_id);
 
     {
         std::lock_guard<std::mutex> lock(_all_params_mutex);
@@ -983,7 +982,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
         return;
     }
 
-    if (work->param_name != extract_safe_param_id(param_value.param_id)) {
+    if (work->param_name != param_id) {
         // No match, let's just return the borrowed work item.
         return;
     }
@@ -1023,9 +1022,9 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
 void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& param_value)
 {
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
+    const auto safe_param_id = extract_safe_param_id(param_value.param_id);
     for (const auto& subscription : _param_changed_subscriptions) {
-        if (subscription.param_name != extract_safe_param_id(param_value.param_id)) {
+        if (subscription.param_name != safe_param_id) {
             continue;
         }
 
@@ -1054,6 +1053,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
 
     mavlink_param_ext_value_t param_ext_value{};
     mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
+    const auto safe_param_id=extract_safe_param_id(param_ext_value.param_id);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -1066,7 +1066,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
         return;
     }
 
-    if (work->param_name != extract_safe_param_id(param_ext_value.param_id)) {
+    if (work->param_name != safe_param_id) {
         return;
     }
 
@@ -1100,6 +1100,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
 
     mavlink_param_ext_ack_t param_ext_ack;
     mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
+    const auto safe_param_id=extract_safe_param_id(param_ext_ack.param_id);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -1113,7 +1114,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
     }
 
     // Now it still needs to match the param name
-    if (work->param_name != extract_safe_param_id(param_ext_ack.param_id)) {
+    if (work->param_name != safe_param_id) {
         return;
     }
 
