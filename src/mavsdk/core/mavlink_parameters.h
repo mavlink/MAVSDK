@@ -123,10 +123,6 @@ public:
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int value);
     Result provide_server_param_custom(const std::string& name, const std::string& value);
-    /**
-     * @return a copy of the current parameter set of the server.
-     */
-    std::map<std::string, parameters::ParamValue> retrieve_all_server_params();
 
     /**
      * Retrieve the current value for a parameter from the server parameter set.
@@ -143,6 +139,10 @@ public:
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
+    /**
+     * @return a copy of the current parameter set of the server.
+     */
+    std::map<std::string, parameters::ParamValue> retrieve_all_server_params();
 
     using GetParamAnyCallback = std::function<void(Result, parameters::ParamValue)>;
     /**
@@ -177,8 +177,9 @@ public:
         bool extended = false);
 
     /**
-     * This could replace the code above. We use get_param_async to get the current type and value for a parameter, then check the type
-     * of the returned parameter and return the result with the appropriate error codes via the callback.
+     * This could replace the code above.
+     * We use get_param_async to get the current type and value for a parameter, then check the type
+     * of the obtained parameter and return the result with the appropriate error codes via the callback.
      */
     template<class T>
     using GetParamTypesafeCallback = std::function<void(Result,T value)>;
@@ -286,6 +287,7 @@ private:
         std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
         bool already_requested{false};
+        // This is only for set commands
         bool exact_type_known{false};
         const void* cookie{nullptr};
         int retries_to_do{3};

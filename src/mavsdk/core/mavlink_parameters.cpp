@@ -456,13 +456,6 @@ void MAVLinkParameters::get_param_custom_async(
     get_param_async_typesafe<std::string>(name,callback,cookie,maybe_component_id,true);
 }
 
-std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_server_params()
-{
-    assert(_is_server);
-    std::lock_guard<std::mutex> lock(_all_params_mutex);
-    return _all_params;
-}
-
 template<class T>
 std::pair<MAVLinkParameters::Result, T> MAVLinkParameters::retrieve_server_param(const std::string& name)
 {
@@ -495,6 +488,13 @@ std::pair<MAVLinkParameters::Result, int>
 MAVLinkParameters::retrieve_server_param_int(const std::string& name)
 {
     return retrieve_server_param<int>(name);
+}
+
+std::map<std::string, parameters::ParamValue> MAVLinkParameters::retrieve_all_server_params()
+{
+    assert(_is_server);
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+    return _all_params;
 }
 
 std::pair<MAVLinkParameters::Result, parameters::ParamValue> MAVLinkParameters::get_param(
