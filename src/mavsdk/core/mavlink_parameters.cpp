@@ -588,7 +588,7 @@ std::map<std::string, parameters::ParamValue> MAVLinkParameters::get_all_params(
 		// goes out of scope when the callback returns. So don't use a reference here, pass by value or refactor the code to use
 		// a std::shared_ptr.
         [&prom](std::map<std::string, parameters::ParamValue> all_params) {
-            prom.set_value(all_params);
+            prom.set_value(std::move(all_params));
         },use_extended);
     return res.get();
 }
