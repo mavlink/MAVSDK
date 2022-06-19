@@ -623,13 +623,5 @@ void ParamValue::log_if_type_is_different_ext(MAV_PARAM_EXT_TYPE newType)const{
   }
 }
 
-/*template<class T> bool ParamValue::is_same_type_x()const
-{
-    if (std::holds_alternative<T>(_value)) {
-        return true;
-    }
-    return false;
-}*/
-
 }
 }
