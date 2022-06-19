@@ -949,10 +949,10 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
 
         // check if we are looking for param list (get all parameters).
         if (_all_params_callback) {
-			// If we are currently waiting for all parameters, this is a hacky way to basically say
-			// "Hey, we got the last parameter, so we got all parameters, and can forward that to the user."
-			// Note that I don't think this accounts for the case where a parameter that is not the last parameter went missing.
-			// So it is better than nothing, but also not ideal. Correct me if I'm wrong.
+            // If we are currently waiting for all parameters, this is a hacky way to basically say
+            // "Hey, we got the last parameter, so we got all parameters, and can forward that to the user."
+            // Note that I don't think this accounts for the case where a parameter that is not the last parameter went missing.
+            // So it is better than nothing, but also not ideal. Correct me if I'm wrong.
             if (param_value.param_index + 1 == param_value.param_count) {
                 _timeout_handler.remove(_all_params_timeout_cookie);
                 _all_params_callback(_all_params);
