@@ -63,6 +63,12 @@ TEST(SystemTest, ParamSetAndGet)
     EXPECT_EQ(result_pair.first, Param::Result::Success);
     EXPECT_EQ(result_pair.second, param_value_int);
 
+    // and we check that obtaining a value with the wrong type returns the proper error code
+    result_pair = param.get_param_int(param_name_float);
+    EXPECT_EQ(result_pair.first, Param::Result::WrongType);
+    result_pair = param.get_param_float(param_name_int);
+    EXPECT_EQ(result_pair.first, Param::Result::WrongType);
+
     // Let's now change the values
     auto result = param.set_param_float(param_name_float, param_value_float + 1.0f);
     EXPECT_EQ(result, Param::Result::Success);
