@@ -82,7 +82,9 @@ public:
         const std::string& name,
         int32_t value,
         std::optional<uint8_t> maybe_component_id,
-        bool extended = false,bool adhere_to_mavlink_specs= false);
+        bool extended = false,
+        // Needs to be false by default, I don't know where people using the library assume the internal type hack is applied
+        bool adhere_to_mavlink_specs= false);
 
     void set_param_int_async(
         const std::string& name,
@@ -90,7 +92,9 @@ public:
         const SetParamCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
-        bool extended = false,bool adhere_to_mavlink_specs= false);
+        bool extended = false,
+        // Needs to be false by default, I don't know where people using the library assume the internal type hack is applied
+        bool adhere_to_mavlink_specs= false);
 
     Result set_param_float(
         const std::string& name,
@@ -218,8 +222,7 @@ public:
         const GetParamIntCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
-        bool extended); // Needs to be false by default, I don't know where people using the library assume the internal
-    // type hack is applied
+        bool extended);
 
     std::pair<Result, std::string> get_param_custom(const std::string& name);
 
