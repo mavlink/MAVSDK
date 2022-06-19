@@ -229,15 +229,16 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16;
 
     struct WorkItem {
-        enum class Type { Get, Set, Value, Ack } type{Type::Get};
-        std::variant<
+        enum class Type { Get, Set, Value, Ack };
+        const Type type;
+        const std::string param_name;
+        using VariantCallback=std::variant<
             GetParamFloatCallback,
             GetParamIntCallback,
             GetParamCustomCallback,
             GetParamAnyCallback,
-            SetParamCallback>
-            callback{};
-        std::string param_name{};
+            SetParamCallback>;
+        VariantCallback callback{};
         parameters::ParamValue param_value{};
         std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
@@ -250,7 +251,7 @@ private:
         int param_index{0};
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(double new_timeout_s) : timeout_s(new_timeout_s){};
+        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s) : type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s){};
     };
     LockedQueue<WorkItem> _work_queue{};
 

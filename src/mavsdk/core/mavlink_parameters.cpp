@@ -170,11 +170,9 @@ void MAVLinkParameters::set_param_async(
         }
         return;
     }
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-    new_work->type = WorkItem::Type::Set;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
-    new_work->param_name = name;
     new_work->param_value = value;
     new_work->extended = extended;
     new_work->exact_type_known = true;
@@ -204,13 +202,10 @@ void MAVLinkParameters::set_param_int_async(
     const bool exact_int_type_known = (_sender.autopilot() == SystemImpl::Autopilot::Px4);
 
     const auto set_step = [=]() {
-        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
         parameters::ParamValue value_to_set;
         value_to_set.set(value);
-
-        new_work->type = WorkItem::Type::Set;
         new_work->callback = callback;
-        new_work->param_name = name;
         new_work->param_value = value_to_set;
         new_work->extended = extended;
         new_work->exact_type_known = exact_int_type_known;
@@ -267,15 +262,11 @@ void MAVLinkParameters::set_param_float_async(
         return;
     }
 
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-
-  	parameters::ParamValue value_to_set;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
+    parameters::ParamValue value_to_set;
     value_to_set.set_float(value);
-
-    new_work->type = WorkItem::Type::Set;
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
-    new_work->param_name = name;
     new_work->param_value = value_to_set;
     new_work->extended = extended;
     new_work->exact_type_known = true;
@@ -325,11 +316,9 @@ void MAVLinkParameters::get_param_float_async(
     value_type.set(NAN);
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-    new_work->type = WorkItem::Type::Get;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
-    new_work->param_name = name;
     new_work->param_value = value_type;
     new_work->extended = extended;
     new_work->cookie = cookie;
@@ -359,11 +348,9 @@ void MAVLinkParameters::get_param_async(
     }
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-    new_work->type = WorkItem::Type::Get;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
-    new_work->param_name = name;
     new_work->param_value = value;
     new_work->extended = extended;
     new_work->exact_type_known = true;
@@ -393,11 +380,9 @@ void MAVLinkParameters::get_param_int_async(
     }
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-    new_work->type = WorkItem::Type::Get;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
     new_work->callback = callback;
     new_work->maybe_component_id = maybe_component_id;
-    new_work->param_name = name;
     new_work->param_value = {};
     new_work->extended = extended;
     new_work->cookie = cookie;
@@ -435,10 +420,8 @@ void MAVLinkParameters::get_param_custom_async(
     }
 
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-    new_work->type = WorkItem::Type::Get;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
     new_work->callback = callback;
-    new_work->param_name = name;
     new_work->param_value.set_custom(std::string());
     new_work->extended = true;
     new_work->cookie = cookie;
@@ -469,14 +452,10 @@ void MAVLinkParameters::set_param_custom_async(
         return;
     }
 
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-
-  	parameters::ParamValue value_to_set;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
+    parameters::ParamValue value_to_set;
     value_to_set.set_custom(value);
-
-    new_work->type = WorkItem::Type::Set;
     new_work->callback = callback;
-    new_work->param_name = name;
     new_work->param_value = value_to_set;
     new_work->extended = true;
     new_work->exact_type_known = true;
@@ -1333,9 +1312,7 @@ void MAVLinkParameters::process_param_ext_set(const mavlink_message_t& message)
             _all_params[safe_param_id] = value;
         }
 
-        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-        new_work->type = WorkItem::Type::Ack;
-        new_work->param_name = safe_param_id;
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,safe_param_id,_timeout_s_callback());
         new_work->param_value = _all_params[safe_param_id];
         new_work->extended = true;
         _work_queue.push_back(new_work);
@@ -1502,9 +1479,7 @@ void MAVLinkParameters::process_param_set(const mavlink_message_t& message)
             LogDebug() << "Changing param from " << _all_params[safe_param_id] << " to " << value;
             _all_params[safe_param_id] = value;
 
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,_timeout_s_callback());
             new_work->param_value = _all_params.at(safe_param_id);
             new_work->extended = false;
             _work_queue.push_back(new_work);
@@ -1562,9 +1537,7 @@ void MAVLinkParameters::process_param_request_read(const mavlink_message_t& mess
 			  LogDebug()<<"Not forwarding param"<<safe_param_id<<" since it needs extended";
 			  return;
 			}
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,_timeout_s_callback());
             new_work->param_value = _all_params.at(safe_param_id);
             new_work->extended = false;
             _work_queue.push_back(new_work);
@@ -1586,9 +1559,7 @@ void MAVLinkParameters::process_param_request_list(const mavlink_message_t& mess
 		  LogDebug()<<"Not forwarding param"<<pair.first<<" since it needs extended";
 		  continue;
 		}
-        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-        new_work->type = WorkItem::Type::Value;
-        new_work->param_name = pair.first;
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,_timeout_s_callback());
         new_work->param_value = pair.second;
         new_work->extended = false;
 		// Consti10 - the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
@@ -1606,9 +1577,7 @@ void MAVLinkParameters::process_param_ext_request_list(const mavlink_message_t& 
   mavlink_msg_param_ext_request_list_decode(&message, &ext_list_request);
   int idx=0;
   for (const auto& pair : _all_params) {
-	auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-	new_work->type = WorkItem::Type::Value;
-	new_work->param_name = pair.first;
+	auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,_timeout_s_callback());
 	new_work->param_value = pair.second;
 	new_work->extended = true;
 	new_work->param_count = get_current_parameters_count(true);
@@ -1627,9 +1596,7 @@ void MAVLinkParameters::process_param_ext_request_read(const mavlink_message_t& 
         LogDebug() << "Request Param " << safe_param_id;
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,_timeout_s_callback());
             new_work->param_value = _all_params.at(safe_param_id);
             new_work->extended = true;
             _work_queue.push_back(new_work);
