@@ -69,9 +69,6 @@ private:
 
     void process_param_set(const mavlink_message_t& message);
     void process_param_ext_set(const mavlink_message_t& message);
-    void receive_timeout();
-
-    void notify_param_subscriptions(const mavlink_param_value_t& param_value);
 
     static std::string extract_safe_param_id(const char param_id[]);
 
@@ -80,13 +77,10 @@ private:
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
-    TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
 
     // Params can be up to 16 chars without 0-termination.
     static constexpr size_t PARAM_ID_LEN = 16;
-
-    void* _timeout_cookie = nullptr;
 
     struct ParamChangedSubscription {
         std::string param_name{};
@@ -100,7 +94,6 @@ private:
     std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
 
     std::mutex _all_params_mutex{};
-    void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
 
     void process_param_request_read(const mavlink_message_t& message);
@@ -113,12 +106,9 @@ private:
         enum class Type { Value, Ack } type{Type::Value};
         std::string param_name{};
         ParamValue param_value{};
-        std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
         bool already_requested{false};
-        bool exact_type_known{false};
         const void* cookie{nullptr};
-        int retries_to_do{3};
         double timeout_s;
         int param_count{1};
         int param_index{0};

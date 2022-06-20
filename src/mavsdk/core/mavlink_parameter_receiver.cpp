@@ -10,7 +10,6 @@ MavlinkParameterReceiver::MavlinkParameterReceiver(
     TimeoutSCallback timeout_s_callback) :
     _sender(sender),
     _message_handler(message_handler),
-    _timeout_handler(timeout_handler),
     _timeout_s_callback(timeout_s_callback)
 {
     _message_handler.register_one(
@@ -493,6 +492,30 @@ void MavlinkParameterReceiver::call_param_changed_callback(
         std::get<ParamCustomChangedCallback>(callback)(value.get_custom().value());
     } else {
         LogErr() << "Type and callback mismatch";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, const MavlinkParameterReceiver::Result& result)
+{
+    switch (result) {
+        case MavlinkParameterReceiver::Result::Success:
+            return str << "Success";
+        case MavlinkParameterReceiver::Result::Timeout:
+            return str << "Timeout";
+        case MavlinkParameterReceiver::Result::ConnectionError:
+            return str << "ConnectionError";
+        case MavlinkParameterReceiver::Result::WrongType:
+            return str << "WrongType";
+        case MavlinkParameterReceiver::Result::ParamNameTooLong:
+            return str << "ParamNameTooLong";
+        case MavlinkParameterReceiver::Result::NotFound:
+            return str << "NotFound";
+        case MavlinkParameterReceiver::Result::Failed:
+            return str << "Failed";
+        case MavlinkParameterReceiver::Result::UnknownError:
+            // Fallthrough
+        default:
+            return str << "UnknownError";
     }
 }
 
