@@ -151,7 +151,7 @@ void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& messag
     mavlink_param_set_t set_request{};
     mavlink_msg_param_set_decode(&message, &set_request);
 
-    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
     if (!safe_param_id.empty()) {
         LogDebug() << "Set Param Request: " << safe_param_id << " with value "
                    << *(int32_t*)(&set_request.param_value);
@@ -167,11 +167,8 @@ void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& messag
             LogDebug() << "Changing param from " << _all_params[safe_param_id] << " to " << value;
             _all_params[safe_param_id] = value;
 
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,_timeout_s_callback());
             new_work->param_value = _all_params.at(safe_param_id);
-            new_work->extended = false;
             _work_queue.push_back(new_work);
             std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
             for (const auto& subscription : _param_changed_subscriptions) {
@@ -199,25 +196,22 @@ void MavlinkParameterReceiver::process_param_ext_set(const mavlink_message_t& me
     mavlink_param_ext_set_t set_request{};
     mavlink_msg_param_ext_set_decode(&message, &set_request);
 
-    std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
     if (!safe_param_id.empty()) {
         LogDebug() << "Set Param Request: " << safe_param_id;
         {
             // Use the ID
-            std::lock_guard<std::mutex> lock(_all_params_mutex);
             ParamValue value{};
             if (!value.set_from_mavlink_param_ext_set(set_request)) {
                 LogWarn() << "Invalid Param Ext Set Request: " << safe_param_id;
                 return;
             }
+            std::lock_guard<std::mutex> lock(_all_params_mutex);
             _all_params[safe_param_id] = value;
         }
 
-        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-        new_work->type = WorkItem::Type::Ack;
-        new_work->param_name = safe_param_id;
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,safe_param_id,true,_timeout_s_callback());
         new_work->param_value = _all_params[safe_param_id];
-        new_work->extended = true;
         _work_queue.push_back(new_work);
         std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
 
@@ -239,24 +233,26 @@ void MavlinkParameterReceiver::process_param_ext_set(const mavlink_message_t& me
         LogWarn() << "Invalid Param Ext Set ID Request: " << safe_param_id;
     }
 }
+
 void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_t& message)
 {
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
 
-    std::string param_id = extract_safe_param_id(read_request.param_id);
-
     if (read_request.param_index == -1) {
-        auto safe_param_id = extract_safe_param_id(read_request.param_id);
+        const auto safe_param_id= extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
 
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
+            // Make sure we are not forwarding an extended param via the "normal" param messages.
+            const auto param_value= _all_params.at(safe_param_id);
+            if(param_value.needs_extended()){
+                LogDebug()<<"Not forwarding param"<<safe_param_id<<" since it needs extended";
+                return;
+            }
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,_timeout_s_callback());
             new_work->param_value = _all_params.at(safe_param_id);
-            new_work->extended = false;
             _work_queue.push_back(new_work);
         } else {
             LogDebug() << "Missing Param " << safe_param_id;
@@ -268,15 +264,19 @@ void MavlinkParameterReceiver::process_param_request_list(const mavlink_message_
 {
     mavlink_param_request_list_t list_request{};
     mavlink_msg_param_request_list_decode(&message, &list_request);
-
-    auto idx = 0;
+    int idx=0;
     for (const auto& pair : _all_params) {
-        auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-        new_work->type = WorkItem::Type::Value;
-        new_work->param_name = pair.first;
+        // make sure extended parameters never make it out via the param request list
+        // (use param extended list)
+        if(pair.second.needs_extended()){
+            LogDebug()<<"Not forwarding param"<<pair.first<<" since it needs extended";
+            continue;
+        }
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,false,_timeout_s_callback());
         new_work->param_value = pair.second;
-        new_work->extended = false;
-        new_work->param_count = static_cast<int>(_all_params.size());
+        // Consti10 - the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
+        // that need the extended protocol
+        new_work->param_count = get_current_parameters_count(false);
         new_work->param_index = idx++;
         _work_queue.push_back(new_work);
     }
@@ -287,18 +287,13 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
 
-    std::string param_id = extract_safe_param_id(read_request.param_id);
-
     if (read_request.param_index == -1) {
-        auto safe_param_id = extract_safe_param_id(read_request.param_id);
+        const auto safe_param_id = extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
-            new_work->type = WorkItem::Type::Value;
-            new_work->param_name = safe_param_id;
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,true,_timeout_s_callback());
             new_work->param_value = _all_params.at(safe_param_id);
-            new_work->extended = true;
             _work_queue.push_back(new_work);
         } else {
             LogDebug() << "Missing Param " << safe_param_id;
@@ -519,6 +514,21 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterReceiver::Resu
         default:
             return str << "UnknownError";
     }
+}
+
+int MavlinkParameterReceiver::get_current_parameters_count(bool extended)const{
+    if(extended){
+        // easy, we can do all parameters.
+        return static_cast<int>(_all_params.size());
+    }
+    // a bit messy, we need to loop through all params and only count the ones that are non-extended
+    int count=0;
+    for (auto const& [key, val] : _all_params){
+        if(!val.needs_extended()){
+            count++;
+        }
+    }
+    return count;
 }
 
 } // namespace mavsdk

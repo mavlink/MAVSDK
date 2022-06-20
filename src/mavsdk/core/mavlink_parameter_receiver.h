@@ -131,20 +131,25 @@ private:
     bool _parameter_debugging{false};
 
     struct WorkItem {
-        enum class Type { Value, Ack } type{Type::Value};
-        std::string param_name{};
+        enum class Type { Value, Ack };
+        const Type type;
+        const std::string param_name;
+        const bool extended;
         ParamValue param_value{};
-        bool extended{false};
         bool already_requested{false};
         const void* cookie{nullptr};
-        double timeout_s;
+        const double timeout_s;
         int param_count{1};
         int param_index{0};
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(double new_timeout_s) : timeout_s(new_timeout_s){};
+        explicit WorkItem(Type type1,std::string param_name1,bool extended1,double new_timeout_s) :
+            type(type1),param_name(std::move(param_name1)),extended(extended1),timeout_s(new_timeout_s){};
     };
     LockedQueue<WorkItem> _work_queue{};
+    // Return the n of parameters, either from an extended or non-extended perspective.
+    // ( we need to hide parameters that need extended from non-extended queries).
+    [[nodiscard]] int get_current_parameters_count(bool extended)const;
 };
 
 } // namespace mavsdk
