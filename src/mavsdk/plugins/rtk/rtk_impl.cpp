@@ -57,7 +57,7 @@ Rtk::Result RtkImpl::send_rtcm_data(Rtk::RtcmData rtcm_data)
             &message,
             flags,
             static_cast<uint8_t>(std::min(field_len, bytes_to_send)),
-            reinterpret_cast<const uint8_t*>(rtcm_data.data.c_str()));
+            reinterpret_cast<const uint8_t*>(rtcm_data.data.c_str() + (i * field_len)));
 
         if (!_parent->send_message(message)) {
             ++_sequence;
