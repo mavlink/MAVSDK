@@ -171,7 +171,7 @@ void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& messag
 
             LogDebug() << "Changing param from " << _all_params[safe_param_id] << " to " << value;
             _all_params[safe_param_id] = value;
-
+            // We now need to emit the message that the vvalue changed, not an axk like in the extended protocol
             auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,_timeout_s_callback());
             new_work->param_value = _all_params.at(safe_param_id);
             _work_queue.push_back(new_work);
@@ -481,6 +481,8 @@ void MavlinkParameterReceiver::do_work()
                     buf.data(),
                     work->param_value.get_mav_param_ext_type(),
                     PARAM_ACK_ACCEPTED);
+            }else{
+                // TODO ext and non-ext - check if all is right
             }
 
             if (!work->extended || !_sender.send_message(work->mavlink_message)) {

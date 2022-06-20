@@ -130,7 +130,10 @@ private:
     void process_param_ext_request_list(const mavlink_message_t& message);
 
     struct WorkItem {
-        enum class Type { Value, Ack };
+        enum class Type {
+            Value, // Emitted on a get value or set value for non-extended
+            Ack  // Emitted on a set value for the extended protocoll only
+        };
         const Type type;
         const std::string param_name;
         const bool extended;
