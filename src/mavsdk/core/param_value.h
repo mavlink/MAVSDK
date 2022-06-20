@@ -62,6 +62,15 @@ public:
 
     [[nodiscard]] bool is_same_type(const ParamValue& rhs) const;
 
+    // Note: the implementation here needs to stay in the header,unfortunately.
+    template<class T>
+    [[nodiscard]] bool is_same_type_templated()const{
+        if (std::holds_alternative<T>(_value)) {
+            return true;
+        }
+        return false;
+    }
+
     bool operator==(const ParamValue& rhs) const
     {
         if (!is_same_type(rhs)) {

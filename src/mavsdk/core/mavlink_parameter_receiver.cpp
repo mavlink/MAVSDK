@@ -113,43 +113,37 @@ std::map<std::string, ParamValue> MavlinkParameterReceiver::retrieve_all_server_
     return _all_params;
 }
 
+template<class T>
+std::pair<MavlinkParameterReceiver::Result, T> MavlinkParameterReceiver::retrieve_server_param(const std::string& name)
+{
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+    if (_all_params.find(name) != _all_params.end()) {
+        // This parameter exists, check its type
+        const auto value = _all_params.at(name);
+        if(value.is_same_type_templated<T>()){
+            return {Result::Success, value.get<T>()};
+        }
+        return {Result::WrongType, {}};
+    }
+    return {Result::NotFound, {}};
+}
+
 std::pair<MavlinkParameterReceiver::Result, float>
 MavlinkParameterReceiver::retrieve_server_param_float(const std::string& name)
 {
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_float();
-        if (maybe_value)
-            return {MavlinkParameterReceiver::Result::Success, maybe_value.value()};
-        else
-            return {MavlinkParameterReceiver::Result::WrongType, {}};
-    }
-    return {MavlinkParameterReceiver::Result::NotFound, {}};
+        return retrieve_server_param<float>(name);
 }
 
 std::pair<MavlinkParameterReceiver::Result, std::string>
 MavlinkParameterReceiver::retrieve_server_param_custom(const std::string& name)
 {
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_custom();
-        if (maybe_value)
-            return {MavlinkParameterReceiver::Result::Success, maybe_value.value()};
-        else
-            return {MavlinkParameterReceiver::Result::WrongType, {}};
-    }
-    return {MavlinkParameterReceiver::Result::NotFound, {}};
+    return retrieve_server_param<std::string>(name);
 }
 
 std::pair<MavlinkParameterReceiver::Result, int>
 MavlinkParameterReceiver::retrieve_server_param_int(const std::string& name)
 {
-    if (_all_params.find(name) != _all_params.end()) {
-        const auto maybe_value = _all_params.at(name).get_int();
-        if (maybe_value)
-            return {MavlinkParameterReceiver::Result::Success, maybe_value.value()};
-        else
-            return {MavlinkParameterReceiver::Result::WrongType, {}};
-    }
-    return {MavlinkParameterReceiver::Result::NotFound, {}};
+    return retrieve_server_param<int>(name);
 }
 
 void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& message)

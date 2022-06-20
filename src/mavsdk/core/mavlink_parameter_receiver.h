@@ -56,6 +56,17 @@ public:
      */
     std::map<std::string, ParamValue> retrieve_all_server_params();
 
+    /**
+     * Retrieve the current value for a parameter from the server parameter set.
+     * @tparam T the type of the parameter to retrieve, if the parameter from the parameter set does not match this type,
+     * the method will return MAVLinkParameters::Result::WrongType  and the value is default constructed.
+     * @param name the name of the parameter to retrieve, if the parameter set does not contain this name key
+     * MAVLinkParameters::Result::NotFound is returned and the value is default constructed
+     * @return MAVLinkParameters::Result::Success if the name is a valid key for the parameter set, AND the type matches the value in the set.
+     * Otherwise,one of the error codes above.
+     */
+    template<class T>
+    std::pair<Result,T> retrieve_server_param(const std::string& name);
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
