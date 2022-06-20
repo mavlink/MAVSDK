@@ -191,7 +191,7 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16;
 
     struct WorkItem {
-        enum class Type { Get, Set, Ack } type{Type::Get};
+        enum class Type { Get, Set} type{Type::Get};
         std::variant<
             GetParamFloatCallback,
             GetParamIntCallback,
@@ -208,8 +208,6 @@ private:
         const void* cookie{nullptr};
         int retries_to_do{3};
         double timeout_s;
-        int param_count{1};
-        int param_index{0};
         mavlink_message_t mavlink_message{};
 
         explicit WorkItem(double new_timeout_s) : timeout_s(new_timeout_s){};
