@@ -36,6 +36,11 @@ MavlinkParameterReceiver::MavlinkParameterReceiver(
         MAVLINK_MSG_ID_PARAM_EXT_REQUEST_READ,
         [this](const mavlink_message_t& message) { process_param_ext_request_read(message); },
         this);
+
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_PARAM_EXT_REQUEST_LIST,
+        [this](const mavlink_message_t& message) { process_param_ext_request_list(message); },
+        this);
 }
 
 MavlinkParameterReceiver::~MavlinkParameterReceiver()
@@ -277,6 +282,20 @@ void MavlinkParameterReceiver::process_param_request_list(const mavlink_message_
         // Consti10 - the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
         // that need the extended protocol
         new_work->param_count = get_current_parameters_count(false);
+        new_work->param_index = idx++;
+        _work_queue.push_back(new_work);
+    }
+}
+
+void MavlinkParameterReceiver::process_param_ext_request_list(const mavlink_message_t& message)
+{
+    mavlink_param_ext_request_list_t ext_list_request{};
+    mavlink_msg_param_ext_request_list_decode(&message, &ext_list_request);
+    int idx=0;
+    for (const auto& pair : _all_params) {
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,true,_timeout_s_callback());
+        new_work->param_value = pair.second;
+        new_work->param_count = get_current_parameters_count(true);
         new_work->param_index = idx++;
         _work_queue.push_back(new_work);
     }
