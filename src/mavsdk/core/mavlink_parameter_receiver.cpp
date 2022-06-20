@@ -53,50 +53,58 @@ std::string MavlinkParameterReceiver::extract_safe_param_id(const char param_id[
 }
 
 MavlinkParameterReceiver::Result
-MavlinkParameterReceiver::provide_server_param_float(const std::string& name, float value)
+MavlinkParameterReceiver::provide_server_param(const std::string& name, ParamValue param_value)
 {
     if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         return Result::ParamNameTooLong;
     }
-
-    ParamValue param_value;
-    param_value.set(value);
+    if(param_value.is<std::string>()){
+        const auto s=param_value.get<std::string>();
+        if(s.size()> sizeof(mavlink_param_ext_set_t::param_value)){
+            LogErr()<<"Error: param value too long";
+            return Result::ParamValueTooLong;
+        }
+    }
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+    if(_all_params.find(name) != _all_params.end()){
+        const auto curr_value = _all_params.at(name);
+        if(!curr_value.is_same_type(param_value)){
+            LogErr()<<"Cannot mutate the type of "<<name<<" from "<<curr_value.typestr() << " to "<<param_value.typestr();
+            return Result::WrongType;
+        }else{
+            // update the value, even though that might result in unwanted behaviour.
+            LogDebug()<<"Updating value of "<<name<<" on server, clients can be out of sync";
+            _all_params.insert_or_assign(name, param_value);
+            return Result::Success;
+        }
+    }
     _all_params.insert_or_assign(name, param_value);
     return Result::Success;
 }
 
 MavlinkParameterReceiver::Result
-MavlinkParameterReceiver::provide_server_param_int(const std::string& name, int value)
+MavlinkParameterReceiver::provide_server_param_float(const std::string& name, float value)
 {
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        return Result::ParamNameTooLong;
-    }
-
     ParamValue param_value;
     param_value.set(value);
-    _all_params.insert_or_assign(name, param_value);
-    return Result::Success;
+    return provide_server_param(name,param_value);
+}
+
+MavlinkParameterReceiver::Result
+MavlinkParameterReceiver::provide_server_param_int(const std::string& name, int value)
+{
+    ParamValue param_value;
+    param_value.set(value);
+    return provide_server_param(name,param_value);
 }
 
 MavlinkParameterReceiver::Result MavlinkParameterReceiver::provide_server_param_custom(
     const std::string& name, const std::string& value)
 {
-    if (name.size() > PARAM_ID_LEN) {
-        LogErr() << "Error: param name too long";
-        return Result::ParamNameTooLong;
-    }
-
-    if (value.size() > sizeof(mavlink_param_ext_set_t::param_value)) {
-        LogErr() << "Error: param value too long";
-        return Result::ParamValueTooLong;
-    }
-
     ParamValue param_value;
     param_value.set(value);
-    _all_params.insert_or_assign(name, param_value);
-    return Result::Success;
+    return provide_server_param(name,param_value);
 }
 
 std::map<std::string, ParamValue> MavlinkParameterReceiver::retrieve_all_server_params()

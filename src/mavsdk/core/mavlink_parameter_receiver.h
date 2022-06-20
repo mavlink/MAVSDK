@@ -34,6 +34,20 @@ public:
         UnknownError
     };
 
+    /**
+     * Add a new parameter to the parameter set.
+     * It is recommended to not change the parameter set after first communicating with any client.
+     * (https://mavlink.io/en/services/parameter_ext.html#parameters_invariant).
+     * @param name the unique id for this parameter
+     * @param param_value the value for this parameter
+     * @return Result::ParamNameTooLong if the parameter name is too long,
+     * Result::WrongType if the same parameter name is provided with a different type (aka updating the parameter would mutate the type
+     * of an already provided parameter), Result::ParamValueTooLong if the parameter type is std::string but the value is longer than
+     * the extended protocol allows and
+     * Result::Success otherwise.
+     */
+    Result provide_server_param(const std::string& name,ParamValue param_value);
+    // convenient implementations for the 3 most commonly used types
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int value);
     Result provide_server_param_custom(const std::string& name, const std::string& value);
