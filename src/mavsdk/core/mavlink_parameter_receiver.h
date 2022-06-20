@@ -51,6 +51,9 @@ public:
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int value);
     Result provide_server_param_custom(const std::string& name, const std::string& value);
+    /**
+     * @return a copy of the current parameter set of the server.
+     */
     std::map<std::string, ParamValue> retrieve_all_server_params();
 
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
