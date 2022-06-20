@@ -518,20 +518,14 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterReceiver::Resu
     switch (result) {
         case MavlinkParameterReceiver::Result::Success:
             return str << "Success";
-        case MavlinkParameterReceiver::Result::Timeout:
-            return str << "Timeout";
-        case MavlinkParameterReceiver::Result::ConnectionError:
-            return str << "ConnectionError";
         case MavlinkParameterReceiver::Result::WrongType:
             return str << "WrongType";
         case MavlinkParameterReceiver::Result::ParamNameTooLong:
             return str << "ParamNameTooLong";
         case MavlinkParameterReceiver::Result::NotFound:
             return str << "NotFound";
-        case MavlinkParameterReceiver::Result::Failed:
-            return str << "Failed";
-        case MavlinkParameterReceiver::Result::UnknownError:
-            // Fallthrough
+        case MavlinkParameterReceiver::Result::ParamValueTooLong:
+            return str << ":ParamValueTooLong";
         default:
             return str << "UnknownError";
     }

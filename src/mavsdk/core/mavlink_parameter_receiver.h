@@ -23,15 +23,11 @@ public:
     ~MavlinkParameterReceiver();
 
     enum class Result {
-        Success,
-        Timeout,
-        ConnectionError,
-        WrongType,
-        ParamNameTooLong,
-        NotFound,
-        Failed,
-        ParamValueTooLong,
-        UnknownError
+        Success, // All Ok
+        WrongType, // Wrong type provided
+        ParamNameTooLong, // param name provided too long
+        NotFound, // get_xxx param not found
+        ParamValueTooLong // value for param of type string doesn't fit into extended protocol.
     };
 
     /**
