@@ -56,6 +56,11 @@ public:
 
     using SetParamCallback = std::function<void(Result result)>;
 
+    /**
+     * Send a message to the server to change the parameter indexed by name to the specified value.
+     * Once the result of this operation is known, the user-specified callback is called with the result of this (set value) operation.
+     * Note that to change a server parameter, one needs to know not only the value to set, but also the exact type this value has.
+     */
     void set_param_async(
         const std::string& name,
         ParamValue value,
@@ -68,7 +73,9 @@ public:
         const std::string& name,
         int32_t value,
         std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        bool extended = false,
+        // Needs to be false by default, I don't know where people using the library assume the internal type hack is applied
+        bool adhere_to_mavlink_specs= false);
 
     void set_param_int_async(
         const std::string& name,
@@ -76,7 +83,9 @@ public:
         const SetParamCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        bool extended = false,
+        // Needs to be false by default, I don't know where people using the library assume the internal type hack is applied
+        bool adhere_to_mavlink_specs= false);
 
     Result set_param_float(
         const std::string& name,
@@ -101,14 +110,48 @@ public:
         const void* cookie = nullptr);
 
     using GetParamAnyCallback = std::function<void(Result, ParamValue)>;
-
-    std::pair<Result, ParamValue>
-    get_param(const std::string& name, ParamValue value_type, bool extended = false);
-
+    /**
+     * This is the only type of communication from client to server that is possible in regard to type safety -
+     * Ask the server for a parameter (when asking, the parameter type is still unknown) and then, once we got
+     * a successful response from the server we know the parameter type and its value.
+     * @param name name of the parameter to get.
+     * @param callback callback that is called with the response from the server (type and value for this key are now known from the response)
+     */
     void get_param_async(
         const std::string& name,
-        ParamValue value,
+        GetParamAnyCallback callback,
+        const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
+        bool extended = false);
+    // Blocking wrapper around get_param_async()
+    std::pair<Result, ParamValue>
+    get_param(const std::string& name, bool extended = false);
+
+    /**
+     * This is legacy code, the original implementation takes a ParamValue to check and infer the type.
+     * If the type returned by get_param_async( typeless) matches the type provided by @param value_type, the callback is called with
+     * Result::Success, one of the error codes otherwise.
+     * TODO: In my opinion, this is not the most verbose implementation, since a ParamValue is constructed just to infer the type.
+     */
+    void get_param_async(
+        const std::string& name,
+        ParamValue value_type,
         const GetParamAnyCallback& callback,
+        const void* cookie,
+        std::optional<uint8_t> maybe_component_id,
+        bool extended = false);
+
+    /**
+     * This could replace the code above.
+     * We use get_param_async to get the current type and value for a parameter, then check the type
+     * of the obtained parameter and return the result with the appropriate error codes via the callback.
+     */
+    template<class T>
+    using GetParamTypesafeCallback = std::function<void(Result,T value)>;
+    template<class T>
+    void get_param_async_typesafe(
+        const std::string& name,
+        GetParamTypesafeCallback<T> callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id,
         bool extended = false);
@@ -142,11 +185,13 @@ public:
     using GetParamCustomCallback = std::function<void(Result, const std::string& value)>;
 
     void get_param_custom_async(
-        const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
+        const std::string& name, const GetParamCustomCallback& callback, const void* cookie,std::optional<uint8_t> maybe_component_id=std::nullopt);
 
-    std::map<std::string, ParamValue> get_all_params();
+    // Note: When use_extended == false, this won't return any parameters that use a string as param value,
+    // since the non-extended protocol is incapable of doing so.
+    std::map<std::string, ParamValue> get_all_params(bool use_extended=false);
     using GetAllParamsCallback = std::function<void(std::map<std::string, ParamValue>)>;
-    void get_all_params_async(const GetAllParamsCallback& callback);
+    void get_all_params_async(const GetAllParamsCallback& callback,bool use_extended=false);
 
     void cancel_all_param(const void* cookie);
 
@@ -172,26 +217,25 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16;
 
     struct WorkItem {
-        enum class Type { Get, Set} type{Type::Get};
-        std::variant<
-            GetParamFloatCallback,
-            GetParamIntCallback,
-            GetParamCustomCallback,
+        enum class Type { Get, Set};
+        const Type type;
+        const std::string param_name;
+        using VariantCallback=std::variant<
             GetParamAnyCallback,
-            SetParamCallback>
-            callback{};
-        std::string param_name{};
+            SetParamCallback>;
+        VariantCallback callback{};
         ParamValue param_value{};
         std::optional<uint8_t> maybe_component_id{};
         bool extended{false};
         bool already_requested{false};
-        bool exact_type_known{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
         double timeout_s;
+        // we need to keep a copy of the message in case a transmission is lost and we want to re-transmit it.
+        // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(double new_timeout_s) : timeout_s(new_timeout_s){};
+        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s) : type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s){};
     };
     LockedQueue<WorkItem> _work_queue{};
 
