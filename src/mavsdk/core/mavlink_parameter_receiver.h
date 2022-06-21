@@ -13,6 +13,15 @@
 
 namespace mavsdk {
 
+/**
+ * One could also call this MavlinkParameterProvider or MavlinkParameterServer but all these names don't really fit perfectly.
+ * This class makes it easy to accomplish the following task:
+ * Having a component that exposes some settings for a user to configure.
+ * In General, the usage of this class is as following:
+ * 1) provide parameters (now other components can request anc change these parameters via mavlink).
+ * 2) add listener(s) for these parameters such that you can react to changes set by another component.
+ * 3) let mavlink do its magic.
+ */
 class MavlinkParameterReceiver {
 public:
     MavlinkParameterReceiver() = delete;
