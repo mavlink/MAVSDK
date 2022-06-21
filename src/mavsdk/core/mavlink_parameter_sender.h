@@ -225,10 +225,10 @@ private:
         using VariantCallback=std::variant<
             GetParamAnyCallback,
             SetParamCallback>;
-        const VariantCallback callback{};
+        const VariantCallback callback;
+        const bool extended;
+        const std::optional<uint8_t> maybe_component_id;
         ParamValue param_value{};
-        std::optional<uint8_t> maybe_component_id{};
-        const bool extended{false};
         bool already_requested{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
@@ -236,8 +236,16 @@ private:
         // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s,VariantCallback callback1,bool extended1) :
-            type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s),callback(std::move(callback1)),extended(extended1){};
+        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s,VariantCallback callback1,
+                          bool extended1,std::optional<uint8_t> maybe_component_id1) :
+            type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s),callback(std::move(callback1)),
+            extended(extended1),maybe_component_id(maybe_component_id1){
+                if(type==Type::Get){
+                   // callback == GetParamCallback
+                }else{
+                    // callback == SetParamCallback
+                }
+            };
     };
     LockedQueue<WorkItem> _work_queue{};
 
