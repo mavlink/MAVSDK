@@ -115,7 +115,6 @@ private:
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
-    TimeoutSCallback _timeout_s_callback;
 
     // Params can be up to 16 chars without 0-termination.
     static constexpr size_t PARAM_ID_LEN = 16;
@@ -150,13 +149,12 @@ private:
         ParamValue param_value{};
         bool already_requested{false};
         const void* cookie{nullptr};
-        const double timeout_s;
         int param_count{1};
         int param_index{0};
         PARAM_ACK param_ack=PARAM_ACK_ACCEPTED; // only for extended protocol
 
-        explicit WorkItem(Type type1,std::string param_name1,bool extended1,double new_timeout_s) :
-            type(type1),param_name(std::move(param_name1)),extended(extended1),timeout_s(new_timeout_s){};
+        explicit WorkItem(Type type1,std::string param_name1,bool extended1) :
+            type(type1),param_name(std::move(param_name1)),extended(extended1){};
     };
     LockedQueue<WorkItem> _work_queue{};
     /*

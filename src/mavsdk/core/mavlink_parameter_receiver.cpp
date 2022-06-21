@@ -10,8 +10,7 @@ MavlinkParameterReceiver::MavlinkParameterReceiver(
     TimeoutHandler& timeout_handler,
     TimeoutSCallback timeout_s_callback) :
     _sender(sender),
-    _message_handler(message_handler),
-    _timeout_s_callback(timeout_s_callback)
+    _message_handler(message_handler)
 {
     _message_handler.register_one(
         MAVLINK_MSG_ID_PARAM_SET,
@@ -174,11 +173,11 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
         // It is up to the component who performed the request to reason if the set was successfully.
         // (Unfortunately, the non-extended protocol does not differentiate here between a failed and non-failed set request)
         if(extended){
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true,_timeout_s_callback());
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true);
             new_work->param_value = _all_params.at(param_id);
             _work_queue.push_back(new_work);
         }else{
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false,_timeout_s_callback());
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false);
             new_work->param_value = _all_params.at(param_id);
             _work_queue.push_back(new_work);
         }
@@ -245,7 +244,7 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
                 LogDebug()<<"Not forwarding param"<<safe_param_id<<" since it needs extended";
                 return;
             }
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,_timeout_s_callback());
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false);
             new_work->param_value = _all_params.at(safe_param_id);
             _work_queue.push_back(new_work);
         } else {
@@ -268,7 +267,7 @@ void MavlinkParameterReceiver::process_param_request_list(const mavlink_message_
             LogDebug()<<"Not forwarding param"<<pair.first<<" since it needs extended";
             continue;
         }
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,false,_timeout_s_callback());
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,false);
         new_work->param_value = pair.second;
         // Consti10 - the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
         // that need the extended protocol
@@ -284,7 +283,7 @@ void MavlinkParameterReceiver::process_param_ext_request_list(const mavlink_mess
     mavlink_msg_param_ext_request_list_decode(&message, &ext_list_request);
     int idx=0;
     for (const auto& pair : _all_params) {
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,true,_timeout_s_callback());
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,true);
         new_work->param_value = pair.second;
         new_work->param_count = get_current_parameters_count(true);
         new_work->param_index = idx++;
@@ -302,7 +301,7 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
         LogDebug() << "Request Param " << safe_param_id;
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,true,_timeout_s_callback());
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,true);
             new_work->param_value = _all_params.at(safe_param_id);
             _work_queue.push_back(new_work);
         } else {
