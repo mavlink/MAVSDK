@@ -6,6 +6,7 @@
 #include "timeout_s_callback.h"
 #include "param_value.h"
 #include "locked_queue.h"
+#include "mavlink_parameter_subscription.h"
 
 #include <map>
 #include <string>
@@ -24,7 +25,7 @@ namespace mavsdk {
  * Note that this side is much more simple - it does not need to worry about re-transmission or such, the responsibility for
  * that lies completely on the part that wants to change parameters.
  */
-class MavlinkParameterReceiver {
+class MavlinkParameterReceiver : public MavlinkParameterSubscription{
 public:
     MavlinkParameterReceiver() = delete;
     explicit MavlinkParameterReceiver(
@@ -79,22 +80,6 @@ public:
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
-    template<class T>
-    using ParamChangedCallback = std::function<void(T value)>;
-
-    template<class T>
-    void subscribe_param_changed(const std::string& name,const ParamChangedCallback<T>& callback, const void* cookie);
-
-    using ParamFloatChangedCallback = ParamChangedCallback<float>;
-    void subscribe_param_float_changed(
-        const std::string& name, const ParamFloatChangedCallback& callback, const void* cookie);
-    using ParamIntChangedCallback = ParamChangedCallback<int>;
-    void subscribe_param_int_changed(
-        const std::string& name, const ParamIntChangedCallback& callback, const void* cookie);
-    using ParamCustomChangedCallback =ParamChangedCallback<std::string>;
-    void subscribe_param_custom_changed(
-        const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
-
     void do_work();
 
     friend std::ostream& operator<<(std::ostream&, const Result&);
@@ -104,8 +89,6 @@ public:
     const MavlinkParameterReceiver& operator=(const MavlinkParameterReceiver&) = delete;
 
 private:
-    using ParamChangedCallbacks = std::
-        variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
 
     /**
      * internally process a param set, coming from either the extended or non-extended protocol.
@@ -129,17 +112,6 @@ private:
 
     // Params can be up to 16 chars without 0-termination.
     static constexpr size_t PARAM_ID_LEN = 16;
-
-    struct ParamChangedSubscription {
-        const std::string param_name;
-        const ParamChangedCallbacks callback;
-        const void* const cookie;
-        explicit ParamChangedSubscription(std::string param_name1,ParamChangedCallbacks callback1,const void* cookie1):
-        param_name(std::move(param_name1)),callback(std::move(callback1)),cookie(cookie1){};
-    };
-
-    std::mutex _param_changed_subscriptions_mutex{};
-    std::list<ParamChangedSubscription> _param_changed_subscriptions{};
 
     std::mutex _all_params_mutex{};
     std::map<std::string, ParamValue> _all_params{};
@@ -179,13 +151,6 @@ private:
      * Doesn't acquire the all-parameters lock, since when used it should already be locked.
      */
     [[nodiscard]] int get_current_parameters_count(bool extended)const;
-
-    /**
-     * Find all the subscriptions for the given @param param_name,
-     * check their type and call them when matching. This does not check if the given param actually was changed,
-     * but it is safe to call with mismatching types.
-     */
-    void find_and_call_subscriptions_value_changed(const std::string& param_name,const ParamValue& new_param_value);
 };
 
 } // namespace mavsdk

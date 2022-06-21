@@ -47,7 +47,7 @@ public:
     void set_float(float new_value);
     void set_custom(const std::string& new_value);
 
-    std::array<char, 128> get_128_bytes() const;
+    [[nodiscard]] std::array<char, 128> get_128_bytes() const;
 
     [[nodiscard]] std::string get_string() const;
 
