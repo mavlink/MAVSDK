@@ -89,7 +89,6 @@ public:
     const MavlinkParameterReceiver& operator=(const MavlinkParameterReceiver&) = delete;
 
 private:
-
     /**
      * internally process a param set, coming from either the extended or non-extended protocol.
      * This checks and properly handles the following conditions:
