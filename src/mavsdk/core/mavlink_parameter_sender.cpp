@@ -505,99 +505,6 @@ void MavlinkParameterSender::cancel_all_param(const void* cookie)
     }
 }
 
-void MavlinkParameterSender::subscribe_param_float_changed(
-    const std::string& name,
-    const MavlinkParameterSender::ParamFloatChangedCallback& callback,
-    const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-    if (callback != nullptr) {
-        ParamChangedSubscription subscription{};
-        subscription.param_name = name;
-        subscription.callback = callback;
-        subscription.cookie = cookie;
-        subscription.any_type = false;
-        ParamValue value_type;
-        value_type.set_float(NAN);
-        subscription.value_type = value_type;
-        _param_changed_subscriptions.push_back(subscription);
-
-    } else {
-        for (auto it = _param_changed_subscriptions.begin();
-             it != _param_changed_subscriptions.end();
-             /* ++it */) {
-            if (it->param_name == name && it->cookie == cookie) {
-                it = _param_changed_subscriptions.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
-}
-
-void MavlinkParameterSender::subscribe_param_int_changed(
-    const std::string& name,
-    const MavlinkParameterSender::ParamIntChangedCallback& callback,
-    const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-    if (callback != nullptr) {
-        ParamChangedSubscription subscription{};
-        subscription.param_name = name;
-        subscription.callback = callback;
-        subscription.cookie = cookie;
-        subscription.any_type = false;
-        ParamValue value_type;
-        value_type.set_int(0);
-        subscription.value_type = value_type;
-        _param_changed_subscriptions.push_back(subscription);
-
-    } else {
-        for (auto it = _param_changed_subscriptions.begin();
-             it != _param_changed_subscriptions.end();
-             /* ++it */) {
-            if (it->param_name == name && it->cookie == cookie) {
-                it = _param_changed_subscriptions.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
-}
-
-void MavlinkParameterSender::subscribe_param_custom_changed(
-    const std::string& name,
-    const MavlinkParameterSender::ParamCustomChangedCallback& callback,
-    const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-    if (callback != nullptr) {
-        ParamChangedSubscription subscription{};
-        subscription.param_name = name;
-        subscription.callback = callback;
-        subscription.cookie = cookie;
-        subscription.any_type = false;
-        ParamValue value_type;
-        value_type.set_custom("");
-        subscription.value_type = value_type;
-        _param_changed_subscriptions.push_back(subscription);
-
-    } else {
-        for (auto it = _param_changed_subscriptions.begin();
-             it != _param_changed_subscriptions.end();
-             /* ++it */) {
-            if (it->param_name == name && it->cookie == cookie) {
-                it = _param_changed_subscriptions.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
-}
-
 void MavlinkParameterSender::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
@@ -806,7 +713,8 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
         }
     }
 
-    notify_param_subscriptions(param_value);
+    // TODO check if value has changed ...
+    find_and_call_subscriptions_value_changed(param_id,received_value);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -884,32 +792,6 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
         } break;
         default:
             break;
-    }
-}
-
-void MavlinkParameterSender::notify_param_subscriptions(const mavlink_param_value_t& param_value)
-{
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-    for (const auto& subscription : _param_changed_subscriptions) {
-        if (subscription.param_name != extract_safe_param_id(param_value.param_id)) {
-            continue;
-        }
-
-        ParamValue value;
-
-        if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
-            value.set_from_mavlink_param_value_cast(param_value);
-        } else {
-            value.set_from_mavlink_param_value_bytewise(param_value);
-        }
-
-        if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
-            LogErr() << "Received wrong param type in subscription for " << subscription.param_name;
-            continue;
-        }
-
-        call_param_changed_callback(subscription.callback, value);
     }
 }
 
@@ -1218,22 +1100,6 @@ std::string MavlinkParameterSender::extract_safe_param_id(const char param_id[])
     char param_id_long_enough[PARAM_ID_LEN + 1] = {};
     std::memcpy(param_id_long_enough, param_id, PARAM_ID_LEN);
     return {param_id_long_enough};
-}
-
-void MavlinkParameterSender::call_param_changed_callback(
-    const ParamChangedCallbacks& callback, const ParamValue& value)
-{
-    if (std::get_if<ParamFloatChangedCallback>(&callback) && value.get_float()) {
-        std::get<ParamFloatChangedCallback>(callback)(value.get_float().value());
-
-    } else if (std::get_if<ParamIntChangedCallback>(&callback) && value.get_int()) {
-        std::get<ParamIntChangedCallback>(callback)(value.get_int().value());
-
-    } else if (std::get_if<ParamCustomChangedCallback>(&callback) && value.get_custom()) {
-        std::get<ParamCustomChangedCallback>(callback)(value.get_custom().value());
-    } else {
-        LogErr() << "Type and callback mismatch";
-    }
 }
 
 std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::Result& result)

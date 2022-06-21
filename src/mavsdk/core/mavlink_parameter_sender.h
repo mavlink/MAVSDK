@@ -5,6 +5,7 @@
 #include "timeout_s_callback.h"
 #include "locked_queue.h"
 #include "param_value.h"
+#include "mavlink_parameter_subscription.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -21,7 +22,7 @@ class Sender;
 class MavlinkMessageHandler;
 class TimeoutHandler;
 
-class MavlinkParameterSender {
+class MavlinkParameterSender : public MavlinkParameterSubscription{
 public:
     MavlinkParameterSender() = delete;
     explicit MavlinkParameterSender(
@@ -144,18 +145,6 @@ public:
     using GetAllParamsCallback = std::function<void(std::map<std::string, ParamValue>)>;
     void get_all_params_async(const GetAllParamsCallback& callback);
 
-    using ParamFloatChangedCallback = std::function<void(float value)>;
-    void subscribe_param_float_changed(
-        const std::string& name, const ParamFloatChangedCallback& callback, const void* cookie);
-
-    using ParamIntChangedCallback = std::function<void(int value)>;
-    void subscribe_param_int_changed(
-        const std::string& name, const ParamIntChangedCallback& callback, const void* cookie);
-
-    using ParamCustomChangedCallback = std::function<void(std::string)>;
-    void subscribe_param_custom_changed(
-        const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
-
     void cancel_all_param(const void* cookie);
 
     void do_work();
@@ -167,20 +156,13 @@ public:
     const MavlinkParameterSender& operator=(const MavlinkParameterSender&) = delete;
 
 private:
-    using ParamChangedCallbacks = std::
-        variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
 
     void process_param_value(const mavlink_message_t& message);
     void process_param_ext_value(const mavlink_message_t& message);
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
 
-    void notify_param_subscriptions(const mavlink_param_value_t& param_value);
-
     static std::string extract_safe_param_id(const char param_id[]);
-
-    static void
-    call_param_changed_callback(const ParamChangedCallbacks& callback, const ParamValue& value);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
@@ -215,17 +197,6 @@ private:
     LockedQueue<WorkItem> _work_queue{};
 
     void* _timeout_cookie = nullptr;
-
-    struct ParamChangedSubscription {
-        std::string param_name{};
-        ParamChangedCallbacks callback{};
-        ParamValue value_type{};
-        bool any_type{false};
-        const void* cookie{nullptr};
-    };
-
-    std::mutex _param_changed_subscriptions_mutex{};
-    std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
 
     std::mutex _all_params_mutex{};
     GetAllParamsCallback _all_params_callback;

@@ -20,6 +20,11 @@ class MavlinkParameterSubscription {
 public:
     template<class T> using ParamChangedCallback = std::function<void(T value)>;
 
+    /**
+     * Subscribe to changes on the parameter referenced by @param name.
+     * If the value for this parameter changes, the given callback is called provided that the expected
+     * type matches the actual type of the parameter.
+     */
     template<class T>
     void subscribe_param_changed(
         const std::string& name, const ParamChangedCallback<T>& callback, const void* cookie);
