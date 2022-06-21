@@ -160,6 +160,7 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
     if (_all_params.find(param_id) != _all_params.end()) {
         const auto curr_value=_all_params[param_id];
         bool param_was_changed=false;
+        PARAM_ACK param_ack=PARAM_ACK_ACCEPTED; // only extended differentiates.
         // check if the type of the param from the param set matches the type from the message
         if(curr_value.is_same_type(value)){
             // TODO check if the change has no effect
@@ -168,6 +169,7 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
             param_was_changed= true;
         }else{
             LogDebug()<< "Ignoring invalid param set request due to type mismatch";
+            param_ack=PARAM_ACK_FAILED;
         }
         // No matter if we've changed the value or not, we need to respond to the request.
         // It is up to the component who performed the request to reason if the set was successfully.
@@ -175,6 +177,7 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
         if(extended){
             auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true);
             new_work->param_value = _all_params.at(param_id);
+            new_work->param_ack = param_ack;
             _work_queue.push_back(new_work);
         }else{
             auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false);
