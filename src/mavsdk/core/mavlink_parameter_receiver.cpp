@@ -1,5 +1,6 @@
 #include "mavlink_parameter_receiver.h"
 #include <cstring>
+#include <cassert>
 
 namespace mavsdk {
 
@@ -80,7 +81,7 @@ MavlinkParameterReceiver::provide_server_param(const std::string& name, ParamVal
         }else{
             // update the value, even though that might result in unwanted behaviour.
             LogDebug()<<"Updating value of "<<name<<" on server, clients can be out of sync";
-            _all_params.insert_or_assign(name, param_value);
+            _all_params.at(name)= param_value;
             return Result::Success;
         }
     }
@@ -151,92 +152,81 @@ MavlinkParameterReceiver::retrieve_server_param_int(const std::string& name)
     return retrieve_server_param<int>(name);
 }
 
+void MavlinkParameterReceiver::process_param_set_internally(const std::string& param_id,const ParamValue& value,bool extended)
+{
+    LogDebug() << "Param set request "<<(extended ? "Ext" : "")<<": " << param_id << " with value_type: "
+               <<value.typestr()<<" value: "<<value.get_string();
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+    // Check if we have this parameter
+    if (_all_params.find(param_id) != _all_params.end()) {
+        const auto curr_value=_all_params[param_id];
+        bool param_was_changed=false;
+        // check if the type of the param from the param set matches the type from the message
+        if(curr_value.is_same_type(value)){
+            // TODO check if the change has no effect
+            LogDebug() << "Changing param "<<param_id<<" from " << _all_params[param_id] << " to " << value;
+            _all_params[param_id] = value;
+            param_was_changed= true;
+        }else{
+            LogDebug()<< "Ignoring invalid param set request due to type mismatch";
+        }
+        // No matter if we've changed the value or not, we need to respond to the request.
+        // It is up to the component who performed the request to reason if the set was successfully.
+        // (Unfortunately, the non-extended protocol does not differentiate here between a failed and non-failed set request)
+        if(extended){
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true,_timeout_s_callback());
+            new_work->param_value = _all_params.at(param_id);
+            _work_queue.push_back(new_work);
+        }else{
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false,_timeout_s_callback());
+            new_work->param_value = _all_params.at(param_id);
+            _work_queue.push_back(new_work);
+        }
+        if(param_was_changed){
+            find_and_call_subscriptions_value_changed(param_id,value);
+        }
+    } else {
+        LogDebug() << "Missing Param: " << param_id << "(this: " << this << ")";
+    }
+
+}
+
 void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& message)
 {
     mavlink_param_set_t set_request{};
     mavlink_msg_param_set_decode(&message, &set_request);
-
     const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
-    if (!safe_param_id.empty()) {
-        LogDebug() << "Set Param Request: " << safe_param_id << " with value "
-                   << *(int32_t*)(&set_request.param_value);
-
-        // Use the ID
-        if (_all_params.find(safe_param_id) != _all_params.end()) {
-            ParamValue value{};
-            if (!value.set_from_mavlink_param_set_bytewise(set_request)) {
-                LogWarn() << "Invalid Param Set Request: " << safe_param_id;
-                return;
-            }
-
-            LogDebug() << "Changing param from " << _all_params[safe_param_id] << " to " << value;
-            _all_params[safe_param_id] = value;
-            // We now need to emit the message that the vvalue changed, not an axk like in the extended protocol
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,_timeout_s_callback());
-            new_work->param_value = _all_params.at(safe_param_id);
-            _work_queue.push_back(new_work);
-            std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-            for (const auto& subscription : _param_changed_subscriptions) {
-                if (subscription.param_name != safe_param_id) {
-                    continue;
-                }
-                if (!subscription.any_type && !subscription.value_type.is_same_type(value)) {
-                    LogErr() << "Received wrong param type in subscription for "
-                             << subscription.param_name;
-                    continue;
-                }
-
-                call_param_changed_callback(subscription.callback, value);
-            }
-        } else {
-            LogDebug() << "Missing Param: " << safe_param_id << "(this: " << this << ")";
-        }
-    } else {
+    if(safe_param_id.empty()){
+        // TODO support int as index, as done in the mavlink specification
         LogWarn() << "Invalid Param Set ID Request: " << safe_param_id;
+        return;
     }
+    ParamValue value;
+    if (!value.set_from_mavlink_param_set_bytewise(set_request)) {
+        // This should never happen, the type enum in the message is unknown.
+        LogWarn() << "Invalid Param Set Request: " << safe_param_id;
+        return;
+    }
+    process_param_set_internally(safe_param_id,value, false);
 }
 
 void MavlinkParameterReceiver::process_param_ext_set(const mavlink_message_t& message)
 {
     mavlink_param_ext_set_t set_request{};
     mavlink_msg_param_ext_set_decode(&message, &set_request);
-
     const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
-    if (!safe_param_id.empty()) {
-        LogDebug() << "Set Param Request: " << safe_param_id;
-        {
-            // Use the ID
-            ParamValue value{};
-            if (!value.set_from_mavlink_param_ext_set(set_request)) {
-                LogWarn() << "Invalid Param Ext Set Request: " << safe_param_id;
-                return;
-            }
-            std::lock_guard<std::mutex> lock(_all_params_mutex);
-            _all_params[safe_param_id] = value;
-        }
-
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,safe_param_id,true,_timeout_s_callback());
-        new_work->param_value = _all_params[safe_param_id];
-        _work_queue.push_back(new_work);
-        std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-        for (const auto& subscription : _param_changed_subscriptions) {
-            if (subscription.param_name != safe_param_id) {
-                continue;
-            }
-
-            if (!subscription.any_type &&
-                !subscription.value_type.is_same_type(new_work->param_value)) {
-                LogErr() << "Received wrong param type in subscription for "
-                         << subscription.param_name;
-                continue;
-            }
-
-            call_param_changed_callback(subscription.callback, new_work->param_value);
-        }
-    } else {
-        LogWarn() << "Invalid Param Ext Set ID Request: " << safe_param_id;
+    if(safe_param_id.empty()){
+        // TODO support int as index, as done in the mavlink specification
+        LogWarn() << "Invalid Param Set ID Request: " << safe_param_id;
+        return;
     }
+    // Use the ID
+    ParamValue value;
+    if (!value.set_from_mavlink_param_ext_set(set_request)) {
+        LogWarn() << "Invalid Param Ext Set Request: " << safe_param_id;
+        return;
+    }
+    process_param_set_internally(safe_param_id,value, true);
 }
 
 void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_t& message)
@@ -247,7 +237,6 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
     if (read_request.param_index == -1) {
         const auto safe_param_id= extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
-
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
             // Make sure we are not forwarding an extended param via the "normal" param messages.
@@ -262,6 +251,8 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
         } else {
             LogDebug() << "Missing Param " << safe_param_id;
         }
+    }else{
+        // TODO the server should be able to handle requests with a int index instead of string as param_id.
     }
 }
 
@@ -317,6 +308,38 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
         } else {
             LogDebug() << "Missing Param " << safe_param_id;
         }
+    }else{
+        // TODO the server should be able to handle requests with a int index instead of string as param_id.
+    }
+}
+
+template<class T>
+void MavlinkParameterReceiver::subscribe_param_changed(const std::string& name,const ParamChangedCallback<T>& callback,const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+    if (callback != nullptr) {
+        ParamChangedSubscription subscription{name,callback,cookie};
+        // This is just to let the upper level know of what probably is a bug, but we check again when actually calling the callback
+        // We also cannot assume here that the user called provide_param before subscribe_param_changed, so the only thing that makes sense
+        // is to log a warning, but then continue anyways.
+        std::lock_guard<std::mutex> lock2(_all_params_mutex);
+        if(_all_params.find(name) != _all_params.end()) {
+            const auto curr_value = _all_params.at(name);
+            if(!curr_value.template is_same_type_templated<T>()){
+                LogDebug()<<"You just registered a param changed callback where the type does not match the type already stored";
+            }
+        }
+        _param_changed_subscriptions.push_back(subscription);
+    } else {
+        for (auto it = _param_changed_subscriptions.begin();
+             it != _param_changed_subscriptions.end();
+             /* ++it */) {
+            if (it->param_name == name && it->cookie == cookie) {
+                it = _param_changed_subscriptions.erase(it);
+            } else {
+                ++it;
+            }
+        }
     }
 }
 
@@ -325,30 +348,7 @@ void MavlinkParameterReceiver::subscribe_param_float_changed(
     const MavlinkParameterReceiver::ParamFloatChangedCallback& callback,
     const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-    if (callback != nullptr) {
-        ParamChangedSubscription subscription{};
-        subscription.param_name = name;
-        subscription.callback = callback;
-        subscription.cookie = cookie;
-        subscription.any_type = false;
-        ParamValue value_type;
-        value_type.set_float(NAN);
-        subscription.value_type = value_type;
-        _param_changed_subscriptions.push_back(subscription);
-
-    } else {
-        for (auto it = _param_changed_subscriptions.begin();
-             it != _param_changed_subscriptions.end();
-             /* ++it */) {
-            if (it->param_name == name && it->cookie == cookie) {
-                it = _param_changed_subscriptions.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
+    subscribe_param_changed<float>(name,callback,cookie);
 }
 
 void MavlinkParameterReceiver::subscribe_param_int_changed(
@@ -356,30 +356,7 @@ void MavlinkParameterReceiver::subscribe_param_int_changed(
     const MavlinkParameterReceiver::ParamIntChangedCallback& callback,
     const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-    if (callback != nullptr) {
-        ParamChangedSubscription subscription{};
-        subscription.param_name = name;
-        subscription.callback = callback;
-        subscription.cookie = cookie;
-        subscription.any_type = false;
-        ParamValue value_type;
-        value_type.set_int(0);
-        subscription.value_type = value_type;
-        _param_changed_subscriptions.push_back(subscription);
-
-    } else {
-        for (auto it = _param_changed_subscriptions.begin();
-             it != _param_changed_subscriptions.end();
-             /* ++it */) {
-            if (it->param_name == name && it->cookie == cookie) {
-                it = _param_changed_subscriptions.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
+    subscribe_param_changed<int>(name,callback,cookie);
 }
 
 void MavlinkParameterReceiver::subscribe_param_custom_changed(
@@ -387,56 +364,31 @@ void MavlinkParameterReceiver::subscribe_param_custom_changed(
     const MavlinkParameterReceiver::ParamCustomChangedCallback& callback,
     const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-
-    if (callback != nullptr) {
-        ParamChangedSubscription subscription{};
-        subscription.param_name = name;
-        subscription.callback = callback;
-        subscription.cookie = cookie;
-        subscription.any_type = false;
-        ParamValue value_type;
-        value_type.set_custom("");
-        subscription.value_type = value_type;
-        _param_changed_subscriptions.push_back(subscription);
-
-    } else {
-        for (auto it = _param_changed_subscriptions.begin();
-             it != _param_changed_subscriptions.end();
-             /* ++it */) {
-            if (it->param_name == name && it->cookie == cookie) {
-                it = _param_changed_subscriptions.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
+    subscribe_param_changed<std::string>(name,callback,cookie);
 }
 
 void MavlinkParameterReceiver::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
-
     if (!work) {
         return;
     }
-
     if (work->already_requested) {
         return;
     }
-
     char param_id[PARAM_ID_LEN + 1] = {};
     strncpy(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
 
+    mavlink_message_t mavlink_message;
     switch (work->type) {
         case WorkItem::Type::Value: {
             if (work->extended) {
-                auto buf = work->param_value.get_128_bytes();
+                const auto buf = work->param_value.get_128_bytes();
                 mavlink_msg_param_ext_value_pack(
                     _sender.get_own_system_id(),
                     _sender.get_own_component_id(),
-                    &work->mavlink_message,
+                    &mavlink_message,
                     param_id,
                     buf.data(),
                     work->param_value.get_mav_param_ext_type(),
@@ -452,64 +404,40 @@ void MavlinkParameterReceiver::do_work()
                 mavlink_msg_param_value_pack(
                     _sender.get_own_system_id(),
                     _sender.get_own_component_id(),
-                    &work->mavlink_message,
+                    &mavlink_message,
                     param_id,
                     param_value,
                     work->param_value.get_mav_param_type(),
                     work->param_count,
                     work->param_index);
             }
-
-            if (!_sender.send_message(work->mavlink_message)) {
+            if (!_sender.send_message(mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();
                 return;
             }
-
-            // As we're a server in this case we don't need any response
             work_queue_guard.pop_front();
         } break;
 
         case WorkItem::Type::Ack: {
-            if (work->extended) {
-                auto buf = work->param_value.get_128_bytes();
-                mavlink_msg_param_ext_ack_pack(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
-                    &work->mavlink_message,
-                    param_id,
-                    buf.data(),
-                    work->param_value.get_mav_param_ext_type(),
-                    PARAM_ACK_ACCEPTED);
-            }else{
-                // TODO ext and non-ext - check if all is right
-            }
-
-            if (!work->extended || !_sender.send_message(work->mavlink_message)) {
+            // ACK is only in the extended protocol.
+            assert(work->extended);
+            auto buf = work->param_value.get_128_bytes();
+            mavlink_msg_param_ext_ack_pack(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                &mavlink_message,
+                param_id,
+                buf.data(),
+                work->param_value.get_mav_param_ext_type(),
+                work->param_ack);
+            if (!_sender.send_message(mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();
                 return;
             }
-
-            // As we're a server in this case we don't need any response
             work_queue_guard.pop_front();
         } break;
-    }
-}
-
-void MavlinkParameterReceiver::call_param_changed_callback(
-    const ParamChangedCallbacks& callback, const ParamValue& value)
-{
-    if (std::get_if<ParamFloatChangedCallback>(&callback) && value.get_float()) {
-        std::get<ParamFloatChangedCallback>(callback)(value.get_float().value());
-
-    } else if (std::get_if<ParamIntChangedCallback>(&callback) && value.get_int()) {
-        std::get<ParamIntChangedCallback>(callback)(value.get_int().value());
-
-    } else if (std::get_if<ParamCustomChangedCallback>(&callback) && value.get_custom()) {
-        std::get<ParamCustomChangedCallback>(callback)(value.get_custom().value());
-    } else {
-        LogErr() << "Type and callback mismatch";
     }
 }
 
@@ -544,6 +472,29 @@ int MavlinkParameterReceiver::get_current_parameters_count(bool extended)const{
         }
     }
     return count;
+}
+
+void MavlinkParameterReceiver::find_and_call_subscriptions_value_changed(
+    const std::string& param_name, const ParamValue& value)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+    for (const auto& subscription : _param_changed_subscriptions) {
+        if (subscription.param_name != param_name) {
+            continue;
+        }
+        // We have a subscription on this param name, now check if the subscription is for the right type and call
+        // the callback when matching
+        if (std::get_if<ParamFloatChangedCallback>(&subscription.callback) && value.get_float()) {
+            std::get<ParamFloatChangedCallback>(subscription.callback)(value.get_float().value());
+        } else if (std::get_if<ParamIntChangedCallback>(&subscription.callback) && value.get_int()) {
+            std::get<ParamIntChangedCallback>(subscription.callback)(value.get_int().value());
+        } else if (std::get_if<ParamCustomChangedCallback>(&subscription.callback) && value.get_custom()) {
+            std::get<ParamCustomChangedCallback>(subscription.callback)(value.get_custom().value());
+        } else {
+            // The callback we have set is not for this type.
+            LogErr() << "Type and callback mismatch";
+        }
+    }
 }
 
 } // namespace mavsdk

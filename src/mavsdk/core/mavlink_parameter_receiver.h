@@ -9,6 +9,7 @@
 
 #include <map>
 #include <string>
+#include <list>
 
 namespace mavsdk {
 
@@ -67,15 +68,19 @@ public:
     std::pair<Result, int> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
-    using ParamFloatChangedCallback = std::function<void(float value)>;
+    template<class T>
+    using ParamChangedCallback = std::function<void(T value)>;
+
+    template<class T>
+    void subscribe_param_changed(const std::string& name,const ParamChangedCallback<T>& callback, const void* cookie);
+
+    using ParamFloatChangedCallback = ParamChangedCallback<float>;
     void subscribe_param_float_changed(
         const std::string& name, const ParamFloatChangedCallback& callback, const void* cookie);
-
-    using ParamIntChangedCallback = std::function<void(int value)>;
+    using ParamIntChangedCallback = ParamChangedCallback<int>;
     void subscribe_param_int_changed(
         const std::string& name, const ParamIntChangedCallback& callback, const void* cookie);
-
-    using ParamCustomChangedCallback = std::function<void(std::string)>;
+    using ParamCustomChangedCallback =ParamChangedCallback<std::string>;
     void subscribe_param_custom_changed(
         const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
 
@@ -91,13 +96,22 @@ private:
     using ParamChangedCallbacks = std::
         variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
 
+    /**
+     * internally process a param set, coming from either the extended or non-extended protocol.
+     * This checks and properly handles the following conditions:
+     * 1) weather the param is inside the parameter set
+     * 2) weather the type of the param inside the parameter set matches the type from the request
+     * 3) TODO what to do if the value to set matches the current value.
+     * @param param_id the id of the parameter in the set request message
+     * @param value the value obtained from the set request message
+     * @param extended true if the message is coming from the extended protocol,false otherwise. The response workflow
+     * is slightly different on the extended protocol.
+     */
+    void process_param_set_internally(const std::string& param_id,const ParamValue& value,bool extended);
     void process_param_set(const mavlink_message_t& message);
     void process_param_ext_set(const mavlink_message_t& message);
 
     static std::string extract_safe_param_id(const char param_id[]);
-
-    static void
-    call_param_changed_callback(const ParamChangedCallbacks& callback, const ParamValue& value);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
@@ -107,15 +121,15 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16;
 
     struct ParamChangedSubscription {
-        std::string param_name{};
-        ParamChangedCallbacks callback{};
-        ParamValue value_type{};
-        bool any_type{false};
-        const void* cookie{nullptr};
+        const std::string param_name;
+        const ParamChangedCallbacks callback;
+        const void* const cookie;
+        explicit ParamChangedSubscription(std::string param_name1,ParamChangedCallbacks callback1,const void* cookie1):
+        param_name(std::move(param_name1)),callback(std::move(callback1)),cookie(cookie1){};
     };
 
     std::mutex _param_changed_subscriptions_mutex{};
-    std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
+    std::list<ParamChangedSubscription> _param_changed_subscriptions{};
 
     std::mutex _all_params_mutex{};
     std::map<std::string, ParamValue> _all_params{};
@@ -127,8 +141,8 @@ private:
 
     struct WorkItem {
         enum class Type {
-            Value, // Emitted on a get value or set value for non-extended
-            Ack  // Emitted on a set value for the extended protocoll only
+            Value, // Emitted on a get value or set value for non-extended, broadcast the current value
+            Ack  // Emitted on a set value for the extended protocol only
         };
         const Type type;
         const std::string param_name;
@@ -139,15 +153,25 @@ private:
         const double timeout_s;
         int param_count{1};
         int param_index{0};
-        mavlink_message_t mavlink_message{};
+        PARAM_ACK param_ack=PARAM_ACK_ACCEPTED; // only for extended protocol
 
         explicit WorkItem(Type type1,std::string param_name1,bool extended1,double new_timeout_s) :
             type(type1),param_name(std::move(param_name1)),extended(extended1),timeout_s(new_timeout_s){};
     };
     LockedQueue<WorkItem> _work_queue{};
-    // Return the n of parameters, either from an extended or non-extended perspective.
-    // ( we need to hide parameters that need extended from non-extended queries).
+    /*
+     * Return the n of parameters, either from an extended or non-extended perspective.
+     * ( we need to hide parameters that need extended from non-extended queries).
+     * Doesn't acquire the all-parameters lock, since when used it should already be locked.
+     */
     [[nodiscard]] int get_current_parameters_count(bool extended)const;
+
+    /**
+     * Find all the subscriptions for the given @param param_name,
+     * check their type and call them when matching. This does not check if the given param actually was changed,
+     * but it is safe to call with mismatching types.
+     */
+    void find_and_call_subscriptions_value_changed(const std::string& param_name,const ParamValue& new_param_value);
 };
 
 } // namespace mavsdk
