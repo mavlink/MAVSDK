@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <string>
 #include <functional>
+#include <utility>
 #include <vector>
 #include <map>
 #include <optional>
@@ -220,22 +221,23 @@ private:
         enum class Type { Get, Set};
         const Type type;
         const std::string param_name;
+        const double timeout_s;
         using VariantCallback=std::variant<
             GetParamAnyCallback,
             SetParamCallback>;
-        VariantCallback callback{};
+        const VariantCallback callback{};
         ParamValue param_value{};
         std::optional<uint8_t> maybe_component_id{};
-        bool extended{false};
+        const bool extended{false};
         bool already_requested{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
-        double timeout_s;
         // we need to keep a copy of the message in case a transmission is lost and we want to re-transmit it.
         // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s) : type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s){};
+        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s,VariantCallback callback1,bool extended1) :
+            type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s),callback(std::move(callback1)),extended(extended1){};
     };
     LockedQueue<WorkItem> _work_queue{};
 

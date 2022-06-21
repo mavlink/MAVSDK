@@ -91,11 +91,9 @@ void MavlinkParameterSender::set_param_async(
         }
         return;
     }
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback());
-    new_work->callback = callback;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback(),callback,extended);
     new_work->maybe_component_id = maybe_component_id;
     new_work->param_value = value;
-    new_work->extended = extended;
     new_work->cookie = cookie;
     _work_queue.push_back(new_work);
 }
@@ -293,14 +291,12 @@ void MavlinkParameterSender::get_param_async(
         return;
     }
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback());
-    new_work->callback = callback;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback(),callback,extended);
     new_work->maybe_component_id = maybe_component_id;
     // We don't need to know the exact type when getting a value - neither extended or non-extended protocol mavlink messages
     // specify the exact type on a "get_xxx" message. This makes total sense. The client still can reason about the type and return
     // the proper error codes, it just needs to delay these checks until a response from the server has been received.
     //new_work->param_value = value;
-    new_work->extended = extended;
     new_work->cookie = cookie;
     _work_queue.push_back(new_work);
 }
