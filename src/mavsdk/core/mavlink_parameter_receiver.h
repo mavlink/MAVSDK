@@ -141,12 +141,17 @@ private:
 
     std::mutex _all_params_mutex{};
     std::map<std::string, ParamValue> _all_params{};
-
+    // broadcast a specific parameter if found, ignores string parameters
     void process_param_request_read(const mavlink_message_t& message);
+    // broadcast a specific parameter if found
     void process_param_ext_request_read(const mavlink_message_t& message);
+    // broadcast all parameters, ignores string parameters
     void process_param_request_list(const mavlink_message_t& message);
+    // broadcast all parameters
     void process_param_ext_request_list(const mavlink_message_t& message);
 
+    // On the server side, the only benefit of using the work item pattern (mavsdk specific)
+    // is that the request all parameters command(s) are less likely to saturate the link.
     struct WorkItem {
         enum class Type {
             Value, // Emitted on a get value or set value for non-extended, broadcast the current value
