@@ -11,65 +11,74 @@ namespace mavsdk {
 
 using AdsbVehicle = Transponder::AdsbVehicle;
 
-Transponder::Transponder(System& system) :
-    PluginBase(),
-    _impl{std::make_unique<TransponderImpl>(system)}
-{}
 
-Transponder::Transponder(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<TransponderImpl>(system)}
-{}
+
+
+Transponder::Transponder(System& system) : PluginBase(), _impl{std::make_unique<TransponderImpl>(system)} {}
+
+Transponder::Transponder(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<TransponderImpl>(system)} {}
+
 
 Transponder::~Transponder() {}
+
+
 
 void Transponder::subscribe_transponder(TransponderCallback callback)
 {
     _impl->subscribe_transponder(callback);
 }
 
-Transponder::AdsbVehicle Transponder::transponder() const
+
+
+
+Transponder::AdsbVehicle
+Transponder::transponder() const
 {
     return _impl->transponder();
 }
+
+
 
 void Transponder::set_rate_transponder_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_transponder_async(rate_hz, callback);
 }
 
+
+
 Transponder::Result Transponder::set_rate_transponder(double rate_hz) const
 {
     return _impl->set_rate_transponder(rate_hz);
 }
 
+
+
 bool operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs)
 {
-    return (rhs.icao_address == lhs.icao_address) &&
-           ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg) &&
-           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
-           ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
-            rhs.heading_deg == lhs.heading_deg) &&
-           ((std::isnan(rhs.horizontal_velocity_m_s) && std::isnan(lhs.horizontal_velocity_m_s)) ||
-            rhs.horizontal_velocity_m_s == lhs.horizontal_velocity_m_s) &&
-           ((std::isnan(rhs.vertical_velocity_m_s) && std::isnan(lhs.vertical_velocity_m_s)) ||
-            rhs.vertical_velocity_m_s == lhs.vertical_velocity_m_s) &&
-           (rhs.callsign == lhs.callsign) && (rhs.emitter_type == lhs.emitter_type) &&
-           (rhs.squawk == lhs.squawk) && (rhs.tslc_s == lhs.tslc_s);
+    return
+        (rhs.icao_address == lhs.icao_address) &&
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg) &&
+        ((std::isnan(rhs.altitude_m) && std::isnan(lhs.altitude_m)) || rhs.altitude_m == lhs.altitude_m) &&
+        ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) || rhs.heading_deg == lhs.heading_deg) &&
+        ((std::isnan(rhs.horizontal_velocity_m_s) && std::isnan(lhs.horizontal_velocity_m_s)) || rhs.horizontal_velocity_m_s == lhs.horizontal_velocity_m_s) &&
+        ((std::isnan(rhs.vertical_velocity_m_s) && std::isnan(lhs.vertical_velocity_m_s)) || rhs.vertical_velocity_m_s == lhs.vertical_velocity_m_s) &&
+        (rhs.callsign == lhs.callsign) &&
+        (rhs.emitter_type == lhs.emitter_type) &&
+        (rhs.squawk == lhs.squawk) &&
+        (rhs.tslc_s == lhs.tslc_s) &&
+        (rhs.altitude_type == lhs.altitude_type);
 }
 
 std::ostream& operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle)
 {
     str << std::setprecision(15);
-    str << "adsb_vehicle:" << '\n' << "{\n";
+    str << "adsb_vehicle:" << '\n'
+        << "{\n";
     str << "    icao_address: " << adsb_vehicle.icao_address << '\n';
     str << "    latitude_deg: " << adsb_vehicle.latitude_deg << '\n';
     str << "    longitude_deg: " << adsb_vehicle.longitude_deg << '\n';
-    str << "    absolute_altitude_m: " << adsb_vehicle.absolute_altitude_m << '\n';
+    str << "    altitude_m: " << adsb_vehicle.altitude_m << '\n';
     str << "    heading_deg: " << adsb_vehicle.heading_deg << '\n';
     str << "    horizontal_velocity_m_s: " << adsb_vehicle.horizontal_velocity_m_s << '\n';
     str << "    vertical_velocity_m_s: " << adsb_vehicle.vertical_velocity_m_s << '\n';
@@ -77,9 +86,12 @@ std::ostream& operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb
     str << "    emitter_type: " << adsb_vehicle.emitter_type << '\n';
     str << "    squawk: " << adsb_vehicle.squawk << '\n';
     str << "    tslc_s: " << adsb_vehicle.tslc_s << '\n';
+    str << "    altitude_type: " << adsb_vehicle.altitude_type << '\n';
     str << '}';
     return str;
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
 {
@@ -102,6 +114,8 @@ std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
             return str << "Unknown";
     }
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type)
 {
@@ -150,5 +164,18 @@ std::ostream& operator<<(std::ostream& str, Transponder::AdsbEmitterType const& 
             return str << "Unknown";
     }
 }
+
+std::ostream& operator<<(std::ostream& str, Transponder::AdsbAltitudeType const& adsb_altitude_type)
+{
+    switch (adsb_altitude_type) {
+        case Transponder::AdsbAltitudeType::PressureQnh:
+            return str << "Pressure Qnh";
+        case Transponder::AdsbAltitudeType::Geometric:
+            return str << "Geometric";
+        default:
+            return str << "Unknown";
+    }
+}
+
 
 } // namespace mavsdk
