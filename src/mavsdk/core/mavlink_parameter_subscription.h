@@ -12,7 +12,7 @@ namespace mavsdk {
 
 // Util for exposing the functionality of subscribing to parameter changes
 // Note: maybe it would be cleaner to also have the parameter set in here, and make this class
-// A "MavlinkParameterSet" so to say where set_xxx properly calls the subscritions.
+// A "MavlinkParameterSet" so to say where set_xxx properly calls the subscriptions.
 // But for now, I don't want to go down that route yet since I don't know if that isn't too much of inheritance.
 // NOTE: r.n the inherited class still needs to remember to call find_and_call_subscriptions_value_changed()
 // When a value is changed.
@@ -38,6 +38,7 @@ public:
     using ParamCustomChangedCallback = ParamChangedCallback<std::string>;
     void subscribe_param_custom_changed(
         const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
+protected:
     /**
      * Find all the subscriptions for the given @param param_name,
      * check their type and call them when matching. This does not check if the given param actually was changed, but it is safe to call with mismatching types.
