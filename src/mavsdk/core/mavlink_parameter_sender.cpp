@@ -504,15 +504,12 @@ void MavlinkParameterSender::do_work()
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
-
     if (!work) {
         return;
     }
-
     if (work->already_requested) {
         return;
     }
-
     char param_id[PARAM_ID_LEN + 1] = {};
     strncpy(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
 
@@ -615,14 +612,10 @@ void MavlinkParameterSender::do_work()
                 work_queue_guard.pop_front();
                 return;
             }
-
             work->already_requested = true;
-
             // _last_request_time = _sender.get_time().steady_time();
-
             // We want to get notified if a timeout happens
             _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
-
         } break;
     }
 }
@@ -632,22 +625,18 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
     const std::string param_id = extract_safe_param_id(param_value.param_id);
-
     if (_parameter_debugging) {
         LogDebug() << "getting param value: " << param_id;
     }
-
     ParamValue received_value;
     if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
         received_value.set_from_mavlink_param_value_cast(param_value);
     } else {
         received_value.set_from_mavlink_param_value_bytewise(param_value);
     }
-
     {
         std::lock_guard<std::mutex> lock(_all_params_mutex);
         _all_params[param_id] = received_value;
-
         // check if we are looking for param list (get all parameters).
         if (_all_params_callback) {
             // If we are currently waiting for all parameters, this is a hacky way to basically say
@@ -666,13 +655,12 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
                     _timeout_s_callback(),
                     &_all_params_timeout_cookie);
             }
-
             return;
         }
     }
 
-    // TODO
-    //notify_param_subscriptions(param_value);
+    // TODO I think we need to consider more edge cases here
+    find_and_call_subscriptions_value_changed(param_id,received_value);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -863,16 +851,13 @@ void MavlinkParameterSender::receive_timeout()
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
-
     if (!work) {
         LogErr() << "Received timeout without work";
         return;
     }
-
     if (!work->already_requested) {
         return;
     }
-
     switch (work->type) {
         case WorkItem::Type::Get: {
             ParamValue empty_value;
@@ -898,9 +883,7 @@ void MavlinkParameterSender::receive_timeout()
             } else {
                 // We have tried retransmitting, giving up now.
                 LogErr() << "Error: Retrying failed get param busy timeout: " << work->param_name;
-
                 work_queue_guard.pop_front();
-
                 if (std::get_if<GetParamAnyCallback>(&work->callback)) {
                     const auto& callback = std::get<GetParamAnyCallback>(work->callback);
                     if (callback) {
