@@ -21,6 +21,8 @@ namespace mavsdk {
  * 1) provide parameters (now other components can request anc change these parameters via mavlink).
  * 2) add listener(s) for these parameters such that you can react to changes set by another component.
  * 3) let mavlink do its magic.
+ * Note that this side is much more simple - it does not need to worry about re-transmission or such, the responsibility for
+ * that lies completely on the part that wants to change parameters.
  */
 class MavlinkParameterReceiver {
 public:
