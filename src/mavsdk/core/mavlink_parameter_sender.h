@@ -31,6 +31,9 @@ public:
         TimeoutHandler& timeout_handler,
         TimeoutSCallback timeout_s_callback);
     ~MavlinkParameterSender();
+    // Non-copyable
+    MavlinkParameterSender(const MavlinkParameterSender&) = delete;
+    const MavlinkParameterSender& operator=(const MavlinkParameterSender&) = delete;
 
     enum class Result {
         Success,
@@ -150,10 +153,6 @@ public:
     void do_work();
 
     friend std::ostream& operator<<(std::ostream&, const Result&);
-
-    // Non-copyable
-    MavlinkParameterSender(const MavlinkParameterSender&) = delete;
-    const MavlinkParameterSender& operator=(const MavlinkParameterSender&) = delete;
 
 private:
 

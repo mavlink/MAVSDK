@@ -5,9 +5,10 @@
 #ifndef MAVSDK_SUPERBUILD_SRC_MAVSDK_CORE_MAVLINK_PARAMETER_SUBSCRIPTION_H_
 #define MAVSDK_SUPERBUILD_SRC_MAVSDK_CORE_MAVLINK_PARAMETER_SUBSCRIPTION_H_
 
+#include "param_value.h"
 #include <mutex>
 #include <list>
-#include "param_value.h"
+
 namespace mavsdk {
 
 // Util for exposing the functionality of subscribing to parameter changes
