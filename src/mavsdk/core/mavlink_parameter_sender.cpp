@@ -436,6 +436,10 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if(_all_params_callback!= nullptr){
         LogDebug()<<"Give get_all_params_async time to complete before requesting again";
+        // make sure any already existing request is terminated, since we immediately have to override an already
+        // existing callback here. ( A future might be blocked on it).
+        _all_params_callback({});
+        _all_params_callback= nullptr;
     }
     _all_params_callback = callback;
     mavlink_message_t msg;
