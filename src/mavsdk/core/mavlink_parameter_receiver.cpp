@@ -97,7 +97,7 @@ MavlinkParameterReceiver::provide_server_param_float(const std::string& name, fl
 }
 
 MavlinkParameterReceiver::Result
-MavlinkParameterReceiver::provide_server_param_int(const std::string& name, int value)
+MavlinkParameterReceiver::provide_server_param_int(const std::string& name,int32_t value)
 {
     ParamValue param_value;
     param_value.set(value);
@@ -148,7 +148,7 @@ MavlinkParameterReceiver::retrieve_server_param_custom(const std::string& name)
 std::pair<MavlinkParameterReceiver::Result, int>
 MavlinkParameterReceiver::retrieve_server_param_int(const std::string& name)
 {
-    return retrieve_server_param<int>(name);
+    return retrieve_server_param<int32_t>(name);
 }
 
 void MavlinkParameterReceiver::process_param_set_internally(const std::string& param_id,const ParamValue& value,bool extended)
