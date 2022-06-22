@@ -241,7 +241,8 @@ void MavlinkMissionTransfer::UploadWorkItem::start()
     // item 0, and the sequence starts counting at 0 from 1.
     // This is only for missions, rally points, and geofence items are normal.
     const bool is_ardupilot_mission =
-        _sender.autopilot() == Sender::Autopilot::ArduPilot && _type == MAV_MISSION_TYPE_MISSION;
+        _sender.compatibility_mode() == System::CompatibilityMode::Ardupilot &&
+        _type == MAV_MISSION_TYPE_MISSION;
 
     if (is_ardupilot_mission) {
         for (unsigned i = 1; i < _items.size(); ++i) {

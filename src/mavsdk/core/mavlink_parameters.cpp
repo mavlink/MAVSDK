@@ -193,7 +193,8 @@ void MAVLinkParameters::set_param_int_async(
 
     // PX4 only uses int32_t, so we can be sure and don't need to check the exact type first
     // by getting the param, or checking the cache.
-    const bool exact_int_type_known = (_sender.autopilot() == SystemImpl::Autopilot::Px4);
+    const bool exact_int_type_known =
+        (_sender.compatibility_mode() == System::CompatibilityMode::Px4);
 
     const auto set_step = [=]() {
         auto new_work = std::make_shared<WorkItem>(_timeout_s_callback());
@@ -806,9 +807,10 @@ void MAVLinkParameters::do_work()
                     param_value_buf.data(),
                     work->param_value.get_mav_param_ext_type());
             } else {
-                float value_set = (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
-                                      work->param_value.get_4_float_bytes_cast() :
-                                      work->param_value.get_4_float_bytes_bytewise();
+                float value_set =
+                    (_sender.compatibility_mode() == System::CompatibilityMode::Ardupilot) ?
+                        work->param_value.get_4_float_bytes_cast() :
+                        work->param_value.get_4_float_bytes_bytewise();
 
                 mavlink_msg_param_set_pack(
                     _sender.get_own_system_id(),
@@ -914,7 +916,7 @@ void MAVLinkParameters::do_work()
                     work->param_index);
             } else {
                 float param_value;
-                if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+                if (_sender.compatibility_mode() == System::CompatibilityMode::Ardupilot) {
                     param_value = work->param_value.get_4_float_bytes_cast();
                 } else {
                     param_value = work->param_value.get_4_float_bytes_bytewise();
@@ -975,7 +977,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
     }
 
     ParamValue received_value;
-    if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_sender.compatibility_mode() == System::CompatibilityMode::Ardupilot) {
         received_value.set_from_mavlink_param_value_cast(param_value);
     } else {
         received_value.set_from_mavlink_param_value_bytewise(param_value);
@@ -1098,7 +1100,7 @@ void MAVLinkParameters::notify_param_subscriptions(const mavlink_param_value_t& 
 
         ParamValue value;
 
-        if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        if (_sender.compatibility_mode() == System::CompatibilityMode::Ardupilot) {
             value.set_from_mavlink_param_value_cast(param_value);
         } else {
             value.set_from_mavlink_param_value_bytewise(param_value);

@@ -364,7 +364,7 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
+    if (_parent->compatibility_mode() == System::CompatibilityMode::Px4) {
         takeoff_async_px4(callback);
     } else {
         takeoff_async_apm(callback);
@@ -466,9 +466,9 @@ void ActionImpl::goto_location_async(
 
     if (_parent->compatibility_mode() == System::CompatibilityMode::Px4) {
         // Change to Hold mode first
-        if (_parent->get_flight_mode() != SystemImpl::FlightMode::Hold) {
+        if (_parent->get_flight_mode() != FlightMode::Hold) {
             _parent->set_flight_mode_async(
-                SystemImpl::FlightMode::Hold,
+                FlightMode::Hold,
                 [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
                     Action::Result action_result = action_result_from_command_result(result);
                     if (action_result != Action::Result::Success) {

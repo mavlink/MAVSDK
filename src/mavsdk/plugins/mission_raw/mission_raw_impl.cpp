@@ -521,7 +521,8 @@ MissionRawImpl::subscribe_mission_changed(const MissionRaw::MissionChangedCallba
     // will be received. This should be specced properly, hence it's not in Pure mode.
     if (_parent->compatibility_mode() == System::CompatibilityMode::Pure) {
         LogErr() << "mission changed subscription not supported";
-        return;
+        // We can't really signal this to the caller except doing an abort which would
+        // be a bit brutal, so we just let the caller get a subscription anyway.
     }
 
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
@@ -547,7 +548,7 @@ MissionRawImpl::import_qgroundcontrol_mission(std::string qgc_plan_path)
     buf << file.rdbuf();
     file.close();
 
-    return MissionImport::parse_json(buf.str(), _parent->autopilot());
+    return MissionImport::parse_json(buf.str(), _parent->compatibility_mode());
 }
 
 MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransfer::Result result)

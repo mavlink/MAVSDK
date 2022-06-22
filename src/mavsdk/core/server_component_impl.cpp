@@ -382,10 +382,10 @@ uint8_t ServerComponentImpl::OurSender::get_system_id() const
     return current_target_system_id;
 }
 
-Sender::Autopilot ServerComponentImpl::OurSender::autopilot() const
+System::CompatibilityMode ServerComponentImpl::OurSender::compatibility_mode() const
 {
     // FIXME: hard-coded to PX4 for now to avoid the dependency into mavsdk_impl.
-    return Sender::Autopilot::Px4;
+    return System::CompatibilityMode::Px4;
 }
 
 } // namespace mavsdk

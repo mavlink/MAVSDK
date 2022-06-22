@@ -27,7 +27,7 @@ enum class FlightMode {
 };
 
 FlightMode to_flight_mode_from_custom_mode(
-    Sender::Autopilot autopilot, MAV_TYPE mav_type, uint32_t custom_mode);
+    System::CompatibilityMode compatibility_mode, MAV_TYPE mav_type, uint32_t custom_mode);
 FlightMode to_flight_mode_from_px4_mode(uint32_t custom_mode);
 FlightMode to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode);
 FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode);

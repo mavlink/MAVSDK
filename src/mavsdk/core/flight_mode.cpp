@@ -8,9 +8,9 @@
 namespace mavsdk {
 
 FlightMode to_flight_mode_from_custom_mode(
-    Sender::Autopilot autopilot, MAV_TYPE mav_type, uint32_t custom_mode)
+    System::CompatibilityMode compatibility_mode, MAV_TYPE mav_type, uint32_t custom_mode)
 {
-    if (autopilot == Sender::Autopilot::ArduPilot) {
+    if (compatibility_mode == System::CompatibilityMode::Ardupilot) {
         switch (mav_type) {
             case MAV_TYPE::MAV_TYPE_SURFACE_BOAT:
             case MAV_TYPE::MAV_TYPE_GROUND_ROVER:

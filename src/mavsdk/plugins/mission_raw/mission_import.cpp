@@ -7,7 +7,7 @@
 namespace mavsdk {
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
-MissionImport::parse_json(const std::string& raw_json, Sender::Autopilot autopilot)
+MissionImport::parse_json(const std::string& raw_json, System::CompatibilityMode compatibility_mode)
 {
     Json::CharReaderBuilder builder;
     const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
@@ -23,7 +23,7 @@ MissionImport::parse_json(const std::string& raw_json, Sender::Autopilot autopil
         return {MissionRaw::Result::FailedToParseQgcPlan, {}};
     }
 
-    auto maybe_mission_items = import_mission(root, autopilot);
+    auto maybe_mission_items = import_mission(root, compatibility_mode);
     if (!maybe_mission_items.has_value()) {
         return {MissionRaw::Result::FailedToParseQgcPlan, {}};
     }
@@ -60,7 +60,7 @@ bool MissionImport::check_overall_version(const Json::Value& root)
 }
 
 std::optional<std::vector<MissionRaw::MissionItem>>
-MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopilot)
+MissionImport::import_mission(const Json::Value& root, System::CompatibilityMode compatibility_mode)
 {
     // We need a mission part.
     const auto mission = root["mission"];
@@ -119,7 +119,7 @@ MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopil
     }
 
     // Add home position at 0 for ArduPilot
-    if (autopilot == Sender::Autopilot::ArduPilot) {
+    if (compatibility_mode == System::CompatibilityMode::Ardupilot) {
         const auto home = mission["plannedHomePosition"];
         if (!home.empty()) {
             if (home.isArray() && home.size() != 3) {

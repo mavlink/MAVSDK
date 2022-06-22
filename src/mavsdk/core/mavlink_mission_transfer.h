@@ -27,7 +27,7 @@ public:
     [[nodiscard]] virtual System::CompatibilityMode compatibility_mode() const = 0;
 };
 
-class MAVLinkMissionTransfer {
+class MavlinkMissionTransfer {
 public:
     enum class Result {
         Success,
