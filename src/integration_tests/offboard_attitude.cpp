@@ -5,6 +5,7 @@
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/offboard/offboard.h"
+#include "plugins/param/param.h"
 
 using namespace mavsdk;
 
@@ -34,6 +35,10 @@ TEST(SitlTestDisabled, OffboardAttitudeRate)
 
     // FIXME: trying new plugin instantiation.
     auto offboard = Offboard{system};
+
+    // Prevent PX4 from entering failsafe without manual control.
+    auto param = std::make_shared<Param>(system);
+    ASSERT_EQ(Param::Result::Success, param->set_param_int("COM_RCL_EXCEPT", 7));
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
