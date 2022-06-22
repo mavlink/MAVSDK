@@ -7,24 +7,22 @@
 
 using namespace mavsdk;
 
-MissionRaw::MissionItem create_mission_item(
-    uint32_t _seq,
-    uint32_t _frame,
-    uint32_t _command,
-    uint32_t _current,
-    uint32_t _autocontinue,
-    float _param1,
-    float _param2,
-    float _param3,
-    float _param4,
-    double _x,
-    double _y,
-    double _z,
-    uint32_t _mission_type);
+static MissionRaw::MissionItem create_mission_item(
+    uint32_t seq,
+    uint32_t frame,
+    uint32_t command,
+    uint32_t current,
+    uint32_t autocontinue,
+    float param1,
+    float param2,
+    float param3,
+    float param4,
+    double x,
+    double y,
+    double z,
+    uint32_t mission_type);
 
-std::vector<MissionRaw::MissionItem> create_mission_raw();
-void test_mission_raw(
-    mavsdk::MissionRaw& mission_raw, mavsdk::Action& action, mavsdk::Telemetry& telemetry);
+static std::vector<MissionRaw::MissionItem> create_mission_raw();
 
 TEST_F(SitlTest, PX4MissionRawImportAndFly)
 {
@@ -172,33 +170,33 @@ std::vector<MissionRaw::MissionItem> create_mission_raw()
 }
 
 MissionRaw::MissionItem create_mission_item(
-    uint32_t _seq,
-    uint32_t _frame,
-    uint32_t _command,
-    uint32_t _current,
-    uint32_t _autocontinue,
-    float _param1,
-    float _param2,
-    float _param3,
-    float _param4,
-    double _x,
-    double _y,
-    double _z,
-    uint32_t _mission_type)
+    uint32_t seq,
+    uint32_t frame,
+    uint32_t command,
+    uint32_t current,
+    uint32_t autocontinue,
+    float param1,
+    float param2,
+    float param3,
+    float param4,
+    double x,
+    double y,
+    double z,
+    uint32_t mission_type)
 {
     MissionRaw::MissionItem new_raw_item_nav{};
-    new_raw_item_nav.seq = _seq;
-    new_raw_item_nav.frame = _frame; // MAV_FRAME_GLOBAL_RELATIVE_ALT_INT
-    new_raw_item_nav.command = _command; // MAV_CMD_NAV_WAYPOINT
-    new_raw_item_nav.current = _current;
-    new_raw_item_nav.autocontinue = _autocontinue;
-    new_raw_item_nav.param1 = _param1; // Hold
-    new_raw_item_nav.param2 = _param2; // Accept Radius
-    new_raw_item_nav.param3 = _param3; // Pass Radius
-    new_raw_item_nav.param4 = _param4; // Yaw
-    new_raw_item_nav.x = int32_t(std::round(_x * 1e7));
-    new_raw_item_nav.y = int32_t(std::round(_y * 1e7));
-    new_raw_item_nav.z = float(_z);
-    new_raw_item_nav.mission_type = _mission_type;
+    new_raw_item_nav.seq = seq;
+    new_raw_item_nav.frame = frame; // MAV_FRAME_GLOBAL_RELATIVE_ALT_INT
+    new_raw_item_nav.command = command; // MAV_CMD_NAV_WAYPOINT
+    new_raw_item_nav.current = current;
+    new_raw_item_nav.autocontinue = autocontinue;
+    new_raw_item_nav.param1 = param1; // Hold
+    new_raw_item_nav.param2 = param2; // Accept Radius
+    new_raw_item_nav.param3 = param3; // Pass Radius
+    new_raw_item_nav.param4 = param4; // Yaw
+    new_raw_item_nav.x = int32_t(std::round(x * 1e7));
+    new_raw_item_nav.y = int32_t(std::round(y * 1e7));
+    new_raw_item_nav.z = float(z);
+    new_raw_item_nav.mission_type = mission_type;
     return new_raw_item_nav;
 }
