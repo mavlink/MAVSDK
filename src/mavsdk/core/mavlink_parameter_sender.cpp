@@ -474,10 +474,9 @@ std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params(const b
     std::promise<std::map<std::string, ParamValue>> prom;
     auto res = prom.get_future();
     get_all_params_async(
-        // Consti10: all_params used to be passed in here as a reference - that is a bug.
-        // Since for example on a receive timeout, the empty all_params result is constructed in-place and then
-        // goes out of scope when the callback returns. So don't use a reference here, pass by value or refactor the code to use
-        // a std::shared_ptr.
+        // Make sure to NOT use a reference for all_params here, pass by value.
+        // Since for example on a timeout, the empty all_params result is constructed in-place and then
+        // goes out of scope when the callback returns.
         [&prom](std::map<std::string, ParamValue> all_params) {
             prom.set_value(std::move(all_params));
         },use_extended);

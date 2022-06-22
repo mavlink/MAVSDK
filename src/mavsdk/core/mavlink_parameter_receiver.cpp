@@ -272,7 +272,7 @@ void MavlinkParameterReceiver::process_param_request_list(const mavlink_message_
         }
         auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,false);
         new_work->param_value = pair.second;
-        // Consti10 - the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
+        // the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
         // that need the extended protocol
         new_work->param_count = get_current_parameters_count(false);
         new_work->param_index = idx++;

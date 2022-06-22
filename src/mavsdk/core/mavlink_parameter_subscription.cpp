@@ -1,7 +1,3 @@
-//
-// Created by consti10 on 21.06.22.
-//
-
 #include "mavlink_parameter_subscription.h"
 
 namespace mavsdk {

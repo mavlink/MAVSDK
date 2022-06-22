@@ -119,7 +119,7 @@ public:
         std::string>
         _value{};
 
-    // Consti10: hacky, returns true if this parameter needs the extended parameters' protocol
+    // returns true if this parameter needs the extended parameters' protocol
     // (which is the case when its value is represented by a string)
     [[nodiscard]] bool needs_extended() const {
         // true if it is a string, false otherwise.
