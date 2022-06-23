@@ -195,7 +195,7 @@ void TelemetryImpl::enable()
     _parent->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
 
     // We're going to retry until we have the Home Position.
-    _parent->add_call_every([this]() { request_home_position_again(); }, 2.0f, &_call_every_cookie);
+    _parent->add_call_every([this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
 }
 
 void TelemetryImpl::disable() {}
@@ -205,7 +205,7 @@ void TelemetryImpl::request_home_position_again()
     {
         std::lock_guard<std::mutex> lock(_request_home_position_mutex);
         if (_health.is_home_position_ok) {
-            _parent->remove_call_every(_call_every_cookie);
+            _parent->remove_call_every(_homepos_cookie);
             return;
         }
     }

@@ -393,7 +393,7 @@ private:
     bool _has_bat_status{false};
 
     void* _calibration_cookie{nullptr};
-    void* _call_every_cookie{nullptr};
+    void* _homepos_cookie{nullptr};
 
     std::atomic<bool> _has_received_hitl_param{false};
 
