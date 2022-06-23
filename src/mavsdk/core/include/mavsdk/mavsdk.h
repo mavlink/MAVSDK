@@ -380,7 +380,6 @@ public:
      */
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
-
 private:
     /* @private. */
     std::shared_ptr<MavsdkImpl> _impl{};

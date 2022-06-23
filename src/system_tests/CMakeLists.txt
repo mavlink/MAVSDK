@@ -16,6 +16,10 @@ target_include_directories(system_tests_runner
     ${PROJECT_SOURCE_DIR}/mavsdk/core
 )
 
+target_include_directories(system_tests_runner SYSTEM
+    PRIVATE ${MAVLINK_HEADERS}
+)
+
 target_link_libraries(system_tests_runner
     PRIVATE
     mavsdk

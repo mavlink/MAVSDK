@@ -63,7 +63,6 @@ target_include_directories(integration_tests_runner
     PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
     PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
     PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../third_party/include
-    PRIVATE ${MAVLINK_HEADERS}
 )
 
 if(MSVC)
@@ -92,6 +91,10 @@ target_link_libraries(integration_tests_runner
     gtest
     gtest_main
     gmock
+)
+
+target_include_directories(integration_tests_runner
+    SYSTEM PRIVATE ${MAVLINK_HEADERS}
 )
 
 add_test(integration_tests

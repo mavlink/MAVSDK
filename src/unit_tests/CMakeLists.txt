@@ -20,13 +20,12 @@ target_link_libraries(unit_tests_runner
 )
 
 target_include_directories(unit_tests_runner
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src/mavsdk/core
-    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../src/mavsdk/core
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../mavsdk/core
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../mavsdk/core
 )
 target_include_directories(unit_tests_runner SYSTEM
     PRIVATE ${MAVLINK_HEADERS}
 )
-message(FATAL_ERROR "HEADERS: ${MAVLINK_HEADERS}")
 
 if (MSVC AND BUILD_SHARED_LIBS)
     target_compile_definitions(unit_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)

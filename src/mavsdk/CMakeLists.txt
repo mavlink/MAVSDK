@@ -24,8 +24,4 @@ if (NOT APPLE AND NOT ANDROID AND NOT MSVC)
     )
 endif()
 
-target_include_directories(mavsdk
-    SYSTEM PUBLIC ${MAVLINK_HEADERS}
-)
-
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
