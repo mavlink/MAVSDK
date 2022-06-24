@@ -198,7 +198,7 @@ void TelemetryImpl::enable()
     _parent->add_call_every([this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
 }
 
-void TelemetryImpl::disable() 
+void TelemetryImpl::disable()
 {
     _parent->remove_call_every(_calibration_cookie);
     _parent->remove_call_every(_homepos_cookie);
