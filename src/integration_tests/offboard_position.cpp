@@ -47,7 +47,11 @@ TEST_F(SitlTest, OffboardPositionNED)
     action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    LogInfo() << "Waiting for actual take off...";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { return telemetry->landed_state() == Telemetry::LandedState::InAir; },
+        std::chrono::seconds(10)));
+    LogInfo() << "Taken off!";
 
     Offboard::PositionNedYaw up{};
     up.down_m = -10.0f;

@@ -70,9 +70,11 @@ void arm_and_takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
 
     ASSERT_EQ(action->takeoff(), Action::Result::Success);
 
-    while (telemetry->position().relative_altitude_m < 4.0f) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
+    LogInfo() << "Waiting for actual take off...";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { return telemetry->landed_state() == Telemetry::LandedState::InAir; },
+        std::chrono::seconds(10)));
+    LogInfo() << "Taken off!";
 }
 
 void disarm_and_land(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)

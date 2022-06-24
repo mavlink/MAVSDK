@@ -44,7 +44,11 @@ TEST_F(SitlTest, PX4OffboardAccelerationNED)
     action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    LogInfo() << "Waiting for actual take off...";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { return telemetry->landed_state() == Telemetry::LandedState::InAir; },
+        std::chrono::seconds(10)));
+    LogInfo() << "Taken off!";
 
     // Send it once before starting offboard, otherwise it will be rejected.
     Offboard::AccelerationNed still{};

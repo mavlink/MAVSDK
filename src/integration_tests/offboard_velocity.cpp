@@ -34,11 +34,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [telemetry]() {
-            LogInfo() << "Waiting for system to be ready";
-            return telemetry->health_all_ok();
-        },
-        std::chrono::seconds(10)));
+        [telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
@@ -46,7 +42,11 @@ TEST_F(SitlTest, OffboardVelocityNED)
     action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    LogInfo() << "Waiting for actual take off...";
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { return telemetry->landed_state() == Telemetry::LandedState::InAir; },
+        std::chrono::seconds(10)));
+    LogInfo() << "Taken off!";
 
     // Send it once before starting offboard, otherwise it will be rejected.
     Offboard::VelocityNedYaw still{};
@@ -160,11 +160,7 @@ TEST_F(SitlTest, OffboardVelocityBody)
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
-        [telemetry]() {
-            LogInfo() << "Waiting for system to be ready";
-            return telemetry->health_all_ok();
-        },
-        std::chrono::seconds(10)));
+        [telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
     Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::Success, action_ret);
@@ -172,7 +168,12 @@ TEST_F(SitlTest, OffboardVelocityBody)
     action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::Success, action_ret);
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    LogInfo() << "Waiting for actual take off...";
+
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [telemetry]() { return telemetry->landed_state() == Telemetry::LandedState::InAir; },
+        std::chrono::seconds(10)));
+    LogInfo() << "Taken off!";
 
     // Send it once before starting offboard, otherwise it will be rejected.
     Offboard::VelocityBodyYawspeed still{};
