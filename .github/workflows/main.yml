@@ -38,7 +38,7 @@ jobs:
       - name: build
         run: cmake --build build -j2
       - name: unit tests
-        run: ./build/src/unit_tests_runner
+        run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/src/system_tests/system_tests_runner
       - name: run lcov
@@ -68,7 +68,7 @@ jobs:
       - name: build
         run: cmake --build build/release -j2
       - name: unit tests
-        run: ./build/release/src/unit_tests_runner
+        run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
 
@@ -105,7 +105,7 @@ jobs:
       - name: build examples
         run: (cd examples && cmake --build build -j2)
       - name: unit tests
-        run: ./build/release/src/unit_tests_runner
+        run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
@@ -134,7 +134,7 @@ jobs:
       - name: build
         run: cmake --build build -j2
       - name: unit tests
-        run: ./build/src/unit_tests_runner
+        run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/src/system_tests/system_tests_runner
 
@@ -379,7 +379,7 @@ jobs:
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: unit tests
-        run: ./build/release/src/unit_tests_runner
+        run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
@@ -519,7 +519,7 @@ jobs:
       - name: build
         run: cmake --build build/macos -j2 --target install
       - name: unit tests
-        run: ./build/macos/src/unit_tests_runner
+        run: ./build/macos/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/macos/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
