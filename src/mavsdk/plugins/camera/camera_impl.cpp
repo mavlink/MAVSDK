@@ -15,6 +15,7 @@ namespace mavsdk {
 
 template class CallbackList<Camera::Mode>;
 template class CallbackList<std::vector<Camera::Setting>>;
+template class CallbackList<std::vector<Camera::SettingOptions>>;
 template class CallbackList<Camera::CaptureInfo>;
 template class CallbackList<Camera::VideoStreamInfo>;
 template class CallbackList<Camera::Status>;

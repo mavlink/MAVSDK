@@ -10,6 +10,14 @@
 #include "telemetry/mocks/telemetry_mock.h"
 #include "telemetry/telemetry_service_impl.h"
 #include "mocks/lazy_plugin_mock.h"
+#include "callback_list.h"
+
+namespace mavsdk {
+template<typename... Args> class FakeHandle {
+public:
+    static mavsdk::Handle<Args...> create() { return mavsdk::Handle<Args...>(0); }
+};
+} // namespace mavsdk
 
 namespace {
 
@@ -71,6 +79,39 @@ protected:
         _stub = TelemetryService::NewStub(channel);
 
         initRandomGenerator();
+
+        testing::DefaultValue<mavsdk::Telemetry::PositionHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::Position>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::HealthHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::Health>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::InAirHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<bool>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::GpsInfoHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::GpsInfo>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::BatteryHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::Battery>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::FlightModeHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::FlightMode>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::AttitudeQuaternionHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::Quaternion>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::AttitudeEulerHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::EulerAngle>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::AngularVelocityBody>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::VelocityNedHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::VelocityNed>::create(); });
+
+        testing::DefaultValue<mavsdk::Telemetry::RcStatusHandle>::SetFactory(
+            [] { return mavsdk::FakeHandle<mavsdk::Telemetry::RcStatus>::create(); });
     }
 
     virtual void TearDown() { _server->Shutdown(); }
@@ -180,8 +221,9 @@ void TelemetryServiceImplTest::initRandomGenerator()
 
 ACTION_P2(SaveCallback, callback, callback_promise)
 {
-    *callback = arg0;
+    auto handle = callback->subscribe(arg0);
     callback_promise->set_value();
+    testing::Return(handle);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
@@ -221,6 +263,9 @@ std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<P
 
 TEST_F(TelemetryServiceImplTest, doesNotSendPositionIfCallbackNotCalled)
 {
+    // testing::DefaultValue<mavsdk::Telemetry::PositionHandle>::SetFactory(
+    //    [] { return mavsdk::FakeHandle<mavsdk::Telemetry::Position>::create(); });
+
     std::vector<Position> positions;
     auto position_stream_future = subscribePositionAsync(positions);
 
@@ -242,15 +287,15 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position>& 
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::PositionCallback position_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::Position> position_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_position(_))
-        .WillOnce(SaveCallback(&position_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&position_callbacks, &subscription_promise));
 
     std::vector<Position> received_positions;
     auto position_stream_future = subscribePositionAsync(received_positions);
     subscription_future.wait();
     for (const auto& position : positions) {
-        position_callback(position);
+        position_callbacks(position);
     }
     _telemetry_service->stop();
     position_stream_future.wait();
@@ -352,15 +397,15 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health>& heal
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::HealthCallback health_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::Health> health_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_health(_))
-        .WillOnce(SaveCallback(&health_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&health_callbacks, &subscription_promise));
 
     std::vector<Health> received_healths;
     auto health_stream_future = subscribeHealthAsync(received_healths);
     subscription_future.wait();
     for (const auto& health : healths) {
-        health_callback(health);
+        health_callbacks(health);
     }
     _telemetry_service->stop();
     health_stream_future.wait();
@@ -456,15 +501,15 @@ void TelemetryServiceImplTest::checkSendsHomePositions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::PositionCallback home_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::Position> home_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_home(_))
-        .WillOnce(SaveCallback(&home_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&home_callbacks, &subscription_promise));
 
     std::vector<Position> received_home_positions;
     auto home_stream_future = subscribeHomeAsync(received_home_positions);
     subscription_future.wait();
     for (const auto& home_position : home_positions) {
-        home_callback(home_position);
+        home_callbacks(home_position);
     }
     _telemetry_service->stop();
     home_stream_future.wait();
@@ -538,15 +583,15 @@ void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool>& in
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::InAirCallback in_air_callback;
+    mavsdk::CallbackList<bool> in_air_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_in_air(_))
-        .WillOnce(SaveCallback(&in_air_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&in_air_callbacks, &subscription_promise));
 
     std::vector<bool> received_in_air_events;
     auto in_air_stream_future = subscribeInAirAsync(received_in_air_events);
     subscription_future.wait();
     for (const auto& is_in_air : in_air_events) {
-        in_air_callback(is_in_air);
+        in_air_callbacks(is_in_air);
     }
     _telemetry_service->stop();
     in_air_stream_future.wait();
@@ -620,15 +665,15 @@ void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool>& ar
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::ArmedCallback armed_callback;
+    mavsdk::CallbackList<bool> armed_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_armed(_))
-        .WillOnce(SaveCallback(&armed_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&armed_callbacks, &subscription_promise));
 
     std::vector<bool> received_armed_events;
     auto armed_stream_future = subscribeArmedAsync(received_armed_events);
     subscription_future.wait();
     for (const auto& is_armed : armed_events) {
-        armed_callback(is_armed);
+        armed_callbacks(is_armed);
     }
     _telemetry_service->stop();
     armed_stream_future.wait();
@@ -730,15 +775,15 @@ void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::GpsInfoCallback gps_info_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::GpsInfo> gps_info_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_gps_info(_))
-        .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&gps_info_callbacks, &subscription_promise));
 
     std::vector<GpsInfo> received_gps_info_events;
     auto gps_info_stream_future = subscribeGpsInfoAsync(received_gps_info_events);
     subscription_future.wait();
     for (const auto& gps_info : gps_info_events) {
-        gps_info_callback(gps_info);
+        gps_info_callbacks(gps_info);
     }
     _telemetry_service->stop();
     gps_info_stream_future.wait();
@@ -844,15 +889,15 @@ void TelemetryServiceImplTest::checkSendsBatteryEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::BatteryCallback battery_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::Battery> battery_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_battery(_))
-        .WillOnce(SaveCallback(&battery_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&battery_callbacks, &subscription_promise));
 
     std::vector<Battery> received_battery_events;
     auto battery_stream_future = subscribeBatteryAsync(received_battery_events);
     subscription_future.wait();
     for (const auto& battery : battery_events) {
-        battery_callback(battery);
+        battery_callbacks(battery);
     }
     _telemetry_service->stop();
     battery_stream_future.wait();
@@ -954,15 +999,15 @@ void TelemetryServiceImplTest::checkSendsFlightModeEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::FlightModeCallback flight_mode_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::FlightMode> flight_mode_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_flight_mode(_))
-        .WillOnce(SaveCallback(&flight_mode_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&flight_mode_callbacks, &subscription_promise));
 
     std::vector<FlightMode> received_flight_mode_events;
     auto flight_mode_stream_future = subscribeFlightModeAsync(received_flight_mode_events);
     subscription_future.wait();
     for (const auto& flight_mode : flight_mode_events) {
-        flight_mode_callback(flight_mode);
+        flight_mode_callbacks(flight_mode);
     }
     _telemetry_service->stop();
     flight_mode_stream_future.wait();
@@ -1130,15 +1175,15 @@ void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::AttitudeQuaternionCallback attitude_quaternion_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::Quaternion> attitude_quaternion_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_attitude_quaternion(_))
-        .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_quaternion_callbacks, &subscription_promise));
 
     std::vector<Quaternion> received_quaternions;
     auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(received_quaternions);
     subscription_future.wait();
     for (const auto& quaternion : quaternions) {
-        attitude_quaternion_callback(quaternion);
+        attitude_quaternion_callbacks(quaternion);
     }
     _telemetry_service->stop();
     quaternion_stream_future.wait();
@@ -1154,16 +1199,17 @@ void TelemetryServiceImplTest::checkSendsAttitudeAngularVelocitiesBody(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::AttitudeAngularVelocityBodyCallback attitude_angular_velocity_body_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::AngularVelocityBody>
+        attitude_angular_velocity_body_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_attitude_angular_velocity_body(_))
-        .WillOnce(SaveCallback(&attitude_angular_velocity_body_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_angular_velocity_body_callbacks, &subscription_promise));
 
     std::vector<AngularVelocityBody> received_angular_velocities_body;
     auto angular_velocity_body_stream_future =
         subscribeAttitudeAngularVelocityBodyAsync(received_angular_velocities_body);
     subscription_future.wait();
     for (const auto& angular_velocity_body : angular_velocities_body) {
-        attitude_angular_velocity_body_callback(angular_velocity_body);
+        attitude_angular_velocity_body_callbacks(angular_velocity_body);
     }
     _telemetry_service->stop();
     angular_velocity_body_stream_future.wait();
@@ -1264,15 +1310,15 @@ void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::AttitudeEulerCallback attitude_euler_angle_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::EulerAngle> attitude_euler_angle_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_attitude_euler(_))
-        .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_euler_angle_callbacks, &subscription_promise));
 
     std::vector<EulerAngle> received_euler_angles;
     auto euler_angle_stream_future = subscribeAttitudeEulerAsync(received_euler_angles);
     subscription_future.wait();
     for (const auto& euler_angle : euler_angles) {
-        attitude_euler_angle_callback(euler_angle);
+        attitude_euler_angle_callbacks(euler_angle);
     }
     _telemetry_service->stop();
     euler_angle_stream_future.wait();
@@ -1353,15 +1399,15 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::AttitudeQuaternionCallback attitude_quaternion_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::Quaternion> attitude_quaternion_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_camera_attitude_quaternion(_))
-        .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_quaternion_callbacks, &subscription_promise));
 
     std::vector<Quaternion> received_quaternions;
     auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(received_quaternions);
     subscription_future.wait();
     for (const auto& quaternion : quaternions) {
-        attitude_quaternion_callback(quaternion);
+        attitude_quaternion_callbacks(quaternion);
     }
     _telemetry_service->stop();
     quaternion_stream_future.wait();
@@ -1441,15 +1487,15 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::AttitudeEulerCallback attitude_euler_angle_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::EulerAngle> attitude_euler_angle_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_camera_attitude_euler(_))
-        .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_euler_angle_callbacks, &subscription_promise));
 
     std::vector<EulerAngle> received_euler_angles;
     auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(received_euler_angles);
     subscription_future.wait();
     for (const auto& euler_angle : euler_angles) {
-        attitude_euler_angle_callback(euler_angle);
+        attitude_euler_angle_callbacks(euler_angle);
     }
     _telemetry_service->stop();
     euler_angle_stream_future.wait();
@@ -1541,15 +1587,15 @@ void TelemetryServiceImplTest::checkSendsVelocityEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::VelocityNedCallback velocity_ned_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::VelocityNed> velocity_ned_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_velocity_ned(_))
-        .WillOnce(SaveCallback(&velocity_ned_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&velocity_ned_callbacks, &subscription_promise));
 
     std::vector<VelocityNed> received_velocity_events;
     auto velocity_stream_future = subscribeVelocityNedAsync(received_velocity_events);
     subscription_future.wait();
     for (const auto& velocity : velocity_events) {
-        velocity_ned_callback(velocity);
+        velocity_ned_callbacks(velocity);
     }
     _telemetry_service->stop();
     velocity_stream_future.wait();
@@ -1643,15 +1689,15 @@ void TelemetryServiceImplTest::checkSendsRcStatusEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::RcStatusCallback rc_status_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::RcStatus> rc_status_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_rc_status(_))
-        .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&rc_status_callbacks, &subscription_promise));
 
     std::vector<RcStatus> received_rc_status_events;
     auto rc_status_stream_future = subscribeRcStatusAsync(received_rc_status_events);
     subscription_future.wait();
     for (const auto& rc_status : rc_status_events) {
-        rc_status_callback(rc_status);
+        rc_status_callbacks(rc_status);
     }
     _telemetry_service->stop();
     rc_status_stream_future.wait();
@@ -1755,9 +1801,10 @@ void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::ActuatorControlTargetCallback actuator_control_target_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::ActuatorControlTarget>
+        actuator_control_target_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_actuator_control_target(_))
-        .WillOnce(SaveCallback(&actuator_control_target_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&actuator_control_target_callbacks, &subscription_promise));
 
     std::vector<ActuatorControlTarget> received_actuator_control_target_events;
     auto actuator_control_target_stream_future =
@@ -1765,7 +1812,7 @@ void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
     subscription_future.wait();
 
     for (const auto& actuator_control_target : actuator_control_target_events) {
-        actuator_control_target_callback(actuator_control_target);
+        actuator_control_target_callbacks(actuator_control_target);
     }
     _telemetry_service->stop();
     actuator_control_target_stream_future.wait();
@@ -1783,16 +1830,16 @@ void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Telemetry::ActuatorOutputStatusCallback actuator_output_status_callback;
+    mavsdk::CallbackList<mavsdk::Telemetry::ActuatorOutputStatus> actuator_output_status_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_actuator_output_status(_))
-        .WillOnce(SaveCallback(&actuator_output_status_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&actuator_output_status_callbacks, &subscription_promise));
 
     std::vector<ActuatorOutputStatus> received_actuator_output_status_events;
     auto actuator_output_status_stream_future =
         subscribeActuatorOutputStatusAsync(received_actuator_output_status_events);
     subscription_future.wait();
     for (const auto& actuator_output_status : actuator_output_status_events) {
-        actuator_output_status_callback(actuator_output_status);
+        actuator_output_status_callbacks(actuator_output_status);
     }
     _telemetry_service->stop();
     actuator_output_status_stream_future.wait();

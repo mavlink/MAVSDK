@@ -9,6 +9,7 @@
 #include "camera/camera_service_impl.h"
 #include "camera/mocks/camera_mock.h"
 #include "mocks/lazy_plugin_mock.h"
+#include "callback_list.h"
 
 namespace {
 
@@ -159,10 +160,11 @@ protected:
     std::future<void> _callback_saved_future{};
 };
 
-ACTION_P2(SaveResult, callback, callback_saved_promise)
+ACTION_P2(SaveResult, callbacks, callback_saved_promise)
 {
-    *callback = arg0;
+    auto handle = callbacks->subscribe(arg0);
     callback_saved_promise->set_value();
+    return handle;
 }
 
 TEST_P(CameraServiceImplTest, takePhotoResultIsTranslatedCorrectly)
@@ -363,18 +365,16 @@ TEST_F(CameraServiceImplTest, setModeSetsVideoMode)
 
 TEST_F(CameraServiceImplTest, registersToCameraMode)
 {
-    mavsdk::Camera::ModeCallback mode_callback;
+    mavsdk::CallbackList<mavsdk::Camera::Mode> mode_callbacks;
     EXPECT_CALL(_camera, subscribe_mode(_))
-        .Times(2)
-        .WillOnce(SaveResult(&mode_callback, &_callback_saved_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&mode_callbacks, &_callback_saved_promise));
     std::vector<mavsdk::Camera::Mode> mode_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
     auto mode_events_future = subscribeModeAsync(mode_events, context);
     _callback_saved_future.wait();
     context->TryCancel();
-    mode_callback(ARBITRARY_CAMERA_MODE);
+    mode_callbacks(ARBITRARY_CAMERA_MODE);
     mode_events_future.wait();
 }
 
@@ -407,21 +407,19 @@ void CameraServiceImplTest::checkSendsModes(const std::vector<mavsdk::Camera::Mo
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::ModeCallback mode_callback;
+    mavsdk::CallbackList<mavsdk::Camera::Mode> mode_callbacks;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_mode(_))
-        .Times(2)
-        .WillOnce(SaveResult(&mode_callback, &subscription_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&mode_callbacks, &subscription_promise));
 
     std::vector<mavsdk::Camera::Mode> received_modes;
     auto mode_events_future = subscribeModeAsync(received_modes, context);
     subscription_future.wait();
     for (const auto mode : modes) {
-        mode_callback(mode);
+        mode_callbacks(mode);
     }
     context->TryCancel();
-    mode_callback(ARBITRARY_CAMERA_MODE);
+    mode_callbacks(ARBITRARY_CAMERA_MODE);
     mode_events_future.wait();
 
     if (modes.size() != received_modes.size()) {
@@ -475,18 +473,16 @@ TEST_F(CameraServiceImplTest, registersToVideoStreamInfo)
     auto rpc_video_stream_info = createArbitraryRPCVideoStreamInfo();
     const auto expected_video_stream_info =
         CameraServiceImpl::translateFromRpcVideoStreamInfo(*rpc_video_stream_info);
-    mavsdk::Camera::VideoStreamInfoCallback video_info_callback;
+    mavsdk::CallbackList<mavsdk::Camera::VideoStreamInfo> video_info_callbacks;
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
-        .Times(2)
-        .WillOnce(SaveResult(&video_info_callback, &_callback_saved_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&video_info_callbacks, &_callback_saved_promise));
     std::vector<mavsdk::Camera::VideoStreamInfo> video_info_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
     auto mode_events_future = subscribeVideoStreamInfoAsync(video_info_events, context);
     _callback_saved_future.wait();
     context->TryCancel();
-    video_info_callback(expected_video_stream_info);
+    video_info_callbacks(expected_video_stream_info);
     mode_events_future.wait();
 }
 
@@ -533,23 +529,21 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::VideoStreamInfoCallback video_info_callback;
+    mavsdk::CallbackList<mavsdk::Camera::VideoStreamInfo> video_info_callbacks;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
-        .Times(2)
-        .WillOnce(SaveResult(&video_info_callback, &subscription_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&video_info_callbacks, &subscription_promise));
 
     std::vector<mavsdk::Camera::VideoStreamInfo> received_video_info_events;
     auto video_info_events_future =
         subscribeVideoStreamInfoAsync(received_video_info_events, context);
     subscription_future.wait();
     for (const auto& video_info_event : video_info_events) {
-        video_info_callback(video_info_event);
+        video_info_callbacks(video_info_event);
     }
     context->TryCancel();
     auto arbitrary_video_info_event = createArbitraryRPCVideoStreamInfo();
-    video_info_callback(
+    video_info_callbacks(
         CameraServiceImpl::translateFromRpcVideoStreamInfo(*arbitrary_video_info_event));
     video_info_events_future.wait();
 
@@ -564,18 +558,16 @@ TEST_F(CameraServiceImplTest, registersToCaptureInfo)
     auto rpc_capture_info = createArbitraryRPCCaptureInfo();
     const auto expected_capture_info =
         CameraServiceImpl::translateFromRpcCaptureInfo(*rpc_capture_info);
-    mavsdk::Camera::CaptureInfoCallback capture_info_callback;
+    mavsdk::CallbackList<mavsdk::Camera::CaptureInfo> capture_info_callbacks;
     EXPECT_CALL(_camera, subscribe_capture_info(_))
-        .Times(2)
-        .WillOnce(SaveResult(&capture_info_callback, &_callback_saved_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&capture_info_callbacks, &_callback_saved_promise));
     std::vector<mavsdk::Camera::CaptureInfo> capture_info_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
     auto mode_events_future = subscribeCaptureInfoAsync(capture_info_events, context);
     _callback_saved_future.wait();
     context->TryCancel();
-    capture_info_callback(expected_capture_info);
+    capture_info_callbacks(expected_capture_info);
     mode_events_future.wait();
 }
 
@@ -668,23 +660,21 @@ void CameraServiceImplTest::checkSendsCaptureInfo(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::CaptureInfoCallback capture_info_callback;
+    mavsdk::CallbackList<mavsdk::Camera::CaptureInfo> capture_info_callbacks;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_capture_info(_))
-        .Times(2)
-        .WillOnce(SaveResult(&capture_info_callback, &subscription_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&capture_info_callbacks, &subscription_promise));
 
     std::vector<mavsdk::Camera::CaptureInfo> received_capture_info_events;
     auto capture_info_events_future =
         subscribeCaptureInfoAsync(received_capture_info_events, context);
     subscription_future.wait();
     for (const auto& capture_info_event : capture_info_events) {
-        capture_info_callback(capture_info_event);
+        capture_info_callbacks(capture_info_event);
     }
     context->TryCancel();
     auto arbitrary_capture_info_event = createArbitraryRPCCaptureInfo();
-    capture_info_callback(
+    capture_info_callbacks(
         CameraServiceImpl::translateFromRpcCaptureInfo(*arbitrary_capture_info_event));
     capture_info_events_future.wait();
 
@@ -741,18 +731,16 @@ TEST_F(CameraServiceImplTest, registersToStatus)
 {
     const auto expected_camera_status = createStatus(
         false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f, 0.4f, "100E90HD");
-    mavsdk::Camera::StatusCallback status_callback;
+    mavsdk::CallbackList<mavsdk::Camera::Status> status_callbacks;
     EXPECT_CALL(_camera, subscribe_status(_))
-        .Times(2)
-        .WillOnce(SaveResult(&status_callback, &_callback_saved_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&status_callbacks, &_callback_saved_promise));
     std::vector<mavsdk::Camera::Status> camera_status_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
     auto mode_events_future = subscribeStatusAsync(camera_status_events, context);
     _callback_saved_future.wait();
     context->TryCancel();
-    status_callback(expected_camera_status);
+    status_callbacks(expected_camera_status);
     mode_events_future.wait();
 }
 
@@ -812,23 +800,21 @@ void CameraServiceImplTest::checkSendsStatus(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::StatusCallback camera_status_callback;
+    mavsdk::CallbackList<mavsdk::Camera::Status> camera_status_callbacks;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_status(_))
-        .Times(2)
-        .WillOnce(SaveResult(&camera_status_callback, &subscription_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&camera_status_callbacks, &subscription_promise));
 
     std::vector<mavsdk::Camera::Status> received_camera_status_events;
     auto camera_status_events_future = subscribeStatusAsync(received_camera_status_events, context);
     subscription_future.wait();
     for (const auto& camera_status_event : camera_status_events) {
-        camera_status_callback(camera_status_event);
+        camera_status_callbacks(camera_status_event);
     }
     context->TryCancel();
     auto arbitrary_camera_status_event = createStatus(
         false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f, 0.0f, "111E90HD");
-    camera_status_callback(arbitrary_camera_status_event);
+    camera_status_callbacks(arbitrary_camera_status_event);
     camera_status_events_future.wait();
 
     ASSERT_EQ(camera_status_events.size(), received_camera_status_events.size());
@@ -879,18 +865,16 @@ TEST_F(CameraServiceImplTest, registersToCurrentSettings)
         ARBITRARY_SETTING_ID,
         ARBITRARY_SETTING_DESCRIPTION,
         createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
-    mavsdk::Camera::CurrentSettingsCallback current_settings_callback;
+    mavsdk::CallbackList<std::vector<mavsdk::Camera::Setting>> current_settings_callbacks;
     EXPECT_CALL(_camera, subscribe_current_settings(_))
-        .Times(2)
-        .WillOnce(SaveResult(&current_settings_callback, &_callback_saved_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&current_settings_callbacks, &_callback_saved_promise));
     std::vector<std::vector<mavsdk::Camera::Setting>> current_settings_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
     auto mode_events_future = subscribeCurrentSettingsAsync(current_settings_events, context);
     _callback_saved_future.wait();
     context->TryCancel();
-    current_settings_callback(current_settings);
+    current_settings_callbacks(current_settings);
     mode_events_future.wait();
 }
 
@@ -960,19 +944,17 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::CurrentSettingsCallback current_settings_callback;
+    mavsdk::CallbackList<std::vector<mavsdk::Camera::Setting>> current_settings_callbacks;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_current_settings(_))
-        .Times(2)
-        .WillOnce(SaveResult(&current_settings_callback, &subscription_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&current_settings_callbacks, &subscription_promise));
 
     std::vector<std::vector<mavsdk::Camera::Setting>> received_current_settings_events;
     auto current_settings_events_future =
         subscribeCurrentSettingsAsync(received_current_settings_events, context);
     subscription_future.wait();
     for (const auto& current_settings_event : current_settings_events) {
-        current_settings_callback(current_settings_event);
+        current_settings_callbacks(current_settings_event);
     }
     context->TryCancel();
     std::vector<mavsdk::Camera::Setting> arbitrary_current_settings_event;
@@ -980,7 +962,7 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
         ARBITRARY_SETTING_ID,
         ARBITRARY_SETTING_DESCRIPTION,
         createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
-    current_settings_callback(arbitrary_current_settings_event);
+    current_settings_callbacks(arbitrary_current_settings_event);
     current_settings_events_future.wait();
 
     ASSERT_EQ(current_settings_events.size(), received_current_settings_events.size());
@@ -1038,11 +1020,9 @@ TEST_F(CameraServiceImplTest, registersToPossibleSettings)
     options.push_back(createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION));
     possible_settings.push_back(
         createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
-    mavsdk::Camera::PossibleSettingOptionsCallback possible_settings_callback;
+    mavsdk::CallbackList<std::vector<mavsdk::Camera::SettingOptions>> possible_settings_callbacks;
     EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
-        .Times(2)
-        .WillOnce(SaveResult(&possible_settings_callback, &_callback_saved_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&possible_settings_callbacks, &_callback_saved_promise));
     std::vector<std::vector<mavsdk::Camera::SettingOptions>> possible_settings_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
@@ -1050,7 +1030,7 @@ TEST_F(CameraServiceImplTest, registersToPossibleSettings)
         subscribePossibleSettingOptionsAsync(possible_settings_events, context);
     _callback_saved_future.wait();
     context->TryCancel();
-    possible_settings_callback(possible_settings);
+    possible_settings_callbacks(possible_settings);
     mode_events_future.wait();
 }
 
@@ -1111,12 +1091,11 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::Camera::PossibleSettingOptionsCallback possible_setting_options_callback;
+    mavsdk::CallbackList<std::vector<mavsdk::Camera::SettingOptions>>
+        possible_setting_options_callbacks;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
-        .Times(2)
-        .WillOnce(SaveResult(&possible_setting_options_callback, &subscription_promise))
-        .WillOnce(DoDefault());
+        .WillOnce(SaveResult(&possible_setting_options_callbacks, &subscription_promise));
 
     std::vector<std::vector<mavsdk::Camera::SettingOptions>>
         received_possible_setting_options_events;
@@ -1124,7 +1103,7 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
         subscribePossibleSettingOptionsAsync(received_possible_setting_options_events, context);
     subscription_future.wait();
     for (const auto& possible_setting_options_event : possible_setting_options_events) {
-        possible_setting_options_callback(possible_setting_options_event);
+        possible_setting_options_callbacks(possible_setting_options_event);
     }
     context->TryCancel();
 
@@ -1133,7 +1112,7 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
     options.push_back(createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION));
     arbitrary_possible_setting_options.push_back(
         createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
-    possible_setting_options_callback(arbitrary_possible_setting_options);
+    possible_setting_options_callbacks(arbitrary_possible_setting_options);
     possible_setting_options_events_future.wait();
 
     ASSERT_EQ(
