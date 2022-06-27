@@ -25,6 +25,10 @@ namespace mavsdk {
  * 3) let mavlink do its magic.
  * Note that this side is much more simple - it does not need to worry about re-transmission or such, the responsibility for
  * that lies completely on the part that wants to change parameters.
+ * Regarding non-extended and extended parameters protocol:
+ * In addition to the parameter types from the non-extended parameter protocol, the extended parameter protocol also
+ * supports string parameter values. This class supports clients using both the non-extended and the extended parameter protocol,
+ * but hides the string parameter values from non-extended protocol clients.
  */
 class MavlinkParameterReceiver : public MavlinkParameterSubscription{
 public:
@@ -78,7 +82,7 @@ public:
     template<class T>
     std::pair<Result,T> retrieve_server_param(const std::string& name);
     std::pair<Result, float> retrieve_server_param_float(const std::string& name);
-    std::pair<Result, int> retrieve_server_param_int(const std::string& name);
+    std::pair<Result, int32_t> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
     void do_work();
@@ -104,22 +108,19 @@ private:
     void process_param_set_internally(const std::string& param_id,const ParamValue& value,bool extended);
     void process_param_set(const mavlink_message_t& message);
     void process_param_ext_set(const mavlink_message_t& message);
-
+    // Params can be up to 16 chars without 0-termination.
+    static constexpr size_t PARAM_ID_LEN = 16;
+    // add the null terminator if needed
     static std::string extract_safe_param_id(const char param_id[]);
+    // create a buffer that is long enough for the message pack to read from. Discards the null terminator
+    // if the param_id is exactly PARAM_ID_LEN long.
+    static std::array<char,PARAM_ID_LEN> param_id_to_message_buffer(const std::string& param_id);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
 
-    // Params can be up to 16 chars without 0-termination.
-    static constexpr size_t PARAM_ID_LEN = 16;
-
     std::mutex _all_params_mutex{};
     std::map<std::string, ParamValue> _all_params{};
-    // map each index to a unique std::string settings value
-    std::vector<ParamValue> _x_all_params{};
-    std::map<std::string,uint32_t> param_id_to_value;
-    //std::map<uint32_t,std::string> index_to_id_non_extended;
-    //std::map<uint32_t,std::string> index_to_id_extended;
 
     // broadcast a specific parameter if found, ignores string parameters
     void process_param_request_read(const mavlink_message_t& message);
@@ -143,9 +144,8 @@ private:
         const ParamValue param_value;
         const int param_count;
         const int param_index;
-        bool already_requested{false};
-        const void* cookie{nullptr};
-        PARAM_ACK param_ack=PARAM_ACK_ACCEPTED; // only for extended protocol
+        // only for ack messages via extended protocol
+        std::optional<PARAM_ACK> param_ack;
 
         explicit WorkItem(Type type1,std::string param_name1,bool extended1,ParamValue param_value1,int param_count1,int param_index1) :
             type(type1),param_name(std::move(param_name1)),extended(extended1),

@@ -50,11 +50,19 @@ MavlinkParameterReceiver::~MavlinkParameterReceiver()
 
 std::string MavlinkParameterReceiver::extract_safe_param_id(const char param_id[])
 {
-    // The param_id field of the MAVLink struct has length 16 and is not 0 terminated.
+    // The param_id field of the MAVLink struct has length 16 and can not be null terminated.
     // Therefore, we make a 0 terminated copy first.
     char param_id_long_enough[PARAM_ID_LEN + 1] = {};
     std::memcpy(param_id_long_enough, param_id, PARAM_ID_LEN);
     return {param_id_long_enough};
+}
+
+std::array<char, MavlinkParameterReceiver::PARAM_ID_LEN> MavlinkParameterReceiver::param_id_to_message_buffer(const std::string& param_id)
+{
+    assert(param_id.length()<=PARAM_ID_LEN);
+    std::array<char,PARAM_ID_LEN> ret={};
+    std::memcpy(ret.data(), param_id.c_str(),param_id.length());
+    return ret;
 }
 
 MavlinkParameterReceiver::Result
@@ -80,7 +88,7 @@ MavlinkParameterReceiver::provide_server_param(const std::string& name, ParamVal
         }else{
             // update the value, even though that might result in unwanted behaviour.
             LogDebug()<<"Updating value of "<<name<<" on server, clients can be out of sync";
-            _all_params.at(name)= param_value;
+            _all_params.at(name).update_value_typesafe(param_value);
             return Result::Success;
         }
     }
@@ -145,7 +153,7 @@ MavlinkParameterReceiver::retrieve_server_param_custom(const std::string& name)
     return retrieve_server_param<std::string>(name);
 }
 
-std::pair<MavlinkParameterReceiver::Result, int>
+std::pair<MavlinkParameterReceiver::Result, int32_t>
 MavlinkParameterReceiver::retrieve_server_param_int(const std::string& name)
 {
     return retrieve_server_param<int32_t>(name);
@@ -322,22 +330,18 @@ void MavlinkParameterReceiver::do_work()
     if (!work) {
         return;
     }
-    if (work->already_requested) {
-        return;
-    }
-    char param_id[PARAM_ID_LEN + 1] = {};
-    strncpy(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
-
+    const auto param_id_message_buffer=param_id_to_message_buffer(work->param_name);
     mavlink_message_t mavlink_message;
     switch (work->type) {
         case WorkItem::Type::Value: {
             if (work->extended) {
                 const auto buf = work->param_value.get_128_bytes();
+                //mavlink_msg_param_ext_value_encode()
                 mavlink_msg_param_ext_value_pack(
                     _sender.get_own_system_id(),
                     _sender.get_own_component_id(),
                     &mavlink_message,
-                    param_id,
+                    param_id_message_buffer.data(),
                     buf.data(),
                     work->param_value.get_mav_param_ext_type(),
                     work->param_count,
@@ -353,7 +357,7 @@ void MavlinkParameterReceiver::do_work()
                     _sender.get_own_system_id(),
                     _sender.get_own_component_id(),
                     &mavlink_message,
-                    param_id,
+                    param_id_message_buffer.data(),
                     param_value,
                     work->param_value.get_mav_param_type(),
                     work->param_count,
@@ -370,15 +374,16 @@ void MavlinkParameterReceiver::do_work()
         case WorkItem::Type::Ack: {
             // ACK is only in the extended protocol.
             assert(work->extended);
+            assert(work->param_ack.has_value());
             auto buf = work->param_value.get_128_bytes();
             mavlink_msg_param_ext_ack_pack(
                 _sender.get_own_system_id(),
                 _sender.get_own_component_id(),
                 &mavlink_message,
-                param_id,
+                param_id_message_buffer.data(),
                 buf.data(),
                 work->param_value.get_mav_param_ext_type(),
-                work->param_ack);
+                work->param_ack.value());
             if (!_sender.send_message(mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();
