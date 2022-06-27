@@ -7,6 +7,8 @@
 #include <optional>
 #include <string>
 #include <variant>
+#include <cstring>
+#include <cassert>
 
 namespace mavsdk {
 
@@ -70,6 +72,9 @@ public:
         }
         return false;
     }
+
+    // update the value of a parameter without mutating its type
+    void update_value_typesafe(const ParamValue& new_value);
 
     bool operator==(const ParamValue& rhs) const
     {

@@ -624,4 +624,9 @@ std::ostream& operator<<(std::ostream& strm, const ParamValue& obj)
     return "unknown";
 }
 
+void ParamValue::update_value_typesafe(const ParamValue& new_value) {
+    assert(this->is_same_type(new_value));
+    _value=new_value._value;
+}
+
 } // namespace mavsdk
