@@ -99,7 +99,7 @@ jobs:
       - name: install
         run: sudo cmake --build build/release --target install
       - name: install examples dependencies
-        run: sudo apt-get install -y libsdl2-dev
+        run: sudo apt-get install --reinstall -y libudev1 libsdl2-dev
       - name: configure examples
         run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -Bbuild -H.)
       - name: build examples
