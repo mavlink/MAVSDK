@@ -158,6 +158,9 @@ private:
      * Doesn't acquire the all-parameters lock, since when used it should already be locked.
      */
     [[nodiscard]] int get_current_parameters_count(bool extended)const;
+
+    // helper, not locked
+    std::optional<ParamValue> find_param(const std::string& param_id);
 };
 
 } // namespace mavsdk

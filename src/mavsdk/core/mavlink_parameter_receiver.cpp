@@ -130,15 +130,16 @@ template<class T>
 std::pair<MavlinkParameterReceiver::Result, T> MavlinkParameterReceiver::retrieve_server_param(const std::string& name)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    if (_all_params.find(name) != _all_params.end()) {
-        // This parameter exists, check its type
-        const auto value = _all_params.at(name);
-        if(value.is_same_type_templated<T>()){
-            return {Result::Success, value.get<T>()};
-        }
-        return {Result::WrongType, {}};
+    const auto param_opt= find_param(name);
+    if(!param_opt.has_value()){
+        return {Result::NotFound, {}};
     }
-    return {Result::NotFound, {}};
+    // This parameter exists, check its type
+    const auto& param=param_opt.value();
+    if(param.is_same_type_templated<T>()){
+        return {Result::Success, param.get<T>()};
+    }
+    return {Result::WrongType, {}};
 }
 
 std::pair<MavlinkParameterReceiver::Result, float>
@@ -165,38 +166,39 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
                <<value.typestr()<<" value: "<<value.get_string();
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     // Check if we have this parameter
-    if (_all_params.find(param_id) != _all_params.end()) {
-        const auto curr_value=_all_params.at(param_id);
-        bool param_was_changed=false;
-        PARAM_ACK param_ack=PARAM_ACK_ACCEPTED; // only extended differentiates.
-        // check if the type of the param from the param set matches the type from the message
-        if(curr_value.is_same_type(value)){
-            // TODO check if the change has no effect
-            LogDebug() << "Changing param "<<param_id<<" from " << curr_value << " to " << value;
-            _all_params.at(param_id) = value;
-            param_was_changed= true;
-        }else{
-            LogDebug()<< "Ignoring invalid param set request due to type mismatch";
-            param_ack=PARAM_ACK_FAILED;
-        }
-        // No matter if we've changed the value or not, we need to respond to the request.
-        // It is up to the component who performed the request to reason if the set was successfully.
-        // (Unfortunately, the non-extended protocol does not differentiate here between a failed and non-failed set request)
-        const int param_count = get_current_parameters_count(extended);
-        const int param_idx= -1; //TODO
-        if(extended){
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true,_all_params.at(param_id),param_count,param_idx);
-            new_work->param_ack = param_ack;
-            _work_queue.push_back(new_work);
-        }else{
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false,_all_params.at(param_id),param_count,param_idx);
-            _work_queue.push_back(new_work);
-        }
-        if(param_was_changed){
-            find_and_call_subscriptions_value_changed(param_id,value);
-        }
-    } else {
+    const auto param_opt= find_param(param_id);
+    if(!param_opt.has_value()){
         LogDebug() << "Missing Param: " << param_id << "(this: " << this << ")";
+        return;
+    }
+    const auto& curr_value=param_opt.value();
+    bool param_was_changed=false;
+    PARAM_ACK param_ack=PARAM_ACK_ACCEPTED; // only extended differentiates.
+    // check if the type of the param from the param set matches the type from the message
+    if(curr_value.is_same_type(value)){
+        // TODO check if the change has no effect
+        LogDebug() << "Changing param "<<param_id<<" from " << curr_value << " to " << value;
+        _all_params.at(param_id) = value;
+        param_was_changed= true;
+    }else{
+        LogDebug()<< "Ignoring invalid param set request due to type mismatch";
+        param_ack=PARAM_ACK_FAILED;
+    }
+    // No matter if we've changed the value or not, we need to respond to the request.
+    // It is up to the component who performed the request to reason if the set was successfully.
+    // (Unfortunately, the non-extended protocol does not differentiate here between a failed and non-failed set request)
+    const int param_count = get_current_parameters_count(extended);
+    const int param_idx= -1; //TODO
+    if(extended){
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true,_all_params.at(param_id),param_count,param_idx);
+        new_work->param_ack = param_ack;
+        _work_queue.push_back(new_work);
+    }else{
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false,_all_params.at(param_id),param_count,param_idx);
+        _work_queue.push_back(new_work);
+    }
+    if(param_was_changed){
+        find_and_call_subscriptions_value_changed(param_id,value);
     }
 
 }
@@ -247,21 +249,20 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
     if (read_request.param_index == -1) {
         const auto safe_param_id= extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
-        // Use the ID
-        if (_all_params.find(safe_param_id) != _all_params.end()) {
-            // Make sure we are not forwarding an extended param via the "normal" param messages.
-            const auto param_value= _all_params.at(safe_param_id);
-            if(param_value.needs_extended()){
-                LogDebug()<<"Not forwarding param"<<safe_param_id<<" since it needs extended";
-                return;
-            }
-            const int param_count = get_current_parameters_count(false);
-            const int param_idx= -1; //TODO
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,param_value,param_count,param_idx);
-            _work_queue.push_back(new_work);
-        } else {
+        const auto param_opt= find_param(safe_param_id);
+        if(!param_opt.has_value()){
             LogDebug() << "Missing Param " << safe_param_id;
+            return;
         }
+        const auto& param_value=param_opt.value();
+        if(param_value.needs_extended()){
+            LogDebug()<<"Not forwarding param"<<safe_param_id<<" since it needs extended";
+            return;
+        }
+        const int param_count = get_current_parameters_count(false);
+        const int param_idx= -1; //TODO
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,param_value,param_count,param_idx);
+        _work_queue.push_back(new_work);
     }else{
         // TODO the server should be able to handle requests with a int index instead of string as param_id.
     }
@@ -309,16 +310,16 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
     if (read_request.param_index == -1) {
         const auto safe_param_id = extract_safe_param_id(read_request.param_id);
         LogDebug() << "Request Param " << safe_param_id;
-        // Use the ID
-        if (_all_params.find(safe_param_id) != _all_params.end()) {
-            const auto param_value=_all_params.at(safe_param_id);
-            const int param_count = get_current_parameters_count(true);
-            const int param_idx= -1; //TODO
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,true,param_value,param_count,param_idx);
-            _work_queue.push_back(new_work);
-        } else {
+        const auto param_opt= find_param(safe_param_id);
+        if(!param_opt.has_value()){
             LogDebug() << "Missing Param " << safe_param_id;
+            return;
         }
+        const auto& param_value = param_opt.value();
+        const int param_count = get_current_parameters_count(true);
+        const int param_idx= -1; //TODO
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,true,param_value,param_count,param_idx);
+        _work_queue.push_back(new_work);
     }else{
         // TODO the server should be able to handle requests with a int index instead of string as param_id.
     }
@@ -426,6 +427,14 @@ int MavlinkParameterReceiver::get_current_parameters_count(bool extended)const{
         }
     }
     return count;
+}
+
+std::optional<ParamValue> MavlinkParameterReceiver::find_param(const std::string& param_id)
+{
+    if(_all_params.find(param_id) != _all_params.end()){
+        return _all_params.at(param_id);
+    }
+    return {};
 }
 
 } // namespace mavsdk
