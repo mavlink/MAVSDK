@@ -234,6 +234,7 @@ private:
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
     void request_home_position_async();
+    void request_home_position_again();
     void check_calibration();
 
     static bool sys_status_present_enabled_health(
@@ -338,6 +339,8 @@ private:
     mutable std::mutex _scaled_pressure_mutex{};
     Telemetry::ScaledPressure _scaled_pressure{};
 
+    mutable std::mutex _request_home_position_mutex{};
+
     std::atomic<bool> _hitl_enabled{false};
 
     std::mutex _subscription_mutex{};
@@ -390,6 +393,7 @@ private:
     bool _has_bat_status{false};
 
     void* _calibration_cookie{nullptr};
+    void* _homepos_cookie{nullptr};
 
     std::atomic<bool> _has_received_hitl_param{false};
 

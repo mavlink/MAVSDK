@@ -193,9 +193,29 @@ void TelemetryImpl::enable()
     //        For now, we just do the same as QGC does.
 
     _parent->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
+
+    // We're going to retry until we have the Home Position.
+    _parent->add_call_every([this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
 }
 
-void TelemetryImpl::disable() {}
+void TelemetryImpl::disable()
+{
+    _parent->remove_call_every(_calibration_cookie);
+    _parent->remove_call_every(_homepos_cookie);
+}
+
+void TelemetryImpl::request_home_position_again()
+{
+    {
+        std::lock_guard<std::mutex> lock(_request_home_position_mutex);
+        if (_health.is_home_position_ok) {
+            _parent->remove_call_every(_homepos_cookie);
+            return;
+        }
+    }
+    LogWarn() << "Requesting Home Position Again.";
+    request_home_position_async();
+}
 
 Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
 {
@@ -2014,6 +2034,7 @@ bool TelemetryImpl::health_all_ok() const
         _health.is_global_position_ok && _health.is_home_position_ok) {
         return true;
     } else {
+        LogWarn() << "System status is usually fixed at 1 Hz";
         return false;
     }
 }
