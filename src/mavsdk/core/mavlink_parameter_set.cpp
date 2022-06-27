@@ -75,4 +75,22 @@ uint16_t MavlinkParameterSet::get_current_parameters_count(bool extended) const
     return count;
 }
 
+std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_param(const std::string& param_id,bool extended)
+{
+    if(param_id_to_idx.find(param_id)==param_id_to_idx.end()){
+        // param does not exist
+        return {};
+    }
+    const auto param_index=param_id_to_idx.at(param_id);
+    return get_param(param_index,extended);
+}
+
+std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_param(const uint16_t param_idx,bool extended)
+{
+    if(param_idx<_x_all_params.size()){
+        //
+    }
+    return {};
+}
+
 }
