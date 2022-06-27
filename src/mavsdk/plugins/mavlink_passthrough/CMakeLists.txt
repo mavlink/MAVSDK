@@ -15,8 +15,3 @@ install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/../../../mavsdk/core/mavlink_include.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mavlink_passthrough
 )
-
-install(DIRECTORY
-    ${MAVLINK_HEADERS}
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mavlink_passthrough
-)
