@@ -11,6 +11,7 @@
 #include <map>
 #include <string>
 #include <list>
+#include <utility>
 
 namespace mavsdk {
 
@@ -114,6 +115,12 @@ private:
 
     std::mutex _all_params_mutex{};
     std::map<std::string, ParamValue> _all_params{};
+    // map each index to a unique std::string settings value
+    std::vector<ParamValue> _x_all_params{};
+    std::map<std::string,uint32_t> param_id_to_value;
+    //std::map<uint32_t,std::string> index_to_id_non_extended;
+    //std::map<uint32_t,std::string> index_to_id_extended;
+
     // broadcast a specific parameter if found, ignores string parameters
     void process_param_request_read(const mavlink_message_t& message);
     // broadcast a specific parameter if found
@@ -133,15 +140,16 @@ private:
         const Type type;
         const std::string param_name;
         const bool extended;
-        ParamValue param_value{};
+        const ParamValue param_value;
+        const int param_count;
+        const int param_index;
         bool already_requested{false};
         const void* cookie{nullptr};
-        int param_count{1};
-        int param_index{0};
         PARAM_ACK param_ack=PARAM_ACK_ACCEPTED; // only for extended protocol
 
-        explicit WorkItem(Type type1,std::string param_name1,bool extended1) :
-            type(type1),param_name(std::move(param_name1)),extended(extended1){};
+        explicit WorkItem(Type type1,std::string param_name1,bool extended1,ParamValue param_value1,int param_count1,int param_index1) :
+            type(type1),param_name(std::move(param_name1)),extended(extended1),
+            param_value(std::move(param_value1)),param_count(param_count1),param_index(param_index1){};
     };
     LockedQueue<WorkItem> _work_queue{};
     /*

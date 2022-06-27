@@ -174,14 +174,14 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
         // No matter if we've changed the value or not, we need to respond to the request.
         // It is up to the component who performed the request to reason if the set was successfully.
         // (Unfortunately, the non-extended protocol does not differentiate here between a failed and non-failed set request)
+        const int param_count = get_current_parameters_count(extended);
+        const int param_idx= -1; //TODO
         if(extended){
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true);
-            new_work->param_value = _all_params.at(param_id);
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,param_id,true,_all_params.at(param_id),param_count,param_idx);
             new_work->param_ack = param_ack;
             _work_queue.push_back(new_work);
         }else{
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false);
-            new_work->param_value = _all_params.at(param_id);
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param_id,false,_all_params.at(param_id),param_count,param_idx);
             _work_queue.push_back(new_work);
         }
         if(param_was_changed){
@@ -247,8 +247,9 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
                 LogDebug()<<"Not forwarding param"<<safe_param_id<<" since it needs extended";
                 return;
             }
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false);
-            new_work->param_value = _all_params.at(safe_param_id);
+            const int param_count = get_current_parameters_count(false);
+            const int param_idx= -1; //TODO
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,false,_all_params.at(safe_param_id),param_count,param_idx);
             _work_queue.push_back(new_work);
         } else {
             LogDebug() << "Missing Param " << safe_param_id;
@@ -270,12 +271,11 @@ void MavlinkParameterReceiver::process_param_request_list(const mavlink_message_
             LogDebug()<<"Not forwarding param"<<pair.first<<" since it needs extended";
             continue;
         }
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,false);
-        new_work->param_value = pair.second;
         // the count of parameters when queried from a non-ext perspective is different, since we need to hide the parameters
         // that need the extended protocol
-        new_work->param_count = get_current_parameters_count(false);
-        new_work->param_index = idx++;
+        const int param_count = get_current_parameters_count(false);
+        const int param_idx= idx++;
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,false,pair.second,param_count,param_idx);
         _work_queue.push_back(new_work);
     }
 }
@@ -286,10 +286,9 @@ void MavlinkParameterReceiver::process_param_ext_request_list(const mavlink_mess
     mavlink_msg_param_ext_request_list_decode(&message, &ext_list_request);
     int idx=0;
     for (const auto& pair : _all_params) {
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,true);
-        new_work->param_value = pair.second;
-        new_work->param_count = get_current_parameters_count(true);
-        new_work->param_index = idx++;
+        const int param_count = get_current_parameters_count(true);
+        const int param_idx= idx++;
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,pair.first,true,pair.second,param_count,param_idx);
         _work_queue.push_back(new_work);
     }
 }
@@ -304,8 +303,9 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
         LogDebug() << "Request Param " << safe_param_id;
         // Use the ID
         if (_all_params.find(safe_param_id) != _all_params.end()) {
-            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,true);
-            new_work->param_value = _all_params.at(safe_param_id);
+            const int param_count = get_current_parameters_count(true);
+            const int param_idx= -1; //TODO
+            auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,safe_param_id,true,_all_params.at(safe_param_id),param_count,param_idx);
             _work_queue.push_back(new_work);
         } else {
             LogDebug() << "Missing Param " << safe_param_id;
