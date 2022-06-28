@@ -21,7 +21,7 @@ namespace mavsdk {
  * This class makes it easy to accomplish the following task:
  * Having a component that exposes some settings for a user to configure.
  * In General, the usage of this class is as following:
- * 1) provide parameters (now other components can request anc change these parameters via mavlink).
+ * 1) provide parameters (now other components can request and change these parameters via mavlink).
  * 2) add listener(s) for these parameters such that you can react to changes set by another component.
  * 3) let mavlink do its magic.
  * Note that this side is much more simple - it does not need to worry about re-transmission or such, the responsibility for
@@ -109,13 +109,6 @@ private:
     void process_param_set_internally(const std::string& param_id,const ParamValue& value_to_set,bool extended);
     void process_param_set(const mavlink_message_t& message);
     void process_param_ext_set(const mavlink_message_t& message);
-    // Params can be up to 16 chars without 0-termination.
-    static constexpr size_t PARAM_ID_LEN = 16;
-    // add the null terminator if needed
-    static std::string extract_safe_param_id(const char param_id[]);
-    // create a buffer that is long enough for the message pack to read from. Discards the null terminator
-    // if the param_id is exactly PARAM_ID_LEN long.
-    static std::array<char,PARAM_ID_LEN> param_id_to_message_buffer(const std::string& param_id);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;

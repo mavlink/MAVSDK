@@ -6,6 +6,7 @@
 #include "locked_queue.h"
 #include "param_value.h"
 #include "mavlink_parameter_subscription.h"
+#include "mavlink_parameter_set.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -207,15 +208,10 @@ private:
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
 
-    static std::string extract_safe_param_id(const char param_id[]);
-
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
-
-    // Params can be up to 16 chars without 0-termination.
-    static constexpr size_t PARAM_ID_LEN = 16;
 
     struct WorkItem {
         enum class Type { Get, Set};

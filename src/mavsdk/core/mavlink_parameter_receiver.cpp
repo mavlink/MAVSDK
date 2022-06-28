@@ -48,27 +48,10 @@ MavlinkParameterReceiver::~MavlinkParameterReceiver()
     _message_handler.unregister_all(this);
 }
 
-std::string MavlinkParameterReceiver::extract_safe_param_id(const char param_id[])
-{
-    // The param_id field of the MAVLink struct has length 16 and can not be null terminated.
-    // Therefore, we make a 0 terminated copy first.
-    char param_id_long_enough[PARAM_ID_LEN + 1] = {};
-    std::memcpy(param_id_long_enough, param_id, PARAM_ID_LEN);
-    return {param_id_long_enough};
-}
-
-std::array<char, MavlinkParameterReceiver::PARAM_ID_LEN> MavlinkParameterReceiver::param_id_to_message_buffer(const std::string& param_id)
-{
-    assert(param_id.length()<=PARAM_ID_LEN);
-    std::array<char,PARAM_ID_LEN> ret={};
-    std::memcpy(ret.data(), param_id.c_str(),param_id.length());
-    return ret;
-}
-
 MavlinkParameterReceiver::Result
 MavlinkParameterReceiver::provide_server_param(const std::string& name,const ParamValue& param_value)
 {
-    if (name.size() > PARAM_ID_LEN) {
+    if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         return Result::ParamNameTooLong;
     }
@@ -207,7 +190,7 @@ void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& messag
 {
     mavlink_param_set_t set_request{};
     mavlink_msg_param_set_decode(&message, &set_request);
-    const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    const std::string safe_param_id = MavlinkParameterSet::extract_safe_param_id(set_request.param_id);
     if(safe_param_id.empty()){
         LogWarn() << "Invalid Param Set ID Request (empty id): ";
         return;
@@ -225,7 +208,7 @@ void MavlinkParameterReceiver::process_param_ext_set(const mavlink_message_t& me
 {
     mavlink_param_ext_set_t set_request{};
     mavlink_msg_param_ext_set_decode(&message, &set_request);
-    const std::string safe_param_id = extract_safe_param_id(set_request.param_id);
+    const std::string safe_param_id = MavlinkParameterSet::extract_safe_param_id(set_request.param_id);
     if(safe_param_id.empty()){
         LogWarn() << "Invalid Param Set ID Request (empty id): ";
         return;
@@ -243,7 +226,7 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
 {
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
-    const auto safe_param_id= extract_safe_param_id(read_request.param_id);
+    const auto safe_param_id= MavlinkParameterSet::extract_safe_param_id(read_request.param_id);
     constexpr bool extended= false;
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ
@@ -263,7 +246,7 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
 {
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
-    const auto safe_param_id = extract_safe_param_id(read_request.param_id);
+    const auto safe_param_id = MavlinkParameterSet::extract_safe_param_id(read_request.param_id);
     constexpr bool extended=true;
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ
@@ -309,7 +292,7 @@ void MavlinkParameterReceiver::do_work()
     if (!work) {
         return;
     }
-    const auto param_id_message_buffer=param_id_to_message_buffer(work->parameter.param_id);
+    const auto param_id_message_buffer=MavlinkParameterSet::param_id_to_message_buffer(work->parameter.param_id);
     mavlink_message_t mavlink_message;
     switch (work->type) {
         case WorkItem::Type::Value: {

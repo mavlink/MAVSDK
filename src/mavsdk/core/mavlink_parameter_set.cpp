@@ -125,6 +125,24 @@ operator<<(std::ostream& strm, const MavlinkParameterSet::UpdateExistingParamRes
     return strm;
 }
 
+std::string MavlinkParameterSet::extract_safe_param_id(const char* param_id)
+{
+    // The param_id field of the MAVLink struct has length 16 and can not be null terminated.
+    // Therefore, we make a 0 terminated copy first.
+    char param_id_long_enough[PARAM_ID_LEN + 1] = {};
+    std::memcpy(param_id_long_enough, param_id, PARAM_ID_LEN);
+    return {param_id_long_enough};
+}
+
+std::array<char, MavlinkParameterSet::PARAM_ID_LEN>
+MavlinkParameterSet::param_id_to_message_buffer(const std::string& param_id)
+{
+    assert(param_id.length()<=PARAM_ID_LEN);
+    std::array<char,PARAM_ID_LEN> ret={};
+    std::memcpy(ret.data(), param_id.c_str(),param_id.length());
+    return ret;
+}
+
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj)
 {
     strm << "Parameter{"<<obj.param_id<<":"<<obj.param_index<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";

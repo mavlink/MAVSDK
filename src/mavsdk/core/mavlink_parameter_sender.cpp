@@ -77,7 +77,7 @@ void MavlinkParameterSender::set_param_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    if (name.size() > PARAM_ID_LEN) {
+    if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             callback(Result::ParamNameTooLong);
@@ -107,7 +107,7 @@ void MavlinkParameterSender::set_param_int_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended,bool adhere_to_mavlink_specs)
 {
-    if (name.size() > PARAM_ID_LEN) {
+    if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             callback(Result::ParamNameTooLong);
@@ -242,7 +242,7 @@ void MavlinkParameterSender::set_param_custom_async(
     const SetParamCallback& callback,
     const void* cookie)
 {
-    if (name.size() > PARAM_ID_LEN) {
+    if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             callback(Result::ParamNameTooLong);
@@ -282,7 +282,7 @@ void MavlinkParameterSender::get_param_async(
     if (_parameter_debugging) {
         LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
     }
-    if (name.size() > PARAM_ID_LEN) {
+    if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             callback(Result::ParamNameTooLong, {});
@@ -507,8 +507,7 @@ void MavlinkParameterSender::do_work()
     if (work->already_requested) {
         return;
     }
-    char param_id[PARAM_ID_LEN + 1] = {};
-    strncpy(param_id, work->param_name.c_str(), sizeof(param_id) - 1);
+    auto param_id=MavlinkParameterSet::param_id_to_message_buffer(work->param_name);
 
     uint8_t component_id = [&]() {
         if (work->maybe_component_id) {
@@ -533,7 +532,7 @@ void MavlinkParameterSender::do_work()
                     &work->mavlink_message,
                     _sender.get_system_id(),
                     component_id,
-                    param_id,
+                    param_id.data(),
                     param_value_buf.data(),
                     work->param_value.get_mav_param_ext_type());
             } else {
@@ -547,7 +546,7 @@ void MavlinkParameterSender::do_work()
                     &work->mavlink_message,
                     _sender.get_system_id(),
                     component_id,
-                    param_id,
+                    param_id.data(),
                     value_set,
                     work->param_value.get_mav_param_type());
             }
@@ -577,7 +576,7 @@ void MavlinkParameterSender::do_work()
                     &work->mavlink_message,
                     _sender.get_system_id(),
                     component_id,
-                    param_id,
+                    param_id.data(),
                     -1);
 
             } else {
@@ -594,7 +593,7 @@ void MavlinkParameterSender::do_work()
                     &work->mavlink_message,
                     _sender.get_system_id(),
                     component_id,
-                    param_id,
+                    param_id.data(),
                     -1);
             }
 
@@ -621,7 +620,7 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
 {
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
-    const std::string safe_param_id = extract_safe_param_id(param_value.param_id);
+    const std::string safe_param_id = MavlinkParameterSet::extract_safe_param_id(param_value.param_id);
     if(safe_param_id.empty()){
         LogDebug()<<"Got ill-formed param_value message (param_id empty)";
         return;
@@ -718,7 +717,7 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
 {
     mavlink_param_ext_value_t param_ext_value{};
     mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
-    const auto safe_param_id=extract_safe_param_id(param_ext_value.param_id);
+    const auto safe_param_id=MavlinkParameterSet::extract_safe_param_id(param_ext_value.param_id);
     if(safe_param_id.empty()){
         LogDebug()<<"Got ill-formed param_ext_value message (param_id empty)";
         return;
@@ -771,7 +770,7 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
 
     mavlink_param_ext_ack_t param_ext_ack;
     mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
-    const auto safe_param_id=extract_safe_param_id(param_ext_ack.param_id);
+    const auto safe_param_id=MavlinkParameterSet::extract_safe_param_id(param_ext_ack.param_id);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -934,15 +933,6 @@ void MavlinkParameterSender::receive_timeout()
         default:
             break;
     }
-}
-
-std::string MavlinkParameterSender::extract_safe_param_id(const char param_id[])
-{
-    // The param_id field of the MAVLink struct has length 16 and is not 0 terminated.
-    // Therefore, we make a 0 terminated copy first.
-    char param_id_long_enough[PARAM_ID_LEN + 1] = {};
-    std::memcpy(param_id_long_enough, param_id, PARAM_ID_LEN);
-    return {param_id_long_enough};
 }
 
 std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::Result& result)
