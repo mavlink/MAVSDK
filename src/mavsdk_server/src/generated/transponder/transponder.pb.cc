@@ -74,8 +74,10 @@ PROTOBUF_CONSTEXPR AdsbVehicle::AdsbVehicle(
     ::_pbi::ConstantInitialized)
   : callsign_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , latitude_deg_(0)
-  , longitude_deg_(0)
   , icao_address_(0u)
+  , altitude_type_(0)
+
+  , longitude_deg_(0)
   , absolute_altitude_m_(0)
   , heading_deg_(0)
   , horizontal_velocity_m_s_(0)
@@ -111,7 +113,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_transponder_2ftransponder_2eproto[6];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_transponder_2ftransponder_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_transponder_2ftransponder_2eproto[3];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_transponder_2ftransponder_2eproto = nullptr;
 
 const uint32_t TableStruct_transponder_2ftransponder_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -151,6 +153,7 @@ const uint32_t TableStruct_transponder_2ftransponder_2eproto::offsets[] PROTOBUF
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, icao_address_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, latitude_deg_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, longitude_deg_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, altitude_type_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, absolute_altitude_m_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, heading_deg_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::transponder::AdsbVehicle, horizontal_velocity_m_s_),
@@ -174,7 +177,7 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 13, -1, -1, sizeof(::mavsdk::rpc::transponder::SetRateTransponderRequest)},
   { 20, -1, -1, sizeof(::mavsdk::rpc::transponder::SetRateTransponderResponse)},
   { 27, -1, -1, sizeof(::mavsdk::rpc::transponder::AdsbVehicle)},
-  { 44, -1, -1, sizeof(::mavsdk::rpc::transponder::TransponderResult)},
+  { 45, -1, -1, sizeof(::mavsdk::rpc::transponder::TransponderResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -194,51 +197,55 @@ const char descriptor_table_protodef_transponder_2ftransponder_2eproto[] PROTOBU
   "Vehicle\",\n\031SetRateTransponderRequest\022\017\n\007"
   "rate_hz\030\001 \001(\001\"c\n\032SetRateTransponderRespo"
   "nse\022E\n\022transponder_result\030\001 \001(\0132).mavsdk"
-  ".rpc.transponder.TransponderResult\"\263\002\n\013A"
+  ".rpc.transponder.TransponderResult\"\364\002\n\013A"
   "dsbVehicle\022\024\n\014icao_address\030\001 \001(\r\022\024\n\014lati"
-  "tude_deg\030\002 \001(\001\022\025\n\rlongitude_deg\030\003 \001(\001\022\033\n"
-  "\023absolute_altitude_m\030\005 \001(\002\022\023\n\013heading_de"
-  "g\030\006 \001(\002\022\037\n\027horizontal_velocity_m_s\030\007 \001(\002"
-  "\022\035\n\025vertical_velocity_m_s\030\010 \001(\002\022\020\n\010calls"
-  "ign\030\t \001(\t\022=\n\014emitter_type\030\n \001(\0162\'.mavsdk"
-  ".rpc.transponder.AdsbEmitterType\022\016\n\006squa"
-  "wk\030\r \001(\r\022\016\n\006tslc_s\030\016 \001(\r\"\217\002\n\021Transponder"
-  "Result\022@\n\006result\030\001 \001(\01620.mavsdk.rpc.tran"
-  "sponder.TransponderResult.Result\022\022\n\nresu"
-  "lt_str\030\002 \001(\t\"\243\001\n\006Result\022\022\n\016RESULT_UNKNOW"
-  "N\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYS"
-  "TEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RE"
-  "SULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022"
-  "\n\016RESULT_TIMEOUT\020\006*\255\005\n\017AdsbEmitterType\022\035"
-  "\n\031ADSB_EMITTER_TYPE_NO_INFO\020\000\022\033\n\027ADSB_EM"
-  "ITTER_TYPE_LIGHT\020\001\022\033\n\027ADSB_EMITTER_TYPE_"
-  "SMALL\020\002\022\033\n\027ADSB_EMITTER_TYPE_LARGE\020\003\022\'\n#"
-  "ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE\020\004\022\033\n"
-  "\027ADSB_EMITTER_TYPE_HEAVY\020\005\022\"\n\036ADSB_EMITT"
-  "ER_TYPE_HIGHLY_MANUV\020\006\022\037\n\033ADSB_EMITTER_T"
-  "YPE_ROTOCRAFT\020\007\022 \n\034ADSB_EMITTER_TYPE_UNA"
-  "SSIGNED\020\010\022\034\n\030ADSB_EMITTER_TYPE_GLIDER\020\t\022"
-  "!\n\035ADSB_EMITTER_TYPE_LIGHTER_AIR\020\n\022\037\n\033AD"
-  "SB_EMITTER_TYPE_PARACHUTE\020\013\022!\n\035ADSB_EMIT"
-  "TER_TYPE_ULTRA_LIGHT\020\014\022!\n\035ADSB_EMITTER_T"
-  "YPE_UNASSIGNED2\020\r\022\031\n\025ADSB_EMITTER_TYPE_U"
-  "AV\020\016\022\033\n\027ADSB_EMITTER_TYPE_SPACE\020\017\022!\n\035ADS"
-  "B_EMITTER_TYPE_UNASSGINED3\020\020\022\'\n#ADSB_EMI"
-  "TTER_TYPE_EMERGENCY_SURFACE\020\021\022%\n!ADSB_EM"
-  "ITTER_TYPE_SERVICE_SURFACE\020\022\022$\n ADSB_EMI"
-  "TTER_TYPE_POINT_OBSTACLE\020\0232\221\002\n\022Transpond"
-  "erService\022|\n\024SubscribeTransponder\0223.mavs"
-  "dk.rpc.transponder.SubscribeTransponderR"
-  "equest\032+.mavsdk.rpc.transponder.Transpon"
-  "derResponse\"\0000\001\022}\n\022SetRateTransponder\0221."
-  "mavsdk.rpc.transponder.SetRateTransponde"
-  "rRequest\0322.mavsdk.rpc.transponder.SetRat"
-  "eTransponderResponse\"\000B)\n\025io.mavsdk.tran"
-  "sponderB\020TransponderProtob\006proto3"
+  "tude_deg\030\002 \001(\001\022\025\n\rlongitude_deg\030\003 \001(\001\022\?\n"
+  "\raltitude_type\030\004 \001(\0162(.mavsdk.rpc.transp"
+  "onder.AdsbAltitudeType\022\033\n\023absolute_altit"
+  "ude_m\030\005 \001(\002\022\023\n\013heading_deg\030\006 \001(\002\022\037\n\027hori"
+  "zontal_velocity_m_s\030\007 \001(\002\022\035\n\025vertical_ve"
+  "locity_m_s\030\010 \001(\002\022\020\n\010callsign\030\t \001(\t\022=\n\014em"
+  "itter_type\030\n \001(\0162\'.mavsdk.rpc.transponde"
+  "r.AdsbEmitterType\022\016\n\006squawk\030\r \001(\r\022\016\n\006tsl"
+  "c_s\030\016 \001(\r\"\217\002\n\021TransponderResult\022@\n\006resul"
+  "t\030\001 \001(\01620.mavsdk.rpc.transponder.Transpo"
+  "nderResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\243\001"
+  "\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_S"
+  "UCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT"
+  "_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025"
+  "RESULT_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOU"
+  "T\020\006*\255\005\n\017AdsbEmitterType\022\035\n\031ADSB_EMITTER_"
+  "TYPE_NO_INFO\020\000\022\033\n\027ADSB_EMITTER_TYPE_LIGH"
+  "T\020\001\022\033\n\027ADSB_EMITTER_TYPE_SMALL\020\002\022\033\n\027ADSB"
+  "_EMITTER_TYPE_LARGE\020\003\022\'\n#ADSB_EMITTER_TY"
+  "PE_HIGH_VORTEX_LARGE\020\004\022\033\n\027ADSB_EMITTER_T"
+  "YPE_HEAVY\020\005\022\"\n\036ADSB_EMITTER_TYPE_HIGHLY_"
+  "MANUV\020\006\022\037\n\033ADSB_EMITTER_TYPE_ROTOCRAFT\020\007"
+  "\022 \n\034ADSB_EMITTER_TYPE_UNASSIGNED\020\010\022\034\n\030AD"
+  "SB_EMITTER_TYPE_GLIDER\020\t\022!\n\035ADSB_EMITTER"
+  "_TYPE_LIGHTER_AIR\020\n\022\037\n\033ADSB_EMITTER_TYPE"
+  "_PARACHUTE\020\013\022!\n\035ADSB_EMITTER_TYPE_ULTRA_"
+  "LIGHT\020\014\022!\n\035ADSB_EMITTER_TYPE_UNASSIGNED2"
+  "\020\r\022\031\n\025ADSB_EMITTER_TYPE_UAV\020\016\022\033\n\027ADSB_EM"
+  "ITTER_TYPE_SPACE\020\017\022!\n\035ADSB_EMITTER_TYPE_"
+  "UNASSGINED3\020\020\022\'\n#ADSB_EMITTER_TYPE_EMERG"
+  "ENCY_SURFACE\020\021\022%\n!ADSB_EMITTER_TYPE_SERV"
+  "ICE_SURFACE\020\022\022$\n ADSB_EMITTER_TYPE_POINT"
+  "_OBSTACLE\020\023*Y\n\020AdsbAltitudeType\022#\n\037ADSB_"
+  "ALTITUDE_TYPE_PRESSURE_QNH\020\000\022 \n\034ADSB_ALT"
+  "ITUDE_TYPE_GEOMETRIC\020\0012\221\002\n\022TransponderSe"
+  "rvice\022|\n\024SubscribeTransponder\0223.mavsdk.r"
+  "pc.transponder.SubscribeTransponderReque"
+  "st\032+.mavsdk.rpc.transponder.TransponderR"
+  "esponse\"\0000\001\022}\n\022SetRateTransponder\0221.mavs"
+  "dk.rpc.transponder.SetRateTransponderReq"
+  "uest\0322.mavsdk.rpc.transponder.SetRateTra"
+  "nsponderResponse\"\000B)\n\025io.mavsdk.transpon"
+  "derB\020TransponderProtob\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_transponder_2ftransponder_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_transponder_2ftransponder_2eproto = {
-    false, false, 1913, descriptor_table_protodef_transponder_2ftransponder_2eproto,
+    false, false, 2069, descriptor_table_protodef_transponder_2ftransponder_2eproto,
     "transponder/transponder.proto",
     &descriptor_table_transponder_2ftransponder_2eproto_once, nullptr, 0, 6,
     schemas, file_default_instances, TableStruct_transponder_2ftransponder_2eproto::offsets,
@@ -311,6 +318,20 @@ bool AdsbEmitterType_IsValid(int value) {
     case 17:
     case 18:
     case 19:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AdsbAltitudeType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_transponder_2ftransponder_2eproto);
+  return file_level_enum_descriptors_transponder_2ftransponder_2eproto[2];
+}
+bool AdsbAltitudeType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
       return true;
     default:
       return false;
@@ -1015,6 +1036,15 @@ const char* AdsbVehicle::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
         } else
           goto handle_unusual;
         continue;
+      // .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_altitude_type(static_cast<::mavsdk::rpc::transponder::AdsbAltitudeType>(val));
+        } else
+          goto handle_unusual;
+        continue;
       // float absolute_altitude_m = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 45)) {
@@ -1137,6 +1167,13 @@ uint8_t* AdsbVehicle::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_longitude_deg(), target);
   }
 
+  // .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
+  if (this->_internal_altitude_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      4, this->_internal_altitude_type(), target);
+  }
+
   // float absolute_altitude_m = 5;
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = this->_internal_absolute_altitude_m();
@@ -1238,6 +1275,17 @@ size_t AdsbVehicle::ByteSizeLong() const {
     total_size += 1 + 8;
   }
 
+  // uint32 icao_address = 1;
+  if (this->_internal_icao_address() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_icao_address());
+  }
+
+  // .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
+  if (this->_internal_altitude_type() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_altitude_type());
+  }
+
   // double longitude_deg = 3;
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
@@ -1245,11 +1293,6 @@ size_t AdsbVehicle::ByteSizeLong() const {
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
     total_size += 1 + 8;
-  }
-
-  // uint32 icao_address = 1;
-  if (this->_internal_icao_address() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_icao_address());
   }
 
   // float absolute_altitude_m = 5;
@@ -1336,15 +1379,18 @@ void AdsbVehicle::MergeFrom(const AdsbVehicle& from) {
   if (raw_latitude_deg != 0) {
     _internal_set_latitude_deg(from._internal_latitude_deg());
   }
+  if (from._internal_icao_address() != 0) {
+    _internal_set_icao_address(from._internal_icao_address());
+  }
+  if (from._internal_altitude_type() != 0) {
+    _internal_set_altitude_type(from._internal_altitude_type());
+  }
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
   double tmp_longitude_deg = from._internal_longitude_deg();
   uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
     _internal_set_longitude_deg(from._internal_longitude_deg());
-  }
-  if (from._internal_icao_address() != 0) {
-    _internal_set_icao_address(from._internal_icao_address());
   }
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = from._internal_absolute_altitude_m();

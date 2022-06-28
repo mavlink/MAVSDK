@@ -86,6 +86,10 @@ void TransponderImpl::process_transponder(const mavlink_message_t& message)
     adsbVehicle.emitter_type = Transponder::AdsbEmitterType(local_adsb_vehicle.emitter_type);
     adsbVehicle.squawk = local_adsb_vehicle.squawk;
     adsbVehicle.tslc_s = local_adsb_vehicle.tslc;
+    adsbVehicle.altitude_type =
+        local_adsb_vehicle.altitude_type == ADSB_ALTITUDE_TYPE_PRESSURE_QNH ?
+            Transponder::AdsbAltitudeType::PressureQnh :
+            Transponder::AdsbAltitudeType::Geometric;
 
     set_transponder(adsbVehicle);
 

@@ -143,6 +143,36 @@ public:
         }
     }
 
+    static rpc::transponder::AdsbAltitudeType
+    translateToRpcAdsbAltitudeType(const mavsdk::Transponder::AdsbAltitudeType& adsb_altitude_type)
+    {
+        switch (adsb_altitude_type) {
+            default:
+                LogErr() << "Unknown adsb_altitude_type enum value: "
+                         << static_cast<int>(adsb_altitude_type);
+            // FALLTHROUGH
+            case mavsdk::Transponder::AdsbAltitudeType::PressureQnh:
+                return rpc::transponder::ADSB_ALTITUDE_TYPE_PRESSURE_QNH;
+            case mavsdk::Transponder::AdsbAltitudeType::Geometric:
+                return rpc::transponder::ADSB_ALTITUDE_TYPE_GEOMETRIC;
+        }
+    }
+
+    static mavsdk::Transponder::AdsbAltitudeType
+    translateFromRpcAdsbAltitudeType(const rpc::transponder::AdsbAltitudeType adsb_altitude_type)
+    {
+        switch (adsb_altitude_type) {
+            default:
+                LogErr() << "Unknown adsb_altitude_type enum value: "
+                         << static_cast<int>(adsb_altitude_type);
+            // FALLTHROUGH
+            case rpc::transponder::ADSB_ALTITUDE_TYPE_PRESSURE_QNH:
+                return mavsdk::Transponder::AdsbAltitudeType::PressureQnh;
+            case rpc::transponder::ADSB_ALTITUDE_TYPE_GEOMETRIC:
+                return mavsdk::Transponder::AdsbAltitudeType::Geometric;
+        }
+    }
+
     static std::unique_ptr<rpc::transponder::AdsbVehicle>
     translateToRpcAdsbVehicle(const mavsdk::Transponder::AdsbVehicle& adsb_vehicle)
     {
@@ -153,6 +183,8 @@ public:
         rpc_obj->set_latitude_deg(adsb_vehicle.latitude_deg);
 
         rpc_obj->set_longitude_deg(adsb_vehicle.longitude_deg);
+
+        rpc_obj->set_altitude_type(translateToRpcAdsbAltitudeType(adsb_vehicle.altitude_type));
 
         rpc_obj->set_absolute_altitude_m(adsb_vehicle.absolute_altitude_m);
 
@@ -183,6 +215,8 @@ public:
         obj.latitude_deg = adsb_vehicle.latitude_deg();
 
         obj.longitude_deg = adsb_vehicle.longitude_deg();
+
+        obj.altitude_type = translateFromRpcAdsbAltitudeType(adsb_vehicle.altitude_type());
 
         obj.absolute_altitude_m = adsb_vehicle.absolute_altitude_m();
 

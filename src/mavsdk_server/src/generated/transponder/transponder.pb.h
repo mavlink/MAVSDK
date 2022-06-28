@@ -155,6 +155,31 @@ inline bool AdsbEmitterType_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<AdsbEmitterType>(
     AdsbEmitterType_descriptor(), name, value);
 }
+enum AdsbAltitudeType : int {
+  ADSB_ALTITUDE_TYPE_PRESSURE_QNH = 0,
+  ADSB_ALTITUDE_TYPE_GEOMETRIC = 1,
+  AdsbAltitudeType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  AdsbAltitudeType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool AdsbAltitudeType_IsValid(int value);
+constexpr AdsbAltitudeType AdsbAltitudeType_MIN = ADSB_ALTITUDE_TYPE_PRESSURE_QNH;
+constexpr AdsbAltitudeType AdsbAltitudeType_MAX = ADSB_ALTITUDE_TYPE_GEOMETRIC;
+constexpr int AdsbAltitudeType_ARRAYSIZE = AdsbAltitudeType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AdsbAltitudeType_descriptor();
+template<typename T>
+inline const std::string& AdsbAltitudeType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, AdsbAltitudeType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function AdsbAltitudeType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    AdsbAltitudeType_descriptor(), enum_t_value);
+}
+inline bool AdsbAltitudeType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, AdsbAltitudeType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<AdsbAltitudeType>(
+    AdsbAltitudeType_descriptor(), name, value);
+}
 // ===================================================================
 
 class SubscribeTransponderRequest final :
@@ -841,8 +866,9 @@ class AdsbVehicle final :
   enum : int {
     kCallsignFieldNumber = 9,
     kLatitudeDegFieldNumber = 2,
-    kLongitudeDegFieldNumber = 3,
     kIcaoAddressFieldNumber = 1,
+    kAltitudeTypeFieldNumber = 4,
+    kLongitudeDegFieldNumber = 3,
     kAbsoluteAltitudeMFieldNumber = 5,
     kHeadingDegFieldNumber = 6,
     kHorizontalVelocityMSFieldNumber = 7,
@@ -874,15 +900,6 @@ class AdsbVehicle final :
   void _internal_set_latitude_deg(double value);
   public:
 
-  // double longitude_deg = 3;
-  void clear_longitude_deg();
-  double longitude_deg() const;
-  void set_longitude_deg(double value);
-  private:
-  double _internal_longitude_deg() const;
-  void _internal_set_longitude_deg(double value);
-  public:
-
   // uint32 icao_address = 1;
   void clear_icao_address();
   uint32_t icao_address() const;
@@ -890,6 +907,24 @@ class AdsbVehicle final :
   private:
   uint32_t _internal_icao_address() const;
   void _internal_set_icao_address(uint32_t value);
+  public:
+
+  // .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
+  void clear_altitude_type();
+  ::mavsdk::rpc::transponder::AdsbAltitudeType altitude_type() const;
+  void set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value);
+  private:
+  ::mavsdk::rpc::transponder::AdsbAltitudeType _internal_altitude_type() const;
+  void _internal_set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value);
+  public:
+
+  // double longitude_deg = 3;
+  void clear_longitude_deg();
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
   public:
 
   // float absolute_altitude_m = 5;
@@ -964,8 +999,9 @@ class AdsbVehicle final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr callsign_;
   double latitude_deg_;
-  double longitude_deg_;
   uint32_t icao_address_;
+  int altitude_type_;
+  double longitude_deg_;
   float absolute_altitude_m_;
   float heading_deg_;
   float horizontal_velocity_m_s_;
@@ -1462,6 +1498,26 @@ inline void AdsbVehicle::set_longitude_deg(double value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.longitude_deg)
 }
 
+// .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
+inline void AdsbVehicle::clear_altitude_type() {
+  altitude_type_ = 0;
+}
+inline ::mavsdk::rpc::transponder::AdsbAltitudeType AdsbVehicle::_internal_altitude_type() const {
+  return static_cast< ::mavsdk::rpc::transponder::AdsbAltitudeType >(altitude_type_);
+}
+inline ::mavsdk::rpc::transponder::AdsbAltitudeType AdsbVehicle::altitude_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.altitude_type)
+  return _internal_altitude_type();
+}
+inline void AdsbVehicle::_internal_set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value) {
+  
+  altitude_type_ = value;
+}
+inline void AdsbVehicle::set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value) {
+  _internal_set_altitude_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.altitude_type)
+}
+
 // float absolute_altitude_m = 5;
 inline void AdsbVehicle::clear_absolute_altitude_m() {
   absolute_altitude_m_ = 0;
@@ -1757,6 +1813,11 @@ template <> struct is_proto_enum< ::mavsdk::rpc::transponder::AdsbEmitterType> :
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::transponder::AdsbEmitterType>() {
   return ::mavsdk::rpc::transponder::AdsbEmitterType_descriptor();
+}
+template <> struct is_proto_enum< ::mavsdk::rpc::transponder::AdsbAltitudeType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::transponder::AdsbAltitudeType>() {
+  return ::mavsdk::rpc::transponder::AdsbAltitudeType_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
