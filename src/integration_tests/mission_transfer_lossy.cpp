@@ -73,7 +73,7 @@ bool should_keep_message(const mavlink_message_t& message)
         // message.msgid == MAVLINK_MSG_ID_MISSION_ACK || FIXME: we rely on ack
         message.msgid == MAVLINK_MSG_ID_MISSION_COUNT ||
         message.msgid == MAVLINK_MSG_ID_MISSION_ITEM_INT) {
-        should_keep = distribution(generator) < 0.9;
+        should_keep = distribution(generator) < 0.95;
     }
     return should_keep;
 }
