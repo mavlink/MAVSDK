@@ -97,6 +97,16 @@ bool ParamValue::set_from_mavlink_param_value_cast(const mavlink_param_value_t& 
     return true;
 }
 
+bool ParamValue::set_from_mavlink_param_value(
+    const mavlink_param_value_t& mavlink_value, const ParamValue::Conversion& conversion)
+{
+    if(conversion==Conversion::CAST){
+        return set_from_mavlink_param_value_cast(mavlink_value);
+    }else{
+        return set_from_mavlink_param_value_bytewise(mavlink_value);
+    }
+}
+
 bool ParamValue::set_from_mavlink_param_set_bytewise(const mavlink_param_set_t& mavlink_set)
 {
     mavlink_param_value_t mavlink_value{};

@@ -32,6 +32,11 @@ public:
     bool set_from_mavlink_param_ext_value(const mavlink_param_ext_value_t& mavlink_ext_value);
     bool set_from_xml(const std::string& type_str, const std::string& value_str);
     bool set_empty_type_from_xml(const std::string& type_str);
+    enum class Conversion{
+        CAST,
+        BYTEWISE
+    };
+    bool set_from_mavlink_param_value(const mavlink_param_value_t& mavlink_value,const Conversion& conversion);
 
     [[nodiscard]] MAV_PARAM_TYPE get_mav_param_type() const;
     [[nodiscard]] MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const;
