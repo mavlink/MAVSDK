@@ -694,6 +694,8 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
             work_queue_guard.pop_front();
         } break;
         case WorkItem::Type::Set: {
+            // TODO check if the response actually matches what we requested. Unfortunately, non-extended
+            // is a bit ambiguous here.
             // We are done, inform caller and go back to idle
             if (std::get_if<SetParamCallback>(&work->callback)) {
                 const auto& callback = std::get<SetParamCallback>(work->callback);
