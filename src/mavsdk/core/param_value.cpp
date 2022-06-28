@@ -591,7 +591,7 @@ bool ParamValue::operator==(const std::string& value_str) const
 
 std::ostream& operator<<(std::ostream& strm, const ParamValue& obj)
 {
-    strm << obj.get_string();
+    strm << "ParamValue{"<<obj.typestr()<<":"<<obj.get_string()<<"}";
     return strm;
 }
 
