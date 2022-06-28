@@ -71,7 +71,7 @@ void check_interval_on(std::shared_ptr<Camera> camera, bool on)
 
     // Check if status is correct
     Camera::StatusHandle handle =
-        camera->subscribe_status([prom, on, camera, handle](Camera::Status status) {
+        camera->subscribe_status([prom, on, camera, &handle](Camera::Status status) {
             camera->unsubscribe_status(handle);
             EXPECT_EQ(status.photo_interval_on, on);
             prom->set_value();
