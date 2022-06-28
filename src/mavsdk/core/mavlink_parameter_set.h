@@ -8,8 +8,8 @@
 namespace mavsdk{
 
 // This class provides convenient methods to handle a set of mavlink parameters.
-// As an example, if at any point in the parameter server / client you need to update an existing parameter
-// and safely handle all the possible errors in this operation (for example, the parameter does not exist yet)
+// As an example, if at any point in the parameter server / client implementation you need to update an existing parameter
+// and safely handle all the possible errors that might occur when performing the wanted operation (for example, the parameter does not exist yet)
 // you can use update_existing_parameter().
 // Its public methods are written for the following premises:
 // 1) Once a parameter has been added, its type can not be mutated anymore.
@@ -25,7 +25,9 @@ public:
      * @return true on success, false otherwise.
      */
     bool add_new_parameter(const std::string& param_id,ParamValue value);
-
+    /**
+     * Possible return codes for performing a update operation on an existing parameter.
+     */
     enum class UpdateExistingParamResult{
         SUCCESS,
         MISSING_PARAM,
@@ -51,7 +53,7 @@ public:
     std::map<std::string, ParamValue> get_copy();
 
     std::optional<Parameter> get_param(const std::string& param_id,bool extended);
-    std::optional<Parameter> get_param(const uint16_t param_idx,bool extended);
+    std::optional<Parameter> get_param(uint16_t param_idx,bool extended);
     // Mavlink uses uint16_t for parameter indices, which allows for that many parameters maximum
     static constexpr auto MAX_N_PARAMETERS= 65535;
     /*
