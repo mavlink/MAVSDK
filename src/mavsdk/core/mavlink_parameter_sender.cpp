@@ -622,8 +622,9 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
     const std::string param_id = extract_safe_param_id(param_value.param_id);
-    if (_parameter_debugging) {
-        LogDebug() << "getting param value: " << param_id;
+    if(param_id.empty()){
+        LogDebug()<<"Got ill-formed param_value message (param_id empty)";
+        return;
     }
     ParamValue received_value;
     if (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) {
@@ -631,9 +632,12 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     } else {
         received_value.set_from_mavlink_param_value_bytewise(param_value);
     }
+    if (_parameter_debugging) {
+        LogDebug() << "process_param_value: " << param_id<<" "<<received_value;
+    }
     {
         std::lock_guard<std::mutex> lock(_all_params_mutex);
-        _all_params[param_id] = received_value;
+        _all_params.insert_or_assign(param_id,received_value);
         // check if we are looking for param list (get all parameters).
         if (_all_params_callback) {
             // If we are currently waiting for all parameters, this is a hacky way to basically say
@@ -709,13 +713,16 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
 
 void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& message)
 {
-    if (_parameter_debugging) {
-        LogDebug() << "getting param ext value";
-    }
     mavlink_param_ext_value_t param_ext_value{};
     mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
     const auto safe_param_id=extract_safe_param_id(param_ext_value.param_id);
-
+    if(safe_param_id.empty()){
+        LogDebug()<<"Got ill-formed param_ext_value message (param_id empty)";
+        return;
+    }
+    if (_parameter_debugging) {
+        LogDebug() << "getting param ext value";
+    }
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
