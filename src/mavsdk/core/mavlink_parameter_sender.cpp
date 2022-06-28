@@ -665,20 +665,16 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
-
     if (!work) {
         return;
     }
-
     if (!work->already_requested) {
         return;
     }
-
     if (work->param_name != safe_param_id) {
         // No match, let's just return the borrowed work item.
         return;
     }
-
     switch (work->type) {
         case WorkItem::Type::Get: {
             if (std::get_if<GetParamAnyCallback>(&work->callback)) {
@@ -732,7 +728,6 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
     }
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
-
     if (!work) {
         return;
     }
@@ -740,9 +735,9 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
         return;
     }
     if (work->param_name != safe_param_id) {
+        // No match, let's just return the borrowed work item.
         return;
     }
-
     switch (work->type) {
         case WorkItem::Type::Get: {
             if (std::get_if<GetParamAnyCallback>(&work->callback)) {
