@@ -846,7 +846,6 @@ void MavlinkParameterSender::receive_timeout()
     switch (work->type) {
         case WorkItem::Type::Get: {
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
-            ParamValue empty_value;
             if (work->retries_to_do > 0) {
                 // We're not sure the command arrived, let's retransmit.
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
