@@ -13,6 +13,8 @@ MAVLINK_HEADERS_PATH=mavlink-headers
 if [ ! -d $MAVLINK_PATH ]
 then
     git clone --recursive $REPO $MAVLINK_PATH
+else
+    (cd $MAVLINK_PATH && git fetch)
 fi
 
 (cd $MAVLINK_PATH && git checkout $TAG && git submodule update --init --recursive)
