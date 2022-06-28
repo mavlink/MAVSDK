@@ -788,10 +788,6 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
     }
 
     switch (work->type) {
-        case WorkItem::Type::Get: {
-            LogWarn() << "Unexpected ParamExtAck response.";
-        } break;
-
         case WorkItem::Type::Set: {
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
@@ -839,6 +835,7 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
             }
         } break;
         default:
+            LogWarn() << "Unexpected ParamExtAck response.";
             break;
     }
 }
