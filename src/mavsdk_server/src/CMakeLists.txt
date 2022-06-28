@@ -44,6 +44,7 @@ foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     target_include_directories(${COMPONENT_NAME}_proto_gens
         PRIVATE
         ${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated
+        ${MAVLINK_HEADERS}
     )
 
     list(APPEND COMPONENTS_PROTOGENS ${COMPONENT_NAME}_proto_gens)
