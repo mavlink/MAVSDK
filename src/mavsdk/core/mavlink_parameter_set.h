@@ -1,9 +1,9 @@
 #ifndef MAVSDK_SUPERBUILD_SRC_MAVSDK_CORE_MAVLINK_PARAMETER_SET_H_
 #define MAVSDK_SUPERBUILD_SRC_MAVSDK_CORE_MAVLINK_PARAMETER_SET_H_
 
+#include "param_value.h"
 #include <map>
 #include <mutex>
-#include "param_value.h"
 
 namespace mavsdk{
 
