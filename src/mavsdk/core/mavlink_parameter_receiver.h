@@ -51,7 +51,7 @@ public:
 
     /**
      * Add a new parameter to the parameter set.
-     * It is recommended to not change the parameter set after first communicating with any client.
+     * It is recommended to not change the parameter set after the first communication with any client.
      * (https://mavlink.io/en/services/parameter_ext.html#parameters_invariant).
      * @param name the unique id for this parameter
      * @param param_value the value for this parameter
