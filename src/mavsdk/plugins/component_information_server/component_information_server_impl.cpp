@@ -149,9 +149,9 @@ std::string ComponentInformationServerImpl::generate_parameter_file()
         parameter["longDesc"] = param.long_description;
         parameter["units"] = param.unit;
         parameter["decimalPlaces"] = param.decimal_places;
-        parameter["min"] = param.min_value;
-        parameter["max"] = param.max_value;
-        parameter["default"] = param.default_value;
+        parameter["min"] = static_cast<double>(param.min_value);
+        parameter["max"] = static_cast<double>(param.max_value);
+        parameter["default"] = static_cast<double>(param.default_value);
         parameters.append(parameter);
     }
     root["parameters"] = parameters;
