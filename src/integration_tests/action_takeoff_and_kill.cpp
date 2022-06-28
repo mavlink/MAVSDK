@@ -19,6 +19,8 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
             const auto system = mavsdk.systems().at(0);
 
             if (system->is_connected()) {
+                // Unregister to prevent fulfilling promise twice.
+                mavsdk.subscribe_on_new_system(nullptr);
                 prom.set_value();
             }
         });
