@@ -635,6 +635,7 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     if (_parameter_debugging) {
         LogDebug() << "process_param_value: " << safe_param_id<<" "<<received_value;
     }
+    validate_parameter_count(param_value.param_count);
     {
         std::lock_guard<std::mutex> lock(_all_params_mutex);
         _all_params.insert_or_assign(safe_param_id,received_value);
@@ -726,6 +727,7 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
     if (_parameter_debugging) {
         LogDebug() << "process_param_value: " << safe_param_id<<" "<<received_value;
     }
+    validate_parameter_count(param_ext_value.param_count);
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
     if (!work) {
@@ -953,6 +955,17 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::Result
             // Fallthrough
         default:
             return str << "UnknownError";
+    }
+}
+
+void MavlinkParameterSender::validate_parameter_count(const uint16_t param_count) {
+    if(_server_param_count.has_value()){
+        if(param_count!=_server_param_count.value()){
+            LogDebug()<<"Warning: detected server with changing parameter set";
+            _server_param_count=param_count;
+        }
+    }else{
+        _server_param_count=param_count;
     }
 }
 

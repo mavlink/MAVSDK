@@ -251,6 +251,12 @@ private:
     GetAllParamsCallback _all_params_callback;
     void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
+    // once the parameter count has been set, it should not change - but we cannot say for certain since
+    // the server might do whatever he wants.
+    std::optional<uint16_t> _server_param_count;
+    // log a warning when the parameter count from the server changes, this is not forbidden but dangerous
+    // https://mavlink.io/en/services/parameter.html#parameters_invariant
+    void validate_parameter_count(uint16_t param_count);
 
     bool _parameter_debugging{false};
 };
