@@ -91,8 +91,8 @@ void MavlinkParameterSender::set_param_async(
         }
         return;
     }
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback(),callback,extended,maybe_component_id);
-    new_work->param_value = value;
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback(),
+                                               WorkItemSet{value,callback},extended,maybe_component_id);
     new_work->cookie = cookie;
     _work_queue.push_back(new_work);
 }
@@ -290,7 +290,7 @@ void MavlinkParameterSender::get_param_async(
         return;
     }
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback(),callback,extended,maybe_component_id);
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback(),WorkItemGet{callback},extended,maybe_component_id);
     // We don't need to know the exact type when getting a value - neither extended or non-extended protocol mavlink messages
     // specify the exact type on a "get_xxx" message. This makes total sense. The client still can reason about the type and return
     // the proper error codes, it just needs to delay these checks until a response from the server has been received.
@@ -523,8 +523,9 @@ void MavlinkParameterSender::do_work()
 
     switch (work->type) {
         case WorkItem::Type::Set: {
+            const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
             if (work->extended) {
-                const auto param_value_buf = work->param_value.get_128_bytes();
+                const auto param_value_buf = specific.param_value.get_128_bytes();
                 // FIXME: extended currently always go to the camera component
                 mavlink_msg_param_ext_set_pack(
                     _sender.get_own_system_id(),
@@ -534,11 +535,11 @@ void MavlinkParameterSender::do_work()
                     component_id,
                     param_id.data(),
                     param_value_buf.data(),
-                    work->param_value.get_mav_param_ext_type());
+                    specific.param_value.get_mav_param_ext_type());
             } else {
                 const float value_set = (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
-                                            work->param_value.get_4_float_bytes_cast() :
-                                            work->param_value.get_4_float_bytes_bytewise();
+                                            specific.param_value.get_4_float_bytes_cast() :
+                                            specific.param_value.get_4_float_bytes_bytewise();
 
                 mavlink_msg_param_set_pack(
                     _sender.get_own_system_id(),
@@ -548,15 +549,12 @@ void MavlinkParameterSender::do_work()
                     component_id,
                     param_id.data(),
                     value_set,
-                    work->param_value.get_mav_param_type());
+                    specific.param_value.get_mav_param_type());
             }
             if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
-                if (std::get_if<SetParamCallback>(&work->callback)) {
-                    const auto& callback = std::get<SetParamCallback>(work->callback);
-                    if (callback) {
-                        callback(Result::ConnectionError);
-                    }
+                if(specific.callback){
+                    specific.callback(Result::ConnectionError);
                 }
                 work_queue_guard.pop_front();
                 return;
@@ -569,6 +567,7 @@ void MavlinkParameterSender::do_work()
 
         case WorkItem::Type::Get: {
             // LogDebug() << "now getting: " << work->param_name;
+            const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
             if (work->extended) {
                 mavlink_msg_param_ext_request_read_pack(
                     _sender.get_own_system_id(),
@@ -599,11 +598,8 @@ void MavlinkParameterSender::do_work()
 
             if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
-                if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                    if (callback) {
-                        (callback)(Result::ConnectionError, ParamValue{});
-                    }
+                if (specific.callback) {
+                    specific.callback(Result::ConnectionError, ParamValue{});
                 }
                 work_queue_guard.pop_front();
                 return;
@@ -678,11 +674,9 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     }
     switch (work->type) {
         case WorkItem::Type::Get: {
-            if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                if (callback) {
-                    callback(Result::Success, received_value);
-                }
+            const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
+            if (specific.callback) {
+                specific.callback(Result::Success, received_value);
             }
             _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
@@ -690,14 +684,12 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
             work_queue_guard.pop_front();
         } break;
         case WorkItem::Type::Set: {
+            const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
             // TODO check if the response actually matches what we requested. Unfortunately, non-extended
             // is a bit ambiguous here.
             // We are done, inform caller and go back to idle
-            if (std::get_if<SetParamCallback>(&work->callback)) {
-                const auto& callback = std::get<SetParamCallback>(work->callback);
-                if (callback) {
-                    callback(MavlinkParameterSender::Result::Success);
-                }
+            if (specific.callback) {
+                specific.callback(MavlinkParameterSender::Result::Success);
             }
 
             _timeout_handler.remove(_timeout_cookie);
@@ -742,11 +734,9 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
     }
     switch (work->type) {
         case WorkItem::Type::Get: {
-            if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                if (callback) {
-                    callback(Result::Success,received_value);
-                }
+            const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
+            if (specific.callback) {
+                specific.callback(Result::Success,received_value);
             }
             _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
@@ -787,15 +777,12 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
 
     switch (work->type) {
         case WorkItem::Type::Set: {
+            const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
-                if (std::get_if<SetParamCallback>(&work->callback)) {
-                    const auto& callback = std::get<SetParamCallback>(work->callback);
-                    if (callback) {
-                        callback(Result::Success);
-                    }
+                if (specific.callback) {
+                    specific.callback(Result::Success);
                 }
-
                 _timeout_handler.remove(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
                 // _sender.get_time().elapsed_since_s(_last_request_time);
@@ -808,24 +795,19 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
             } else {
                 LogErr() << "Somehow we did not get an ack, we got: "
                          << int(param_ext_ack.param_result);
-
-                if (std::get_if<SetParamCallback>(&work->callback)) {
-                    const auto& callback = std::get<SetParamCallback>(work->callback);
-                    if (callback) {
-                        auto result = [&]() {
-                            switch (param_ext_ack.param_result) {
-                                case PARAM_ACK_FAILED:
-                                    return Result::Failed;
-                                case PARAM_ACK_VALUE_UNSUPPORTED:
-                                    return Result::ValueUnsupported;
-                                default:
-                                    return Result::UnknownError;
-                            }
-                        }();
-                        callback(result);
-                    }
+                if (specific.callback) {
+                    auto result = [&]() {
+                        switch (param_ext_ack.param_result) {
+                            case PARAM_ACK_FAILED:
+                                return Result::Failed;
+                            case PARAM_ACK_VALUE_UNSUPPORTED:
+                                return Result::ValueUnsupported;
+                            default:
+                                return Result::UnknownError;
+                        }
+                    }();
+                    specific.callback(result);
                 }
-
                 _timeout_handler.remove(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
                 // _sender.get_time().elapsed_since_s(_last_request_time);
@@ -863,6 +845,7 @@ void MavlinkParameterSender::receive_timeout()
     }
     switch (work->type) {
         case WorkItem::Type::Get: {
+            const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
             ParamValue empty_value;
             if (work->retries_to_do > 0) {
                 // We're not sure the command arrived, let's retransmit.
@@ -871,12 +854,8 @@ void MavlinkParameterSender::receive_timeout()
                 if (!_sender.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit (" << work->param_name << ").";
                     work_queue_guard.pop_front();
-
-                    if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                        const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                        if (callback) {
-                            callback(Result::ConnectionError, {});
-                        }
+                    if (specific.callback) {
+                        specific.callback(Result::ConnectionError, {});
                     }
                 } else {
                     --work->retries_to_do;
@@ -887,15 +866,13 @@ void MavlinkParameterSender::receive_timeout()
                 // We have tried retransmitting, giving up now.
                 LogErr() << "Error: Retrying failed get param busy timeout: " << work->param_name;
                 work_queue_guard.pop_front();
-                if (std::get_if<GetParamAnyCallback>(&work->callback)) {
-                    const auto& callback = std::get<GetParamAnyCallback>(work->callback);
-                    if (callback) {
-                        callback(Result::Timeout, {});
-                    }
+                if (specific.callback) {
+                    specific.callback(Result::Timeout, {});
                 }
             }
         } break;
         case WorkItem::Type::Set: {
+            const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
             if (work->retries_to_do > 0) {
                 // We're not sure the command arrived, let's retransmit.
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
@@ -903,11 +880,8 @@ void MavlinkParameterSender::receive_timeout()
                 if (!_sender.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit (" << work->param_name << ").";
                     work_queue_guard.pop_front();
-                    if (std::get_if<SetParamCallback>(&work->callback)) {
-                        const auto& callback = std::get<SetParamCallback>(work->callback);
-                        if (callback) {
-                            callback(Result::ConnectionError);
-                        }
+                    if (specific.callback) {
+                        specific.callback(Result::ConnectionError);
                     }
                 } else {
                     --work->retries_to_do;
@@ -919,11 +893,8 @@ void MavlinkParameterSender::receive_timeout()
                 LogErr() << "Error: Retrying failed get param busy timeout: " << work->param_name;
 
                 work_queue_guard.pop_front();
-                if (std::get_if<SetParamCallback>(&work->callback)) {
-                    const auto& callback = std::get<SetParamCallback>(work->callback);
-                    if (callback) {
-                        callback(Result::Timeout);
-                    }
+                if (specific.callback) {
+                    specific.callback(Result::Timeout);
                 }
             }
         } break;
