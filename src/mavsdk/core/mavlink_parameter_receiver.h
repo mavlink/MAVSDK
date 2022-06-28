@@ -131,6 +131,8 @@ private:
     void process_param_request_list(const mavlink_message_t& message);
     //  response: broadcast all parameters
     void process_param_ext_request_list(const mavlink_message_t& message);
+    // broadcast all current parameters. If extended=false, string parameters are ignored.
+    void broadcast_all_parameters(bool extended);
 
     // On the server side, the only benefit of using the work item pattern (mavsdk specific)
     // is that the request all parameters command(s) are less likely to saturate the link.

@@ -283,24 +283,18 @@ void MavlinkParameterReceiver::process_param_request_list(const mavlink_message_
 {
     mavlink_param_request_list_t list_request{};
     mavlink_msg_param_request_list_decode(&message, &list_request);
-    constexpr auto extended=false;
-    std::lock_guard<std::mutex> lock(_all_params_mutex);
-    const auto all_params=_param_set.get_all(extended);
-    for(const auto& parameter:all_params){
-        // make sure extended parameters never make it out via the param request list
-        // (use param extended list)
-        assert(!parameter.value.needs_extended());
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,parameter,all_params.size(),extended);
-        _work_queue.push_back(new_work);
-    }
+    broadcast_all_parameters(false);
 }
 
 void MavlinkParameterReceiver::process_param_ext_request_list(const mavlink_message_t& message)
 {
     mavlink_param_ext_request_list_t ext_list_request{};
     mavlink_msg_param_ext_request_list_decode(&message, &ext_list_request);
+    broadcast_all_parameters(true);
+}
+
+void MavlinkParameterReceiver::broadcast_all_parameters(const bool extended) {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    constexpr auto extended=true;
     const auto all_params=_param_set.get_all(extended);
     for(const auto& parameter:all_params){
         auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,parameter,all_params.size(),extended);
