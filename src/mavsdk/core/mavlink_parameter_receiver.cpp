@@ -8,10 +8,20 @@ MavlinkParameterReceiver::MavlinkParameterReceiver(
     Sender& sender,
     MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler_unused,
-    TimeoutSCallback timeout_s_callback_unused) :
+    TimeoutSCallback timeout_s_callback_unused,
+    std::optional<std::map<std::string,ParamValue>> optional_param_values) :
     _sender(sender),
     _message_handler(message_handler)
 {
+    if(optional_param_values.has_value()){
+        const auto& param_values=optional_param_values.value();
+        for(const auto& [key,value] : param_values){
+            const auto result= provide_server_param(key,value);
+            if(result!=Result::Success){
+                LogDebug()<<"Cannot add parameter:"<<key<<":"<<value;
+            }
+        }
+    }
     _message_handler.register_one(
         MAVLINK_MSG_ID_PARAM_SET,
         [this](const mavlink_message_t& message) { process_param_set(message); },
