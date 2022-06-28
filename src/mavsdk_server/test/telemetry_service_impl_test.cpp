@@ -223,7 +223,7 @@ ACTION_P2(SaveCallback, callback, callback_promise)
 {
     auto handle = callback->subscribe(arg0);
     callback_promise->set_value();
-    testing::Return(handle);
+    return handle;
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
@@ -239,7 +239,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
 
 std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<Position>& positions)
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &positions]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribePositionRequest request;
         auto response_reader = _stub->SubscribePosition(&context, request);
@@ -342,7 +342,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHealthAsync)
 
 std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Health>& healths)
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &healths]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeHealthRequest request;
         auto response_reader = _stub->SubscribeHealth(&context, request);
@@ -455,7 +455,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
 std::future<void>
 TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>& home_positions) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &home_positions]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeHomeRequest request;
         auto response_reader = _stub->SubscribeHome(&context, request);
@@ -545,7 +545,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryInAirAsync)
 std::future<void>
 TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool>& in_air_events) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &in_air_events]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeInAirRequest request;
         auto response_reader = _stub->SubscribeInAir(&context, request);
@@ -627,7 +627,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryArmedAsync)
 std::future<void>
 TelemetryServiceImplTest::subscribeArmedAsync(std::vector<bool>& armed_events) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &armed_events]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeArmedRequest request;
         auto response_reader = _stub->SubscribeArmed(&context, request);
@@ -709,7 +709,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryGpsInfoAsync)
 std::future<void>
 TelemetryServiceImplTest::subscribeGpsInfoAsync(std::vector<GpsInfo>& gps_info_events) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &gps_info_events]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeGpsInfoRequest request;
         auto response_reader = _stub->SubscribeGpsInfo(&context, request);
@@ -833,7 +833,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryBatteryAsync)
 std::future<void>
 TelemetryServiceImplTest::subscribeBatteryAsync(std::vector<Battery>& battery_events) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &battery_events]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeBatteryRequest request;
         auto response_reader = _stub->SubscribeBattery(&context, request);
@@ -934,7 +934,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryFlightModeAsync)
 std::future<void> TelemetryServiceImplTest::subscribeFlightModeAsync(
     std::vector<FlightMode>& flight_mode_events) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &flight_mode_events]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeFlightModeRequest request;
         auto response_reader = _stub->SubscribeFlightMode(&context, request);
@@ -1060,7 +1060,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeAngularVelocityBody
 std::future<void> TelemetryServiceImplTest::subscribeAttitudeQuaternionAsync(
     std::vector<Quaternion>& quaternions) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &quaternions]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest request;
         auto response_reader = _stub->SubscribeAttitudeQuaternion(&context, request);
@@ -1096,7 +1096,7 @@ TEST_F(TelemetryServiceImplTest, doesNotSendAttitudeQuaternionIfCallbackNotCalle
 std::future<void> TelemetryServiceImplTest::subscribeAttitudeAngularVelocityBodyAsync(
     std::vector<AngularVelocityBody>& angular_velocities_body) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, &angular_velocities_body]() {
         grpc::ClientContext context;
         mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest request;
         auto response_reader = _stub->SubscribeAttitudeAngularVelocityBody(&context, request);

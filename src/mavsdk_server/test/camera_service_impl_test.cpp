@@ -69,6 +69,8 @@ protected:
         _stub = CameraService::NewStub(channel);
     }
 
+    virtual void TearDown() { _server->Shutdown(); }
+
     void setCameraMode(const mavsdk::rpc::camera::Mode mode);
 
     std::future<void> subscribeModeAsync(
@@ -382,7 +384,7 @@ std::future<void> CameraServiceImplTest::subscribeModeAsync(
     std::vector<mavsdk::Camera::Mode>& camera_modes,
     std::shared_ptr<grpc::ClientContext> context) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [&camera_modes, context, this]() {
         mavsdk::rpc::camera::SubscribeModeRequest request;
         auto response_reader = _stub->SubscribeMode(context.get(), request);
 
@@ -490,7 +492,7 @@ std::future<void> CameraServiceImplTest::subscribeVideoStreamInfoAsync(
     std::vector<mavsdk::Camera::VideoStreamInfo>& video_info_events,
     std::shared_ptr<grpc::ClientContext> context) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, context, &video_info_events]() {
         mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest request;
         auto response_reader = _stub->SubscribeVideoStreamInfo(context.get(), request);
 
@@ -575,7 +577,7 @@ std::future<void> CameraServiceImplTest::subscribeCaptureInfoAsync(
     std::vector<mavsdk::Camera::CaptureInfo>& capture_info_events,
     std::shared_ptr<grpc::ClientContext> context) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, context, &capture_info_events]() {
         mavsdk::rpc::camera::SubscribeCaptureInfoRequest request;
         auto response_reader = _stub->SubscribeCaptureInfo(context.get(), request);
 
@@ -771,7 +773,7 @@ std::future<void> CameraServiceImplTest::subscribeStatusAsync(
     std::vector<mavsdk::Camera::Status>& camera_status_events,
     std::shared_ptr<grpc::ClientContext> context) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, context, &camera_status_events]() {
         mavsdk::rpc::camera::SubscribeStatusRequest request;
         auto response_reader = _stub->SubscribeStatus(context.get(), request);
 
@@ -905,7 +907,7 @@ std::future<void> CameraServiceImplTest::subscribeCurrentSettingsAsync(
     std::vector<std::vector<mavsdk::Camera::Setting>>& current_settings_events,
     std::shared_ptr<grpc::ClientContext> context) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, context, &current_settings_events]() {
         mavsdk::rpc::camera::SubscribeCurrentSettingsRequest request;
         auto response_reader = _stub->SubscribeCurrentSettings(context.get(), request);
 
@@ -1051,11 +1053,11 @@ std::future<void> CameraServiceImplTest::subscribePossibleSettingOptionsAsync(
     std::vector<std::vector<mavsdk::Camera::SettingOptions>>& possible_settings_events,
     std::shared_ptr<grpc::ClientContext> context) const
 {
-    return std::async(std::launch::async, [&]() {
+    return std::async(std::launch::async, [this, context, &possible_settings_events]() {
         mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest request;
         auto response_reader = _stub->SubscribePossibleSettingOptions(context.get(), request);
 
-        mavsdk::rpc::camera::PossibleSettingOptionsResponse response;
+        mavsdk::rpc::camera::PossibleSettingOptionsResponse response{};
         while (response_reader->Read(&response)) {
             std::vector<mavsdk::Camera::SettingOptions> response_setting_options;
 
