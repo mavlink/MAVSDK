@@ -12,6 +12,9 @@
 
 namespace mavsdk {
 
+/**
+ * This is a c++ helper for a mavlink extended or non-extended param value.
+ */
 class ParamValue {
 public:
     bool set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value);
