@@ -8,6 +8,9 @@
 namespace mavsdk{
 
 // This class provides convenient methods to handle a set of mavlink parameters.
+// As an example, if at any point in the parameter server / client you need to update an existing parameter
+// and safely handle all the possible errors in this operation (for example, the parameter does not exist yet)
+// you can use update_existing_parameter().
 // Its public methods are written for the following premises:
 // 1) Once a parameter has been added, its type can not be mutated anymore.
 // 2) Once a parameter has been added, it cannot be removed.
@@ -16,32 +19,25 @@ namespace mavsdk{
 // and would easily lead to bugs / crashes.
 class MavlinkParameterSet{
 public:
-    enum class XResult{
-
-    };
-    void add_or_update_param();
-
     /**
-     * add a new parameter to the parameter set, @return false if this parameter does already exist.
+     * add a new parameter to the parameter set, as long as the parameter does not exist yet, there is space available and
+     * the param_id is not empty.
+     * @return true on success, false otherwise.
      */
     bool add_new_parameter(const std::string& param_id,ParamValue value);
-    /**
-     * update the value of an already existing parameter
-     * @return true if the stored value's type matches the type provided and the value therefore can be updated,
-     * false otherwise.
-     */
-    bool update_existing_parameter(const std::string& param_id,const ParamValue& value);
-    /**
-     * Get the current value for a given parameter.
-     * @return empty when the value does not exist, the current value otherwise.
-     */
-    std::optional<ParamValue> get_value(const std::string& param_id);
 
-    template<class T>
-    std::optional<ParamValue> get_value_exact_type(const std::string& param_id);
-
-    [[nodiscard]] uint16_t get_current_parameters_count(bool extended)const;
-    std::map<std::string, ParamValue> get_all();
+    enum class UpdateExistingParamResult{
+        SUCCESS,
+        MISSING_PARAM,
+        WRONG_PARAM_TYPE
+    };
+    friend std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::UpdateExistingParamResult& obj);
+    /**
+     * update the value of an already existing parameter, as long as current and provided type match.
+     * Does not add the parameter as a new parameter if missing.
+     * @return one of the results above.
+     */
+    UpdateExistingParamResult update_existing_parameter(const std::string& param_id,const ParamValue& value);
 
     struct Parameter{
         // unique parameter id
@@ -49,18 +45,36 @@ public:
         // unique parameter index
         const int param_index;
         // value of this parameter.
-        ParamValue param_value;
+        ParamValue value;
     };
+    std::vector<Parameter> get_all(bool supports_extended);
+    std::map<std::string, ParamValue> get_copy();
 
     std::optional<Parameter> get_param(const std::string& param_id,bool extended);
     std::optional<Parameter> get_param(const uint16_t param_idx,bool extended);
-
+    // Mavlink uses uint16_t for parameter indices, which allows for that many parameters maximum
+    static constexpr auto MAX_N_PARAMETERS= 65535;
+    /*
+     * Return the n of parameters, either from an extended or non-extended perspective.
+     * ( we need to hide parameters that need extended from non-extended queries).
+     * Doesn't acquire the all-parameters lock, since when used it should already be locked.
+     */
+    [[nodiscard]] uint16_t get_current_parameters_count(bool extended);
 private:
     std::mutex _all_params_mutex{};
-    std::map<std::string, ParamValue> _all_params{};
-    std::vector<ParamValue> _x_all_params;
-    std::map<std::string,uint16_t> param_id_to_idx;
+    // list of all the parameters supported by both non-extended and extended protocol.
+    std::vector<Parameter> _all_params;
+    // list of all the parameters supported only by the extended protocol
+    //std::vector<Parameter> _string_params;
+    // if an element exists in this map, since we never remove parameters, it is guaranteed that the returned index is
+    // inside the _all_params range.
+    std::map<std::string,uint16_t> _param_id_to_idx;
+    //
+    const bool enable_debugging=true;
 };
+
+std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj);
+
 }
 
 #endif // MAVSDK_SUPERBUILD_SRC_MAVSDK_CORE_MAVLINK_PARAMETER_SET_H_

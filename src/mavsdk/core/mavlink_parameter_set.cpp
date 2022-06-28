@@ -7,90 +7,127 @@ namespace mavsdk{
 bool MavlinkParameterSet::add_new_parameter(const std::string& param_id, ParamValue value)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    if(_all_params.find(param_id) != _all_params.end()) {
+    if(param_id.empty()){
+        if(enable_debugging){
+            LogDebug()<<"Cannot add parameter with empty param id: ";
+        }
         return false;
     }
-    _all_params[param_id]=std::move(value);
-    return true;
+    if(_param_id_to_idx.find(param_id) != _param_id_to_idx.end()) {
+        // this parameter does already exist, we cannot add it as a new one.
+        return false;
+    }
+    if(_all_params.size()<MAX_N_PARAMETERS){
+        Parameter parameter{param_id,static_cast<uint16_t>(_all_params.size()),std::move(value)};
+        _all_params.push_back(parameter);
+        _param_id_to_idx[param_id]=parameter.param_index;
+        if(enable_debugging){
+            LogDebug()<<"Added parameter: "<<parameter;
+        }
+        return true;
+    }
+    return false;
 }
 
-bool MavlinkParameterSet::update_existing_parameter(const std::string& param_id,const ParamValue& value)
+MavlinkParameterSet::UpdateExistingParamResult MavlinkParameterSet::update_existing_parameter(const std::string& param_id,const ParamValue& value)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    if(_all_params.find(param_id) == _all_params.end()) {
+    if(_param_id_to_idx.find(param_id) == _param_id_to_idx.end()) {
         // this parameter does not exist yet.
-        return false;
+        LogDebug()<<"MavlinkParameterSet::update_existing_parameter "<<param_id<<" does not exist";
+        return UpdateExistingParamResult::MISSING_PARAM;
     }
-    const auto curr_value = _all_params.at(param_id);
-    if(!curr_value.is_same_type(value)){
+    const auto index=_param_id_to_idx.at(param_id);
+    const auto parameter = _all_params.at(index);
+    if(!parameter.value.is_same_type(value)){
         // We cannot mutate the parameter type.
-        return false;
+        LogDebug()<<"Cannot mutate the type of "<<param_id<<" from "<<parameter.value.typestr() << " to "<<value.typestr();
+        return  UpdateExistingParamResult::WRONG_PARAM_TYPE;
     }
-    if(curr_value._value==value._value){
-        // The parameter already has the given value
-        return false;
-    }
-    _all_params[param_id].update_value_typesafe(value);
-    return true;
+    _all_params.at(index).value.update_value_typesafe(value);
+    return UpdateExistingParamResult::SUCCESS;
 }
 
-std::optional<ParamValue>  MavlinkParameterSet::get_value(const std::string& param_id)
+
+std::vector<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_all(const bool supports_extended)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    if(_all_params.find(param_id) == _all_params.end()) {
-        // this parameter does not exist yet.
-        return std::nullopt;
+    if(supports_extended)return _all_params;
+    std::vector<MavlinkParameterSet::Parameter> ret;
+    for (const auto& param : _all_params) {
+        if(!param.value.needs_extended()){
+            ret.push_back(param);
+        }
     }
-    return _all_params[param_id];
+    return ret;
 }
 
-template<class T>
-std::optional<ParamValue> MavlinkParameterSet::get_value_exact_type(const std::string& param_id)
+std::map<std::string, ParamValue> MavlinkParameterSet::get_copy()
 {
-    auto value = get_value(param_id);
-    if (value.has_value() && value->is_same_type_templated<T>()){
-        return value;
-    }
-    return {};
+   std::lock_guard<std::mutex> lock(_all_params_mutex);
+   std::map<std::string,ParamValue> ret;
+   for(const auto& param:_all_params){
+       ret[param.param_id]=param.value;
+   }
+   return ret;
 }
-std::map<std::string, ParamValue> MavlinkParameterSet::get_all()
+
+uint16_t MavlinkParameterSet::get_current_parameters_count(bool extended)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    return _all_params;
-}
-
-uint16_t MavlinkParameterSet::get_current_parameters_count(bool extended) const
-{
     if(extended){
         // easy, we can do all parameters.
-        return static_cast<int>(_all_params.size());
+        return static_cast<uint16_t>(_all_params.size());
     }
     // a bit messy, we need to loop through all params and only count the ones that are non-extended
     int count=0;
-    for (auto const& [key, val] : _all_params){
-        if(!val.needs_extended()){
+    for (const auto& param : _all_params){
+        if(!param.value.needs_extended()){
             count++;
         }
     }
-    return count;
+    return  static_cast<uint16_t>(count);
 }
 
 std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_param(const std::string& param_id,bool extended)
 {
-    if(param_id_to_idx.find(param_id)==param_id_to_idx.end()){
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+    if(_param_id_to_idx.find(param_id)==_param_id_to_idx.end()){
         // param does not exist
         return {};
     }
-    const auto param_index=param_id_to_idx.at(param_id);
-    return get_param(param_index,extended);
+    const auto param_index=_param_id_to_idx.at(param_id);
+    return _all_params.at(param_index);
 }
 
 std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_param(const uint16_t param_idx,bool extended)
 {
-    if(param_idx<_x_all_params.size()){
-        //
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+    if(param_idx<_all_params.size()){
+        return _all_params.at(param_idx);
     }
     return {};
 }
+std::ostream&
+operator<<(std::ostream& strm, const MavlinkParameterSet::UpdateExistingParamResult& obj)
+{
+    switch (obj) {
+        case MavlinkParameterSet::UpdateExistingParamResult::MISSING_PARAM:
+            strm<<"MISSING_PARAM";
+            break;
+        case MavlinkParameterSet::UpdateExistingParamResult::SUCCESS:
+            strm<<"SUCCESS";
+            break;
+        case MavlinkParameterSet::UpdateExistingParamResult::WRONG_PARAM_TYPE:
+            strm<<"WRONG_PARAM_TYPE";
+            break;
+    }
+    return strm;
+}
 
+std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj)
+{
+    strm << "Parameter{"<<obj.param_id<<":"<<obj.param_index<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";
+    return strm;
+}
 }
