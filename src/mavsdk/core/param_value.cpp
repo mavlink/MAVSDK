@@ -4,6 +4,17 @@
 
 namespace mavsdk {
 
+// std::to_string doesn't work for std::string, so we need this workaround.
+template<typename T> std::string to_string(T&& value)
+{
+    return std::to_string(std::forward<T>(value));
+}
+
+inline std::string& to_string(std::string& value)
+{
+    return value;
+}
+
 bool ParamValue::set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value)
 {
     switch (mavlink_value.param_type) {
