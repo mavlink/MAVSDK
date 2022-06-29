@@ -65,7 +65,7 @@ TEST_F(SitlTest, PX4ActionTransitionSync_standard_vtol)
         }
     });
 
-    EXPECT_EQ(fut.wait_for(std::chrono::seconds(20)), std::future_status::ready);
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(20)), std::future_status::ready);
 
     LogInfo() << "Transitioning to fixedwing";
     Action::Result transition_result = action->transition_to_fixedwing();
