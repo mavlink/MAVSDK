@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-template class CallbackList<void(const mavlink_message_t&)>;
+template class CallbackList<const mavlink_message_t&>;
 
 MavlinkPassthroughImpl::MavlinkPassthroughImpl(System& system) : PluginImplBase(system)
 {
