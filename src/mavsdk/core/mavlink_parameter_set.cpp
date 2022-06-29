@@ -89,7 +89,7 @@ uint16_t MavlinkParameterSet::get_current_parameters_count(bool extended)
     return  static_cast<uint16_t>(count);
 }
 
-std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_param(const std::string& param_id,bool extended)
+std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parameter(const std::string& param_id,bool extended)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if(_param_id_to_idx.find(param_id)==_param_id_to_idx.end()){
@@ -97,17 +97,18 @@ std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_param(con
         return {};
     }
     const auto param_index=_param_id_to_idx.at(param_id);
-    return _all_params.at(param_index);
+    return {_all_params.at(param_index)};
 }
 
-std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_param(const uint16_t param_idx,bool extended)
+std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parameter(const uint16_t param_index,bool extended)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    if(param_idx<_all_params.size()){
-        return _all_params.at(param_idx);
+    if(param_index<_all_params.size()){
+        return {_all_params.at(param_index)};
     }
     return {};
 }
+
 std::ostream&
 operator<<(std::ostream& strm, const MavlinkParameterSet::UpdateExistingParamResult& obj)
 {

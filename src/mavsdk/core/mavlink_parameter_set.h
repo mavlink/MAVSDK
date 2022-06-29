@@ -52,8 +52,8 @@ public:
     std::vector<Parameter> get_all(bool supports_extended);
     std::map<std::string, ParamValue> get_copy();
 
-    std::optional<Parameter> get_param(const std::string& param_id,bool extended);
-    std::optional<Parameter> get_param(uint16_t param_idx,bool extended);
+    std::optional<Parameter> lookup_parameter(const std::string& param_id,bool extended);
+    std::optional<Parameter> lookup_parameter(uint16_t param_index,bool extended);
     // Mavlink uses uint16_t for parameter indices, which allows for that many parameters maximum
     static constexpr auto MAX_N_PARAMETERS= 65535;
     /*
@@ -80,6 +80,10 @@ private:
     // if an element exists in this map, since we never remove parameters, it is guaranteed that the returned index is
     // inside the _all_params range.
     std::map<std::string,uint16_t> _param_id_to_idx;
+    // parameter ids for values that are supported by both non-extended and extended
+    std::vector<std::string> _basic_param_ids;
+    // parameter ids for values that are
+    std::vector<std::string> _extend_only_param_ids;
     //
     const bool enable_debugging=true;
 };

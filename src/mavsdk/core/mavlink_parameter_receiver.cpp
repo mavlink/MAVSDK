@@ -121,7 +121,7 @@ template<class T>
 std::pair<MavlinkParameterReceiver::Result, T> MavlinkParameterReceiver::retrieve_server_param(const std::string& name)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    const auto param_opt= _param_set.get_param(name, true);
+    const auto param_opt= _param_set.lookup_parameter(name, true);
     if(!param_opt.has_value()){
         return {Result::NotFound, {}};
     }
@@ -168,7 +168,7 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
         }
         case MavlinkParameterSet::UpdateExistingParamResult::WRONG_PARAM_TYPE:{
             // We broadcast the un-changed parameter type and value, non-extended and extended work differently here
-            const auto curr_param=_param_set.get_param(param_id,extended).value();
+            const auto curr_param=_param_set.lookup_parameter(param_id,extended).value();
             LogDebug() << "Got param_set for existing value, but wrong type. registered param: "<<curr_param;
             if(extended){
                 auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,curr_param,param_count, extended);
@@ -181,7 +181,7 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
             return;
         }
         case MavlinkParameterSet::UpdateExistingParamResult::SUCCESS:{
-            const auto updated_parameter=_param_set.get_param(param_id,extended).value();
+            const auto updated_parameter=_param_set.lookup_parameter(param_id,extended).value();
             LogDebug()<<"Updated param:"<<updated_parameter;
             if(extended){
                 auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,updated_parameter,param_count, extended);
@@ -240,8 +240,8 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
     constexpr bool extended= false;
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ
-    const auto param_opt = (read_request.param_index==-1) ? _param_set.get_param(safe_param_id, extended) :
-                                                              _param_set.get_param(read_request.param_index, extended);
+    const auto param_opt = (read_request.param_index==-1) ? _param_set.lookup_parameter(safe_param_id, extended) :
+                                                              _param_set.lookup_parameter(read_request.param_index, extended);
     if(!param_opt.has_value()){
         LogDebug()<<"Ignoring param_ext_request_read message - value not found {"<<safe_param_id<<":"<<read_request.param_index<<"}";
         return;
@@ -260,8 +260,8 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
     constexpr bool extended=true;
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ
-    const auto param_opt = (read_request.param_index==-1) ? _param_set.get_param(safe_param_id, extended) :
-                                                              _param_set.get_param(read_request.param_index, extended);
+    const auto param_opt = (read_request.param_index==-1) ? _param_set.lookup_parameter(safe_param_id, extended) :
+                                                              _param_set.lookup_parameter(read_request.param_index, extended);
     if(!param_opt.has_value()){
         LogDebug()<<"Ignoring param_ext_request_read message - value not found {"<<safe_param_id<<":"<<read_request.param_index<<"}";
         return;
