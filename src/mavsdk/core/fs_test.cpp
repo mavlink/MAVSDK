@@ -2,8 +2,7 @@
 #include <unistd.h>
 #include "fs.h"
 
-#if defined(WINDOWS)
-#else
+#if !defined(WINDOWS)
 #define PATH_MAX 4096
 
 TEST(Filesystem, AbsolutePathUnchanged)
