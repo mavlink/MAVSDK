@@ -6,7 +6,7 @@ template<typename... Args> class CallbackListImpl;
 template<typename... Args> class CallbackList;
 template<typename... Args> class FakeHandle;
 
-/*
+/**
  * @brief A handle returned from subscribe which allows to unsubscribe again.
  */
 template<typename... Args> class Handle {

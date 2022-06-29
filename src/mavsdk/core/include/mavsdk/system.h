@@ -173,7 +173,7 @@ public:
     ComponentDiscoveredIdHandle
     subscribe_component_discovered_id(const ComponentDiscoveredIdCallback& callback);
 
-    /*
+    /**
      * @brief Unsubscribe from subscribe_component_discovered_id
      */
     void unsubscribe_component_discovered_id(ComponentDiscoveredIdHandle handle);
