@@ -4,6 +4,17 @@
 
 namespace mavsdk {
 
+// std::to_string doesn't work for std::string, so we need this workaround.
+template<typename T> std::string to_string(T&& value)
+{
+    return std::to_string(std::forward<T>(value));
+}
+
+inline std::string& to_string(std::string& value)
+{
+    return value;
+}
+
 bool ParamValue::set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value)
 {
     switch (mavlink_value.param_type) {
@@ -95,6 +106,16 @@ bool ParamValue::set_from_mavlink_param_value_cast(const mavlink_param_value_t& 
             return false;
     }
     return true;
+}
+
+bool ParamValue::set_from_mavlink_param_value(
+    const mavlink_param_value_t& mavlink_value, const ParamValue::Conversion& conversion)
+{
+    if(conversion==Conversion::CAST){
+        return set_from_mavlink_param_value_cast(mavlink_value);
+    }else{
+        return set_from_mavlink_param_value_bytewise(mavlink_value);
+    }
 }
 
 bool ParamValue::set_from_mavlink_param_set_bytewise(const mavlink_param_set_t& mavlink_set)
@@ -591,7 +612,7 @@ bool ParamValue::operator==(const std::string& value_str) const
 
 std::ostream& operator<<(std::ostream& strm, const ParamValue& obj)
 {
-    strm << obj.get_string();
+    strm << "ParamValue{"<<obj.typestr()<<":"<<obj.get_string()<<"}";
     return strm;
 }
 

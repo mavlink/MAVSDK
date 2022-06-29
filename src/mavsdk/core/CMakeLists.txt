@@ -26,6 +26,7 @@ target_sources(mavsdk
     mavlink_parameter_receiver.cpp
     mavlink_parameter_sender.cpp
     mavlink_parameter_subscription.cpp
+    mavlink_parameter_set.cpp
     mavlink_receiver.cpp
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp

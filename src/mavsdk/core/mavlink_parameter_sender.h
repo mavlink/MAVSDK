@@ -6,6 +6,8 @@
 #include "locked_queue.h"
 #include "param_value.h"
 #include "mavlink_parameter_subscription.h"
+#include "mavlink_parameter_set.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -207,28 +209,28 @@ private:
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
 
-    static std::string extract_safe_param_id(const char param_id[]);
-
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
 
-    // Params can be up to 16 chars without 0-termination.
-    static constexpr size_t PARAM_ID_LEN = 16;
-
+    // These are specific depending on the work item type
+    struct WorkItemSet{
+        const ParamValue param_value;
+        const SetParamCallback callback;
+    };
+    struct WorkItemGet{
+        const GetParamAnyCallback callback;
+    };
     struct WorkItem {
         enum class Type { Get, Set};
         const Type type;
         const std::string param_name;
         const double timeout_s;
-        using VariantCallback=std::variant<
-            GetParamAnyCallback,
-            SetParamCallback>;
-        const VariantCallback callback;
+        using WorkItemVariant=std::variant<WorkItemGet,WorkItemSet>;
+        const WorkItemVariant work_item_variant;
         const bool extended;
         const std::optional<uint8_t> maybe_component_id;
-        ParamValue param_value{};
         bool already_requested{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
@@ -236,14 +238,14 @@ private:
         // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s,VariantCallback callback1,
+        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s,WorkItemVariant work_item_variant1,
                           bool extended1,std::optional<uint8_t> maybe_component_id1) :
-            type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s),callback(std::move(callback1)),
+            type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),
             extended(extended1),maybe_component_id(maybe_component_id1){
                 if(type==Type::Get){
-                   // callback == GetParamCallback
+                   assert(std::holds_alternative<WorkItemGet>(work_item_variant));
                 }else{
-                    // callback == SetParamCallback
+                    assert(std::holds_alternative<WorkItemSet>(work_item_variant));
                 }
             };
     };
@@ -255,6 +257,12 @@ private:
     GetAllParamsCallback _all_params_callback;
     void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
+    // once the parameter count has been set, it should not change - but we cannot say for certain since
+    // the server might do whatever he wants.
+    std::optional<uint16_t> _server_param_count;
+    // log a warning when the parameter count from the server changes, this is not forbidden but dangerous
+    // https://mavlink.io/en/services/parameter.html#parameters_invariant
+    void validate_parameter_count(uint16_t param_count);
 
     bool _parameter_debugging{false};
 };

@@ -7,6 +7,7 @@
 #include "param_value.h"
 #include "locked_queue.h"
 #include "mavlink_parameter_subscription.h"
+#include "mavlink_parameter_set.h"
 
 #include <map>
 #include <string>
@@ -20,7 +21,7 @@ namespace mavsdk {
  * This class makes it easy to accomplish the following task:
  * Having a component that exposes some settings for a user to configure.
  * In General, the usage of this class is as following:
- * 1) provide parameters (now other components can request anc change these parameters via mavlink).
+ * 1) provide parameters (now other components can request and change these parameters via mavlink).
  * 2) add listener(s) for these parameters such that you can react to changes set by another component.
  * 3) let mavlink do its magic.
  * Note that this side is much more simple - it does not need to worry about re-transmission or such, the responsibility for
@@ -36,8 +37,12 @@ public:
     explicit MavlinkParameterReceiver(
         Sender& parent,
         MavlinkMessageHandler& message_handler,
-        TimeoutHandler& timeout_handler,
-        TimeoutSCallback timeout_s_callback);
+        TimeoutHandler& timeout_handler_unused, // Here until it can be safely deleted
+        TimeoutSCallback timeout_s_callback_unused, // Here until it can be safely deleted
+        // by providing all the parameters on construction you can populate the parameter set
+        // before the server starts reacting to clients, removing this issue:
+        // https://mavlink.io/en/services/parameter.html#parameters_invariant
+        std::optional<std::map<std::string,ParamValue>> optional_param_values=std::nullopt);
     ~MavlinkParameterReceiver();
 
     enum class Result {
@@ -45,12 +50,12 @@ public:
         WrongType, // Wrong type provided
         ParamNameTooLong, // param name provided too long
         NotFound, // get_xxx param not found
-        ParamValueTooLong // value for param of type string doesn't fit into extended protocol.
+        ParamValueTooLong, // value for param of type string doesn't fit into extended protocol.
     };
 
     /**
      * Add a new parameter to the parameter set.
-     * It is recommended to not change the parameter set after first communicating with any client.
+     * It is recommended to not change the parameter set after the first communication with any client.
      * (https://mavlink.io/en/services/parameter_ext.html#parameters_invariant).
      * @param name the unique id for this parameter
      * @param param_value the value for this parameter
@@ -60,7 +65,7 @@ public:
      * the extended protocol allows and
      * Result::Success otherwise.
      */
-    Result provide_server_param(const std::string& name,ParamValue param_value);
+    Result provide_server_param(const std::string& name,const ParamValue& param_value);
     // convenient implementations for the 3 most commonly used types
     Result provide_server_param_float(const std::string& name, float value);
     Result provide_server_param_int(const std::string& name, int32_t value);
@@ -105,31 +110,26 @@ private:
      * @param extended true if the message is coming from the extended protocol,false otherwise. The response workflow
      * is slightly different on the extended protocol.
      */
-    void process_param_set_internally(const std::string& param_id,const ParamValue& value,bool extended);
+    void process_param_set_internally(const std::string& param_id,const ParamValue& value_to_set,bool extended);
     void process_param_set(const mavlink_message_t& message);
     void process_param_ext_set(const mavlink_message_t& message);
-    // Params can be up to 16 chars without 0-termination.
-    static constexpr size_t PARAM_ID_LEN = 16;
-    // add the null terminator if needed
-    static std::string extract_safe_param_id(const char param_id[]);
-    // create a buffer that is long enough for the message pack to read from. Discards the null terminator
-    // if the param_id is exactly PARAM_ID_LEN long.
-    static std::array<char,PARAM_ID_LEN> param_id_to_message_buffer(const std::string& param_id);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
 
     std::mutex _all_params_mutex{};
-    std::map<std::string, ParamValue> _all_params{};
+    MavlinkParameterSet _param_set;
 
-    // broadcast a specific parameter if found, ignores string parameters
+    // response: broadcast a specific parameter if found, ignores string parameters
     void process_param_request_read(const mavlink_message_t& message);
-    // broadcast a specific parameter if found
+    //  response: broadcast a specific parameter if found
     void process_param_ext_request_read(const mavlink_message_t& message);
-    // broadcast all parameters, ignores string parameters
+    //  response: broadcast all parameters, ignores string parameters
     void process_param_request_list(const mavlink_message_t& message);
-    // broadcast all parameters
+    //  response: broadcast all parameters
     void process_param_ext_request_list(const mavlink_message_t& message);
+    // broadcast all current parameters. If extended=false, string parameters are ignored.
+    void broadcast_all_parameters(bool extended);
 
     // On the server side, the only benefit of using the work item pattern (mavsdk specific)
     // is that the request all parameters command(s) are less likely to saturate the link.
@@ -139,25 +139,17 @@ private:
             Ack  // Emitted on a set value for the extended protocol only
         };
         const Type type;
-        const std::string param_name;
+        const MavlinkParameterSet::Parameter parameter;
+        const uint16_t param_count;
         const bool extended;
-        const ParamValue param_value;
-        const int param_count;
-        const int param_index;
         // only for ack messages via extended protocol
-        std::optional<PARAM_ACK> param_ack;
-
-        explicit WorkItem(Type type1,std::string param_name1,bool extended1,ParamValue param_value1,int param_count1,int param_index1) :
-            type(type1),param_name(std::move(param_name1)),extended(extended1),
-            param_value(std::move(param_value1)),param_count(param_count1),param_index(param_index1){};
+        std::optional<PARAM_ACK> param_ack{};
+        explicit WorkItem(Type type1,MavlinkParameterSet::Parameter parameter1,uint16_t param_count1,bool extended1) :
+            type(type1),parameter(std::move(parameter1)),param_count(param_count1),extended(extended1){
+                if(!extended)assert(!parameter.value.needs_extended());
+            };
     };
     LockedQueue<WorkItem> _work_queue{};
-    /*
-     * Return the n of parameters, either from an extended or non-extended perspective.
-     * ( we need to hide parameters that need extended from non-extended queries).
-     * Doesn't acquire the all-parameters lock, since when used it should already be locked.
-     */
-    [[nodiscard]] int get_current_parameters_count(bool extended)const;
 };
 
 } // namespace mavsdk
