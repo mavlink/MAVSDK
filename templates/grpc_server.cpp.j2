@@ -28,6 +28,7 @@ int GrpcServer::run()
 #endif
 {% endfor %}
 
+    grpc::EnableDefaultHealthCheckService(true);
     _server = builder.BuildAndStart();
 
     if (_bound_port != 0) {
