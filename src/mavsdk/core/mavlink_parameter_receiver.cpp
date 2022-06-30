@@ -127,7 +127,7 @@ std::pair<MavlinkParameterReceiver::Result, T> MavlinkParameterReceiver::retriev
     }
     // This parameter exists, check its type
     const auto& param=param_opt.value();
-    if(param.value.is_same_type_templated<T>()){
+    if(param.value.is<T>()){
         return {Result::Success, param.value.get<T>()};
     }
     return {Result::WrongType, {}};

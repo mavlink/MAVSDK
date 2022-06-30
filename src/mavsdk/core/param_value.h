@@ -50,20 +50,18 @@ public:
 
     [[nodiscard]] std::string get_string() const;
 
+    // Note: the implementation here needs to stay in the header,unfortunately.
+    template<typename T>
+    [[nodiscard]] constexpr bool is() const{
+        // is this better ? std::holds_alternative<T>(_value)
+        return (std::get_if<T>(&_value) != nullptr);
+    }
+
     template<typename T> T get() const { return std::get<T>(_value); }
 
     template<typename T> void set(T new_value) { _value = new_value; }
 
     [[nodiscard]] bool is_same_type(const ParamValue& rhs) const;
-
-    // Note: the implementation here needs to stay in the header,unfortunately.
-    template<class T>
-    [[nodiscard]] constexpr bool is_same_type_templated()const{
-        if (std::holds_alternative<T>(_value)) {
-            return true;
-        }
-        return false;
-    }
 
     // update the value of a parameter without mutating its type
     void update_value_typesafe(const ParamValue& new_value);
@@ -120,7 +118,7 @@ public:
     // (which is the case when its value is represented by a string)
     [[nodiscard]] constexpr bool needs_extended() const {
         // true if it is a string, false otherwise.
-        return is_same_type_templated<std::string>();
+        return is<std::string>();
     }
 };
 

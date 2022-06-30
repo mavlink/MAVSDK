@@ -84,7 +84,7 @@ void MavlinkParameterSender::set_param_async(
         }
         return;
     }
-    if(value.is_same_type_templated<std::string>() && !extended){
+    if(value.is<std::string>() && !extended){
         LogErr()<<"std::string needs extended protocol";
         if(callback){
             callback(Result::UnknownError);
@@ -333,7 +333,7 @@ void MavlinkParameterSender::get_param_async_typesafe(
     // We need to delay the type checking until we get a response from the server.
     GetParamAnyCallback callback_future_result=[callback](Result result, ParamValue value){
         if(result==Result::Success){
-            if(value.is_same_type_templated<T>()){
+            if(value.is<T>()){
                 callback(Result::Success,value.get<T>());
             }else{
                 callback(Result::WrongType,{});
