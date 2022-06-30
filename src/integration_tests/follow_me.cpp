@@ -3,22 +3,33 @@
 #include <thread>
 #include <chrono>
 #include <array>
+
 #include "integration_test_helper.h"
+
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
 #include "plugins/follow_me/follow_me.h"
+#include "plugins/info/info.h"
 
 using namespace mavsdk;
 using namespace std::chrono;
 using namespace std::this_thread;
 
+/* Updated FollowMe only works from PX4 v1.13, as it went through refactoring */
+const int32_t PX4_SW_MAJOR_MINIMUM = 1;
+const int32_t PX4_SW_MINOR_MINIMUM = 13;
+bool autopilot_sw_ver_minimum_satisfied(const std::shared_ptr<Info> info);
+
+/* Auxilary Functions */
 void print(const FollowMe::Config& config);
+
 void send_location_updates(
     std::shared_ptr<FollowMe> follow_me, size_t count = 25ul, float rate = 2.f);
 
 const size_t N_LOCATIONS = 100ul;
 
+/* Test FollowMe with a stationary target at one location */
 TEST_F(SitlTest, PX4FollowMeOneLocation)
 {
     Mavsdk mavsdk;
@@ -34,6 +45,11 @@ TEST_F(SitlTest, PX4FollowMeOneLocation)
     auto telemetry = std::make_shared<Telemetry>(system);
     auto follow_me = std::make_shared<FollowMe>(system);
     auto action = std::make_shared<Action>(system);
+    auto info = std::make_shared<Info>(system);
+
+    if (!autopilot_sw_ver_minimum_satisfied(info)) {
+        GTEST_SKIP();
+    }
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
@@ -95,6 +111,7 @@ TEST_F(SitlTest, PX4FollowMeOneLocation)
     }
 }
 
+/* Test FollowMe with a dynamically moving target */
 TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
 {
     Mavsdk mavsdk;
@@ -121,6 +138,11 @@ TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
     auto telemetry = std::make_shared<Telemetry>(system);
     auto follow_me = std::make_shared<FollowMe>(system);
     auto action = std::make_shared<Action>(system);
+    auto info = std::make_shared<Info>(system);
+
+    if (!autopilot_sw_ver_minimum_satisfied(info)) {
+        GTEST_SKIP();
+    }
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
@@ -148,11 +170,10 @@ TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
 
     // configure follow me behaviour
     FollowMe::Config config;
-    config.min_height_m = 12.f; // increase min height
+    config.follow_height_m = 12.f; // increase min height
     config.follow_distance_m = 20.f; // set distance b/w system and target during FollowMe mode
-    config.responsiveness = 0.2f; // set to higher responsiveness
-    config.follow_direction =
-        FollowMe::Config::FollowDirection::Front; // System follows target from FRONT side
+    config.responsiveness = 0.2f; // Make it less responsive (higher value for the setting)
+    config.follow_angle_deg = 0.0; // System follows target from FRONT side
 
     // Apply configuration
     FollowMe::Result config_result = follow_me->set_config(config);
@@ -184,10 +205,10 @@ void print(const FollowMe::Config& config)
 {
     std::cout << "Current FollowMe configuration of the system" << '\n';
     std::cout << "---------------------------" << '\n';
-    std::cout << "Min Height: " << config.min_height_m << "m" << '\n';
+    std::cout << "Height: " << config.follow_height_m << "m" << '\n';
     std::cout << "Distance: " << config.follow_distance_m << "m" << '\n';
+    std::cout << "Following angle: " << config.follow_angle_deg << "[deg]" << '\n';
     std::cout << "Responsiveness: " << config.responsiveness << '\n';
-    std::cout << "Following from: " << config.follow_direction << '\n';
     std::cout << "---------------------------" << '\n';
 }
 
@@ -201,6 +222,29 @@ FollowMe::TargetLocation create_target_location(double latitude_deg, double long
     location.velocity_y_m_s = 0.f;
     location.velocity_z_m_s = 0.f;
     return location;
+}
+
+bool autopilot_sw_ver_minimum_satisfied(const std::shared_ptr<Info> info)
+{
+    EXPECT_TRUE(poll_condition_with_timeout(
+        [&]() { return info->get_version().first == Info::Result::Success; },
+        std::chrono::seconds(5)));
+
+    // Check PX4 version running and if too low, skip the test
+    std::pair<Info::Result, Info::Version> version_result = info->get_version();
+    EXPECT_EQ(version_result.first, Info::Result::Success);
+
+    if (version_result.second.flight_sw_major < PX4_SW_MAJOR_MINIMUM) {
+        return false; // Major version not satisfied
+
+    } else if (version_result.second.flight_sw_major > PX4_SW_MAJOR_MINIMUM) {
+        return true; // Major version satisfied
+
+    } else if (version_result.second.flight_sw_minor >= PX4_SW_MINOR_MINIMUM) {
+        return true; // Major version same, minor version satisfied
+    }
+
+    return false;
 }
 
 void send_location_updates(std::shared_ptr<FollowMe> follow_me, size_t count, float rate)

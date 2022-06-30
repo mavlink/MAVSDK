@@ -64,31 +64,40 @@ public:
      */
     struct Config {
         /**
-         * @brief Direction relative to the target that the vehicle should follow
+         * @brief Altitude mode to configure which altitude the follow me will assume the target to
+         * be at.
          */
-        enum class FollowDirection {
-            None, /**< @brief Do not follow. */
-            Behind, /**< @brief Follow from behind. */
-            Front, /**< @brief Follow from front. */
-            FrontRight, /**< @brief Follow from front right. */
-            FrontLeft, /**< @brief Follow from front left. */
+        enum class FollowAltitudeMode {
+            Constant, /**< @brief Target assumed to be mobing at a constant altitude of home
+                         position (where the vehicle armed). */
+            Terrain, /**< @brief Target assumed to be at the terrain level sensed by the distance
+                        sensor. */
+            TargetGps, /**< @brief Target GPS altitude taken into account to do 3D tracking. */
         };
 
         /**
-         * @brief Stream operator to print information about a `FollowMe::FollowDirection`.
+         * @brief Stream operator to print information about a `FollowMe::FollowAltitudeMode`.
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
-        operator<<(std::ostream& str, FollowMe::Config::FollowDirection const& follow_direction);
+        friend std::ostream& operator<<(
+            std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode);
 
-        float min_height_m{8.0}; /**< @brief Minimum height for the vehicle in meters (recommended
-                                    minimum 8 meters) */
-        float follow_distance_m{8.0}; /**< @brief Distance from target for vehicle to follow in
-                                         meters (recommended minimum 1 meter) */
-        FollowDirection follow_direction{}; /**< @brief Direction to follow in */
-        float responsiveness{0.5}; /**< @brief How responsive the vehicle is to the motion of the
-                                      target (range 0.0 to 1.0) */
+        float follow_height_m{
+            8.0f}; /**< @brief [m] Follow height in meters (recommended minimum 8 meters) */
+        float follow_distance_m{8.0f}; /**< @brief [m] Follow distance to target in meters
+                                          (recommended minimum 4 meter) */
+        float responsiveness{0.1f}; /**< @brief How responsive the vehicle is to the motion of the
+                                       target, Lower value = More responsive (range 0.0 to 1.0) */
+        FollowAltitudeMode altitude_mode{}; /**< @brief Follow Altitude control mode */
+        float max_tangential_vel_m_s{
+            8.0f}; /**< @brief [m/s] Maximum orbit tangential velocity relative to the target, in
+                      meters per second. Higher value = More aggressive follow angle tracking. */
+        float follow_angle_deg{
+            180.0f}; /**< @brief [deg] Follow Angle relative to the target. 0 equals following in
+                        front of the target's direction. Angle increases in Clockwise direction, so
+                        following from right would be 90 degrees, from the left is -90 degrees, and
+                        so on. */
     };
 
     /**

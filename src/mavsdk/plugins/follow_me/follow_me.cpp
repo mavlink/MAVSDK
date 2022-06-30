@@ -57,42 +57,44 @@ FollowMe::Result FollowMe::stop() const
 }
 
 std::ostream&
-operator<<(std::ostream& str, FollowMe::Config::FollowDirection const& follow_direction)
+operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
 {
-    switch (follow_direction) {
-        case FollowMe::Config::FollowDirection::None:
-            return str << "None";
-        case FollowMe::Config::FollowDirection::Behind:
-            return str << "Behind";
-        case FollowMe::Config::FollowDirection::Front:
-            return str << "Front";
-        case FollowMe::Config::FollowDirection::FrontRight:
-            return str << "Front Right";
-        case FollowMe::Config::FollowDirection::FrontLeft:
-            return str << "Front Left";
+    switch (follow_altitude_mode) {
+        case FollowMe::Config::FollowAltitudeMode::Constant:
+            return str << "Constant";
+        case FollowMe::Config::FollowAltitudeMode::Terrain:
+            return str << "Terrain";
+        case FollowMe::Config::FollowAltitudeMode::TargetGps:
+            return str << "Target Gps";
         default:
             return str << "Unknown";
     }
 }
 bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
 {
-    return ((std::isnan(rhs.min_height_m) && std::isnan(lhs.min_height_m)) ||
-            rhs.min_height_m == lhs.min_height_m) &&
+    return ((std::isnan(rhs.follow_height_m) && std::isnan(lhs.follow_height_m)) ||
+            rhs.follow_height_m == lhs.follow_height_m) &&
            ((std::isnan(rhs.follow_distance_m) && std::isnan(lhs.follow_distance_m)) ||
             rhs.follow_distance_m == lhs.follow_distance_m) &&
-           (rhs.follow_direction == lhs.follow_direction) &&
            ((std::isnan(rhs.responsiveness) && std::isnan(lhs.responsiveness)) ||
-            rhs.responsiveness == lhs.responsiveness);
+            rhs.responsiveness == lhs.responsiveness) &&
+           (rhs.altitude_mode == lhs.altitude_mode) &&
+           ((std::isnan(rhs.max_tangential_vel_m_s) && std::isnan(lhs.max_tangential_vel_m_s)) ||
+            rhs.max_tangential_vel_m_s == lhs.max_tangential_vel_m_s) &&
+           ((std::isnan(rhs.follow_angle_deg) && std::isnan(lhs.follow_angle_deg)) ||
+            rhs.follow_angle_deg == lhs.follow_angle_deg);
 }
 
 std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config)
 {
     str << std::setprecision(15);
     str << "config:" << '\n' << "{\n";
-    str << "    min_height_m: " << config.min_height_m << '\n';
+    str << "    follow_height_m: " << config.follow_height_m << '\n';
     str << "    follow_distance_m: " << config.follow_distance_m << '\n';
-    str << "    follow_direction: " << config.follow_direction << '\n';
     str << "    responsiveness: " << config.responsiveness << '\n';
+    str << "    altitude_mode: " << config.altitude_mode << '\n';
+    str << "    max_tangential_vel_m_s: " << config.max_tangential_vel_m_s << '\n';
+    str << "    follow_angle_deg: " << config.follow_angle_deg << '\n';
     str << '}';
     return str;
 }

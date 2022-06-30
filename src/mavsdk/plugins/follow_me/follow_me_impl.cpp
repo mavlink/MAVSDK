@@ -43,34 +43,50 @@ void FollowMeImpl::deinit()
 void FollowMeImpl::enable()
 {
     _parent->get_param_float_async(
-        "NAV_MIN_FT_HT",
+        "FLW_TGT_HT",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
-                _config.min_height_m = value;
+                _config.follow_height_m = value;
             }
         },
         this);
     _parent->get_param_float_async(
-        "NAV_FT_DST",
+        "FLW_TGT_DST",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
                 _config.follow_distance_m = value;
             }
         },
         this);
-    _parent->get_param_int_async(
-        "NAV_FT_FS",
-        [this](MAVLinkParameters::Result result, int32_t value) {
+    _parent->get_param_float_async(
+        "FLW_TGT_FA",
+        [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
-                _config.follow_direction = static_cast<FollowMe::Config::FollowDirection>(value);
+                _config.follow_angle_deg = value;
             }
         },
         this);
     _parent->get_param_float_async(
-        "NAV_FT_RS",
+        "FLW_TGT_RS",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
                 _config.responsiveness = value;
+            }
+        },
+        this);
+    _parent->get_param_int_async(
+        "FLW_TGT_ALT_M",
+        [this](MAVLinkParameters::Result result, int value) {
+            if (result == MAVLinkParameters::Result::Success) {
+                _config.altitude_mode = static_cast<FollowMe::Config::FollowAltitudeMode>(value);
+            }
+        },
+        this);
+    _parent->get_param_float_async(
+        "FLW_TGT_MAX_VEL",
+        [this](MAVLinkParameters::Result result, float value) {
+            if (result == MAVLinkParameters::Result::Success) {
+                _config.max_tangential_vel_m_s = value;
             }
         },
         this);
@@ -94,44 +110,65 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
         return FollowMe::Result::SetConfigFailed;
     }
 
-    auto height = config.min_height_m;
+    auto height = config.follow_height_m;
     auto distance = config.follow_distance_m;
-    int32_t direction = static_cast<int32_t>(config.follow_direction);
     auto responsiveness = config.responsiveness;
+    auto altitude_mode = config.altitude_mode;
+    auto max_tangential_vel_m_s = config.max_tangential_vel_m_s;
 
     LogDebug() << "Waiting for the system confirmation of the new configuration..";
 
     bool success = true;
 
     // Send configuration to Vehicle
-    if (_config.min_height_m != height) {
-        if (_parent->set_param_float("NAV_MIN_FT_HT", height) ==
-            MAVLinkParameters::Result::Success) {
-            _config.min_height_m = height;
+    if (_config.follow_height_m != height) {
+        if (_parent->set_param_float("FLW_TGT_HT", height) == MAVLinkParameters::Result::Success) {
+            _config.follow_height_m = height;
         } else {
             success = false;
         }
     }
+
     if (_config.follow_distance_m != distance) {
-        if (_parent->set_param_float("NAV_FT_DST", distance) ==
+        if (_parent->set_param_float("FLW_TGT_DST", distance) ==
             MAVLinkParameters::Result::Success) {
             _config.follow_distance_m = distance;
         } else {
             success = false;
         }
     }
-    if (_config.follow_direction != config.follow_direction) {
-        if (_parent->set_param_int("NAV_FT_FS", direction) == MAVLinkParameters::Result::Success) {
-            _config.follow_direction = static_cast<FollowMe::Config::FollowDirection>(direction);
 
+    if (_config.follow_angle_deg != config.follow_angle_deg) {
+        if (_parent->set_param_float("FLW_TGT_FA", config.follow_angle_deg) ==
+            MAVLinkParameters::Result::Success) {
+            _config.follow_angle_deg = config.follow_angle_deg;
         } else {
             success = false;
         }
     }
+
     if (_config.responsiveness != responsiveness) {
-        if (_parent->set_param_float("NAV_FT_RS", responsiveness) ==
+        if (_parent->set_param_float("FLW_TGT_RS", responsiveness) ==
             MAVLinkParameters::Result::Success) {
             _config.responsiveness = responsiveness;
+        } else {
+            success = false;
+        }
+    }
+
+    if (_config.altitude_mode != altitude_mode) {
+        if (_parent->set_param_int("FLW_TGT_ALT_M", static_cast<int32_t>(altitude_mode)) ==
+            MAVLinkParameters::Result::Success) {
+            _config.altitude_mode = altitude_mode;
+        } else {
+            success = false;
+        }
+    }
+
+    if (_config.max_tangential_vel_m_s != max_tangential_vel_m_s) {
+        if (_parent->set_param_float("FLW_TGT_MAX_VEL", max_tangential_vel_m_s) ==
+            MAVLinkParameters::Result::Success) {
+            _config.max_tangential_vel_m_s = max_tangential_vel_m_s;
         } else {
             success = false;
         }
@@ -215,18 +252,22 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
 {
     auto config_ok = false;
 
-    if (config.min_height_m < CONFIG_MIN_HEIGHT_M) {
-        LogErr() << debug_str << "Err: Min height must be atleast 8.0 meters";
+    if (config.follow_height_m < CONFIG_MIN_HEIGHT_M) {
+        LogErr() << debug_str << "Err: Min height must be at least " << CONFIG_MIN_HEIGHT_M
+                 << " meters";
     } else if (config.follow_distance_m < CONFIG_MIN_FOLLOW_DIST_M) {
-        LogErr() << debug_str << "Err: Min Follow distance must be atleast 1.0 meter";
-    } else if (
-        config.follow_direction < FollowMe::Config::FollowDirection::None ||
-        config.follow_direction > FollowMe::Config::FollowDirection::FrontLeft) {
-        LogErr() << debug_str << "Err: Invalid Follow direction";
+        LogErr() << debug_str << "Err: Min Follow distance must be at least "
+                 << CONFIG_MIN_FOLLOW_DIST_M << " meters";
     } else if (
         config.responsiveness < CONFIG_MIN_RESPONSIVENESS ||
         config.responsiveness > CONFIG_MAX_RESPONSIVENESS) {
-        LogErr() << debug_str << "Err: Responsiveness must be in range (0.0 to 1.0)";
+        LogErr() << debug_str << "Err: Responsiveness must be in range ("
+                 << CONFIG_MIN_RESPONSIVENESS << " to " << CONFIG_MAX_RESPONSIVENESS << ")";
+    } else if (
+        config.follow_angle_deg < CONFIG_MIN_FOLLOW_ANGLE ||
+        config.follow_angle_deg > CONFIG_MAX_FOLLOW_ANGLE) {
+        LogErr() << debug_str << "Err: Follow Angle must be in range " << CONFIG_MIN_FOLLOW_ANGLE
+                 << " to " << CONFIG_MAX_FOLLOW_ANGLE << " degrees!";
     } else { // Config is OK
         config_ok = true;
     }

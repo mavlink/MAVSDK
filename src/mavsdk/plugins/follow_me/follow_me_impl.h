@@ -40,8 +40,10 @@ private:
     void process_heartbeat(const mavlink_message_t& message);
 
     enum class ConfigParameter;
+
     // Config methods
     bool is_config_ok(const FollowMe::Config& config) const;
+
     FollowMe::Result to_follow_me_result(MavlinkCommandSender::Result result) const;
 
     bool is_target_location_set() const;
@@ -61,9 +63,23 @@ private:
     };
 
     constexpr static const float CONFIG_MIN_HEIGHT_M = 8.0f;
-    constexpr static const float CONFIG_MIN_FOLLOW_DIST_M = 1.0f;
+    constexpr static const float CONFIG_MIN_FOLLOW_DIST_M = 2.0f;
+
     constexpr static const float CONFIG_MIN_RESPONSIVENESS = 0.f;
     constexpr static const float CONFIG_MAX_RESPONSIVENESS = 1.0f;
+
+    constexpr static const float CONFIG_MIN_FOLLOW_ANGLE = -180.0f;
+    constexpr static const float CONFIG_MAX_FOLLOW_ANGLE = 180.0f;
+
+    /* <Upstream Enum definitions, to map from the Protobuf generated enums>
+     * NOTE : This MUST be up to date with the upstream PX4's enum values!! */
+
+    // Follow Altitude modes set by the parameter FLW_TGT_ALT_M
+    enum kFollowAltitudeMode {
+        kFollowAltitudeModeConstant,
+        kFollowAltitudeModeTerrain,
+        kFollowAltitudeModeTrackTarget
+    };
 
     friend config_val_t operator~(ConfigParameter cfgp) { return ~static_cast<config_val_t>(cfgp); }
     friend config_val_t operator|(config_val_t config_val, ConfigParameter cfgp)

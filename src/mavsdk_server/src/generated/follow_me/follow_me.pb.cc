@@ -25,11 +25,13 @@ namespace rpc {
 namespace follow_me {
 PROTOBUF_CONSTEXPR Config::Config(
     ::_pbi::ConstantInitialized)
-  : min_height_m_(0)
+  : follow_height_m_(0)
   , follow_distance_m_(0)
-  , follow_direction_(0)
+  , responsiveness_(0)
+  , altitude_mode_(0)
 
-  , responsiveness_(0){}
+  , max_tangential_vel_m_s_(0)
+  , follow_angle_deg_(0){}
 struct ConfigDefaultTypeInternal {
   PROTOBUF_CONSTEXPR ConfigDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -247,10 +249,12 @@ const uint32_t TableStruct_follow_5fme_2ffollow_5fme_2eproto::offsets[] PROTOBUF
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, min_height_m_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, follow_height_m_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, follow_distance_m_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, follow_direction_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, responsiveness_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, altitude_mode_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, max_tangential_vel_m_s_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::Config, follow_angle_deg_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::follow_me::TargetLocation, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -367,22 +371,22 @@ const uint32_t TableStruct_follow_5fme_2ffollow_5fme_2eproto::offsets[] PROTOBUF
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::mavsdk::rpc::follow_me::Config)},
-  { 10, -1, -1, sizeof(::mavsdk::rpc::follow_me::TargetLocation)},
-  { 22, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetConfigRequest)},
-  { 28, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetConfigResponse)},
-  { 35, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetConfigRequest)},
-  { 42, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetConfigResponse)},
-  { 49, -1, -1, sizeof(::mavsdk::rpc::follow_me::IsActiveRequest)},
-  { 55, -1, -1, sizeof(::mavsdk::rpc::follow_me::IsActiveResponse)},
-  { 62, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetTargetLocationRequest)},
-  { 69, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetTargetLocationResponse)},
-  { 76, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetLastLocationRequest)},
-  { 82, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetLastLocationResponse)},
-  { 89, -1, -1, sizeof(::mavsdk::rpc::follow_me::StartRequest)},
-  { 95, -1, -1, sizeof(::mavsdk::rpc::follow_me::StartResponse)},
-  { 102, -1, -1, sizeof(::mavsdk::rpc::follow_me::StopRequest)},
-  { 108, -1, -1, sizeof(::mavsdk::rpc::follow_me::StopResponse)},
-  { 115, -1, -1, sizeof(::mavsdk::rpc::follow_me::FollowMeResult)},
+  { 12, -1, -1, sizeof(::mavsdk::rpc::follow_me::TargetLocation)},
+  { 24, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetConfigRequest)},
+  { 30, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetConfigResponse)},
+  { 37, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetConfigRequest)},
+  { 44, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetConfigResponse)},
+  { 51, -1, -1, sizeof(::mavsdk::rpc::follow_me::IsActiveRequest)},
+  { 57, -1, -1, sizeof(::mavsdk::rpc::follow_me::IsActiveResponse)},
+  { 64, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetTargetLocationRequest)},
+  { 71, -1, -1, sizeof(::mavsdk::rpc::follow_me::SetTargetLocationResponse)},
+  { 78, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetLastLocationRequest)},
+  { 84, -1, -1, sizeof(::mavsdk::rpc::follow_me::GetLastLocationResponse)},
+  { 91, -1, -1, sizeof(::mavsdk::rpc::follow_me::StartRequest)},
+  { 97, -1, -1, sizeof(::mavsdk::rpc::follow_me::StartResponse)},
+  { 104, -1, -1, sizeof(::mavsdk::rpc::follow_me::StopRequest)},
+  { 110, -1, -1, sizeof(::mavsdk::rpc::follow_me::StopResponse)},
+  { 117, -1, -1, sizeof(::mavsdk::rpc::follow_me::FollowMeResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -407,75 +411,76 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_follow_5fme_2ffollow_5fme_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\031follow_me/follow_me.proto\022\024mavsdk.rpc."
-  "follow_me\032\024mavsdk_options.proto\"\337\002\n\006Conf"
-  "ig\022\035\n\014min_height_m\030\001 \001(\002B\007\202\265\030\0038.0\022\"\n\021fol"
-  "low_distance_m\030\002 \001(\002B\007\202\265\030\0038.0\022F\n\020follow_"
-  "direction\030\003 \001(\0162,.mavsdk.rpc.follow_me.C"
-  "onfig.FollowDirection\022\037\n\016responsiveness\030"
-  "\004 \001(\002B\007\202\265\030\0030.5\"\250\001\n\017FollowDirection\022\031\n\025FO"
-  "LLOW_DIRECTION_NONE\020\000\022\033\n\027FOLLOW_DIRECTIO"
-  "N_BEHIND\020\001\022\032\n\026FOLLOW_DIRECTION_FRONT\020\002\022 "
-  "\n\034FOLLOW_DIRECTION_FRONT_RIGHT\020\003\022\037\n\033FOLL"
-  "OW_DIRECTION_FRONT_LEFT\020\004\"\330\001\n\016TargetLoca"
-  "tion\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rl"
-  "ongitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_"
-  "altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022\037\n\016velocity_x_"
-  "m_s\030\004 \001(\002B\007\202\265\030\003NaN\022\037\n\016velocity_y_m_s\030\005 \001"
-  "(\002B\007\202\265\030\003NaN\022\037\n\016velocity_z_m_s\030\006 \001(\002B\007\202\265\030"
-  "\003NaN\"\022\n\020GetConfigRequest\"A\n\021GetConfigRes"
-  "ponse\022,\n\006config\030\001 \001(\0132\034.mavsdk.rpc.follo"
-  "w_me.Config\"@\n\020SetConfigRequest\022,\n\006confi"
-  "g\030\001 \001(\0132\034.mavsdk.rpc.follow_me.Config\"S\n"
-  "\021SetConfigResponse\022>\n\020follow_me_result\030\001"
-  " \001(\0132$.mavsdk.rpc.follow_me.FollowMeResu"
-  "lt\"\021\n\017IsActiveRequest\"%\n\020IsActiveRespons"
-  "e\022\021\n\tis_active\030\001 \001(\010\"R\n\030SetTargetLocatio"
-  "nRequest\0226\n\010location\030\001 \001(\0132$.mavsdk.rpc."
-  "follow_me.TargetLocation\"[\n\031SetTargetLoc"
-  "ationResponse\022>\n\020follow_me_result\030\001 \001(\0132"
-  "$.mavsdk.rpc.follow_me.FollowMeResult\"\030\n"
-  "\026GetLastLocationRequest\"Q\n\027GetLastLocati"
-  "onResponse\0226\n\010location\030\001 \001(\0132$.mavsdk.rp"
-  "c.follow_me.TargetLocation\"\016\n\014StartReque"
-  "st\"O\n\rStartResponse\022>\n\020follow_me_result\030"
-  "\001 \001(\0132$.mavsdk.rpc.follow_me.FollowMeRes"
-  "ult\"\r\n\013StopRequest\"N\n\014StopResponse\022>\n\020fo"
-  "llow_me_result\030\001 \001(\0132$.mavsdk.rpc.follow"
-  "_me.FollowMeResult\"\274\002\n\016FollowMeResult\022;\n"
-  "\006result\030\001 \001(\0162+.mavsdk.rpc.follow_me.Fol"
-  "lowMeResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\330"
-  "\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_"
-  "SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESUL"
-  "T_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n"
-  "\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEO"
-  "UT\020\006\022\025\n\021RESULT_NOT_ACTIVE\020\007\022\034\n\030RESULT_SE"
-  "T_CONFIG_FAILED\020\0102\331\005\n\017FollowMeService\022b\n"
-  "\tGetConfig\022&.mavsdk.rpc.follow_me.GetCon"
-  "figRequest\032\'.mavsdk.rpc.follow_me.GetCon"
-  "figResponse\"\004\200\265\030\001\022b\n\tSetConfig\022&.mavsdk."
-  "rpc.follow_me.SetConfigRequest\032\'.mavsdk."
-  "rpc.follow_me.SetConfigResponse\"\004\200\265\030\001\022_\n"
-  "\010IsActive\022%.mavsdk.rpc.follow_me.IsActiv"
-  "eRequest\032&.mavsdk.rpc.follow_me.IsActive"
-  "Response\"\004\200\265\030\001\022z\n\021SetTargetLocation\022..ma"
-  "vsdk.rpc.follow_me.SetTargetLocationRequ"
-  "est\032/.mavsdk.rpc.follow_me.SetTargetLoca"
-  "tionResponse\"\004\200\265\030\001\022t\n\017GetLastLocation\022,."
-  "mavsdk.rpc.follow_me.GetLastLocationRequ"
-  "est\032-.mavsdk.rpc.follow_me.GetLastLocati"
-  "onResponse\"\004\200\265\030\001\022V\n\005Start\022\".mavsdk.rpc.f"
-  "ollow_me.StartRequest\032#.mavsdk.rpc.follo"
-  "w_me.StartResponse\"\004\200\265\030\001\022S\n\004Stop\022!.mavsd"
-  "k.rpc.follow_me.StopRequest\032\".mavsdk.rpc"
-  ".follow_me.StopResponse\"\004\200\265\030\001B$\n\023io.mavs"
-  "dk.follow_meB\rFollowMeProtob\006proto3"
+  "follow_me\032\024mavsdk_options.proto\"\212\003\n\006Conf"
+  "ig\022!\n\017follow_height_m\030\001 \001(\002B\010\202\265\030\0048.0f\022#\n"
+  "\021follow_distance_m\030\002 \001(\002B\010\202\265\030\0048.0f\022 \n\016re"
+  "sponsiveness\030\004 \001(\002B\010\202\265\030\0040.1f\022F\n\raltitude"
+  "_mode\030\005 \001(\0162/.mavsdk.rpc.follow_me.Confi"
+  "g.FollowAltitudeMode\022(\n\026max_tangential_v"
+  "el_m_s\030\006 \001(\002B\010\202\265\030\0048.0f\022$\n\020follow_angle_d"
+  "eg\030\007 \001(\002B\n\202\265\030\006180.0f\"~\n\022FollowAltitudeMo"
+  "de\022!\n\035FOLLOW_ALTITUDE_MODE_CONSTANT\020\000\022 \n"
+  "\034FOLLOW_ALTITUDE_MODE_TERRAIN\020\001\022#\n\037FOLLO"
+  "W_ALTITUDE_MODE_TARGET_GPS\020\002\"\330\001\n\016TargetL"
+  "ocation\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036"
+  "\n\rlongitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolu"
+  "te_altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022\037\n\016velocity"
+  "_x_m_s\030\004 \001(\002B\007\202\265\030\003NaN\022\037\n\016velocity_y_m_s\030"
+  "\005 \001(\002B\007\202\265\030\003NaN\022\037\n\016velocity_z_m_s\030\006 \001(\002B\007"
+  "\202\265\030\003NaN\"\022\n\020GetConfigRequest\"A\n\021GetConfig"
+  "Response\022,\n\006config\030\001 \001(\0132\034.mavsdk.rpc.fo"
+  "llow_me.Config\"@\n\020SetConfigRequest\022,\n\006co"
+  "nfig\030\001 \001(\0132\034.mavsdk.rpc.follow_me.Config"
+  "\"S\n\021SetConfigResponse\022>\n\020follow_me_resul"
+  "t\030\001 \001(\0132$.mavsdk.rpc.follow_me.FollowMeR"
+  "esult\"\021\n\017IsActiveRequest\"%\n\020IsActiveResp"
+  "onse\022\021\n\tis_active\030\001 \001(\010\"R\n\030SetTargetLoca"
+  "tionRequest\0226\n\010location\030\001 \001(\0132$.mavsdk.r"
+  "pc.follow_me.TargetLocation\"[\n\031SetTarget"
+  "LocationResponse\022>\n\020follow_me_result\030\001 \001"
+  "(\0132$.mavsdk.rpc.follow_me.FollowMeResult"
+  "\"\030\n\026GetLastLocationRequest\"Q\n\027GetLastLoc"
+  "ationResponse\0226\n\010location\030\001 \001(\0132$.mavsdk"
+  ".rpc.follow_me.TargetLocation\"\016\n\014StartRe"
+  "quest\"O\n\rStartResponse\022>\n\020follow_me_resu"
+  "lt\030\001 \001(\0132$.mavsdk.rpc.follow_me.FollowMe"
+  "Result\"\r\n\013StopRequest\"N\n\014StopResponse\022>\n"
+  "\020follow_me_result\030\001 \001(\0132$.mavsdk.rpc.fol"
+  "low_me.FollowMeResult\"\274\002\n\016FollowMeResult"
+  "\022;\n\006result\030\001 \001(\0162+.mavsdk.rpc.follow_me."
+  "FollowMeResult.Result\022\022\n\nresult_str\030\002 \001("
+  "\t\"\330\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESU"
+  "LT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RE"
+  "SULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004"
+  "\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RESULT_TI"
+  "MEOUT\020\006\022\025\n\021RESULT_NOT_ACTIVE\020\007\022\034\n\030RESULT"
+  "_SET_CONFIG_FAILED\020\0102\331\005\n\017FollowMeService"
+  "\022b\n\tGetConfig\022&.mavsdk.rpc.follow_me.Get"
+  "ConfigRequest\032\'.mavsdk.rpc.follow_me.Get"
+  "ConfigResponse\"\004\200\265\030\001\022b\n\tSetConfig\022&.mavs"
+  "dk.rpc.follow_me.SetConfigRequest\032\'.mavs"
+  "dk.rpc.follow_me.SetConfigResponse\"\004\200\265\030\001"
+  "\022_\n\010IsActive\022%.mavsdk.rpc.follow_me.IsAc"
+  "tiveRequest\032&.mavsdk.rpc.follow_me.IsAct"
+  "iveResponse\"\004\200\265\030\001\022z\n\021SetTargetLocation\022."
+  ".mavsdk.rpc.follow_me.SetTargetLocationR"
+  "equest\032/.mavsdk.rpc.follow_me.SetTargetL"
+  "ocationResponse\"\004\200\265\030\001\022t\n\017GetLastLocation"
+  "\022,.mavsdk.rpc.follow_me.GetLastLocationR"
+  "equest\032-.mavsdk.rpc.follow_me.GetLastLoc"
+  "ationResponse\"\004\200\265\030\001\022V\n\005Start\022\".mavsdk.rp"
+  "c.follow_me.StartRequest\032#.mavsdk.rpc.fo"
+  "llow_me.StartResponse\"\004\200\265\030\001\022S\n\004Stop\022!.ma"
+  "vsdk.rpc.follow_me.StopRequest\032\".mavsdk."
+  "rpc.follow_me.StopResponse\"\004\200\265\030\001B$\n\023io.m"
+  "avsdk.follow_meB\rFollowMeProtob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_follow_5fme_2ffollow_5fme_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_follow_5fme_2ffollow_5fme_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_follow_5fme_2ffollow_5fme_2eproto = {
-    false, false, 2515, descriptor_table_protodef_follow_5fme_2ffollow_5fme_2eproto,
+    false, false, 2558, descriptor_table_protodef_follow_5fme_2ffollow_5fme_2eproto,
     "follow_me/follow_me.proto",
     &descriptor_table_follow_5fme_2ffollow_5fme_2eproto_once, descriptor_table_follow_5fme_2ffollow_5fme_2eproto_deps, 1, 17,
     schemas, file_default_instances, TableStruct_follow_5fme_2ffollow_5fme_2eproto::offsets,
@@ -491,17 +496,15 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_in
 namespace mavsdk {
 namespace rpc {
 namespace follow_me {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Config_FollowDirection_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Config_FollowAltitudeMode_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_follow_5fme_2ffollow_5fme_2eproto);
   return file_level_enum_descriptors_follow_5fme_2ffollow_5fme_2eproto[0];
 }
-bool Config_FollowDirection_IsValid(int value) {
+bool Config_FollowAltitudeMode_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
     case 2:
-    case 3:
-    case 4:
       return true;
     default:
       return false;
@@ -509,14 +512,12 @@ bool Config_FollowDirection_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-constexpr Config_FollowDirection Config::FOLLOW_DIRECTION_NONE;
-constexpr Config_FollowDirection Config::FOLLOW_DIRECTION_BEHIND;
-constexpr Config_FollowDirection Config::FOLLOW_DIRECTION_FRONT;
-constexpr Config_FollowDirection Config::FOLLOW_DIRECTION_FRONT_RIGHT;
-constexpr Config_FollowDirection Config::FOLLOW_DIRECTION_FRONT_LEFT;
-constexpr Config_FollowDirection Config::FollowDirection_MIN;
-constexpr Config_FollowDirection Config::FollowDirection_MAX;
-constexpr int Config::FollowDirection_ARRAYSIZE;
+constexpr Config_FollowAltitudeMode Config::FOLLOW_ALTITUDE_MODE_CONSTANT;
+constexpr Config_FollowAltitudeMode Config::FOLLOW_ALTITUDE_MODE_TERRAIN;
+constexpr Config_FollowAltitudeMode Config::FOLLOW_ALTITUDE_MODE_TARGET_GPS;
+constexpr Config_FollowAltitudeMode Config::FollowAltitudeMode_MIN;
+constexpr Config_FollowAltitudeMode Config::FollowAltitudeMode_MAX;
+constexpr int Config::FollowAltitudeMode_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FollowMeResult_Result_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_follow_5fme_2ffollow_5fme_2eproto);
@@ -569,17 +570,17 @@ Config::Config(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 Config::Config(const Config& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&min_height_m_, &from.min_height_m_,
-    static_cast<size_t>(reinterpret_cast<char*>(&responsiveness_) -
-    reinterpret_cast<char*>(&min_height_m_)) + sizeof(responsiveness_));
+  ::memcpy(&follow_height_m_, &from.follow_height_m_,
+    static_cast<size_t>(reinterpret_cast<char*>(&follow_angle_deg_) -
+    reinterpret_cast<char*>(&follow_height_m_)) + sizeof(follow_angle_deg_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.follow_me.Config)
 }
 
 inline void Config::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&min_height_m_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&responsiveness_) -
-    reinterpret_cast<char*>(&min_height_m_)) + sizeof(responsiveness_));
+    reinterpret_cast<char*>(&follow_height_m_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&follow_angle_deg_) -
+    reinterpret_cast<char*>(&follow_height_m_)) + sizeof(follow_angle_deg_));
 }
 
 Config::~Config() {
@@ -605,9 +606,9 @@ void Config::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&min_height_m_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&responsiveness_) -
-      reinterpret_cast<char*>(&min_height_m_)) + sizeof(responsiveness_));
+  ::memset(&follow_height_m_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&follow_angle_deg_) -
+      reinterpret_cast<char*>(&follow_height_m_)) + sizeof(follow_angle_deg_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -617,15 +618,15 @@ const char* Config::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // float min_height_m = 1 [(.mavsdk.options.default_value) = "8.0"];
+      // float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0f"];
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
-          min_height_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          follow_height_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else
           goto handle_unusual;
         continue;
-      // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0"];
+      // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0f"];
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
           follow_distance_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
@@ -633,19 +634,35 @@ const char* Config::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
         } else
           goto handle_unusual;
         continue;
-      // .mavsdk.rpc.follow_me.Config.FollowDirection follow_direction = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-          _internal_set_follow_direction(static_cast<::mavsdk::rpc::follow_me::Config_FollowDirection>(val));
-        } else
-          goto handle_unusual;
-        continue;
-      // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.5"];
+      // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1f"];
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
           responsiveness_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.follow_me.Config.FollowAltitudeMode altitude_mode = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_altitude_mode(static_cast<::mavsdk::rpc::follow_me::Config_FollowAltitudeMode>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0f"];
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 53)) {
+          max_tangential_vel_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0f"];
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 61)) {
+          follow_angle_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else
           goto handle_unusual;
@@ -679,17 +696,17 @@ uint8_t* Config::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // float min_height_m = 1 [(.mavsdk.options.default_value) = "8.0"];
+  // float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0f"];
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_min_height_m = this->_internal_min_height_m();
-  uint32_t raw_min_height_m;
-  memcpy(&raw_min_height_m, &tmp_min_height_m, sizeof(tmp_min_height_m));
-  if (raw_min_height_m != 0) {
+  float tmp_follow_height_m = this->_internal_follow_height_m();
+  uint32_t raw_follow_height_m;
+  memcpy(&raw_follow_height_m, &tmp_follow_height_m, sizeof(tmp_follow_height_m));
+  if (raw_follow_height_m != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this->_internal_min_height_m(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this->_internal_follow_height_m(), target);
   }
 
-  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0"];
+  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0f"];
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_follow_distance_m = this->_internal_follow_distance_m();
   uint32_t raw_follow_distance_m;
@@ -699,14 +716,7 @@ uint8_t* Config::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_follow_distance_m(), target);
   }
 
-  // .mavsdk.rpc.follow_me.Config.FollowDirection follow_direction = 3;
-  if (this->_internal_follow_direction() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      3, this->_internal_follow_direction(), target);
-  }
-
-  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.5"];
+  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1f"];
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_responsiveness = this->_internal_responsiveness();
   uint32_t raw_responsiveness;
@@ -714,6 +724,33 @@ uint8_t* Config::_InternalSerialize(
   if (raw_responsiveness != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(4, this->_internal_responsiveness(), target);
+  }
+
+  // .mavsdk.rpc.follow_me.Config.FollowAltitudeMode altitude_mode = 5;
+  if (this->_internal_altitude_mode() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      5, this->_internal_altitude_mode(), target);
+  }
+
+  // float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0f"];
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_max_tangential_vel_m_s = this->_internal_max_tangential_vel_m_s();
+  uint32_t raw_max_tangential_vel_m_s;
+  memcpy(&raw_max_tangential_vel_m_s, &tmp_max_tangential_vel_m_s, sizeof(tmp_max_tangential_vel_m_s));
+  if (raw_max_tangential_vel_m_s != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(6, this->_internal_max_tangential_vel_m_s(), target);
+  }
+
+  // float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0f"];
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_follow_angle_deg = this->_internal_follow_angle_deg();
+  uint32_t raw_follow_angle_deg;
+  memcpy(&raw_follow_angle_deg, &tmp_follow_angle_deg, sizeof(tmp_follow_angle_deg));
+  if (raw_follow_angle_deg != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(7, this->_internal_follow_angle_deg(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -732,16 +769,16 @@ size_t Config::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // float min_height_m = 1 [(.mavsdk.options.default_value) = "8.0"];
+  // float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0f"];
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_min_height_m = this->_internal_min_height_m();
-  uint32_t raw_min_height_m;
-  memcpy(&raw_min_height_m, &tmp_min_height_m, sizeof(tmp_min_height_m));
-  if (raw_min_height_m != 0) {
+  float tmp_follow_height_m = this->_internal_follow_height_m();
+  uint32_t raw_follow_height_m;
+  memcpy(&raw_follow_height_m, &tmp_follow_height_m, sizeof(tmp_follow_height_m));
+  if (raw_follow_height_m != 0) {
     total_size += 1 + 4;
   }
 
-  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0"];
+  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0f"];
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_follow_distance_m = this->_internal_follow_distance_m();
   uint32_t raw_follow_distance_m;
@@ -750,18 +787,36 @@ size_t Config::ByteSizeLong() const {
     total_size += 1 + 4;
   }
 
-  // .mavsdk.rpc.follow_me.Config.FollowDirection follow_direction = 3;
-  if (this->_internal_follow_direction() != 0) {
-    total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_follow_direction());
-  }
-
-  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.5"];
+  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1f"];
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_responsiveness = this->_internal_responsiveness();
   uint32_t raw_responsiveness;
   memcpy(&raw_responsiveness, &tmp_responsiveness, sizeof(tmp_responsiveness));
   if (raw_responsiveness != 0) {
+    total_size += 1 + 4;
+  }
+
+  // .mavsdk.rpc.follow_me.Config.FollowAltitudeMode altitude_mode = 5;
+  if (this->_internal_altitude_mode() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_altitude_mode());
+  }
+
+  // float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0f"];
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_max_tangential_vel_m_s = this->_internal_max_tangential_vel_m_s();
+  uint32_t raw_max_tangential_vel_m_s;
+  memcpy(&raw_max_tangential_vel_m_s, &tmp_max_tangential_vel_m_s, sizeof(tmp_max_tangential_vel_m_s));
+  if (raw_max_tangential_vel_m_s != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0f"];
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_follow_angle_deg = this->_internal_follow_angle_deg();
+  uint32_t raw_follow_angle_deg;
+  memcpy(&raw_follow_angle_deg, &tmp_follow_angle_deg, sizeof(tmp_follow_angle_deg));
+  if (raw_follow_angle_deg != 0) {
     total_size += 1 + 4;
   }
 
@@ -788,11 +843,11 @@ void Config::MergeFrom(const Config& from) {
   (void) cached_has_bits;
 
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_min_height_m = from._internal_min_height_m();
-  uint32_t raw_min_height_m;
-  memcpy(&raw_min_height_m, &tmp_min_height_m, sizeof(tmp_min_height_m));
-  if (raw_min_height_m != 0) {
-    _internal_set_min_height_m(from._internal_min_height_m());
+  float tmp_follow_height_m = from._internal_follow_height_m();
+  uint32_t raw_follow_height_m;
+  memcpy(&raw_follow_height_m, &tmp_follow_height_m, sizeof(tmp_follow_height_m));
+  if (raw_follow_height_m != 0) {
+    _internal_set_follow_height_m(from._internal_follow_height_m());
   }
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_follow_distance_m = from._internal_follow_distance_m();
@@ -801,15 +856,29 @@ void Config::MergeFrom(const Config& from) {
   if (raw_follow_distance_m != 0) {
     _internal_set_follow_distance_m(from._internal_follow_distance_m());
   }
-  if (from._internal_follow_direction() != 0) {
-    _internal_set_follow_direction(from._internal_follow_direction());
-  }
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
   float tmp_responsiveness = from._internal_responsiveness();
   uint32_t raw_responsiveness;
   memcpy(&raw_responsiveness, &tmp_responsiveness, sizeof(tmp_responsiveness));
   if (raw_responsiveness != 0) {
     _internal_set_responsiveness(from._internal_responsiveness());
+  }
+  if (from._internal_altitude_mode() != 0) {
+    _internal_set_altitude_mode(from._internal_altitude_mode());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_max_tangential_vel_m_s = from._internal_max_tangential_vel_m_s();
+  uint32_t raw_max_tangential_vel_m_s;
+  memcpy(&raw_max_tangential_vel_m_s, &tmp_max_tangential_vel_m_s, sizeof(tmp_max_tangential_vel_m_s));
+  if (raw_max_tangential_vel_m_s != 0) {
+    _internal_set_max_tangential_vel_m_s(from._internal_max_tangential_vel_m_s());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_follow_angle_deg = from._internal_follow_angle_deg();
+  uint32_t raw_follow_angle_deg;
+  memcpy(&raw_follow_angle_deg, &tmp_follow_angle_deg, sizeof(tmp_follow_angle_deg));
+  if (raw_follow_angle_deg != 0) {
+    _internal_set_follow_angle_deg(from._internal_follow_angle_deg());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -829,11 +898,11 @@ void Config::InternalSwap(Config* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Config, responsiveness_)
-      + sizeof(Config::responsiveness_)
-      - PROTOBUF_FIELD_OFFSET(Config, min_height_m_)>(
-          reinterpret_cast<char*>(&min_height_m_),
-          reinterpret_cast<char*>(&other->min_height_m_));
+      PROTOBUF_FIELD_OFFSET(Config, follow_angle_deg_)
+      + sizeof(Config::follow_angle_deg_)
+      - PROTOBUF_FIELD_OFFSET(Config, follow_height_m_)>(
+          reinterpret_cast<char*>(&follow_height_m_),
+          reinterpret_cast<char*>(&other->follow_height_m_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Config::GetMetadata() const {

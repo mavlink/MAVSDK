@@ -127,33 +127,31 @@ namespace mavsdk {
 namespace rpc {
 namespace follow_me {
 
-enum Config_FollowDirection : int {
-  Config_FollowDirection_FOLLOW_DIRECTION_NONE = 0,
-  Config_FollowDirection_FOLLOW_DIRECTION_BEHIND = 1,
-  Config_FollowDirection_FOLLOW_DIRECTION_FRONT = 2,
-  Config_FollowDirection_FOLLOW_DIRECTION_FRONT_RIGHT = 3,
-  Config_FollowDirection_FOLLOW_DIRECTION_FRONT_LEFT = 4,
-  Config_FollowDirection_Config_FollowDirection_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  Config_FollowDirection_Config_FollowDirection_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+enum Config_FollowAltitudeMode : int {
+  Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT = 0,
+  Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TERRAIN = 1,
+  Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TARGET_GPS = 2,
+  Config_FollowAltitudeMode_Config_FollowAltitudeMode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  Config_FollowAltitudeMode_Config_FollowAltitudeMode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool Config_FollowDirection_IsValid(int value);
-constexpr Config_FollowDirection Config_FollowDirection_FollowDirection_MIN = Config_FollowDirection_FOLLOW_DIRECTION_NONE;
-constexpr Config_FollowDirection Config_FollowDirection_FollowDirection_MAX = Config_FollowDirection_FOLLOW_DIRECTION_FRONT_LEFT;
-constexpr int Config_FollowDirection_FollowDirection_ARRAYSIZE = Config_FollowDirection_FollowDirection_MAX + 1;
+bool Config_FollowAltitudeMode_IsValid(int value);
+constexpr Config_FollowAltitudeMode Config_FollowAltitudeMode_FollowAltitudeMode_MIN = Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT;
+constexpr Config_FollowAltitudeMode Config_FollowAltitudeMode_FollowAltitudeMode_MAX = Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TARGET_GPS;
+constexpr int Config_FollowAltitudeMode_FollowAltitudeMode_ARRAYSIZE = Config_FollowAltitudeMode_FollowAltitudeMode_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Config_FollowDirection_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Config_FollowAltitudeMode_descriptor();
 template<typename T>
-inline const std::string& Config_FollowDirection_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, Config_FollowDirection>::value ||
+inline const std::string& Config_FollowAltitudeMode_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, Config_FollowAltitudeMode>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function Config_FollowDirection_Name.");
+    "Incorrect type passed to function Config_FollowAltitudeMode_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    Config_FollowDirection_descriptor(), enum_t_value);
+    Config_FollowAltitudeMode_descriptor(), enum_t_value);
 }
-inline bool Config_FollowDirection_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, Config_FollowDirection* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Config_FollowDirection>(
-    Config_FollowDirection_descriptor(), name, value);
+inline bool Config_FollowAltitudeMode_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, Config_FollowAltitudeMode* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Config_FollowAltitudeMode>(
+    Config_FollowAltitudeMode_descriptor(), name, value);
 }
 enum FollowMeResult_Result : int {
   FollowMeResult_Result_RESULT_UNKNOWN = 0,
@@ -305,60 +303,58 @@ class Config final :
 
   // nested types ----------------------------------------------------
 
-  typedef Config_FollowDirection FollowDirection;
-  static constexpr FollowDirection FOLLOW_DIRECTION_NONE =
-    Config_FollowDirection_FOLLOW_DIRECTION_NONE;
-  static constexpr FollowDirection FOLLOW_DIRECTION_BEHIND =
-    Config_FollowDirection_FOLLOW_DIRECTION_BEHIND;
-  static constexpr FollowDirection FOLLOW_DIRECTION_FRONT =
-    Config_FollowDirection_FOLLOW_DIRECTION_FRONT;
-  static constexpr FollowDirection FOLLOW_DIRECTION_FRONT_RIGHT =
-    Config_FollowDirection_FOLLOW_DIRECTION_FRONT_RIGHT;
-  static constexpr FollowDirection FOLLOW_DIRECTION_FRONT_LEFT =
-    Config_FollowDirection_FOLLOW_DIRECTION_FRONT_LEFT;
-  static inline bool FollowDirection_IsValid(int value) {
-    return Config_FollowDirection_IsValid(value);
+  typedef Config_FollowAltitudeMode FollowAltitudeMode;
+  static constexpr FollowAltitudeMode FOLLOW_ALTITUDE_MODE_CONSTANT =
+    Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT;
+  static constexpr FollowAltitudeMode FOLLOW_ALTITUDE_MODE_TERRAIN =
+    Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TERRAIN;
+  static constexpr FollowAltitudeMode FOLLOW_ALTITUDE_MODE_TARGET_GPS =
+    Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_TARGET_GPS;
+  static inline bool FollowAltitudeMode_IsValid(int value) {
+    return Config_FollowAltitudeMode_IsValid(value);
   }
-  static constexpr FollowDirection FollowDirection_MIN =
-    Config_FollowDirection_FollowDirection_MIN;
-  static constexpr FollowDirection FollowDirection_MAX =
-    Config_FollowDirection_FollowDirection_MAX;
-  static constexpr int FollowDirection_ARRAYSIZE =
-    Config_FollowDirection_FollowDirection_ARRAYSIZE;
+  static constexpr FollowAltitudeMode FollowAltitudeMode_MIN =
+    Config_FollowAltitudeMode_FollowAltitudeMode_MIN;
+  static constexpr FollowAltitudeMode FollowAltitudeMode_MAX =
+    Config_FollowAltitudeMode_FollowAltitudeMode_MAX;
+  static constexpr int FollowAltitudeMode_ARRAYSIZE =
+    Config_FollowAltitudeMode_FollowAltitudeMode_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  FollowDirection_descriptor() {
-    return Config_FollowDirection_descriptor();
+  FollowAltitudeMode_descriptor() {
+    return Config_FollowAltitudeMode_descriptor();
   }
   template<typename T>
-  static inline const std::string& FollowDirection_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, FollowDirection>::value ||
+  static inline const std::string& FollowAltitudeMode_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, FollowAltitudeMode>::value ||
       ::std::is_integral<T>::value,
-      "Incorrect type passed to function FollowDirection_Name.");
-    return Config_FollowDirection_Name(enum_t_value);
+      "Incorrect type passed to function FollowAltitudeMode_Name.");
+    return Config_FollowAltitudeMode_Name(enum_t_value);
   }
-  static inline bool FollowDirection_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
-      FollowDirection* value) {
-    return Config_FollowDirection_Parse(name, value);
+  static inline bool FollowAltitudeMode_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      FollowAltitudeMode* value) {
+    return Config_FollowAltitudeMode_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMinHeightMFieldNumber = 1,
+    kFollowHeightMFieldNumber = 1,
     kFollowDistanceMFieldNumber = 2,
-    kFollowDirectionFieldNumber = 3,
     kResponsivenessFieldNumber = 4,
+    kAltitudeModeFieldNumber = 5,
+    kMaxTangentialVelMSFieldNumber = 6,
+    kFollowAngleDegFieldNumber = 7,
   };
-  // float min_height_m = 1 [(.mavsdk.options.default_value) = "8.0"];
-  void clear_min_height_m();
-  float min_height_m() const;
-  void set_min_height_m(float value);
+  // float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0f"];
+  void clear_follow_height_m();
+  float follow_height_m() const;
+  void set_follow_height_m(float value);
   private:
-  float _internal_min_height_m() const;
-  void _internal_set_min_height_m(float value);
+  float _internal_follow_height_m() const;
+  void _internal_set_follow_height_m(float value);
   public:
 
-  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0"];
+  // float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0f"];
   void clear_follow_distance_m();
   float follow_distance_m() const;
   void set_follow_distance_m(float value);
@@ -367,22 +363,40 @@ class Config final :
   void _internal_set_follow_distance_m(float value);
   public:
 
-  // .mavsdk.rpc.follow_me.Config.FollowDirection follow_direction = 3;
-  void clear_follow_direction();
-  ::mavsdk::rpc::follow_me::Config_FollowDirection follow_direction() const;
-  void set_follow_direction(::mavsdk::rpc::follow_me::Config_FollowDirection value);
-  private:
-  ::mavsdk::rpc::follow_me::Config_FollowDirection _internal_follow_direction() const;
-  void _internal_set_follow_direction(::mavsdk::rpc::follow_me::Config_FollowDirection value);
-  public:
-
-  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.5"];
+  // float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1f"];
   void clear_responsiveness();
   float responsiveness() const;
   void set_responsiveness(float value);
   private:
   float _internal_responsiveness() const;
   void _internal_set_responsiveness(float value);
+  public:
+
+  // .mavsdk.rpc.follow_me.Config.FollowAltitudeMode altitude_mode = 5;
+  void clear_altitude_mode();
+  ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode altitude_mode() const;
+  void set_altitude_mode(::mavsdk::rpc::follow_me::Config_FollowAltitudeMode value);
+  private:
+  ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode _internal_altitude_mode() const;
+  void _internal_set_altitude_mode(::mavsdk::rpc::follow_me::Config_FollowAltitudeMode value);
+  public:
+
+  // float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0f"];
+  void clear_max_tangential_vel_m_s();
+  float max_tangential_vel_m_s() const;
+  void set_max_tangential_vel_m_s(float value);
+  private:
+  float _internal_max_tangential_vel_m_s() const;
+  void _internal_set_max_tangential_vel_m_s(float value);
+  public:
+
+  // float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0f"];
+  void clear_follow_angle_deg();
+  float follow_angle_deg() const;
+  void set_follow_angle_deg(float value);
+  private:
+  float _internal_follow_angle_deg() const;
+  void _internal_set_follow_angle_deg(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.follow_me.Config)
@@ -392,10 +406,12 @@ class Config final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  float min_height_m_;
+  float follow_height_m_;
   float follow_distance_m_;
-  int follow_direction_;
   float responsiveness_;
+  int altitude_mode_;
+  float max_tangential_vel_m_s_;
+  float follow_angle_deg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_follow_5fme_2ffollow_5fme_2eproto;
 };
@@ -2750,27 +2766,27 @@ class FollowMeResult final :
 #endif  // __GNUC__
 // Config
 
-// float min_height_m = 1 [(.mavsdk.options.default_value) = "8.0"];
-inline void Config::clear_min_height_m() {
-  min_height_m_ = 0;
+// float follow_height_m = 1 [(.mavsdk.options.default_value) = "8.0f"];
+inline void Config::clear_follow_height_m() {
+  follow_height_m_ = 0;
 }
-inline float Config::_internal_min_height_m() const {
-  return min_height_m_;
+inline float Config::_internal_follow_height_m() const {
+  return follow_height_m_;
 }
-inline float Config::min_height_m() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.follow_me.Config.min_height_m)
-  return _internal_min_height_m();
+inline float Config::follow_height_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.follow_me.Config.follow_height_m)
+  return _internal_follow_height_m();
 }
-inline void Config::_internal_set_min_height_m(float value) {
+inline void Config::_internal_set_follow_height_m(float value) {
   
-  min_height_m_ = value;
+  follow_height_m_ = value;
 }
-inline void Config::set_min_height_m(float value) {
-  _internal_set_min_height_m(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.min_height_m)
+inline void Config::set_follow_height_m(float value) {
+  _internal_set_follow_height_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.follow_height_m)
 }
 
-// float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0"];
+// float follow_distance_m = 2 [(.mavsdk.options.default_value) = "8.0f"];
 inline void Config::clear_follow_distance_m() {
   follow_distance_m_ = 0;
 }
@@ -2790,27 +2806,7 @@ inline void Config::set_follow_distance_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.follow_distance_m)
 }
 
-// .mavsdk.rpc.follow_me.Config.FollowDirection follow_direction = 3;
-inline void Config::clear_follow_direction() {
-  follow_direction_ = 0;
-}
-inline ::mavsdk::rpc::follow_me::Config_FollowDirection Config::_internal_follow_direction() const {
-  return static_cast< ::mavsdk::rpc::follow_me::Config_FollowDirection >(follow_direction_);
-}
-inline ::mavsdk::rpc::follow_me::Config_FollowDirection Config::follow_direction() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.follow_me.Config.follow_direction)
-  return _internal_follow_direction();
-}
-inline void Config::_internal_set_follow_direction(::mavsdk::rpc::follow_me::Config_FollowDirection value) {
-  
-  follow_direction_ = value;
-}
-inline void Config::set_follow_direction(::mavsdk::rpc::follow_me::Config_FollowDirection value) {
-  _internal_set_follow_direction(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.follow_direction)
-}
-
-// float responsiveness = 4 [(.mavsdk.options.default_value) = "0.5"];
+// float responsiveness = 4 [(.mavsdk.options.default_value) = "0.1f"];
 inline void Config::clear_responsiveness() {
   responsiveness_ = 0;
 }
@@ -2828,6 +2824,66 @@ inline void Config::_internal_set_responsiveness(float value) {
 inline void Config::set_responsiveness(float value) {
   _internal_set_responsiveness(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.responsiveness)
+}
+
+// .mavsdk.rpc.follow_me.Config.FollowAltitudeMode altitude_mode = 5;
+inline void Config::clear_altitude_mode() {
+  altitude_mode_ = 0;
+}
+inline ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode Config::_internal_altitude_mode() const {
+  return static_cast< ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode >(altitude_mode_);
+}
+inline ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode Config::altitude_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.follow_me.Config.altitude_mode)
+  return _internal_altitude_mode();
+}
+inline void Config::_internal_set_altitude_mode(::mavsdk::rpc::follow_me::Config_FollowAltitudeMode value) {
+  
+  altitude_mode_ = value;
+}
+inline void Config::set_altitude_mode(::mavsdk::rpc::follow_me::Config_FollowAltitudeMode value) {
+  _internal_set_altitude_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.altitude_mode)
+}
+
+// float max_tangential_vel_m_s = 6 [(.mavsdk.options.default_value) = "8.0f"];
+inline void Config::clear_max_tangential_vel_m_s() {
+  max_tangential_vel_m_s_ = 0;
+}
+inline float Config::_internal_max_tangential_vel_m_s() const {
+  return max_tangential_vel_m_s_;
+}
+inline float Config::max_tangential_vel_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.follow_me.Config.max_tangential_vel_m_s)
+  return _internal_max_tangential_vel_m_s();
+}
+inline void Config::_internal_set_max_tangential_vel_m_s(float value) {
+  
+  max_tangential_vel_m_s_ = value;
+}
+inline void Config::set_max_tangential_vel_m_s(float value) {
+  _internal_set_max_tangential_vel_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.max_tangential_vel_m_s)
+}
+
+// float follow_angle_deg = 7 [(.mavsdk.options.default_value) = "180.0f"];
+inline void Config::clear_follow_angle_deg() {
+  follow_angle_deg_ = 0;
+}
+inline float Config::_internal_follow_angle_deg() const {
+  return follow_angle_deg_;
+}
+inline float Config::follow_angle_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.follow_me.Config.follow_angle_deg)
+  return _internal_follow_angle_deg();
+}
+inline void Config::_internal_set_follow_angle_deg(float value) {
+  
+  follow_angle_deg_ = value;
+}
+inline void Config::set_follow_angle_deg(float value) {
+  _internal_set_follow_angle_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.follow_me.Config.follow_angle_deg)
 }
 
 // -------------------------------------------------------------------
@@ -3868,10 +3924,10 @@ inline void FollowMeResult::set_allocated_result_str(std::string* result_str) {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::mavsdk::rpc::follow_me::Config_FollowDirection> : ::std::true_type {};
+template <> struct is_proto_enum< ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::follow_me::Config_FollowDirection>() {
-  return ::mavsdk::rpc::follow_me::Config_FollowDirection_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode>() {
+  return ::mavsdk::rpc::follow_me::Config_FollowAltitudeMode_descriptor();
 }
 template <> struct is_proto_enum< ::mavsdk::rpc::follow_me::FollowMeResult_Result> : ::std::true_type {};
 template <>
