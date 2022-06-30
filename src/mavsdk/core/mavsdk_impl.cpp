@@ -628,13 +628,12 @@ Mavsdk::NewSystemHandle
 MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-    const bool is_first_subscription = _new_system_callbacks.empty();
-    const auto handle = _new_system_callbacks.subscribe(callback);
 
-    if (is_first_subscription && is_any_system_connected()) {
-        _new_system_callbacks.queue([this](const auto& func) { call_user_callback(func); });
+    if (callback != nullptr && is_any_system_connected()) {
+        call_user_callback([temp_callback = callback]() { temp_callback(); });
     }
-    return handle;
+
+    return _new_system_callbacks.subscribe(callback);
 }
 
 void MavsdkImpl::unsubscribe_on_new_system(Mavsdk::NewSystemHandle handle)
