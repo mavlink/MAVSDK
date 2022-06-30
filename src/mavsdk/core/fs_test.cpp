@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
-#include <unistd.h>
 #include "fs.h"
 
 #if !defined(WINDOWS)
 #define PATH_MAX 4096
+
+#include <unistd.h>
 
 TEST(Filesystem, AbsolutePathUnchanged)
 {
