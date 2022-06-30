@@ -24,6 +24,9 @@ TEST_F(SitlTest, ActionHoverAsync)
             if (mavsdk.systems().size() == 1) {
                 system = mavsdk.systems().at(0);
                 ASSERT_TRUE(system->has_autopilot());
+
+                // Unregister to prevent fulfilling promise twice.
+                mavsdk.subscribe_on_new_system(nullptr);
                 prom.set_value();
             }
         });
