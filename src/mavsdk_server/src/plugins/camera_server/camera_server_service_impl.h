@@ -380,22 +380,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_take_photo(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const int32_t take_photo) {
-                rpc::camera_server::TakePhotoResponse rpc_response;
+        const mavsdk::CameraServer::TakePhotoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_take_photo(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const int32_t take_photo) {
+                    rpc::camera_server::TakePhotoResponse rpc_response;
 
-                rpc_response.set_index(take_photo);
+                    rpc_response.set_index(take_photo);
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_take_photo(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_take_photo(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);

@@ -365,8 +365,8 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_control(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
+        const mavsdk::Gimbal::ControlHandle handle = _lazy_plugin.maybe_plugin()->subscribe_control(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
                 const mavsdk::Gimbal::ControlStatus control) {
                 rpc::gimbal::ControlResponse rpc_response;
 
@@ -375,7 +375,7 @@ public:
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_control(nullptr);
+                    _lazy_plugin.maybe_plugin()->unsubscribe_control(handle);
 
                     *is_finished = true;
                     unregister_stream_stop_promise(stream_closed_promise);

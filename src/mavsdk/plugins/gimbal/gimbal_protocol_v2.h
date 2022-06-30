@@ -12,7 +12,7 @@ public:
         const mavlink_gimbal_manager_information_t& information,
         uint8_t gimbal_manager_sysid,
         uint8_t gimbal_manager_compid);
-    ~GimbalProtocolV2() = default;
+    ~GimbalProtocolV2() override = default;
 
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) override;
     void set_pitch_and_yaw_async(

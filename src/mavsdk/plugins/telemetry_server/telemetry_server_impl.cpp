@@ -227,6 +227,9 @@ TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text
             break;
     }
 
+    // Prevent memcpy in mavlink function to read outside of allocated data.
+    status_text.text.resize(sizeof(mavlink_statustext_t::text));
+
     mavlink_msg_statustext_pack(
         _server_component_impl->get_own_system_id(),
         _server_component_impl->get_own_component_id(),

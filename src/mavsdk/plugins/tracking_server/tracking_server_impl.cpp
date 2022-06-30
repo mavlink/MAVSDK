@@ -1,7 +1,12 @@
 #include "tracking_server_impl.h"
+#include "callback_list.tpp"
 #include <mutex>
 
 namespace mavsdk {
+
+template class CallbackList<TrackingServer::TrackPoint>;
+template class CallbackList<TrackingServer::TrackRectangle>;
+template class CallbackList<int32_t>;
 
 TrackingServerImpl::TrackingServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)
@@ -109,25 +114,47 @@ void TrackingServerImpl::set_tracking_off_status()
     _server_component_impl->send_message(message);
 }
 
-void TrackingServerImpl::subscribe_tracking_point_command(
-    TrackingServer::TrackingPointCommandCallback callback)
+TrackingServer::TrackingPointCommandHandle TrackingServerImpl::subscribe_tracking_point_command(
+    const TrackingServer::TrackingPointCommandCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    _tracking_point_callback = callback;
+    return _tracking_point_callbacks.subscribe(callback);
 }
 
-void TrackingServerImpl::subscribe_tracking_rectangle_command(
-    TrackingServer::TrackingRectangleCommandCallback callback)
+void TrackingServerImpl::unsubscribe_tracking_point_command(
+    TrackingServer::TrackingPointCommandHandle handle)
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    _tracking_rectangle_callback = callback;
+    _tracking_point_callbacks.unsubscribe(handle);
 }
 
-void TrackingServerImpl::subscribe_tracking_off_command(
-    TrackingServer::TrackingOffCommandCallback callback)
+TrackingServer::TrackingRectangleCommandHandle
+TrackingServerImpl::subscribe_tracking_rectangle_command(
+    const TrackingServer::TrackingRectangleCommandCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    _tracking_off_callback = callback;
+    return _tracking_rectangle_callbacks.subscribe(callback);
+}
+
+void TrackingServerImpl::unsubscribe_tracking_rectangle_command(
+    TrackingServer::TrackingRectangleCommandHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _tracking_rectangle_callbacks.unsubscribe(handle);
+}
+
+TrackingServer::TrackingOffCommandHandle TrackingServerImpl::subscribe_tracking_off_command(
+    const TrackingServer::TrackingOffCommandCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return _tracking_off_callbacks.subscribe(callback);
+}
+
+void TrackingServerImpl::unsubscribe_tracking_off_command(
+    TrackingServer::TrackingOffCommandHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _tracking_off_callbacks.unsubscribe(handle);
 }
 
 TrackingServer::Result
@@ -210,10 +237,9 @@ TrackingServerImpl::process_track_point_command(const MavlinkCommandReceiver::Co
     _tracking_point_command_sysid = command.origin_system_id;
     _tracking_point_command_compid = command.origin_component_id;
 
-    auto temp_callback = _tracking_point_callback;
-
-    _server_component_impl->call_user_callback(
-        [temp_callback, track_point]() { temp_callback(track_point); });
+    _tracking_point_callbacks.queue(track_point, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
 
     // We don't send an ack but leave that to the user.
     return std::nullopt;
@@ -236,10 +262,9 @@ std::optional<mavlink_message_t> TrackingServerImpl::process_track_rectangle_com
     _tracking_rectangle_command_sysid = command.origin_system_id;
     _tracking_rectangle_command_compid = command.origin_component_id;
 
-    auto temp_callback = _tracking_rectangle_callback;
-
-    _server_component_impl->call_user_callback(
-        [temp_callback, track_rectangle]() { temp_callback(track_rectangle); });
+    _tracking_rectangle_callbacks.queue(track_rectangle, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
 
     // We don't send an ack but leave that to the user.
     return std::nullopt;
@@ -259,9 +284,8 @@ TrackingServerImpl::process_track_off_command(const MavlinkCommandReceiver::Comm
     _tracking_off_command_sysid = command.origin_system_id;
     _tracking_off_command_compid = command.origin_component_id;
 
-    auto temp_callback = _tracking_off_callback;
-
-    _server_component_impl->call_user_callback([temp_callback]() { temp_callback(0); });
+    _tracking_off_callbacks.queue(
+        0, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     // We don't send an ack but leave that to the user.
     return std::nullopt;

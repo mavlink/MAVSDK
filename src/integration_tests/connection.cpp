@@ -75,7 +75,7 @@ static std::shared_ptr<System> discover_system(Mavsdk& mavsdk_instance)
 
 static void prepare_autopilot(MavlinkPassthrough& mavlink_passthrough)
 {
-    mavlink_passthrough.subscribe_message_async(
+    mavlink_passthrough.subscribe_message(
         MAVLINK_MSG_ID_COMMAND_LONG,
         [&mavlink_passthrough](const mavlink_message_t& mavlink_message) {
             mavlink_command_long_t cmd_read;

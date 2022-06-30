@@ -11,7 +11,6 @@
 
 using namespace mavsdk;
 
-static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
 static std::vector<Mission::MissionItem> create_mission_items();
 static bool should_keep_message(const mavlink_message_t& message);
 
@@ -42,7 +41,11 @@ TEST_F(SitlTest, PX4MissionTransferLossy)
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
     auto mission = std::make_shared<Mission>(system);
 
-    set_link_lossy(mavlink_passthrough);
+    mavsdk.intercept_outgoing_messages_async(
+        [](const mavlink_message_t& message) { return should_keep_message(message); });
+
+    mavsdk.intercept_incoming_messages_async(
+        [](const mavlink_message_t& message) { return should_keep_message(message); });
 
     Mission::MissionPlan mission_plan;
     mission_plan.mission_items = create_mission_items();
@@ -53,15 +56,6 @@ TEST_F(SitlTest, PX4MissionTransferLossy)
     ASSERT_EQ(result.first, Mission::Result::Success);
 
     EXPECT_EQ(mission_plan, result.second);
-}
-
-void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
-{
-    mavlink_passthrough->intercept_outgoing_messages_async(
-        [](const mavlink_message_t& message) { return should_keep_message(message); });
-
-    mavlink_passthrough->intercept_incoming_messages_async(
-        [](const mavlink_message_t& message) { return should_keep_message(message); });
 }
 
 bool should_keep_message(const mavlink_message_t& message)

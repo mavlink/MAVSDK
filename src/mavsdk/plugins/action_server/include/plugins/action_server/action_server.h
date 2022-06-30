@@ -13,7 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/server_plugin_base.h"
+#include "server_plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -158,79 +160,142 @@ public:
     /**
      * @brief Callback type for subscribe_arm_disarm.
      */
-
     using ArmDisarmCallback = std::function<void(Result, ArmDisarm)>;
+
+    /**
+     * @brief Handle type for subscribe_arm_disarm.
+     */
+    using ArmDisarmHandle = Handle<Result, ArmDisarm>;
 
     /**
      * @brief Subscribe to ARM/DISARM commands
      */
-    void subscribe_arm_disarm(ArmDisarmCallback callback);
+    ArmDisarmHandle subscribe_arm_disarm(const ArmDisarmCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_arm_disarm
+     */
+    void unsubscribe_arm_disarm(ArmDisarmHandle handle);
 
     /**
      * @brief Callback type for subscribe_flight_mode_change.
      */
-
     using FlightModeChangeCallback = std::function<void(Result, FlightMode)>;
+
+    /**
+     * @brief Handle type for subscribe_flight_mode_change.
+     */
+    using FlightModeChangeHandle = Handle<Result, FlightMode>;
 
     /**
      * @brief Subscribe to DO_SET_MODE
      */
-    void subscribe_flight_mode_change(FlightModeChangeCallback callback);
+    FlightModeChangeHandle subscribe_flight_mode_change(const FlightModeChangeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_flight_mode_change
+     */
+    void unsubscribe_flight_mode_change(FlightModeChangeHandle handle);
 
     /**
      * @brief Callback type for subscribe_takeoff.
      */
-
     using TakeoffCallback = std::function<void(Result, bool)>;
+
+    /**
+     * @brief Handle type for subscribe_takeoff.
+     */
+    using TakeoffHandle = Handle<Result, bool>;
 
     /**
      * @brief Subscribe to takeoff command
      */
-    void subscribe_takeoff(TakeoffCallback callback);
+    TakeoffHandle subscribe_takeoff(const TakeoffCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_takeoff
+     */
+    void unsubscribe_takeoff(TakeoffHandle handle);
 
     /**
      * @brief Callback type for subscribe_land.
      */
-
     using LandCallback = std::function<void(Result, bool)>;
+
+    /**
+     * @brief Handle type for subscribe_land.
+     */
+    using LandHandle = Handle<Result, bool>;
 
     /**
      * @brief Subscribe to land command
      */
-    void subscribe_land(LandCallback callback);
+    LandHandle subscribe_land(const LandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_land
+     */
+    void unsubscribe_land(LandHandle handle);
 
     /**
      * @brief Callback type for subscribe_reboot.
      */
-
     using RebootCallback = std::function<void(Result, bool)>;
+
+    /**
+     * @brief Handle type for subscribe_reboot.
+     */
+    using RebootHandle = Handle<Result, bool>;
 
     /**
      * @brief Subscribe to reboot command
      */
-    void subscribe_reboot(RebootCallback callback);
+    RebootHandle subscribe_reboot(const RebootCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_reboot
+     */
+    void unsubscribe_reboot(RebootHandle handle);
 
     /**
      * @brief Callback type for subscribe_shutdown.
      */
-
     using ShutdownCallback = std::function<void(Result, bool)>;
+
+    /**
+     * @brief Handle type for subscribe_shutdown.
+     */
+    using ShutdownHandle = Handle<Result, bool>;
 
     /**
      * @brief Subscribe to shutdown command
      */
-    void subscribe_shutdown(ShutdownCallback callback);
+    ShutdownHandle subscribe_shutdown(const ShutdownCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_shutdown
+     */
+    void unsubscribe_shutdown(ShutdownHandle handle);
 
     /**
      * @brief Callback type for subscribe_terminate.
      */
-
     using TerminateCallback = std::function<void(Result, bool)>;
+
+    /**
+     * @brief Handle type for subscribe_terminate.
+     */
+    using TerminateHandle = Handle<Result, bool>;
 
     /**
      * @brief Subscribe to terminate command
      */
-    void subscribe_terminate(TerminateCallback callback);
+    TerminateHandle subscribe_terminate(const TerminateCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_terminate
+     */
+    void unsubscribe_terminate(TerminateHandle handle);
 
     /**
      * @brief Can the vehicle takeoff

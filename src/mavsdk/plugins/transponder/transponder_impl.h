@@ -2,6 +2,7 @@
 
 #include "plugins/transponder/transponder.h"
 #include "plugin_impl_base.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -23,7 +24,9 @@ public:
 
     Transponder::AdsbVehicle transponder() const;
 
-    void subscribe_transponder(Transponder::TransponderCallback callback);
+    Transponder::TransponderHandle
+    subscribe_transponder(const Transponder::TransponderCallback& callback);
+    void unsubscribe_transponder(Transponder::TransponderHandle handle);
 
 private:
     void set_transponder(Transponder::AdsbVehicle transponder);
@@ -40,7 +43,7 @@ private:
     Transponder::AdsbVehicle _transponder{};
 
     std::mutex _subscription_mutex{};
-    Transponder::TransponderCallback _transponder_subscription{nullptr};
+    CallbackList<Transponder::AdsbVehicle> _transponder_subscriptions{};
 };
 
 } // namespace mavsdk

@@ -4,6 +4,7 @@
 #include "gimbal_protocol_base.h"
 #include "plugin_impl_base.h"
 #include "system.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -44,7 +45,8 @@ public:
     void release_control_async(Gimbal::ResultCallback callback);
 
     Gimbal::ControlStatus control();
-    void subscribe_control(Gimbal::ControlCallback callback);
+    Gimbal::ControlHandle subscribe_control(const Gimbal::ControlCallback& callback);
+    void unsubscribe_control(Gimbal::ControlHandle handle);
 
     static Gimbal::Result
     gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);
@@ -65,6 +67,9 @@ private:
     void wait_for_protocol_async(std::function<void()> callback);
     void receive_protocol_timeout();
     void process_gimbal_manager_information(const mavlink_message_t& message);
+
+    std::mutex _mutex{};
+    CallbackList<Gimbal::ControlStatus> _control_subscriptions{};
 };
 
 } // namespace mavsdk

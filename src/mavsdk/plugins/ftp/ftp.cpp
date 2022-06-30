@@ -23,12 +23,13 @@ void Ftp::reset_async(const ResultCallback callback)
 }
 
 void Ftp::download_async(
-    std::string remote_file_path, std::string local_dir, DownloadCallback callback)
+    std::string remote_file_path, std::string local_dir, const DownloadCallback& callback)
 {
     _impl->download_async(remote_file_path, local_dir, callback);
 }
 
-void Ftp::upload_async(std::string local_file_path, std::string remote_dir, UploadCallback callback)
+void Ftp::upload_async(
+    std::string local_file_path, std::string remote_dir, const UploadCallback& callback)
 {
     _impl->upload_async(local_file_path, remote_dir, callback);
 }

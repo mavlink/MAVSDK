@@ -23,9 +23,15 @@ Transponder::Transponder(std::shared_ptr<System> system) :
 
 Transponder::~Transponder() {}
 
-void Transponder::subscribe_transponder(TransponderCallback callback)
+Transponder::TransponderHandle
+Transponder::subscribe_transponder(const TransponderCallback& callback)
 {
-    _impl->subscribe_transponder(callback);
+    return _impl->subscribe_transponder(callback);
+}
+
+void Transponder::unsubscribe_transponder(TransponderHandle handle)
+{
+    _impl->unsubscribe_transponder(handle);
 }
 
 Transponder::AdsbVehicle Transponder::transponder() const

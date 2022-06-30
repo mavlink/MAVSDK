@@ -1,9 +1,16 @@
 #include "callback_list.h"
+#include "callback_list.tpp"
 #include "log.h"
 #include <gtest/gtest.h>
 
-using namespace mavsdk;
+namespace mavsdk {
 
+template class CallbackList<int, double>;
+template class CallbackList<>;
+
+} // namespace mavsdk
+
+using namespace mavsdk;
 TEST(CallbackList, SubscribeCallUnsubscribe)
 {
     unsigned first_called = 0;
@@ -68,4 +75,26 @@ TEST(CallbackList, UnsubscribeFromCallback)
     cl();
     cl();
     EXPECT_EQ(called, 1);
+}
+
+TEST(CallbackList, UnsubscribeAllWithNullptr)
+{
+    // This is to deal with the previous API where nullptr would
+    // unsubscribe the callback.
+    unsigned num_called = 0;
+
+    CallbackList<> cl;
+    cl.subscribe([&]() { ++num_called; });
+
+    // Call once.
+    cl();
+
+    // Unsubscribe using legacy way.
+    cl.subscribe(nullptr);
+
+    // Call again.
+    cl();
+
+    // It should only be called once.
+    EXPECT_EQ(num_called, 1);
 }

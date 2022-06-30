@@ -13,7 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -120,57 +122,52 @@ public:
     /**
      * @brief Callback type for calibrate_gyro_async.
      */
-
     using CalibrateGyroCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Perform gyro calibration.
      */
-    void calibrate_gyro_async(CalibrateGyroCallback callback);
+    void calibrate_gyro_async(const CalibrateGyroCallback& callback);
 
     /**
      * @brief Callback type for calibrate_accelerometer_async.
      */
-
     using CalibrateAccelerometerCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Perform accelerometer calibration.
      */
-    void calibrate_accelerometer_async(CalibrateAccelerometerCallback callback);
+    void calibrate_accelerometer_async(const CalibrateAccelerometerCallback& callback);
 
     /**
      * @brief Callback type for calibrate_magnetometer_async.
      */
-
     using CalibrateMagnetometerCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Perform magnetometer calibration.
      */
-    void calibrate_magnetometer_async(CalibrateMagnetometerCallback callback);
+    void calibrate_magnetometer_async(const CalibrateMagnetometerCallback& callback);
 
     /**
      * @brief Callback type for calibrate_level_horizon_async.
      */
-
     using CalibrateLevelHorizonCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Perform board level horizon calibration.
      */
-    void calibrate_level_horizon_async(CalibrateLevelHorizonCallback callback);
+    void calibrate_level_horizon_async(const CalibrateLevelHorizonCallback& callback);
 
     /**
      * @brief Callback type for calibrate_gimbal_accelerometer_async.
      */
-
     using CalibrateGimbalAccelerometerCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Perform gimbal accelerometer calibration.
      */
-    void calibrate_gimbal_accelerometer_async(CalibrateGimbalAccelerometerCallback callback);
+    void calibrate_gimbal_accelerometer_async(const CalibrateGimbalAccelerometerCallback& callback);
 
     /**
      * @brief Cancel ongoing calibration process.

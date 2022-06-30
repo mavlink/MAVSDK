@@ -1,5 +1,6 @@
 #pragma once
 
+#include "callback_list.h"
 #include "flight_mode.h"
 #include "mavlink_address.h"
 #include "mavlink_include.h"
@@ -43,7 +44,8 @@ public:
 
     void enable_timesync();
 
-    void subscribe_is_connected(System::IsConnectedCallback callback);
+    System::IsConnectedHandle subscribe_is_connected(const System::IsConnectedCallback& callback);
+    void unsubscribe_is_connected(System::IsConnectedHandle handle);
 
     // void process_mavlink_message(mavlink_message_t& message);
 
@@ -100,8 +102,13 @@ public:
     void add_new_component(uint8_t component_id);
     size_t total_components() const;
 
-    void register_component_discovered_callback(System::DiscoverCallback callback);
-    void register_component_discovered_id_callback(System::DiscoverIdCallback callback);
+    System::ComponentDiscoveredHandle
+    subscribe_component_discovered(const System::ComponentDiscoveredCallback& callback);
+    void unsubscribe_component_discovered(System::ComponentDiscoveredHandle handle);
+
+    System::ComponentDiscoveredIdHandle
+    subscribe_component_discovered_id(const System::ComponentDiscoveredIdCallback& callback);
+    void unsubscribe_component_discovered_id(System::ComponentDiscoveredIdHandle handle);
 
     uint8_t get_autopilot_id() const;
     std::vector<uint8_t> get_camera_ids() const;
@@ -266,9 +273,6 @@ public:
 
     RequestMessage& request_message() { return _request_message; };
 
-    void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
-    void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
-
     // Non-copyable
     SystemImpl(const SystemImpl&) = delete;
     const SystemImpl& operator=(const SystemImpl&) = delete;
@@ -320,8 +324,8 @@ private:
         const GetParamIntCallback& callback);
 
     std::mutex _component_discovered_callback_mutex{};
-    System::DiscoverCallback _component_discovered_callback{nullptr};
-    System::DiscoverIdCallback _component_discovered_id_callback{nullptr};
+    CallbackList<System::ComponentType> _component_discovered_callbacks{};
+    CallbackList<System::ComponentType, uint8_t> _component_discovered_id_callbacks{};
 
     MAVLinkAddress _target_address{};
 
@@ -351,7 +355,7 @@ private:
 
     std::mutex _connection_mutex{};
     std::atomic<bool> _connected{false};
-    System::IsConnectedCallback _is_connected_callback{nullptr};
+    CallbackList<bool> _is_connected_callbacks{};
     void* _heartbeat_timeout_cookie = nullptr;
 
     std::atomic<bool> _autopilot_version_pending{false};

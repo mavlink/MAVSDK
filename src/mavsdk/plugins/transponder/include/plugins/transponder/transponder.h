@@ -13,7 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -171,13 +173,22 @@ public:
     /**
      * @brief Callback type for subscribe_transponder.
      */
-
     using TransponderCallback = std::function<void(AdsbVehicle)>;
+
+    /**
+     * @brief Handle type for subscribe_transponder.
+     */
+    using TransponderHandle = Handle<AdsbVehicle>;
 
     /**
      * @brief Subscribe to 'transponder' updates.
      */
-    void subscribe_transponder(TransponderCallback callback);
+    TransponderHandle subscribe_transponder(const TransponderCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_transponder
+     */
+    void unsubscribe_transponder(TransponderHandle handle);
 
     /**
      * @brief Poll for 'AdsbVehicle' (blocking).

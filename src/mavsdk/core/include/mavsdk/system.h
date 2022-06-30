@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "deprecated.h"
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -108,11 +109,21 @@ public:
     using IsConnectedCallback = std::function<void(bool)>;
 
     /**
+     * @brief handle type to unsubscribe from subscribe_is_connected.
+     */
+    using IsConnectedHandle = Handle<bool>;
+
+    /**
      * @brief Subscribe to callback to be called when system connection state changes.
      *
      * @param callback Callback which will be called.
      */
-    void subscribe_is_connected(IsConnectedCallback callback);
+    IsConnectedHandle subscribe_is_connected(const IsConnectedCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_is_connected.
+     */
+    void unsubscribe_is_connected(IsConnectedHandle handle);
 
     /**
      * @brief Component Types
@@ -122,28 +133,50 @@ public:
     /**
      * @brief type for component discovery callback
      */
-    using DiscoverCallback = std::function<void(ComponentType)>;
+    using ComponentDiscoveredCallback = std::function<void(ComponentType)>;
 
     /**
-     * @brief type for component discovery callback
+     * @brief type for component discovery callback handle
      */
-    using DiscoverIdCallback = std::function<void(ComponentType, uint8_t)>;
+    using ComponentDiscoveredHandle = Handle<ComponentType>;
 
     /**
-     * @brief Register a callback to be called when a component is discovered.
+     * @brief type for component discovery callback with component ID
+     */
+    using ComponentDiscoveredIdCallback = std::function<void(ComponentType, uint8_t)>;
+
+    /**
+     * @brief type for component discovery callback handle with component ID
+     */
+    using ComponentDiscoveredIdHandle = Handle<ComponentType, uint8_t>;
+
+    /**
+     * @brief Subscribe to be called when a component is discovered.
      *
-     * @param callback a function of type void(ComponentType) which will be called with the
-     * component type of the new component.
+     * @param callback a function of type void(ComponentType) which will be
+     * called with the component type of the new component.
      */
-    void register_component_discovered_callback(DiscoverCallback callback) const;
+    ComponentDiscoveredHandle
+    subscribe_component_discovered(const ComponentDiscoveredCallback& callback);
 
     /**
-     * @brief Register a callback to be called when a component is discovered.
-     *
-     * @param callback a function of type void(ComponentType) which will be called with the
-     * component type and the component id of the new component.
+     * @brief Unsubscribe from subscribe_component_discovered
      */
-    void register_component_discovered_id_callback(DiscoverIdCallback callback) const;
+    void unsubscribe_component_discovered(ComponentDiscoveredHandle handle);
+
+    /**
+     * @brief Subscribe to be called when a component is discovered.
+     *
+     * @param callback a function of type void(ComponentType) which will be
+     * called with the component type and the component id of the new component.
+     */
+    ComponentDiscoveredIdHandle
+    subscribe_component_discovered_id(const ComponentDiscoveredIdCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_component_discovered_id
+     */
+    void unsubscribe_component_discovered_id(ComponentDiscoveredIdHandle handle);
 
     /**
      * @brief Enable time synchronization using the TIMESYNC messages.

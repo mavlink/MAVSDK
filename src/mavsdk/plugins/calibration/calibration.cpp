@@ -23,28 +23,28 @@ Calibration::Calibration(std::shared_ptr<System> system) :
 
 Calibration::~Calibration() {}
 
-void Calibration::calibrate_gyro_async(CalibrateGyroCallback callback)
+void Calibration::calibrate_gyro_async(const CalibrateGyroCallback& callback)
 {
     _impl->calibrate_gyro_async(callback);
 }
 
-void Calibration::calibrate_accelerometer_async(CalibrateAccelerometerCallback callback)
+void Calibration::calibrate_accelerometer_async(const CalibrateAccelerometerCallback& callback)
 {
     _impl->calibrate_accelerometer_async(callback);
 }
 
-void Calibration::calibrate_magnetometer_async(CalibrateMagnetometerCallback callback)
+void Calibration::calibrate_magnetometer_async(const CalibrateMagnetometerCallback& callback)
 {
     _impl->calibrate_magnetometer_async(callback);
 }
 
-void Calibration::calibrate_level_horizon_async(CalibrateLevelHorizonCallback callback)
+void Calibration::calibrate_level_horizon_async(const CalibrateLevelHorizonCallback& callback)
 {
     _impl->calibrate_level_horizon_async(callback);
 }
 
 void Calibration::calibrate_gimbal_accelerometer_async(
-    CalibrateGimbalAccelerometerCallback callback)
+    const CalibrateGimbalAccelerometerCallback& callback)
 {
     _impl->calibrate_gimbal_accelerometer_async(callback);
 }

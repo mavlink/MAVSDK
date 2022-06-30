@@ -7,6 +7,7 @@
 #include "plugins/camera/camera.h"
 #include "plugin_impl_base.h"
 #include "system.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -41,12 +42,15 @@ public:
     void stop_video_async(const Camera::ResultCallback& callback);
 
     Camera::Information information() const;
-    void subscribe_information(const Camera::InformationCallback& callback);
+    Camera::InformationHandle subscribe_information(const Camera::InformationCallback& callback);
+    void unsubscribe_information(Camera::InformationHandle handle);
 
     std::pair<Camera::Result, Camera::VideoStreamInfo> get_video_stream_info();
 
     Camera::VideoStreamInfo video_stream_info();
-    void subscribe_video_stream_info(Camera::VideoStreamInfoCallback callback);
+    Camera::VideoStreamInfoHandle
+    subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback);
+    void unsubscribe_video_stream_info(Camera::VideoStreamInfoHandle handle);
 
     Camera::Result start_video_streaming();
     Camera::Result stop_video_streaming();
@@ -55,12 +59,15 @@ public:
     void set_mode_async(const Camera::Mode mode, const Camera::ResultCallback& callback);
 
     Camera::Mode mode();
-    void subscribe_mode(const Camera::ModeCallback callback);
+    Camera::ModeHandle subscribe_mode(const Camera::ModeCallback& callback);
+    void unsubscribe_mode(Camera::ModeHandle handle);
 
-    void subscribe_capture_info(Camera::CaptureInfoCallback callback);
+    Camera::CaptureInfoHandle subscribe_capture_info(const Camera::CaptureInfoCallback& callback);
+    void unsubscribe_capture_info(Camera::CaptureInfoHandle handle);
 
     Camera::Status status();
-    void subscribe_status(const Camera::StatusCallback callback);
+    Camera::StatusHandle subscribe_status(const Camera::StatusCallback& callback);
+    void unsubscribe_status(Camera::StatusHandle handle);
 
     Camera::Result set_setting(Camera::Setting setting);
     void set_setting_async(Camera::Setting setting, const Camera::ResultCallback callback);
@@ -72,8 +79,12 @@ public:
 
     bool is_setting_range(const std::string& setting_id);
 
-    void subscribe_current_settings(const Camera::CurrentSettingsCallback& callback);
-    void subscribe_possible_setting_options(const Camera::PossibleSettingOptionsCallback& callback);
+    Camera::CurrentSettingsHandle
+    subscribe_current_settings(const Camera::CurrentSettingsCallback& callback);
+    void unsubscribe_current_settings(Camera::CurrentSettingsHandle handle);
+    Camera::PossibleSettingOptionsHandle
+    subscribe_possible_setting_options(const Camera::PossibleSettingOptionsCallback& callback);
+    void unsubscribe_possible_setting_options(Camera::PossibleSettingOptionsHandle handle);
 
     Camera::Result format_storage();
     void format_storage_async(Camera::ResultCallback callback);
@@ -195,7 +206,7 @@ private:
     bool _has_camera_definition_timed_out{false};
     size_t _camera_definition_fetch_count{0};
     using CameraDefinitionCallback = std::function<void(bool)>;
-    CameraDefinitionCallback _camera_definition_callback{nullptr};
+    CameraDefinitionCallback _camera_definition_callback{};
 
     std::atomic<size_t> _camera_id{0};
     std::atomic<bool> _camera_found{false};
@@ -210,7 +221,7 @@ private:
         std::map<int, Camera::CaptureInfo> photo_list;
         bool is_fetching_photos{false};
 
-        Camera::StatusCallback subscription_callback{nullptr};
+        CallbackList<Camera::Status> subscription_callbacks{};
         void* call_every_cookie{nullptr};
     } _status{};
 
@@ -219,7 +230,7 @@ private:
     struct {
         std::mutex mutex{};
         Camera::Mode data{};
-        Camera::ModeCallback subscription_callback{nullptr};
+        CallbackList<Camera::Mode> subscription_callbacks{};
         void* call_every_cookie{nullptr};
     } _mode{};
 
@@ -230,7 +241,7 @@ private:
 
     struct {
         std::mutex mutex{};
-        Camera::CaptureInfoCallback callback{nullptr};
+        CallbackList<Camera::CaptureInfo> callbacks{};
         int last_advertised_image_index{-1};
         std::map<int, int> missing_image_retries{};
     } _capture_info{};
@@ -240,23 +251,23 @@ private:
         Camera::VideoStreamInfo data{};
         bool available{false};
         void* call_every_cookie{nullptr};
-        Camera::VideoStreamInfoCallback subscription_callback{nullptr};
+        CallbackList<Camera::VideoStreamInfo> subscription_callbacks{};
     } _video_stream_info{};
 
     struct {
         mutable std::mutex mutex{};
         Camera::Information data{};
-        Camera::InformationCallback subscription_callback{nullptr};
+        CallbackList<Camera::Information> subscription_callbacks{};
     } _information{};
 
     struct {
         std::mutex mutex{};
-        Camera::CurrentSettingsCallback callback{nullptr};
+        CallbackList<std::vector<Camera::Setting>> callbacks{};
     } _subscribe_current_settings{};
 
     struct {
         std::mutex mutex{};
-        Camera::PossibleSettingOptionsCallback callback{nullptr};
+        CallbackList<std::vector<Camera::SettingOptions>> callbacks{};
     } _subscribe_possible_setting_options{};
 
     std::condition_variable _captured_request_cv;

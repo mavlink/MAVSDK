@@ -13,8 +13,11 @@
 #include "version.h"
 #include "unused.h"
 #include "server_component_impl.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<>;
 
 MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
 {
@@ -612,30 +615,30 @@ void MavsdkImpl::make_system_with_component(
 void MavsdkImpl::notify_on_discover()
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-    if (_new_system_callback) {
-        auto temp_callback = _new_system_callback;
-        call_user_callback([temp_callback]() { temp_callback(); });
-    }
+    _new_system_callbacks.queue([this](const auto& func) { call_user_callback(func); });
 }
 
 void MavsdkImpl::notify_on_timeout()
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-    if (_new_system_callback) {
-        auto temp_callback = _new_system_callback;
-        call_user_callback([temp_callback]() { temp_callback(); });
-    }
+    _new_system_callbacks.queue([this](const auto& func) { call_user_callback(func); });
 }
 
-void MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
+Mavsdk::NewSystemHandle
+MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-    _new_system_callback = callback;
 
-    if (_new_system_callback != nullptr && is_any_system_connected()) {
-        auto temp_callback = _new_system_callback;
-        call_user_callback([temp_callback]() { temp_callback(); });
+    if (callback != nullptr && is_any_system_connected()) {
+        call_user_callback([temp_callback = callback]() { temp_callback(); });
     }
+
+    return _new_system_callbacks.subscribe(callback);
+}
+
+void MavsdkImpl::unsubscribe_on_new_system(Mavsdk::NewSystemHandle handle)
+{
+    _new_system_callbacks.unsubscribe(handle);
 }
 
 bool MavsdkImpl::is_any_system_connected() const
@@ -756,12 +759,12 @@ void MavsdkImpl::send_heartbeat()
     }
 }
 
-void MavsdkImpl::intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback)
+void MavsdkImpl::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
     _intercept_incoming_messages_callback = callback;
 }
 
-void MavsdkImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback)
+void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
     _intercept_outgoing_messages_callback = callback;
 }

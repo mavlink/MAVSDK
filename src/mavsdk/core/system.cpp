@@ -55,19 +55,36 @@ std::vector<uint8_t> System::component_ids() const
     return _system_impl->component_ids();
 }
 
-void System::subscribe_is_connected(IsConnectedCallback callback)
+System::IsConnectedHandle System::subscribe_is_connected(const IsConnectedCallback& callback)
 {
-    return _system_impl->subscribe_is_connected(std::move(callback));
+    return _system_impl->subscribe_is_connected(callback);
 }
 
-void System::register_component_discovered_callback(DiscoverCallback callback) const
+void System::unsubscribe_is_connected(IsConnectedHandle handle)
 {
-    return _system_impl->register_component_discovered_callback(std::move(callback));
+    _system_impl->unsubscribe_is_connected(handle);
 }
 
-void System::register_component_discovered_id_callback(DiscoverIdCallback callback) const
+System::ComponentDiscoveredHandle
+System::subscribe_component_discovered(const ComponentDiscoveredCallback& callback)
 {
-    return _system_impl->register_component_discovered_id_callback(std::move(callback));
+    return _system_impl->subscribe_component_discovered(callback);
+}
+
+void System::unsubscribe_component_discovered(System::ComponentDiscoveredHandle handle)
+{
+    _system_impl->unsubscribe_component_discovered(handle);
+}
+
+System::ComponentDiscoveredIdHandle
+System::subscribe_component_discovered_id(const ComponentDiscoveredIdCallback& callback)
+{
+    return _system_impl->subscribe_component_discovered_id(callback);
+}
+
+void System::unsubscribe_component_discovered_id(System::ComponentDiscoveredIdHandle handle)
+{
+    _system_impl->unsubscribe_component_discovered_id(handle);
 }
 
 void System::enable_timesync()

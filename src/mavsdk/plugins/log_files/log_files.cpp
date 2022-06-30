@@ -32,7 +32,7 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFiles::get_entries(
 }
 
 void LogFiles::download_log_file_async(
-    Entry entry, std::string path, DownloadLogFileCallback callback)
+    Entry entry, std::string path, const DownloadLogFileCallback& callback)
 {
     _impl->download_log_file_async(entry, path, callback);
 }

@@ -266,33 +266,35 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_incoming_mission(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                mavsdk::MissionRawServer::Result result,
-                const mavsdk::MissionRawServer::MissionPlan incoming_mission) {
-                rpc::mission_raw_server::IncomingMissionResponse rpc_response;
+        const mavsdk::MissionRawServer::IncomingMissionHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_incoming_mission(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    mavsdk::MissionRawServer::Result result,
+                    const mavsdk::MissionRawServer::MissionPlan incoming_mission) {
+                    rpc::mission_raw_server::IncomingMissionResponse rpc_response;
 
-                rpc_response.set_allocated_mission_plan(
-                    translateToRpcMissionPlan(incoming_mission).release());
+                    rpc_response.set_allocated_mission_plan(
+                        translateToRpcMissionPlan(incoming_mission).release());
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_mission_raw_server_result =
-                    new rpc::mission_raw_server::MissionRawServerResult();
-                rpc_mission_raw_server_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_mission_raw_server_result->set_result_str(ss.str());
-                rpc_response.set_allocated_mission_raw_server_result(rpc_mission_raw_server_result);
+                    auto rpc_result = translateToRpcResult(result);
+                    auto* rpc_mission_raw_server_result =
+                        new rpc::mission_raw_server::MissionRawServerResult();
+                    rpc_mission_raw_server_result->set_result(rpc_result);
+                    std::stringstream ss;
+                    ss << result;
+                    rpc_mission_raw_server_result->set_result_str(ss.str());
+                    rpc_response.set_allocated_mission_raw_server_result(
+                        rpc_mission_raw_server_result);
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_incoming_mission(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_incoming_mission(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -317,23 +319,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_current_item_changed(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::MissionRawServer::MissionItem current_item_changed) {
-                rpc::mission_raw_server::CurrentItemChangedResponse rpc_response;
+        const mavsdk::MissionRawServer::CurrentItemChangedHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_current_item_changed(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::MissionRawServer::MissionItem current_item_changed) {
+                    rpc::mission_raw_server::CurrentItemChangedResponse rpc_response;
 
-                rpc_response.set_allocated_mission_item(
-                    translateToRpcMissionItem(current_item_changed).release());
+                    rpc_response.set_allocated_mission_item(
+                        translateToRpcMissionItem(current_item_changed).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_current_item_changed(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_current_item_changed(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -372,22 +375,23 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_clear_all(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const uint32_t clear_all) {
-                rpc::mission_raw_server::ClearAllResponse rpc_response;
+        const mavsdk::MissionRawServer::ClearAllHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_clear_all(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const uint32_t clear_all) {
+                    rpc::mission_raw_server::ClearAllResponse rpc_response;
 
-                rpc_response.set_clear_type(clear_all);
+                    rpc_response.set_clear_type(clear_all);
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_clear_all(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_clear_all(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);

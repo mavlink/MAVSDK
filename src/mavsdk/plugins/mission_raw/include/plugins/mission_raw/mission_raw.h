@@ -13,7 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -324,13 +326,22 @@ public:
     /**
      * @brief Callback type for subscribe_mission_progress.
      */
-
     using MissionProgressCallback = std::function<void(MissionProgress)>;
+
+    /**
+     * @brief Handle type for subscribe_mission_progress.
+     */
+    using MissionProgressHandle = Handle<MissionProgress>;
 
     /**
      * @brief Subscribe to mission progress updates.
      */
-    void subscribe_mission_progress(MissionProgressCallback callback);
+    MissionProgressHandle subscribe_mission_progress(const MissionProgressCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_mission_progress
+     */
+    void unsubscribe_mission_progress(MissionProgressHandle handle);
 
     /**
      * @brief Poll for 'MissionProgress' (blocking).
@@ -342,8 +353,12 @@ public:
     /**
      * @brief Callback type for subscribe_mission_changed.
      */
-
     using MissionChangedCallback = std::function<void(bool)>;
+
+    /**
+     * @brief Handle type for subscribe_mission_changed.
+     */
+    using MissionChangedHandle = Handle<bool>;
 
     /**
      * @brief *
@@ -354,7 +369,12 @@ public:
      *
      * @param callback Callback to notify about change.
      */
-    void subscribe_mission_changed(MissionChangedCallback callback);
+    MissionChangedHandle subscribe_mission_changed(const MissionChangedCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_mission_changed
+     */
+    void unsubscribe_mission_changed(MissionChangedHandle handle);
 
     /**
      * @brief Import a QGroundControl missions in JSON .plan format.

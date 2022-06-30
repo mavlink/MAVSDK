@@ -46,10 +46,8 @@ void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& me
     _current_control_status.compid_secondary_control = secondary_control_compid;
 
     if (_control_callback) {
-        auto temp_status = _current_control_status;
-        auto temp_callback = _control_callback;
-        _system_impl.call_user_callback(
-            [temp_callback, temp_status]() { temp_callback(temp_status); });
+        // The queue is called outside of this class.
+        _control_callback(_current_control_status);
     }
 }
 
@@ -271,17 +269,31 @@ Gimbal::ControlStatus GimbalProtocolV2::control()
 
 void GimbalProtocolV2::control_async(Gimbal::ControlCallback callback)
 {
-    if (!_is_mavlink_manager_status_registered) {
-        _is_mavlink_manager_status_registered = true;
-
-        _system_impl.register_mavlink_message_handler(
-            MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS,
-            [this](const mavlink_message_t& message) { process_gimbal_manager_status(message); },
-            this);
-    }
-
     _control_callback = callback;
-    _system_impl.call_user_callback([this, callback]() { callback(_current_control_status); });
+
+    if (_control_callback != nullptr) {
+        if (!_is_mavlink_manager_status_registered) {
+            _is_mavlink_manager_status_registered = true;
+
+            _system_impl.register_mavlink_message_handler(
+                MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS,
+                [this](const mavlink_message_t& message) {
+                    process_gimbal_manager_status(message);
+                },
+                this);
+        }
+
+        // We don't need to use the queue here. This is done outside of this class.
+        _control_callback(_current_control_status);
+
+    } else {
+        if (_is_mavlink_manager_status_registered) {
+            _is_mavlink_manager_status_registered = false;
+
+            _system_impl.unregister_mavlink_message_handler(
+                MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS, this);
+        }
+    }
 }
 
 } // namespace mavsdk

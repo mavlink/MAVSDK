@@ -38,14 +38,14 @@ std::shared_ptr<System> get_system(Mavsdk& mavsdk)
 
     // We wait for new systems to be discovered, once we find one that has an
     // autopilot, we decide to use it.
-    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+    Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, &prom, &handle]() {
         auto system = mavsdk.systems().back();
 
         if (system->has_autopilot()) {
             std::cout << "Discovered autopilot\n";
 
             // Unsubscribe again as we only want to find one system.
-            mavsdk.subscribe_on_new_system(nullptr);
+            mavsdk.unsubscribe_on_new_system(handle);
             prom.set_value(system);
         }
     });
@@ -370,13 +370,14 @@ int main(int argc, char** argv)
 
     auto in_air_promise = std::promise<void>{};
     auto in_air_future = in_air_promise.get_future();
-    telemetry.subscribe_landed_state([&telemetry, &in_air_promise](Telemetry::LandedState state) {
-        if (state == Telemetry::LandedState::InAir) {
-            std::cout << "Taking off has finished\n.";
-            telemetry.subscribe_landed_state(nullptr);
-            in_air_promise.set_value();
-        }
-    });
+    Telemetry::LandedStateHandle handle = telemetry.subscribe_landed_state(
+        [&telemetry, &in_air_promise, &handle](Telemetry::LandedState state) {
+            if (state == Telemetry::LandedState::InAir) {
+                std::cout << "Taking off has finished\n.";
+                telemetry.unsubscribe_landed_state(handle);
+                in_air_promise.set_value();
+            }
+        });
     in_air_future.wait_for(seconds(10));
     if (in_air_future.wait_for(seconds(3)) == std::future_status::timeout) {
         std::cerr << "Takeoff timed out.\n";

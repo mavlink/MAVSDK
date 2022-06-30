@@ -14,7 +14,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/server_plugin_base.h"
+#include "server_plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -173,35 +175,65 @@ public:
     /**
      * @brief Callback type for subscribe_tracking_point_command.
      */
-
     using TrackingPointCommandCallback = std::function<void(TrackPoint)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_point_command.
+     */
+    using TrackingPointCommandHandle = Handle<TrackPoint>;
 
     /**
      * @brief Subscribe to incoming tracking point command.
      */
-    void subscribe_tracking_point_command(TrackingPointCommandCallback callback);
+    TrackingPointCommandHandle
+    subscribe_tracking_point_command(const TrackingPointCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_point_command
+     */
+    void unsubscribe_tracking_point_command(TrackingPointCommandHandle handle);
 
     /**
      * @brief Callback type for subscribe_tracking_rectangle_command.
      */
-
     using TrackingRectangleCommandCallback = std::function<void(TrackRectangle)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_rectangle_command.
+     */
+    using TrackingRectangleCommandHandle = Handle<TrackRectangle>;
 
     /**
      * @brief Subscribe to incoming tracking rectangle command.
      */
-    void subscribe_tracking_rectangle_command(TrackingRectangleCommandCallback callback);
+    TrackingRectangleCommandHandle
+    subscribe_tracking_rectangle_command(const TrackingRectangleCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_rectangle_command
+     */
+    void unsubscribe_tracking_rectangle_command(TrackingRectangleCommandHandle handle);
 
     /**
      * @brief Callback type for subscribe_tracking_off_command.
      */
-
     using TrackingOffCommandCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_off_command.
+     */
+    using TrackingOffCommandHandle = Handle<int32_t>;
 
     /**
      * @brief Subscribe to incoming tracking off command.
      */
-    void subscribe_tracking_off_command(TrackingOffCommandCallback callback);
+    TrackingOffCommandHandle
+    subscribe_tracking_off_command(const TrackingOffCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_off_command
+     */
+    void unsubscribe_tracking_off_command(TrackingOffCommandHandle handle);
 
     /**
      * @brief Respond to an incoming tracking point command.

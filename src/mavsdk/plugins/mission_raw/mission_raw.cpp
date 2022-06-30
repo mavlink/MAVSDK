@@ -97,9 +97,15 @@ MissionRaw::Result MissionRaw::set_current_mission_item(int32_t index) const
     return _impl->set_current_mission_item(index);
 }
 
-void MissionRaw::subscribe_mission_progress(MissionProgressCallback callback)
+MissionRaw::MissionProgressHandle
+MissionRaw::subscribe_mission_progress(const MissionProgressCallback& callback)
 {
-    _impl->subscribe_mission_progress(callback);
+    return _impl->subscribe_mission_progress(callback);
+}
+
+void MissionRaw::unsubscribe_mission_progress(MissionProgressHandle handle)
+{
+    _impl->unsubscribe_mission_progress(handle);
 }
 
 MissionRaw::MissionProgress MissionRaw::mission_progress() const
@@ -107,9 +113,15 @@ MissionRaw::MissionProgress MissionRaw::mission_progress() const
     return _impl->mission_progress();
 }
 
-void MissionRaw::subscribe_mission_changed(MissionChangedCallback callback)
+MissionRaw::MissionChangedHandle
+MissionRaw::subscribe_mission_changed(const MissionChangedCallback& callback)
 {
-    _impl->subscribe_mission_changed(callback);
+    return _impl->subscribe_mission_changed(callback);
+}
+
+void MissionRaw::unsubscribe_mission_changed(MissionChangedHandle handle)
+{
+    _impl->unsubscribe_mission_changed(handle);
 }
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>

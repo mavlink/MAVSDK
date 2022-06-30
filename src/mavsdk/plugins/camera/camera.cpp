@@ -121,9 +121,14 @@ Camera::list_photos(PhotosRange photos_range) const
     return _impl->list_photos(photos_range);
 }
 
-void Camera::subscribe_mode(ModeCallback callback)
+Camera::ModeHandle Camera::subscribe_mode(const ModeCallback& callback)
 {
-    _impl->subscribe_mode(callback);
+    return _impl->subscribe_mode(callback);
+}
+
+void Camera::unsubscribe_mode(ModeHandle handle)
+{
+    _impl->unsubscribe_mode(handle);
 }
 
 Camera::Mode Camera::mode() const
@@ -131,9 +136,14 @@ Camera::Mode Camera::mode() const
     return _impl->mode();
 }
 
-void Camera::subscribe_information(InformationCallback callback)
+Camera::InformationHandle Camera::subscribe_information(const InformationCallback& callback)
 {
-    _impl->subscribe_information(callback);
+    return _impl->subscribe_information(callback);
+}
+
+void Camera::unsubscribe_information(InformationHandle handle)
+{
+    _impl->unsubscribe_information(handle);
 }
 
 Camera::Information Camera::information() const
@@ -141,9 +151,15 @@ Camera::Information Camera::information() const
     return _impl->information();
 }
 
-void Camera::subscribe_video_stream_info(VideoStreamInfoCallback callback)
+Camera::VideoStreamInfoHandle
+Camera::subscribe_video_stream_info(const VideoStreamInfoCallback& callback)
 {
-    _impl->subscribe_video_stream_info(callback);
+    return _impl->subscribe_video_stream_info(callback);
+}
+
+void Camera::unsubscribe_video_stream_info(VideoStreamInfoHandle handle)
+{
+    _impl->unsubscribe_video_stream_info(handle);
 }
 
 Camera::VideoStreamInfo Camera::video_stream_info() const
@@ -151,14 +167,24 @@ Camera::VideoStreamInfo Camera::video_stream_info() const
     return _impl->video_stream_info();
 }
 
-void Camera::subscribe_capture_info(CaptureInfoCallback callback)
+Camera::CaptureInfoHandle Camera::subscribe_capture_info(const CaptureInfoCallback& callback)
 {
-    _impl->subscribe_capture_info(callback);
+    return _impl->subscribe_capture_info(callback);
 }
 
-void Camera::subscribe_status(StatusCallback callback)
+void Camera::unsubscribe_capture_info(CaptureInfoHandle handle)
 {
-    _impl->subscribe_status(callback);
+    _impl->unsubscribe_capture_info(handle);
+}
+
+Camera::StatusHandle Camera::subscribe_status(const StatusCallback& callback)
+{
+    return _impl->subscribe_status(callback);
+}
+
+void Camera::unsubscribe_status(StatusHandle handle)
+{
+    _impl->unsubscribe_status(handle);
 }
 
 Camera::Status Camera::status() const
@@ -166,14 +192,26 @@ Camera::Status Camera::status() const
     return _impl->status();
 }
 
-void Camera::subscribe_current_settings(CurrentSettingsCallback callback)
+Camera::CurrentSettingsHandle
+Camera::subscribe_current_settings(const CurrentSettingsCallback& callback)
 {
-    _impl->subscribe_current_settings(callback);
+    return _impl->subscribe_current_settings(callback);
 }
 
-void Camera::subscribe_possible_setting_options(PossibleSettingOptionsCallback callback)
+void Camera::unsubscribe_current_settings(CurrentSettingsHandle handle)
 {
-    _impl->subscribe_possible_setting_options(callback);
+    _impl->unsubscribe_current_settings(handle);
+}
+
+Camera::PossibleSettingOptionsHandle
+Camera::subscribe_possible_setting_options(const PossibleSettingOptionsCallback& callback)
+{
+    return _impl->subscribe_possible_setting_options(callback);
+}
+
+void Camera::unsubscribe_possible_setting_options(PossibleSettingOptionsHandle handle)
+{
+    _impl->unsubscribe_possible_setting_options(handle);
 }
 
 std::vector<Camera::SettingOptions> Camera::possible_setting_options() const

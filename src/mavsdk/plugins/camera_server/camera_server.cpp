@@ -32,9 +32,14 @@ CameraServer::Result CameraServer::set_in_progress(bool in_progress) const
     return _impl->set_in_progress(in_progress);
 }
 
-void CameraServer::subscribe_take_photo(TakePhotoCallback callback)
+CameraServer::TakePhotoHandle CameraServer::subscribe_take_photo(const TakePhotoCallback& callback)
 {
-    _impl->subscribe_take_photo(callback);
+    return _impl->subscribe_take_photo(callback);
+}
+
+void CameraServer::unsubscribe_take_photo(TakePhotoHandle handle)
+{
+    _impl->unsubscribe_take_photo(handle);
 }
 
 CameraServer::Result CameraServer::respond_take_photo(

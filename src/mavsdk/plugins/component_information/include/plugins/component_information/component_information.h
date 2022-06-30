@@ -14,7 +14,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -146,13 +148,22 @@ public:
     /**
      * @brief Callback type for subscribe_float_param.
      */
-
     using FloatParamCallback = std::function<void(FloatParamUpdate)>;
+
+    /**
+     * @brief Handle type for subscribe_float_param.
+     */
+    using FloatParamHandle = Handle<FloatParamUpdate>;
 
     /**
      * @brief Subscribe to float param changes/updates.
      */
-    void subscribe_float_param(FloatParamCallback callback);
+    FloatParamHandle subscribe_float_param(const FloatParamCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_float_param
+     */
+    void unsubscribe_float_param(FloatParamHandle handle);
 
     /**
      * @brief Copy constructor.

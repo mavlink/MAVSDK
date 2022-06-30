@@ -21,9 +21,15 @@ MissionRawServer::MissionRawServer(std::shared_ptr<ServerComponent> server_compo
 
 MissionRawServer::~MissionRawServer() {}
 
-void MissionRawServer::subscribe_incoming_mission(IncomingMissionCallback callback)
+MissionRawServer::IncomingMissionHandle
+MissionRawServer::subscribe_incoming_mission(const IncomingMissionCallback& callback)
 {
-    _impl->subscribe_incoming_mission(callback);
+    return _impl->subscribe_incoming_mission(callback);
+}
+
+void MissionRawServer::unsubscribe_incoming_mission(IncomingMissionHandle handle)
+{
+    _impl->unsubscribe_incoming_mission(handle);
 }
 
 MissionRawServer::MissionPlan MissionRawServer::incoming_mission() const
@@ -31,9 +37,15 @@ MissionRawServer::MissionPlan MissionRawServer::incoming_mission() const
     return _impl->incoming_mission();
 }
 
-void MissionRawServer::subscribe_current_item_changed(CurrentItemChangedCallback callback)
+MissionRawServer::CurrentItemChangedHandle
+MissionRawServer::subscribe_current_item_changed(const CurrentItemChangedCallback& callback)
 {
-    _impl->subscribe_current_item_changed(callback);
+    return _impl->subscribe_current_item_changed(callback);
+}
+
+void MissionRawServer::unsubscribe_current_item_changed(CurrentItemChangedHandle handle)
+{
+    _impl->unsubscribe_current_item_changed(handle);
 }
 
 MissionRawServer::MissionItem MissionRawServer::current_item_changed() const
@@ -46,9 +58,15 @@ void MissionRawServer::set_current_item_complete() const
     _impl->set_current_item_complete();
 }
 
-void MissionRawServer::subscribe_clear_all(ClearAllCallback callback)
+MissionRawServer::ClearAllHandle
+MissionRawServer::subscribe_clear_all(const ClearAllCallback& callback)
 {
-    _impl->subscribe_clear_all(callback);
+    return _impl->subscribe_clear_all(callback);
+}
+
+void MissionRawServer::unsubscribe_clear_all(ClearAllHandle handle)
+{
+    _impl->unsubscribe_clear_all(handle);
 }
 
 uint32_t MissionRawServer::clear_all() const

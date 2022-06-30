@@ -69,9 +69,14 @@ void Mavsdk::set_timeout_s(double timeout_s)
     _impl->set_timeout_s(timeout_s);
 }
 
-void Mavsdk::subscribe_on_new_system(const NewSystemCallback& callback)
+Mavsdk::NewSystemHandle Mavsdk::subscribe_on_new_system(const NewSystemCallback& callback)
 {
-    _impl->subscribe_on_new_system(callback);
+    return _impl->subscribe_on_new_system(callback);
+}
+
+void Mavsdk::unsubscribe_on_new_system(NewSystemHandle handle)
+{
+    _impl->unsubscribe_on_new_system(handle);
 }
 
 std::shared_ptr<ServerComponent>
@@ -181,6 +186,16 @@ Mavsdk::Configuration::UsageType Mavsdk::Configuration::get_usage_type() const
 void Mavsdk::Configuration::set_usage_type(Mavsdk::Configuration::UsageType usage_type)
 {
     _usage_type = usage_type;
+}
+
+void Mavsdk::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
+{
+    _impl->intercept_incoming_messages_async(callback);
+}
+
+void Mavsdk::intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback)
+{
+    _impl->intercept_outgoing_messages_async(callback);
 }
 
 } // namespace mavsdk

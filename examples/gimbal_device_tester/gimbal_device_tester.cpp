@@ -698,9 +698,9 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
 
     std::promise<void> prom;
     std::future<void> fut = prom.get_future();
-    mavlink_passthrough.subscribe_message_async(
+    MavlinkPassthrough::MessageHandle handle = mavlink_passthrough.subscribe_message(
         MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
-        [&prom, &mavlink_passthrough, &attitude_data](const mavlink_message_t& message) {
+        [&prom, &mavlink_passthrough, &attitude_data, &handle](const mavlink_message_t& message) {
             mavlink_gimbal_device_information_t information;
             mavlink_msg_gimbal_device_information_decode(&message, &information);
 
@@ -715,8 +715,7 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
                 });
 
             // We only need it once.
-            mavlink_passthrough.subscribe_message_async(
-                MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, nullptr);
+            mavlink_passthrough.unsubscribe_message(handle);
             prom.set_value();
         });
 
@@ -738,7 +737,7 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
 
 void subscribe_to_heartbeat(MavlinkPassthrough& mavlink_passthrough)
 {
-    mavlink_passthrough.subscribe_message_async(
+    mavlink_passthrough.subscribe_message(
         MAVLINK_MSG_ID_HEARTBEAT, [](const mavlink_message_t& message) {
             mavlink_heartbeat_t heartbeat;
             mavlink_msg_heartbeat_decode(&message, &heartbeat);
@@ -753,7 +752,7 @@ void subscribe_to_heartbeat(MavlinkPassthrough& mavlink_passthrough)
 void subscribe_to_gimbal_device_attitude_status(
     MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
 {
-    mavlink_passthrough.subscribe_message_async(
+    mavlink_passthrough.subscribe_message(
         MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
         [&attitude_data](const mavlink_message_t& message) {
             mavlink_gimbal_device_attitude_status_t attitude_status;
@@ -817,14 +816,17 @@ int main(int argc, char** argv)
     {
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
-        mavsdk.subscribe_on_new_system([&prom]() { prom.set_value(); });
+        Mavsdk::NewSystemHandle handle =
+            mavsdk.subscribe_on_new_system([&prom, &mavsdk, &handle]() {
+                prom.set_value();
+                mavsdk.unsubscribe_on_new_system(handle);
+            });
 
         if (fut.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
             std::cout << "FAIL\n";
             std::cout << "-> no device found\n";
             return 1;
         }
-        mavsdk.subscribe_on_new_system(nullptr);
     }
 
     auto system = mavsdk.systems().at(0);

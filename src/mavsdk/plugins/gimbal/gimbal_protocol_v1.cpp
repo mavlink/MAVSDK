@@ -8,6 +8,11 @@ namespace mavsdk {
 
 GimbalProtocolV1::GimbalProtocolV1(SystemImpl& system_impl) : GimbalProtocolBase(system_impl) {}
 
+GimbalProtocolV1::~GimbalProtocolV1()
+{
+    _system_impl.remove_call_every(_control_cookie);
+}
+
 Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     const float roll_deg = 0.0f;
@@ -198,18 +203,18 @@ Gimbal::ControlStatus GimbalProtocolV1::control()
 
 void GimbalProtocolV1::control_async(Gimbal::ControlCallback callback)
 {
-    _control_callback = callback;
-    _control_thread_cv.notify_one();
+    if (_control_callback == nullptr && callback != nullptr) {
+        _control_callback = callback;
+        _system_impl.add_call_every(
+            [this]() { _control_callback(_current_control_status); }, 1.0, &_control_cookie);
 
-    std::thread([this, &callback]() {
-        std::unique_lock<std::mutex> lock(_control_thread_mutex);
+    } else if (_control_callback != nullptr && callback == nullptr) {
+        _control_callback = callback;
+        _system_impl.remove_call_every(_control_cookie);
 
-        while (_control_callback) {
-            _system_impl.call_user_callback(
-                [this, callback]() { callback(_current_control_status); });
-            _control_thread_cv.wait_for(lock, std::chrono::seconds(1));
-        }
-    }).detach();
+    } else {
+        _control_callback = callback;
+    }
 }
 
 } // namespace mavsdk

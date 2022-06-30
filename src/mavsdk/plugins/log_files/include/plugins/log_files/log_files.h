@@ -13,7 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -152,13 +154,13 @@ public:
     /**
      * @brief Callback type for download_log_file_async.
      */
-
     using DownloadLogFileCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Download log file.
      */
-    void download_log_file_async(Entry entry, std::string path, DownloadLogFileCallback callback);
+    void
+    download_log_file_async(Entry entry, std::string path, const DownloadLogFileCallback& callback);
 
     /**
      * @brief Download log file synchronously.

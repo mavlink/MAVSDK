@@ -1,9 +1,9 @@
 #include "mavlink_command_sender.h"
 #include "system_impl.h"
+#include "unused.h"
 #include <cmath>
 #include <future>
 #include <memory>
-#include <unused.h>
 
 namespace mavsdk {
 

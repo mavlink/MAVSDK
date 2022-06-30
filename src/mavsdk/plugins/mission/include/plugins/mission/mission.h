@@ -13,7 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -276,7 +278,6 @@ public:
     /**
      * @brief Callback type for upload_mission_with_progress_async.
      */
-
     using UploadMissionWithProgressCallback = std::function<void(Result, ProgressData)>;
 
     /**
@@ -286,7 +287,7 @@ public:
      * executed even if the connection is lost.
      */
     void upload_mission_with_progress_async(
-        MissionPlan mission_plan, UploadMissionWithProgressCallback callback);
+        MissionPlan mission_plan, const UploadMissionWithProgressCallback& callback);
 
     /**
      * @brief Cancel an ongoing mission upload.
@@ -327,7 +328,6 @@ public:
     /**
      * @brief Callback type for download_mission_with_progress_async.
      */
-
     using DownloadMissionWithProgressCallback = std::function<void(Result, ProgressDataOrMission)>;
 
     /**
@@ -336,7 +336,7 @@ public:
      * Will fail if any of the downloaded mission items are not supported
      * by the MAVSDK API.
      */
-    void download_mission_with_progress_async(DownloadMissionWithProgressCallback callback);
+    void download_mission_with_progress_async(const DownloadMissionWithProgressCallback& callback);
 
     /**
      * @brief Cancel an ongoing mission download.
@@ -450,13 +450,22 @@ public:
     /**
      * @brief Callback type for subscribe_mission_progress.
      */
-
     using MissionProgressCallback = std::function<void(MissionProgress)>;
+
+    /**
+     * @brief Handle type for subscribe_mission_progress.
+     */
+    using MissionProgressHandle = Handle<MissionProgress>;
 
     /**
      * @brief Subscribe to mission progress updates.
      */
-    void subscribe_mission_progress(MissionProgressCallback callback);
+    MissionProgressHandle subscribe_mission_progress(const MissionProgressCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_mission_progress
+     */
+    void unsubscribe_mission_progress(MissionProgressHandle handle);
 
     /**
      * @brief Poll for 'MissionProgress' (blocking).

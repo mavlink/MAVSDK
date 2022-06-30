@@ -96,15 +96,16 @@ int main(int argc, char** argv)
         std::cout << "MissionRawServer created" << std::endl;
 
         auto mission_prom = std::promise<MissionRawServer::MissionPlan>{};
-        missionRawServer.subscribe_incoming_mission(
-            [&mission_prom,
-             &missionRawServer](MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
-                std::cout << "Received Uploaded Mission!" << std::endl;
-                std::cout << plan << std::endl;
-                // Unsubscribe so we only recieve one mission
-                missionRawServer.subscribe_incoming_mission(nullptr);
-                mission_prom.set_value(plan);
-            });
+        MissionRawServer::IncomingMissionHandle handle =
+            missionRawServer.subscribe_incoming_mission(
+                [&mission_prom, &missionRawServer, &handle](
+                    MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
+                    std::cout << "Received Uploaded Mission!" << std::endl;
+                    std::cout << plan << std::endl;
+                    // Unsubscribe so we only recieve one mission
+                    missionRawServer.unsubscribe_incoming_mission(handle);
+                    mission_prom.set_value(plan);
+                });
         missionRawServer.subscribe_current_item_changed([](MissionRawServer::MissionItem item) {
             std::cout << "Current Mission Item Changed!" << std::endl;
             std::cout << "Current Item: " << item << std::endl;
@@ -158,14 +159,14 @@ int main(int argc, char** argv)
 
     auto prom = std::promise<std::shared_ptr<mavsdk::System>>{};
     auto fut = prom.get_future();
-    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+    Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, &prom, &handle]() {
         auto system = mavsdk.systems().back();
 
         if (system->has_autopilot()) {
             std::cout << "Discovered Autopilot from Client" << std::endl;
 
             // Unsubscribe again as we only want to find one system.
-            mavsdk.subscribe_on_new_system(nullptr);
+            mavsdk.unsubscribe_on_new_system(handle);
             prom.set_value(system);
         } else {
             std::cout << "No MAVSDK found" << std::endl;

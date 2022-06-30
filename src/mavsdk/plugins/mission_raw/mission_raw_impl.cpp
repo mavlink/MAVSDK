@@ -1,11 +1,15 @@
 #include "mission_raw_impl.h"
 #include "mission_import.h"
 #include "system.h"
+#include "callback_list.tpp"
 
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
 
 namespace mavsdk {
+
+template class CallbackList<MissionRaw::MissionProgress>;
+template class CallbackList<bool>;
 
 // This is an empty item that can be sent to ArduPilot to mimic clearing of mission.
 constexpr MissionRaw::MissionItem empty_item{0, 3, 16, 1};
@@ -78,10 +82,8 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
     // We assume that if the vehicle sends an ACCEPTED ack might have received
     // a new mission. In that case we need to notify our user.
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
-    if (_mission_changed.callback) {
-        auto temp_callback = _mission_changed.callback;
-        _parent->call_user_callback([temp_callback]() { temp_callback(true); });
-    }
+    _mission_changed.callbacks.queue(
+        true, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
@@ -432,7 +434,7 @@ void MissionRawImpl::report_progress_current()
 {
     std::lock_guard<std::mutex> lock(_mission_progress.mutex);
 
-    if (_mission_progress.callback == nullptr) {
+    if (_mission_progress.callbacks.empty()) {
         return;
     }
 
@@ -449,16 +451,23 @@ void MissionRawImpl::report_progress_current()
     }
 
     if (should_report) {
-        const auto last = _mission_progress.last;
-        const auto temp_callback = _mission_progress.callback;
-        _parent->call_user_callback([temp_callback, last]() { temp_callback(last); });
+        _mission_progress.callbacks.queue(_mission_progress.last, [this](const auto& func) {
+            _parent->call_user_callback(func);
+        });
     }
 }
 
-void MissionRawImpl::subscribe_mission_progress(MissionRaw::MissionProgressCallback callback)
+MissionRaw::MissionProgressHandle
+MissionRawImpl::subscribe_mission_progress(const MissionRaw::MissionProgressCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_mission_progress.mutex);
-    _mission_progress.callback = callback;
+    return _mission_progress.callbacks.subscribe(callback);
+}
+
+void MissionRawImpl::unsubscribe_mission_progress(MissionRaw::MissionProgressHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+    _mission_progress.callbacks.unsubscribe(handle);
 }
 
 MissionRaw::MissionProgress MissionRawImpl::mission_progress()
@@ -467,10 +476,17 @@ MissionRaw::MissionProgress MissionRawImpl::mission_progress()
     return _mission_progress.last;
 }
 
-void MissionRawImpl::subscribe_mission_changed(MissionRaw::MissionChangedCallback callback)
+MissionRaw::MissionChangedHandle
+MissionRawImpl::subscribe_mission_changed(const MissionRaw::MissionChangedCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
-    _mission_changed.callback = callback;
+    return _mission_changed.callbacks.subscribe(callback);
+}
+
+void MissionRawImpl::unsubscribe_mission_changed(MissionRaw::MissionChangedHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+    _mission_changed.callbacks.unsubscribe(handle);
 }
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>

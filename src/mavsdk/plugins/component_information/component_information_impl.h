@@ -2,6 +2,7 @@
 
 #include "plugins/component_information/component_information.h"
 #include "plugin_impl_base.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -20,7 +21,9 @@ public:
     std::pair<ComponentInformation::Result, std::vector<ComponentInformation::FloatParam>>
     access_float_params();
 
-    void subscribe_float_param(ComponentInformation::FloatParamCallback callback);
+    ComponentInformation::FloatParamHandle
+    subscribe_float_param(const ComponentInformation::FloatParamCallback& callback);
+    void unsubscribe_float_param(ComponentInformation::FloatParamHandle handle);
 
 private:
     void receive_component_information(
@@ -39,7 +42,7 @@ private:
     std::mutex _mutex{};
     std::vector<ComponentInformation::FloatParam> _float_params{};
 
-    ComponentInformation::FloatParamCallback _float_param_update_callback{};
+    CallbackList<ComponentInformation::FloatParamUpdate> _float_param_update_callbacks{};
 };
 
 } // namespace mavsdk

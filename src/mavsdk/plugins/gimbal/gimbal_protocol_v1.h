@@ -11,7 +11,7 @@ namespace mavsdk {
 class GimbalProtocolV1 : public GimbalProtocolBase {
 public:
     GimbalProtocolV1(SystemImpl& system_impl);
-    ~GimbalProtocolV1() = default;
+    ~GimbalProtocolV1() override;
 
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) override;
     void set_pitch_and_yaw_async(
@@ -51,8 +51,7 @@ private:
     Gimbal::ControlStatus _current_control_status{Gimbal::ControlMode::None, 0, 0, 0, 0};
     Gimbal::ControlCallback _control_callback;
 
-    std::condition_variable _control_thread_cv;
-    std::mutex _control_thread_mutex;
+    void* _control_cookie{nullptr};
 };
 
 } // namespace mavsdk

@@ -67,13 +67,14 @@ TEST_F(SitlTest, PX4MissionRawImportAndFly)
     auto prom = std::promise<void>();
     auto fut = prom.get_future();
 
-    mission_raw.subscribe_mission_progress([&](MissionRaw::MissionProgress progress) {
-        LogInfo() << "Progress: " << progress.current << "/" << progress.total;
-        if (progress.current == progress.total) {
-            mission_raw.subscribe_mission_progress(nullptr);
-            prom.set_value();
-        }
-    });
+    MissionRaw::MissionProgressHandle handle =
+        mission_raw.subscribe_mission_progress([&](MissionRaw::MissionProgress progress) {
+            LogInfo() << "Progress: " << progress.current << "/" << progress.total;
+            if (progress.current == progress.total) {
+                mission_raw.unsubscribe_mission_progress(handle);
+                prom.set_value();
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(120)), std::future_status::ready);
     fut.get();

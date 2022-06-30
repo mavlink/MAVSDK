@@ -13,7 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "mavsdk/plugin_base.h"
+#include "plugin_base.h"
+
+#include "handle.h"
 
 namespace mavsdk {
 
@@ -119,25 +121,24 @@ public:
     /**
      * @brief Callback type for download_async.
      */
-
     using DownloadCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Downloads a file to local directory.
      */
-    void
-    download_async(std::string remote_file_path, std::string local_dir, DownloadCallback callback);
+    void download_async(
+        std::string remote_file_path, std::string local_dir, const DownloadCallback& callback);
 
     /**
      * @brief Callback type for upload_async.
      */
-
     using UploadCallback = std::function<void(Result, ProgressData)>;
 
     /**
      * @brief Uploads local file to remote directory.
      */
-    void upload_async(std::string local_file_path, std::string remote_dir, UploadCallback callback);
+    void upload_async(
+        std::string local_file_path, std::string remote_dir, const UploadCallback& callback);
 
     /**
      * @brief Callback type for list_directory_async.

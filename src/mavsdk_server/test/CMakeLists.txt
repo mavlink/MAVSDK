@@ -21,6 +21,7 @@ target_include_directories(unit_tests_mavsdk_server
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mavsdk/core
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mavsdk/plugins
+    ${MAVLINK_HEADERS}
 )
 
 target_include_directories(unit_tests_mavsdk_server

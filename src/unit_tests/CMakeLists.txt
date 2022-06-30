@@ -20,11 +20,10 @@ target_link_libraries(unit_tests_runner
 )
 
 target_include_directories(unit_tests_runner
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src/mavsdk/core
-    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../src/mavsdk/core
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../mavsdk/core
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../mavsdk/core
 )
 target_include_directories(unit_tests_runner SYSTEM
-    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/third_party/include
     PRIVATE ${MAVLINK_HEADERS}
 )
 

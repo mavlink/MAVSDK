@@ -301,23 +301,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->subscribe_transponder(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                const mavsdk::Transponder::AdsbVehicle transponder) {
-                rpc::transponder::TransponderResponse rpc_response;
+        const mavsdk::Transponder::TransponderHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_transponder(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                    const mavsdk::Transponder::AdsbVehicle transponder) {
+                    rpc::transponder::TransponderResponse rpc_response;
 
-                rpc_response.set_allocated_transponder(
-                    translateToRpcAdsbVehicle(transponder).release());
+                    rpc_response.set_allocated_transponder(
+                        translateToRpcAdsbVehicle(transponder).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->subscribe_transponder(nullptr);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_transponder(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);

@@ -17,6 +17,7 @@
 #include "server_component.h"
 #include "system.h"
 #include "timeout_handler.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -72,7 +73,8 @@ public:
     uint8_t get_own_component_id() const;
     uint8_t get_mav_type() const;
 
-    void subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback);
+    Mavsdk::NewSystemHandle subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback);
+    void unsubscribe_on_new_system(Mavsdk::NewSystemHandle handle);
 
     void notify_on_discover();
     void notify_on_timeout();
@@ -80,8 +82,8 @@ public:
     void start_sending_heartbeats();
     void stop_sending_heartbeats();
 
-    void intercept_incoming_messages(std::function<bool(mavlink_message_t&)> callback);
-    void intercept_outgoing_messages(std::function<bool(mavlink_message_t&)> callback);
+    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
+    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
     std::shared_ptr<ServerComponent> server_component_by_type(
         Mavsdk::ServerComponentType server_component_type, unsigned instance = 0);
@@ -124,7 +126,7 @@ private:
     std::vector<std::pair<uint8_t, std::shared_ptr<ServerComponent>>> _server_components{};
     std::shared_ptr<ServerComponent> _default_server_component{nullptr};
 
-    Mavsdk::NewSystemCallback _new_system_callback{nullptr};
+    CallbackList<> _new_system_callbacks{};
 
     Time _time{};
 

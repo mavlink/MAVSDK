@@ -36,7 +36,7 @@ Mission::Result Mission::upload_mission(MissionPlan mission_plan) const
 }
 
 void Mission::upload_mission_with_progress_async(
-    MissionPlan mission_plan, UploadMissionWithProgressCallback callback)
+    MissionPlan mission_plan, const UploadMissionWithProgressCallback& callback)
 {
     _impl->upload_mission_with_progress_async(mission_plan, callback);
 }
@@ -56,7 +56,8 @@ std::pair<Mission::Result, Mission::MissionPlan> Mission::download_mission() con
     return _impl->download_mission();
 }
 
-void Mission::download_mission_with_progress_async(DownloadMissionWithProgressCallback callback)
+void Mission::download_mission_with_progress_async(
+    const DownloadMissionWithProgressCallback& callback)
 {
     _impl->download_mission_with_progress_async(callback);
 }
@@ -111,9 +112,15 @@ std::pair<Mission::Result, bool> Mission::is_mission_finished() const
     return _impl->is_mission_finished();
 }
 
-void Mission::subscribe_mission_progress(MissionProgressCallback callback)
+Mission::MissionProgressHandle
+Mission::subscribe_mission_progress(const MissionProgressCallback& callback)
 {
-    _impl->subscribe_mission_progress(callback);
+    return _impl->subscribe_mission_progress(callback);
+}
+
+void Mission::unsubscribe_mission_progress(MissionProgressHandle handle)
+{
+    _impl->unsubscribe_mission_progress(handle);
 }
 
 Mission::MissionProgress Mission::mission_progress() const
