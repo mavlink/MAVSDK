@@ -1,11 +1,13 @@
-#include <iostream>
-#include <future>
 #include <atomic>
-#include "log.h"
+#include <future>
+#include <iostream>
+#include <random>
+
 #include "integration_test_helper.h"
+#include "log.h"
 #include "mavsdk.h"
-#include "plugins/mission/mission.h"
 #include "plugins/mavlink_passthrough/mavlink_passthrough.h"
+#include "plugins/mission/mission.h"
 
 using namespace mavsdk;
 
@@ -13,7 +15,8 @@ static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrou
 static std::vector<Mission::MissionItem> create_mission_items();
 static bool should_keep_message(const mavlink_message_t& message);
 
-static std::atomic<size_t> _lossy_counter{0};
+static std::default_random_engine generator;
+static std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
 TEST_F(SitlTest, PX4MissionTransferLossy)
 {
@@ -70,7 +73,7 @@ bool should_keep_message(const mavlink_message_t& message)
         // message.msgid == MAVLINK_MSG_ID_MISSION_ACK || FIXME: we rely on ack
         message.msgid == MAVLINK_MSG_ID_MISSION_COUNT ||
         message.msgid == MAVLINK_MSG_ID_MISSION_ITEM_INT) {
-        should_keep = (_lossy_counter++ % 10 != 0);
+        should_keep = distribution(generator) < 0.95;
     }
     return should_keep;
 }
