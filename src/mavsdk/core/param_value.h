@@ -50,11 +50,6 @@ public:
 
     [[nodiscard]] std::string get_string() const;
 
-    template<typename T>[[nodiscard]] bool is() const
-    {
-        return (std::get_if<T>(&_value) != nullptr);
-    }
-
     template<typename T> T get() const { return std::get<T>(_value); }
 
     template<typename T> void set(T new_value) { _value = new_value; }
@@ -63,7 +58,7 @@ public:
 
     // Note: the implementation here needs to stay in the header,unfortunately.
     template<class T>
-    [[nodiscard]] bool is_same_type_templated()const{
+    [[nodiscard]] constexpr bool is_same_type_templated()const{
         if (std::holds_alternative<T>(_value)) {
             return true;
         }
@@ -123,9 +118,9 @@ public:
 
     // returns true if this parameter needs the extended parameters' protocol
     // (which is the case when its value is represented by a string)
-    [[nodiscard]] bool needs_extended() const {
+    [[nodiscard]] constexpr bool needs_extended() const {
         // true if it is a string, false otherwise.
-        return is<std::string>();
+        return is_same_type_templated<std::string>();
     }
 };
 
