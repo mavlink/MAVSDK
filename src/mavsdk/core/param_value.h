@@ -100,6 +100,13 @@ public:
 
     [[nodiscard]] std::string typestr() const;
 
+    // returns true if this parameter needs the extended parameters' protocol
+    // (which is the case when its value is represented by a string)
+    [[nodiscard]] constexpr bool needs_extended() const {
+        // true if it is a string, false otherwise.
+        return is<std::string>();
+    }
+private:
     std::variant<
         uint8_t,
         int8_t,
@@ -113,13 +120,6 @@ public:
         double,
         std::string>
         _value{};
-
-    // returns true if this parameter needs the extended parameters' protocol
-    // (which is the case when its value is represented by a string)
-    [[nodiscard]] constexpr bool needs_extended() const {
-        // true if it is a string, false otherwise.
-        return is<std::string>();
-    }
 };
 
 std::ostream& operator<<(std::ostream& strm, const ParamValue& obj);
