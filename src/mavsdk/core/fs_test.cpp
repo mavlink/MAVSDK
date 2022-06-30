@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include "fs.h"
 
-#if !defined(WINDOWS)
 #define PATH_MAX 4096
 
 TEST(Filesystem, AbsolutePathUnchanged)
@@ -76,4 +75,3 @@ TEST(Filesystem, RelativePathDotSlash)
     ASSERT_EQ(canonical_path, mavsdk::fs_canonical(dotslash_path));
 }
 
-#endif
