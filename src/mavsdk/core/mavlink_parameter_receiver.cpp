@@ -13,12 +13,13 @@ MavlinkParameterReceiver::MavlinkParameterReceiver(
     _sender(sender),
     _message_handler(message_handler)
 {
+    // Populate the parameter set before the first communication, if provided by the user.
     if(optional_param_values.has_value()){
         const auto& param_values=optional_param_values.value();
         for(const auto& [key,value] : param_values){
             const auto result= provide_server_param(key,value);
             if(result!=Result::Success){
-                LogDebug()<<"Cannot add parameter:"<<key<<":"<<value;
+                LogDebug()<<"Cannot add parameter:"<<key<<":"<<value<<" "<<result;
             }
         }
     }

@@ -57,7 +57,8 @@ public:
         return (std::get_if<T>(&_value) != nullptr);
     }
 
-    template<typename T> T get() const { return std::get<T>(_value); }
+    template<typename T>
+    T get() const { return std::get<T>(_value); }
 
     template<typename T> void set(T new_value) { _value = new_value; }
 
