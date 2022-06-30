@@ -62,53 +62,49 @@ std::string fs_filename(const std::string& path)
 
 std::string fs_canonical(const std::string& path)
 {
-    std::stack<std::string> st;
-    std::string dir;
-    std::string res{};
-
-    if (path.rfind(path_separator, 0) != 0) {
-        char buffer[PATH_MAX];
-        if (getcwd(buffer, sizeof(buffer)) != nullptr) {
-            res = std::string(buffer);
-        }
-    } else {
-        res = path_separator;
-    }
+    std::deque<std::string> st;
+    std::string res;
 
     int len = path.length();
 
-    for (int i = 0; i < len; i++) {
-        dir.clear();
-        while (path[i] == '/') {
-            i++;
+    int index = 0;
+    while (index < len) {
+        int next_index = path.find(path_separator, index);
+        if (next_index == -1) {
+            next_index = path.size();
         }
-        while (i < len && path[i] != '/') {
-            dir.push_back(path[i]);
-            i++;
-        }
+
+        std::string dir = path.substr(index, next_index - index);
+
         if (dir.compare("..") == 0 && !st.empty()) {
-            st.pop();
-        } else if (dir.compare(".") == 0) {
-            continue;
-        } else if (dir.length() != 0) {
-            st.push(dir);
+            st.pop_back();
+        } else if (dir.length() != 0 && dir.compare(".") != 0) {
+            st.push_back(dir);
         }
+
+        index = next_index + path_separator.size();
     }
 
-    std::stack<std::string> st1;
+    if (path.rfind(path_separator, path_separator.size() - 1) != 0) {
+        char buffer[PATH_MAX];
+        if (getcwd(buffer, sizeof(buffer)) != nullptr) {
+            res.append(buffer);
+            if (!st.empty()) {
+                res.append(path_separator);
+            }
+        }
+    } else {
+        res.append(path_separator);
+    }
+
     while (!st.empty()) {
-        st1.push(st.top());
-        st.pop();
-    }
-
-    while (!st1.empty()) {
-        std::string temp = st1.top();
-        if (st1.size() != 1) {
-            res.append(temp + "/");
+        std::string temp = st.front();
+        if (st.size() != 1) {
+            res.append(temp + path_separator);
         } else {
             res.append(temp);
         }
-        st1.pop();
+        st.pop_front();
     }
 
     return res;

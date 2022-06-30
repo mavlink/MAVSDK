@@ -126,22 +126,23 @@ install(DIRECTORY
 
 list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/callback_list_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/call_every_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/cli_arg_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/fs_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
     # TODO: add this again
     #${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/timeout_handler_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/call_every_handler_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/cli_arg_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/safe_queue_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/ringbuffer_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/safe_queue_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/timeout_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
