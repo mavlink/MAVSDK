@@ -29,7 +29,6 @@ void send_location_updates(
 
 const size_t N_LOCATIONS = 100ul;
 
-
 /* Test FollowMe with a stationary target at one location */
 TEST_F(SitlTest, PX4FollowMeOneLocation)
 {
@@ -114,7 +113,6 @@ TEST_F(SitlTest, PX4FollowMeOneLocation)
     // Unsubscribe to avoid races on destruction.
     telemetry->subscribe_flight_mode(nullptr);
 }
-
 
 /* Test FollowMe with a dynamically moving target */
 TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
@@ -234,19 +232,22 @@ FollowMe::TargetLocation create_target_location(double latitude_deg, double long
 
 bool autopilot_sw_ver_minimum_satisfied(const std::shared_ptr<Info> info)
 {
+    EXPECT_TRUE(poll_condition_with_timeout(
+        [&]() { return info->get_version().first == Info::Result::Success; },
+        std::chrono::seconds(5)));
+
     // Check PX4 version running and if too low, skip the test
     std::pair<Info::Result, Info::Version> version_result = info->get_version();
     EXPECT_EQ(version_result.first, Info::Result::Success);
 
     if (version_result.second.flight_sw_major < PX4_SW_MAJOR_MINIMUM) {
         return false; // Major version not satisfied
-    
+
     } else if (version_result.second.flight_sw_major > PX4_SW_MAJOR_MINIMUM) {
         return true; // Major version satisfied
-    
+
     } else if (version_result.second.flight_sw_minor >= PX4_SW_MINOR_MINIMUM) {
         return true; // Major version same, minor version satisfied
-    
     }
 
     return false;
