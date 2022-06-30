@@ -12,6 +12,7 @@ fi
 
 $DOCKER_CMD build -f Dockerfile-Fedora-34 -t mavsdk/mavsdk-fedora-34 .
 $DOCKER_CMD build -f Dockerfile-Fedora-35 -t mavsdk/mavsdk-fedora-35 .
+$DOCKER_CMD build -f Dockerfile-Fedora-36 -t mavsdk/mavsdk-fedora-36 .
 $DOCKER_CMD build -f Dockerfile-Ubuntu-20.04 -t mavsdk/mavsdk-ubuntu-20.04 .
 $DOCKER_CMD build -f Dockerfile-Ubuntu-20.04-PX4-SITL-v1.11 -t mavsdk/mavsdk-ubuntu-20.04-px4-sitl-v1.11 .
 $DOCKER_CMD build -f Dockerfile-Ubuntu-20.04-PX4-SITL-v1.12 -t mavsdk/mavsdk-ubuntu-20.04-px4-sitl-v1.12 .
@@ -24,6 +25,7 @@ $DOCKER_CMD build -f Dockerfile.dockcross-linux-arm64-custom -t mavsdk/mavsdk-do
 
 $DOCKER_CMD push mavsdk/mavsdk-fedora-34:latest
 $DOCKER_CMD push mavsdk/mavsdk-fedora-35:latest
+$DOCKER_CMD push mavsdk/mavsdk-fedora-36:latest
 $DOCKER_CMD push mavsdk/mavsdk-ubuntu-20.04:latest
 $DOCKER_CMD push mavsdk/mavsdk-ubuntu-20.04-px4-sitl-v1.11:latest
 $DOCKER_CMD push mavsdk/mavsdk-ubuntu-20.04-px4-sitl-v1.12:latest
