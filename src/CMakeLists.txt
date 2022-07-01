@@ -54,6 +54,16 @@ else()
     set(lib_path "lib")
 endif()
 
+if (ENABLED_PLUGINS)
+    message(STATUS "Manually enabled plugins:")
+    foreach(plugin ${ENABLED_PLUGINS})
+        message(STATUS "  - ${plugin}")
+    endforeach()
+else()
+    message(STATUS "All plugins enabled")
+    file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/plugins.txt" ENABLED_PLUGINS)
+endif()
+
 add_subdirectory(mavsdk)
 
 include(cmake/static_analyzers.cmake)

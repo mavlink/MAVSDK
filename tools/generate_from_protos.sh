@@ -104,6 +104,7 @@ command -v protoc-gen-mavsdk > /dev/null || {
 }
 
 plugin_list_and_core=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::')
+plugin_list=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::' | grep -v core)
 
 echo "Processing mavsdk_options.proto"
 ${protoc_binary} -I ${proto_dir} --cpp_out=${mavsdk_server_generated_dir} --grpc_out=${mavsdk_server_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
@@ -116,6 +117,10 @@ template_path_plugin_impl_h="${script_dir}/../templates/plugin_impl_h"
 template_path_plugin_impl_cpp="${script_dir}/../templates/plugin_impl_cpp"
 template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
 template_path_cmake="${script_dir}/../templates/cmake"
+
+plugins_file="${script_dir}/../src/plugins.txt"
+# Overwrite plugins file to be empty
+> $plugins_file
 
 for plugin in ${plugin_list_and_core}; do
 
@@ -175,15 +180,8 @@ for plugin in ${plugin_list_and_core}; do
         fi
     fi
 
-    plugins_cmake_file="${script_dir}/../src/mavsdk/plugins/CMakeLists.txt"
-    if [[ ! $(grep ${plugin} ${plugins_cmake_file}) ]]; then
-        echo "-> Adding entry for '${plugin}' to ${plugins_cmake_file}"
-
-        # We want to append the plugin to the list but before the passthrough plugin.
-        # Therefore, we grep for the line numbers of add_subdirectory, cut to numbers only, and use the first of the two last.
-        last_line=$(grep -n 'add_subdirectory' 'src/mavsdk/plugins/CMakeLists.txt' | cut -f1 -d: | tail -2 | head -n 1)
-        # We have to increment by one to write it below the last one.
-        last_line=$(($last_line+1))
-        sed -i "${last_line}iadd_subdirectory(${plugin})" ${plugins_cmake_file}
-    fi
+    echo "${plugin}" >> $plugins_file
 done
+
+# Generate grpc_server.h and grpc_server.cpp files according to plugin list
+python3 tools/grpc_server_jinja.py $plugin_list
