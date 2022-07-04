@@ -29,7 +29,8 @@ namespace mavsdk {
  * Regarding non-extended and extended parameters protocol:
  * In addition to the parameter types from the non-extended parameter protocol, the extended parameter protocol also
  * supports string parameter values. This class supports clients using both the non-extended and the extended parameter protocol,
- * but hides the string parameter values from non-extended protocol clients.
+ * but hides the string parameter values from non-extended protocol clients. Therefore, if the server has std:.string parameters but is
+ * talking to a non-extended client, param_index and param_count are different compared to talking to a client who doesn't speak extended.
  */
 class MavlinkParameterReceiver : public MavlinkParameterSubscription{
 public:
@@ -37,8 +38,10 @@ public:
     explicit MavlinkParameterReceiver(
         Sender& parent,
         MavlinkMessageHandler& message_handler,
-        TimeoutHandler& timeout_handler_unused, // Here until it can be safely deleted
-        TimeoutSCallback timeout_s_callback_unused, // Here until it can be safely deleted
+        // Here until it can be safely deleted
+        TimeoutHandler& timeout_handler_unused,
+        // Here until it can be safely deleted
+        TimeoutSCallback timeout_s_callback_unused,
         // by providing all the parameters on construction you can populate the parameter set
         // before the server starts reacting to clients, removing this issue:
         // https://mavlink.io/en/services/parameter.html#parameters_invariant
