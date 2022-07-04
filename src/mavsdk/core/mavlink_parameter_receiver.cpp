@@ -416,11 +416,6 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterReceiver::Resu
 
 bool MavlinkParameterReceiver::target_matches(const uint16_t target_sys_id,const uint16_t target_comp_id,bool is_request)
 {
-    // TODO: There seems to be some internal issue(s) in mavsdk regarding the "own" component id
-    const bool fixme=false;
-    if(fixme){
-        return true;
-    }
     if(target_sys_id!=_sender.get_own_system_id()){
         return false;
     }
