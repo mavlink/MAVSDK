@@ -23,6 +23,7 @@ bool MavlinkParameterSet::add_new_parameter(const std::string& param_id, ParamVa
     }
     InternalParameter parameter{param_id,std::move(value)};
     _all_params.push_back(parameter);
+    // just don't think about it.
     _param_index_to_hidden_extended.push_back(param_count_non_extended);
     _param_id_to_idx[param_id]=static_cast<uint16_t>(_param_id_to_idx.size());
     if(!parameter.value.needs_extended()){
@@ -31,6 +32,8 @@ bool MavlinkParameterSet::add_new_parameter(const std::string& param_id, ParamVa
     if(enable_debugging){
         LogDebug()<<"Added parameter: "<<parameter;
     }
+    assert(_all_params.size()==_param_index_to_hidden_extended.size());
+    assert(_all_params.size()== _param_id_to_idx.size());
     return true;
 }
 

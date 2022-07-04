@@ -47,8 +47,6 @@ MavlinkParameterSender::~MavlinkParameterSender()
     _message_handler.unregister_all(this);
 }
 
-
-
 MavlinkParameterSender::Result MavlinkParameterSender::set_param(
     const std::string& name,
     ParamValue value,
@@ -761,20 +759,16 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
-
     if (!work) {
         return;
     }
-
     if (!work->already_requested) {
         return;
     }
-
-    // Now it still needs to match the param name
     if (work->param_name != safe_param_id) {
+        // No match, let's just return the borrowed work item.
         return;
     }
-
     switch (work->type) {
         case WorkItem::Type::Set: {
             const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
@@ -833,7 +827,6 @@ void MavlinkParameterSender::receive_timeout()
             return;
         }
     }
-
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
     if (!work) {
