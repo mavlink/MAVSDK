@@ -46,7 +46,7 @@ public:
         // unique parameter id
         const std::string param_id;
         // unique parameter index
-        const int param_index;
+        const uint16_t param_index;
         // value of this parameter.
         ParamValue value;
     };

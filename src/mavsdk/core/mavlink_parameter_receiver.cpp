@@ -172,11 +172,12 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
             const auto curr_param=_param_set.lookup_parameter(param_id,extended).value();
             LogDebug() << "Got param_set for existing value, but wrong type. registered param: "<<curr_param;
             if(extended){
-                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,curr_param,param_count, extended);
-                new_work->param_ack=PARAM_ACK_FAILED;
+                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,curr_param.param_id,curr_param.value,
+                                                           WorkItemAck{PARAM_ACK_FAILED});
                 _work_queue.push_back(new_work);
             }else{
-                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,curr_param,param_count,extended);
+                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,curr_param.param_id,curr_param.value,
+                                                           WorkItemValue{curr_param.param_index,param_count,extended});
                 _work_queue.push_back(new_work);
             }
             return;
@@ -184,12 +185,14 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
         case MavlinkParameterSet::UpdateExistingParamResult::SUCCESS:{
             const auto updated_parameter=_param_set.lookup_parameter(param_id,extended).value();
             LogDebug()<<"Updated param:"<<updated_parameter;
+            find_and_call_subscriptions_value_changed(updated_parameter.param_id,updated_parameter.value);
             if(extended){
-                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,updated_parameter,param_count, extended);
-                new_work->param_ack=PARAM_ACK_ACCEPTED;
+                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Ack,updated_parameter.param_id,updated_parameter.value,
+                                                           WorkItemAck{PARAM_ACK_ACCEPTED});
                 _work_queue.push_back(new_work);
             }else{
-                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,updated_parameter,param_count,extended);
+                auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,updated_parameter.param_id,updated_parameter.value,
+                                                           WorkItemValue{updated_parameter.param_index,param_count,extended});
                 _work_queue.push_back(new_work);
             }
         }
@@ -248,8 +251,9 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
         return;
     }
     const auto& param=param_opt.value();
-    const int param_count = _param_set.get_current_parameters_count(extended);
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param,param_count,extended);
+    const auto param_count = _param_set.get_current_parameters_count(extended);
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param.param_id,param.value,
+                                               WorkItemValue{param.param_index,param_count,extended});
     _work_queue.push_back(new_work);
 }
 
@@ -268,8 +272,9 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
         return;
     }
     const auto& param=param_opt.value();
-    const int param_count = _param_set.get_current_parameters_count(extended);
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param,param_count,extended);
+    const auto param_count = _param_set.get_current_parameters_count(extended);
+    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,param.param_id,param.value,
+                                               WorkItemValue{param.param_index,param_count,extended});
     _work_queue.push_back(new_work);
 }
 
@@ -291,7 +296,8 @@ void MavlinkParameterReceiver::broadcast_all_parameters(const bool extended) {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     const auto all_params= _param_set.list_all_parameters(extended);
     for(const auto& parameter:all_params){
-        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,parameter,all_params.size(),extended);
+        auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,parameter.param_id,parameter.value,
+            WorkItemValue{parameter.param_index,static_cast<uint16_t>(all_params.size()),extended});
         _work_queue.push_back(new_work);
     }
 }
@@ -303,13 +309,13 @@ void MavlinkParameterReceiver::do_work()
     if (!work) {
         return;
     }
-    const auto param_id_message_buffer=MavlinkParameterSet::param_id_to_message_buffer(work->parameter.param_id);
+    const auto param_id_message_buffer=MavlinkParameterSet::param_id_to_message_buffer(work->param_id);
     mavlink_message_t mavlink_message;
     switch (work->type) {
         case WorkItem::Type::Value: {
-            assert(!work->param_ack.has_value());
-            if (work->extended) {
-                const auto buf = work->parameter.value.get_128_bytes();
+            const auto& specific=std::get<WorkItemValue>(work->work_item_variant);
+            if (specific.extended) {
+                const auto buf = work->param_value.get_128_bytes();
                 //mavlink_msg_param_ext_value_encode()
                 mavlink_msg_param_ext_value_pack(
                     _sender.get_own_system_id(),
@@ -317,15 +323,15 @@ void MavlinkParameterReceiver::do_work()
                     &mavlink_message,
                     param_id_message_buffer.data(),
                     buf.data(),
-                    work->parameter.value.get_mav_param_ext_type(),
-                    work->param_count,
-                    work->parameter.param_index);
+                    work->param_value.get_mav_param_ext_type(),
+                    specific.param_count,
+                    specific.param_index);
             } else {
                 float param_value;
                 if (_sender.autopilot() == Sender::Autopilot::ArduPilot) {
-                    param_value = work->parameter.value.get_4_float_bytes_cast();
+                    param_value = work->param_value.get_4_float_bytes_cast();
                 } else {
-                    param_value = work->parameter.value.get_4_float_bytes_bytewise();
+                    param_value = work->param_value.get_4_float_bytes_bytewise();
                 }
                 mavlink_msg_param_value_pack(
                     _sender.get_own_system_id(),
@@ -333,9 +339,9 @@ void MavlinkParameterReceiver::do_work()
                     &mavlink_message,
                     param_id_message_buffer.data(),
                     param_value,
-                    work->parameter.value.get_mav_param_type(),
-                    work->param_count,
-                    work->parameter.param_index);
+                    work->param_value.get_mav_param_type(),
+                    specific.param_count,
+                    specific.param_index);
             }
             if (!_sender.send_message(mavlink_message)) {
                 LogErr() << "Error: Send message failed";
@@ -346,18 +352,16 @@ void MavlinkParameterReceiver::do_work()
         } break;
 
         case WorkItem::Type::Ack: {
-            // ACK is only in the extended protocol.
-            assert(work->extended);
-            assert(work->param_ack.has_value());
-            auto buf = work->parameter.value.get_128_bytes();
+            const auto& specific=std::get<WorkItemAck>(work->work_item_variant);
+            auto buf = work->param_value.get_128_bytes();
             mavlink_msg_param_ext_ack_pack(
                 _sender.get_own_system_id(),
                 _sender.get_own_component_id(),
                 &mavlink_message,
                 param_id_message_buffer.data(),
                 buf.data(),
-                work->parameter.value.get_mav_param_ext_type(),
-                work->param_ack.value());
+                work->param_value.get_mav_param_ext_type(),
+                specific.param_ack);
             if (!_sender.send_message(mavlink_message)) {
                 LogErr() << "Error: Send message failed";
                 work_queue_guard.pop_front();

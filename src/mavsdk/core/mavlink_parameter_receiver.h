@@ -134,6 +134,16 @@ private:
     // broadcast all current parameters. If extended=false, string parameters are ignored.
     void broadcast_all_parameters(bool extended);
 
+    // These are specific depending on the work item type.
+    // note that ack needs fewer arguments.
+    struct WorkItemValue{
+        const uint16_t param_index;
+        const uint16_t param_count;
+        const bool extended;
+    };
+    struct WorkItemAck{
+        const PARAM_ACK param_ack;
+    };
     // On the server side, the only benefit of using the work item pattern (mavsdk specific)
     // is that the request all parameters command(s) are less likely to saturate the link.
     struct WorkItem {
@@ -142,15 +152,18 @@ private:
             Ack  // Emitted on a set value for the extended protocol only
         };
         const Type type;
-        const MavlinkParameterSet::Parameter parameter;
-        const uint16_t param_count;
-        const bool extended;
-        // only for ack messages via extended protocol
-        std::optional<PARAM_ACK> param_ack{};
-        explicit WorkItem(Type type1,MavlinkParameterSet::Parameter parameter1,uint16_t param_count1,bool extended1) :
-            type(type1),parameter(std::move(parameter1)),param_count(param_count1),extended(extended1){
-                if(!extended)assert(!parameter.value.needs_extended());
-            };
+        const std::string param_id;
+        const ParamValue param_value;
+        using WorkItemVariant=std::variant<WorkItemValue,WorkItemAck>;
+        const WorkItemVariant work_item_variant;
+        explicit WorkItem(Type type1,std::string param_id1,ParamValue param_value1,WorkItemVariant work_item_variant1) :
+            type(type1),param_id(std::move(param_id1)),param_value(std::move(param_value1)),work_item_variant(std::move(work_item_variant1)){
+            if(type==Type::Value){
+                assert(std::holds_alternative<WorkItemValue>(work_item_variant));
+            }else{
+                assert(std::holds_alternative<WorkItemAck>(work_item_variant));
+            }
+        };
     };
     LockedQueue<WorkItem> _work_queue{};
 };
