@@ -524,6 +524,7 @@ void MavlinkParameterSender::do_work()
             auto param_id=MavlinkParameterSet::param_id_to_message_buffer(specific.param_name);
             if (work->extended) {
                 const auto param_value_buf = specific.param_value.get_128_bytes();
+                LogDebug()<<"Sending to:"<<(int)_sender.get_own_system_id()<<":"<<(int)_sender.get_own_component_id();
                 // FIXME: extended currently always go to the camera component
                 mavlink_msg_param_ext_set_pack(
                     _sender.get_own_system_id(),
