@@ -166,6 +166,7 @@ private:
      * @param is_request we also respond to MAV_COMP_ID_ALL on messages that are a "request", but not on the "set" messages.
      */
     bool target_matches(uint16_t target_sys_id,uint16_t target_comp_id,bool is_request);
+    void log_target_mismatch(uint16_t target_sys_id,uint16_t target_comp_id);
 };
 
 } // namespace mavsdk
