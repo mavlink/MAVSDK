@@ -568,7 +568,18 @@ void MavlinkParameterSender::do_work()
         case WorkItem::Type::Get: {
             // LogDebug() << "now getting: " << work->param_name;
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
-            auto param_id=MavlinkParameterSet::param_id_to_message_buffer(specific.param_name);
+            // Can be by string or index id
+            std::array<char, MavlinkParameterSet::PARAM_ID_LEN> param_id_buff{};
+            int16_t param_index=-1;
+            if(std::holds_alternative<std::string>(specific.param_identifier)){
+                const auto tmp=std::get<std::string>(specific.param_identifier);
+                param_id_buff=MavlinkParameterSet::param_id_to_message_buffer(tmp);
+                param_index=-1;
+            }else{
+                // param_id_buff doesn't matter
+                param_index=std::get<int16_t>(specific.param_identifier);
+            }
+
             if (work->extended) {
                 mavlink_msg_param_ext_request_read_pack(
                     _sender.get_own_system_id(),
@@ -576,8 +587,8 @@ void MavlinkParameterSender::do_work()
                     &work->mavlink_message,
                     _sender.get_system_id(),
                     component_id,
-                    param_id.data(),
-                    -1);
+                    param_id_buff.data(),
+                    param_index);
 
             } else {
                 // LogDebug() << "request read: "
@@ -593,8 +604,8 @@ void MavlinkParameterSender::do_work()
                     &work->mavlink_message,
                     _sender.get_system_id(),
                     component_id,
-                    param_id.data(),
-                    -1);
+                    param_id_buff.data(),
+                    param_index);
             }
 
             if (!_sender.send_message(work->mavlink_message)) {
@@ -672,7 +683,8 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     switch (work->get_type()) {
         case WorkItem::Type::Get: {
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
-            if (specific.param_name != safe_param_id) {
+            if(!validate_id_or_index(specific.param_identifier,safe_param_id,static_cast<int16_t>(param_value.param_index))){
+                LogDebug()<<"Got unexpected response on work item";
                 // No match, let's just return the borrowed work item.
                 return;
             }
@@ -736,7 +748,8 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
     switch (work->get_type()) {
         case WorkItem::Type::Get: {
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
-            if (specific.param_name != safe_param_id) {
+            if(!validate_id_or_index(specific.param_identifier,safe_param_id,static_cast<int16_t>(param_ext_value.param_index))){
+                LogDebug()<<"Got unexpected response on work item";
                 // No match, let's just return the borrowed work item.
                 return;
             }
@@ -848,10 +861,9 @@ void MavlinkParameterSender::receive_timeout()
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
             if (work->retries_to_do > 0) {
                 // We're not sure the command arrived, let's retransmit.
-                LogWarn() << "sending again, retries to do: " << work->retries_to_do << "  ("
-                          << specific.param_name << ").";
+                LogWarn() << "sending again, retries to do: " << work->retries_to_do;
                 if (!_sender.send_message(work->mavlink_message)) {
-                    LogErr() << "connection send error in retransmit (" << specific.param_name << ").";
+                    LogErr() << "connection send error in retransmit ";
                     work_queue_guard.pop_front();
                     if (specific.callback) {
                         specific.callback(Result::ConnectionError, {});
@@ -863,7 +875,7 @@ void MavlinkParameterSender::receive_timeout()
                 }
             } else {
                 // We have tried retransmitting, giving up now.
-                LogErr() << "Error: Retrying failed get param busy timeout: " << specific.param_name;
+                LogErr() << "Error: Retrying failed get param busy timeout: ";
                 work_queue_guard.pop_front();
                 if (specific.callback) {
                     specific.callback(Result::Timeout, {});
