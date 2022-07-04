@@ -160,6 +160,7 @@ private:
     LockedQueue<WorkItem> _work_queue{};
     /**
      * See: https://mavlink.io/en/services/parameter.html#multi-system-and-multi-component-support
+     * @return true if the message should be processed by this server, false otherwise.
      * @param target_sys_id the target sys id from the mavlink param message
      * @param target_comp_id the target component id from the mavlink param message
      * @param is_request we also respond to MAV_COMP_ID_ALL on messages that are a "request", but not on the "set" messages.
