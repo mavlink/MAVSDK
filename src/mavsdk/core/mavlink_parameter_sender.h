@@ -216,15 +216,16 @@ private:
 
     // These are specific depending on the work item type
     struct WorkItemSet{
+        const std::string param_name;
         const ParamValue param_value;
         const SetParamCallback callback;
     };
     struct WorkItemGet{
+        const std::string param_name;
         const GetParamAnyCallback callback;
     };
     struct WorkItem {
         enum class Type { Get, Set};
-        const std::string param_name;
         const double timeout_s;
         using WorkItemVariant=std::variant<WorkItemGet,WorkItemSet>;
         const WorkItemVariant work_item_variant;
@@ -237,15 +238,11 @@ private:
         // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(std::string param_name1,double new_timeout_s,WorkItemVariant work_item_variant1,
+        explicit WorkItem(double new_timeout_s,WorkItemVariant work_item_variant1,
                           bool extended1,std::optional<uint8_t> maybe_component_id1) :
-            param_name(std::move(param_name1)),timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),
-            extended(extended1),maybe_component_id(maybe_component_id1){
-                /*if(type==Type::Get){
-                   assert(std::holds_alternative<WorkItemGet>(work_item_variant));
-                }else{
-                    assert(std::holds_alternative<WorkItemSet>(work_item_variant));
-                }*/
+                timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),
+                extended(extended1),maybe_component_id(maybe_component_id1){
+
             };
         [[nodiscard]] Type get_type()const{
             if(std::holds_alternative<WorkItemGet>(work_item_variant)){
