@@ -511,7 +511,8 @@ void MavlinkParameterSender::do_work()
             return work->maybe_component_id.value();
         } else {
             if (work->extended) {
-                return static_cast<uint8_t>(MAV_COMP_ID_CAMERA);
+                //return static_cast<uint8_t>(MAV_COMP_ID_CAMERA);
+                return static_cast<uint8_t>(MAV_COMP_ID_AUTOPILOT1);
             } else {
                 return static_cast<uint8_t>(MAV_COMP_ID_AUTOPILOT1);
             }
