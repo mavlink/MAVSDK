@@ -71,20 +71,17 @@ public:
     // create a buffer that is long enough for the message pack to read from. Discards the null terminator
     // if the param_id is exactly PARAM_ID_LEN long.
     static std::array<char,PARAM_ID_LEN> param_id_to_message_buffer(const std::string& param_id);
+    // returns true if the given param id is a valid param id for the mavlink protocol
+    static bool validate_param_id(const std::string& param_id);
 private:
     std::mutex _all_params_mutex{};
-    // list of all the parameters supported by both non-extended and extended protocol.
+    // list of all the parameters added,not checked for extended/non-extended protocol
     std::vector<Parameter> _all_params;
-    // list of all the parameters supported only by the extended protocol
-    //std::vector<Parameter> _string_params;
     // if an element exists in this map, since we never remove parameters, it is guaranteed that the returned index is
     // inside the _all_params range.
     std::map<std::string,uint16_t> _param_id_to_idx;
-    // parameter ids for values that are supported by both non-extended and extended
-    std::vector<std::string> _basic_param_ids;
-    // parameter ids for values that are
-    std::vector<std::string> _extend_only_param_ids;
-    //
+    // parameter count from a non-extended perspective (string params hidden)
+    uint16_t param_count_non_extended=0;
     const bool enable_debugging=true;
 };
 
