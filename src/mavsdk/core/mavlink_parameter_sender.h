@@ -224,7 +224,6 @@ private:
     };
     struct WorkItem {
         enum class Type { Get, Set};
-        const Type type;
         const std::string param_name;
         const double timeout_s;
         using WorkItemVariant=std::variant<WorkItemGet,WorkItemSet>;
@@ -238,16 +237,22 @@ private:
         // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(Type type1,std::string param_name1,double new_timeout_s,WorkItemVariant work_item_variant1,
+        explicit WorkItem(std::string param_name1,double new_timeout_s,WorkItemVariant work_item_variant1,
                           bool extended1,std::optional<uint8_t> maybe_component_id1) :
-            type(type1),param_name(std::move(param_name1)),timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),
+            param_name(std::move(param_name1)),timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),
             extended(extended1),maybe_component_id(maybe_component_id1){
-                if(type==Type::Get){
+                /*if(type==Type::Get){
                    assert(std::holds_alternative<WorkItemGet>(work_item_variant));
                 }else{
                     assert(std::holds_alternative<WorkItemSet>(work_item_variant));
-                }
+                }*/
             };
+        [[nodiscard]] Type get_type()const{
+            if(std::holds_alternative<WorkItemGet>(work_item_variant)){
+                return Type::Get;
+            }
+            return Type::Set;
+        }
     };
     LockedQueue<WorkItem> _work_queue{};
 

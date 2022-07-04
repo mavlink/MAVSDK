@@ -89,7 +89,7 @@ void MavlinkParameterSender::set_param_async(
         }
         return;
     }
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Set,name,_timeout_s_callback(),
+    auto new_work = std::make_shared<WorkItem>(name,_timeout_s_callback(),
                                                WorkItemSet{value,callback},extended,maybe_component_id);
     new_work->cookie = cookie;
     _work_queue.push_back(new_work);
@@ -288,7 +288,7 @@ void MavlinkParameterSender::get_param_async(
         return;
     }
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Get,name,_timeout_s_callback(),WorkItemGet{callback},extended,maybe_component_id);
+    auto new_work = std::make_shared<WorkItem>(name,_timeout_s_callback(),WorkItemGet{callback},extended,maybe_component_id);
     // We don't need to know the exact type when getting a value - neither extended or non-extended protocol mavlink messages
     // specify the exact type on a "get_xxx" message. This makes total sense. The client still can reason about the type and return
     // the proper error codes, it just needs to delay these checks until a response from the server has been received.
@@ -519,7 +519,7 @@ void MavlinkParameterSender::do_work()
         }
     }();
 
-    switch (work->type) {
+    switch (work->get_type()) {
         case WorkItem::Type::Set: {
             const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
             if (work->extended) {
@@ -670,7 +670,7 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
         // No match, let's just return the borrowed work item.
         return;
     }
-    switch (work->type) {
+    switch (work->get_type()) {
         case WorkItem::Type::Get: {
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
             if (specific.callback) {
@@ -730,7 +730,7 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
         // No match, let's just return the borrowed work item.
         return;
     }
-    switch (work->type) {
+    switch (work->get_type()) {
         case WorkItem::Type::Get: {
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
             if (specific.callback) {
@@ -769,7 +769,7 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
         // No match, let's just return the borrowed work item.
         return;
     }
-    switch (work->type) {
+    switch (work->get_type()) {
         case WorkItem::Type::Set: {
             const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
@@ -836,7 +836,7 @@ void MavlinkParameterSender::receive_timeout()
     if (!work->already_requested) {
         return;
     }
-    switch (work->type) {
+    switch (work->get_type()) {
         case WorkItem::Type::Get: {
             const auto& specific=std::get<WorkItemGet>(work->work_item_variant);
             if (work->retries_to_do > 0) {
