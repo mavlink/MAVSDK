@@ -158,8 +158,13 @@ private:
         };
     };
     LockedQueue<WorkItem> _work_queue{};
-    // all the mavlink param messages have a target. Returns true if the target matches the sys and comp id we process.
-    bool target_matches(const uint16_t target_sys_id,const uint16_t target_comp_id);
+    /**
+     * See: https://mavlink.io/en/services/parameter.html#multi-system-and-multi-component-support
+     * @param target_sys_id the target sys id from the mavlink param message
+     * @param target_comp_id the target component id from the mavlink param message
+     * @param is_request we also respond to MAV_COMP_ID_ALL on messages that are a "request", but not on the "set" messages.
+     */
+    bool target_matches(uint16_t target_sys_id,uint16_t target_comp_id,bool is_request);
 };
 
 } // namespace mavsdk
