@@ -21,9 +21,10 @@ bool MavlinkParameterSet::add_new_parameter(const std::string& param_id, ParamVa
         // not enough space for this parameter
         return false;
     }
-    Parameter parameter{param_id,static_cast<uint16_t>(_all_params.size()),std::move(value)};
+    InternalParameter parameter{param_id,std::move(value)};
     _all_params.push_back(parameter);
-    _param_id_to_idx[param_id]=parameter.param_index;
+    _param_index_to_hidden_extended.push_back(param_count_non_extended);
+    _param_id_to_idx[param_id]=static_cast<uint16_t>(_param_id_to_idx.size());
     if(!parameter.value.needs_extended()){
         param_count_non_extended++;
     }
@@ -52,20 +53,22 @@ MavlinkParameterSet::UpdateExistingParamResult MavlinkParameterSet::update_exist
     return UpdateExistingParamResult::SUCCESS;
 }
 
-std::vector<MavlinkParameterSet::Parameter> MavlinkParameterSet::get_all(const bool supports_extended)
+std::vector<MavlinkParameterSet::Parameter> MavlinkParameterSet::list_all_parameters(const bool supports_extended)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    if(supports_extended)return _all_params;
     std::vector<MavlinkParameterSet::Parameter> ret;
-    for (const auto& param : _all_params) {
-        if(!param.value.needs_extended()){
-            ret.push_back(param);
+    uint16_t index=0;
+    for(const auto& param:_all_params){
+        if(param.value.needs_extended() && !supports_extended){
+            continue;
         }
+        ret.emplace_back(MavlinkParameterSet::Parameter{param.param_id,index,param.value});
+        index++;
     }
     return ret;
 }
 
-std::map<std::string, ParamValue> MavlinkParameterSet::get_copy()
+std::map<std::string, ParamValue> MavlinkParameterSet::create_copy_as_map()
 {
    std::lock_guard<std::mutex> lock(_all_params_mutex);
    std::map<std::string,ParamValue> ret;
@@ -98,7 +101,8 @@ std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parame
         // param exists, but needs extended
         return {};
     }
-    return param;
+    const auto param_index_actual=extended ? param_index : _param_index_to_hidden_extended.at(param_index);
+    return MavlinkParameterSet::Parameter{param.param_id,param_index_actual,param.value};
 }
 
 std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parameter(const uint16_t param_index,bool extended)
@@ -113,7 +117,8 @@ std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parame
         // param exists, but needs extended
         return {};
     }
-    return param;
+    const auto param_index_actual=extended ? param_index : _param_index_to_hidden_extended.at(param_index);
+    return MavlinkParameterSet::Parameter{param.param_id,param_index_actual,param.value};
 }
 
 std::ostream&
@@ -159,6 +164,12 @@ bool MavlinkParameterSet::validate_param_id(const std::string& param_id)
         return false;
     }
     return true;
+}
+
+std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::InternalParameter& obj)
+{
+    strm << "Parameter{"<<obj.param_id<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";
+    return strm;
 }
 
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj)

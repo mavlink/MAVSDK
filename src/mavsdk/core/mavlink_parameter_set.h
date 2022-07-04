@@ -40,7 +40,8 @@ public:
      * @return one of the results above.
      */
     UpdateExistingParamResult update_existing_parameter(const std::string& param_id,const ParamValue& value);
-
+    // This is how we publicly expose parameters - with a unique param_id as well as a unique param_index.
+    // The param_index can be different on extended or non-extended protocol.
     struct Parameter{
         // unique parameter id
         const std::string param_id;
@@ -49,8 +50,8 @@ public:
         // value of this parameter.
         ParamValue value;
     };
-    std::vector<Parameter> get_all(bool supports_extended);
-    std::map<std::string, ParamValue> get_copy();
+    std::vector<Parameter> list_all_parameters(bool supports_extended);
+    std::map<std::string, ParamValue> create_copy_as_map();
 
     std::optional<Parameter> lookup_parameter(const std::string& param_id,bool extended);
     std::optional<Parameter> lookup_parameter(uint16_t param_index,bool extended);
@@ -74,12 +75,22 @@ public:
     // returns true if the given param id is a valid param id for the mavlink protocol
     static bool validate_param_id(const std::string& param_id);
 private:
+    struct InternalParameter{
+        // unique parameter id
+        const std::string param_id;
+        // value of this parameter.
+        ParamValue value;
+    };
+    friend std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::InternalParameter& obj);
     std::mutex _all_params_mutex{};
     // list of all the parameters added,not checked for extended/non-extended protocol
-    std::vector<Parameter> _all_params;
+    std::vector<InternalParameter> _all_params;
     // if an element exists in this map, since we never remove parameters, it is guaranteed that the returned index is
     // inside the _all_params range.
     std::map<std::string,uint16_t> _param_id_to_idx;
+    // This really messed up my brain,but no other way around - we need to be able to convert a parameter index from the
+    // extended perspective into the non-extended perspective.
+    std::vector<uint16_t> _param_index_to_hidden_extended;
     // parameter count from a non-extended perspective (string params hidden)
     uint16_t param_count_non_extended=0;
     const bool enable_debugging=true;

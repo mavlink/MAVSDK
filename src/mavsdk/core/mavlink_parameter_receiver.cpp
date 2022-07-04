@@ -115,7 +115,7 @@ MavlinkParameterReceiver::Result MavlinkParameterReceiver::provide_server_param_
 std::map<std::string, ParamValue> MavlinkParameterReceiver::retrieve_all_server_params()
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    return _param_set.get_copy();
+    return _param_set.create_copy_as_map();
 }
 
 template<class T>
@@ -289,7 +289,7 @@ void MavlinkParameterReceiver::process_param_ext_request_list(const mavlink_mess
 
 void MavlinkParameterReceiver::broadcast_all_parameters(const bool extended) {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    const auto all_params=_param_set.get_all(extended);
+    const auto all_params= _param_set.list_all_parameters(extended);
     for(const auto& parameter:all_params){
         auto new_work = std::make_shared<WorkItem>(WorkItem::Type::Value,parameter,all_params.size(),extended);
         _work_queue.push_back(new_work);
