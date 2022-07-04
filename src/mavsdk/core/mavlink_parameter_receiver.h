@@ -158,6 +158,8 @@ private:
         };
     };
     LockedQueue<WorkItem> _work_queue{};
+    // all the mavlink param messages have a target. Returns true if the target matches the sys and comp id we process.
+    bool target_matches(const uint16_t target_sys_id,const uint16_t target_comp_id);
 };
 
 } // namespace mavsdk

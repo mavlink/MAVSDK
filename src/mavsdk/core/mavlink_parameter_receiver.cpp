@@ -206,6 +206,10 @@ void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& messag
 {
     mavlink_param_set_t set_request{};
     mavlink_msg_param_set_decode(&message, &set_request);
+    if(!target_matches(set_request.target_system,set_request.target_component)){
+        LogDebug()<<"Ignoring message - wrong target id:"<<set_request.target_system<<":"<<set_request.target_component;
+        return;
+    }
     const std::string safe_param_id = MavlinkParameterSet::extract_safe_param_id(set_request.param_id);
     if(safe_param_id.empty()){
         LogWarn() << "Invalid Param Set ID Request (empty id): ";
@@ -224,6 +228,10 @@ void MavlinkParameterReceiver::process_param_ext_set(const mavlink_message_t& me
 {
     mavlink_param_ext_set_t set_request{};
     mavlink_msg_param_ext_set_decode(&message, &set_request);
+    if(!target_matches(set_request.target_system,set_request.target_component)){
+        LogDebug()<<"Ignoring message - wrong target id:"<<set_request.target_system<<":"<<set_request.target_component;
+        return;
+    }
     const std::string safe_param_id = MavlinkParameterSet::extract_safe_param_id(set_request.param_id);
     if(safe_param_id.empty()){
         LogWarn() << "Invalid Param Set ID Request (empty id): ";
@@ -242,6 +250,10 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
 {
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
+    if(!target_matches( read_request.target_system,read_request.target_component)){
+        LogDebug()<<"Ignoring message - wrong target id:"<<read_request.target_system<<":"<<read_request.target_component;
+        return;
+    }
     const auto safe_param_id= MavlinkParameterSet::extract_safe_param_id(read_request.param_id);
     constexpr bool extended= false;
     std::lock_guard<std::mutex> lock(_all_params_mutex);
@@ -264,6 +276,10 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
 {
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
+    if(!target_matches( read_request.target_system,read_request.target_component)){
+        LogDebug()<<"Ignoring message - wrong target id:"<<read_request.target_system<<":"<<read_request.target_component;
+        return;
+    }
     const auto safe_param_id = MavlinkParameterSet::extract_safe_param_id(read_request.param_id);
     constexpr bool extended=true;
     std::lock_guard<std::mutex> lock(_all_params_mutex);
@@ -286,6 +302,10 @@ void MavlinkParameterReceiver::process_param_request_list(const mavlink_message_
 {
     mavlink_param_request_list_t list_request{};
     mavlink_msg_param_request_list_decode(&message, &list_request);
+    if(!target_matches(list_request.target_system,list_request.target_component)){
+        LogDebug()<<"Ignoring message - wrong target id:"<<list_request.target_system<<":"<<list_request.target_component;
+        return;
+    }
     broadcast_all_parameters(false);
 }
 
@@ -293,6 +313,10 @@ void MavlinkParameterReceiver::process_param_ext_request_list(const mavlink_mess
 {
     mavlink_param_ext_request_list_t ext_list_request{};
     mavlink_msg_param_ext_request_list_decode(&message, &ext_list_request);
+    if(!target_matches(ext_list_request.target_system,ext_list_request.target_component)){
+        LogDebug()<<"Ignoring message - wrong target id:"<<ext_list_request.target_system<<":"<<ext_list_request.target_component;
+        return;
+    }
     broadcast_all_parameters(true);
 }
 
@@ -388,6 +412,11 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterReceiver::Resu
         default:
             return str << "UnknownError";
     }
+}
+
+bool MavlinkParameterReceiver::target_matches(const uint16_t target_sys_id,const uint16_t  target_comp_id)
+{
+    return target_sys_id==_sender.get_own_system_id() && target_comp_id==_sender.get_own_component_id();
 }
 
 } // namespace mavsdk
