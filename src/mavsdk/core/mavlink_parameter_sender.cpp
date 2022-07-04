@@ -956,4 +956,25 @@ void MavlinkParameterSender::validate_parameter_count(const uint16_t param_count
     }
 }
 
+bool MavlinkParameterSender::validate_id_or_index(
+    const std::variant<std::string, int16_t>& original,
+    const std::string& param_id,
+    const int16_t param_index)
+{
+    if(std::holds_alternative<std::string>(original)){
+        const auto tmp=std::get<std::string>(original);
+        if(param_id != tmp){
+            // We requested by string id, but response doesn't match
+            return false;
+        }
+    }else{
+        const auto tmp=std::get<int16_t>(original);
+        if(param_index!=tmp){
+            // We requested by index, but response doesn't match
+            return false;
+        }
+    }
+    return true;
+}
+
 } // namespace mavsdk
