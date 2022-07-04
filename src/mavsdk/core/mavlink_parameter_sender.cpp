@@ -673,7 +673,7 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     find_and_call_subscriptions_value_changed(safe_param_id,received_value);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
+    const auto work = work_queue_guard.get_front();
     if (!work) {
         return;
     }
@@ -702,13 +702,18 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
                 // No match, let's just return the borrowed work item.
                 return;
             }
-            // TODO check if the response actually matches what we requested. Unfortunately, non-extended
-            // is a bit ambiguous here.
             // We are done, inform caller and go back to idle
-            if (specific.callback) {
-                specific.callback(MavlinkParameterSender::Result::Success);
+            // Unfortunately non-extended is less verbose than extended in this case.
+            if(specific.param_value==received_value){
+                // the value was set to what we have requested
+                if (specific.callback) {
+                    specific.callback(MavlinkParameterSender::Result::Success);
+                }
+            }else{
+                if (specific.callback) {
+                    specific.callback(MavlinkParameterSender::Result::UnknownError);
+                }
             }
-
             _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _sender.get_time().elapsed_since_s(_last_request_time);
