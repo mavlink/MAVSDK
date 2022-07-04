@@ -136,33 +136,25 @@ private:
 
     // These are specific depending on the work item type.
     // note that ack needs fewer arguments.
+    // Emitted on a get value or set value for non-extended, broadcast the current value
     struct WorkItemValue{
         const uint16_t param_index;
         const uint16_t param_count;
         const bool extended;
     };
+    // Emitted on a set value for the extended protocol only
     struct WorkItemAck{
         const PARAM_ACK param_ack;
     };
     // On the server side, the only benefit of using the work item pattern (mavsdk specific)
     // is that the request all parameters command(s) are less likely to saturate the link.
     struct WorkItem {
-        enum class Type {
-            Value, // Emitted on a get value or set value for non-extended, broadcast the current value
-            Ack  // Emitted on a set value for the extended protocol only
-        };
-        const Type type;
         const std::string param_id;
         const ParamValue param_value;
         using WorkItemVariant=std::variant<WorkItemValue,WorkItemAck>;
         const WorkItemVariant work_item_variant;
-        explicit WorkItem(Type type1,std::string param_id1,ParamValue param_value1,WorkItemVariant work_item_variant1) :
-            type(type1),param_id(std::move(param_id1)),param_value(std::move(param_value1)),work_item_variant(std::move(work_item_variant1)){
-            if(type==Type::Value){
-                assert(std::holds_alternative<WorkItemValue>(work_item_variant));
-            }else{
-                assert(std::holds_alternative<WorkItemAck>(work_item_variant));
-            }
+        explicit WorkItem(std::string param_id1,ParamValue param_value1,WorkItemVariant work_item_variant1) :
+            param_id(std::move(param_id1)),param_value(std::move(param_value1)),work_item_variant(std::move(work_item_variant1)){
         };
     };
     LockedQueue<WorkItem> _work_queue{};
