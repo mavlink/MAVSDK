@@ -192,6 +192,8 @@ public:
 
     // Note: When use_extended == false, this won't return any parameters that use a string as param value,
     // since the non-extended protocol is incapable of doing so.
+    // also, in case there is packet loss and the parameter set of the server has a lot of parameters,
+    // this might take a significant amount of time.
     std::map<std::string, ParamValue> get_all_params(bool use_extended=false);
     using GetAllParamsCallback = std::function<void(std::map<std::string, ParamValue>)>;
     void get_all_params_async(const GetAllParamsCallback& callback,bool use_extended=false);
@@ -279,7 +281,7 @@ private:
     void check_all_params_timeout();
     // Create a callback for a WorkItemGet that performs the following steps:
     // 1) Check if any parameter of the parameter set is missing.
-    // 2) If yes, request the first missing parameter and recursively add the same callback
+    // 2) If yes, request the first missing parameter and recursively add the same callback to check and request again
     // 3) If no, terminate.
     GetParamAnyCallback create_recursive_callback();
 };

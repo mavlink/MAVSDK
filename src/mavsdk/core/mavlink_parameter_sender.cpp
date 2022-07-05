@@ -487,13 +487,13 @@ void MavlinkParameterSender::cancel_all_param(const void* cookie)
 
     for (auto item = _work_queue.begin(); item != _work_queue.end(); /* manual incrementation */) {
         if ((*item)->cookie == cookie) {
+            // TODO: Don't we need to make sure to call the callbacks before removing the items ?
             item = _work_queue.erase(item);
         } else {
             ++item;
         }
     }
 }
-
 
 void MavlinkParameterSender::do_work()
 {
