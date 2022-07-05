@@ -619,38 +619,8 @@ void MavlinkParameterSender::do_work()
             // We want to get notified if a timeout happens
             _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
         } break;
-        case WorkItem::Type::GetAll: {
-            const auto& specific=std::get<WorkItemGetAll>(work->work_item_variant);
-            if(work->extended){
-                mavlink_msg_param_ext_request_list_pack(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
-                    &work->mavlink_message,
-                    _sender.get_system_id(),
-                    component_id);
-            }else{
-                mavlink_msg_param_request_list_pack(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
-                    &work->mavlink_message,
-                    _sender.get_system_id(),
-                    component_id);
-            }
-            if (!_sender.send_message(work->mavlink_message)) {
-                LogErr() << "Error: Send message failed";
-                if (specific.callback) {
-                    specific.callback({});
-                }
-                work_queue_guard.pop_front();
-                return;
-            }
-            work->already_requested = true;
-            // _last_request_time = _sender.get_time().steady_time();
-            // We want to get notified if a timeout happens
-            _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
-        }break;
         default:
-            assert(true);
+            LogWarn()<<"Unknown work item";
             break;
     }
 }
@@ -776,34 +746,6 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
             // LogDebug() << "time taken: " <<
             // _sender.get_time().elapsed_since_s(_last_request_time);
             work_queue_guard.pop_front();
-        } break;
-        case WorkItem::Type::GetAll: {
-            auto& specific=std::get<WorkItemGetAll>(work->work_item_variant);
-            const auto param_idx=param_ext_value.param_index;
-            const auto all_params_count=param_ext_value.param_count;
-            if(!specific.param_set_from_server.add_new_parameter(safe_param_id,param_idx,all_params_count,received_value)){
-                // something wrong with the data from the server.
-                _timeout_handler.remove(_timeout_cookie);
-                if (specific.callback) {
-                    specific.callback({});
-                }
-                work_queue_guard.pop_front();
-                return;
-            }
-            if(specific.param_set_from_server.is_complete()){
-                // we have all the parameters from the server
-                _timeout_handler.remove(_timeout_cookie);
-                if (specific.callback) {
-                    specific.callback(specific.param_set_from_server.get_all_params());
-                }
-                work_queue_guard.pop_front();
-                return;
-            }else{
-                // We haven't gotten all the parameters yet, but messages are still coming in (this might take a while depending
-                // on the size of the set and the mavlink bandwidth)
-                _timeout_handler.remove(_timeout_cookie);
-                _timeout_handler.add([this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
-            }
         } break;
         // According to the mavlink spec, PARAM_EXT_VALUE is only emitted in response to a PARAM_EXT_REQUEST_LIST or PARAM_EXT_REQUEST_READ.
         default:
@@ -944,73 +886,6 @@ void MavlinkParameterSender::receive_timeout()
                 }
             }
         } break;
-        case WorkItem::Type::GetAll: {
-            const auto& specific=std::get<WorkItemGetAll>(work->work_item_variant);
-            // check if we have gotten at least one parameter back from the server - in this case, we know the param count
-            if(specific.param_set_from_server.param_count_known()){
-                // check how many parameters are missing.
-                const auto missing_param_indices=specific.param_set_from_server.get_missing_param_indices();
-
-                const std::array<char,MavlinkParameterSet::PARAM_ID_LEN> param_id_buff={};
-                // we request up to five parameter indices at a time, to speed up things in case there are a lot of parameters.
-                for(std::size_t i=0;i<5 && i< missing_param_indices.size();i++){
-                    const auto missing_index=missing_param_indices.at(i);
-                    if (work->extended) {
-                        mavlink_msg_param_ext_request_read_pack(
-                            _sender.get_own_system_id(),
-                            _sender.get_own_component_id(),
-                            &work->mavlink_message,
-                            _sender.get_system_id(),
-                            0, //TODO
-                            param_id_buff.data(),
-                            static_cast<int16_t>(missing_index));
-                    } else {
-                        mavlink_msg_param_request_read_pack(
-                            _sender.get_own_system_id(),
-                            _sender.get_own_component_id(),
-                            &work->mavlink_message,
-                            _sender.get_system_id(),
-                            0, //TODO
-                            param_id_buff.data(),
-                            static_cast<int16_t>(missing_index));
-                    }
-                    if (!_sender.send_message(work->mavlink_message)) {
-                        LogErr() << "connection send error in retransmit ";
-                        work_queue_guard.pop_front();
-                        if (specific.callback) {
-                            specific.callback({});
-                        }
-                    } else {
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
-                    }
-                }
-            }else{
-                // We did not get any response from the server, most likely the list all messages request got lost.
-                // send the list all request.
-                if(work->retries_to_do > 0){
-                    LogWarn() << "sending again, retries to do: " << work->retries_to_do;
-                    if (!_sender.send_message(work->mavlink_message)) {
-                        LogErr() << "connection send error in retransmit ";
-                        work_queue_guard.pop_front();
-                        if (specific.callback) {
-                            specific.callback({});
-                        }
-                    } else {
-                        --work->retries_to_do;
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, work->timeout_s, &_timeout_cookie);
-                    }
-                }else{
-                    // We have tried retransmitting, giving up now.
-                    LogErr() << "Error: Retrying failed Get all params busy timeout";
-                    work_queue_guard.pop_front();
-                    if (specific.callback) {
-                        specific.callback({});
-                    }
-                }
-            }
-        } break;
         default:
             break;
     }
@@ -1079,6 +954,10 @@ void MavlinkParameterSender::check_for_full_parameter_set(const std::string& saf
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if(_all_params_callback){
         if(!_param_set_from_server.add_new_parameter(safe_param_id,param_idx,all_param_count,received_value)){
+            // we cannot do a full parameter synchronization with this server, it provides inconsistent data.
+            _timeout_handler.remove(_all_params_timeout_cookie);
+            _all_params_callback({});
+            _all_params_callback = nullptr;
             return;
         }
         if(_param_set_from_server.is_complete()){
@@ -1094,35 +973,7 @@ void MavlinkParameterSender::check_for_full_parameter_set(const std::string& saf
                 &_all_params_timeout_cookie);
         }
     }
-
-    // check if we are looking for param list (get all parameters).
-    /*if (_all_params_callback) {
-        // If we are currently waiting for all parameters, this is a hacky way to basically say
-        // "Hey, we got the last parameter, so we got all parameters, and can forward that to the user."
-        // Note that I don't think this accounts for the case where a parameter that is not the last parameter went missing.
-        // So it is better than nothing, but also not ideal. Correct me if I'm wrong.
-        if (param_idx + 1 == all_param_count) {
-            // we got the last parameter. Now check if any parameters in between are missing
-            if(_all_params.size()==all_param_count){
-                // We got the full parameter set
-            }else{
-                // We got a partial parameter set, but we can request the missing parameters by index.
-            }
-            _timeout_handler.remove(_all_params_timeout_cookie);
-            _all_params_callback(_all_params);
-            _all_params_callback = nullptr;
-        } else {
-            _timeout_handler.remove(_all_params_timeout_cookie);
-
-            _timeout_handler.add(
-                [this] { receive_timeout(); },
-                _timeout_s_callback(),
-                &_all_params_timeout_cookie);
-        }
-        return;
-    }*/
 }
-
 
 void MavlinkParameterSender::check_all_params_timeout() {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
@@ -1137,35 +988,18 @@ void MavlinkParameterSender::check_all_params_timeout() {
             // We know the n of parameters on the server, now check how many are still missing
             const auto missing_param_indices=_param_set_from_server.get_missing_param_indices();
             if(missing_param_indices.empty()){
-                _all_params_callback({});
+                assert(_param_set_from_server.is_complete());
+                _all_params_callback(_param_set_from_server.get_all_params());
                 _all_params_callback= nullptr;
             }
             // We request all the missing parameters. for that, we can use the work queue.
             // We add the first missing parameter to the work queue, once we've gotten a result of this operation we can fetch the next one.
-            const auto missing=missing_param_indices.at(0);
-            const auto callback=[this](Result res,ParamValue unused){
-                std::lock_guard<std::mutex> lock(_all_params_mutex);
-                if(res==Result::Success){
-                    // get the next missing parameter, if there is any.
-                    const auto missing=_param_set_from_server.get_missing_param_indices();
-                    if(missing.empty()){
-                        _all_params_callback(_param_set_from_server.get_all_params());
-                        _all_params_callback= nullptr;
-                    }
-                }else{
-                    LogDebug()<<"Get param used for GetAllParameters failed";
-                    _all_params_callback({});
-                    _all_params_callback= nullptr;
-                }
-            };
+            const auto first_missing_param=missing_param_indices.at(0);
+            LogDebug()<<"Requesting missing parameter "<<(int)first_missing_param;
             auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),
-                                                       WorkItemGet{missing,callback}, this,_all_params_request_extended,std::nullopt);
+                                                       WorkItemGet{first_missing_param,create_recursive_callback()}, this,_all_params_request_extended,std::nullopt);
             _work_queue.push_back(new_work);
         }
-
-        _all_params_callback({});
-        _all_params_callback= nullptr;
-        return;
     }
 }
 

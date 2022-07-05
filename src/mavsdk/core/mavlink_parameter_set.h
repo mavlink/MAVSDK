@@ -97,11 +97,11 @@ private:
 };
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj);
 
-// This class helps to build a parameter set as messages from a server come in
+// This class helps to build a complete parameter set with messages from a server.
 class ParamSetFromServer{
 public:
     // Add a new parameter to the parameter set.
-    // returns true if the message has been properly prcoessed, false otherwise
+    // returns true if the message is okay, false otherwise
     // (we might get inconsistent data from a buggy param server, an "all param synchronization" is not possible in this case).
     bool add_new_parameter(const std::string& safe_param_id,uint16_t param_index,uint16_t parameter_count,const ParamValue& value);
     // returns true if we know how many parameters the server provides.
@@ -109,10 +109,12 @@ public:
     [[nodiscard]] bool param_count_known()const{
         return _server_all_param_ids.has_value();
     }
+    // total number of parameters (once known)
     [[nodiscard]] uint16_t total_param_count()const{
         assert(_server_all_param_ids.has_value());
         return _server_all_param_ids.value().size();
     }
+    // total number of missing parameters
     [[nodiscard]] uint16_t missing_param_count()const{
         return get_missing_param_indices().size();
     }
