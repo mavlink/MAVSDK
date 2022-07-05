@@ -382,7 +382,7 @@ public:
 
         const mavsdk::CameraServer::TakePhotoHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_take_photo(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const int32_t take_photo) {
                     rpc::camera_server::TakePhotoResponse rpc_response;
 

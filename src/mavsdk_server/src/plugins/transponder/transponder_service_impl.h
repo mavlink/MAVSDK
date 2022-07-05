@@ -303,7 +303,7 @@ public:
 
         const mavsdk::Transponder::TransponderHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_transponder(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Transponder::AdsbVehicle transponder) {
                     rpc::transponder::TransponderResponse rpc_response;
 

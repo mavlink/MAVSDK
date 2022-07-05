@@ -366,7 +366,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Gimbal::ControlHandle handle = _lazy_plugin.maybe_plugin()->subscribe_control(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const mavsdk::Gimbal::ControlStatus control) {
                 rpc::gimbal::ControlResponse rpc_response;
 

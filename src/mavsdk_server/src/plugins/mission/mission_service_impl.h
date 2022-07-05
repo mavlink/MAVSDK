@@ -688,7 +688,7 @@ public:
 
         const mavsdk::Mission::MissionProgressHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_mission_progress(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Mission::MissionProgress mission_progress) {
                     rpc::mission::MissionProgressResponse rpc_response;
 

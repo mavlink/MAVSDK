@@ -237,7 +237,7 @@ public:
 
         const mavsdk::ComponentInformationServer::FloatParamHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_float_param(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::ComponentInformationServer::FloatParamUpdate float_param) {
                     rpc::component_information_server::FloatParamResponse rpc_response;
 

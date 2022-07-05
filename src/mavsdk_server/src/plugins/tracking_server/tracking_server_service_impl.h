@@ -256,7 +256,7 @@ public:
 
         const mavsdk::TrackingServer::TrackingPointCommandHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_tracking_point_command(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::TrackingServer::TrackPoint tracking_point_command) {
                     rpc::tracking_server::TrackingPointCommandResponse rpc_response;
 
@@ -298,7 +298,7 @@ public:
 
         const mavsdk::TrackingServer::TrackingRectangleCommandHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_tracking_rectangle_command(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::TrackingServer::TrackRectangle tracking_rectangle_command) {
                     rpc::tracking_server::TrackingRectangleCommandResponse rpc_response;
 
@@ -340,7 +340,7 @@ public:
 
         const mavsdk::TrackingServer::TrackingOffCommandHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_tracking_off_command(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const int32_t tracking_off_command) {
                     rpc::tracking_server::TrackingOffCommandResponse rpc_response;
 

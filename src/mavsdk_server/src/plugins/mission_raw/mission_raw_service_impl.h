@@ -477,7 +477,7 @@ public:
 
         const mavsdk::MissionRaw::MissionProgressHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_mission_progress(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::MissionRaw::MissionProgress mission_progress) {
                     rpc::mission_raw::MissionProgressResponse rpc_response;
 
@@ -519,7 +519,7 @@ public:
 
         const mavsdk::MissionRaw::MissionChangedHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_mission_changed(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const bool mission_changed) {
                     rpc::mission_raw::MissionChangedResponse rpc_response;
 

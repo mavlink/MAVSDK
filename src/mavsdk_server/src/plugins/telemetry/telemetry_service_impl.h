@@ -1322,7 +1322,7 @@ public:
 
         const mavsdk::Telemetry::PositionHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_position(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Position position) {
                     rpc::telemetry::PositionResponse rpc_response;
 
@@ -1362,7 +1362,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::HomeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_home(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const mavsdk::Telemetry::Position home) {
                 rpc::telemetry::HomeResponse rpc_response;
 
@@ -1402,7 +1402,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::InAirHandle handle = _lazy_plugin.maybe_plugin()->subscribe_in_air(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const bool in_air) {
                 rpc::telemetry::InAirResponse rpc_response;
 
@@ -1443,7 +1443,7 @@ public:
 
         const mavsdk::Telemetry::LandedStateHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_landed_state(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::LandedState landed_state) {
                     rpc::telemetry::LandedStateResponse rpc_response;
 
@@ -1483,7 +1483,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::ArmedHandle handle = _lazy_plugin.maybe_plugin()->subscribe_armed(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const bool armed) {
                 rpc::telemetry::ArmedResponse rpc_response;
 
@@ -1524,7 +1524,7 @@ public:
 
         const mavsdk::Telemetry::VtolStateHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_vtol_state(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::VtolState vtol_state) {
                     rpc::telemetry::VtolStateResponse rpc_response;
 
@@ -1565,7 +1565,7 @@ public:
 
         const mavsdk::Telemetry::AttitudeQuaternionHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_attitude_quaternion(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Quaternion attitude_quaternion) {
                     rpc::telemetry::AttitudeQuaternionResponse rpc_response;
 
@@ -1607,7 +1607,7 @@ public:
 
         const mavsdk::Telemetry::AttitudeEulerHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_attitude_euler(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::EulerAngle attitude_euler) {
                     rpc::telemetry::AttitudeEulerResponse rpc_response;
 
@@ -1649,7 +1649,7 @@ public:
 
         const mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_attitude_angular_velocity_body(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
                     rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
 
@@ -1693,7 +1693,7 @@ public:
 
         const mavsdk::Telemetry::CameraAttitudeQuaternionHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_quaternion(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
                     rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
 
@@ -1735,7 +1735,7 @@ public:
 
         const mavsdk::Telemetry::CameraAttitudeEulerHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_euler(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
                     rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
 
@@ -1777,7 +1777,7 @@ public:
 
         const mavsdk::Telemetry::VelocityNedHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_velocity_ned(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::VelocityNed velocity_ned) {
                     rpc::telemetry::VelocityNedResponse rpc_response;
 
@@ -1819,7 +1819,7 @@ public:
 
         const mavsdk::Telemetry::GpsInfoHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_gps_info(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::GpsInfo gps_info) {
                     rpc::telemetry::GpsInfoResponse rpc_response;
 
@@ -1860,7 +1860,7 @@ public:
 
         const mavsdk::Telemetry::RawGpsHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_raw_gps(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::RawGps raw_gps) {
                     rpc::telemetry::RawGpsResponse rpc_response;
 
@@ -1901,7 +1901,7 @@ public:
 
         const mavsdk::Telemetry::BatteryHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_battery(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Battery battery) {
                     rpc::telemetry::BatteryResponse rpc_response;
 
@@ -1942,7 +1942,7 @@ public:
 
         const mavsdk::Telemetry::FlightModeHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_flight_mode(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::FlightMode flight_mode) {
                     rpc::telemetry::FlightModeResponse rpc_response;
 
@@ -1983,7 +1983,7 @@ public:
 
         const mavsdk::Telemetry::HealthHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_health(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Health health) {
                     rpc::telemetry::HealthResponse rpc_response;
 
@@ -2024,7 +2024,7 @@ public:
 
         const mavsdk::Telemetry::RcStatusHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_rc_status(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::RcStatus rc_status) {
                     rpc::telemetry::RcStatusResponse rpc_response;
 
@@ -2066,7 +2066,7 @@ public:
 
         const mavsdk::Telemetry::StatusTextHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_status_text(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::StatusText status_text) {
                     rpc::telemetry::StatusTextResponse rpc_response;
 
@@ -2108,7 +2108,7 @@ public:
 
         const mavsdk::Telemetry::ActuatorControlTargetHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_actuator_control_target(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
                     rpc::telemetry::ActuatorControlTargetResponse rpc_response;
 
@@ -2150,7 +2150,7 @@ public:
 
         const mavsdk::Telemetry::ActuatorOutputStatusHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_actuator_output_status(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
                     rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
 
@@ -2192,7 +2192,7 @@ public:
 
         const mavsdk::Telemetry::OdometryHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_odometry(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Odometry odometry) {
                     rpc::telemetry::OdometryResponse rpc_response;
 
@@ -2233,7 +2233,7 @@ public:
 
         const mavsdk::Telemetry::PositionVelocityNedHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_position_velocity_ned(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
                     rpc::telemetry::PositionVelocityNedResponse rpc_response;
 
@@ -2275,7 +2275,7 @@ public:
 
         const mavsdk::Telemetry::GroundTruthHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_ground_truth(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::GroundTruth ground_truth) {
                     rpc::telemetry::GroundTruthResponse rpc_response;
 
@@ -2317,7 +2317,7 @@ public:
 
         const mavsdk::Telemetry::FixedwingMetricsHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_fixedwing_metrics(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
                     rpc::telemetry::FixedwingMetricsResponse rpc_response;
 
@@ -2358,7 +2358,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::ImuHandle handle = _lazy_plugin.maybe_plugin()->subscribe_imu(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const mavsdk::Telemetry::Imu imu) {
                 rpc::telemetry::ImuResponse rpc_response;
 
@@ -2399,7 +2399,7 @@ public:
 
         const mavsdk::Telemetry::ScaledImuHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_scaled_imu(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Imu scaled_imu) {
                     rpc::telemetry::ScaledImuResponse rpc_response;
 
@@ -2440,7 +2440,7 @@ public:
 
         const mavsdk::Telemetry::RawImuHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_raw_imu(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Imu raw_imu) {
                     rpc::telemetry::RawImuResponse rpc_response;
 
@@ -2481,7 +2481,7 @@ public:
 
         const mavsdk::Telemetry::HealthAllOkHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_health_all_ok(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const bool health_all_ok) {
                     rpc::telemetry::HealthAllOkResponse rpc_response;
 
@@ -2522,7 +2522,7 @@ public:
 
         const mavsdk::Telemetry::UnixEpochTimeHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_unix_epoch_time(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const uint64_t unix_epoch_time) {
                     rpc::telemetry::UnixEpochTimeResponse rpc_response;
 
@@ -2563,7 +2563,7 @@ public:
 
         const mavsdk::Telemetry::DistanceSensorHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_distance_sensor(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::DistanceSensor distance_sensor) {
                     rpc::telemetry::DistanceSensorResponse rpc_response;
 
@@ -2605,7 +2605,7 @@ public:
 
         const mavsdk::Telemetry::ScaledPressureHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_scaled_pressure(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::ScaledPressure scaled_pressure) {
                     rpc::telemetry::ScaledPressureResponse rpc_response;
 
@@ -2647,7 +2647,7 @@ public:
 
         const mavsdk::Telemetry::HeadingHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_heading(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Telemetry::Heading heading) {
                     rpc::telemetry::HeadingResponse rpc_response;
 
