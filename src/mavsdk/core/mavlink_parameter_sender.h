@@ -277,33 +277,11 @@ private:
 
     void check_for_full_parameter_set(const std::string& safe_param_id,uint16_t param_idx,uint16_t all_param_count,const ParamValue& received_value,bool extended);
     void check_all_params_timeout();
-
-    GetParamAnyCallback create_recursive_callback(){
-        const auto callback=[this](Result res,ParamValue unused){
-            std::lock_guard<std::mutex> lock(_all_params_mutex);
-            if(res==Result::Success){
-                const auto missing=_param_set_from_server.get_missing_param_indices();
-                if(missing.empty()){
-                    assert(_param_set_from_server.is_complete());
-                    // we are done, the parameter set is complete.
-                }else{
-                    // Request the next parameter still missing
-                    const auto next_missing_param=missing.at(0);
-                    LogDebug()<<"Requesting missing parameter "<<(int)next_missing_param;
-                    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),
-                                                               WorkItemGet{static_cast<int16_t>(next_missing_param),create_recursive_callback()}, this,_all_params_request_extended,std::nullopt);
-                    _work_queue.push_back(new_work);
-                }
-            }else{
-                LogDebug()<<"Get param used for GetAllParameters failed";
-                if(_all_params_callback){
-                    _all_params_callback({});
-                    _all_params_callback= nullptr;
-                }
-            }
-        };
-        return callback;
-    }
+    // Create a callback for a WorkItemGet that performs the following steps:
+    // 1) Check if any parameter of the parameter set is missing.
+    // 2) If yes, request the first missing parameter and recursively add the same callback
+    // 3) If no, terminate.
+    GetParamAnyCallback create_recursive_callback();
 };
 
 } // namespace mavsdk

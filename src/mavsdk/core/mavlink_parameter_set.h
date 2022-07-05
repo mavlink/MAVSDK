@@ -8,9 +8,6 @@
 namespace mavsdk{
 
 // This class provides convenient methods to handle a set of mavlink parameters.
-// As an example, if at any point in the parameter server / client implementation you need to update an existing parameter
-// and safely handle all the possible errors that might occur when performing the wanted operation (for example, the parameter does not exist yet)
-// you can use update_existing_parameter().
 // Its public methods are written for the following premises:
 // 1) Once a parameter has been added, its type can not be mutated anymore.
 // 2) Once a parameter has been added, it cannot be removed.
@@ -98,6 +95,7 @@ private:
     const bool enable_debugging=true;
 };
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj);
+
 
 // This class helps to build a complete parameter set with messages from a server.
 class ParamSetFromServer{

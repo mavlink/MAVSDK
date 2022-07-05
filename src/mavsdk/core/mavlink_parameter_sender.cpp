@@ -1003,4 +1003,32 @@ void MavlinkParameterSender::check_all_params_timeout() {
     }
 }
 
+MavlinkParameterSender::GetParamAnyCallback MavlinkParameterSender::create_recursive_callback()
+{
+    const auto callback=[this](Result res,ParamValue unused){
+      std::lock_guard<std::mutex> lock(_all_params_mutex);
+      if(res==Result::Success){
+          const auto missing=_param_set_from_server.get_missing_param_indices();
+          if(missing.empty()){
+              assert(_param_set_from_server.is_complete());
+              // we are done, the parameter set is complete.
+          }else{
+              // Request the next parameter still missing
+              const auto next_missing_param=missing.at(0);
+              LogDebug()<<"Requesting missing parameter "<<(int)next_missing_param;
+              auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),
+                                                         WorkItemGet{static_cast<int16_t>(next_missing_param),create_recursive_callback()}, this,_all_params_request_extended,std::nullopt);
+              _work_queue.push_back(new_work);
+          }
+      }else{
+          LogDebug()<<"Get param used for GetAllParameters failed";
+          if(_all_params_callback){
+              _all_params_callback({});
+              _all_params_callback= nullptr;
+          }
+      }
+    };
+    return callback;
+}
+
 } // namespace mavsdk
