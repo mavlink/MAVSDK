@@ -505,7 +505,6 @@ void MavlinkParameterSender::do_work()
     if (work->already_requested) {
         return;
     }
-
     uint8_t component_id = [&]() {
         if (work->maybe_component_id) {
             return work->maybe_component_id.value();
@@ -518,7 +517,6 @@ void MavlinkParameterSender::do_work()
             }
         }
     }();
-
     switch (work->get_type()) {
         case WorkItem::Type::Set: {
             const auto& specific=std::get<WorkItemSet>(work->work_item_variant);

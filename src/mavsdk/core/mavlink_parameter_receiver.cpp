@@ -211,8 +211,8 @@ void MavlinkParameterReceiver::process_param_set(const mavlink_message_t& messag
         return;
     }
     const std::string safe_param_id = MavlinkParameterSet::extract_safe_param_id(set_request.param_id);
-    if(safe_param_id.empty()){
-        LogWarn() << "Invalid Param Set ID Request (empty id): ";
+    if(!MavlinkParameterSet::validate_param_id(safe_param_id)){
+        LogWarn() << "Invalid Param Set ID Request {"<<safe_param_id<<"}";
         return;
     }
     ParamValue value_to_set;
@@ -233,8 +233,8 @@ void MavlinkParameterReceiver::process_param_ext_set(const mavlink_message_t& me
         return;
     }
     const std::string safe_param_id = MavlinkParameterSet::extract_safe_param_id(set_request.param_id);
-    if(safe_param_id.empty()){
-        LogWarn() << "Invalid Param Set ID Request (empty id): ";
+    if(!MavlinkParameterSet::validate_param_id(safe_param_id)){
+        LogWarn() << "Invalid Param Set ID Request {"<<safe_param_id<<"}";
         return;
     }
     ParamValue value_to_set;
@@ -283,6 +283,7 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
 void MavlinkParameterReceiver::internal_process_param_request_read(
     const std::variant<std::string, uint16_t>& identifier,const bool extended){
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+    // look u the parameter in the parameter set by its identifier.
     const auto param_opt = _param_set.lookup_parameter(identifier,extended);
     if(!param_opt.has_value()){
         LogDebug()<<"Ignoring param_ext_request_read message - value not found";
