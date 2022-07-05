@@ -977,11 +977,11 @@ void MavlinkParameterSender::check_for_full_parameter_set(const std::string& saf
 
 void MavlinkParameterSender::check_all_params_timeout() {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    // first check if we are waiting for param list response
     if (_all_params_callback) {
         LogDebug()<<"All params receive timeout with "<< _param_set_from_server.to_string();
         if(!_param_set_from_server.param_count_known()){
-            // We got 0 messages back from the server (param count unknown)
+            // We got 0 messages back from the server (param count unknown). Most likely the "list request" got lost before making it to the server,
+            // TODO maybe re-transmit the list request message just like it is done with the other work items.
             _all_params_callback({});
             _all_params_callback= nullptr;
         }else{
