@@ -151,7 +151,9 @@ private:
     // On the server side, the only benefit of using the work item pattern (mavsdk specific)
     // is that the request all parameters command(s) are less likely to saturate the link.
     struct WorkItem {
+        // A response always has a valid param id
         const std::string param_id;
+        // as well as a valid param value
         const ParamValue param_value;
         using WorkItemVariant=std::variant<WorkItemValue,WorkItemAck>;
         const WorkItemVariant work_item_variant;
