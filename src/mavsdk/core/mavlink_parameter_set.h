@@ -55,6 +55,8 @@ public:
 
     std::optional<Parameter> lookup_parameter(const std::string& param_id,bool extended);
     std::optional<Parameter> lookup_parameter(uint16_t param_index,bool extended);
+    // identifier can be either a string or index.
+    std::optional<Parameter> lookup_parameter(const std::variant<std::string,std::uint16_t>& identifier,bool extended);
     // Mavlink uses uint16_t for parameter indices, which allows for that many parameters maximum
     static constexpr auto MAX_N_PARAMETERS= 65535;
     /*

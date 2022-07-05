@@ -127,6 +127,8 @@ private:
     void process_param_request_read(const mavlink_message_t& message);
     //  response: broadcast a specific parameter if found
     void process_param_ext_request_read(const mavlink_message_t& message);
+    // send the appropriate response on a read request with a valid identifier. (weather this parameter then exists is still unchecked)
+    void internal_process_param_request_read(const std::variant<std::string,uint16_t>& identifier,bool extended);
     //  response: broadcast all parameters, ignores string parameters
     void process_param_request_list(const mavlink_message_t& message);
     //  response: broadcast all parameters
@@ -167,6 +169,11 @@ private:
      */
     bool target_matches(uint16_t target_sys_id,uint16_t target_comp_id,bool is_request);
     void log_target_mismatch(uint16_t target_sys_id,uint16_t target_comp_id);
+
+    // returns the identifier that should be used or nothing if the message is ill-formed. See
+    // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ and
+    // https://mavlink.io/en/messages/common.html#PARAM_EXT_REQUEST_READ
+    static std::optional<std::variant<std::string,std::uint16_t>> safe_extract_request(int16_t param_index,const char* param_id);
 };
 
 } // namespace mavsdk

@@ -124,6 +124,15 @@ std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parame
     return MavlinkParameterSet::Parameter{param.param_id,param_index_actual,param.value};
 }
 
+std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parameter(const std::variant<std::string,std::uint16_t>& identifier,bool extended)
+{
+    if(std::holds_alternative<std::string>(identifier)){
+        const auto param_id=std::get<std::string>(identifier);
+        return lookup_parameter(param_id,extended);
+    }
+    return lookup_parameter(std::get<std::uint16_t>(identifier),extended);
+}
+
 std::ostream&
 operator<<(std::ostream& strm, const MavlinkParameterSet::UpdateExistingParamResult& obj)
 {
@@ -174,6 +183,7 @@ std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Internal
     strm << "Parameter{"<<obj.param_id<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";
     return strm;
 }
+
 
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj)
 {

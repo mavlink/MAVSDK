@@ -254,40 +254,36 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
         log_target_mismatch(read_request.target_system,read_request.target_component);
         return;
     }
-    const auto safe_param_id= MavlinkParameterSet::extract_safe_param_id(read_request.param_id);
-    constexpr bool extended= false;
-    std::lock_guard<std::mutex> lock(_all_params_mutex);
-    // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ
-    const auto param_opt = (read_request.param_index==-1) ? _param_set.lookup_parameter(safe_param_id, extended) :
-                                                              _param_set.lookup_parameter(read_request.param_index, extended);
-    if(!param_opt.has_value()){
-        LogDebug()<<"Ignoring param_ext_request_read message - value not found {"<<safe_param_id<<":"<<read_request.param_index<<"}";
+    const auto opt_param_id_or_index= safe_extract_request(read_request.param_index,read_request.param_id);
+    if(opt_param_id_or_index==std::nullopt){
+        LogWarn()<<"Ill-formed param_ext_request_read message";
         return;
     }
-    const auto& param=param_opt.value();
-    const auto param_count = _param_set.get_current_parameters_count(extended);
-    assert(param.param_index<param_count);
-    auto new_work = std::make_shared<WorkItem>(param.param_id,param.value,
-                                               WorkItemValue{param.param_index,param_count,extended});
-    _work_queue.push_back(new_work);
+    internal_process_param_request_read(opt_param_id_or_index.value(), false);
 }
 
 void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_message_t& message)
 {
-    mavlink_param_request_read_t read_request{};
-    mavlink_msg_param_request_read_decode(&message, &read_request);
+    mavlink_param_ext_request_read_t read_request{};
+    mavlink_msg_param_ext_request_read_decode(&message, &read_request);
     if(!target_matches( read_request.target_system,read_request.target_component, true)){
         log_target_mismatch(read_request.target_system,read_request.target_component);
         return;
     }
-    const auto safe_param_id = MavlinkParameterSet::extract_safe_param_id(read_request.param_id);
-    constexpr bool extended=true;
+    const auto opt_param_id_or_index= safe_extract_request(read_request.param_index,read_request.param_id);
+    if(opt_param_id_or_index==std::nullopt){
+        LogWarn()<<"Ill-formed param_ext_request_read message";
+        return;
+    }
+    internal_process_param_request_read(opt_param_id_or_index.value(), true);
+}
+
+void MavlinkParameterReceiver::internal_process_param_request_read(
+    const std::variant<std::string, uint16_t>& identifier,const bool extended){
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ
-    const auto param_opt = (read_request.param_index==-1) ? _param_set.lookup_parameter(safe_param_id, extended) :
-                                                              _param_set.lookup_parameter(read_request.param_index, extended);
+    const auto param_opt = _param_set.lookup_parameter(identifier,extended);
     if(!param_opt.has_value()){
-        LogDebug()<<"Ignoring param_ext_request_read message - value not found {"<<safe_param_id<<":"<<read_request.param_index<<"}";
+        LogDebug()<<"Ignoring param_ext_request_read message - value not found";
         return;
     }
     const auto& param=param_opt.value();
@@ -427,6 +423,25 @@ bool MavlinkParameterReceiver::target_matches(const uint16_t target_sys_id,const
 void MavlinkParameterReceiver::log_target_mismatch(uint16_t target_sys_id,uint16_t target_comp_id) {
     LogDebug()<<"Ignoring message - wrong target id. Got:"<<(int)target_sys_id<<":"<<(int)target_comp_id<<" Wanted:"
         <<(int)_sender.get_own_system_id()<<":"<<(int)_sender.get_own_component_id();
+}
+
+std::optional<std::variant<std::string, std::uint16_t>>
+MavlinkParameterReceiver::safe_extract_request(const int16_t param_index, const char* param_id)
+{
+    if(param_index==-1){
+        // use param_id if index == -1
+        const auto safe_param_id = MavlinkParameterSet::extract_safe_param_id(param_id);
+        if(MavlinkParameterSet::validate_param_id(safe_param_id)){
+            return safe_param_id;
+        }
+        return std::nullopt;
+    }else{
+        // if index is not -1, it should be a valid parameter index (>=0)
+        if(param_index>=0){
+            return param_index;
+        }
+    }
+    return std::nullopt;
 }
 
 } // namespace mavsdk
