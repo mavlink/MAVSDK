@@ -221,7 +221,7 @@ bool ParamSetFromServer::is_complete() const
         // we don't know the parameter count yet.
         return false;
     }
-    for(const auto& param_id:_server_all_param_ids.value()){
+    for(const auto& param_id:_server_all_param_ids.value()){ // NOLINT(readability-use-anyofallof)
         if(param_id==std::nullopt){
             return false;
         }

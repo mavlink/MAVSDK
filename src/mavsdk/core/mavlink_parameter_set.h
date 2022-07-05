@@ -15,7 +15,7 @@ namespace mavsdk{
 // 1) Once a parameter has been added, its type can not be mutated anymore.
 // 2) Once a parameter has been added, it cannot be removed.
 // This restriction makes sense when viewed from both a mavlink parameter server and client perspective:
-// Changing the type (not value) of parameter (aka a Setting) most likely was a programming mistake
+// Changing the type (not value) of a parameter (aka a Setting) most likely was a programming mistake
 // and would easily lead to bugs / crashes.
 class MavlinkParameterSet{
 public:
