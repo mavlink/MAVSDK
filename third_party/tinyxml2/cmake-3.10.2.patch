@@ -1,17 +1,17 @@
-commit 2919fb4e5fe988c329e3af5801a9c74f1dcaf9e7
+commit c5ccc044c2f87a2c76925d2bdaf84df763d8366a
 Author: Jonas Vautherin <jonas.vautherin@gmail.com>
-Date:   Wed May 19 01:22:13 2021 +0200
+Date:   Tue Jul 5 20:18:01 2022 +0200
 
-    Update cmake minimum version to 3.10.2 for Ubuntu 18.04
+    Support cmake 3.10.2 for Ubuntu 18.04
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4930f5c..11d6688 100644
+index 8802fb8..e915c91 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,4 +1,4 @@
 -cmake_minimum_required(VERSION 3.15)
 +cmake_minimum_required(VERSION 3.10.2)
- project(tinyxml2 VERSION 8.1.0)
+ project(tinyxml2 VERSION 9.0.0)
  
  include(CTest)
 @@ -71,14 +71,26 @@ set(tinyxml2_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/tinyxml2"
