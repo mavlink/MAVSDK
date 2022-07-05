@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+
 #include "fs.h"
+#include "unused.h"
 
 #if !defined(WINDOWS)
 #define PATH_MAX 4096
@@ -43,7 +45,7 @@ TEST(Filesystem, ResolveDoubleDots)
 TEST(Filesystem, RelativePathEmpty)
 {
     char cwd[PATH_MAX];
-    getcwd(cwd, PATH_MAX);
+    UNUSED(getcwd(cwd, PATH_MAX));
     const std::string path = "";
     const std::string canonical_path = std::string(cwd);
     ASSERT_EQ(canonical_path, mavsdk::fs_canonical(path));
@@ -52,7 +54,7 @@ TEST(Filesystem, RelativePathEmpty)
 TEST(Filesystem, RelativePathDot)
 {
     char cwd[PATH_MAX];
-    getcwd(cwd, PATH_MAX);
+    UNUSED(getcwd(cwd, PATH_MAX));
     const std::string path = ".";
     const std::string canonical_path = std::string(cwd);
     ASSERT_EQ(canonical_path, mavsdk::fs_canonical(path));
@@ -61,7 +63,7 @@ TEST(Filesystem, RelativePathDot)
 TEST(Filesystem, RelativePathBare)
 {
     char cwd[PATH_MAX];
-    getcwd(cwd, PATH_MAX);
+    UNUSED(getcwd(cwd, PATH_MAX));
     const std::string path = "src/mavsdk/core/fs_test.cpp";
     const std::string canonical_path = std::string(cwd) + mavsdk::path_separator + path;
     ASSERT_EQ(canonical_path, mavsdk::fs_canonical(path));
@@ -70,7 +72,7 @@ TEST(Filesystem, RelativePathBare)
 TEST(Filesystem, RelativePathDotSlash)
 {
     char cwd[PATH_MAX];
-    getcwd(cwd, PATH_MAX);
+    UNUSED(getcwd(cwd, PATH_MAX));
     const std::string bare_path = "src/mavsdk/plugins/mavlink_passthrough";
     const std::string dotslash_path = "./" + bare_path;
     const std::string canonical_path = std::string(cwd) + mavsdk::path_separator + bare_path;
