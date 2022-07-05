@@ -170,10 +170,12 @@ private:
     bool target_matches(uint16_t target_sys_id,uint16_t target_comp_id,bool is_request);
     void log_target_mismatch(uint16_t target_sys_id,uint16_t target_comp_id);
 
+    // Helper for safely handling a request_read or ext_request_read message (which have the exact same layout).
     // returns the identifier that should be used or nothing if the message is ill-formed. See
     // https://mavlink.io/en/messages/common.html#PARAM_REQUEST_READ and
     // https://mavlink.io/en/messages/common.html#PARAM_EXT_REQUEST_READ
-    static std::optional<std::variant<std::string,std::uint16_t>> safe_extract_request(int16_t param_index,const char* param_id);
+    static std::optional<std::variant<std::string,std::uint16_t>>
+    extract_request_read_param_identifier(int16_t param_index,const char* param_id);
 };
 
 } // namespace mavsdk

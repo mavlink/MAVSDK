@@ -254,9 +254,10 @@ void MavlinkParameterReceiver::process_param_request_read(const mavlink_message_
         log_target_mismatch(read_request.target_system,read_request.target_component);
         return;
     }
-    const auto opt_param_id_or_index= safe_extract_request(read_request.param_index,read_request.param_id);
+    const auto opt_param_id_or_index=
+        extract_request_read_param_identifier(read_request.param_index, read_request.param_id);
     if(opt_param_id_or_index==std::nullopt){
-        LogWarn()<<"Ill-formed param_ext_request_read message";
+        LogWarn()<<"Ill-formed param_request_read message";
         return;
     }
     internal_process_param_request_read(opt_param_id_or_index.value(), false);
@@ -270,7 +271,8 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
         log_target_mismatch(read_request.target_system,read_request.target_component);
         return;
     }
-    const auto opt_param_id_or_index= safe_extract_request(read_request.param_index,read_request.param_id);
+    const auto opt_param_id_or_index=
+        extract_request_read_param_identifier(read_request.param_index, read_request.param_id);
     if(opt_param_id_or_index==std::nullopt){
         LogWarn()<<"Ill-formed param_ext_request_read message";
         return;
@@ -426,7 +428,8 @@ void MavlinkParameterReceiver::log_target_mismatch(uint16_t target_sys_id,uint16
 }
 
 std::optional<std::variant<std::string, std::uint16_t>>
-MavlinkParameterReceiver::safe_extract_request(const int16_t param_index, const char* param_id)
+MavlinkParameterReceiver::extract_request_read_param_identifier(
+    int16_t param_index, const char* param_id)
 {
     if(param_index==-1){
         // use param_id if index == -1
