@@ -431,7 +431,7 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if(_all_params_callback!= nullptr){
-        LogDebug()<<"Give get_all_params_async time to complete before requesting again";
+        LogWarn()<<"Give get_all_params_async time to complete before requesting again";
         // make sure any already existing request is terminated, since we immediately have to override an already
         // existing callback here. ( A future might be blocked on it).
         _all_params_callback({});
@@ -699,6 +699,7 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
             work_queue_guard.pop_front();
         } break;
         default:
+            LogWarn() << "Unexpected ParamValue";
             break;
     }
 }
@@ -920,7 +921,7 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::Result
 void MavlinkParameterSender::validate_parameter_count(const uint16_t param_count) {
     if(_server_param_count.has_value()){
         if(param_count!=_server_param_count.value()){
-            LogDebug()<<"Warning: detected server with changing parameter set";
+            LogWarn()<<"Warning: detected server with changing parameter set";
             _server_param_count=param_count;
         }
     }else{
