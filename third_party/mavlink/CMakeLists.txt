@@ -7,6 +7,10 @@ include(ExternalProject)
 set(Python3_FIND_REGISTRY "NEVER")
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
+if (NOT MAVLINK_DIALECT)
+    set(MAVLINK_DIALECT common)
+endif()
+
 ExternalProject_add(
     mavlink
     GIT_REPOSITORY https://github.com/mavlink/mavlink
