@@ -225,11 +225,17 @@ private:
         const std::variant<std::string,int16_t> param_identifier;
         const GetParamAnyCallback callback;
     };
+    struct WorkItemGetAll{
+        // filled as data comes in
+        ParamSetFromServer param_set_from_server;
+        // called once we have all parameters or timeout
+        GetAllParamsCallback callback;
+    };
     struct WorkItem {
-        enum class Type { Get, Set};
+        enum class Type { Get, Set, GetAll};
         const double timeout_s;
-        using WorkItemVariant=std::variant<WorkItemGet,WorkItemSet>;
-        const WorkItemVariant work_item_variant;
+        using WorkItemVariant=std::variant<WorkItemGet,WorkItemSet,WorkItemGetAll>;
+        WorkItemVariant work_item_variant;
         const bool extended;
         const std::optional<uint8_t> maybe_component_id;
         bool already_requested{false};
@@ -239,17 +245,19 @@ private:
         // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(double new_timeout_s,WorkItemVariant work_item_variant1,
+        explicit WorkItem(double new_timeout_s,WorkItemVariant work_item_variant1,const void* cookie1,
                           bool extended1,std::optional<uint8_t> maybe_component_id1) :
                 timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),
-                extended(extended1),maybe_component_id(maybe_component_id1){
+                extended(extended1),maybe_component_id(maybe_component_id1),cookie(cookie1){
 
             };
         [[nodiscard]] Type get_type()const{
             if(std::holds_alternative<WorkItemGet>(work_item_variant)){
                 return Type::Get;
+            }else if(std::holds_alternative<WorkItemSet>(work_item_variant)){
+                return Type::Set;
             }
-            return Type::Set;
+            return Type::GetAll;
         }
     };
     LockedQueue<WorkItem> _work_queue{};
@@ -260,6 +268,9 @@ private:
     GetAllParamsCallback _all_params_callback;
     void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
+    ParamSetFromServer _param_set_from_server;
+    bool _all_params_request_extended=false;
+
     // once the parameter count has been set, it should not change - but we cannot say for certain since
     // the server might do whatever he wants.
     std::optional<uint16_t> _server_param_count;
@@ -271,6 +282,9 @@ private:
 
     // Validate if the response matches what was given in the work queue
     static bool validate_id_or_index(const std::variant<std::string,int16_t>& original,const std::string& param_id,int16_t param_index);
+
+    void check_for_full_parameter_set(const std::string& safe_param_id,uint16_t param_idx,uint16_t all_param_count,const ParamValue& received_value,bool extended);
+    void check_all_params_timeout();
 };
 
 } // namespace mavsdk

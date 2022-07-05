@@ -95,8 +95,55 @@ private:
     uint16_t param_count_non_extended=0;
     const bool enable_debugging=true;
 };
-
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj);
+
+// This class helps to build a parameter set as messages from a server come in
+class ParamSetFromServer{
+public:
+    // Add a new parameter to the parameter set.
+    // returns true if the message has been properly prcoessed, false otherwise
+    // (we might get inconsistent data from a buggy param server, an "all param synchronization" is not possible in this case).
+    bool add_new_parameter(const std::string& safe_param_id,uint16_t param_index,uint16_t parameter_count,const ParamValue& value);
+    // returns true if we know how many parameters the server provides.
+    // (We've gotten at least one message).
+    [[nodiscard]] bool param_count_known()const{
+        return _server_all_param_ids.has_value();
+    }
+    [[nodiscard]] uint16_t total_param_count()const{
+        assert(_server_all_param_ids.has_value());
+        return _server_all_param_ids.value().size();
+    }
+    [[nodiscard]] uint16_t missing_param_count()const{
+        return get_missing_param_indices().size();
+    }
+    // returns true if the parameter set is complete.
+    [[nodiscard]] bool is_complete()const;
+    // get the indices for all the parameters that are still missing.
+    [[nodiscard]] std::vector<uint16_t> get_missing_param_indices()const;
+    // temporary, make sure to check for completeness first.
+    [[nodiscard]] std::map<std::string, ParamValue> get_all_params()const{
+        return _all_params;
+    }
+    // create a string representation of the current state, for debugging.
+    [[nodiscard]] std::string debug_state()const{
+        std::stringstream ss;
+        ss<<"ParamSetFromServer:{ ";
+        if(!param_count_known()){
+            ss<<"size unknown }";
+            return ss.str();
+        }
+        ss<<"Param total:"<<(int)total_param_count()<<" missing:"<<(int)missing_param_count();
+        ss<<" }";
+        return ss.str();
+    }
+private:
+    // filled as parameters come in
+    std::map<std::string, ParamValue> _all_params{};
+    // Once we got the first message with a parameter count, this becomes a valid vector
+    // of size == param count from server and filled with std::nullopt.
+    // Once no element in this vector is of type std::nullopt anymore, we know all the string param ids from the server.
+    std::optional<std::vector<std::optional<std::string>>> _server_all_param_ids;
+};
 
 }
 

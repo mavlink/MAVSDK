@@ -180,4 +180,64 @@ std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Paramete
     strm << "Parameter{"<<obj.param_id<<":"<<obj.param_index<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";
     return strm;
 }
+
+bool ParamSetFromServer::add_new_parameter(
+    const std::string& safe_param_id,
+    const uint16_t param_index,
+    const uint16_t parameter_count,
+    const ParamValue& value)
+{
+    assert(MavlinkParameterSet::validate_param_id(safe_param_id));
+    if(param_index>=parameter_count){
+        LogWarn() << "Inconsistent data from server. param_index:"<<(int)param_index<<" param_count:"<<(int)parameter_count;
+        return false;
+    }
+    if(!_server_all_param_ids.has_value()){
+        // the first time we get a message, we know the parameter count.
+        _server_all_param_ids=std::vector<std::optional<std::string>>(parameter_count,std::nullopt);
+    }
+    if(_server_all_param_ids.value().size()!=parameter_count){
+        // the parameter count changed in consecutive messages. We cannot do any parameter synchronization with this server.
+        LogWarn() << "Inconsistent data from server. Param count changed from "<<_server_all_param_ids.value().size()<<" to "<<(int)parameter_count;
+        return false;
+    }
+    if(_server_all_param_ids.value().at(param_index)!= std::nullopt){
+        // We have already gotten this parameter at some time
+        const std::string previous_param_id=_server_all_param_ids.value().at(param_index).value();
+        if(previous_param_id!=safe_param_id){
+            // the server doesn't have unique param indices for each param id.
+            LogWarn() << "Inconsistent data from server. Param with id:"<<(int)param_index<<" cannot be:{"<<previous_param_id<<"} and {"<<safe_param_id<<"}";
+            return false;
+        }
+    }
+    _all_params.insert_or_assign(safe_param_id,value);
+    _server_all_param_ids.value().at(param_index)=safe_param_id;
+    return true;
+}
+
+bool ParamSetFromServer::is_complete() const
+{
+    if(!_server_all_param_ids.has_value()){
+        // we don't know the parameter count yet.
+        return false;
+    }
+    for(const auto& param_id:_server_all_param_ids.value()){
+        if(param_id==std::nullopt){
+            return false;
+        }
+    }
+    return true;
+}
+
+std::vector<uint16_t> ParamSetFromServer::get_missing_param_indices() const
+{
+    assert(_server_all_param_ids.has_value());
+    std::vector<uint16_t> missing_params;
+    for(uint16_t i=0;i<static_cast<uint16_t>(_server_all_param_ids.value().size());i++){
+        if(_server_all_param_ids.value().at(i)==std::nullopt){
+            missing_params.push_back(i);
+        }
+    }
+    return missing_params;
+}
 }
