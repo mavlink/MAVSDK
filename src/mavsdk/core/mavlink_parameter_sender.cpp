@@ -438,6 +438,7 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
         _all_params_callback= nullptr;
     }
     _all_params_callback = callback;
+    _all_params_request_extended=use_extended;
     mavlink_message_t msg;
     if(use_extended){
         mavlink_msg_param_ext_request_list_pack(
@@ -456,7 +457,8 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
     }
     if (!_sender.send_message(msg)) {
         LogErr() << "Failed to send param list request!";
-        callback(std::map<std::string, ParamValue>{});
+        _all_params_callback({});
+        _all_params_callback= nullptr;
     }
     // There are 2 possible cases - we get all the messages in time - in this case, the
     // _all_params_callback member is called. Otherwise, we get a timeout at some point, which then calls
