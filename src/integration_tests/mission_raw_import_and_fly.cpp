@@ -199,6 +199,6 @@ MissionRaw::MissionItem create_mission_item(
     new_raw_item_nav.x = int32_t(std::round(_x * 1e7));
     new_raw_item_nav.y = int32_t(std::round(_y * 1e7));
     new_raw_item_nav.z = float(_z);
-    new_raw_item_nav.mission_type = 0;
+    new_raw_item_nav.mission_type = _mission_type;
     return new_raw_item_nav;
 }
