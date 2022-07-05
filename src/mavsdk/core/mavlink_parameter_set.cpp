@@ -250,4 +250,17 @@ std::vector<uint16_t> ParamSetFromServer::get_missing_param_indices() const
     }
     return missing_params;
 }
+
+std::string ParamSetFromServer::to_string() const
+{
+    std::stringstream ss;
+    ss<<"ParamSetFromServer:{ ";
+    if(!param_count_known()){
+        ss<<"size unknown }";
+        return ss.str();
+    }
+    ss<<"Param total:"<<(int)total_param_count()<<" missing:"<<(int)missing_param_count();
+    ss<<" }";
+    return ss.str();
+}
 }

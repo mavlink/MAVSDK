@@ -127,16 +127,12 @@ public:
         return _all_params;
     }
     // create a string representation of the current state, for debugging.
-    [[nodiscard]] std::string debug_state()const{
-        std::stringstream ss;
-        ss<<"ParamSetFromServer:{ ";
-        if(!param_count_known()){
-            ss<<"size unknown }";
-            return ss.str();
-        }
-        ss<<"Param total:"<<(int)total_param_count()<<" missing:"<<(int)missing_param_count();
-        ss<<" }";
-        return ss.str();
+    [[nodiscard]] std::string to_string()const;
+    // remove all cached parameters as well as the parameter count. This might be needed when dealing with a server
+    // that doesn't fully follow the recommended mavlink quidelines and has a invariant parameter set.
+    void clear(){
+        _all_params.clear();
+        _server_all_param_ids=std::nullopt;
     }
 private:
     // filled as parameters come in
@@ -144,7 +140,7 @@ private:
     // Once we got the first message with a parameter count, this becomes a valid vector
     // of size == param count from server and filled with std::nullopt.
     // Once no element in this vector is of type std::nullopt anymore, we know all the string param ids from the server.
-    std::optional<std::vector<std::optional<std::string>>> _server_all_param_ids;
+    std::optional<std::vector<std::optional<std::string>>> _server_all_param_ids=std::nullopt;
 };
 
 }

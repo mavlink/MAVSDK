@@ -979,7 +979,7 @@ void MavlinkParameterSender::check_all_params_timeout() {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     // first check if we are waiting for param list response
     if (_all_params_callback) {
-        LogDebug()<<"All params receive timeout with "<< _param_set_from_server.debug_state();
+        LogDebug()<<"All params receive timeout with "<< _param_set_from_server.to_string();
         if(!_param_set_from_server.param_count_known()){
             // We got 0 messages back from the server (param count unknown)
             _all_params_callback({});
