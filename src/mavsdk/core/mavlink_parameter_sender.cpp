@@ -424,14 +424,14 @@ void MavlinkParameterSender::get_all_params_async(GetAllParamsCallback callback,
             _sender.get_own_component_id(),
             &msg,
             _sender.get_system_id(),
-            MAV_COMP_ID_AUTOPILOT1); // FIXME: what should the component be?
+            _target_component_id);
     }else{
         mavlink_msg_param_request_list_pack(
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
             &msg,
             _sender.get_system_id(),
-            MAV_COMP_ID_AUTOPILOT1); // FIXME: what should the component be?
+            _target_component_id);
     }
     if (!_sender.send_message(msg)) {
         LogErr() << "Failed to send param list request!";
