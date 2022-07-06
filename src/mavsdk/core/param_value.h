@@ -76,6 +76,13 @@ public:
 
         return _value == rhs._value;
     }
+    bool operator!=(const ParamValue& rhs) const{
+        if (!is_same_type(rhs)) {
+            LogWarn() << "Trying to compare different types.";
+            return true;
+        }
+        return !(*this==rhs);
+    }
 
     bool operator<(const ParamValue& rhs) const
     {

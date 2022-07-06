@@ -186,8 +186,14 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
         case MavlinkParameterSet::UpdateExistingParamResult::SUCCESS:{
             const auto updated_parameter=_param_set.lookup_parameter(param_id,extended).value();
             assert(updated_parameter.param_index<param_count);
-            LogDebug()<<"Updated param:"<<updated_parameter;
-            find_and_call_subscriptions_value_changed(updated_parameter.param_id,updated_parameter.value);
+            // the param set doesn't differentiate between an update that actually changed the value
+            // (aka for example from int=0 to int=1) and an update that had no effect (for example from int=0 to int=0).
+            if(value_to_set!=updated_parameter.value){
+                LogDebug()<<"Updated param to :"<<updated_parameter;
+                find_and_call_subscriptions_value_changed(updated_parameter.param_id,updated_parameter.value);
+            }else{
+                LogDebug()<<"Update had no effect"<<updated_parameter;
+            }
             if(extended){
                 auto new_work = std::make_shared<WorkItem>(updated_parameter.param_id,updated_parameter.value,
                                                            WorkItemAck{PARAM_ACK_ACCEPTED});
