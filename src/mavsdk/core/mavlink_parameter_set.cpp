@@ -133,6 +133,19 @@ std::optional<MavlinkParameterSet::Parameter> MavlinkParameterSet::lookup_parame
     return lookup_parameter(std::get<std::uint16_t>(identifier),extended);
 }
 
+std::string MavlinkParameterSet::param_identifier_to_string(const MavlinkParameterSet::ParamIdentifier& param_identifier)
+{
+    std::stringstream ss;
+    ss<<"ParamIdentifier:{";
+    if(std::holds_alternative<std::string>(param_identifier)) {
+        ss<<"str:"<<std::get<std::string>(param_identifier);
+    }else{
+        ss<<"int:"<<(int)std::get<std::uint16_t>(param_identifier);
+    }
+    ss<<"}";
+    return ss.str();
+}
+
 std::ostream&
 operator<<(std::ostream& strm, const MavlinkParameterSet::UpdateExistingParamResult& obj)
 {
@@ -183,7 +196,6 @@ std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Internal
     strm << "Parameter{"<<obj.param_id<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";
     return strm;
 }
-
 
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj)
 {
@@ -271,4 +283,5 @@ std::optional<ParamValue> ParamSetFromServer::lookup_parameter(const std::string
     }
     return _all_params.at(param_id);
 }
+
 }

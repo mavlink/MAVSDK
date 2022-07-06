@@ -295,7 +295,7 @@ void MavlinkParameterReceiver::internal_process_param_request_read(
     // look up the parameter in the parameter set by its identifier.
     const auto param_opt = _param_set.lookup_parameter(identifier,extended);
     if(!param_opt.has_value()){
-        LogDebug()<<"Ignoring param_ext_request_read message - value not found";
+        LogDebug()<<"Ignoring request_read message "<<(extended ? "ext ": "")<<"- value not found "<<MavlinkParameterSet::param_identifier_to_string(identifier);
         return;
     }
     const auto& param=param_opt.value();
