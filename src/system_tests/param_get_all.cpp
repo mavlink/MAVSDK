@@ -3,6 +3,7 @@
 #include "system_tests_helper.h"
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
+//#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include <chrono>
 #include <utility>
 #include <vector>
@@ -76,6 +77,24 @@ TEST(SystemTest, ParamGetAll)
     ASSERT_TRUE(system->has_autopilot());
 
     auto param_sender = Param{system};
+
+    // we emulate a packet loss of every second packet - this obviously doesn't really emulate true packet loss, but will at least
+    // test the packet loss resilience a bit. Since the param sender re-transmits up to 2 times, when dropping every second packet
+    // everything should still work.
+    /*auto drop=std::make_shared<mavsdk::MavlinkPassthrough>(system);
+    int drop_in=0;
+    int drop_out=0;
+    drop->intercept_incoming_messages_async([&drop_in](auto& msg){
+        //qDebug()<<"Intercept:Got message"<<msg.msgid;
+        drop_in++;
+        if(drop_in % 2 ==0)return true;
+        return false;
+    });
+    drop->intercept_outgoing_messages_async([&drop_out](auto& msg){
+        drop_out++;
+        if(drop_out % 2 ==0)return true;
+        return false;
+    });*/
 
     const auto test_float_params=generate_float_params();
     const auto test_int_params=generate_int_params();
