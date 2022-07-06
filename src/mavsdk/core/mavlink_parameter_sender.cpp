@@ -156,13 +156,11 @@ void MavlinkParameterSender::set_param_int_async(
         }else{
             // parameter is not cached. Request it and then perform the appropriate action once we know it
             auto send_message_once_type_is_known=[this,name,value,callback,cookie](Result result, ParamValue fetched_param_value){
-                LogDebug()<<"result:"<<result;
                 if(result==Result::Success){
                     if(fetched_param_value.set_int(value)){
                         // Argh, this is kinda stupid - since the callback itself is called with the work queue locked,
-                        // we cannot push a new item onto the work queue here.
+                        // we had to make sure that the work queue guard is removed before we call the finalizing callback of a work item
                         set_param_async(name,fetched_param_value,callback, cookie);
-                        LogDebug()<<"Done";
                         return;
                     }
                 }
