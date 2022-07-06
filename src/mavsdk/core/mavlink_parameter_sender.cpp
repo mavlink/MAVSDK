@@ -463,8 +463,8 @@ void MavlinkParameterSender::cancel_all_param(const void* cookie)
 
 void MavlinkParameterSender::do_work()
 {
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
+    auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
+    auto work = work_queue_guard->get_front();
     if (!work) {
         return;
     }
@@ -505,10 +505,11 @@ void MavlinkParameterSender::do_work()
             }
             if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
+                work_queue_guard->pop_front();
+                work_queue_guard.reset();
                 if(specific.callback){
                     specific.callback(Result::ConnectionError);
                 }
-                work_queue_guard.pop_front();
                 return;
             }
             work->already_requested = true;
@@ -562,10 +563,11 @@ void MavlinkParameterSender::do_work()
 
             if (!_sender.send_message(work->mavlink_message)) {
                 LogErr() << "Error: Send message failed";
+                work_queue_guard->pop_front();
+                work_queue_guard.reset();
                 if (specific.callback) {
                     specific.callback(Result::ConnectionError, ParamValue{});
                 }
-                work_queue_guard.pop_front();
                 return;
             }
             work->already_requested = true;
