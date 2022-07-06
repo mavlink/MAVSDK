@@ -51,6 +51,7 @@ MavlinkParameterSender::MavlinkParameterSender(
 void MavlinkParameterSender::late_init(uint8_t target_component_id, bool use_extended) {
     _target_component_id=target_component_id;
     _use_extended=use_extended;
+    _param_set_from_server.clear();
 }
 
 MavlinkParameterSender::~MavlinkParameterSender()
