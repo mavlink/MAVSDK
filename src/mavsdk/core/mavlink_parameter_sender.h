@@ -251,7 +251,6 @@ private:
     std::mutex _all_params_mutex{};
     GetAllParamsCallback _all_params_callback;
     void* _all_params_timeout_cookie{nullptr};
-    std::map<std::string, ParamValue> _all_params{};
     ParamSetFromServer _param_set_from_server;
 
     // once the parameter count has been set, it should not change - but we cannot say for certain since

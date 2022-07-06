@@ -52,7 +52,6 @@ void MavlinkParameterSender::late_init(uint8_t target_component_id, bool use_ext
     _target_component_id=target_component_id;
     _use_extended=use_extended;
     _param_set_from_server.clear();
-    _all_params.clear();
     _server_param_count=std::nullopt;
 }
 
@@ -601,8 +600,6 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     }
     validate_parameter_count(param_value.param_count);
     check_for_full_parameter_set(safe_param_id,param_value.param_index,param_value.param_count,received_value);
-    _all_params.insert_or_assign(safe_param_id,received_value);
-
     // TODO I think we need to consider more edge cases here
     find_and_call_subscriptions_value_changed(safe_param_id,received_value);
 
@@ -681,7 +678,6 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
     }
     validate_parameter_count(param_ext_value.param_count);
     check_for_full_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
-    _all_params.insert_or_assign(safe_param_id,received_value);
     // See comments on process_param_value for use of unique_ptr
     auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
     auto work = work_queue_guard->get_front();
@@ -919,8 +915,13 @@ bool MavlinkParameterSender::validate_id_or_index(
 void MavlinkParameterSender::check_for_full_parameter_set(const std::string& safe_param_id,const uint16_t param_idx,const uint16_t all_param_count,
                                                           const ParamValue& received_value) {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+    const bool success=_param_set_from_server.add_new_parameter(safe_param_id,param_idx,all_param_count,received_value);
+    if(!success){
+        // This can result in unwanted behaviour, but never crashes / terminates the sender.
+        LogWarn()<<"Invariant parameter set detected";
+    }
     if(_all_params_callback){
-        if(!_param_set_from_server.add_new_parameter(safe_param_id,param_idx,all_param_count,received_value)){
+        if(!success){
             // we cannot do a full parameter synchronization with this server, it provides inconsistent data.
             _timeout_handler.remove(_all_params_timeout_cookie);
             _all_params_callback({});
