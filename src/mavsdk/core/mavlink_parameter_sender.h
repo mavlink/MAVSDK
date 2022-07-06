@@ -176,13 +176,17 @@ public:
     void get_param_custom_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
-    // Note: When use_extended == false, this won't return any parameters that use a string as param value,
-    // since the non-extended protocol is incapable of doing so.
-    // also, in case there is packet loss and the parameter set of the server has a lot of parameters,
-    // this might take a significant amount of time.
-    std::map<std::string, ParamValue> get_all_params();
     using GetAllParamsCallback = std::function<void(std::map<std::string, ParamValue>)>;
-    void get_all_params_async(const GetAllParamsCallback& callback);
+    /**
+     * Try to obtain the complete parameter set (all the parameters the server provides). In case of packet loss/
+     * a param server with a lot of parameters, this might take a significant amount of time. The callback is called with
+     * a full parameter set on success, an empty parameter set on failure.
+     * @param callback callback to be called when done.
+     * @param clear_cache when set to true, clear the previous full / partial parameter set from the server. This is needed
+     * in case the server parameter set is invariant.
+     */
+    void get_all_params_async(GetAllParamsCallback callback,bool clear_cache=false);
+    std::map<std::string, ParamValue> get_all_params(bool clear_cache=false);
 
     void cancel_all_param(const void* cookie);
 

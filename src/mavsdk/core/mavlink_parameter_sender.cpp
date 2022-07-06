@@ -402,7 +402,7 @@ MavlinkParameterSender::get_param_custom(const std::string& name)
     return res.get();
 }
 
-void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& callback)
+void MavlinkParameterSender::get_all_params_async(GetAllParamsCallback callback,const bool clear_cache)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if(_all_params_callback!= nullptr){
@@ -412,7 +412,10 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
         _all_params_callback({});
         _all_params_callback= nullptr;
     }
-    _all_params_callback = callback;
+    if(clear_cache){
+        _param_set_from_server.clear();
+    }
+    _all_params_callback = std::move(callback);
     mavlink_message_t msg;
     if(_use_extended){
         mavlink_msg_param_ext_request_list_pack(
@@ -441,7 +444,7 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
         [this] { receive_timeout(); }, _timeout_s_callback(), &_all_params_timeout_cookie);
 }
 
-std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params()
+std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params(bool clear_cache)
 {
     std::promise<std::map<std::string, ParamValue>> prom;
     auto res = prom.get_future();
@@ -451,7 +454,7 @@ std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params()
         // goes out of scope when the callback returns.
         [&prom](std::map<std::string, ParamValue> all_params) {
             prom.set_value(std::move(all_params));
-        });
+        },clear_cache);
     return res.get();
 }
 
