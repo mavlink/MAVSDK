@@ -30,7 +30,7 @@ MavlinkParameterSender::MavlinkParameterSender(
             _parameter_debugging = true;
         }
     }
-    if(_use_extended){
+    //if(_use_extended){
         _message_handler.register_one(
             MAVLINK_MSG_ID_PARAM_EXT_VALUE,
             [this](const mavlink_message_t& message) { process_param_ext_value(message); },
@@ -40,12 +40,17 @@ MavlinkParameterSender::MavlinkParameterSender(
             MAVLINK_MSG_ID_PARAM_EXT_ACK,
             [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
             this);
-    }else{
+    //}else{
         _message_handler.register_one(
             MAVLINK_MSG_ID_PARAM_VALUE,
             [this](const mavlink_message_t& message) { process_param_value(message); },
             this);
-    }
+    //}
+}
+
+void MavlinkParameterSender::late_init(uint8_t target_component_id, bool use_extended) {
+    _target_component_id=target_component_id;
+    _use_extended=use_extended;
 }
 
 MavlinkParameterSender::~MavlinkParameterSender()

@@ -42,6 +42,13 @@ public:
     MavlinkParameterSender(const MavlinkParameterSender&) = delete;
     const MavlinkParameterSender& operator=(const MavlinkParameterSender&) = delete;
 
+    /**
+     * argh what the crap, we could have nicely done these in the constructor with const
+     * @param target_component_id target component id (the param providing component this sender should talk to)
+     * @param use_extended weather to use the extended protocol or not - it is not possible to mix them up.
+     */
+    void late_init(uint8_t target_component_id,bool use_extended);
+
     enum class Result {
         Success,
         Timeout,
@@ -195,9 +202,9 @@ private:
     TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
     // target component id (the param providing component this sender should talk to)
-    const uint8_t _target_component_id;
+    uint8_t _target_component_id=MAV_COMP_ID_AUTOPILOT1;
     // weather to use the extended protocol or not - it is not possible to mix them up.
-    const bool _use_extended;
+    bool _use_extended=false;
 
     // These are specific depending on the work item type
     struct WorkItemSet{
