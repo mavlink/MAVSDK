@@ -164,14 +164,17 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
         case MavlinkParameterSet::UpdateExistingParamResult::MISSING_PARAM:{
             // We do not allow clients to add a new parameter to the parameter set, only to update existing parameters.
             // In this case, we cannot even respond with anything, since this parameter simply does not exist.
-            LogDebug() << "Got param_set for non-existing parameter:"<<param_id;
+            LogWarn() << "Got param_set for non-existing parameter:"<<param_id;
+            // TODO it is ambiguous if we should send a PARAM_ACK_VALUE_UNSUPPORTED for the extended protocol only in this case.
+            // However, I don't think that is a good idea - since we then basically need to construct a valid parameter
+            // with this param_id and hope the client ignores it.
             return;
         }
         case MavlinkParameterSet::UpdateExistingParamResult::WRONG_PARAM_TYPE:{
             // We broadcast the un-changed parameter type and value, non-extended and extended work differently here
             const auto curr_param=_param_set.lookup_parameter(param_id,extended).value();
             assert(curr_param.param_index<param_count);
-            LogDebug() << "Got param_set for existing value, but wrong type. registered param: "<<curr_param;
+            LogWarn() << "Got param_set for existing value, but wrong type. registered param: "<<curr_param;
             if(extended){
                 auto new_work = std::make_shared<WorkItem>(curr_param.param_id,curr_param.value,
                                                            WorkItemAck{PARAM_ACK_FAILED});
