@@ -1208,4 +1208,8 @@ void SystemImpl::subscribe_param_custom(
     _mavlink_parameter_sender.subscribe_param_custom_changed(name, callback, cookie);
 }
 
+void SystemImpl::late_init(uint8_t target_component_id, bool use_extended) {
+    _mavlink_parameter_sender.late_init(target_component_id,use_extended);
+}
+
 } // namespace mavsdk

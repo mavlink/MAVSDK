@@ -165,6 +165,8 @@ public:
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
+    void late_init(uint8_t target_component_id, bool use_extended);
+
     FlightMode get_flight_mode() const;
 
     MavlinkCommandSender::Result

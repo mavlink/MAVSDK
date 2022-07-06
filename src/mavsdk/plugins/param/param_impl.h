@@ -34,6 +34,8 @@ public:
 
     Param::AllParams get_all_params();
 
+    void late_init(uint8_t target_component_id,bool use_extended);
+
 private:
     static Param::Result
     result_from_mavlink_parameter_sender_result(MavlinkParameterSender::Result result);

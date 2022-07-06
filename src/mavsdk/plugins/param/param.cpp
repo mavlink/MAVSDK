@@ -58,6 +58,10 @@ Param::AllParams Param::get_all_params() const
     return _impl->get_all_params();
 }
 
+void Param::late_init(uint8_t target_component_id, bool use_extended) {
+    return _impl->late_init(target_component_id,use_extended);
+}
+
 bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
