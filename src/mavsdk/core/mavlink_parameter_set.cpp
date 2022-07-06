@@ -263,4 +263,12 @@ std::string ParamSetFromServer::to_string() const
     ss<<" }";
     return ss.str();
 }
+std::optional<ParamValue> ParamSetFromServer::lookup_parameter(const std::string& param_id)
+{
+    if(_all_params.find(param_id)==_all_params.end()){
+        // param does not exist
+        return std::nullopt;
+    }
+    return _all_params.at(param_id);
+}
 }

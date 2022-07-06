@@ -135,6 +135,8 @@ public:
         _all_params.clear();
         _server_all_param_ids=std::nullopt;
     }
+    // On the client side, we only need to lookup parameters by their string id.
+    std::optional<ParamValue> lookup_parameter(const std::string& param_id);
 private:
     // filled as parameters come in
     std::map<std::string, ParamValue> _all_params{};
