@@ -1,5 +1,4 @@
 #include "mavlink_parameter_receiver.h"
-#include <cstring>
 #include <cassert>
 
 namespace mavsdk {
