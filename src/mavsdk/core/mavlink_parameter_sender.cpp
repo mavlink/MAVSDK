@@ -807,7 +807,8 @@ void MavlinkParameterSender::receive_timeout()
                 LogWarn() << "sending again, retries to do: " << work->retries_to_do;
                 if (!_sender.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit ";
-                    work_queue_guard.pop_front();
+                    work_queue_guard->pop_front();
+                    work_queue_guard.reset();
                     if (specific.callback) {
                         specific.callback(Result::ConnectionError, {});
                     }
