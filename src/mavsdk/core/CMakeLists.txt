@@ -1,6 +1,8 @@
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+find_package(MAVLink REQUIRED)
+
 configure_file(version.h.in version.h)
 configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
 
@@ -47,6 +49,8 @@ target_sources(mavsdk
 
 cmake_policy(SET CMP0079 NEW)
 target_link_libraries(mavsdk
+    PUBLIC
+    MAVLink::mavlink
     PRIVATE
     CURL::libcurl
     Threads::Threads
@@ -96,7 +100,6 @@ target_include_directories(mavsdk
     PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-    ${MAVLINK_HEADERS}
     )
 
 install(TARGETS mavsdk

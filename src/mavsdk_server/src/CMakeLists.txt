@@ -77,7 +77,6 @@ target_include_directories(mavsdk_server
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk/core>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk/plugins>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/plugins>
-    ${MAVLINK_HEADERS}
     PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated>
     $<INSTALL_INTERFACE:include>

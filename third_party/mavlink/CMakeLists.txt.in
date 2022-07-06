@@ -8,12 +8,12 @@ include(GNUInstallDirs)
 
 target_include_directories(mavlink
     INTERFACE
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/mavlink>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
 
 install(TARGETS mavlink
     EXPORT MAVLinkTargets
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavlink
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     )
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/include/mavlink"

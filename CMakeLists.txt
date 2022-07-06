@@ -40,7 +40,6 @@ HunterGate(
     SHA1 "ea5d72afc0df67f2126e7fd069f20c5f723709e1"
 )
 
-
 project(mavsdk_superbuild)
 
 if (BUILD_BACKEND)
@@ -56,12 +55,5 @@ if (NOT MAVLINK_DIALECT)
     set(MAVLINK_DIALECT common)
 endif()
 
-if (MAVLINK_HEADERS)
-    get_filename_component(MAVLINK_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${MAVLINK_HEADERS} REALPATH)
-    set(MAVLINK_HEADERS ${MAVLINK_HEADERS})
-    message(STATUS "MAVLink headers for dialect ${MAVLINK_DIALECT} manually provided in ${MAVLINK_HEADERS}")
-endif()
-
 add_subdirectory(third_party)
-
 add_subdirectory(src)

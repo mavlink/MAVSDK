@@ -5,6 +5,7 @@ include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
+    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     )
 
 # Without this GitHub actions picks the wrong python3 executable.

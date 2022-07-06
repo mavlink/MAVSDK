@@ -93,10 +93,6 @@ target_link_libraries(integration_tests_runner
     gmock
 )
 
-target_include_directories(integration_tests_runner
-    SYSTEM PRIVATE ${MAVLINK_HEADERS}
-)
-
 add_test(integration_tests
     integration_tests_runner
 )
