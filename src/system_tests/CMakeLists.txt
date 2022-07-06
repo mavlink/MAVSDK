@@ -6,6 +6,7 @@ add_executable(system_tests_runner
     system_tests_helper.cpp
     param_set_and_get.cpp
     param_custom_set_and_get.cpp
+    param_get_all.cpp
     mission_raw_upload.cpp
 )
 
