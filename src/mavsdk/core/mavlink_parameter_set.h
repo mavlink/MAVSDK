@@ -49,8 +49,9 @@ public:
     };
     std::vector<Parameter> list_all_parameters(bool supports_extended);
     std::map<std::string, ParamValue> create_copy_as_map();
-
+    // lookup a parameter using the unique string id
     std::optional<Parameter> lookup_parameter(const std::string& param_id,bool extended);
+    // lookup a parameter using the unique unsigned int index
     std::optional<Parameter> lookup_parameter(uint16_t param_index,bool extended);
     // identifier can be either a string or index.
     std::optional<Parameter> lookup_parameter(const std::variant<std::string,std::uint16_t>& identifier,bool extended);

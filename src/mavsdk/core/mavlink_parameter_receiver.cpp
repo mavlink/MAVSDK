@@ -283,7 +283,7 @@ void MavlinkParameterReceiver::process_param_ext_request_read(const mavlink_mess
 void MavlinkParameterReceiver::internal_process_param_request_read(
     const std::variant<std::string, uint16_t>& identifier,const bool extended){
     std::lock_guard<std::mutex> lock(_all_params_mutex);
-    // look u the parameter in the parameter set by its identifier.
+    // look up the parameter in the parameter set by its identifier.
     const auto param_opt = _param_set.lookup_parameter(identifier,extended);
     if(!param_opt.has_value()){
         LogDebug()<<"Ignoring param_ext_request_read message - value not found";
