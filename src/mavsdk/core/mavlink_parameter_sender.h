@@ -32,7 +32,11 @@ public:
         Sender& parent,
         MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler,
-        TimeoutSCallback timeout_s_callback);
+        TimeoutSCallback timeout_s_callback,
+        // target component id (the param providing component this sender should talk to)
+        uint8_t target_component_id=MAV_COMP_ID_AUTOPILOT1,
+        // weather to use the extended protocol or not - it is not possible to mix them up.
+        bool use_extended=false);
     ~MavlinkParameterSender();
     // Non-copyable
     MavlinkParameterSender(const MavlinkParameterSender&) = delete;
@@ -53,9 +57,7 @@ public:
 
     Result set_param(
         const std::string& name,
-        ParamValue value,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        ParamValue value);
 
     using SetParamCallback = std::function<void(Result result)>;
 
@@ -68,15 +70,11 @@ public:
         const std::string& name,
         ParamValue value,
         const SetParamCallback& callback,
-        const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        const void* cookie);
 
     Result set_param_int(
         const std::string& name,
         int32_t value,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false,
         // Needs to be false by default, I don't know where people using the library assume the internal type hack is applied
         bool adhere_to_mavlink_specs= false);
 
@@ -85,24 +83,18 @@ public:
         int32_t value,
         const SetParamCallback& callback,
         const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false,
         // Needs to be false by default, I don't know where people using the library assume the internal type hack is applied
         bool adhere_to_mavlink_specs= false);
 
     Result set_param_float(
         const std::string& name,
-        float value,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        float value);
 
     void set_param_float_async(
         const std::string& name,
         float value,
         const SetParamCallback& callback,
-        const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        const void* cookie);
 
     Result set_param_custom(const std::string& name, const std::string& value);
 
@@ -123,12 +115,9 @@ public:
     void get_param_async(
         const std::string& name,
         GetParamAnyCallback callback,
-        const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
-    // Blocking wrapper around get_param_async()
+        const void* cookie);
     std::pair<Result, ParamValue>
-    get_param(const std::string& name, bool extended = false);
+    get_param(const std::string& name);
 
     /**
      * This is legacy code, the original implementation takes a ParamValue to check and infer the type.
@@ -140,9 +129,7 @@ public:
         const std::string& name,
         ParamValue value_type,
         const GetParamAnyCallback& callback,
-        const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        const void* cookie);
 
     /**
      * This could replace the code above.
@@ -155,48 +142,40 @@ public:
     void get_param_async_typesafe(
         const std::string& name,
         GetParamTypesafeCallback<T> callback,
-        const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended = false);
+        const void* cookie);
 
-    std::pair<Result, float> get_param_float(
-        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
+    std::pair<Result, float> get_param_float(const std::string& name);
 
     using GetParamFloatCallback = std::function<void(Result, float)>;
 
     void get_param_float_async(
         const std::string& name,
         const GetParamFloatCallback& callback,
-        const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended);
+        const void* cookie);
 
-    std::pair<Result, int32_t> get_param_int(
-        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
+    std::pair<Result, int32_t> get_param_int(const std::string& name);
 
     using GetParamIntCallback = std::function<void(Result, int32_t)>;
 
     void get_param_int_async(
         const std::string& name,
         const GetParamIntCallback& callback,
-        const void* cookie,
-        std::optional<uint8_t> maybe_component_id,
-        bool extended);
+        const void* cookie);
 
     std::pair<Result, std::string> get_param_custom(const std::string& name);
 
     using GetParamCustomCallback = std::function<void(Result, const std::string& value)>;
 
     void get_param_custom_async(
-        const std::string& name, const GetParamCustomCallback& callback, const void* cookie,std::optional<uint8_t> maybe_component_id=std::nullopt);
+        const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
     // Note: When use_extended == false, this won't return any parameters that use a string as param value,
     // since the non-extended protocol is incapable of doing so.
     // also, in case there is packet loss and the parameter set of the server has a lot of parameters,
     // this might take a significant amount of time.
-    std::map<std::string, ParamValue> get_all_params(bool use_extended=false);
+    std::map<std::string, ParamValue> get_all_params();
     using GetAllParamsCallback = std::function<void(std::map<std::string, ParamValue>)>;
-    void get_all_params_async(const GetAllParamsCallback& callback,bool use_extended=false);
+    void get_all_params_async(const GetAllParamsCallback& callback);
 
     void cancel_all_param(const void* cookie);
 
@@ -215,6 +194,10 @@ private:
     MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
+    // target component id (the param providing component this sender should talk to)
+    const uint8_t _target_component_id;
+    // weather to use the extended protocol or not - it is not possible to mix them up.
+    const bool _use_extended;
 
     // These are specific depending on the work item type
     struct WorkItemSet{
@@ -232,8 +215,6 @@ private:
         const double timeout_s;
         using WorkItemVariant=std::variant<WorkItemGet,WorkItemSet>;
         WorkItemVariant work_item_variant;
-        const bool extended;
-        const std::optional<uint8_t> maybe_component_id;
         bool already_requested{false};
         const void* cookie{nullptr};
         int retries_to_do{3};
@@ -241,10 +222,8 @@ private:
         // TODO: Don't we need a new message sequence number for that ? Not sure.
         mavlink_message_t mavlink_message{};
 
-        explicit WorkItem(double new_timeout_s,WorkItemVariant work_item_variant1,const void* cookie1,
-                          bool extended1,std::optional<uint8_t> maybe_component_id1) :
-                timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),
-                extended(extended1),maybe_component_id(maybe_component_id1),cookie(cookie1){
+        explicit WorkItem(double new_timeout_s,WorkItemVariant work_item_variant1,const void* cookie1) :
+                timeout_s(new_timeout_s),work_item_variant(std::move(work_item_variant1)),cookie(cookie1){
 
             };
         [[nodiscard]] Type get_type()const{
@@ -263,7 +242,6 @@ private:
     void* _all_params_timeout_cookie{nullptr};
     std::map<std::string, ParamValue> _all_params{};
     ParamSetFromServer _param_set_from_server;
-    bool _all_params_request_extended=false;
 
     // once the parameter count has been set, it should not change - but we cannot say for certain since
     // the server might do whatever he wants.
@@ -277,7 +255,7 @@ private:
     // Validate if the response matches what was given in the work queue
     static bool validate_id_or_index(const std::variant<std::string,int16_t>& original,const std::string& param_id,int16_t param_index);
 
-    void check_for_full_parameter_set(const std::string& safe_param_id,uint16_t param_idx,uint16_t all_param_count,const ParamValue& received_value,bool extended);
+    void check_for_full_parameter_set(const std::string& safe_param_id,uint16_t param_idx,uint16_t all_param_count,const ParamValue& received_value);
     void check_all_params_timeout();
     // Create a callback for a WorkItemGet that performs the following steps:
     // 1) Check if any parameter of the parameter set is missing.

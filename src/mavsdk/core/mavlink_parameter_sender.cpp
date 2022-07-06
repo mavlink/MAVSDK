@@ -14,11 +14,15 @@ MavlinkParameterSender::MavlinkParameterSender(
     Sender& sender,
     MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
-    TimeoutSCallback timeout_s_callback) :
+    TimeoutSCallback timeout_s_callback,
+    const uint8_t target_component_id,
+    bool use_extended) :
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
-    _timeout_s_callback(std::move(timeout_s_callback))
+    _timeout_s_callback(std::move(timeout_s_callback)),
+    _target_component_id(target_component_id),
+    _use_extended(use_extended)
 {
     if (const char* env_p = std::getenv("MAVSDK_PARAMETER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -50,21 +54,15 @@ MavlinkParameterSender::~MavlinkParameterSender()
 
 MavlinkParameterSender::Result MavlinkParameterSender::set_param(
     const std::string& name,
-    ParamValue value,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    ParamValue value)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-
     set_param_async(
         name,
         value,
         [&prom](Result result) { prom.set_value(result); },
-        this,
-        maybe_component_id,
-        extended);
-
+        this);
     return res.get();
 }
 
@@ -72,9 +70,7 @@ void MavlinkParameterSender::set_param_async(
     const std::string& name,
     ParamValue value,
     const SetParamCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    const void* cookie)
 {
     if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
@@ -83,7 +79,7 @@ void MavlinkParameterSender::set_param_async(
         }
         return;
     }
-    if(value.is<std::string>() && !extended){
+    if(value.is<std::string>() && !_use_extended){
         LogErr()<<"std::string needs extended protocol";
         if(callback){
             callback(Result::UnknownError);
@@ -91,7 +87,7 @@ void MavlinkParameterSender::set_param_async(
         return;
     }
     auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),
-                                               WorkItemSet{name,value,callback},cookie,extended,maybe_component_id);
+                                               WorkItemSet{name,value,callback},cookie);
     _work_queue.push_back(new_work);
 }
 
@@ -102,8 +98,7 @@ void MavlinkParameterSender::set_param_int_async(
     int32_t value,
     const SetParamCallback& callback,
     const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended,bool adhere_to_mavlink_specs)
+    bool adhere_to_mavlink_specs)
 {
     if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
@@ -116,7 +111,7 @@ void MavlinkParameterSender::set_param_int_async(
         // Lol so much easier - but assumes that the user meant int32_t when saying int ;)
         ParamValue value_to_set;
         value_to_set.set(static_cast<int32_t>(value));
-        set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+        set_param_async(name,value_to_set,callback,cookie);
         return;
     }
     // PX4 only uses int32_t, so we can be sure and don't need to check the exact type first
@@ -124,7 +119,7 @@ void MavlinkParameterSender::set_param_int_async(
     if(_sender.autopilot() == SystemImpl::Autopilot::Px4){
         ParamValue value_to_set;
         value_to_set.set(static_cast<int32_t>(value));
-        set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+        set_param_async(name,value_to_set,callback,cookie);
     }else{
         // Here I implemented the same behaviour as the original author, but by using the same "do the checking in the callback" - trick
         // the duplicated code can be reduced nicely.
@@ -136,14 +131,14 @@ void MavlinkParameterSender::set_param_int_async(
         // break things here.
 
         // Action to perform once we know the exact type, as we have the parameter cached.
-        auto send_message_once_type_is_known=[this,name,value,callback,cookie,maybe_component_id,extended](){
+        auto send_message_once_type_is_known=[this,name,value,callback,cookie](){
             //std::lock_guard<std::mutex> lock(_all_params_mutex);
             assert(_all_params.find(name) != _all_params.end());
             auto copy= _all_params.at(name);
             const auto is_any_int=copy.set_int(value);
             if(is_any_int){
                 LogDebug()<<"set_int() casted the type to whatever is cached internally";
-                set_param_async(name,copy,callback,cookie,maybe_component_id,extended);
+                set_param_async(name,copy,callback,cookie);
             }else{
                 // Now if we have pre-cached the value already, and the user calls set_int() with a key that is not for an int, we could say
                 // Hey, we know that this is not an int, and give the response of invalid value immediately back to the user. However, to keep things
@@ -152,7 +147,7 @@ void MavlinkParameterSender::set_param_int_async(
                 LogDebug()<<"Weird case on set_int() read the documentation in code";
                 ParamValue value_to_set;
                 value_to_set.set(static_cast<int32_t>(value));
-                set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+                set_param_async(name,value_to_set,callback,cookie);
             }
         };
         // we need to be carefully with the mutex here
@@ -163,44 +158,40 @@ void MavlinkParameterSender::set_param_int_async(
         if(is_parameter_cached){
             send_message_once_type_is_known();
         }else{
-            auto cb=[this,send_message_once_type_is_known,name,value,cookie,callback,maybe_component_id,extended]
+            auto cb=[this,send_message_once_type_is_known,name,value,cookie,callback]
                 (Result result, ParamValue param_value){
                     if(result!=Result::Success){
                         // we didn't get the expected response from the server, but now send the message out anyways.
                         ParamValue value_to_set;
                         value_to_set.set(static_cast<int32_t>(value));
-                        set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+                        set_param_async(name,value_to_set,callback,cookie);
                     }else{
                         // Now we have it cached, apply the same logic as above
                         send_message_once_type_is_known();
                     }
                 };
-            get_param_async(name, cb,cookie,maybe_component_id,extended);
+            get_param_async(name, cb,cookie);
         }
         // We do a get_param_async to find out the actual type, then cast the user-provided int value
         // to the int value the server side uses. This results in the same behaviour as implemented by the original author,
         // but I changed the code to
-        get_param_async(name,nullptr,cookie,maybe_component_id,extended);
+        get_param_async(name,nullptr,cookie);
     }
 }
 
 MavlinkParameterSender::Result MavlinkParameterSender::set_param_int(
     const std::string& name,
     int32_t value,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended,bool adhere_to_mavlink_specs)
+    bool adhere_to_mavlink_specs)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-
     set_param_int_async(
         name,
         value,
         [&prom](Result result) { prom.set_value(result); },
         this,
-        maybe_component_id,
-        extended,adhere_to_mavlink_specs);
-
+        adhere_to_mavlink_specs);
     return res.get();
 }
 
@@ -208,17 +199,15 @@ void MavlinkParameterSender::set_param_float_async(
     const std::string& name,
     float value,
     const SetParamCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    const void* cookie)
 {
     ParamValue value_to_set;
     value_to_set.set_float(value);
-    set_param_async(name,value_to_set,callback,cookie,maybe_component_id,extended);
+    set_param_async(name,value_to_set,callback,cookie);
 }
 
 MavlinkParameterSender::Result MavlinkParameterSender::set_param_float(
-    const std::string& name, float value, std::optional<uint8_t> maybe_component_id, bool extended)
+    const std::string& name, float value)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
@@ -227,9 +216,7 @@ MavlinkParameterSender::Result MavlinkParameterSender::set_param_float(
         name,
         value,
         [&prom](Result result) { prom.set_value(result); },
-        this,
-        maybe_component_id,
-        extended);
+        this);
 
     return res.get();
 }
@@ -257,7 +244,7 @@ void MavlinkParameterSender::set_param_custom_async(
     }
     ParamValue value_to_set;
     value_to_set.set_custom(value);
-    set_param_async(name,value_to_set,callback,cookie,std::nullopt, true);
+    set_param_async(name,value_to_set,callback,cookie);
 }
 
 MavlinkParameterSender::Result
@@ -273,12 +260,10 @@ MavlinkParameterSender::set_param_custom(const std::string& name, const std::str
 void MavlinkParameterSender::get_param_async(
     const std::string& name,
     GetParamAnyCallback callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    const void* cookie)
 {
     if (_parameter_debugging) {
-        LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
+        LogDebug() << "getting param " << name << ", extended: " << (_use_extended ? "yes" : "no");
     }
     if (name.size() > MavlinkParameterSet::PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
@@ -288,7 +273,7 @@ void MavlinkParameterSender::get_param_async(
         return;
     }
     // Otherwise, push work onto queue.
-    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),WorkItemGet{name,callback},cookie,extended,maybe_component_id);
+    auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),WorkItemGet{name,callback},cookie);
     // We don't need to know the exact type when getting a value - neither extended or non-extended protocol mavlink messages
     // specify the exact type on a "get_xxx" message. This makes total sense. The client still can reason about the type and return
     // the proper error codes, it just needs to delay these checks until a response from the server has been received.
@@ -299,9 +284,7 @@ void MavlinkParameterSender::get_param_async(
     const std::string& name,
     ParamValue value_type,
     const GetParamAnyCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    const void* cookie)
 {
     // We need to delay the type checking until we get a response from the server.
     GetParamAnyCallback callback_future_result=[callback,value_type](Result result, ParamValue value){
@@ -315,16 +298,14 @@ void MavlinkParameterSender::get_param_async(
             callback(result,{});
         }
     };
-    get_param_async(name,callback,cookie,maybe_component_id,extended);
+    get_param_async(name,callback,cookie);
 }
 
 template<class T>
 void MavlinkParameterSender::get_param_async_typesafe(
     const std::string& name,
     const GetParamTypesafeCallback<T> callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    const void* cookie)
 {
     // We need to delay the type checking until we get a response from the server.
     GetParamAnyCallback callback_future_result=[callback](Result result, ParamValue value){
@@ -338,40 +319,35 @@ void MavlinkParameterSender::get_param_async_typesafe(
             callback(result,{});
         }
     };
-    get_param_async(name,callback_future_result,cookie,maybe_component_id,extended);
+    get_param_async(name,callback_future_result,cookie);
 }
 
 void MavlinkParameterSender::get_param_float_async(
     const std::string& name,
     const GetParamFloatCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    const void* cookie)
 {
-    get_param_async_typesafe<float>(name,callback,cookie,maybe_component_id,extended);
+    get_param_async_typesafe<float>(name,callback,cookie);
 }
 
 
 void MavlinkParameterSender::get_param_int_async(
     const std::string& name,
     const GetParamIntCallback& callback,
-    const void* cookie,
-    std::optional<uint8_t> maybe_component_id,
-    bool extended)
+    const void* cookie)
 {
-    get_param_async_typesafe<int32_t>(name,callback,cookie,maybe_component_id,extended);
+    get_param_async_typesafe<int32_t>(name,callback,cookie);
 }
 
 void MavlinkParameterSender::get_param_custom_async(
-    const std::string& name, const GetParamCustomCallback& callback, const void* cookie,std::optional<uint8_t> maybe_component_id)
+    const std::string& name, const GetParamCustomCallback& callback, const void* cookie)
 {
-    get_param_async_typesafe<std::string>(name,callback,cookie,maybe_component_id,true);
+    get_param_async_typesafe<std::string>(name,callback,cookie);
 }
 
 
 
-std::pair<MavlinkParameterSender::Result, ParamValue> MavlinkParameterSender::get_param(
-    const std::string& name,bool extended)
+std::pair<MavlinkParameterSender::Result, ParamValue> MavlinkParameterSender::get_param(const std::string& name)
 {
     auto prom = std::promise<std::pair<Result, ParamValue>>();
     auto res = prom.get_future();
@@ -380,36 +356,29 @@ std::pair<MavlinkParameterSender::Result, ParamValue> MavlinkParameterSender::ge
         [&prom](Result result, ParamValue new_value) {
             prom.set_value(std::make_pair<>(result, std::move(new_value)));
         },
-        this,
-        extended);
+        this);
     return res.get();
 }
 
-std::pair<MavlinkParameterSender::Result, int32_t> MavlinkParameterSender::get_param_int(
-    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
+std::pair<MavlinkParameterSender::Result, int32_t> MavlinkParameterSender::get_param_int(const std::string& name)
 {
     auto prom = std::promise<std::pair<Result, int32_t>>();
     auto res = prom.get_future();
     get_param_int_async(
         name,
         [&prom](Result result, int32_t value) { prom.set_value(std::make_pair<>(result, value)); },
-        this,
-        maybe_component_id,
-        extended);
+        this);
     return res.get();
 }
 
-std::pair<MavlinkParameterSender::Result, float> MavlinkParameterSender::get_param_float(
-    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
+std::pair<MavlinkParameterSender::Result, float> MavlinkParameterSender::get_param_float(const std::string& name)
 {
     auto prom = std::promise<std::pair<Result, float>>();
     auto res = prom.get_future();
     get_param_float_async(
         name,
         [&prom](Result result, float value) { prom.set_value(std::make_pair<>(result, value)); },
-        this,
-        maybe_component_id,
-        extended);
+        this);
     return res.get();
 }
 
@@ -427,7 +396,7 @@ MavlinkParameterSender::get_param_custom(const std::string& name)
     return res.get();
 }
 
-void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& callback,const bool use_extended)
+void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if(_all_params_callback!= nullptr){
@@ -438,9 +407,8 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
         _all_params_callback= nullptr;
     }
     _all_params_callback = callback;
-    _all_params_request_extended=use_extended;
     mavlink_message_t msg;
-    if(use_extended){
+    if(_use_extended){
         mavlink_msg_param_ext_request_list_pack(
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
@@ -467,7 +435,7 @@ void MavlinkParameterSender::get_all_params_async(const GetAllParamsCallback& ca
         [this] { receive_timeout(); }, _timeout_s_callback(), &_all_params_timeout_cookie);
 }
 
-std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params(const bool use_extended)
+std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params()
 {
     std::promise<std::map<std::string, ParamValue>> prom;
     auto res = prom.get_future();
@@ -477,7 +445,7 @@ std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params(const b
         // goes out of scope when the callback returns.
         [&prom](std::map<std::string, ParamValue> all_params) {
             prom.set_value(std::move(all_params));
-        },use_extended);
+        });
     return res.get();
 }
 
@@ -505,23 +473,11 @@ void MavlinkParameterSender::do_work()
     if (work->already_requested) {
         return;
     }
-    uint8_t component_id = [&]() {
-        if (work->maybe_component_id) {
-            return work->maybe_component_id.value();
-        } else {
-            if (work->extended) {
-                //return static_cast<uint8_t>(MAV_COMP_ID_CAMERA);
-                return static_cast<uint8_t>(MAV_COMP_ID_AUTOPILOT1);
-            } else {
-                return static_cast<uint8_t>(MAV_COMP_ID_AUTOPILOT1);
-            }
-        }
-    }();
     switch (work->get_type()) {
         case WorkItem::Type::Set: {
             const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
             auto param_id=MavlinkParameterSet::param_id_to_message_buffer(specific.param_name);
-            if (work->extended) {
+            if (_use_extended) {
                 const auto param_value_buf = specific.param_value.get_128_bytes();
                 LogDebug()<<"Sending to:"<<(int)_sender.get_own_system_id()<<":"<<(int)_sender.get_own_component_id();
                 // FIXME: extended currently always go to the camera component
@@ -530,7 +486,7 @@ void MavlinkParameterSender::do_work()
                     _sender.get_own_component_id(),
                     &work->mavlink_message,
                     _sender.get_system_id(),
-                    component_id,
+                    _target_component_id,
                     param_id.data(),
                     param_value_buf.data(),
                     specific.param_value.get_mav_param_ext_type());
@@ -544,7 +500,7 @@ void MavlinkParameterSender::do_work()
                     _sender.get_own_component_id(),
                     &work->mavlink_message,
                     _sender.get_system_id(),
-                    component_id,
+                    _target_component_id,
                     param_id.data(),
                     value_set,
                     specific.param_value.get_mav_param_type());
@@ -578,13 +534,13 @@ void MavlinkParameterSender::do_work()
                 param_index=std::get<int16_t>(specific.param_identifier);
             }
 
-            if (work->extended) {
+            if (_use_extended) {
                 mavlink_msg_param_ext_request_read_pack(
                     _sender.get_own_system_id(),
                     _sender.get_own_component_id(),
                     &work->mavlink_message,
                     _sender.get_system_id(),
-                    component_id,
+                    _target_component_id,
                     param_id_buff.data(),
                     param_index);
 
@@ -601,7 +557,7 @@ void MavlinkParameterSender::do_work()
                     _sender.get_own_component_id(),
                     &work->mavlink_message,
                     _sender.get_system_id(),
-                    component_id,
+                    _target_component_id,
                     param_id_buff.data(),
                     param_index);
             }
@@ -645,7 +601,7 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
         LogDebug() << "process_param_value: " << safe_param_id<<" "<<received_value;
     }
     validate_parameter_count(param_value.param_count);
-    check_for_full_parameter_set(safe_param_id,param_value.param_index,param_value.param_count,received_value, false);
+    check_for_full_parameter_set(safe_param_id,param_value.param_index,param_value.param_count,received_value);
     _all_params.insert_or_assign(safe_param_id,received_value);
 
     // TODO I think we need to consider more edge cases here
@@ -722,7 +678,7 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
         LogDebug() << "process_param_value: " << safe_param_id<<" "<<received_value;
     }
     validate_parameter_count(param_ext_value.param_count);
-    check_for_full_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value, true);
+    check_for_full_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
     _all_params.insert_or_assign(safe_param_id,received_value);
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -951,7 +907,7 @@ bool MavlinkParameterSender::validate_id_or_index(
 }
 
 void MavlinkParameterSender::check_for_full_parameter_set(const std::string& safe_param_id,const uint16_t param_idx,const uint16_t all_param_count,
-                                                          const ParamValue& received_value,const bool extended) {
+                                                          const ParamValue& received_value) {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     if(_all_params_callback){
         if(!_param_set_from_server.add_new_parameter(safe_param_id,param_idx,all_param_count,received_value)){
@@ -998,7 +954,7 @@ void MavlinkParameterSender::check_all_params_timeout() {
             const auto first_missing_param=missing_param_indices.at(0);
             LogDebug()<<"Requesting missing parameter "<<(int)first_missing_param;
             auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),
-                                                       WorkItemGet{first_missing_param,create_recursive_callback()}, this,_all_params_request_extended,std::nullopt);
+                                                       WorkItemGet{first_missing_param,create_recursive_callback()}, this);
             _work_queue.push_back(new_work);
         }
     }
@@ -1018,7 +974,7 @@ MavlinkParameterSender::GetParamAnyCallback MavlinkParameterSender::create_recur
               const auto next_missing_param=missing.at(0);
               LogDebug()<<"Requesting missing parameter "<<(int)next_missing_param;
               auto new_work = std::make_shared<WorkItem>(_timeout_s_callback(),
-                                                         WorkItemGet{static_cast<int16_t>(next_missing_param),create_recursive_callback()}, this,_all_params_request_extended,std::nullopt);
+                                                         WorkItemGet{static_cast<int16_t>(next_missing_param),create_recursive_callback()}, this);
               _work_queue.push_back(new_work);
           }
       }else{
