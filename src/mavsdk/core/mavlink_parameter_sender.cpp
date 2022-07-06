@@ -116,7 +116,7 @@ void MavlinkParameterSender::set_param_int_async(
         }
         return;
     }
-    if(adhere_to_mavlink_specs){
+    if(adhere_to_mavlink_specs || true){
         // Lol so much easier - but assumes that the user meant int32_t when saying int ;)
         ParamValue value_to_set;
         value_to_set.set(static_cast<int32_t>(value));
@@ -138,53 +138,42 @@ void MavlinkParameterSender::set_param_int_async(
         // get a invalid value back from the server, and the parameter is not changed. To work around this issue, here we try and find out what
         // the server stores, then cast the user-provided int parameter into this exact type and send that instead. Not to the specs, but I didn't want to
         // break things here.
-
-        // Action to perform once we know the exact type, as we have the parameter cached.
-        auto send_message_once_type_is_known=[this,name,value,callback,cookie](){
-            //std::lock_guard<std::mutex> lock(_all_params_mutex);
-            assert(_all_params.find(name) != _all_params.end());
-            auto copy= _all_params.at(name);
-            const auto is_any_int=copy.set_int(value);
-            if(is_any_int){
-                LogDebug()<<"set_int() casted the type to whatever is cached internally";
-                set_param_async(name,copy,callback,cookie);
+        // first check if we have this parameter cached
+        auto param_opt=_param_set_from_server.lookup_parameter(name);
+        if(param_opt.has_value()){
+            // we have the parameter cached
+            auto param=param_opt.value();
+            if(param.set_int(value)){
+                // we have successfully written whatever int the user provided into the int type that is actually stored
+                set_param_async(name,param,callback,cookie);
             }else{
-                // Now if we have pre-cached the value already, and the user calls set_int() with a key that is not for an int, we could say
-                // Hey, we know that this is not an int, and give the response of invalid value immediately back to the user. However, to keep things
-                // consistently, here we just send out the message for an int32_t , perhaps the server allows changing the type of a parameter ?
-                // This really goes to show how messy the workaround above is, though.
-                LogDebug()<<"Weird case on set_int() read the documentation in code";
+                // param is something else - but we send out a set request anyways, it is really unlikely but maybe the param set is invariant
+                // or the server allows changing the type of parameter
                 ParamValue value_to_set;
                 value_to_set.set(static_cast<int32_t>(value));
                 set_param_async(name,value_to_set,callback,cookie);
             }
-        };
-        // we need to be carefully with the mutex here
-        _all_params_mutex.lock();
-        const bool is_parameter_cached=_all_params.find(name) != _all_params.end();
-        _all_params_mutex.unlock();
-        // Now the parameter might change, but that doesn't matter, we never remove elements from the map.
-        if(is_parameter_cached){
-            send_message_once_type_is_known();
         }else{
-            auto cb=[this,send_message_once_type_is_known,name,value,cookie,callback]
-                (Result result, ParamValue param_value){
-                    if(result!=Result::Success){
-                        // we didn't get the expected response from the server, but now send the message out anyways.
-                        ParamValue value_to_set;
-                        value_to_set.set(static_cast<int32_t>(value));
-                        set_param_async(name,value_to_set,callback,cookie);
-                    }else{
-                        // Now we have it cached, apply the same logic as above
-                        send_message_once_type_is_known();
+            // parameter is not cached. Request it and then perform the appropriate action once we know it
+            auto send_message_once_type_is_known=[this,name,value,callback,cookie](Result result, ParamValue fetched_param_value){
+                LogDebug()<<"result:"<<result;
+                if(result==Result::Success){
+                    if(fetched_param_value.set_int(value)){
+                        // Argh, this is kinda stupid - since the callback itself is called with the work queue locked,
+                        // we cannot push a new item onto the work queue here.
+                        set_param_async(name,fetched_param_value,callback, cookie);
+                        LogDebug()<<"Done";
+                        return;
                     }
-                };
-            get_param_async(name, cb,cookie);
+                }
+                // param is something else - but we sent out a set reset anyways, it is really unlikely but maybe the param set is invariant
+                // or the server allows changing the type of parameter
+                ParamValue value_to_set;
+                value_to_set.set(static_cast<int32_t>(value));
+                set_param_async(name,value_to_set,callback,cookie);
+            };
+            get_param_async(name,send_message_once_type_is_known,cookie);
         }
-        // We do a get_param_async to find out the actual type, then cast the user-provided int value
-        // to the int value the server side uses. This results in the same behaviour as implemented by the original author,
-        // but I changed the code to
-        get_param_async(name,nullptr,cookie);
     }
 }
 
@@ -619,8 +608,12 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     // TODO I think we need to consider more edge cases here
     find_and_call_subscriptions_value_changed(safe_param_id,received_value);
 
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    const auto work = work_queue_guard.get_front();
+    // We need to use a unique pointer here to remove the lock from the work queue manually "early"
+    // before calling the (perhaps user-provided) callback. Otherwise, we might end up in a deadlock if the
+    // callback wants to push another work item onto the queue. By using a unique ptr there is no risk
+    // of forgetting to remove the lock - it is destroyed (if still valid) after going out of scope.
+    auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
+    const auto work = work_queue_guard->get_front();
     if (!work) {
         return;
     }
@@ -635,13 +628,14 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
                 // No match, let's just return the borrowed work item.
                 return;
             }
-            if (specific.callback) {
-                specific.callback(Result::Success, received_value);
-            }
             _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _sender.get_time().elapsed_since_s(_last_request_time);
-            work_queue_guard.pop_front();
+            work_queue_guard->pop_front();
+            work_queue_guard.reset();
+            if (specific.callback) {
+                specific.callback(Result::Success, received_value);
+            }
         } break;
         case WorkItem::Type::Set: {
             const auto& specific=std::get<WorkItemSet>(work->work_item_variant);
@@ -651,20 +645,18 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
             }
             // We are done, inform caller and go back to idle
             // Unfortunately non-extended is less verbose than extended in this case.
-            if(specific.param_value==received_value){
-                // the value was set to what we have requested
-                if (specific.callback) {
-                    specific.callback(MavlinkParameterSender::Result::Success);
-                }
-            }else{
-                if (specific.callback) {
-                    specific.callback(MavlinkParameterSender::Result::UnknownError);
-                }
-            }
+            // We check the actual returned value against the originally provided value to be sure.
+            const auto result=specific.param_value==received_value ?
+                                    MavlinkParameterSender::Result::Success :
+                                    MavlinkParameterSender::Result::UnknownError;
             _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _sender.get_time().elapsed_since_s(_last_request_time);
-            work_queue_guard.pop_front();
+            work_queue_guard->pop_front();
+            work_queue_guard.reset();
+            if (specific.callback) {
+                specific.callback(MavlinkParameterSender::Result::Success);
+            }
         } break;
         default:
             LogWarn() << "Unexpected ParamValue";
@@ -692,8 +684,9 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
     validate_parameter_count(param_ext_value.param_count);
     check_for_full_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
     _all_params.insert_or_assign(safe_param_id,received_value);
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
+    // See comments on process_param_value for use of unique_ptr
+    auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
+    auto work = work_queue_guard->get_front();
     if (!work) {
         return;
     }
@@ -708,13 +701,14 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
                 // No match, let's just return the borrowed work item.
                 return;
             }
-            if (specific.callback) {
-                specific.callback(Result::Success,received_value);
-            }
             _timeout_handler.remove(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _sender.get_time().elapsed_since_s(_last_request_time);
-            work_queue_guard.pop_front();
+            work_queue_guard->pop_front();
+            work_queue_guard.reset();
+            if (specific.callback) {
+                specific.callback(Result::Success,received_value);
+            }
         } break;
         // According to the mavlink spec, PARAM_EXT_VALUE is only emitted in response to a PARAM_EXT_REQUEST_LIST or PARAM_EXT_REQUEST_READ.
         default:
@@ -731,8 +725,9 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
     mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
     const auto safe_param_id=MavlinkParameterSet::extract_safe_param_id(param_ext_ack.param_id);
 
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
+    // See comments on process_param_value for use of unique_ptr
+    auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
+    auto work = work_queue_guard->get_front();
     if (!work) {
         return;
     }
@@ -747,15 +742,15 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
                 return;
             }
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
+                _timeout_handler.remove(_timeout_cookie);
+                // LogDebug() << "time taken: " <<
+                // _sender.get_time().elapsed_since_s(_last_request_time);
+                work_queue_guard->pop_front();
+                work_queue_guard.reset();
                 // We are done, inform caller and go back to idle
                 if (specific.callback) {
                     specific.callback(Result::Success);
                 }
-                _timeout_handler.remove(_timeout_cookie);
-                // LogDebug() << "time taken: " <<
-                // _sender.get_time().elapsed_since_s(_last_request_time);
-                work_queue_guard.pop_front();
-
             } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
                 // Reset timeout and wait again.
                 _timeout_handler.refresh(_timeout_cookie);
@@ -763,6 +758,11 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
             } else {
                 LogErr() << "Somehow we did not get an ack, we got: "
                          << int(param_ext_ack.param_result);
+                _timeout_handler.remove(_timeout_cookie);
+                // LogDebug() << "time taken: " <<
+                // _sender.get_time().elapsed_since_s(_last_request_time);
+                work_queue_guard->pop_front();
+                work_queue_guard.reset();
                 if (specific.callback) {
                     auto result = [&]() {
                         switch (param_ext_ack.param_result) {
@@ -776,10 +776,6 @@ void MavlinkParameterSender::process_param_ext_ack(const mavlink_message_t& mess
                     }();
                     specific.callback(result);
                 }
-                _timeout_handler.remove(_timeout_cookie);
-                // LogDebug() << "time taken: " <<
-                // _sender.get_time().elapsed_since_s(_last_request_time);
-                work_queue_guard.pop_front();
             }
         } break;
         default:
@@ -793,8 +789,9 @@ void MavlinkParameterSender::receive_timeout()
 {
     check_all_params_timeout();
 
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
+    // See comments on process_param_value for use of unique_ptr
+    auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
+    auto work = work_queue_guard->get_front();
     if (!work) {
         LogErr() << "Received timeout without work";
         return;
@@ -822,7 +819,8 @@ void MavlinkParameterSender::receive_timeout()
             } else {
                 // We have tried retransmitting, giving up now.
                 LogErr() << "Error: Retrying failed get param busy timeout: ";
-                work_queue_guard.pop_front();
+                work_queue_guard->pop_front();
+                work_queue_guard.reset();
                 if (specific.callback) {
                     specific.callback(Result::Timeout, {});
                 }
@@ -836,7 +834,8 @@ void MavlinkParameterSender::receive_timeout()
                           << specific.param_name << ").";
                 if (!_sender.send_message(work->mavlink_message)) {
                     LogErr() << "connection send error in retransmit (" << specific.param_name << ").";
-                    work_queue_guard.pop_front();
+                    work_queue_guard->pop_front();
+                    work_queue_guard.reset();
                     if (specific.callback) {
                         specific.callback(Result::ConnectionError);
                     }
@@ -848,8 +847,8 @@ void MavlinkParameterSender::receive_timeout()
             } else {
                 // We have tried retransmitting, giving up now.
                 LogErr() << "Error: Retrying failed get param busy timeout: " << specific.param_name;
-
-                work_queue_guard.pop_front();
+                work_queue_guard->pop_front();
+                work_queue_guard.reset();
                 if (specific.callback) {
                     specific.callback(Result::Timeout);
                 }
