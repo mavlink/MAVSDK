@@ -92,6 +92,11 @@ Param::AllParams ParamImpl::get_all_params()
             tmp_param.name = param_pair.first;
             tmp_param.value = param_pair.second.get<int8_t>();
             res.int_params.push_back(tmp_param);
+        }else if (param_pair.second.is<std::string>()) {
+            Param::CustomParam tmp_param;
+            tmp_param.name = param_pair.first;
+            tmp_param.value = param_pair.second.get<std::string>();
+            res.custom_params.push_back(tmp_param);
         }
     }
 
