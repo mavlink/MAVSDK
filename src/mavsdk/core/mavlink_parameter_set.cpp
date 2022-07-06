@@ -193,13 +193,13 @@ bool MavlinkParameterSet::validate_param_id(const std::string& param_id)
 
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::InternalParameter& obj)
 {
-    strm << "Parameter{"<<obj.param_id<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";
+    strm << "InternalParameter{id:("<<obj.param_id<<") value:("<<obj.value.typestr()<<","<<obj.value.get_string()<<")}";
     return strm;
 }
 
 std::ostream& operator<<(std::ostream& strm, const MavlinkParameterSet::Parameter& obj)
 {
-    strm << "Parameter{"<<obj.param_id<<":"<<obj.param_index<<" value:"<<obj.value.typestr()<<","<<obj.value.get_string()<<"}";
+    strm << "Parameter{id:("<<obj.param_id<<":"<<obj.param_index<<") value:("<<obj.value.typestr()<<","<<obj.value.get_string()<<")}";
     return strm;
 }
 

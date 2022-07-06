@@ -24,12 +24,12 @@ MavlinkParameterSender::MavlinkParameterSender(
     _target_component_id(target_component_id),
     _use_extended(use_extended)
 {
-    if (const char* env_p = std::getenv("MAVSDK_PARAMETER_DEBUGGING")) {
+    /*if (const char* env_p = std::getenv("MAVSDK_PARAMETER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
             LogDebug() << "Parameter debugging is on.";
             _parameter_debugging = true;
         }
-    }
+    }*/
     //if(_use_extended){
         _message_handler.register_one(
             MAVLINK_MSG_ID_PARAM_EXT_VALUE,
@@ -52,6 +52,8 @@ void MavlinkParameterSender::late_init(uint8_t target_component_id, bool use_ext
     _target_component_id=target_component_id;
     _use_extended=use_extended;
     _param_set_from_server.clear();
+    _all_params.clear();
+    _server_param_count=std::nullopt;
 }
 
 MavlinkParameterSender::~MavlinkParameterSender()
@@ -685,7 +687,7 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
         return;
     }
     if (_parameter_debugging) {
-        LogDebug() << "process_param_value: " << safe_param_id<<" "<<received_value;
+        LogDebug() << "process_param_ext_value: " << safe_param_id<<" "<<received_value;
     }
     validate_parameter_count(param_ext_value.param_count);
     check_for_full_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
@@ -887,7 +889,7 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::Result
 void MavlinkParameterSender::validate_parameter_count(const uint16_t param_count) {
     if(_server_param_count.has_value()){
         if(param_count!=_server_param_count.value()){
-            LogWarn()<<"Warning: detected server with changing parameter set";
+            LogWarn()<<"Warning: detected server with changing parameter set"<<_server_param_count.value()<<" becomes: "<<param_count;
             _server_param_count=param_count;
         }
     }else{
@@ -928,10 +930,12 @@ void MavlinkParameterSender::check_for_full_parameter_set(const std::string& saf
             return;
         }
         if(_param_set_from_server.is_complete()){
+            LogDebug()<<"Param set complete "<<_param_set_from_server.to_string();
             _timeout_handler.remove(_all_params_timeout_cookie);
             _all_params_callback(_param_set_from_server.get_all_params());
             _all_params_callback = nullptr;
         }else{
+            LogDebug()<<"Param set not yet complete";
             // update the timeout handler, messages are still coming in.
             _timeout_handler.remove(_all_params_timeout_cookie);
             _timeout_handler.add(

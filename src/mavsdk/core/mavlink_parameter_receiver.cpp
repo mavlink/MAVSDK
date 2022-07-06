@@ -331,7 +331,9 @@ void MavlinkParameterReceiver::process_param_ext_request_list(const mavlink_mess
 void MavlinkParameterReceiver::broadcast_all_parameters(const bool extended) {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     const auto all_params= _param_set.list_all_parameters(extended);
+    LogDebug() << "broadcast_all_parameters "<<(extended ? "Ext" : "")<<": " << all_params.size();
     for(const auto& parameter:all_params){
+        LogDebug() << "sending param:"<<parameter;
         auto new_work = std::make_shared<WorkItem>(parameter.param_id,parameter.value,
             WorkItemValue{parameter.param_index,static_cast<uint16_t>(all_params.size()),extended});
         _work_queue.push_back(new_work);

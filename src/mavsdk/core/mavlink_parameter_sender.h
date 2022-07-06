@@ -261,7 +261,7 @@ private:
     // https://mavlink.io/en/services/parameter.html#parameters_invariant
     void validate_parameter_count(uint16_t param_count);
 
-    bool _parameter_debugging{false};
+    bool _parameter_debugging=true;
 
     // Validate if the response matches what was given in the work queue
     static bool validate_id_or_index(const std::variant<std::string,int16_t>& original,const std::string& param_id,int16_t param_index);

@@ -42,7 +42,7 @@ static std::map<std::string,std::string> generate_string_params(){
   }
   return params;
 }
-
+// compare originally provided and received values - they have a slightly different data layout.
 template<typename T1,typename T2>
 static void assert_equal(const std::map<std::string,T1>& values,const std::vector<T2>& received){
     EXPECT_EQ(received.size(), values.size());
@@ -86,15 +86,17 @@ TEST(SystemTest, ParamGetAll)
             param_server.provide_param_float(key,val),
             ParamServer::Result::Success);
     }
-    for (auto const& [key, val] : test_int_params){
-        EXPECT_EQ(
-            param_server.provide_param_int(key,val),
-            ParamServer::Result::Success);
-    }
     // We also add a couple of std::string parameters - note that they won't show up in get_all_params() when using the non-extended version
+    // also note that we add the string parameters before then adding the int params, which also tests if the server handles the "hiding" properly
+    // (now the indices of the non-ext params are different to the extended ones).
     for (auto const& [key, val] : test_string_params){
         EXPECT_EQ(
             param_server.provide_param_custom(key,val),
+            ParamServer::Result::Success);
+    }
+    for (auto const& [key, val] : test_int_params){
+        EXPECT_EQ(
+            param_server.provide_param_int(key,val),
             ParamServer::Result::Success);
     }
 
@@ -107,11 +109,11 @@ TEST(SystemTest, ParamGetAll)
     }
     {
         // now we do the same, but this time with the extended protocol
-        param_sender.late_init(1, false);
+        param_sender.late_init(1, true);
         const auto all_params = param_sender.get_all_params();
         assert_equal<int,Param::IntParam>(test_int_params,all_params.int_params);
         assert_equal<float,Param::FloatParam>(test_float_params,all_params.float_params);
-        //assert_equal<std::string,Param::CustomParam>(test_string_params,all_params.custom_params);
+        assert_equal<std::string,Param::CustomParam>(test_string_params,all_params.custom_params);
     }
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
