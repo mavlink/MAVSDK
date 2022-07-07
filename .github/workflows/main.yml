@@ -98,8 +98,13 @@ jobs:
         run: cmake --build build/release -j2
       - name: install
         run: sudo cmake --build build/release --target install
+      - name: temporary workaround for Ubuntu 22.04
+        if: ${{ matrix.ubuntu_image }} == "ubuntu-22.04"
+        run: |
+          sudo apt-get update
+          sudo apt-get install libudev1=249.11-0ubuntu3 libudev-dev=249.11-0ubuntu3 -y --allow-downgrades
       - name: install examples dependencies
-        run: sudo apt-get install -y libsdl2-dev
+        run: sudo apt-get install libsdl2-dev
       - name: configure examples
         run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -Bbuild -H.)
       - name: build examples
