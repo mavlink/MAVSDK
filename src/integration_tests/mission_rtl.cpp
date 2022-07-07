@@ -41,11 +41,13 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         auto future_result = prom->get_future();
 
         LogInfo() << "Waiting to discover system...";
-        Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, prom, handle]() {
+        Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, prom, &handle]() {
             const auto system = mavsdk.systems().at(0);
 
             if (system->is_connected()) {
                 LogInfo() << "Discovered system";
+                // Unregister to prevent fulfilling promise twice.
+                mavsdk.unsubscribe_on_new_system(handle);
                 prom->set_value();
             }
         });
@@ -56,8 +58,6 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         auto status = future_result.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
-        // This is to prevent that the promise is set twice.
-        mavsdk.unsubscribe_on_new_system(handle);
     }
 
     auto system = mavsdk.systems().at(0);
