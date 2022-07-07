@@ -57,15 +57,11 @@ elseif(IOS)
 
     message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
 
-    if(${ENABLE_BITCODE})
-        set(CFLAGS "-fembed-bitcode")
-    endif()
-
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CFLAGS=${CFLAGS} <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
