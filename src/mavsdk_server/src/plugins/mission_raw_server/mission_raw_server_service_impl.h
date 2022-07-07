@@ -268,7 +268,7 @@ public:
 
         const mavsdk::MissionRawServer::IncomingMissionHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_incoming_mission(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     mavsdk::MissionRawServer::Result result,
                     const mavsdk::MissionRawServer::MissionPlan incoming_mission) {
                     rpc::mission_raw_server::IncomingMissionResponse rpc_response;
@@ -321,7 +321,7 @@ public:
 
         const mavsdk::MissionRawServer::CurrentItemChangedHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_current_item_changed(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::MissionRawServer::MissionItem current_item_changed) {
                     rpc::mission_raw_server::CurrentItemChangedResponse rpc_response;
 
@@ -377,7 +377,7 @@ public:
 
         const mavsdk::MissionRawServer::ClearAllHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_clear_all(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const uint32_t clear_all) {
                     rpc::mission_raw_server::ClearAllResponse rpc_response;
 

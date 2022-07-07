@@ -976,7 +976,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Camera::ModeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_mode(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const mavsdk::Camera::Mode mode) {
                 rpc::camera::ModeResponse rpc_response;
 
@@ -1017,7 +1017,7 @@ public:
 
         const mavsdk::Camera::InformationHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_information(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Camera::Information information) {
                     rpc::camera::InformationResponse rpc_response;
 
@@ -1059,7 +1059,7 @@ public:
 
         const mavsdk::Camera::VideoStreamInfoHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Camera::VideoStreamInfo video_stream_info) {
                     rpc::camera::VideoStreamInfoResponse rpc_response;
 
@@ -1101,7 +1101,7 @@ public:
 
         const mavsdk::Camera::CaptureInfoHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_capture_info(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const mavsdk::Camera::CaptureInfo capture_info) {
                     rpc::camera::CaptureInfoResponse rpc_response;
 
@@ -1142,7 +1142,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Camera::StatusHandle handle = _lazy_plugin.maybe_plugin()->subscribe_status(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const mavsdk::Camera::Status status) {
                 rpc::camera::StatusResponse rpc_response;
 
@@ -1183,7 +1183,7 @@ public:
 
         const mavsdk::Camera::CurrentSettingsHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_current_settings(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const std::vector<mavsdk::Camera::Setting> current_settings) {
                     rpc::camera::CurrentSettingsResponse rpc_response;
 
@@ -1227,7 +1227,7 @@ public:
 
         const mavsdk::Camera::PossibleSettingOptionsHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     const std::vector<mavsdk::Camera::SettingOptions> possible_setting_options) {
                     rpc::camera::PossibleSettingOptionsResponse rpc_response;
 

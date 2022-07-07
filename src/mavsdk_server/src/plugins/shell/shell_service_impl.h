@@ -129,7 +129,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Shell::ReceiveHandle handle = _lazy_plugin.maybe_plugin()->subscribe_receive(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 const std::string receive) {
                 rpc::shell::ReceiveResponse rpc_response;
 

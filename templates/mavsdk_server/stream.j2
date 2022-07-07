@@ -23,7 +23,7 @@ grpc::Status Subscribe{{ name.upper_camel_case }}(grpc::ServerContext* /* contex
     auto subscribe_mutex = std::make_shared<std::mutex>();
 
     {% if not is_finite %}const mavsdk::{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}Handle handle = {% endif %}_lazy_plugin.maybe_plugin()->{% if not is_finite %}subscribe_{% endif %}{{ name.lower_snake_case }}{% if is_finite %}_async{% endif %}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}(){% if not param.type_info.is_primitive %}){% endif %}, {% endfor %}
-        [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex{% if not is_finite %}, handle{% endif %}](
+        [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex{% if not is_finite %}, &handle{% endif %}](
             {%- if has_result -%}mavsdk::{{ plugin_name.upper_camel_case }}::Result result,{%- endif -%}
             const {% if return_type.is_repeated %}std::vector<{% if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.inner_name }}>{% else %}{%- if not return_type.is_primitive %}{{ package.lower_snake_case.split('.')[0] }}::{{ plugin_name.upper_camel_case }}::{% endif %}{{ return_type.name }}{% endif %} {{ name.lower_snake_case }}) {
 

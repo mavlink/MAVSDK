@@ -276,7 +276,7 @@ public:
 
         const mavsdk::ActionServer::ArmDisarmHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_arm_disarm(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     mavsdk::ActionServer::Result result,
                     const mavsdk::ActionServer::ArmDisarm arm_disarm) {
                     rpc::action_server::ArmDisarmResponse rpc_response;
@@ -333,7 +333,7 @@ public:
 
         const mavsdk::ActionServer::FlightModeChangeHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_flight_mode_change(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     mavsdk::ActionServer::Result result,
                     const mavsdk::ActionServer::FlightMode flight_mode_change) {
                     rpc::action_server::FlightModeChangeResponse rpc_response;
@@ -390,7 +390,7 @@ public:
 
         const mavsdk::ActionServer::TakeoffHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_takeoff(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     mavsdk::ActionServer::Result result, const bool takeoff) {
                     rpc::action_server::TakeoffResponse rpc_response;
 
@@ -445,7 +445,7 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::ActionServer::LandHandle handle = _lazy_plugin.maybe_plugin()->subscribe_land(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                 mavsdk::ActionServer::Result result, const bool land) {
                 rpc::action_server::LandResponse rpc_response;
 
@@ -501,7 +501,7 @@ public:
 
         const mavsdk::ActionServer::RebootHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_reboot(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     mavsdk::ActionServer::Result result, const bool reboot) {
                     rpc::action_server::RebootResponse rpc_response;
 
@@ -557,7 +557,7 @@ public:
 
         const mavsdk::ActionServer::ShutdownHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_shutdown(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     mavsdk::ActionServer::Result result, const bool shutdown) {
                     rpc::action_server::ShutdownResponse rpc_response;
 
@@ -613,7 +613,7 @@ public:
 
         const mavsdk::ActionServer::TerminateHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_terminate(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, handle](
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
                     mavsdk::ActionServer::Result result, const bool terminate) {
                     rpc::action_server::TerminateResponse rpc_response;
 
