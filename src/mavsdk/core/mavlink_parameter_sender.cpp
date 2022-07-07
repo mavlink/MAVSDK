@@ -51,6 +51,7 @@ MavlinkParameterSender::MavlinkParameterSender(
 void MavlinkParameterSender::late_init(uint8_t target_component_id, bool use_extended) {
     _target_component_id=target_component_id;
     _use_extended=use_extended;
+    // if the target comp id or the usage of extended / non-extended changes, we need to clear the cache
     _param_set_from_server.clear();
 }
 
@@ -601,7 +602,6 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
     if (_parameter_debugging) {
         LogDebug() << "process_param_value: " << safe_param_id<<" "<<received_value;
     }
-    validate_parameter_count(param_value.param_count);
     add_param_to_cached_parameter_set(safe_param_id,param_value.param_index,param_value.param_count,received_value);
     // TODO I think we need to consider more edge cases here
     find_and_call_subscriptions_value_changed(safe_param_id,received_value);
@@ -679,7 +679,6 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
     if (_parameter_debugging) {
         LogDebug() << "process_param_ext_value: " << safe_param_id<<" "<<received_value;
     }
-    validate_parameter_count(param_ext_value.param_count);
     add_param_to_cached_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
     // See comments on process_param_value for use of unique_ptr
     auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
