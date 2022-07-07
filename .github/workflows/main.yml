@@ -25,7 +25,7 @@ jobs:
         id: cache
         with:
           path: ./build/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" >> $GITHUB_ENV
@@ -86,7 +86,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
@@ -98,8 +98,13 @@ jobs:
         run: cmake --build build/release -j2
       - name: install
         run: sudo cmake --build build/release --target install
+      - name: temporary workaround for Ubuntu 22.04
+        if: ${{ matrix.ubuntu_image }} == "ubuntu-22.04"
+        run: |
+         echo 'APT::Get::Always-Include-Phased-Updates "true";' | sudo tee -a /etc/apt/apt.conf.d/99-phased-updates
+         sudo apt-get update
       - name: install examples dependencies
-        run: sudo apt-get install -y libsdl2-dev
+        run: sudo apt-get install libsdl2-dev
       - name: configure examples
         run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -Bbuild -H.)
       - name: build examples
@@ -124,7 +129,7 @@ jobs:
         id: cache
         with:
           path: ~/.hunter
-          key: ${{ github.job.name }}-${{ hashFiles('~/.hunter/**') }}
+          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}
       - name: install pymavlink dependencies
         run: sudo apt-get update && sudo apt-get install -y python3-future
       - name: prepare mavlink headers because this is without superbuild
@@ -158,7 +163,7 @@ jobs:
         id: cache
         with:
           path: ./build/default/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
@@ -300,7 +305,7 @@ jobs:
         id: cache
         with:
           path: ./build/linux-${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-linux-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
@@ -332,7 +337,7 @@ jobs:
         id: cache
         with:
           path: ./build/manylinux2010-x64/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/manylinux2010-x64/third_party/install" >> $GITHUB_ENV
@@ -370,7 +375,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
@@ -420,7 +425,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
@@ -466,7 +471,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
@@ -504,7 +509,7 @@ jobs:
         id: cache
         with:
           path: ./build/macos/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
       - name: fetch git tags for version
         run: git fetch --prune --unshallow --tags
       - name: disable superbuild on cache hit
@@ -561,7 +566,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
       - name: fetch git tags for version
         run: git fetch --prune --unshallow --tags
       - name: disable superbuild on cache hit
@@ -639,7 +644,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
