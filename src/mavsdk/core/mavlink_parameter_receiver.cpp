@@ -449,12 +449,14 @@ MavlinkParameterReceiver::extract_request_read_param_identifier(
         if(MavlinkParameterSet::validate_param_id(safe_param_id)){
             return safe_param_id;
         }
+        LogWarn()<<"Message with param_index=-1 but no valid param id";
         return std::nullopt;
     }else{
         // if index is not -1, it should be a valid parameter index (>=0)
         if(param_index>=0){
             return param_index;
         }
+        LogWarn()<<"Param_index "<<param_index<<" cannot be a valid param index";
     }
     return std::nullopt;
 }
