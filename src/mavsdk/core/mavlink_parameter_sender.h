@@ -183,6 +183,7 @@ public:
         Unknown, // Something unexpected happened, can point to a buggy param server
         Success // We got the full parameter set from the server
     };
+
     using GetAllParamsCallback = std::function<void(GetAllParamsResult result,std::map<std::string, ParamValue> set)>;
     /**
      * Try to obtain the complete parameter set (all the parameters the server provides). In case of packet loss/
@@ -200,6 +201,7 @@ public:
     void do_work();
 
     friend std::ostream& operator<<(std::ostream&, const Result&);
+    friend std::ostream& operator<<(std::ostream&, const GetAllParamsResult&);
 
 private:
 

@@ -443,6 +443,7 @@ std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params(bool cl
         // goes out of scope when the callback returns.
         [&prom](GetAllParamsResult result,std::map<std::string, ParamValue> set) {
             // TODO convey the error message
+            LogDebug()<<result;
             prom.set_value(std::move(set));
         },clear_cache);
     return res.get();
@@ -882,6 +883,22 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::Result
             return str << "UnknownError";
     }
 }
+std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::GetAllParamsResult& result)
+{
+    switch (result) {
+        case MavlinkParameterSender::GetAllParamsResult::ConnectionError:
+            return str << "GetAllParamsResult::ConnectionError";
+        case MavlinkParameterSender::GetAllParamsResult::InconsistentData:
+            return str << "GetAllParamsResult::InconsistentData";
+        case MavlinkParameterSender::GetAllParamsResult::Timeout:
+            return str << "GetAllParamsResult::Timeout";
+        case MavlinkParameterSender::GetAllParamsResult::Success:
+            return str << "GetAllParamsResult::Success";
+        // Fallthrough
+        default:
+            return str << "GetAllParamsResult::Unknown";
+    }
+}
 
 void MavlinkParameterSender::validate_parameter_count(const uint16_t param_count) {
     if(_server_param_count.has_value()){
@@ -1009,5 +1026,6 @@ MavlinkParameterSender::GetParamAnyCallback MavlinkParameterSender::create_recur
     };
     return callback;
 }
+
 
 } // namespace mavsdk
