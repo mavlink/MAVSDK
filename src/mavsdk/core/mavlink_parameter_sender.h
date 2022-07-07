@@ -176,7 +176,14 @@ public:
     void get_param_custom_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
-    using GetAllParamsCallback = std::function<void(std::map<std::string, ParamValue>)>;
+    enum GetAllParamsResult{
+        ConnectionError, // Cannot send message(s)
+        InconsistentData, // The param server is buggy and doesn't allow parameter synchronization
+        Timeout, // There is too much packet loss, the synchronization did not succeed. Perhaps try again.
+        Unknown, // Something unexpected happened, can point to a buggy param server
+        Success // We got the full parameter set from the server
+    };
+    using GetAllParamsCallback = std::function<void(GetAllParamsResult result,std::map<std::string, ParamValue> set)>;
     /**
      * Try to obtain the complete parameter set (all the parameters the server provides). In case of packet loss/
      * a param server with a lot of parameters, this might take a significant amount of time. The callback is called with
@@ -265,7 +272,9 @@ private:
     // Validate if the response matches what was given in the work queue
     static bool validate_id_or_index(const std::variant<std::string,int16_t>& original,const std::string& param_id,int16_t param_index);
 
-    void check_for_full_parameter_set(const std::string& safe_param_id,uint16_t param_idx,uint16_t all_param_count,const ParamValue& received_value);
+    // This adds the given parameter to the parameter set cache (if possible) and then checks and call the
+    // _all_params_callback() if it is set and the parameter set has become complete after adding this parameter.
+    void add_param_to_cached_parameter_set(const std::string& safe_param_id,uint16_t param_idx,uint16_t all_param_count,const ParamValue& received_value);
     void check_all_params_timeout();
     // Create a callback for a WorkItemGet that performs the following steps:
     // 1) Check if any parameter of the parameter set is missing.

@@ -398,7 +398,7 @@ void MavlinkParameterSender::get_all_params_async(GetAllParamsCallback callback,
         LogWarn()<<"Give get_all_params_async time to complete before requesting again";
         // make sure any already existing request is terminated, since we immediately have to override an already
         // existing callback here. ( A future might be blocked on it).
-        _all_params_callback({});
+        _all_params_callback(GetAllParamsResult::Unknown,{});
         _all_params_callback= nullptr;
     }
     if(clear_cache){
@@ -423,7 +423,7 @@ void MavlinkParameterSender::get_all_params_async(GetAllParamsCallback callback,
     }
     if (!_sender.send_message(msg)) {
         LogErr() << "Failed to send param list request!";
-        _all_params_callback({});
+        _all_params_callback(GetAllParamsResult::ConnectionError,{});
         _all_params_callback= nullptr;
     }
     // There are 2 possible cases - we get all the messages in time - in this case, the
@@ -441,8 +441,9 @@ std::map<std::string, ParamValue> MavlinkParameterSender::get_all_params(bool cl
         // Make sure to NOT use a reference for all_params here, pass by value.
         // Since for example on a timeout, the empty all_params result is constructed in-place and then
         // goes out of scope when the callback returns.
-        [&prom](std::map<std::string, ParamValue> all_params) {
-            prom.set_value(std::move(all_params));
+        [&prom](GetAllParamsResult result,std::map<std::string, ParamValue> set) {
+            // TODO convey the error message
+            prom.set_value(std::move(set));
         },clear_cache);
     return res.get();
 }
@@ -601,7 +602,7 @@ void MavlinkParameterSender::process_param_value(const mavlink_message_t& messag
         LogDebug() << "process_param_value: " << safe_param_id<<" "<<received_value;
     }
     validate_parameter_count(param_value.param_count);
-    check_for_full_parameter_set(safe_param_id,param_value.param_index,param_value.param_count,received_value);
+    add_param_to_cached_parameter_set(safe_param_id,param_value.param_index,param_value.param_count,received_value);
     // TODO I think we need to consider more edge cases here
     find_and_call_subscriptions_value_changed(safe_param_id,received_value);
 
@@ -679,7 +680,7 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
         LogDebug() << "process_param_ext_value: " << safe_param_id<<" "<<received_value;
     }
     validate_parameter_count(param_ext_value.param_count);
-    check_for_full_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
+    add_param_to_cached_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
     // See comments on process_param_value for use of unique_ptr
     auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
     auto work = work_queue_guard->get_front();
@@ -914,7 +915,7 @@ bool MavlinkParameterSender::validate_id_or_index(
     return true;
 }
 
-void MavlinkParameterSender::check_for_full_parameter_set(const std::string& safe_param_id,const uint16_t param_idx,const uint16_t all_param_count,
+void MavlinkParameterSender::add_param_to_cached_parameter_set(const std::string& safe_param_id,const uint16_t param_idx,const uint16_t all_param_count,
                                                           const ParamValue& received_value) {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     const bool success=_param_set_from_server.add_new_parameter(safe_param_id,param_idx,all_param_count,received_value);
@@ -926,14 +927,14 @@ void MavlinkParameterSender::check_for_full_parameter_set(const std::string& saf
         if(!success){
             // we cannot do a full parameter synchronization with this server, it provides inconsistent data.
             _timeout_handler.remove(_all_params_timeout_cookie);
-            _all_params_callback({});
+            _all_params_callback(GetAllParamsResult::InconsistentData,{});
             _all_params_callback = nullptr;
             return;
         }
         if(_param_set_from_server.is_complete()){
             LogDebug()<<"Param set complete "<<_param_set_from_server.to_string();
             _timeout_handler.remove(_all_params_timeout_cookie);
-            _all_params_callback(_param_set_from_server.get_all_params());
+            _all_params_callback(GetAllParamsResult::Success,_param_set_from_server.get_all_params());
             _all_params_callback = nullptr;
         }else{
             LogDebug()<<"Param set not yet complete";
@@ -954,14 +955,14 @@ void MavlinkParameterSender::check_all_params_timeout() {
         if(!_param_set_from_server.param_count_known()){
             // We got 0 messages back from the server (param count unknown). Most likely the "list request" got lost before making it to the server,
             // TODO maybe re-transmit the list request message just like it is done with the other work items.
-            _all_params_callback({});
+            _all_params_callback(GetAllParamsResult::Timeout,{});
             _all_params_callback= nullptr;
         }else{
             // We know the n of parameters on the server, now check how many are still missing
             const auto missing_param_indices=_param_set_from_server.get_missing_param_indices();
             if(missing_param_indices.empty()){
                 assert(_param_set_from_server.is_complete());
-                _all_params_callback(_param_set_from_server.get_all_params());
+                _all_params_callback(GetAllParamsResult::Success,_param_set_from_server.get_all_params());
                 _all_params_callback= nullptr;
             }
             // We request all the missing parameters. for that, we can use the work queue.
@@ -993,9 +994,15 @@ MavlinkParameterSender::GetParamAnyCallback MavlinkParameterSender::create_recur
               _work_queue.push_back(new_work);
           }
       }else{
+          GetAllParamsResult conv_result=GetAllParamsResult::Unknown;
+          if(res==Result::Timeout){
+              conv_result=GetAllParamsResult::Timeout;
+          }else if(res==Result::ConnectionError){
+              conv_result=GetAllParamsResult::ConnectionError;
+          }
           LogDebug()<<"Get param used for GetAllParameters failed";
           if(_all_params_callback){
-              _all_params_callback({});
+              _all_params_callback(conv_result,{});
               _all_params_callback= nullptr;
           }
       }
