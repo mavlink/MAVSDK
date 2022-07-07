@@ -680,6 +680,8 @@ void MavlinkParameterSender::process_param_ext_value(const mavlink_message_t& me
         LogDebug() << "process_param_ext_value: " << safe_param_id<<" "<<received_value;
     }
     add_param_to_cached_parameter_set(safe_param_id,param_ext_value.param_index,param_ext_value.param_count,received_value);
+    // TODO I think we need to consider more edge cases here
+    find_and_call_subscriptions_value_changed(safe_param_id,received_value);
     // See comments on process_param_value for use of unique_ptr
     auto work_queue_guard=std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
     auto work = work_queue_guard->get_front();
