@@ -52,7 +52,6 @@ void MavlinkParameterSender::late_init(uint8_t target_component_id, bool use_ext
     _target_component_id=target_component_id;
     _use_extended=use_extended;
     _param_set_from_server.clear();
-    _server_param_count=std::nullopt;
 }
 
 MavlinkParameterSender::~MavlinkParameterSender()
@@ -897,17 +896,6 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterSender::GetAll
         // Fallthrough
         default:
             return str << "GetAllParamsResult::Unknown";
-    }
-}
-
-void MavlinkParameterSender::validate_parameter_count(const uint16_t param_count) {
-    if(_server_param_count.has_value()){
-        if(param_count!=_server_param_count.value()){
-            LogWarn()<<"Warning: detected server with changing parameter set"<<_server_param_count.value()<<" becomes: "<<param_count;
-            _server_param_count=param_count;
-        }
-    }else{
-        _server_param_count=param_count;
     }
 }
 

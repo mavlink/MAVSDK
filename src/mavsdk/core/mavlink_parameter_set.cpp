@@ -220,6 +220,8 @@ bool ParamSetFromServer::add_new_parameter(
     }
     if(_server_all_param_ids.value().size()!=parameter_count){
         // the parameter count changed in consecutive messages. We cannot do any parameter synchronization with this server.
+        // This is not forbidden but has the above unwanted side effect
+        // https://mavlink.io/en/services/parameter.html#parameters_invariant
         LogWarn() << "Inconsistent data from server. Param count changed from "<<_server_all_param_ids.value().size()<<" to "<<(int)parameter_count;
         return false;
     }
@@ -228,7 +230,7 @@ bool ParamSetFromServer::add_new_parameter(
         const std::string previous_param_id=_server_all_param_ids.value().at(param_index).value();
         if(previous_param_id!=safe_param_id){
             // the server doesn't have unique param indices for each param id.
-            LogWarn() << "Inconsistent data from server. Param with id:"<<(int)param_index<<" cannot be:{"<<previous_param_id<<"} and {"<<safe_param_id<<"}";
+            LogWarn() << "Inconsistent data from server. Param with index:"<<(int)param_index<<" cannot be:{"<<previous_param_id<<"} and {"<<safe_param_id<<"}";
             return false;
         }
     }

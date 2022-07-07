@@ -145,6 +145,8 @@ private:
     // Once we got the first message with a parameter count, this becomes a valid vector
     // of size == param count from server and filled with std::nullopt.
     // Once no element in this vector is of type std::nullopt anymore, we know all the string param ids from the server.
+    // once the parameter count has been set, it should not change - but we cannot say for certain since
+    // the server might do whatever he wants.
     std::optional<std::vector<std::optional<std::string>>> _server_all_param_ids=std::nullopt;
 };
 
