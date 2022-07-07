@@ -101,8 +101,8 @@ jobs:
       - name: temporary workaround for Ubuntu 22.04
         if: ${{ matrix.ubuntu_image }} == "ubuntu-22.04"
         run: |
-          sudo apt-get update
-          sudo apt-get install libudev1=249.11-0ubuntu3 libudev-dev=249.11-0ubuntu3 -y --allow-downgrades
+         echo 'APT::Get::Always-Include-Phased-Updates "true";' | sudo tee -a /etc/apt/apt.conf.d/99-phased-updates
+         sudo apt-get update
       - name: install examples dependencies
         run: sudo apt-get install libsdl2-dev
       - name: configure examples
