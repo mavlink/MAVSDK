@@ -156,6 +156,8 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
 {
     LogDebug() << "Param set request "<<(extended ? "Ext" : "")<<": " << param_id << " with "<<value_to_set;
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+    // for checking if the update actually changed the value
+    const auto opt_before_update=_param_set.lookup_parameter(param_id,extended);
     const auto result=_param_set.update_existing_parameter(param_id,value_to_set);
     const auto param_count=_param_set.get_current_parameters_count(extended);
     LogDebug()<<result;
@@ -190,11 +192,11 @@ void MavlinkParameterReceiver::process_param_set_internally(const std::string& p
             assert(updated_parameter.param_index<param_count);
             // the param set doesn't differentiate between an update that actually changed the value
             // (aka for example from int=0 to int=1) and an update that had no effect (for example from int=0 to int=0).
-            if(value_to_set!=updated_parameter.value){
+            if(opt_before_update.has_value() && opt_before_update.value().value==updated_parameter.value){
+                LogDebug()<<"Update had no effect: "<<updated_parameter;
+            }else{
                 LogDebug()<<"Updated param to :"<<updated_parameter;
                 find_and_call_subscriptions_value_changed(updated_parameter.param_id,updated_parameter.value);
-            }else{
-                LogDebug()<<"Update had no effect"<<updated_parameter;
             }
             if(extended){
                 auto new_work = std::make_shared<WorkItem>(updated_parameter.param_id,updated_parameter.value,
