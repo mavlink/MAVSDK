@@ -6,9 +6,9 @@
 
 namespace mavsdk {
 
-class MAVLinkReceiver {
+class MavlinkReceiver {
 public:
-    explicit MAVLinkReceiver(uint8_t channel);
+    explicit MavlinkReceiver(uint8_t channel);
 
     [[nodiscard]] uint8_t get_channel() const { return _channel; }
 

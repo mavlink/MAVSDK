@@ -36,7 +36,7 @@ protected:
     void receive_message(mavlink_message_t& message, Connection* connection);
 
     receiver_callback_t _receiver_callback{};
-    std::unique_ptr<MAVLinkReceiver> _mavlink_receiver;
+    std::unique_ptr<MavlinkReceiver> _mavlink_receiver;
     ForwardingOption _forwarding_option;
     std::unordered_set<uint8_t> _system_ids;
 

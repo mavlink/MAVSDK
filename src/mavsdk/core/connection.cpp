@@ -36,7 +36,7 @@ bool Connection::start_mavlink_receiver()
         return false;
     }
 
-    _mavlink_receiver = std::make_unique<MAVLinkReceiver>(channel);
+    _mavlink_receiver = std::make_unique<MavlinkReceiver>(channel);
     return true;
 }
 
