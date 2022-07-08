@@ -5,24 +5,24 @@
 
 namespace mavsdk {
 
-class MAVLinkChannels {
+class MavlinkChannels {
 public:
-    static MAVLinkChannels& Instance()
+    static MavlinkChannels& Instance()
     {
         // This should be thread-safe in C++11.
-        static MAVLinkChannels instance;
+        static MavlinkChannels instance;
 
         return instance;
     }
 
     // delete copy and move constructors and assign operators
-    MAVLinkChannels(MAVLinkChannels const&) = delete; // Copy construct
-    MAVLinkChannels(MAVLinkChannels&&) = delete; // Move construct
-    MAVLinkChannels& operator=(MAVLinkChannels const&) = delete; // Copy assign
-    MAVLinkChannels& operator=(MAVLinkChannels&&) = delete; // Move assign
+    MavlinkChannels(MavlinkChannels const&) = delete; // Copy construct
+    MavlinkChannels(MavlinkChannels&&) = delete; // Move construct
+    MavlinkChannels& operator=(MavlinkChannels const&) = delete; // Copy assign
+    MavlinkChannels& operator=(MavlinkChannels&&) = delete; // Move assign
 
-    MAVLinkChannels();
-    ~MAVLinkChannels() = default;
+    MavlinkChannels();
+    ~MavlinkChannels() = default;
 
     /**
      * Check out a free channel and mark it as used.
