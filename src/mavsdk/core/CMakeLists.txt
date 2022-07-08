@@ -141,5 +141,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/ringbuffer_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
