@@ -17,6 +17,7 @@ TEST(ParamValue, CustomComparator)
     EXPECT_NE(param_value1,param_value2);
     // different type ,same value but int and float.
     param_value2.set(static_cast<float>(10));
+    EXPECT_EQ(false,param_value1.is_same_type(param_value2));
     EXPECT_NE(param_value1,param_value2);
     //
     param_value1.set(std::string("Hello"));
