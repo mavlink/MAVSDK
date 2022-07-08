@@ -48,7 +48,7 @@ bool HttpLoader::download_sync(const std::string& url, const std::string& local_
 void HttpLoader::download_async(
     const std::string& url,
     const std::string& local_path,
-    const progress_callback_t& progress_callback)
+    const ProgressCallback& progress_callback)
 {
     auto work_item = std::make_shared<DownloadItem>(url, local_path, progress_callback);
     _work_queue.enqueue(work_item);
@@ -64,7 +64,7 @@ bool HttpLoader::upload_sync(const std::string& target_url, const std::string& l
 void HttpLoader::upload_async(
     const std::string& target_url,
     const std::string& local_path,
-    const progress_callback_t& progress_callback)
+    const ProgressCallback& progress_callback)
 {
     auto work_item = std::make_shared<UploadItem>(target_url, local_path, progress_callback);
     _work_queue.enqueue(work_item);

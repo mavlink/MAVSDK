@@ -68,7 +68,7 @@ Mocap::Result MocapImpl::send_vision_position_estimate(
                 .count() :
             std::chrono::duration_cast<std::chrono::microseconds>(
                 _parent->get_autopilot_time()
-                    .time_in(dl_system_time_t(
+                    .time_in(SystemTimePoint(
                         std::chrono::microseconds(vision_position_estimate.time_usec)))
                     .time_since_epoch())
                 .count();
@@ -118,7 +118,7 @@ MocapImpl::send_attitude_position_mocap(const Mocap::AttitudePositionMocap& atti
                 .count() :
             std::chrono::duration_cast<std::chrono::microseconds>(
                 _parent->get_autopilot_time()
-                    .time_in(dl_system_time_t(
+                    .time_in(SystemTimePoint(
                         std::chrono::microseconds(attitude_position_mocap.time_usec)))
                     .time_since_epoch())
                 .count();
@@ -171,7 +171,7 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
                 .count() :
             std::chrono::duration_cast<std::chrono::microseconds>(
                 _parent->get_autopilot_time()
-                    .time_in(dl_system_time_t(std::chrono::microseconds(odometry.time_usec)))
+                    .time_in(SystemTimePoint(std::chrono::microseconds(odometry.time_usec)))
                     .time_since_epoch())
                 .count();
 

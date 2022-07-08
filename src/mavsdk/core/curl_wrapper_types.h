@@ -6,11 +6,11 @@ namespace mavsdk {
 
 enum class Status { Idle = 0, Downloading = 1, Uploading = 2, Finished = 3, Error = 4 };
 
-typedef std::function<int(int progress, Status status, CURLcode curl_code)> progress_callback_t;
+using ProgressCallback = std::function<int(int progress, Status status, CURLcode curl_code)>;
 
-struct dl_up_progress {
+struct UpProgress {
     int progress_in_percentage = 0;
-    progress_callback_t progress_callback{nullptr};
+    ProgressCallback progress_callback{nullptr};
 };
 
 } // namespace mavsdk

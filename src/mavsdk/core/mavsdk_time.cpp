@@ -10,12 +10,12 @@ namespace mavsdk {
 using std::chrono::steady_clock;
 using std::chrono::system_clock;
 
-dl_time_t Time::steady_time()
+SteadyTimePoint Time::steady_time()
 {
     return steady_clock::now();
 }
 
-dl_system_time_t Time::system_time()
+SystemTimePoint Time::system_time()
 {
     return system_clock::now();
 }
@@ -40,7 +40,7 @@ uint64_t Time::elapsed_us() const
         steady_clock::now().time_since_epoch() / std::chrono::microseconds(1));
 }
 
-double Time::elapsed_since_s(const dl_time_t& since)
+double Time::elapsed_since_s(const SteadyTimePoint& since)
 {
     auto now = steady_time();
 
@@ -48,13 +48,13 @@ double Time::elapsed_since_s(const dl_time_t& since)
            static_cast<double>(steady_clock::period::den);
 }
 
-dl_time_t Time::steady_time_in_future(double duration_s)
+SteadyTimePoint Time::steady_time_in_future(double duration_s)
 {
     auto now = steady_time();
     return now + std::chrono::milliseconds(int64_t(duration_s * 1e3));
 }
 
-void Time::shift_steady_time_by(dl_time_t& time, double offset_s)
+void Time::shift_steady_time_by(SteadyTimePoint& time, double offset_s)
 {
     time += std::chrono::milliseconds(int64_t(offset_s * 1e3));
 }
@@ -95,7 +95,7 @@ FakeTime::FakeTime() : Time()
     _current = steady_clock::now();
 }
 
-dl_time_t FakeTime::steady_time()
+SteadyTimePoint FakeTime::steady_time()
 {
     return _current;
 }
@@ -141,15 +141,15 @@ void FakeTime::add_overhead()
     _current += std::chrono::microseconds(50);
 }
 
-dl_system_time_t AutopilotTime::system_time()
+SystemTimePoint AutopilotTime::system_time()
 {
     return system_clock::now();
 }
 
-dl_autopilot_time_t AutopilotTime::now()
+AutopilotTimePoint AutopilotTime::now()
 {
     std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
-    return dl_autopilot_time_t(std::chrono::duration_cast<std::chrono::microseconds>(
+    return AutopilotTimePoint(std::chrono::duration_cast<std::chrono::microseconds>(
         system_time().time_since_epoch() + _autopilot_time_offset));
 }
 
@@ -159,10 +159,10 @@ void AutopilotTime::shift_time_by(std::chrono::nanoseconds offset)
     _autopilot_time_offset += offset;
 };
 
-dl_autopilot_time_t AutopilotTime::time_in(dl_system_time_t local_system_time_point)
+AutopilotTimePoint AutopilotTime::time_in(SystemTimePoint local_system_time_point)
 {
     std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
-    return dl_autopilot_time_t(std::chrono::duration_cast<std::chrono::microseconds>(
+    return AutopilotTimePoint(std::chrono::duration_cast<std::chrono::microseconds>(
         local_system_time_point.time_since_epoch() + _autopilot_time_offset));
 };
 

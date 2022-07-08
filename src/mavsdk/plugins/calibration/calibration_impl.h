@@ -30,8 +30,8 @@ public:
         const Calibration::CalibrateGimbalAccelerometerCallback& callback);
 
 private:
-    typedef std::function<void(const Calibration::Result result, const Calibration::ProgressData)>
-        CalibrationCallback;
+    using CalibrationCallback =
+        std::function<void(const Calibration::Result result, const Calibration::ProgressData)>;
 
     void call_callback(
         const CalibrationCallback& callback,

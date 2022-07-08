@@ -285,7 +285,7 @@ CameraDefinition::parse_options(
                     return std::make_pair<>(false, options);
                 }
 
-                parameter_range_t new_parameter_range;
+                ParameterRange new_parameter_range;
 
                 for (auto e_roption = e_parameterrange->FirstChildElement("roption");
                      e_roption != nullptr;

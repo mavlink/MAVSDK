@@ -246,9 +246,8 @@ public:
 
     void param_changed(const std::string& name);
 
-    typedef std::function<void(const std::string& name)> param_changed_callback_t;
-    void
-    register_param_changed_handler(const param_changed_callback_t& callback, const void* cookie);
+    using ParamChangedCallback = std::function<void(const std::string& name)>;
+    void register_param_changed_handler(const ParamChangedCallback& callback, const void* cookie);
     void unregister_param_changed_handler(const void* cookie);
 
     bool is_connected() const;
@@ -379,7 +378,7 @@ private:
     std::unordered_set<uint8_t> _components{};
 
     std::mutex _param_changed_callbacks_mutex{};
-    std::unordered_map<const void*, param_changed_callback_t> _param_changed_callbacks{};
+    std::unordered_map<const void*, ParamChangedCallback> _param_changed_callbacks{};
 
     MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};
 

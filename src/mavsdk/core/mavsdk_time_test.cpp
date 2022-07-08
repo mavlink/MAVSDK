@@ -12,9 +12,9 @@ TEST(Time, SteadyTimeIncreasing)
 {
     Time time{};
 
-    dl_time_t time_before = time.steady_time();
+    SteadyTimePoint time_before = time.steady_time();
     time.sleep_for(std::chrono::milliseconds(100));
-    dl_time_t time_now = time.steady_time();
+    SteadyTimePoint time_now = time.steady_time();
 
     ASSERT_GT(time_now, time_before);
 }
@@ -22,7 +22,7 @@ TEST(Time, SteadyTimeIncreasing)
 TEST(Time, ElapsedSinceAboutRight)
 {
     Time time{};
-    dl_time_t time_before = time.steady_time();
+    SteadyTimePoint time_before = time.steady_time();
     time.sleep_for(std::chrono::milliseconds(100));
     double seconds_elapsed = time.elapsed_since_s(time_before);
 
@@ -33,9 +33,9 @@ TEST(Time, ElapsedSinceAboutRight)
 TEST(Time, SteadyTimeInFuture)
 {
     Time time{};
-    dl_time_t in_future = time.steady_time_in_future(0.1);
+    SteadyTimePoint in_future = time.steady_time_in_future(0.1);
     time.sleep_for(std::chrono::milliseconds(80));
-    dl_time_t now = time.steady_time();
+    SteadyTimePoint now = time.steady_time();
     ASSERT_LT(now, in_future);
     time.sleep_for(std::chrono::milliseconds(40));
     now = time.steady_time();

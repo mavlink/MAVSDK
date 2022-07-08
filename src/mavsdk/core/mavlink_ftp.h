@@ -144,7 +144,7 @@ private:
         RSP_NAK ///< Nak response
     };
 
-    typedef std::function<void(ClientResult, uint32_t)> file_crc32_ResultCallback;
+    using file_crc32_ResultCallback = std::function<void(ClientResult, uint32_t)>;
 
     static constexpr auto DIRENT_FILE = "F"; ///< Identifies File returned from List command
     static constexpr auto DIRENT_DIR = "D"; ///< Identifies Directory returned from List command

@@ -65,7 +65,7 @@ private:
     Ringbuffer<SpeedFactorMeasurement, 50> _speed_factor_measurements;
 
     Time _time{};
-    dl_time_t _last_time_attitude_arrived{};
+    SteadyTimePoint _last_time_attitude_arrived{};
     uint32_t _last_time_boot_ms{0};
 
     static const std::string vendor_id_str(uint16_t vendor_id);

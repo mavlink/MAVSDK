@@ -20,7 +20,7 @@ namespace mavsdk {
 class TcpConnection : public Connection {
 public:
     explicit TcpConnection(
-        Connection::receiver_callback_t receiver_callback,
+        Connection::ReceiverCallback receiver_callback,
         std::string remote_ip,
         int remote_port,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);

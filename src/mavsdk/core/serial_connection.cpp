@@ -46,7 +46,7 @@ std::string GetLastErrorStdStr()
 #endif
 
 SerialConnection::SerialConnection(
-    Connection::receiver_callback_t receiver_callback,
+    Connection::ReceiverCallback receiver_callback,
     std::string path,
     int baudrate,
     bool flow_control,

@@ -88,7 +88,7 @@ private:
     Offboard::Attitude _attitude{};
     Offboard::AttitudeRate _attitude_rate{};
     Offboard::ActuatorControl _actuator_control{};
-    dl_time_t _last_started{};
+    SteadyTimePoint _last_started{};
 
     void* _call_every_cookie = nullptr;
 

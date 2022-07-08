@@ -9,11 +9,11 @@ namespace mavsdk {
 
 class Connection {
 public:
-    typedef std::function<void(mavlink_message_t& message, Connection* connection)>
-        receiver_callback_t;
+    using ReceiverCallback =
+        std::function<void(mavlink_message_t& message, Connection* connection)>;
 
     explicit Connection(
-        receiver_callback_t receiver_callback,
+        ReceiverCallback receiver_callback,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     virtual ~Connection();
 
@@ -35,7 +35,7 @@ protected:
     void stop_mavlink_receiver();
     void receive_message(mavlink_message_t& message, Connection* connection);
 
-    receiver_callback_t _receiver_callback{};
+    ReceiverCallback _receiver_callback{};
     std::unique_ptr<MavlinkReceiver> _mavlink_receiver;
     ForwardingOption _forwarding_option;
     std::unordered_set<uint8_t> _system_ids;

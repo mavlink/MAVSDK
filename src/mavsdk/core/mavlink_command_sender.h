@@ -113,7 +113,7 @@ private:
         Command command;
         CommandIdentification identification{};
         CommandResultCallback callback{};
-        dl_time_t time_started{};
+        SteadyTimePoint time_started{};
         void* timeout_cookie = nullptr;
         double timeout_s{0.5};
         int retries_to_do{3};
