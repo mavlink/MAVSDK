@@ -230,7 +230,7 @@ bool autopilot_has_improved_followme(const std::shared_ptr<Param> param)
     // Check if the newly added parameter in the improved follow-me exists
     // Improved Follow-Me PR: https://github.com/PX4/PX4-Autopilot/pull/18026
     const std::pair<Param::Result, float> get_result = param->get_param_float("FLW_TGT_MAX_VEL");
-    
+
     if (get_result.first == Param::Result::Success) {
         return true;
     } else {
