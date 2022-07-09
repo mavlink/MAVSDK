@@ -125,7 +125,6 @@ install(FILES
 )
 
 install(DIRECTORY
-    ${MAVLINK_HEADERS}/mavlink
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk
 )
 
