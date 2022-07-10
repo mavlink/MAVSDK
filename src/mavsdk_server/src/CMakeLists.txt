@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10.2)
 
 set(COMPONENTS_LIST ${ENABLED_PLUGINS})
+set(OPTIONAL_TARGETS "")
 list(APPEND COMPONENTS_LIST core)
 
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
@@ -43,10 +44,15 @@ else()
     add_library(mavsdk_server ${MAVSDK_SERVER_SOURCES})
 endif()
 
+if(BUILD_WITH_PROTO_REFLECTION)
+    list(APPEND OPTIONAL_TARGETS gRPC::grpc++_reflection)
+endif()
+
 target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk
     gRPC::grpc++
+    ${OPTIONAL_TARGETS}
     ${COMPONENTS_PROTOGENS}
 )
 

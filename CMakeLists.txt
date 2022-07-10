@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
 option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
+option(BUILD_WITH_PROTO_REFLECTION "Build MAVSDK Server with Proto Reflection" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 
 if(SUPERBUILD AND HUNTER_ENABLED)
