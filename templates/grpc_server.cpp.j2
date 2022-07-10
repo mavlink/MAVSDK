@@ -28,7 +28,7 @@ int GrpcServer::run()
 #endif
 {% endfor %}
 
-#ifdef BUILD_WITH_PROTO_REFLECTION
+#ifdef ENABLE_PROTO_REFLECTION
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 #endif
 

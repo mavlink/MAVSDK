@@ -142,7 +142,7 @@ int GrpcServer::run()
     builder.RegisterService(&_tune_service);
 #endif
 
-#ifdef BUILD_WITH_PROTO_REFLECTION
+#ifdef ENABLE_PROTO_REFLECTION
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 #endif
 

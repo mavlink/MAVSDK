@@ -51,6 +51,7 @@ target_link_libraries(mavsdk_server
 )
 
 if(BUILD_WITH_PROTO_REFLECTION)
+    add_definitions(-DENABLE_PROTO_REFLECTION)
     target_link_libraries(mavsdk_server PRIVATE gRPC::grpc++_reflection)
 endif()
 
