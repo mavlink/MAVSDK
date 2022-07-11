@@ -283,7 +283,7 @@ void SystemImpl::heartbeats_timed_out()
 
 void SystemImpl::system_thread()
 {
-    dl_time_t last_ping_time{};
+    SteadyTimePoint last_ping_time{};
 
     while (!_should_exit) {
         _params.do_work();
@@ -1156,7 +1156,7 @@ void SystemImpl::param_changed(const std::string& name)
 }
 
 void SystemImpl::register_param_changed_handler(
-    const param_changed_callback_t& callback, const void* cookie)
+    const ParamChangedCallback& callback, const void* cookie)
 {
     if (!callback) {
         LogErr() << "No callback for param_changed_handler supplied.";

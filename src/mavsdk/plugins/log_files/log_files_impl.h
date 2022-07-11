@@ -90,7 +90,7 @@ private:
         unsigned retries{0};
         bool rerequesting{false};
         int last_ofs_rerequested{-1};
-        dl_time_t time_started{};
+        SteadyTimePoint time_started{};
         std::ofstream file{};
         LogFiles::DownloadLogFileCallback callback{nullptr};
     } _data{};

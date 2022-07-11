@@ -36,7 +36,7 @@ public:
     FollowMeImpl& operator=(const FollowMeImpl&) = delete;
 
 private:
-    typedef unsigned int config_val_t;
+    using ConfigVal = unsigned int;
     void process_heartbeat(const mavlink_message_t& message);
 
     enum class ConfigParameter;
@@ -81,22 +81,22 @@ private:
         kFollowAltitudeModeTrackTarget
     };
 
-    friend config_val_t operator~(ConfigParameter cfgp) { return ~static_cast<config_val_t>(cfgp); }
-    friend config_val_t operator|(config_val_t config_val, ConfigParameter cfgp)
+    friend ConfigVal operator~(ConfigParameter cfgp) { return ~static_cast<ConfigVal>(cfgp); }
+    friend ConfigVal operator|(ConfigVal config_val, ConfigParameter cfgp)
     {
-        return (config_val) | static_cast<config_val_t>(cfgp);
+        return (config_val) | static_cast<ConfigVal>(cfgp);
     }
-    friend config_val_t operator|=(config_val_t& config_val, ConfigParameter cfgp)
+    friend ConfigVal operator|=(ConfigVal& config_val, ConfigParameter cfgp)
     {
-        return config_val = config_val | static_cast<config_val_t>(cfgp);
+        return config_val = config_val | static_cast<ConfigVal>(cfgp);
     }
-    friend bool operator!=(config_val_t config_val, ConfigParameter cfgp)
+    friend bool operator!=(ConfigVal config_val, ConfigParameter cfgp)
     {
-        return config_val != static_cast<config_val_t>(cfgp);
+        return config_val != static_cast<ConfigVal>(cfgp);
     }
-    friend bool operator==(config_val_t config_val, ConfigParameter cfgp)
+    friend bool operator==(ConfigVal config_val, ConfigParameter cfgp)
     {
-        return config_val == static_cast<config_val_t>(cfgp);
+        return config_val == static_cast<ConfigVal>(cfgp);
     }
 
     mutable std::mutex _mutex{};

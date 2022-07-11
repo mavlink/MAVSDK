@@ -28,7 +28,7 @@ public:
 private:
     struct Timeout {
         std::function<void()> callback{};
-        dl_time_t time{};
+        SteadyTimePoint time{};
         double duration_s{0.0};
     };
 

@@ -50,7 +50,7 @@ protected:
         EXPECT_CALL(*curl_wrapper, download_file_to_path(_, _, _))
             .WillRepeatedly(Invoke([&](const std::string& /*url*/,
                                        const std::string& path,
-                                       const progress_callback_t& progress_callback) {
+                                       const ProgressCallback& progress_callback) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) {
                         progress_callback(i, Status::Downloading, CURLcode::CURLE_OK);
@@ -74,7 +74,7 @@ protected:
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
             .WillOnce(Invoke([&](const std::string& /*url*/,
                                  const std::string& /*path*/,
-                                 const progress_callback_t& progress_callback) {
+                                 const ProgressCallback& progress_callback) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(20));
                 progress_callback(0, Status::Error, CURLcode::CURLE_COULDNT_RESOLVE_HOST);
                 return false;
@@ -89,7 +89,7 @@ protected:
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
             .WillOnce(Invoke([&](const std::string& /*url*/,
                                  const std::string& got_path,
-                                 const progress_callback_t& progress_callback) {
+                                 const ProgressCallback& progress_callback) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) {
                         progress_callback(i, Status::Downloading, CURLcode::CURLE_OK);
@@ -119,7 +119,7 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     int callback_finished_counter = 0;
     int callback_error_counter = 0;
 
-    progress_callback_t progress =
+    ProgressCallback progress =
         [&callback_results_progress, &callback_finished_counter, &callback_error_counter](
             int got_progress, Status status, CURLcode curl_code) -> int {
         if (status == Status::Downloading) {
@@ -163,7 +163,7 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
     int callback_finished_counter = 0;
     int callback_error_counter = 0;
 
-    progress_callback_t progress =
+    ProgressCallback progress =
         [&callback_results_progress, &callback_finished_counter, &callback_error_counter](
             int got_progress, Status status, CURLcode curl_code) -> int {
         if (status == Status::Downloading) {

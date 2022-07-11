@@ -29,13 +29,13 @@ public:
     void download_async(
         const std::string& url,
         const std::string& local_path,
-        const progress_callback_t& progress_callback = nullptr);
+        const ProgressCallback& progress_callback = nullptr);
 
     bool upload_sync(const std::string& target_url, const std::string& local_path);
     void upload_async(
         const std::string& target_url,
         const std::string& local_path,
-        const progress_callback_t& progress_callback = nullptr);
+        const ProgressCallback& progress_callback = nullptr);
 
     // Non-copyable
     HttpLoader(const HttpLoader&) = delete;
@@ -66,8 +66,7 @@ private:
 
     class DownloadItem : public WorkItem {
     public:
-        DownloadItem(
-            std::string url, std::string local_path, progress_callback_t progress_callback) :
+        DownloadItem(std::string url, std::string local_path, ProgressCallback progress_callback) :
             _url(std::move(url)),
             _local_path(std::move(local_path)),
             _progress_callback(std::move(progress_callback))
@@ -79,10 +78,7 @@ private:
 
         [[nodiscard]] std::string get_url() const { return _url; }
 
-        [[nodiscard]] progress_callback_t get_progress_callback() const
-        {
-            return _progress_callback;
-        }
+        [[nodiscard]] ProgressCallback get_progress_callback() const { return _progress_callback; }
 
         DownloadItem(DownloadItem&) = delete;
         DownloadItem operator=(DownloadItem&) = delete;
@@ -90,13 +86,13 @@ private:
     private:
         std::string _url;
         std::string _local_path;
-        progress_callback_t _progress_callback{};
+        ProgressCallback _progress_callback{};
     };
 
     class UploadItem : public WorkItem {
     public:
         UploadItem(
-            std::string target_url, std::string local_path, progress_callback_t progress_callback) :
+            std::string target_url, std::string local_path, ProgressCallback progress_callback) :
             _target_url(std::move(target_url)),
             _local_path(std::move(local_path)),
             _progress_callback(std::move(progress_callback))
@@ -108,10 +104,7 @@ private:
 
         [[nodiscard]] std::string get_target_url() const { return _target_url; }
 
-        [[nodiscard]] progress_callback_t get_progress_callback() const
-        {
-            return _progress_callback;
-        }
+        [[nodiscard]] ProgressCallback get_progress_callback() const { return _progress_callback; }
 
         UploadItem(UploadItem&) = delete;
         UploadItem operator=(UploadItem&) = delete;
@@ -119,7 +112,7 @@ private:
     private:
         std::string _target_url;
         std::string _local_path;
-        progress_callback_t _progress_callback{};
+        ProgressCallback _progress_callback{};
     };
 
     static void work_thread(HttpLoader* self);

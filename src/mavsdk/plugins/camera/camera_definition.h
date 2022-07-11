@@ -63,13 +63,13 @@ private:
     bool get_possible_settings_locked(
         std::unordered_map<std::string, MAVLinkParameters::ParamValue>& settings);
 
-    typedef std::unordered_map<std::string, MAVLinkParameters::ParamValue> parameter_range_t;
+    using ParameterRange = std::unordered_map<std::string, MAVLinkParameters::ParamValue>;
 
     struct Option {
         std::string name{};
         MAVLinkParameters::ParamValue value{};
         std::vector<std::string> exclusions{};
-        std::unordered_map<std::string, parameter_range_t> parameter_ranges{};
+        std::unordered_map<std::string, ParameterRange> parameter_ranges{};
     };
 
     struct Parameter {

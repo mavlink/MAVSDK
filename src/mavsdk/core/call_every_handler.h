@@ -29,7 +29,7 @@ public:
 private:
     struct Entry {
         std::function<void()> callback{nullptr};
-        dl_time_t last_time{};
+        SteadyTimePoint last_time{};
         double interval_s{0.0};
     };
 

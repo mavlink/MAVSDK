@@ -51,7 +51,7 @@ upload_progress_update(void* p, double dltotal, double dlnow, double ultotal, do
     UNUSED(dltotal);
     UNUSED(dlnow);
 
-    auto* myp = reinterpret_cast<struct dl_up_progress*>(p);
+    auto* myp = reinterpret_cast<struct UpProgress*>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -90,13 +90,13 @@ template<typename T> std::string to_string(T value)
 }
 
 bool CurlWrapper::upload_file(
-    const std::string& url, const std::string& path, const progress_callback_t& progress_callback)
+    const std::string& url, const std::string& path, const ProgressCallback& progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     CURLcode res;
 
     if (nullptr != curl) {
-        struct dl_up_progress progress;
+        struct UpProgress progress;
         progress.progress_callback = progress_callback;
 
         curl_httppost* post = nullptr;
@@ -155,7 +155,7 @@ download_progress_update(void* p, double dltotal, double dlnow, double ultotal, 
     UNUSED(ultotal);
     UNUSED(ulnow);
 
-    auto* myp = reinterpret_cast<struct dl_up_progress*>(p);
+    auto* myp = reinterpret_cast<struct UpProgress*>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -176,14 +176,14 @@ download_progress_update(void* p, double dltotal, double dlnow, double ultotal, 
 }
 
 bool CurlWrapper::download_file_to_path(
-    const std::string& url, const std::string& path, const progress_callback_t& progress_callback)
+    const std::string& url, const std::string& path, const ProgressCallback& progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     FILE* fp;
 
     if (nullptr != curl) {
         CURLcode res;
-        struct dl_up_progress progress;
+        struct UpProgress progress;
         progress.progress_callback = progress_callback;
 
         fp = fopen(path.c_str(), "wb");

@@ -311,7 +311,7 @@ void FollowMeImpl::send_target_location()
         return;
     }
 
-    dl_time_t now = _time.steady_time();
+    SteadyTimePoint now = _time.steady_time();
     // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
     uint64_t elapsed_msec =
         static_cast<uint64_t>(_time.elapsed_since_s(now) * 1000); // milliseconds

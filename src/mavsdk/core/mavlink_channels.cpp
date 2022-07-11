@@ -2,9 +2,9 @@
 
 namespace mavsdk {
 
-MAVLinkChannels::MAVLinkChannels() : _channels_used{}, _channels_used_mutex() {}
+MavlinkChannels::MavlinkChannels() : _channels_used{}, _channels_used_mutex() {}
 
-bool MAVLinkChannels::checkout_free_channel(uint8_t& new_channel)
+bool MavlinkChannels::checkout_free_channel(uint8_t& new_channel)
 {
     std::lock_guard<std::mutex> lock(_channels_used_mutex);
 
@@ -18,7 +18,7 @@ bool MAVLinkChannels::checkout_free_channel(uint8_t& new_channel)
     return false;
 }
 
-void MAVLinkChannels::checkin_used_channel(uint8_t used_channel)
+void MavlinkChannels::checkin_used_channel(uint8_t used_channel)
 {
     std::lock_guard<std::mutex> lock(_channels_used_mutex);
 

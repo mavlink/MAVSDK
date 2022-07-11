@@ -4,7 +4,7 @@
 
 namespace mavsdk {
 
-MAVLinkReceiver::MAVLinkReceiver(uint8_t channel) : _channel(channel)
+MavlinkReceiver::MavlinkReceiver(uint8_t channel) : _channel(channel)
 {
     if (const char* env_p = std::getenv("MAVSDK_DROP_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -14,7 +14,7 @@ MAVLinkReceiver::MAVLinkReceiver(uint8_t channel) : _channel(channel)
     }
 }
 
-void MAVLinkReceiver::set_new_datagram(char* datagram, unsigned datagram_len)
+void MavlinkReceiver::set_new_datagram(char* datagram, unsigned datagram_len)
 {
     _datagram = datagram;
     _datagram_len = datagram_len;
@@ -24,7 +24,7 @@ void MAVLinkReceiver::set_new_datagram(char* datagram, unsigned datagram_len)
     }
 }
 
-bool MAVLinkReceiver::parse_message()
+bool MavlinkReceiver::parse_message()
 {
     // Note that one datagram can contain multiple mavlink messages.
     for (unsigned i = 0; i < _datagram_len; ++i) {
@@ -49,7 +49,7 @@ bool MAVLinkReceiver::parse_message()
     return false;
 }
 
-void MAVLinkReceiver::debug_drop_rate()
+void MavlinkReceiver::debug_drop_rate()
 {
     if (_last_message.msgid == MAVLINK_MSG_ID_SYS_STATUS) {
         const unsigned msg_len = (_last_message.len + MAVLINK_NUM_NON_PAYLOAD_BYTES);
@@ -106,7 +106,7 @@ void MAVLinkReceiver::debug_drop_rate()
     }
 }
 
-void MAVLinkReceiver::print_line(
+void MavlinkReceiver::print_line(
     const char* index,
     uint64_t count,
     uint64_t count_total,

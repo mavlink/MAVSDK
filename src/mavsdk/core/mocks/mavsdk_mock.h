@@ -10,7 +10,7 @@
 namespace mavsdk {
 namespace testing {
 
-typedef std::function<void()> NewSystemCallback;
+using NewSystemCallback = std::function<void()>;
 
 class MockMavsdk {
 public:

@@ -33,7 +33,7 @@ void TimeoutHandler::refresh(const void* cookie)
 
     auto it = _timeouts.find(const_cast<void*>(cookie));
     if (it != _timeouts.end()) {
-        dl_time_t future_time = _time.steady_time_in_future(it->second->duration_s);
+        auto future_time = _time.steady_time_in_future(it->second->duration_s);
         it->second->time = future_time;
     }
 }
@@ -57,7 +57,7 @@ void TimeoutHandler::run_once()
 {
     _timeouts_mutex.lock();
 
-    dl_time_t now = _time.steady_time();
+    auto now = _time.steady_time();
 
     for (auto it = _timeouts.begin(); it != _timeouts.end(); /* no ++it */) {
         // If time is passed, call timeout callback.

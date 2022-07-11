@@ -6,9 +6,9 @@
 
 namespace mavsdk {
 
-class MAVLinkReceiver {
+class MavlinkReceiver {
 public:
-    explicit MAVLinkReceiver(uint8_t channel);
+    explicit MavlinkReceiver(uint8_t channel);
 
     [[nodiscard]] uint8_t get_channel() const { return _channel; }
 
@@ -45,7 +45,7 @@ private:
         uint64_t bytes_at_camera_overall{0};
         uint64_t bytes_at_sdk_overall{0};
         bool first{true};
-        dl_time_t last_time{};
+        SteadyTimePoint last_time{};
         double time_elapsed{0.0};
     } _drop_stats{};
 };

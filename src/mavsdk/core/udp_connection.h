@@ -14,7 +14,7 @@ namespace mavsdk {
 class UdpConnection : public Connection {
 public:
     explicit UdpConnection(
-        Connection::receiver_callback_t receiver_callback,
+        Connection::ReceiverCallback receiver_callback,
         std::string local_ip,
         int local_port,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);

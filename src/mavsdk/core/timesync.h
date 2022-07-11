@@ -26,7 +26,7 @@ private:
     void set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_local_time_ns);
 
     static constexpr double TIMESYNC_SEND_INTERVAL_S = 5.0;
-    dl_time_t _last_time{};
+    SteadyTimePoint _last_time{};
 
     static constexpr uint64_t MAX_CONS_HIGH_RTT = 5;
     static constexpr uint64_t MAX_RTT_SAMPLE_MS = 10;

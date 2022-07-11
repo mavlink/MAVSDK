@@ -9,7 +9,7 @@ namespace mavsdk {
 
 std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
 
-Connection::Connection(receiver_callback_t receiver_callback, ForwardingOption forwarding_option) :
+Connection::Connection(ReceiverCallback receiver_callback, ForwardingOption forwarding_option) :
     _receiver_callback(std::move(receiver_callback)),
     _mavlink_receiver(),
     _forwarding_option(forwarding_option)
@@ -32,11 +32,11 @@ Connection::~Connection()
 bool Connection::start_mavlink_receiver()
 {
     uint8_t channel;
-    if (!MAVLinkChannels::Instance().checkout_free_channel(channel)) {
+    if (!MavlinkChannels::Instance().checkout_free_channel(channel)) {
         return false;
     }
 
-    _mavlink_receiver = std::make_unique<MAVLinkReceiver>(channel);
+    _mavlink_receiver = std::make_unique<MavlinkReceiver>(channel);
     return true;
 }
 
@@ -46,7 +46,7 @@ void Connection::stop_mavlink_receiver()
         uint8_t used_channel = _mavlink_receiver->get_channel();
         // Destroy receiver before giving the channel back.
         _mavlink_receiver.reset();
-        MAVLinkChannels::Instance().checkin_used_channel(used_channel);
+        MavlinkChannels::Instance().checkin_used_channel(used_channel);
     }
 }
 
