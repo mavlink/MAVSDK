@@ -4,6 +4,11 @@
 
 #include <grpcpp/server.h>
 #include <grpcpp/server_builder.h>
+
+#ifdef ENABLE_PROTO_REFLECTION
+#include <grpcpp/ext/proto_server_reflection_plugin.h>
+#endif
+
 #include <memory>
 
 #include "mavsdk.h"

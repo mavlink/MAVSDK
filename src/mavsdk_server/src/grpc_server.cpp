@@ -142,6 +142,10 @@ int GrpcServer::run()
     builder.RegisterService(&_tune_service);
 #endif
 
+#ifdef ENABLE_PROTO_REFLECTION
+    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
+#endif
+
     grpc::EnableDefaultHealthCheckService(true);
     _server = builder.BuildAndStart();
 
