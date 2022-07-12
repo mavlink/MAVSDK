@@ -143,6 +143,7 @@ private:
     void process_video_information(const mavlink_message_t& message);
     void process_video_stream_status(const mavlink_message_t& message);
     void process_flight_information(const mavlink_message_t& message);
+    void reset_following_format_storage();
 
     Camera::EulerAngle to_euler_angle_from_quaternion(Camera::Quaternion quaternion);
 
