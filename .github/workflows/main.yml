@@ -566,7 +566,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}-2
       - name: fetch git tags for version
         run: git fetch --prune --unshallow --tags
       - name: disable superbuild on cache hit
