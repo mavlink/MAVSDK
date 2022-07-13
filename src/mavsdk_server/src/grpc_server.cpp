@@ -301,7 +301,7 @@ void GrpcServer::stop()
 
 void GrpcServer::setup_port(grpc::ServerBuilder& builder)
 {
-    const std::string server_address("0.0.0.0:" + std::to_string(_port));
+    const std::string server_address("127.0.0.1:" + std::to_string(_port));
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials(), &_bound_port);
 }
 
