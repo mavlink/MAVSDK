@@ -144,14 +144,14 @@ jobs:
         run: ./build/src/system_tests/system_tests_runner
 
   ubuntu20-proto-check:
-    name: ubuntu-20.04 (proto check)
-    runs-on: ubuntu-20.04
+    name: ubuntu-22.04 (proto check)
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install clang-format
-        run: sudo apt-get update && sudo apt-get install -y clang-format-10
+        run: sudo apt-get update && sudo apt-get install -y clang-format-12
       - name: install pymavlink dependencies
         run: sudo apt-get install -y python3-future
       - name: install protoc-gen-mavsdk
@@ -177,14 +177,14 @@ jobs:
         run: git diff --exit-code
 
   ubuntu20-check-style:
-    name: ubuntu-20.04 (check style and docs)
+    name: ubuntu-22.04 (check style and docs)
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
       - name: install dependencies
-        run: sudo apt-get update && sudo apt-get install -y doxygen clang-format-10
+        run: sudo apt-get update && sudo apt-get install -y doxygen clang-format-12
       - name: install pymavlink dependencies
         run: sudo apt-get install -y python3-future
       - name: check style
