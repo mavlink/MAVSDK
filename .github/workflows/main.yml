@@ -154,11 +154,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y clang-format-10
       - name: install pymavlink dependencies
         run: sudo apt-get install -y python3-future
-      - name: install protoc-gen-mavsdk
-        run: |
-             cd proto/pb_plugins
-             pip3 install --user -r requirements.txt
-             pip3 install --user -e .
       - uses: actions/cache@v2
         id: cache
         with:
