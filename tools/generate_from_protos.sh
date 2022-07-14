@@ -14,7 +14,7 @@ EOF
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 proto_dir="${script_dir}/../proto/protos"
 build_dir="${script_dir}/../build/default"
-
+repo_dir="${script_dir}/../"
 options=$(getopt -l "help,build-dir:" -o "hb:" -a -- "$@")
 
 eval set -- "$options"
@@ -90,18 +90,12 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
     echo "-------------------------------"
 }
 
-command -v protoc-gen-mavsdk > /dev/null || {
-    echo "-------------------------------"
-    echo " Error"
-    echo "-------------------------------"
-    echo >&2 "'protoc-gen-mavsdk' not found in PATH"
-    echo >&2 ""
-    echo >&2 "Make sure 'protoc-gen-mavsdk' is installed and available"
-    echo >&2 "You can install it using pip:"
-    echo >&2 ""
-    echo >&2 "    pip3 install --user protoc-gen-mavsdk"
-    exit 1
-}
+echo "Installing protoc-gen-mavsdk locally into build folder"
+python -m pip install --upgrade --target=${build_dir}/pb_plugins  ${script_dir}/../proto/pb_plugins
+
+protoc_gen_mavsdk="${build_dir}/pb_plugins/bin/protoc-gen-mavsdk"
+export PYTHONPATH="${build_dir}/pb_plugins:${PYTHONPATH}"
+echo "Using protoc_gen_mavsdk: ${protoc_gen_mavsdk}"
 
 plugin_list_and_core=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::')
 plugin_list=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::' | grep -v core)
@@ -110,7 +104,6 @@ echo "Processing mavsdk_options.proto"
 ${protoc_binary} -I ${proto_dir} --cpp_out=${mavsdk_server_generated_dir} --grpc_out=${mavsdk_server_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
 
 tmp_output_dir="$(mktemp -d)"
-protoc_gen_mavsdk=$(which protoc-gen-mavsdk)
 template_path_plugin_h="${script_dir}/../templates/plugin_h"
 template_path_plugin_cpp="${script_dir}/../templates/plugin_cpp"
 template_path_plugin_impl_h="${script_dir}/../templates/plugin_impl_h"
@@ -151,7 +144,7 @@ for plugin in ${plugin_list_and_core}; do
         echo "-> Creating ${file_impl_h}"
     else
         # Warn if file is not checked in yet.
-        if [[ ! $(git ls-files --error-unmatch ${file_impl_h} 2> /dev/null) ]]; then
+        if [[ ! $(git -C ${repo_dir} ls-files --error-unmatch ${file_impl_h} 2> /dev/null) ]]; then
             echo "-> Not creating ${file_impl_h} because it already exists"
         fi
     fi
@@ -163,7 +156,7 @@ for plugin in ${plugin_list_and_core}; do
         echo "-> Creating ${file_impl_cpp}"
     else
         # Warn if file is not checked in yet.
-        if [[ ! $(git ls-files --error-unmatch ${file_impl_cpp} 2> /dev/null) ]]; then
+        if [[ ! $(git -C ${repo_dir} ls-files --error-unmatch ${file_impl_cpp} 2> /dev/null) ]]; then
             echo "-> Not creating ${file_impl_cpp} because it already exists"
         fi
     fi
@@ -175,7 +168,7 @@ for plugin in ${plugin_list_and_core}; do
         echo "-> Creating ${file_cmake}"
     else
         # Warn if file is not checked in yet.
-        if [[ ! $(git ls-files --error-unmatch ${file_cmake} 2> /dev/null) ]]; then
+        if [[ ! $(git -C ${repo_dir} ls-files --error-unmatch ${file_cmake} 2> /dev/null) ]]; then
             echo "-> Not creating ${file_cmake} because it already exists"
         fi
     fi
