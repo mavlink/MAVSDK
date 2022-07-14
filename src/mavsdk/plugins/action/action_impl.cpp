@@ -124,10 +124,10 @@ Action::Result ActionImpl::takeoff() const
 
 Action::Result ActionImpl::land() const
 {
-    auto prom = std::promise<Action::Result>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<Action::Result>>();
+    auto fut = prom->get_future();
 
-    land_async([&prom](Action::Result result) { prom.set_value(result); });
+    land_async([prom](Action::Result result) { prom->set_value(result); });
 
     return fut.get();
 }
