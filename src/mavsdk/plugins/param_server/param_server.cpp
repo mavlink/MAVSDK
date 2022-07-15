@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/param_server/param_server.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "param_server_impl.h"
 #include "plugins/param_server/param_server.h"

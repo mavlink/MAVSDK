@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/calibration/calibration.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "calibration_impl.h"
 #include "plugins/calibration/calibration.h"

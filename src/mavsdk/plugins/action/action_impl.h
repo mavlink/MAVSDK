@@ -100,6 +100,14 @@ public:
     Action::Result set_return_to_launch_altitude(const float relative_altitude_m) const;
     std::pair<Action::Result, float> get_return_to_launch_altitude() const;
 
+    std::mutex arm_mutex{};
+    std::mutex disarm_mutex{};
+    std::mutex takeoff_mutex{};
+    std::mutex land_mutex{};
+    std::mutex get_takeoff_altitude_mutex{};
+    std::mutex get_return_to_launch_altitude_mutex{};
+    std::mutex get_maximum_speed_mutex{};
+
 private:
     void process_extended_sys_state(const mavlink_message_t& message);
 

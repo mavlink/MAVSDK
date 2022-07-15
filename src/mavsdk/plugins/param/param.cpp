@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/param/param.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "param_impl.h"
 #include "plugins/param/param.h"

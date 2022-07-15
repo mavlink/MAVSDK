@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/telemetry/telemetry.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "telemetry_impl.h"
 #include "plugins/telemetry/telemetry.h"
@@ -779,6 +780,7 @@ Telemetry::Result Telemetry::set_rate_distance_sensor(double rate_hz) const
 
 void Telemetry::get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->get_gps_global_origin_mutex);
     _impl->get_gps_global_origin_async(callback);
 }
 

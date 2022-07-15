@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/mocap/mocap.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "mocap_impl.h"
 #include "plugins/mocap/mocap.h"

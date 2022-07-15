@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/mission/mission.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "mission_impl.h"
 #include "plugins/mission/mission.h"
@@ -48,6 +49,7 @@ Mission::Result Mission::cancel_mission_upload() const
 
 void Mission::download_mission_async(const DownloadMissionCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->download_mission_mutex);
     _impl->download_mission_async(callback);
 }
 

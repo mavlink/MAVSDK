@@ -200,6 +200,8 @@ public:
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
 
+    std::mutex get_gps_global_origin_mutex{};
+
 private:
     void set_position_velocity_ned(Telemetry::PositionVelocityNed position_velocity_ned);
     void set_position(Telemetry::Position position);

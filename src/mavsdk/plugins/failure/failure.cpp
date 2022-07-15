@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/failure/failure.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "failure_impl.h"
 #include "plugins/failure/failure.h"

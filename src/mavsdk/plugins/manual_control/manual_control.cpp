@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/manual_control/manual_control.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "manual_control_impl.h"
 #include "plugins/manual_control/manual_control.h"

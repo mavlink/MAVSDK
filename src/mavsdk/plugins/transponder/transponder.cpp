@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/transponder/transponder.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "transponder_impl.h"
 #include "plugins/transponder/transponder.h"

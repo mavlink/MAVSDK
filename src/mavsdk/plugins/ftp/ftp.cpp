@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/ftp/ftp.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "ftp_impl.h"
 #include "plugins/ftp/ftp.h"
@@ -36,6 +37,7 @@ void Ftp::upload_async(
 
 void Ftp::list_directory_async(std::string remote_dir, const ListDirectoryCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->list_directory_mutex);
     _impl->list_directory_async(remote_dir, callback);
 }
 
@@ -90,6 +92,7 @@ void Ftp::are_files_identical_async(
     std::string remote_file_path,
     const AreFilesIdenticalCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->are_files_identical_mutex);
     _impl->are_files_identical_async(local_file_path, remote_file_path, callback);
 }
 

@@ -67,6 +67,9 @@ public:
     uint8_t get_our_compid() { return _parent->get_own_component_id(); };
     Ftp::Result set_target_compid(uint8_t component_id);
 
+    std::mutex are_files_identical_mutex{};
+    std::mutex list_directory_mutex{};
+
 private:
     Ftp::Result result_from_mavlink_ftp_result(MavlinkFtp::ClientResult result);
     Ftp::ProgressData

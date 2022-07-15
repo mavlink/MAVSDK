@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/mission_raw/mission_raw.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "mission_raw_impl.h"
 #include "plugins/mission_raw/mission_raw.h"
@@ -43,6 +44,7 @@ MissionRaw::Result MissionRaw::cancel_mission_upload() const
 
 void MissionRaw::download_mission_async(const DownloadMissionCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->download_mission_mutex);
     _impl->download_mission_async(callback);
 }
 

@@ -32,6 +32,8 @@ public:
 
     LogFiles::Result erase_all_log_files();
 
+    std::mutex get_entries_mutex{};
+
 private:
     void request_end();
 

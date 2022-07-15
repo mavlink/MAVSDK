@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/gimbal/gimbal.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "gimbal_impl.h"
 #include "plugins/gimbal/gimbal.h"

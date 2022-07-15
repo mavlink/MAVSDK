@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/server_utility/server_utility.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "server_utility_impl.h"
 #include "plugins/server_utility/server_utility.h"

@@ -97,6 +97,9 @@ public:
     CameraImpl(const CameraImpl&) = delete;
     CameraImpl& operator=(const CameraImpl&) = delete;
 
+    std::mutex get_setting_mutex{};
+    std::mutex list_photos_mutex{};
+
 private:
     bool get_possible_setting_options(std::vector<std::string>& settings);
     bool get_possible_options(const std::string& setting_id, std::vector<Camera::Option>& options);

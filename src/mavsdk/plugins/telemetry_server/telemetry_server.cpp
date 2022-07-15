@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/telemetry_server/telemetry_server.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "telemetry_server_impl.h"
 #include "plugins/telemetry_server/telemetry_server.h"

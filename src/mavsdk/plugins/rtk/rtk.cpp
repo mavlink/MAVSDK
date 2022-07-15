@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/rtk/rtk.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "rtk_impl.h"
 #include "plugins/rtk/rtk.h"

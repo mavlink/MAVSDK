@@ -73,6 +73,8 @@ public:
     MissionImpl(const MissionImpl&) = delete;
     const MissionImpl& operator=(const MissionImpl&) = delete;
 
+    std::mutex download_mission_mutex{};
+
 private:
     int current_mission_item_locked() const;
     int total_mission_items_locked() const;

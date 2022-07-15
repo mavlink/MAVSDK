@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/camera_server/camera_server.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "camera_server_impl.h"
 #include "plugins/camera_server/camera_server.h"

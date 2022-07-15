@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/action/action.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "action_impl.h"
 #include "plugins/action/action.h"
@@ -197,6 +198,7 @@ Action::Result Action::transition_to_multicopter() const
 
 void Action::get_takeoff_altitude_async(const GetTakeoffAltitudeCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->get_takeoff_altitude_mutex);
     _impl->get_takeoff_altitude_async(callback);
 }
 
@@ -217,6 +219,7 @@ Action::Result Action::set_takeoff_altitude(float altitude) const
 
 void Action::get_maximum_speed_async(const GetMaximumSpeedCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->get_maximum_speed_mutex);
     _impl->get_maximum_speed_async(callback);
 }
 
@@ -237,6 +240,7 @@ Action::Result Action::set_maximum_speed(float speed) const
 
 void Action::get_return_to_launch_altitude_async(const GetReturnToLaunchAltitudeCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->get_return_to_launch_altitude_mutex);
     _impl->get_return_to_launch_altitude_async(callback);
 }
 

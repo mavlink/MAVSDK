@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/shell/shell.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "shell_impl.h"
 #include "plugins/shell/shell.h"

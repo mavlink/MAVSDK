@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/mission_raw_server/mission_raw_server.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "mission_raw_server_impl.h"
 #include "plugins/mission_raw_server/mission_raw_server.h"

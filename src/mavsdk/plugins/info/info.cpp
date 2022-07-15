@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/info/info.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "info_impl.h"
 #include "plugins/info/info.h"

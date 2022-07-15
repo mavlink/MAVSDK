@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/offboard/offboard.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "offboard_impl.h"
 #include "plugins/offboard/offboard.h"

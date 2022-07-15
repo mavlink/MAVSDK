@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/tune/tune.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "tune_impl.h"
 #include "plugins/tune/tune.h"

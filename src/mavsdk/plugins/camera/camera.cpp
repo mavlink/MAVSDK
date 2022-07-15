@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/camera/camera.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "camera_impl.h"
 #include "plugins/camera/camera.h"
@@ -112,6 +113,7 @@ Camera::Result Camera::set_mode(Mode mode) const
 
 void Camera::list_photos_async(PhotosRange photos_range, const ListPhotosCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->list_photos_mutex);
     _impl->list_photos_async(photos_range, callback);
 }
 
@@ -231,6 +233,7 @@ Camera::Result Camera::set_setting(Setting setting) const
 
 void Camera::get_setting_async(Setting setting, const GetSettingCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->get_setting_mutex);
     _impl->get_setting_async(setting, callback);
 }
 

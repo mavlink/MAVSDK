@@ -68,6 +68,8 @@ public:
     MissionRawImpl(const MissionRawImpl&) = delete;
     const MissionRawImpl& operator=(const MissionRawImpl&) = delete;
 
+    std::mutex download_mission_mutex{};
+
 private:
     void reset_mission_progress();
 

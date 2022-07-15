@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/component_information_server/component_information_server.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "component_information_server_impl.h"
 #include "plugins/component_information_server/component_information_server.h"

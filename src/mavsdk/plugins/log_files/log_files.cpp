@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/log_files/log_files.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "log_files_impl.h"
 #include "plugins/log_files/log_files.h"
@@ -23,6 +24,7 @@ LogFiles::~LogFiles() {}
 
 void LogFiles::get_entries_async(const GetEntriesCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_impl->get_entries_mutex);
     _impl->get_entries_async(callback);
 }
 

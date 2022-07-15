@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/follow_me/follow_me.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "follow_me_impl.h"
 #include "plugins/follow_me/follow_me.h"

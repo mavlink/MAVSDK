@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/action_server/action_server.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "action_server_impl.h"
 #include "plugins/action_server/action_server.h"

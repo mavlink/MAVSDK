@@ -3,6 +3,7 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/geofence/geofence.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "geofence_impl.h"
 #include "plugins/geofence/geofence.h"

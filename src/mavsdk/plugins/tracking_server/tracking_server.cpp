@@ -4,6 +4,7 @@
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/tracking_server/tracking_server.proto)
 
 #include <iomanip>
+#include <mutex>
 
 #include "tracking_server_impl.h"
 #include "plugins/tracking_server/tracking_server.h"
