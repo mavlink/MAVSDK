@@ -1,6 +1,7 @@
 {% if is_async %}
 void {{ plugin_name.upper_camel_case }}::{{ name.lower_snake_case }}_async({% for param in params %}{% if param.type_info.name.endswith("Result") %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback callback)
 {
+    std::lock_guard<std::mutex> lock(_{{ name.lower_snake_case }}_mutex);
     _impl->{{ name.lower_snake_case }}_async({% for param in params %}{{ param.name.lower_snake_case }}, {% endfor %}callback);
 }
 {% endif %}
