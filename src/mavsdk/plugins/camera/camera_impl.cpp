@@ -931,6 +931,12 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
     mavlink_camera_capture_status_t camera_capture_status;
     mavlink_msg_camera_capture_status_decode(&message, &camera_capture_status);
 
+    // If image_count got smaller, consider that the storage was formatted.
+    if (camera_capture_status.image_count < _status.image_count) {
+        LogDebug() << "Seems like storage was formatted, setting state accordingly";
+        reset_following_format_storage();
+    }
+
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
 
@@ -939,6 +945,7 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
             (camera_capture_status.image_status == 2 || camera_capture_status.image_status == 3);
         _status.received_camera_capture_status = true;
         _status.data.recording_time_s = float(camera_capture_status.recording_time_ms) / 1e3f;
+
         _status.image_count = camera_capture_status.image_count;
 
         if (_status.image_count_at_connection == -1) {
@@ -1953,22 +1960,27 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
 
             receive_command_result(result, [this, callback](Camera::Result camera_result) {
                 if (camera_result == Camera::Result::Success) {
-                    {
-                        std::lock_guard<std::mutex> status_lock(_status.mutex);
-                        _status.photo_list.clear();
-                        _status.image_count = 0;
-                        _status.image_count_at_connection = 0;
-                    }
-                    {
-                        std::lock_guard<std::mutex> lock(_capture_info.mutex);
-                        _capture_info.last_advertised_image_index = -1;
-                        _capture_info.missing_image_retries.clear();
-                    }
+                    reset_following_format_storage();
                 }
 
                 callback(camera_result);
             });
         });
+}
+
+void CameraImpl::reset_following_format_storage()
+{
+    {
+        std::lock_guard<std::mutex> status_lock(_status.mutex);
+        _status.photo_list.clear();
+        _status.image_count = 0;
+        _status.image_count_at_connection = 0;
+    }
+    {
+        std::lock_guard<std::mutex> lock(_capture_info.mutex);
+        _capture_info.last_advertised_image_index = -1;
+        _capture_info.missing_image_retries.clear();
+    }
 }
 
 std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
