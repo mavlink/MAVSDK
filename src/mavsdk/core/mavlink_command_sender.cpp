@@ -317,13 +317,17 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
                          << ").";
                 temp_callback = work->callback;
                 temp_result = {Result::ConnectionError, NAN};
+                _work_queue.erase(it);
+                break;
+            } else {
+                --work->retries_to_do;
+                _parent.register_timeout_handler(
+                    [this, identification = work->identification] {
+                        receive_timeout(identification);
+                    },
+                    work->timeout_s,
+                    &work->timeout_cookie);
             }
-            --work->retries_to_do;
-            _parent.register_timeout_handler(
-                [this, identification = work->identification] { receive_timeout(identification); },
-                work->timeout_s,
-                &work->timeout_cookie);
-
         } else {
             // We have tried retransmitting, giving up now.
             LogErr() << "Retrying failed (" << work->identification.command << ")";
@@ -384,6 +388,8 @@ void MavlinkCommandSender::do_work()
             mavlink_message_t message = create_mavlink_message(work->command);
             if (!_parent.send_message(message)) {
                 LogErr() << "connection send error (" << work->identification.command << ")";
+                // In this case we try again after the timeout. Chances are slim it will work next
+                // time though.
             } else {
                 if (_command_debugging) {
                     LogDebug() << "Sent command " << static_cast<int>(work->identification.command);
