@@ -31,24 +31,26 @@ struct LocalMission {
     std::vector<Point> points;
 };
 
-LocalMission convert_mission_plan(Telemetry::GpsGlobalOrigin origin, const MissionRawServer::MissionPlan& plan) {
-
+LocalMission
+convert_mission_plan(Telemetry::GpsGlobalOrigin origin, const MissionRawServer::MissionPlan& plan)
+{
     LocalMission local_mission;
 
     using CT = geometry::CoordinateTransformation;
 
     auto ct = CT{CT::GlobalCoordinate{origin.latitude_deg, origin.longitude_deg}};
 
-    for (const auto &item: plan.mission_items) {
+    for (const auto& item : plan.mission_items) {
         switch (item.command) {
             case MAV_CMD_NAV_TAKEOFF:
             case MAV_CMD_NAV_WAYPOINT: {
-                std::cout << "Using command: " << item.command << " -> " << static_cast<double>(item.x) / 1e7 << ", "
-                          << static_cast<double>(item.y) / 1e7 << ", seq: " << item.seq<< '\n';
+                std::cout << "Using command: " << item.command << " -> "
+                          << static_cast<double>(item.x) / 1e7 << ", "
+                          << static_cast<double>(item.y) / 1e7 << ", seq: " << item.seq << '\n';
                 const auto local_coord = ct.local_from_global(CT::GlobalCoordinate{
-                        static_cast<double>(item.x) / 1e7,
-                        static_cast<double>(item.y) / 1e7});
-                local_mission.points.emplace_back(Point{local_coord.north_m, local_coord.east_m, -item.z});
+                    static_cast<double>(item.x) / 1e7, static_cast<double>(item.y) / 1e7});
+                local_mission.points.emplace_back(
+                    Point{local_coord.north_m, local_coord.east_m, -item.z});
                 break;
             }
 
@@ -61,7 +63,8 @@ LocalMission convert_mission_plan(Telemetry::GpsGlobalOrigin origin, const Missi
     return local_mission;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     if (argc != 3) {
         usage(argv[0]);
         return 1;
@@ -70,26 +73,30 @@ int main(int argc, char** argv) {
     Mavsdk mavsdk;
     mavsdk.set_configuration(Mavsdk::Configuration{1, 34, true}); // MAV_COMP_ID_USER10
 
-    ConnectionResult connection_result_gcs = mavsdk.add_any_connection(argv[1], mavsdk::ForwardingOption::ForwardingOn);
+    ConnectionResult connection_result_gcs =
+        mavsdk.add_any_connection(argv[1], mavsdk::ForwardingOption::ForwardingOn);
     if (connection_result_gcs != ConnectionResult::Success) {
-        std::cerr << "Error setting up connection to Mission Manager: " << connection_result_gcs << '\n';
+        std::cerr << "Error setting up connection to Mission Manager: " << connection_result_gcs
+                  << '\n';
         return 1;
     }
 
-    ConnectionResult connection_result_autopilot = mavsdk.add_any_connection(argv[2],
-                                                                             mavsdk::ForwardingOption::ForwardingOn);
+    ConnectionResult connection_result_autopilot =
+        mavsdk.add_any_connection(argv[2], mavsdk::ForwardingOption::ForwardingOn);
     if (connection_result_autopilot != ConnectionResult::Success) {
-        std::cerr << "Error setting up connection to Autopilot: " << connection_result_autopilot << '\n';
+        std::cerr << "Error setting up connection to Autopilot: " << connection_result_autopilot
+                  << '\n';
         return 1;
     }
 
-    std::cout << "MissionRawServer running, waiting for ground station and autopilot to connect...\n";
+    std::cout
+        << "MissionRawServer running, waiting for ground station and autopilot to connect...\n";
     while (mavsdk.systems().size() < 2) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     auto maybe_autopilot = [&]() {
-        for (auto system: mavsdk.systems()) {
+        for (auto system : mavsdk.systems()) {
             if (system->has_autopilot()) {
                 return std::make_optional<std::shared_ptr<System>>(system);
             }
@@ -98,8 +105,8 @@ int main(int argc, char** argv) {
     }();
 
     auto maybe_gcs = [&]() {
-        for (auto system: mavsdk.systems()) {
-            for (auto component_id: system->component_ids()) {
+        for (auto system : mavsdk.systems()) {
+            for (auto component_id : system->component_ids()) {
                 // FIXME: we assume the component ID of 190 for QGC
                 if (component_id == 190) {
                     return std::make_optional<std::shared_ptr<System>>(system);
@@ -147,20 +154,21 @@ int main(int argc, char** argv) {
 
     auto mission_raw_server = MissionRawServer{gcs};
     mission_raw_server.subscribe_incoming_mission(
-            [&prom, &origin, &mission_raw_server](MissionRawServer::Result result, MissionRawServer::MissionPlan plan) {
-                if (result == MissionRawServer::Result::Success && !plan.mission_items.empty() &&
+        [&prom, &origin, &mission_raw_server](
+            MissionRawServer::Result result, MissionRawServer::MissionPlan plan) {
+            if (result == MissionRawServer::Result::Success && !plan.mission_items.empty() &&
                     std::cout << "Received mission with result: " << result << '\n';
-                        plan.mission_items.front().mission_type == MAV_MISSION_TYPE_MISSION) {
-                    mission_raw_server.subscribe_incoming_mission(nullptr);
-                    prom.set_value(convert_mission_plan(origin, plan));
-                }
-            });
+                plan.mission_items.front().mission_type == MAV_MISSION_TYPE_MISSION) {
+                mission_raw_server.subscribe_incoming_mission(nullptr);
+                prom.set_value(convert_mission_plan(origin, plan));
+            }
+        });
 
     std::cout << "Waiting for mission to be uploaded...\n";
     auto local_mission = fut.get();
 
     std::cout << "Got local mission\n";
-    for (const auto &point: local_mission.points) {
+    for (const auto& point : local_mission.points) {
         std::cout << point << '\n';
     }
 
@@ -183,8 +191,9 @@ int main(int argc, char** argv) {
         }
     }
     auto current_position = telemetry.position_velocity_ned().position;
-    local_mission.points.insert(local_mission.points.begin(),
-                                Point{current_position.north_m, current_position.east_m, current_position.down_m});
+    local_mission.points.insert(
+        local_mission.points.begin(),
+        Point{current_position.north_m, current_position.east_m, current_position.down_m});
 
     auto rc = rounded_corners::RoundedCorners{5.0};
     rc.set_points(local_mission.points);
@@ -199,9 +208,11 @@ int main(int argc, char** argv) {
     for (const auto& sample : sampled) {
         std::cout << sample << '\n';
         offboard.set_position_ned(Offboard::PositionNedYaw{
-            static_cast<float>(sample.x), static_cast<float>(sample.y), static_cast<float>(sample.z)});
+            static_cast<float>(sample.x),
+            static_cast<float>(sample.y),
+            static_cast<float>(sample.z)});
         const auto current_position = telemetry.position_velocity_ned().position;
-        //std::cout << "dist: " << std::sqrt(
+        // std::cout << "dist: " << std::sqrt(
         //    (sample.x-current_position.north_m)*(sample.x-current_position.north_m) +
         //    (sample.y-current_position.east_m)*(sample.y-current_position.east_m) +
         //    (sample.z-current_position.down_m)*(sample.z-current_position.down_m)) << '\n';

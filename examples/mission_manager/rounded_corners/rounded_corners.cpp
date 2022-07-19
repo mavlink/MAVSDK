@@ -1,8 +1,8 @@
 #include "rounded_corners.hpp"
 #include "segment.hpp"
-#include <cassert>
 #include <cmath>
 #include <iostream>
+#include <limits>
 
 namespace rounded_corners {
 
@@ -10,67 +10,86 @@ RoundedCorners::RoundedCorners(double radius) : radius_(radius) {}
 
 void RoundedCorners::set_points(const std::vector<Point>& points) noexcept
 {
-    assert(points.size() > 1);
+    points_ = points;
+    segments_.clear();
+}
 
-    for (auto it = points.cbegin(); it != points.cend(); ++it) {
-        const auto it_next = it + 1;
+RoundedCorners::Result RoundedCorners::calculate() noexcept
+{
+    segments_.clear();
 
-        if (it == points.cbegin()) {
-            const auto full_first_line = *it_next-*it;
-            segments_.emplace_back(LineSegment{*it, *it_next - 0.5*full_first_line});
+    if (points_.size() < 2) {
+        return Result::NotEnoughPoints;
+    }
 
-        } else if (it_next == points.cend()) {
-            const auto it_previous = it - 1;
-            const auto full_first_line = *it-*it_previous;
-            segments_.emplace_back(LineSegment{*it - 0.5*full_first_line, *it});
+    if (points_.size() == 2) {
+        segments_.emplace_back(LineSegment{points_[0], points_[1]});
+        return Result::Ok;
+    }
+
+    std::optional<Point> last_point;
+
+    for (auto a = points_.cbegin(); a != points_.cend(); ++a) {
+        const auto b = a + 1;
+        if (b == points_.cend()) {
             break;
         }
 
-        const auto it_next_next = it_next + 1;
+        const auto c = b + 1;
+        if (c == points_.cend()) {
+            break;
+        }
 
-        if (it_next_next != points.cend()) {
-            const double angle = calculate_angle(*it, *it_next, *it_next_next);
-            double distance_from_corner = calculate_distance_from_corner(angle);
+        if (!last_point) {
+            last_point = *a;
+        }
 
-            const auto full_first_line = *it_next - *it;
-            const double max_distance = full_first_line.norm() / 2.0;
+        const auto ab = *b - last_point.value();
+        const auto bc = *c - *b;
 
-            auto radius = radius_;
-            if (distance_from_corner > max_distance) {
-                radius = calculated_adapted_radius(max_distance, angle);
-                distance_from_corner = max_distance;
-            }
-            const auto first_line_end = *it_next - distance_from_corner * full_first_line.normalized();
-            const auto full_second_line = *it_next_next - *it_next;
-            const auto second_line_start = *it_next + distance_from_corner * full_second_line.normalized();
+        const double angle = calculate_angle(last_point.value(), *b, *c);
+        if (angle < std::numeric_limits<double>::epsilon()) {
+            continue;
+        }
 
-            const auto line12 = *it_next - *it;
-            const auto line23 = *it_next_next - *it_next;
+        const double distance_from_corner = calculate_distance_from_corner(angle);
 
-            const auto line = LineSegment{*it + 0.5 * full_first_line, first_line_end};
-            if (line.length() > 0) {
-                segments_.push_back(line);
-            }
+        const double available_straight = ab.norm();
 
-            const auto c = cross_product(line12, line23);
+        if (available_straight > distance_from_corner) {
+            segments_.emplace_back(
+                LineSegment{last_point.value(), *b - distance_from_corner * ab.normalized()});
 
-            const auto norm12 = cross_product(c, line12).normalized();
-            const auto norm23 = cross_product(c, line23).normalized();
+        } else if (available_straight < distance_from_corner) {
+            return Result::CornersTooTight;
 
-            const auto center = first_line_end + radius * norm12;
-            const auto center_check = second_line_start + radius * norm23;
-
-            //assert(center == center_check);
-
-            segments_.emplace_back(CornerSegment{first_line_end, second_line_start, center, angle});
-
-            const auto line2 = LineSegment{second_line_start, second_line_start + 0.5 * full_second_line};
-            if (line2.length() > 0) {
-                segments_.emplace_back(line2);
-            }
         } else {
+            // Exactly no line segment required.
+        }
+
+        const auto plane = cross_product(ab, bc);
+        auto norm12 = cross_product(plane, ab).normalized();
+
+        if (dot_product(norm12, bc) < 0) {
+            norm12 = -1.0 * norm12;
+        }
+
+        const auto center = *b - distance_from_corner * ab.normalized() + radius_ * norm12;
+
+        segments_.emplace_back(CornerSegment{
+            *b - distance_from_corner * ab.normalized(),
+            *b + distance_from_corner * bc.normalized(),
+            center,
+            angle});
+
+        last_point = *b + distance_from_corner * bc.normalized();
+
+        if (c + 1 == points_.cend()) {
+            segments_.emplace_back(LineSegment{last_point.value(), *c});
         }
     }
+
+    return Result::Ok;
 }
 
 std::vector<Point> RoundedCorners::sample(double resolution) const noexcept
@@ -90,28 +109,28 @@ std::vector<Point> RoundedCorners::sample(double resolution) const noexcept
     return sampled;
 }
 
-double RoundedCorners::calculate_angle(const Point &a, const Point &b, const Point &c)
+double RoundedCorners::calculate_angle(const Point& a, const Point& b, const Point& c)
 {
     const auto l1 = b - a;
-    const auto l2 = c -b;
+    const auto l2 = c - b;
 
     const double alpha = std::acos(
-            (l1.x*l2.x + l1.y*l2.y + l1.z*l2.z) /
-            (sqrt(l1.x*l1.x + l1.y*l1.y + l1.z*l1.z) *
-             sqrt(l2.x*l2.x + l2.y*l2.y + l2.z*l2.z))
-    );
+        (l1.x * l2.x + l1.y * l2.y + l1.z * l2.z) /
+        (sqrt(l1.x * l1.x + l1.y * l1.y + l1.z * l1.z) *
+         sqrt(l2.x * l2.x + l2.y * l2.y + l2.z * l2.z)));
 
     return alpha;
 }
 
 double RoundedCorners::calculate_distance_from_corner(const double angle) const
 {
-    const double distance_from_corner = tan(angle/2)*radius_;
+    const double distance_from_corner = tan(angle / 2) * radius_;
     return distance_from_corner;
 }
 
-double RoundedCorners::calculated_adapted_radius(const double distance, const double angle) {
-    return distance/tan(angle/2);
+double RoundedCorners::calculated_adapted_radius(const double distance, const double angle)
+{
+    return distance / tan(angle / 2);
 }
 
 } // namespace rounded_corners

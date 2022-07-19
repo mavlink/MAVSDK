@@ -25,11 +25,11 @@ void visualize_points(const std::vector<Point>& lines, const std::vector<Point>&
 
     glBegin(GL_LINES);
 
-    for (auto it = lines.begin(); (it+1) != lines.end(); ++it) {
+    for (auto it = lines.begin(); (it + 1) != lines.end(); ++it) {
         const auto& line = *it;
         const auto& next = *(it + 1);
-        glVertex2i(line.x*100, line.y*100);
-        glVertex2i(next.x*100, next.y*100);
+        glVertex2i(line.x * 100, line.y * 100);
+        glVertex2i(next.x * 100, next.y * 100);
     }
 
     glEnd();
@@ -38,16 +38,16 @@ void visualize_points(const std::vector<Point>& lines, const std::vector<Point>&
 
     // Begin the polygon
     glBegin(GL_LINES);
-    for (auto it = sampled.begin(); (it+1) != sampled.end(); ++it) {
+    for (auto it = sampled.begin(); (it + 1) != sampled.end(); ++it) {
         const auto& sample = *it;
         const auto& next = *(it + 1);
-        glVertex2i(sample.x*100, sample.y*100);
-        glVertex2i(next.x*100, next.y*100);
+        glVertex2i(sample.x * 100, sample.y * 100);
+        glVertex2i(next.x * 100, next.y * 100);
     }
     glEnd();
     glFlush();
     glutSwapBuffers();
-    }
+}
 #endif
 
 void sample_straight_line()
@@ -55,9 +55,10 @@ void sample_straight_line()
     auto rc = RoundedCorners{1.0};
     const auto line = std::vector<Point>{{2.0, 0.0, 0.0}, {5.0, 0.0, 0.0}};
     rc.set_points(line);
+    assert(rc.calculate() == RoundedCorners::Result::Ok);
     auto sampled = rc.sample(0.1);
 
-    print_points(sampled);
+    // print_points(sampled);
 
     assert(sampled.at(0) == line.at(0));
     assert(sampled.at(1) == Point(2.1, 0.0, 0.0));
@@ -67,17 +68,26 @@ void sample_straight_line()
 
 void calculate_corner()
 {
-    auto rc = RoundedCorners{1.0};
-    const auto lines = std::vector<Point>{{2.0, 1.0, 0.0}, {5.0, 1.0, 0.0}, {1.0, 7.0, 0.0}, {-5, -1.0, 0.0}};
+    auto rc = RoundedCorners{2.0};
+
+    // const auto lines = std::vector<Point>{
+    //    {4., 0., 0.0},
+    //    {4., 4, 0.0},
+    //    {4, 8, 0.0},
+    //    {0., 10, 0.0},
+    //    {-5, 5, 0.0},
+    //    {-2, 0., 0.0}};
+    const auto lines =
+        std::vector<Point>{{0., 0., 0.}, {5., 0., 0.}, {5., 5., 0.}, {10., 4., 0.}, {15., 8., 0.}};
+
     rc.set_points(lines);
+    assert(rc.calculate() == RoundedCorners::Result::Ok);
     auto sampled = rc.sample(0.1);
 
-    print_points(sampled);
-#if VISUALIZE==1
+    // print_points(sampled);
+#if VISUALIZE == 1
     visualize_points(lines, sampled);
 #endif
-    assert(sampled.size() == 294);
-    assert(sampled.at(0) == lines.at(0));
 }
 
 #if VISUALIZE == 1
@@ -85,18 +95,18 @@ void myInit()
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
-    glMatrixMode( GL_PROJECTION );
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    double w = glutGet( GLUT_WINDOW_WIDTH );
-    double h = glutGet( GLUT_WINDOW_HEIGHT );
+    double w = glutGet(GLUT_WINDOW_WIDTH);
+    double h = glutGet(GLUT_WINDOW_HEIGHT);
     double ar = w / h;
-    glOrtho( -2 * ar, 2 * ar, -2, 2, -1, 1);
+    glOrtho(-2 * ar, 2 * ar, -2, 2, -1, 1);
 
     // Specify the display area
-    gluOrtho2D(0.0, 500.0, 0.0, 500.0);
+    gluOrtho2D(0.0, 1000.0, 0.0, 1000.0);
 }
 
-void keyboard(unsigned char key, int x, int y)	// Close on key press
+void keyboard(unsigned char key, int x, int y) // Close on key press
 {
     if (key) {
         exit(0);
@@ -105,7 +115,7 @@ void keyboard(unsigned char key, int x, int y)	// Close on key press
 
 int main(int argc, char** argv)
 {
-    sample_straight_line();
+    // sample_straight_line();
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -125,7 +135,7 @@ int main(int argc, char** argv)
 int main(int, char**)
 {
     calculate_corner();
-    sample_straight_line();
+    // sample_straight_line();
     return 0;
 }
 #endif

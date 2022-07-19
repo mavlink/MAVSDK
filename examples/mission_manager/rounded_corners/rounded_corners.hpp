@@ -12,6 +12,14 @@ public:
     RoundedCorners() = delete;
     explicit RoundedCorners(double radius);
     void set_points(const std::vector<Point>& points) noexcept;
+
+    enum class Result {
+        Ok,
+        NotEnoughPoints,
+        CornersTooTight
+    };
+    [[nodiscard]] Result calculate() noexcept;
+
     [[nodiscard]] std::vector<Point> sample(double resolution) const noexcept;
 
 private:
@@ -20,8 +28,8 @@ private:
     [[nodiscard]] double calculated_adapted_radius(double distance, double angle);
 
     double radius_;
+    std::vector<Point> points_;
     std::vector<Segment> segments_{};
-
 };
 
 } // namespace rounded_corners

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <optional>
 
 namespace rounded_corners {
 
@@ -20,6 +21,7 @@ struct Point {
 };
 
 Point cross_product(const Point& a, const Point& b);
+double dot_product(const Point& a, const Point& b);
 
 Point operator+ (const Point& lhs, const Point& rhs);
 Point operator- (const Point& lhs, const Point& rhs);
