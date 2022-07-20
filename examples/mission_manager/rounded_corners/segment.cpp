@@ -46,7 +46,7 @@ std::vector<Point> CornerSegment::sample(double resolution) const
     if (len == 0) {
         return {};
     }
-    const auto num_points = 2 * M_PI / resolution;
+    const auto num_points = 2 * len * M_PI / resolution;
 
     for (unsigned long step = 0; step < num_points; ++step) {
         // Slerp
