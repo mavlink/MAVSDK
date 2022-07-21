@@ -44,6 +44,8 @@
 #include "param/param_service_impl.h"
 #include "plugins/param_server/param_server.h"
 #include "param_server/param_server_service_impl.h"
+#include "plugins/rtk/rtk.h"
+#include "rtk/rtk_service_impl.h"
 #include "plugins/server_utility/server_utility.h"
 #include "server_utility/server_utility_service_impl.h"
 #include "plugins/shell/shell.h"
@@ -104,6 +106,8 @@ public:
         _param_service(_param_lazy_plugin),
         _param_server_lazy_plugin(mavsdk),
         _param_server_service(_param_server_lazy_plugin),
+        _rtk_lazy_plugin(mavsdk),
+        _rtk_service(_rtk_lazy_plugin),
         _server_utility_lazy_plugin(mavsdk),
         _server_utility_service(_server_utility_lazy_plugin),
         _shell_lazy_plugin(mavsdk),
@@ -167,6 +171,8 @@ private:
     ParamServiceImpl<> _param_service;
     LazyPlugin<ParamServer> _param_server_lazy_plugin;
     ParamServerServiceImpl<> _param_server_service;
+    LazyPlugin<Rtk> _rtk_lazy_plugin;
+    RtkServiceImpl<> _rtk_service;
     LazyPlugin<ServerUtility> _server_utility_lazy_plugin;
     ServerUtilityServiceImpl<> _server_utility_service;
     LazyPlugin<Shell> _shell_lazy_plugin;
