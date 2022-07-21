@@ -38,6 +38,7 @@ int GrpcServer::run()
     builder.RegisterService(&_offboard_service);
     builder.RegisterService(&_param_service);
     builder.RegisterService(&_param_server_service);
+    builder.RegisterService(&_rtk_service);
     builder.RegisterService(&_server_utility_service);
     builder.RegisterService(&_shell_service);
     builder.RegisterService(&_telemetry_service);
@@ -90,6 +91,7 @@ void GrpcServer::stop()
         _offboard_service.stop();
         _param_service.stop();
         _param_server_service.stop();
+        _rtk_service.stop();
         _server_utility_service.stop();
         _shell_service.stop();
         _telemetry_service.stop();

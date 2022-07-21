@@ -11,21 +11,24 @@ set(COMPONENTS_LIST
     ftp
     geofence
     gimbal
-    info log_files
+    info
+    log_files
     manual_control
     mission
     mission_raw
     mission_raw_server
-    mocap offboard
+    mocap
+    offboard
     param
     param_server
+    rtk
     server_utility
     shell
     telemetry
     telemetry_server
     tracking_server
-    tune
     transponder
+    tune
 )
 
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
