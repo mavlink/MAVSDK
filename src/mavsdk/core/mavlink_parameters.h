@@ -73,7 +73,7 @@ public:
 
         [[nodiscard]] std::string get_string() const;
 
-        template<typename T>[[nodiscard]] bool is() const
+        template<typename T> [[nodiscard]] bool is() const
         {
             return (std::get_if<T>(&_value) != nullptr);
         }
