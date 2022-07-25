@@ -82,6 +82,30 @@ MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& c
         _parent->send_command(command_internal));
 }
 
+mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
+    const uint8_t target_sysid,
+    const uint8_t target_compid,
+    const uint16_t command,
+    MAV_RESULT result)
+{
+    /* copied over from system impl */
+    const uint8_t progress = std::numeric_limits<uint8_t>::max();
+    const uint8_t result_param2 = 0;
+
+    mavlink_message_t msg{};
+    mavlink_msg_command_ack_pack(
+        get_our_sysid(),
+        get_our_compid(),
+        &msg,
+        command,
+        result,
+        progress,
+        result_param2,
+        target_sysid,
+        target_compid);
+    return msg;
+}
+
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_result(
     MavlinkCommandSender::Result result)
