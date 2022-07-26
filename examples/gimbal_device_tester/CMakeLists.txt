@@ -18,7 +18,7 @@ target_link_libraries(gimbal_device_tester
 )
 
 if(NOT MSVC)
-    add_compile_options(battery PRIVATE -Wall -Wextra)
+    add_compile_options(gimbal_device_tester PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(battery PRIVATE -WX -W2)
+    add_compile_options(gimbal_device_tester PRIVATE -WX -W2)
 endif()
