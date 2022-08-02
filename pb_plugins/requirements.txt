@@ -1,2 +1,2 @@
-protobuf>=3.13
+protobuf>=3.13,<=3.20.1
 jinja2>=2.11
