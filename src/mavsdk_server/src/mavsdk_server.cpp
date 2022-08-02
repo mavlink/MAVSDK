@@ -15,13 +15,19 @@ public:
 
     bool connect(const std::string& connection_url)
     {
-        _connection_initiator.start(_mavsdk, connection_url);
+        if (_mavsdk == nullptr) {
+            _mavsdk = std::make_unique<mavsdk::Mavsdk>();
+        }
+        _connection_initiator.start(*_mavsdk, connection_url);
         return _connection_initiator.wait();
     }
 
     int startGrpcServer(const int port)
     {
-        _server = std::make_unique<GrpcServer>(_mavsdk);
+        if (_mavsdk == nullptr) {
+            _mavsdk = std::make_unique<mavsdk::Mavsdk>();
+        }
+        _server = std::make_unique<GrpcServer>(*_mavsdk);
         _server->set_port(port);
         _grpc_port = _server->run();
         return _grpc_port;
@@ -35,19 +41,21 @@ public:
 
         if (_server != nullptr) {
             _server->stop();
+            _server.reset();
         }
+        _mavsdk.reset();
     }
 
     int getPort() { return _grpc_port; }
 
     void setMavlinkIds(uint8_t system_id, uint8_t component_id)
     {
-        _mavsdk.set_configuration(mavsdk::Mavsdk::Configuration{system_id, component_id, false});
+        _mavsdk->set_configuration(mavsdk::Mavsdk::Configuration{system_id, component_id, false});
     }
 
 private:
-    mavsdk::Mavsdk _mavsdk;
     ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
+    std::unique_ptr<mavsdk::Mavsdk> _mavsdk;
     std::unique_ptr<GrpcServer> _server;
     int _grpc_port;
 };
