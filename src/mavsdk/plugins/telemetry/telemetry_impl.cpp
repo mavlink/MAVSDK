@@ -283,10 +283,16 @@ Telemetry::Result TelemetryImpl::set_rate_landed_state(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
 }
 
-Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
+Telemetry::Result TelemetryImpl::set_rate_attitude_quaternion(double rate_hz)
 {
     return telemetry_result_from_command_result(
         _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_attitude_euler(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_camera_attitude(double rate_hz)
@@ -443,10 +449,22 @@ void TelemetryImpl::set_rate_landed_state_async(double rate_hz, Telemetry::Resul
         });
 }
 
-void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::ResultCallback callback)
+void TelemetryImpl::set_rate_attitude_quaternion_async(
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
+        rate_hz,
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
+}
+
+void TelemetryImpl::set_rate_attitude_euler_async(
+    double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_ATTITUDE,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
@@ -752,13 +770,6 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     angular_velocity_body.yaw_rad_s = attitude.yawspeed;
     set_attitude_angular_velocity_body(angular_velocity_body);
 
-    auto quaternion = mavsdk::to_quaternion_from_euler_angle(euler_angle);
-    set_attitude_quaternion(quaternion);
-
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _attitude_quaternion_angle_subscriptions.queue(
-        attitude_quaternion(), [this](const auto& func) { _parent->call_user_callback(func); });
-
     _attitude_euler_angle_subscriptions.queue(
         attitude_euler(), [this](const auto& func) { _parent->call_user_callback(func); });
 
@@ -792,9 +803,6 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_quaternion_angle_subscriptions.queue(
         attitude_quaternion(), [this](const auto& func) { _parent->call_user_callback(func); });
-
-    _attitude_euler_angle_subscriptions.queue(
-        attitude_euler(), [this](const auto& func) { _parent->call_user_callback(func); });
 
     _attitude_angular_velocity_body_subscriptions.queue(
         attitude_angular_velocity_body(),

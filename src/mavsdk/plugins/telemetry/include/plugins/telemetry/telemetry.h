@@ -1963,20 +1963,39 @@ public:
     Result set_rate_vtol_state(double rate_hz) const;
 
     /**
-     * @brief Set rate to 'attitude' updates.
+     * @brief Set rate to 'attitude euler angle' updates.
      *
-     * This function is non-blocking. See 'set_rate_attitude' for the blocking counterpart.
+     * This function is non-blocking. See 'set_rate_attitude_quaternion' for the blocking
+     * counterpart.
      */
-    void set_rate_attitude_async(double rate_hz, const ResultCallback callback);
+    void set_rate_attitude_quaternion_async(double rate_hz, const ResultCallback callback);
 
     /**
-     * @brief Set rate to 'attitude' updates.
+     * @brief Set rate to 'attitude euler angle' updates.
      *
-     * This function is blocking. See 'set_rate_attitude_async' for the non-blocking counterpart.
+     * This function is blocking. See 'set_rate_attitude_quaternion_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
-    Result set_rate_attitude(double rate_hz) const;
+    Result set_rate_attitude_quaternion(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'attitude quaternion' updates.
+     *
+     * This function is non-blocking. See 'set_rate_attitude_euler' for the blocking counterpart.
+     */
+    void set_rate_attitude_euler_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'attitude quaternion' updates.
+     *
+     * This function is blocking. See 'set_rate_attitude_euler_async' for the non-blocking
+     * counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_attitude_euler(double rate_hz) const;
 
     /**
      * @brief Set rate of camera attitude updates.

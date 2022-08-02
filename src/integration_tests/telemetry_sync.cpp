@@ -22,7 +22,8 @@ TEST_F(SitlTest, PX4TelemetrySync)
     EXPECT_EQ(telemetry->set_rate_position(10.0), Telemetry::Result::Success);
     EXPECT_EQ(telemetry->set_rate_home(10.0), Telemetry::Result::Success);
     EXPECT_EQ(telemetry->set_rate_in_air(10.0), Telemetry::Result::Success);
-    EXPECT_EQ(telemetry->set_rate_attitude(10.0), Telemetry::Result::Success);
+    EXPECT_EQ(telemetry->set_rate_attitude_quaternion(10.0), Telemetry::Result::Success);
+    EXPECT_EQ(telemetry->set_rate_attitude_euler(10.0), Telemetry::Result::Success);
     EXPECT_EQ(telemetry->set_rate_velocity_ned(10.0), Telemetry::Result::Success);
     EXPECT_EQ(telemetry->set_rate_gps_info(10.0), Telemetry::Result::Success);
     EXPECT_EQ(telemetry->set_rate_battery(10.0), Telemetry::Result::Success);

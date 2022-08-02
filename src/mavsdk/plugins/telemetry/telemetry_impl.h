@@ -32,7 +32,8 @@ public:
     Telemetry::Result set_rate_in_air(double rate_hz);
     Telemetry::Result set_rate_landed_state(double rate_hz);
     Telemetry::Result set_rate_vtol_state(double rate_hz);
-    Telemetry::Result set_rate_attitude(double rate_hz);
+    Telemetry::Result set_rate_attitude_quaternion(double rate_hz);
+    Telemetry::Result set_rate_attitude_euler(double rate_hz);
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
     Telemetry::Result set_rate_velocity_ned(double rate_hz);
     Telemetry::Result set_rate_imu(double rate_hz);
@@ -56,7 +57,8 @@ public:
     void set_rate_in_air_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_landed_state_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_vtol_state_async(double rate_hz, Telemetry::ResultCallback callback);
-    void set_rate_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_attitude_quaternion_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_attitude_euler_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback);

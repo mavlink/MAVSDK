@@ -606,14 +606,24 @@ Telemetry::Result Telemetry::set_rate_vtol_state(double rate_hz) const
     return _impl->set_rate_vtol_state(rate_hz);
 }
 
-void Telemetry::set_rate_attitude_async(double rate_hz, const ResultCallback callback)
+void Telemetry::set_rate_attitude_quaternion_async(double rate_hz, const ResultCallback callback)
 {
-    _impl->set_rate_attitude_async(rate_hz, callback);
+    _impl->set_rate_attitude_quaternion_async(rate_hz, callback);
 }
 
-Telemetry::Result Telemetry::set_rate_attitude(double rate_hz) const
+Telemetry::Result Telemetry::set_rate_attitude_quaternion(double rate_hz) const
 {
-    return _impl->set_rate_attitude(rate_hz);
+    return _impl->set_rate_attitude_quaternion(rate_hz);
+}
+
+void Telemetry::set_rate_attitude_euler_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_attitude_euler_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_attitude_euler(double rate_hz) const
+{
+    return _impl->set_rate_attitude_euler(rate_hz);
 }
 
 void Telemetry::set_rate_camera_attitude_async(double rate_hz, const ResultCallback callback)
