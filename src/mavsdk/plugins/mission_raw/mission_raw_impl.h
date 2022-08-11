@@ -74,6 +74,7 @@ private:
     void process_mission_ack(const mavlink_message_t& message);
     void process_mission_current(const mavlink_message_t& message);
     void process_mission_item_reached(const mavlink_message_t& message);
+    void process_mission_changed(const mavlink_message_t& message);
 
     void report_progress_current();
 

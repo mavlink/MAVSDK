@@ -2,6 +2,7 @@
 #include "mission_import.h"
 #include "system.h"
 #include "callback_list.tpp"
+#include "unused.h"
 
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
@@ -44,6 +45,11 @@ void MissionRawImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
         [this](const mavlink_message_t& message) { process_mission_item_reached(message); },
+        this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_MISSION_CHANGED,
+        [this](const mavlink_message_t& message) { process_mission_changed(message); },
         this);
 }
 
@@ -116,6 +122,19 @@ void MissionRawImpl::process_mission_item_reached(const mavlink_message_t& messa
     }
 
     report_progress_current();
+}
+
+void MissionRawImpl::process_mission_changed(const mavlink_message_t& message)
+{
+    // mavlink_mission_changed_t mission_changed;
+    // mavlink_msg_mission_changed_decode(&message, &mission_changed);
+    UNUSED(message);
+
+    // We don't actually care about what changed, we just need to tell the
+    // user that something changed
+
+    _mission_changed.callbacks.queue(
+        true, [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 MissionRaw::Result
