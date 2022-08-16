@@ -94,12 +94,6 @@ int main(int argc, char** argv)
     auto manual_control = ManualControl{system};
     auto mavlink_passthrough = MavlinkPassthrough{system};
 
-    while (!telemetry.health_all_ok()) {
-        std::cout << "Waiting for system to be ready\n";
-        sleep_for(seconds(1));
-    }
-    std::cout << "System is ready\n";
-
     for (unsigned i = 0; i << 10; ++i) {
         manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
         sleep_for(milliseconds(20));
