@@ -16,6 +16,7 @@
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <mavsdk/plugins/manual_control/manual_control.h>
+#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
 
 using namespace mavsdk;
 using std::chrono::seconds;
@@ -91,6 +92,7 @@ int main(int argc, char** argv)
     auto action = Action{system};
     auto telemetry = Telemetry{system};
     auto manual_control = ManualControl{system};
+    auto mavlink_passthrough = MavlinkPassthrough{system};
 
     while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready\n";
@@ -103,10 +105,12 @@ int main(int argc, char** argv)
         sleep_for(milliseconds(20));
     }
 
-    auto action_result = action.arm();
-    if (action_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << action_result << '\n';
-        return 1;
+    if (!telemetry.armed()) {
+        auto action_result = action.arm();
+        if (action_result != Action::Result::Success) {
+            std::cerr << "Arming failed: " << action_result << '\n';
+            return 1;
+        }
     }
 
     for (unsigned i = 0; i << 10; ++i) {
@@ -118,6 +122,13 @@ int main(int argc, char** argv)
     //    std::cerr << "Position control start failed: " << manual_control_result << '\n';
     //    return 1;
     //}
+    //
+    float PX4_CUSTOM_MAIN_MODE_MANUAL = 1;
+    
+    auto manual_mode_result = mavlink_passthrough.send_command_long(
+        MavlinkPassthrough::CommandLong{
+            1, 1, MAV_CMD_DO_SET_MODE, MAV_MODE_MANUAL_ARMED, PX4_CUSTOM_MAIN_MODE_MANUAL, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+    std::cout << "Result setting manual_control: " << manual_mode_result << '\n';
 
     while (true) {
 
@@ -141,6 +152,8 @@ int main(int argc, char** argv)
         manual_control.set_manual_control_input(pitch, roll, throttle, yaw);
 
         sleep_for(milliseconds(20));
+
+        std::cout << "Mode: " << telemetry.flight_mode() << '\n';
     }
 
     while (telemetry.armed()) {
