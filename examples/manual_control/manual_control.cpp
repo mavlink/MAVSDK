@@ -10,31 +10,18 @@
 #include <future>
 #include <memory>
 #include <iostream>
+#include <thread>
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <mavsdk/plugins/manual_control/manual_control.h>
 
-#include "joystick.h"
-
 using namespace mavsdk;
 using std::chrono::seconds;
 using std::chrono::milliseconds;
 using std::this_thread::sleep_for;
 
-// This config works for Logitech Extreme 3D Pro
-struct JoystickMapping {
-    int roll_axis = 0;
-    int pitch_axis = 1;
-    int yaw_axis = 2;
-    int throttle_axis = 3;
-
-    bool roll_inverted = false;
-    bool pitch_inverted = true;
-    bool yaw_inverted = false;
-    bool throttle_inverted = true;
-} joystick_mapping{};
 
 std::shared_ptr<System> get_system(Mavsdk& mavsdk)
 {
@@ -84,14 +71,11 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto joystick = Joystick::create();
-    if (!joystick) {
-        std::cerr << "Could not find any joystick\n";
-        return 1;
-    }
-
     Mavsdk mavsdk;
-    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1], ForwardingOption::ForwardingOn);
+
+    // To enable forwarding to QGC
+    // ConnectionResult connection_result2 = mavsdk.add_any_connection("udp://127.0.0.1:14550", ForwardingOption::ForwardingOn);
 
     if (connection_result != ConnectionResult::Success) {
         std::cerr << "Connection failed: " << connection_result << '\n';
@@ -116,6 +100,7 @@ int main(int argc, char** argv)
 
     for (unsigned i = 0; i << 10; ++i) {
         manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
+        sleep_for(milliseconds(20));
     }
 
     auto action_result = action.arm();
@@ -128,27 +113,30 @@ int main(int argc, char** argv)
         manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
     }
 
-    auto manual_control_result = manual_control.start_position_control();
-    if (manual_control_result != ManualControl::Result::Success) {
-        std::cerr << "Position control start failed: " << manual_control_result << '\n';
-        return 1;
-    }
+    //auto manual_control_result = manual_control.start_position_control();
+    //if (manual_control_result != ManualControl::Result::Success) {
+    //    std::cerr << "Position control start failed: " << manual_control_result << '\n';
+    //    return 1;
+    //}
 
     while (true) {
-        const float roll = joystick->get_axis(joystick_mapping.roll_axis) *
-                           (joystick_mapping.roll_inverted ? -1.f : 1.f);
-        const float pitch = joystick->get_axis(joystick_mapping.pitch_axis) *
-                            (joystick_mapping.pitch_inverted ? -1.f : 1.f);
-        const float yaw = joystick->get_axis(joystick_mapping.yaw_axis) *
-                          (joystick_mapping.yaw_inverted ? -1.f : 1.f);
-        float throttle = joystick->get_axis(joystick_mapping.throttle_axis) *
-                         (joystick_mapping.throttle_inverted ? -1.f : 1.f);
 
-        // Scale -1 to 1 throttle range to 0 to 1
-        throttle = throttle / 2.f + 0.5f;
+        float roll = 0.1f;
+        float throttle = 0.3f;
+        float pitch = 0.0f;
+        float yaw = 0.0f;
 
-        // std::cout << "Joystick input: roll: " << roll << ", pitch: " << pitch << ", yaw: " << yaw
-        //           << ", throttle " << throttle << '\n';
+
+        static unsigned counter = 0;
+        if (counter++ % 2 == 0) {
+            roll += 0.1;
+        } else {
+            roll -= 0.1;
+        }
+
+        std::cout << "Joystick input: roll: " << roll << ", pitch: " << pitch << ", yaw: " << yaw
+                   << ", throttle " << throttle << '\n';
+
 
         manual_control.set_manual_control_input(pitch, roll, throttle, yaw);
 
