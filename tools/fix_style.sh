@@ -33,14 +33,14 @@ if [[ $version =~ $semver_regex ]]; then
 version_major=${BASH_REMATCH[1]}
 if [ "$version_required_major" -gt "$version_major" ]; then
     echo "Clang version $version_major too old (required: $version_required_major)"
-    echo "You can use clang-format-12 from docker:"
+    echo "You can use clang-format-$version_required_major from docker:"
     echo ""
     echo "    'tools/run-docker.sh tools/fix_style.sh .'"
     exit 1
 
 elif [ "$version_required_major" -lt "$version_major" ]; then
     echo "Clang version $version_major too new (required: $version_required_major)"
-    echo "You can use clang-format-10 from docker:"
+    echo "You can use clang-format-$version_required_major from docker:"
     echo ""
     echo "    'tools/run-docker.sh tools/fix_style.sh .'"
     exit 1
