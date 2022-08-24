@@ -274,6 +274,10 @@ std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
             return str << "Next";
         case Mission::Result::Denied:
             return str << "Denied";
+        case Mission::Result::ProtocolError:
+            return str << "Protocol Error";
+        case Mission::Result::IntMessagesNotSupported:
+            return str << "Int Messages Not Supported";
         default:
             return str << "Unknown";
     }

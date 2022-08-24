@@ -246,6 +246,10 @@ public:
                 return rpc::mission::MissionResult_Result_RESULT_NEXT;
             case mavsdk::Mission::Result::Denied:
                 return rpc::mission::MissionResult_Result_RESULT_DENIED;
+            case mavsdk::Mission::Result::ProtocolError:
+                return rpc::mission::MissionResult_Result_RESULT_PROTOCOL_ERROR;
+            case mavsdk::Mission::Result::IntMessagesNotSupported:
+                return rpc::mission::MissionResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED;
         }
     }
 
@@ -284,6 +288,10 @@ public:
                 return mavsdk::Mission::Result::Next;
             case rpc::mission::MissionResult_Result_RESULT_DENIED:
                 return mavsdk::Mission::Result::Denied;
+            case rpc::mission::MissionResult_Result_RESULT_PROTOCOL_ERROR:
+                return mavsdk::Mission::Result::ProtocolError;
+            case rpc::mission::MissionResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED:
+                return mavsdk::Mission::Result::IntMessagesNotSupported;
         }
     }
 

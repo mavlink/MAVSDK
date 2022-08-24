@@ -189,6 +189,9 @@ public:
         NoSystem, /**< @brief No system connected. */
         Next, /**< @brief Intermediate message showing progress. */
         Denied, /**< @brief Request denied. */
+        ProtocolError, /**< @brief There was a protocol error. */
+        IntMessagesNotSupported, /**< @brief The system does not support the MISSION_INT protocol.
+                                  */
     };
 
     /**
