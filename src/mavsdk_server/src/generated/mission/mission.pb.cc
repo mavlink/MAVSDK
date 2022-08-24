@@ -856,9 +856,9 @@ const char descriptor_table_protodef_mission_2fmission_2eproto[] PROTOBUF_SECTIO
   "STANCE\020\007\"E\n\013MissionPlan\0226\n\rmission_items"
   "\030\001 \003(\0132\037.mavsdk.rpc.mission.MissionItem\""
   "1\n\017MissionProgress\022\017\n\007current\030\001 \001(\005\022\r\n\005t"
-  "otal\030\002 \001(\005\"\275\003\n\rMissionResult\0228\n\006result\030\001"
+  "otal\030\002 \001(\005\"\377\003\n\rMissionResult\0228\n\006result\030\001"
   " \001(\0162(.mavsdk.rpc.mission.MissionResult."
-  "Result\022\022\n\nresult_str\030\002 \001(\t\"\335\002\n\006Result\022\022\n"
+  "Result\022\022\n\nresult_str\030\002 \001(\t\"\237\003\n\006Result\022\022\n"
   "\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n"
   "\014RESULT_ERROR\020\002\022!\n\035RESULT_TOO_MANY_MISSI"
   "ON_ITEMS\020\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016RESULT_TI"
@@ -867,66 +867,68 @@ const char descriptor_table_protodef_mission_2fmission_2eproto[] PROTOBUF_SECTIO
   "N_AVAILABLE\020\010\022\"\n\036RESULT_UNSUPPORTED_MISS"
   "ION_CMD\020\013\022\035\n\031RESULT_TRANSFER_CANCELLED\020\014"
   "\022\024\n\020RESULT_NO_SYSTEM\020\r\022\017\n\013RESULT_NEXT\020\016\022"
-  "\021\n\rRESULT_DENIED\020\017\")\n\014ProgressData\022\031\n\010pr"
-  "ogress\030\001 \001(\002B\007\202\265\030\003NaN\"\237\001\n\025ProgressDataOr"
-  "Mission\022\037\n\014has_progress\030\001 \001(\010B\t\202\265\030\005false"
-  "\022\031\n\010progress\030\002 \001(\002B\007\202\265\030\003NaN\022\023\n\013has_missi"
-  "on\030\003 \001(\010\0225\n\014mission_plan\030\004 \001(\0132\037.mavsdk."
-  "rpc.mission.MissionPlan2\245\016\n\016MissionServi"
-  "ce\022f\n\rUploadMission\022(.mavsdk.rpc.mission"
-  ".UploadMissionRequest\032).mavsdk.rpc.missi"
-  "on.UploadMissionResponse\"\000\022\246\001\n\"Subscribe"
-  "UploadMissionWithProgress\022=.mavsdk.rpc.m"
-  "ission.SubscribeUploadMissionWithProgres"
-  "sRequest\0325.mavsdk.rpc.mission.UploadMiss"
-  "ionWithProgressResponse\"\010\200\265\030\000\210\265\030\0010\001\022|\n\023C"
-  "ancelMissionUpload\022..mavsdk.rpc.mission."
-  "CancelMissionUploadRequest\032/.mavsdk.rpc."
-  "mission.CancelMissionUploadResponse\"\004\200\265\030"
-  "\001\022l\n\017DownloadMission\022*.mavsdk.rpc.missio"
-  "n.DownloadMissionRequest\032+.mavsdk.rpc.mi"
-  "ssion.DownloadMissionResponse\"\000\022\254\001\n$Subs"
-  "cribeDownloadMissionWithProgress\022\?.mavsd"
-  "k.rpc.mission.SubscribeDownloadMissionWi"
-  "thProgressRequest\0327.mavsdk.rpc.mission.D"
-  "ownloadMissionWithProgressResponse\"\010\200\265\030\000"
-  "\210\265\030\0010\001\022\202\001\n\025CancelMissionDownload\0220.mavsd"
-  "k.rpc.mission.CancelMissionDownloadReque"
-  "st\0321.mavsdk.rpc.mission.CancelMissionDow"
-  "nloadResponse\"\004\200\265\030\001\022c\n\014StartMission\022\'.ma"
-  "vsdk.rpc.mission.StartMissionRequest\032(.m"
-  "avsdk.rpc.mission.StartMissionResponse\"\000"
-  "\022c\n\014PauseMission\022\'.mavsdk.rpc.mission.Pa"
-  "useMissionRequest\032(.mavsdk.rpc.mission.P"
-  "auseMissionResponse\"\000\022c\n\014ClearMission\022\'."
-  "mavsdk.rpc.mission.ClearMissionRequest\032("
-  ".mavsdk.rpc.mission.ClearMissionResponse"
-  "\"\000\022~\n\025SetCurrentMissionItem\0220.mavsdk.rpc"
-  ".mission.SetCurrentMissionItemRequest\0321."
-  "mavsdk.rpc.mission.SetCurrentMissionItem"
-  "Response\"\000\022v\n\021IsMissionFinished\022,.mavsdk"
-  ".rpc.mission.IsMissionFinishedRequest\032-."
-  "mavsdk.rpc.mission.IsMissionFinishedResp"
-  "onse\"\004\200\265\030\001\022\200\001\n\030SubscribeMissionProgress\022"
-  "3.mavsdk.rpc.mission.SubscribeMissionPro"
-  "gressRequest\032+.mavsdk.rpc.mission.Missio"
-  "nProgressResponse\"\0000\001\022\232\001\n\035GetReturnToLau"
-  "nchAfterMission\0228.mavsdk.rpc.mission.Get"
-  "ReturnToLaunchAfterMissionRequest\0329.mavs"
-  "dk.rpc.mission.GetReturnToLaunchAfterMis"
-  "sionResponse\"\004\200\265\030\001\022\232\001\n\035SetReturnToLaunch"
-  "AfterMission\0228.mavsdk.rpc.mission.SetRet"
-  "urnToLaunchAfterMissionRequest\0329.mavsdk."
-  "rpc.mission.SetReturnToLaunchAfterMissio"
-  "nResponse\"\004\200\265\030\001B!\n\021io.mavsdk.missionB\014Mi"
-  "ssionProtob\006proto3"
+  "\021\n\rRESULT_DENIED\020\017\022\031\n\025RESULT_PROTOCOL_ER"
+  "ROR\020\020\022%\n!RESULT_INT_MESSAGES_NOT_SUPPORT"
+  "ED\020\021\")\n\014ProgressData\022\031\n\010progress\030\001 \001(\002B\007"
+  "\202\265\030\003NaN\"\237\001\n\025ProgressDataOrMission\022\037\n\014has"
+  "_progress\030\001 \001(\010B\t\202\265\030\005false\022\031\n\010progress\030\002"
+  " \001(\002B\007\202\265\030\003NaN\022\023\n\013has_mission\030\003 \001(\010\0225\n\014mi"
+  "ssion_plan\030\004 \001(\0132\037.mavsdk.rpc.mission.Mi"
+  "ssionPlan2\245\016\n\016MissionService\022f\n\rUploadMi"
+  "ssion\022(.mavsdk.rpc.mission.UploadMission"
+  "Request\032).mavsdk.rpc.mission.UploadMissi"
+  "onResponse\"\000\022\246\001\n\"SubscribeUploadMissionW"
+  "ithProgress\022=.mavsdk.rpc.mission.Subscri"
+  "beUploadMissionWithProgressRequest\0325.mav"
+  "sdk.rpc.mission.UploadMissionWithProgres"
+  "sResponse\"\010\200\265\030\000\210\265\030\0010\001\022|\n\023CancelMissionUp"
+  "load\022..mavsdk.rpc.mission.CancelMissionU"
+  "ploadRequest\032/.mavsdk.rpc.mission.Cancel"
+  "MissionUploadResponse\"\004\200\265\030\001\022l\n\017DownloadM"
+  "ission\022*.mavsdk.rpc.mission.DownloadMiss"
+  "ionRequest\032+.mavsdk.rpc.mission.Download"
+  "MissionResponse\"\000\022\254\001\n$SubscribeDownloadM"
+  "issionWithProgress\022\?.mavsdk.rpc.mission."
+  "SubscribeDownloadMissionWithProgressRequ"
+  "est\0327.mavsdk.rpc.mission.DownloadMission"
+  "WithProgressResponse\"\010\200\265\030\000\210\265\030\0010\001\022\202\001\n\025Can"
+  "celMissionDownload\0220.mavsdk.rpc.mission."
+  "CancelMissionDownloadRequest\0321.mavsdk.rp"
+  "c.mission.CancelMissionDownloadResponse\""
+  "\004\200\265\030\001\022c\n\014StartMission\022\'.mavsdk.rpc.missi"
+  "on.StartMissionRequest\032(.mavsdk.rpc.miss"
+  "ion.StartMissionResponse\"\000\022c\n\014PauseMissi"
+  "on\022\'.mavsdk.rpc.mission.PauseMissionRequ"
+  "est\032(.mavsdk.rpc.mission.PauseMissionRes"
+  "ponse\"\000\022c\n\014ClearMission\022\'.mavsdk.rpc.mis"
+  "sion.ClearMissionRequest\032(.mavsdk.rpc.mi"
+  "ssion.ClearMissionResponse\"\000\022~\n\025SetCurre"
+  "ntMissionItem\0220.mavsdk.rpc.mission.SetCu"
+  "rrentMissionItemRequest\0321.mavsdk.rpc.mis"
+  "sion.SetCurrentMissionItemResponse\"\000\022v\n\021"
+  "IsMissionFinished\022,.mavsdk.rpc.mission.I"
+  "sMissionFinishedRequest\032-.mavsdk.rpc.mis"
+  "sion.IsMissionFinishedResponse\"\004\200\265\030\001\022\200\001\n"
+  "\030SubscribeMissionProgress\0223.mavsdk.rpc.m"
+  "ission.SubscribeMissionProgressRequest\032+"
+  ".mavsdk.rpc.mission.MissionProgressRespo"
+  "nse\"\0000\001\022\232\001\n\035GetReturnToLaunchAfterMissio"
+  "n\0228.mavsdk.rpc.mission.GetReturnToLaunch"
+  "AfterMissionRequest\0329.mavsdk.rpc.mission"
+  ".GetReturnToLaunchAfterMissionResponse\"\004"
+  "\200\265\030\001\022\232\001\n\035SetReturnToLaunchAfterMission\0228"
+  ".mavsdk.rpc.mission.SetReturnToLaunchAft"
+  "erMissionRequest\0329.mavsdk.rpc.mission.Se"
+  "tReturnToLaunchAfterMissionResponse\"\004\200\265\030"
+  "\001B!\n\021io.mavsdk.missionB\014MissionProtob\006pr"
+  "oto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_mission_2fmission_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_mission_2fmission_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_mission_2fmission_2eproto = {
-    false, false, 5618, descriptor_table_protodef_mission_2fmission_2eproto,
+    false, false, 5684, descriptor_table_protodef_mission_2fmission_2eproto,
     "mission/mission.proto",
     &descriptor_table_mission_2fmission_2eproto_once, descriptor_table_mission_2fmission_2eproto_deps, 1, 34,
     schemas, file_default_instances, TableStruct_mission_2fmission_2eproto::offsets,
@@ -995,6 +997,8 @@ bool MissionResult_Result_IsValid(int value) {
     case 13:
     case 14:
     case 15:
+    case 16:
+    case 17:
       return true;
     default:
       return false;
@@ -1016,6 +1020,8 @@ constexpr MissionResult_Result MissionResult::RESULT_TRANSFER_CANCELLED;
 constexpr MissionResult_Result MissionResult::RESULT_NO_SYSTEM;
 constexpr MissionResult_Result MissionResult::RESULT_NEXT;
 constexpr MissionResult_Result MissionResult::RESULT_DENIED;
+constexpr MissionResult_Result MissionResult::RESULT_PROTOCOL_ERROR;
+constexpr MissionResult_Result MissionResult::RESULT_INT_MESSAGES_NOT_SUPPORTED;
 constexpr MissionResult_Result MissionResult::Result_MIN;
 constexpr MissionResult_Result MissionResult::Result_MAX;
 constexpr int MissionResult::Result_ARRAYSIZE;

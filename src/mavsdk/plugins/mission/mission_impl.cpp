@@ -1038,9 +1038,9 @@ Mission::Result MissionImpl::convert_result(MavlinkMissionTransfer::Result resul
         case MavlinkMissionTransfer::Result::Success:
             return Mission::Result::Success;
         case MavlinkMissionTransfer::Result::ConnectionError:
-            return Mission::Result::Error; // FIXME
+            return Mission::Result::Error;
         case MavlinkMissionTransfer::Result::Denied:
-            return Mission::Result::Error; // FIXME
+            return Mission::Result::Denied;
         case MavlinkMissionTransfer::Result::TooManyMissionItems:
             return Mission::Result::TooManyMissionItems;
         case MavlinkMissionTransfer::Result::Timeout:
@@ -1054,17 +1054,17 @@ Mission::Result MissionImpl::convert_result(MavlinkMissionTransfer::Result resul
         case MavlinkMissionTransfer::Result::Cancelled:
             return Mission::Result::TransferCancelled;
         case MavlinkMissionTransfer::Result::MissionTypeNotConsistent:
-            return Mission::Result::InvalidArgument; // FIXME
+            return Mission::Result::Error; // should not happen
         case MavlinkMissionTransfer::Result::InvalidSequence:
-            return Mission::Result::InvalidArgument; // FIXME
+            return Mission::Result::Error; // should not happen
         case MavlinkMissionTransfer::Result::CurrentInvalid:
-            return Mission::Result::InvalidArgument; // FIXME
+            return Mission::Result::Error; // should not happen
         case MavlinkMissionTransfer::Result::ProtocolError:
-            return Mission::Result::Error; // FIXME
+            return Mission::Result::ProtocolError;
         case MavlinkMissionTransfer::Result::InvalidParam:
-            return Mission::Result::InvalidArgument; // FIXME
+            return Mission::Result::InvalidArgument;
         case MavlinkMissionTransfer::Result::IntMessagesNotSupported:
-            return Mission::Result::Unsupported; // FIXME
+            return Mission::Result::IntMessagesNotSupported;
         default:
             return Mission::Result::Unknown;
     }

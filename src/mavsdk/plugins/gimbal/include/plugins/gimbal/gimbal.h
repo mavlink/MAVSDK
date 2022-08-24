@@ -63,7 +63,7 @@ public:
      */
     enum class GimbalMode {
         YawFollow, /**< @brief Yaw follow will point the gimbal to the vehicle heading. */
-        YawLock, /**< @brief Yaw lock will fix the gimbal poiting to an absolute direction. */
+        YawLock, /**< @brief Yaw lock will fix the gimbal pointing to an absolute direction. */
     };
 
     /**
