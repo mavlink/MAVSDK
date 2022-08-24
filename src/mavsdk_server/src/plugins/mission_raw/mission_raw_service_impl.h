@@ -214,6 +214,16 @@ public:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_NO_SYSTEM;
             case mavsdk::MissionRaw::Result::Denied:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_DENIED;
+            case mavsdk::MissionRaw::Result::MissionTypeNotConsistent:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_MISSION_TYPE_NOT_CONSISTENT;
+            case mavsdk::MissionRaw::Result::InvalidSequence:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_INVALID_SEQUENCE;
+            case mavsdk::MissionRaw::Result::CurrentInvalid:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_CURRENT_INVALID;
+            case mavsdk::MissionRaw::Result::ProtocolError:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_PROTOCOL_ERROR;
+            case mavsdk::MissionRaw::Result::IntMessagesNotSupported:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED;
         }
     }
 
@@ -252,6 +262,16 @@ public:
                 return mavsdk::MissionRaw::Result::NoSystem;
             case rpc::mission_raw::MissionRawResult_Result_RESULT_DENIED:
                 return mavsdk::MissionRaw::Result::Denied;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_MISSION_TYPE_NOT_CONSISTENT:
+                return mavsdk::MissionRaw::Result::MissionTypeNotConsistent;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_INVALID_SEQUENCE:
+                return mavsdk::MissionRaw::Result::InvalidSequence;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_CURRENT_INVALID:
+                return mavsdk::MissionRaw::Result::CurrentInvalid;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_PROTOCOL_ERROR:
+                return mavsdk::MissionRaw::Result::ProtocolError;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED:
+                return mavsdk::MissionRaw::Result::IntMessagesNotSupported;
         }
     }
 

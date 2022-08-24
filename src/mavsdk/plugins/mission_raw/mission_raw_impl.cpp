@@ -511,33 +511,33 @@ MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransfer::Result
         case MavlinkMissionTransfer::Result::Success:
             return MissionRaw::Result::Success;
         case MavlinkMissionTransfer::Result::ConnectionError:
-            return MissionRaw::Result::Error; // FIXME
+            return MissionRaw::Result::Error;
         case MavlinkMissionTransfer::Result::Denied:
-            return MissionRaw::Result::Error; // FIXME
+            return MissionRaw::Result::Denied;
         case MavlinkMissionTransfer::Result::TooManyMissionItems:
-            return MissionRaw::Result::Error; // FIXME
+            return MissionRaw::Result::TooManyMissionItems;
         case MavlinkMissionTransfer::Result::Timeout:
             return MissionRaw::Result::Timeout;
         case MavlinkMissionTransfer::Result::Unsupported:
             return MissionRaw::Result::Unsupported;
         case MavlinkMissionTransfer::Result::UnsupportedFrame:
-            return MissionRaw::Result::Error; // FIXME
+            return MissionRaw::Result::Unsupported;
         case MavlinkMissionTransfer::Result::NoMissionAvailable:
             return MissionRaw::Result::NoMissionAvailable;
         case MavlinkMissionTransfer::Result::Cancelled:
             return MissionRaw::Result::TransferCancelled;
         case MavlinkMissionTransfer::Result::MissionTypeNotConsistent:
-            return MissionRaw::Result::InvalidArgument; // FIXME
+            return MissionRaw::Result::MissionTypeNotConsistent;
         case MavlinkMissionTransfer::Result::InvalidSequence:
-            return MissionRaw::Result::InvalidArgument; // FIXME
+            return MissionRaw::Result::InvalidSequence;
         case MavlinkMissionTransfer::Result::CurrentInvalid:
-            return MissionRaw::Result::InvalidArgument; // FIXME
+            return MissionRaw::Result::CurrentInvalid;
         case MavlinkMissionTransfer::Result::ProtocolError:
-            return MissionRaw::Result::Error; // FIXME
+            return MissionRaw::Result::ProtocolError;
         case MavlinkMissionTransfer::Result::InvalidParam:
-            return MissionRaw::Result::InvalidArgument; // FIXME
+            return MissionRaw::Result::InvalidArgument;
         case MavlinkMissionTransfer::Result::IntMessagesNotSupported:
-            return MissionRaw::Result::Unsupported; // FIXME
+            return MissionRaw::Result::IntMessagesNotSupported;
         default:
             return MissionRaw::Result::Unknown;
     }

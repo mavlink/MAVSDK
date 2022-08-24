@@ -246,6 +246,16 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
             return str << "No System";
         case MissionRaw::Result::Denied:
             return str << "Denied";
+        case MissionRaw::Result::MissionTypeNotConsistent:
+            return str << "Mission Type Not Consistent";
+        case MissionRaw::Result::InvalidSequence:
+            return str << "Invalid Sequence";
+        case MissionRaw::Result::CurrentInvalid:
+            return str << "Current Invalid";
+        case MissionRaw::Result::ProtocolError:
+            return str << "Protocol Error";
+        case MissionRaw::Result::IntMessagesNotSupported:
+            return str << "Int Messages Not Supported";
         default:
             return str << "Unknown";
     }

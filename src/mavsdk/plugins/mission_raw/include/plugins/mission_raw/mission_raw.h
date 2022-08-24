@@ -162,6 +162,12 @@ public:
         FailedToParseQgcPlan, /**< @brief Failed to parse the QGroundControl plan. */
         NoSystem, /**< @brief No system connected. */
         Denied, /**< @brief Request denied. */
+        MissionTypeNotConsistent, /**< @brief Mission type is not consistent. */
+        InvalidSequence, /**< @brief The mission item sequences are not increasing correctly. */
+        CurrentInvalid, /**< @brief The current item is not set correctly. */
+        ProtocolError, /**< @brief There was a protocol error. */
+        IntMessagesNotSupported, /**< @brief The system does not support the MISSION_INT protocol.
+                                  */
     };
 
     /**
