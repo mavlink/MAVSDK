@@ -85,9 +85,9 @@ public:
     MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandInt& command);
 
     void send_command_async(
-        MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback);
+        MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback, bool no_ack = false);
     void send_command_async(
-        MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback);
+        MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback, bool no_ack = false);
 
     MavlinkCommandSender::Result set_msg_rate(
         uint16_t message_id, double rate_hz, uint8_t maybe_component_id = MAV_COMP_ID_AUTOPILOT1);

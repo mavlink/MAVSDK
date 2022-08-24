@@ -28,7 +28,8 @@ MavlinkCommandSender::~MavlinkCommandSender()
 }
 
 MavlinkCommandSender::Result
-MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& command)
+MavlinkCommandSender::send_command(
+    const MavlinkCommandSender::CommandInt& command, bool no_ack)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -42,14 +43,16 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& comma
         if (result != Result::InProgress) {
             prom->set_value(result);
         }
-    });
+    },
+        no_ack);
 
     // Block now to wait for result.
     return res.get();
 }
 
 MavlinkCommandSender::Result
-MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& command)
+MavlinkCommandSender::send_command(
+    const MavlinkCommandSender::CommandLong& command, bool no_ack)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -63,13 +66,14 @@ MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& comm
         if (result != Result::InProgress) {
             prom->set_value(result);
         }
-    });
+    },
+        no_ack);
 
     return res.get();
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandInt& command, const CommandResultCallback& callback)
+    const CommandInt& command, const CommandResultCallback& callback, bool no_ack)
 {
     if (_command_debugging) {
         LogDebug() << "COMMAND_INT " << (int)(command.command) << " to send to "
@@ -93,11 +97,12 @@ void MavlinkCommandSender::queue_command_async(
     new_work->command = command;
     new_work->identification = identification;
     new_work->callback = callback;
+    new_work->no_ack = no_ack;
     _work_queue.push_back(new_work);
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandLong& command, const CommandResultCallback& callback)
+    const CommandLong& command, const CommandResultCallback& callback, bool no_ack)
 {
     if (_command_debugging) {
         LogDebug() << "COMMAND_LONG " << (int)(command.command) << " to send to "
@@ -122,6 +127,7 @@ void MavlinkCommandSender::queue_command_async(
     new_work->identification = identification;
     new_work->callback = callback;
     new_work->time_started = _parent.get_time().steady_time();
+    new_work->no_ack = no_ack;
     _work_queue.push_back(new_work);
 }
 
@@ -352,9 +358,11 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
 void MavlinkCommandSender::do_work()
 {
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-
-    for (const auto& work : _work_queue) {
+    auto work_iterator = _work_queue.begin();
+    while (work_iterator != _work_queue.end()) {
+        const auto& work = *work_iterator;
         if (work->already_sent) {
+            work_iterator = std::next(work_iterator);
             continue;
         }
 
@@ -378,6 +386,7 @@ void MavlinkCommandSender::do_work()
         }
 
         if (already_being_sent) {
+            work_iterator = std::next(work_iterator);
             continue;
         }
 
@@ -399,10 +408,16 @@ void MavlinkCommandSender::do_work()
 
         work->already_sent = true;
 
-        _parent.register_timeout_handler(
-            [this, identification = work->identification] { receive_timeout(identification); },
-            work->timeout_s,
-            &work->timeout_cookie);
+        if (work->no_ack) {
+            work_iterator = _work_queue.erase(work_iterator);
+        }
+        else {
+            _parent.register_timeout_handler(
+                [this, identification = work->identification] { receive_timeout(identification); },
+                work->timeout_s,
+                &work->timeout_cookie);
+            work_iterator = std::next(work_iterator);
+        }
     }
 }
 

@@ -1037,7 +1037,7 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 }
 
 void SystemImpl::send_command_async(
-    MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback)
+    MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback, bool no_ack)
 {
     if (_target_address.system_id == 0 && _components.empty()) {
         if (callback) {
@@ -1047,11 +1047,11 @@ void SystemImpl::send_command_async(
     }
     command.target_system_id = get_system_id();
 
-    _command_sender.queue_command_async(command, callback);
+    _command_sender.queue_command_async(command, callback, no_ack);
 }
 
 void SystemImpl::send_command_async(
-    MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback)
+    MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback, bool no_ack)
 {
     if (_target_address.system_id == 0 && _components.empty()) {
         if (callback) {

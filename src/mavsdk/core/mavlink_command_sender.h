@@ -73,11 +73,11 @@ public:
         } params{};
     };
 
-    Result send_command(const CommandInt& command);
-    Result send_command(const CommandLong& command);
+    Result send_command(const CommandInt& command, bool no_ack = false);
+    Result send_command(const CommandLong& command, bool no_ack = false);
 
-    void queue_command_async(const CommandInt& command, const CommandResultCallback& callback);
-    void queue_command_async(const CommandLong& command, const CommandResultCallback& callback);
+    void queue_command_async(const CommandInt& command, const CommandResultCallback& callback, bool no_ack = false);
+    void queue_command_async(const CommandLong& command, const CommandResultCallback& callback, bool no_ack = false);
 
     void do_work();
 
@@ -118,6 +118,7 @@ private:
         double timeout_s{0.5};
         int retries_to_do{3};
         bool already_sent{false};
+        bool no_ack{false};
     };
 
     template<typename CommandType>
