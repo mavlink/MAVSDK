@@ -5,7 +5,7 @@ include(ExternalProject)
 
 message(STATUS "Preparing external project \"openssl\"")
 
-set(OPENSSL_VERSION 3.0.3)
+set(OPENSSL_VERSION 3.0.5)
 
 if(ANDROID)
     if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
