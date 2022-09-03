@@ -264,6 +264,8 @@ public:
         const std::string& filename, int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
+    void send_autopilot_version_request_async(
+        const MavlinkCommandSender::CommandResultCallback& callback);
     void send_flight_information_request();
 
     MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; };
@@ -386,6 +388,9 @@ private:
 
     std::mutex _mavlink_ftp_files_mutex{};
     std::unordered_map<std::string, std::string> _mavlink_ftp_files{};
+
+    bool _old_message_520_supported{true};
+    bool _old_message_528_supported{true};
 };
 
 } // namespace mavsdk

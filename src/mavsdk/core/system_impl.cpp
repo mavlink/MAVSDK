@@ -481,26 +481,64 @@ bool SystemImpl::send_message(mavlink_message_t& message)
 
 void SystemImpl::send_autopilot_version_request()
 {
-    // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    MavlinkCommandSender::CommandLong command{};
+    auto prom = std::promise<MavlinkCommandSender::Result>();
+    auto fut = prom.get_future();
 
-    command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
-    command.params.maybe_param1 = 1.0f;
+    send_autopilot_version_request_async(
+        [&prom](MavlinkCommandSender::Result result, float _val) { prom.set_value(result); });
+
+    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
+        _old_message_520_supported = false;
+        LogWarn() << "Trying alternative command (512).";
+        send_autopilot_version_request();
+    }
+}
+
+void SystemImpl::send_autopilot_version_request_async(
+    const MavlinkCommandSender::CommandResultCallback& callback)
+{
+    MavlinkCommandSender::CommandLong command{};
     command.target_component_id = get_autopilot_id();
 
-    send_command_async(command, nullptr);
+    if (_old_message_520_supported) {
+        // Note: This MAVLINK message is deprecated and would be removed from MAVSDK in a future
+        // release.
+        command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
+        command.params.maybe_param1 = 1.0f;
+    } else {
+        command.command = MAV_CMD_REQUEST_MESSAGE;
+        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_AUTOPILOT_VERSION)};
+    }
+
+    send_command_async(command, callback);
 }
 
 void SystemImpl::send_flight_information_request()
 {
-    // We don't care about an answer, we mostly care about receiving FLIGHT_INFORMATION.
-    MavlinkCommandSender::CommandLong command{};
+    auto prom = std::promise<MavlinkCommandSender::Result>();
+    auto fut = prom.get_future();
 
-    command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
-    command.params.maybe_param1 = 1.0f;
+    MavlinkCommandSender::CommandLong command{};
     command.target_component_id = get_autopilot_id();
 
-    send_command_async(command, nullptr);
+    if (_old_message_528_supported) {
+        // Note: This MAVLINK message is deprecated and would be removed from MAVSDK in a future
+        // release.
+        command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
+        command.params.maybe_param1 = 1.0f;
+    } else {
+        command.command = MAV_CMD_REQUEST_MESSAGE;
+        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_FLIGHT_INFORMATION)};
+    }
+
+    send_command_async(command, [&prom](MavlinkCommandSender::Result result, float _val) {
+        prom.set_value(result);
+    });
+    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
+        _old_message_528_supported = false;
+        LogWarn() << "Trying alternative command (512)..";
+        send_flight_information_request();
+    }
 }
 
 void SystemImpl::set_connected()
@@ -546,7 +584,7 @@ void SystemImpl::set_connected()
     }
     if (enable_needed) {
         if (has_autopilot()) {
-            send_autopilot_version_request();
+            send_autopilot_version_request_async(nullptr);
         }
 
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
