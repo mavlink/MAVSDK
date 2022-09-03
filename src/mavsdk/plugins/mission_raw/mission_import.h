@@ -30,7 +30,7 @@ private:
     static std::vector<MissionRaw::MissionItem>
     import_circular_geofences(const Json::Value& json_item);
     static float set_float(const Json::Value& val);
-    static float set_int32(const Json::Value& val);
+    static int32_t set_int32(const Json::Value& val);
 };
 
 } // namespace mavsdk

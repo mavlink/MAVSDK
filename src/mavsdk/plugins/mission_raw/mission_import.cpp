@@ -377,7 +377,7 @@ float MissionImport::set_float(const Json::Value& val)
     return val.isNull() ? NAN : val.asFloat();
 }
 
-float MissionImport::set_int32(const Json::Value& val)
+int32_t MissionImport::set_int32(const Json::Value& val)
 {
     return static_cast<int32_t>(val.isNull() ? 0 : (std::round(val.asDouble() * 1e7)));
 }
