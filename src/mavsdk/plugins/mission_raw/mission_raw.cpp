@@ -36,6 +36,28 @@ MissionRaw::Result MissionRaw::upload_mission(std::vector<MissionItem> mission_i
     return _impl->upload_mission(mission_items);
 }
 
+void MissionRaw::upload_geofence_async(
+    std::vector<MissionItem> mission_items, const ResultCallback callback)
+{
+    _impl->upload_geofence_async(mission_items, callback);
+}
+
+MissionRaw::Result MissionRaw::upload_geofence(std::vector<MissionItem> mission_items) const
+{
+    return _impl->upload_geofence(mission_items);
+}
+
+void MissionRaw::upload_rally_points_async(
+    std::vector<MissionItem> mission_items, const ResultCallback callback)
+{
+    _impl->upload_rally_points_async(mission_items, callback);
+}
+
+MissionRaw::Result MissionRaw::upload_rally_points(std::vector<MissionItem> mission_items) const
+{
+    return _impl->upload_rally_points(mission_items);
+}
+
 MissionRaw::Result MissionRaw::cancel_mission_upload() const
 {
     return _impl->cancel_mission_upload();
