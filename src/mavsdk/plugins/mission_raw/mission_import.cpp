@@ -7,7 +7,7 @@
 namespace mavsdk {
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
-MissionImport::parse_json(const std::string& raw_json)
+MissionImport::parse_json(const std::string& raw_json, Sender::Autopilot autopilot)
 {
     Json::CharReaderBuilder builder;
     const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
@@ -23,7 +23,7 @@ MissionImport::parse_json(const std::string& raw_json)
         return {MissionRaw::Result::FailedToParseQgcPlan, {}};
     }
 
-    auto maybe_mission_items = import_mission(root);
+    auto maybe_mission_items = import_mission(root, autopilot);
     if (!maybe_mission_items.has_value()) {
         return {MissionRaw::Result::FailedToParseQgcPlan, {}};
     }
@@ -60,7 +60,7 @@ bool MissionImport::check_overall_version(const Json::Value& root)
 }
 
 std::optional<std::vector<MissionRaw::MissionItem>>
-MissionImport::import_mission(const Json::Value& root)
+MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopilot)
 {
     // We need a mission part.
     const auto mission = root["mission"];
@@ -116,6 +116,34 @@ MissionImport::import_mission(const Json::Value& root)
     unsigned sequence = 0;
     for (auto& mission_item : mission_items) {
         mission_item.seq = sequence++;
+    }
+
+    // Add home position at 0 for ArduPilot
+    if (autopilot == Sender::Autopilot::ArduPilot) {
+        const auto home = mission["plannedHomePosition"];
+        if (!home.empty()) {
+            if (home.isArray() && home.size() != 3) {
+                LogErr() << "Unknown plannedHomePosition format";
+                return std::nullopt;
+            }
+
+            mission_items.insert(
+                mission_items.begin(),
+                MissionRaw::MissionItem{
+                    0,
+                    MAV_FRAME_GLOBAL_INT,
+                    MAV_CMD_NAV_WAYPOINT,
+                    0, // current
+                    1, // autocontinue
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    static_cast<int32_t>(std::round(home[0].asDouble() * 1e7)),
+                    static_cast<int32_t>(std::round(home[1].asDouble() * 1e7)),
+                    home[2].asFloat(),
+                    MAV_MISSION_TYPE_MISSION});
+        }
     }
 
     // Returning an empty vector is ok here if there were really no mission items.

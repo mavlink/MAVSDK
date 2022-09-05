@@ -17,9 +17,9 @@ std::string path_prefix(const std::string& path)
     return std::string("src/mavsdk/plugins/mission_raw/test_plans/") + path;
 }
 
-TEST(MissionRaw, ImportSamplePlanSuccessfully)
+std::vector<MissionRaw::MissionItem> create_reference_items()
 {
-    const std::vector<MissionRaw::MissionItem> reference_items = {
+    return {
         {0,
          MAV_FRAME_GLOBAL_RELATIVE_ALT,
          MAV_CMD_NAV_TAKEOFF,
@@ -99,6 +99,11 @@ TEST(MissionRaw, ImportSamplePlanSuccessfully)
          0.0f,
          MAV_MISSION_TYPE_MISSION},
     };
+}
+
+TEST(MissionRaw, ImportSamplePlanSuccessfully)
+{
+    const auto reference_items = create_reference_items();
 
     std::ifstream file{path_prefix("qgroundcontrol_sample.plan")};
     ASSERT_TRUE(file);
@@ -107,7 +112,7 @@ TEST(MissionRaw, ImportSamplePlanSuccessfully)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
 
     EXPECT_EQ(reference_items, result_pair.second.mission_items);
@@ -122,7 +127,7 @@ TEST(MissionRaw, ImportSamplePlanWithWrongOverallVersion)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -138,7 +143,7 @@ TEST(MissionRaw, ImportSamplePlanWithWrongMissionVersion)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -154,7 +159,7 @@ TEST(MissionRaw, ImportSamplePlanWithoutMission)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -341,7 +346,7 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionSurvey)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::Success);
     EXPECT_EQ(reference_items, result_pair.second.mission_items);
 
@@ -358,7 +363,7 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionSurveyWrongVersion)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -374,7 +379,7 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionStructuredScan)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -390,9 +395,46 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionSurveyMissingItems)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str());
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
     EXPECT_EQ(result_pair.second.rally_items.size(), 0);
+}
+
+TEST(MissionRaw, ImportSamplePlanWithArduPilot)
+{
+    auto reference_items = create_reference_items();
+
+    auto home_item = MissionRaw::MissionItem{
+        0,
+        MAV_FRAME_GLOBAL_INT,
+        MAV_CMD_NAV_WAYPOINT,
+        0, // current
+        1, // autocontinue
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        473977507,
+        85456075,
+        488.93101752001763f,
+        MAV_MISSION_TYPE_MISSION};
+
+    reference_items.insert(reference_items.begin(), home_item);
+
+    // There is no need to increment the sequence for all items, the sequence
+    // still starts at 0 after home.
+
+    std::ifstream file{path_prefix("qgroundcontrol_sample.plan")};
+    ASSERT_TRUE(file);
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::ArduPilot);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+
+    EXPECT_EQ(reference_items, result_pair.second.mission_items);
 }
