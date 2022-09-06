@@ -2811,10 +2811,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetRateAttitude(
+    grpc::Status SetRateAttitudeQuaternion(
         grpc::ServerContext* /* context */,
-        const rpc::telemetry::SetRateAttitudeRequest* request,
-        rpc::telemetry::SetRateAttitudeResponse* response) override
+        const rpc::telemetry::SetRateAttitudeQuaternionRequest* request,
+        rpc::telemetry::SetRateAttitudeQuaternionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
@@ -2826,11 +2826,39 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateAttitude sent with a null request! Ignoring...";
+            LogWarn() << "SetRateAttitudeQuaternion sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->set_rate_attitude(request->rate_hz());
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_attitude_quaternion(request->rate_hz());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRateAttitudeEuler(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateAttitudeEulerRequest* request,
+        rpc::telemetry::SetRateAttitudeEulerResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetRateAttitudeEuler sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_attitude_euler(request->rate_hz());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

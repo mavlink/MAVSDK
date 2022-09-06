@@ -85,7 +85,11 @@ TEST_F(SitlTest, PX4TelemetryAsync)
         10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    telemetry->set_rate_attitude_async(
+    telemetry->set_rate_attitude_euler_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    telemetry->set_rate_attitude_quaternion_async(
         10.0, [](Telemetry::Result result) { return receive_result(result); });
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

@@ -121,7 +121,8 @@ public:
     MOCK_METHOD1(set_rate_home, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_in_air, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_landed_state, Telemetry::Result(double)){};
-    MOCK_METHOD1(set_rate_attitude, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_attitude_quaternion, Telemetry::Result(double)){};
+    MOCK_METHOD1(set_rate_attitude_euler, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_camera_attitude, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_velocity_ned, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_gps_info, Telemetry::Result(double)){};
@@ -146,7 +147,9 @@ public:
     MOCK_CONST_METHOD2(set_rate_home_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_in_air_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_landed_state_async, void(double, Telemetry::ResultCallback)){};
-    MOCK_CONST_METHOD2(set_rate_attitude_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(
+        set_rate_attitude_quaternion_async, void(double, Telemetry::ResultCallback)){};
+    MOCK_CONST_METHOD2(set_rate_attitude_euler_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_camera_attitude_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_velocity_ned_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_gps_info_async, void(double, Telemetry::ResultCallback)){};
