@@ -531,9 +531,8 @@ void SystemImpl::send_flight_information_request()
         command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_FLIGHT_INFORMATION)};
     }
 
-    send_command_async(command, [&prom](MavlinkCommandSender::Result result, float) {
-        prom.set_value(result);
-    });
+    send_command_async(
+        command, [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
     if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
         _old_message_528_supported = false;
         LogWarn() << "Trying alternative command (512)..";
