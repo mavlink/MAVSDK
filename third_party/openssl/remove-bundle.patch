@@ -1,0 +1,13 @@
+diff --git a/Configurations/shared-info.pl b/Configurations/shared-info.pl
+index edd16f4055..a9da040c6f 100644
+--- a/Configurations/shared-info.pl
++++ b/Configurations/shared-info.pl
+@@ -41,7 +41,7 @@ my %shared_info;
+     },
+     'bsd-gcc-shared' => sub { return $shared_info{'linux-shared'}; },
+     'darwin-shared' => {
+-        module_ldflags        => '-bundle',
++        module_ldflags        => '',
+         shared_ldflag         => '-dynamiclib -current_version $(SHLIB_VERSION_NUMBER) -compatibility_version $(SHLIB_VERSION_NUMBER)',
+         shared_sonameflag     => '-install_name $(libdir)/',
+     },

@@ -61,6 +61,7 @@ elseif(IOS)
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
+        PATCH_COMMAND patch -p 1 < ${PROJECT_SOURCE_DIR}/remove-bundle.patch
         CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} CFLAGS='-fembed-bitcode' --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
