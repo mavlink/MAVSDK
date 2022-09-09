@@ -54,7 +54,7 @@ elseif(IOS)
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         PATCH_COMMAND patch -p 1 < ${PROJECT_SOURCE_DIR}/change-bundle.patch
-        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} CFLAGS=${CFLAGS} -E env NO_FIPS=True -E env NO_LEGACY=True --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env NO_FIPS=True NO_LEGACY=True <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} CFLAGS=${CFLAGS} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
