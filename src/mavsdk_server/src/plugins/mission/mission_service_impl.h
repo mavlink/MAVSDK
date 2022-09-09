@@ -93,6 +93,48 @@ public:
         }
     }
 
+    static rpc::mission::MissionItem::VehicleAction
+    translateToRpcVehicleAction(const mavsdk::Mission::MissionItem::VehicleAction& vehicle_action)
+    {
+        switch (vehicle_action) {
+            default:
+                LogErr() << "Unknown vehicle_action enum value: "
+                         << static_cast<int>(vehicle_action);
+            // FALLTHROUGH
+            case mavsdk::Mission::MissionItem::VehicleAction::None:
+                return rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_NONE;
+            case mavsdk::Mission::MissionItem::VehicleAction::Takeoff:
+                return rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF;
+            case mavsdk::Mission::MissionItem::VehicleAction::Land:
+                return rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_LAND;
+            case mavsdk::Mission::MissionItem::VehicleAction::TransitionToFw:
+                return rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW;
+            case mavsdk::Mission::MissionItem::VehicleAction::TransitionToMc:
+                return rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC;
+        }
+    }
+
+    static mavsdk::Mission::MissionItem::VehicleAction
+    translateFromRpcVehicleAction(const rpc::mission::MissionItem::VehicleAction vehicle_action)
+    {
+        switch (vehicle_action) {
+            default:
+                LogErr() << "Unknown vehicle_action enum value: "
+                         << static_cast<int>(vehicle_action);
+            // FALLTHROUGH
+            case rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_NONE:
+                return mavsdk::Mission::MissionItem::VehicleAction::None;
+            case rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF:
+                return mavsdk::Mission::MissionItem::VehicleAction::Takeoff;
+            case rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_LAND:
+                return mavsdk::Mission::MissionItem::VehicleAction::Land;
+            case rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW:
+                return mavsdk::Mission::MissionItem::VehicleAction::TransitionToFw;
+            case rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC:
+                return mavsdk::Mission::MissionItem::VehicleAction::TransitionToMc;
+        }
+    }
+
     static std::unique_ptr<rpc::mission::MissionItem>
     translateToRpcMissionItem(const mavsdk::Mission::MissionItem& mission_item)
     {
@@ -123,6 +165,8 @@ public:
         rpc_obj->set_yaw_deg(mission_item.yaw_deg);
 
         rpc_obj->set_camera_photo_distance_m(mission_item.camera_photo_distance_m);
+
+        rpc_obj->set_vehicle_action(translateToRpcVehicleAction(mission_item.vehicle_action));
 
         return rpc_obj;
     }
@@ -157,6 +201,8 @@ public:
         obj.yaw_deg = mission_item.yaw_deg();
 
         obj.camera_photo_distance_m = mission_item.camera_photo_distance_m();
+
+        obj.vehicle_action = translateFromRpcVehicleAction(mission_item.vehicle_action());
 
         return obj;
     }

@@ -226,6 +226,34 @@ inline bool MissionItem_CameraAction_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MissionItem_CameraAction>(
     MissionItem_CameraAction_descriptor(), name, value);
 }
+enum MissionItem_VehicleAction : int {
+  MissionItem_VehicleAction_VEHICLE_ACTION_NONE = 0,
+  MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF = 1,
+  MissionItem_VehicleAction_VEHICLE_ACTION_LAND = 2,
+  MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW = 3,
+  MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC = 4,
+  MissionItem_VehicleAction_MissionItem_VehicleAction_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  MissionItem_VehicleAction_MissionItem_VehicleAction_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool MissionItem_VehicleAction_IsValid(int value);
+constexpr MissionItem_VehicleAction MissionItem_VehicleAction_VehicleAction_MIN = MissionItem_VehicleAction_VEHICLE_ACTION_NONE;
+constexpr MissionItem_VehicleAction MissionItem_VehicleAction_VehicleAction_MAX = MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC;
+constexpr int MissionItem_VehicleAction_VehicleAction_ARRAYSIZE = MissionItem_VehicleAction_VehicleAction_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MissionItem_VehicleAction_descriptor();
+template<typename T>
+inline const std::string& MissionItem_VehicleAction_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, MissionItem_VehicleAction>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function MissionItem_VehicleAction_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    MissionItem_VehicleAction_descriptor(), enum_t_value);
+}
+inline bool MissionItem_VehicleAction_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, MissionItem_VehicleAction* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MissionItem_VehicleAction>(
+    MissionItem_VehicleAction_descriptor(), name, value);
+}
 enum MissionResult_Result : int {
   MissionResult_Result_RESULT_UNKNOWN = 0,
   MissionResult_Result_RESULT_SUCCESS = 1,
@@ -4385,6 +4413,42 @@ class MissionItem final :
     return MissionItem_CameraAction_Parse(name, value);
   }
 
+  typedef MissionItem_VehicleAction VehicleAction;
+  static constexpr VehicleAction VEHICLE_ACTION_NONE =
+    MissionItem_VehicleAction_VEHICLE_ACTION_NONE;
+  static constexpr VehicleAction VEHICLE_ACTION_TAKEOFF =
+    MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF;
+  static constexpr VehicleAction VEHICLE_ACTION_LAND =
+    MissionItem_VehicleAction_VEHICLE_ACTION_LAND;
+  static constexpr VehicleAction VEHICLE_ACTION_TRANSITION_TO_FW =
+    MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW;
+  static constexpr VehicleAction VEHICLE_ACTION_TRANSITION_TO_MC =
+    MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC;
+  static inline bool VehicleAction_IsValid(int value) {
+    return MissionItem_VehicleAction_IsValid(value);
+  }
+  static constexpr VehicleAction VehicleAction_MIN =
+    MissionItem_VehicleAction_VehicleAction_MIN;
+  static constexpr VehicleAction VehicleAction_MAX =
+    MissionItem_VehicleAction_VehicleAction_MAX;
+  static constexpr int VehicleAction_ARRAYSIZE =
+    MissionItem_VehicleAction_VehicleAction_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  VehicleAction_descriptor() {
+    return MissionItem_VehicleAction_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& VehicleAction_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, VehicleAction>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function VehicleAction_Name.");
+    return MissionItem_VehicleAction_Name(enum_t_value);
+  }
+  static inline bool VehicleAction_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      VehicleAction* value) {
+    return MissionItem_VehicleAction_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
@@ -4401,6 +4465,7 @@ class MissionItem final :
     kAcceptanceRadiusMFieldNumber = 11,
     kYawDegFieldNumber = 12,
     kCameraPhotoDistanceMFieldNumber = 13,
+    kVehicleActionFieldNumber = 14,
   };
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
   void clear_latitude_deg();
@@ -4519,6 +4584,15 @@ class MissionItem final :
   void _internal_set_camera_photo_distance_m(float value);
   public:
 
+  // .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 14;
+  void clear_vehicle_action();
+  ::mavsdk::rpc::mission::MissionItem_VehicleAction vehicle_action() const;
+  void set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
+  private:
+  ::mavsdk::rpc::mission::MissionItem_VehicleAction _internal_vehicle_action() const;
+  void _internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionItem)
  private:
   class _Internal;
@@ -4539,6 +4613,7 @@ class MissionItem final :
   float acceptance_radius_m_;
   float yaw_deg_;
   float camera_photo_distance_m_;
+  int vehicle_action_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_2fmission_2eproto;
 };
@@ -7566,6 +7641,26 @@ inline void MissionItem::set_camera_photo_distance_m(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_distance_m)
 }
 
+// .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 14;
+inline void MissionItem::clear_vehicle_action() {
+  vehicle_action_ = 0;
+}
+inline ::mavsdk::rpc::mission::MissionItem_VehicleAction MissionItem::_internal_vehicle_action() const {
+  return static_cast< ::mavsdk::rpc::mission::MissionItem_VehicleAction >(vehicle_action_);
+}
+inline ::mavsdk::rpc::mission::MissionItem_VehicleAction MissionItem::vehicle_action() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.vehicle_action)
+  return _internal_vehicle_action();
+}
+inline void MissionItem::_internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value) {
+  
+  vehicle_action_ = value;
+}
+inline void MissionItem::set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value) {
+  _internal_set_vehicle_action(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.vehicle_action)
+}
+
 // -------------------------------------------------------------------
 
 // MissionPlan
@@ -7988,6 +8083,11 @@ template <> struct is_proto_enum< ::mavsdk::rpc::mission::MissionItem_CameraActi
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::mission::MissionItem_CameraAction>() {
   return ::mavsdk::rpc::mission::MissionItem_CameraAction_descriptor();
+}
+template <> struct is_proto_enum< ::mavsdk::rpc::mission::MissionItem_VehicleAction> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::mission::MissionItem_VehicleAction>() {
+  return ::mavsdk::rpc::mission::MissionItem_VehicleAction_descriptor();
 }
 template <> struct is_proto_enum< ::mavsdk::rpc::mission::MissionResult_Result> : ::std::true_type {};
 template <>
