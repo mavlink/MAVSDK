@@ -7,7 +7,7 @@ index edd16f4055..a9da040c6f 100644
      'bsd-gcc-shared' => sub { return $shared_info{'linux-shared'}; },
      'darwin-shared' => {
 -        module_ldflags        => '-bundle',
-+        module_ldflags        => '-bitcode_bundle',
++        module_ldflags        => '',
          shared_ldflag         => '-dynamiclib -current_version $(SHLIB_VERSION_NUMBER) -compatibility_version $(SHLIB_VERSION_NUMBER)',
          shared_sonameflag     => '-install_name $(libdir)/',
      },
