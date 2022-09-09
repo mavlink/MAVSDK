@@ -7,6 +7,13 @@ message(STATUS "Preparing external project \"openssl\"")
 
 set(OPENSSL_VERSION 3.0.5)
 
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    set(OPENSSL_BUILD_TYPE "--debug")
+else()
+    set(OPENSSL_BUILD_TYPE "--release")
+endif()
+message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
+
 if(ANDROID)
     if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
         set(OPENSSL_PLATFORM "android-arm")
@@ -22,13 +29,6 @@ if(ANDROID)
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
-    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        set(OPENSSL_BUILD_TYPE "--debug")
-    else()
-        set(OPENSSL_BUILD_TYPE "--release")
-    endif()
-
-    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
 
     ExternalProject_add(
         openssl
@@ -48,14 +48,6 @@ elseif(IOS)
     endif()
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
-
-    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        set(OPENSSL_BUILD_TYPE "--debug")
-    else()
-        set(OPENSSL_BUILD_TYPE "--release")
-    endif()
-
-    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
 
     if(${ENABLE_BITCODE})
         set(CFLAGS "-fembed-bitcode")
@@ -79,14 +71,6 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
-    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        set(OPENSSL_BUILD_TYPE "--debug")
-    else()
-        set(OPENSSL_BUILD_TYPE "--release")
-    endif()
-
-    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
-
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
@@ -95,14 +79,6 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
         BUILD_COMMAND make
         )
 elseif(MSVC)
-    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        set(OPENSSL_BUILD_TYPE "--debug")
-    else()
-        set(OPENSSL_BUILD_TYPE "--release")
-    endif()
-
-    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
-
     message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
     # Only available from cmake 3.20, for now do it manually.
     #cmake_path(NATIVE_PATH CMAKE_INSTALL_PREFIX NORMALIZE NATIVE_INSTALL_PREFIX)
@@ -118,14 +94,6 @@ elseif(MSVC)
         INSTALL_COMMAND set MAKEFLAGS= && nmake install
         )
 else()
-    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        set(OPENSSL_BUILD_TYPE "-d")
-    else()
-        set(OPENSSL_BUILD_TYPE "")
-    endif()
-
-    message("OPENSSL_BUILD_TYPE set to ${OPENSSL_BUILD_TYPE}")
-
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
