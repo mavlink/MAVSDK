@@ -9,8 +9,8 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-    "-DCMAKE_USE_OPENSSL=OFF"
-    "-DCMAKE_USE_LIBSSH2=OFF"
+    "-DCURL_USE_OPENSSL=OFF"
+    "-DCURL_USE_LIBSSH2=OFF"
     "-DBUILD_SHARED_LIBS=OFF"
     "-DCURL_CA_PATH_SET=OFF"
     "-DCURL_ZLIB=OFF"
@@ -30,6 +30,12 @@ elseif(IOS)
         "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}"
         "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}"
         )
+elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
+    if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
+        list(APPEND CMAKE_ARGS
+            "-DCMAKE_EXE_LINKER_FLAGS=-Wl,--no-as-needed -latomic -Wl,--as-needed"
+            )
+    endif()
 endif()
 
 message(STATUS "Preparing external project \"curl\" with args:")
@@ -40,7 +46,7 @@ endforeach()
 ExternalProject_add(
     curl
     GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG curl-7_83_1
+    GIT_TAG curl-7_84_0
     GIT_SHALLOW ON
     PREFIX curl
     CMAKE_ARGS "${CMAKE_ARGS}"
