@@ -39,6 +39,9 @@ if(ANDROID)
         BUILD_COMMAND make
         )
 elseif(IOS)
+    # OpenSSL 3 has issues with bitcode. Let's stay with OpenSSL 1 until we can drop bitcode (with Xcode 14).
+    set(OPENSSL_VERSION 1.1.1o)
+
     if(${PLATFORM} STREQUAL "OS64")
         set(OPENSSL_PLATFORM "ios64-xcrun")
     elseif(${PLATFORM} STREQUAL "SIMULATOR64")
@@ -57,8 +60,7 @@ elseif(IOS)
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        PATCH_COMMAND patch -p 1 < ${PROJECT_SOURCE_DIR}/remove-bundle.patch
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env NO_FIPS=True NO_LEGACY=True <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} CFLAGS=${CFLAGS} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} CFLAGS=${CFLAGS} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         )
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
