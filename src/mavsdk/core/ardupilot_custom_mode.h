@@ -49,4 +49,33 @@ enum class CopterMode {
     Turtle = 28,
     Unknown = 100
 };
+enum class PlaneMode {
+    Manual = 0,
+    Circle = 1,
+    Stabilize = 2,
+    Training = 3,
+    Acro = 4,
+    FBWA = 5,
+    FBWB = 6,
+    Cruise = 7,
+    Autotune = 7,
+    Auto = 10,
+    RTL = 11,
+    Loiter = 12,
+    Takeoff = 13,
+    AvoidADSB = 14,
+    Guided = 15,
+    Initializing = 16,
+    QStabilize = 17,
+    QHover = 18,
+    QLoiter = 19,
+    QLand = 20,
+    QRTL = 21,
+    QAutotune = 22,
+    QAcro = 23,
+    Thermal = 24,
+    Unknown = 100
+};
+
+
 } // namespace ardupilot

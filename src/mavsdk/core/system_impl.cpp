@@ -844,6 +844,16 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
                     static_cast<float>(flight_mode_to_ardupilot_rover_mode(flight_mode));
             }
             break;
+        case MAV_TYPE::MAV_TYPE_FIXED_WING:
+            if (flight_mode_to_ardupilot_plane_mode(flight_mode) == ardupilot::PlaneMode::Unknown) {
+                LogErr() << "Cannot translate flight mode to ardupilot pplane mode.";
+                MavlinkCommandSender::CommandLong empty_command{};
+                return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
+            } else {
+                command.params.maybe_param2 =
+                    static_cast<float>(flight_mode_to_ardupilot_plane_mode(flight_mode));
+            }
+            break;
         default:
             if (flight_mode_to_ardupilot_copter_mode(flight_mode) ==
                 ardupilot::CopterMode::Unknown) {
@@ -919,6 +929,29 @@ ardupilot::CopterMode SystemImpl::flight_mode_to_ardupilot_copter_mode(FlightMod
         case FlightMode::Rattitude:
         default:
             return ardupilot::CopterMode::Unknown;
+    }
+}
+ardupilot::PlaneMode SystemImpl::flight_mode_to_ardupilot_plane_mode(FlightMode flight_mode)
+{
+    switch (flight_mode) {
+        case FlightMode::Mission:
+            return ardupilot::PlaneMode::Auto;
+        case FlightMode::Acro:
+            return ardupilot::PlaneMode::Acro;
+        case FlightMode::Hold:
+            return ardupilot::PlaneMode::Loiter;
+        case FlightMode::ReturnToLaunch:
+            return ardupilot::PlaneMode::RTL;
+        case FlightMode::Manual:
+            return ardupilot::PlaneMode::Manual;
+        case FlightMode::FBWA:
+            return ardupilot::PlaneMode::FBWA;
+        case FlightMode::Stabilized:
+            return ardupilot::PlaneMode::Stabilize;
+        case FlightMode::Unknown:
+            return ardupilot::PlaneMode::Unknown;
+        default:
+            return ardupilot::PlaneMode::Unknown;
     }
 }
 
