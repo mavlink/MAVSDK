@@ -458,7 +458,7 @@ jobs:
 
   macOS:
     name: ${{ matrix.name }}
-    runs-on: macos-latest
+    runs-on: macos-12
     strategy:
       matrix:
         include:
@@ -513,7 +513,7 @@ jobs:
 
   iOS:
     name: ${{ matrix.name }}
-    runs-on: macos-latest
+    runs-on: macos-12
     strategy:
       matrix:
         include:
@@ -555,7 +555,7 @@ jobs:
   iOS-XCFramework:
     name: iOS XCFramework
     needs: [macOS, iOS]
-    runs-on: macos-latest
+    runs-on: macos-12
     steps:
       - uses: actions/checkout@v2
         with:
