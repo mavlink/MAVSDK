@@ -863,6 +863,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
             break;
         }
 
+        case MAV_TYPE::MAV_TYPE_QUADROTOR:
         case MAV_TYPE::MAV_TYPE_COAXIAL:
         case MAV_TYPE::MAV_TYPE_HELICOPTER:
         case MAV_TYPE::MAV_TYPE_HEXAROTOR:
