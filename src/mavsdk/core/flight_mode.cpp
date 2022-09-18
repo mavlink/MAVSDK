@@ -51,15 +51,15 @@ FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode)
             return FlightMode::Mission;
         case ardupilot::CopterMode::Acro:
             return FlightMode::Acro;
-        case ardupilot::CopterMode::Alt_Hold:
+        case ardupilot::CopterMode::AltHold:
             return FlightMode::Altctl;
-        case ardupilot::CopterMode::POS_HOLD:
+        case ardupilot::CopterMode::PosHold:
             return FlightMode::Posctl;
-        case ardupilot::CopterMode::Flow_Hold:
+        case ardupilot::CopterMode::FlowHold:
         case ardupilot::CopterMode::Loiter:
             return FlightMode::Hold;
-        case ardupilot::CopterMode::RTL:
-        case ardupilot::CopterMode::Auto_RTL:
+        case ardupilot::CopterMode::Rtl:
+        case ardupilot::CopterMode::AutoRtl:
             return FlightMode::ReturnToLaunch;
         case ardupilot::CopterMode::Land:
             return FlightMode::Land;
@@ -75,7 +75,8 @@ FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode)
             return FlightMode::Unknown;
     }
 }
-FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode){
+FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode)
+{
     switch (static_cast<ardupilot::PlaneMode>(custom_mode)) {
         case ardupilot::PlaneMode::Manual:
             return FlightMode::Manual;
@@ -85,15 +86,13 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode){
             return FlightMode::Acro;
         case ardupilot::PlaneMode::Autotune:
             return FlightMode::Altctl;
-        case ardupilot::PlaneMode::FBWA:
+        case ardupilot::PlaneMode::Fbwa:
             return FlightMode::FBWA;
         case ardupilot::PlaneMode::Guided:
             return FlightMode::Guided;
         case ardupilot::PlaneMode::Loiter:
             return FlightMode::Hold;
-        case ardupilot::PlaneMode::RTL:
-            return FlightMode::ReturnToLaunch;
-        case ardupilot::PlaneMode::Auto_RTL:
+        case ardupilot::PlaneMode::Rtl:
             return FlightMode::ReturnToLaunch;
         case ardupilot::PlaneMode::Stabilize:
             return FlightMode::Stabilized;
@@ -103,7 +102,6 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode){
             return FlightMode::Unknown;
     }
 }
-
 
 FlightMode to_flight_mode_from_px4_mode(uint32_t custom_mode)
 {

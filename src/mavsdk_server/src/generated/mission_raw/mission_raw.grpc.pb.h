@@ -111,7 +111,7 @@ class MissionRawService final {
     //
     // Pausing the mission puts the vehicle into
     // [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
-    // A multi should just hover at the spot while a fixedwing vehicle should loiter
+    // A multicopter should just hover at the spot while a fixedwing vehicle should loiter
     // around the location where it paused.
     virtual ::grpc::Status PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::PauseMissionRequest& request, ::mavsdk::rpc::mission_raw::PauseMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::PauseMissionResponse>> AsyncPauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::PauseMissionRequest& request, ::grpc::CompletionQueue* cq) {
