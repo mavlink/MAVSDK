@@ -191,6 +191,7 @@ void TelemetryImpl::init()
 
 void TelemetryImpl::deinit()
 {
+    _parent->cancel_all_param(this);
     _parent->remove_call_every(_calibration_cookie);
     _parent->unregister_statustext_handler(this);
     _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
