@@ -52,6 +52,9 @@ public:
         Acro,
         Rattitude,
         Stabilized,
+        Fbwa,
+        Autotune,
+        Guided
     };
 
     explicit SystemImpl(MavsdkImpl& parent);
@@ -413,6 +416,7 @@ private:
 
     static ardupilot::RoverMode flight_mode_to_ardupilot_rover_mode(FlightMode flight_mode);
     static ardupilot::CopterMode flight_mode_to_ardupilot_copter_mode(FlightMode flight_mode);
+    static ardupilot::PlaneMode flight_mode_to_ardupilot_plane_mode(FlightMode flight_mode);
 
     MavlinkCommandSender::CommandLong
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
