@@ -1945,7 +1945,6 @@ bool TelemetryImpl::health_all_ok() const
         _health.is_global_position_ok && _health.is_home_position_ok) {
         return true;
     } else {
-        LogWarn() << "System status is usually fixed at 1 Hz";
         return false;
     }
 }
