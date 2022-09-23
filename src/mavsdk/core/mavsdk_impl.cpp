@@ -325,6 +325,13 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         }
     }
 
+    if (!found_system && message.compid == MAV_COMP_ID_TELEMETRY_RADIO) {
+        if (_message_logging_on) {
+            LogDebug() << "Don't create new system just for telemetry radio";
+        }
+        return;
+    }
+
     if (!found_system) {
         make_system_with_component(message.sysid, message.compid);
     }
