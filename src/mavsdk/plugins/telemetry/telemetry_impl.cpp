@@ -243,7 +243,6 @@ void TelemetryImpl::request_home_position_again()
             return;
         }
     }
-    LogWarn() << "Requesting Home Position Again.";
     request_home_position_async();
 }
 
