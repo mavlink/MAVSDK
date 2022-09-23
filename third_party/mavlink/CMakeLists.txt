@@ -17,6 +17,8 @@ ExternalProject_add(
     GIT_TAG 0b5b5dabf9c6ae22f2f93f0db9a4e19dcf6f19ac
     PREFIX mavlink
     CONFIGURE_COMMAND Python3::Interpreter
+        -m pip install -r pymavlink/requirements.txt
+    COMMAND Python3::Interpreter
         -m pymavlink.tools.mavgen
         --lang=C
         --wire-protocol=2.0
