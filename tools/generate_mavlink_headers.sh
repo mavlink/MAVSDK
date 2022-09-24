@@ -23,6 +23,12 @@ OUTPUT_PATH="$MAVLINK_HEADERS_PATH/include/mavlink/v2.0/"
 mkdir -p "$OUTPUT_PATH"
 OUTPUT_PATH=$(realpath $OUTPUT_PATH)
 
+echo "Installing dependencies"
+(cd $MAVLINK_PATH && \
+    python3 \
+        -m pip install -r pymavlink/requirements.txt)
+
+echo "Generating headers"
 (cd $MAVLINK_PATH && \
     python3 \
         -m pymavlink.tools.mavgen \
