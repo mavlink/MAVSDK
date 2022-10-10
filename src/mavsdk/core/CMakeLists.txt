@@ -113,11 +113,6 @@ install(FILES
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 
-install(DIRECTORY
-    ${MAVLINK_HEADERS}/mavlink
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk
-)
-
 list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
