@@ -106,7 +106,9 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     _version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
     _version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
     _version.flight_sw_patch = (autopilot_version.flight_sw_version >> (8 * 1)) & 0xFF;
-    _version.flight_sw_version_type = get_flight_software_version_type(static_cast<FIRMWARE_VERSION_TYPE>((autopilot_version.flight_sw_version >> (8 * 0)) & 0xFF));
+    _version.flight_sw_version_type =
+        get_flight_software_version_type(static_cast<FIRMWARE_VERSION_TYPE>(
+            (autopilot_version.flight_sw_version >> (8 * 0)) & 0xFF));
 
     // first three bytes of flight_custom_version (little endian) describe vendor version
     _version.flight_sw_git_hash = swap_and_translate_binary_to_str(

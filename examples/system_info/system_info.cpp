@@ -79,36 +79,36 @@ int main(int argc, char** argv)
     auto info = Info{system};
 
     // Wait until version/firmware information has been populated from the vehicle
-    while (info.get_identification().first==Info::Result::InformationNotReceivedYet) {
+    while (info.get_identification().first == Info::Result::InformationNotReceivedYet) {
         std::cout << "Waiting for Version information to populate from system." << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     // Get the system Version struct
-    const Info::Version &systemVersion =  info.get_version().second;
+    const Info::Version& systemVersion = info.get_version().second;
 
     // Print out the vehicle version information.
-    std::cout << "  flight_sw_major: " << systemVersion.flight_sw_major<< '\n'
-            << "  flight_sw_minor: " << systemVersion.flight_sw_minor<< '\n'
-            << "  flight_sw_patch: " << systemVersion.flight_sw_patch<< '\n'
-            << "  flight_sw_version_type: " << systemVersion.flight_sw_version_type<< '\n'
-            << "  flight_sw_vendor_major: " << systemVersion.flight_sw_vendor_major<< '\n'
-            << "  flight_sw_vendor_minor: " << systemVersion.flight_sw_vendor_minor<< '\n'
-            << "  flight_sw_vendor_patch: " << systemVersion.flight_sw_vendor_patch<< '\n'
-            << "  flight_sw_git_hash: " << systemVersion.flight_sw_git_hash<< '\n'
-            << "  os_sw_major: " << systemVersion.os_sw_major<< '\n'
-            << "  os_sw_minor: " << systemVersion.os_sw_minor<< '\n'
-            << "  os_sw_patch: " << systemVersion.os_sw_patch<< '\n'
-            << "  os_sw_git_hash: " << systemVersion.os_sw_git_hash<< '\n';
+    std::cout << "  flight_sw_major: " << systemVersion.flight_sw_major << '\n'
+              << "  flight_sw_minor: " << systemVersion.flight_sw_minor << '\n'
+              << "  flight_sw_patch: " << systemVersion.flight_sw_patch << '\n'
+              << "  flight_sw_version_type: " << systemVersion.flight_sw_version_type << '\n'
+              << "  flight_sw_vendor_major: " << systemVersion.flight_sw_vendor_major << '\n'
+              << "  flight_sw_vendor_minor: " << systemVersion.flight_sw_vendor_minor << '\n'
+              << "  flight_sw_vendor_patch: " << systemVersion.flight_sw_vendor_patch << '\n'
+              << "  flight_sw_git_hash: " << systemVersion.flight_sw_git_hash << '\n'
+              << "  os_sw_major: " << systemVersion.os_sw_major << '\n'
+              << "  os_sw_minor: " << systemVersion.os_sw_minor << '\n'
+              << "  os_sw_patch: " << systemVersion.os_sw_patch << '\n'
+              << "  os_sw_git_hash: " << systemVersion.os_sw_git_hash << '\n';
 
     // Get the system Product struct
-    const Info::Product &systemProduct =  info.get_product().second;
+    const Info::Product& systemProduct = info.get_product().second;
 
     // Print out the vehicle product information.
-    std::cout << "  vendor_id: " << systemProduct.vendor_id<< '\n'
-            << "  vendor_name: " << systemProduct.vendor_name<< '\n'
-            << "  product_id: " << systemProduct.product_id<< '\n'
-            << "  product_name: " << systemProduct.product_id<< '\n';
+    std::cout << "  vendor_id: " << systemProduct.vendor_id << '\n'
+              << "  vendor_name: " << systemProduct.vendor_name << '\n'
+              << "  product_id: " << systemProduct.product_id << '\n'
+              << "  product_name: " << systemProduct.product_id << '\n';
 
     return 0;
 }
