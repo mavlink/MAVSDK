@@ -120,6 +120,58 @@ public:
         return obj;
     }
 
+    static rpc::info::Version::FlightSoftwareVersionType translateToRpcFlightSoftwareVersionType(
+        const mavsdk::Info::Version::FlightSoftwareVersionType& flight_software_version_type)
+    {
+        switch (flight_software_version_type) {
+            default:
+                LogErr() << "Unknown flight_software_version_type enum value: "
+                         << static_cast<int>(flight_software_version_type);
+            // FALLTHROUGH
+            case mavsdk::Info::Version::FlightSoftwareVersionType::Unknown:
+                return rpc::info::
+                    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN;
+            case mavsdk::Info::Version::FlightSoftwareVersionType::Dev:
+                return rpc::info::
+                    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_DEV;
+            case mavsdk::Info::Version::FlightSoftwareVersionType::Alpha:
+                return rpc::info::
+                    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA;
+            case mavsdk::Info::Version::FlightSoftwareVersionType::Beta:
+                return rpc::info::
+                    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_BETA;
+            case mavsdk::Info::Version::FlightSoftwareVersionType::Rc:
+                return rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RC;
+            case mavsdk::Info::Version::FlightSoftwareVersionType::Release:
+                return rpc::info::
+                    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE;
+        }
+    }
+
+    static mavsdk::Info::Version::FlightSoftwareVersionType
+    translateFromRpcFlightSoftwareVersionType(
+        const rpc::info::Version::FlightSoftwareVersionType flight_software_version_type)
+    {
+        switch (flight_software_version_type) {
+            default:
+                LogErr() << "Unknown flight_software_version_type enum value: "
+                         << static_cast<int>(flight_software_version_type);
+            // FALLTHROUGH
+            case rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN:
+                return mavsdk::Info::Version::FlightSoftwareVersionType::Unknown;
+            case rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_DEV:
+                return mavsdk::Info::Version::FlightSoftwareVersionType::Dev;
+            case rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA:
+                return mavsdk::Info::Version::FlightSoftwareVersionType::Alpha;
+            case rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_BETA:
+                return mavsdk::Info::Version::FlightSoftwareVersionType::Beta;
+            case rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RC:
+                return mavsdk::Info::Version::FlightSoftwareVersionType::Rc;
+            case rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE:
+                return mavsdk::Info::Version::FlightSoftwareVersionType::Release;
+        }
+    }
+
     static std::unique_ptr<rpc::info::Version>
     translateToRpcVersion(const mavsdk::Info::Version& version)
     {
@@ -146,6 +198,9 @@ public:
         rpc_obj->set_flight_sw_git_hash(version.flight_sw_git_hash);
 
         rpc_obj->set_os_sw_git_hash(version.os_sw_git_hash);
+
+        rpc_obj->set_flight_sw_version_type(
+            translateToRpcFlightSoftwareVersionType(version.flight_sw_version_type));
 
         return rpc_obj;
     }
@@ -175,6 +230,9 @@ public:
         obj.flight_sw_git_hash = version.flight_sw_git_hash();
 
         obj.os_sw_git_hash = version.os_sw_git_hash();
+
+        obj.flight_sw_version_type =
+            translateFromRpcFlightSoftwareVersionType(version.flight_sw_version_type());
 
         return obj;
     }

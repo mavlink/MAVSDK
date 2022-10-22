@@ -38,6 +38,9 @@ private:
     void process_flight_information(const mavlink_message_t& message);
     void process_attitude(const mavlink_message_t& message);
 
+    Info::Version::FlightSoftwareVersionType
+    get_flight_software_version_type(FIRMWARE_VERSION_TYPE);
+
     mutable std::mutex _mutex{};
 
     Info::Version _version{};

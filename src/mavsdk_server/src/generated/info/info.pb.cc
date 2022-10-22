@@ -196,7 +196,9 @@ PROTOBUF_CONSTEXPR Version::Version(
   , flight_sw_vendor_patch_(0)
   , os_sw_major_(0)
   , os_sw_minor_(0)
-  , os_sw_patch_(0){}
+  , os_sw_patch_(0)
+  , flight_sw_version_type_(0)
+{}
 struct VersionDefaultTypeInternal {
   PROTOBUF_CONSTEXPR VersionDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -224,7 +226,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_info_2finfo_2eproto[15];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_info_2finfo_2eproto[1];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_info_2finfo_2eproto[2];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_info_2finfo_2eproto = nullptr;
 
 const uint32_t TableStruct_info_2finfo_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -341,6 +343,7 @@ const uint32_t TableStruct_info_2finfo_2eproto::offsets[] PROTOBUF_SECTION_VARIA
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Version, os_sw_patch_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Version, flight_sw_git_hash_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Version, os_sw_git_hash_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Version, flight_sw_version_type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::InfoResult, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -365,7 +368,7 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 78, -1, -1, sizeof(::mavsdk::rpc::info::Identification)},
   { 86, -1, -1, sizeof(::mavsdk::rpc::info::Product)},
   { 96, -1, -1, sizeof(::mavsdk::rpc::info::Version)},
-  { 113, -1, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
+  { 114, -1, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -411,7 +414,7 @@ const char descriptor_table_protodef_info_2finfo_2eproto[] PROTOBUF_SECTION_VARI
   "Identification\022\024\n\014hardware_uid\030\001 \001(\t\022\022\n\n"
   "legacy_uid\030\002 \001(\004\"[\n\007Product\022\021\n\tvendor_id"
   "\030\001 \001(\005\022\023\n\013vendor_name\030\002 \001(\t\022\022\n\nproduct_i"
-  "d\030\003 \001(\005\022\024\n\014product_name\030\004 \001(\t\"\247\002\n\007Versio"
+  "d\030\003 \001(\005\022\024\n\014product_name\030\004 \001(\t\"\207\005\n\007Versio"
   "n\022\027\n\017flight_sw_major\030\001 \001(\005\022\027\n\017flight_sw_"
   "minor\030\002 \001(\005\022\027\n\017flight_sw_patch\030\003 \001(\005\022\036\n\026"
   "flight_sw_vendor_major\030\004 \001(\005\022\036\n\026flight_s"
@@ -419,33 +422,42 @@ const char descriptor_table_protodef_info_2finfo_2eproto[] PROTOBUF_SECTION_VARI
   "_patch\030\006 \001(\005\022\023\n\013os_sw_major\030\007 \001(\005\022\023\n\013os_"
   "sw_minor\030\010 \001(\005\022\023\n\013os_sw_patch\030\t \001(\005\022\032\n\022f"
   "light_sw_git_hash\030\n \001(\t\022\026\n\016os_sw_git_has"
-  "h\030\013 \001(\t\"\305\001\n\nInfoResult\0222\n\006result\030\001 \001(\0162\""
-  ".mavsdk.rpc.info.InfoResult.Result\022\022\n\nre"
-  "sult_str\030\002 \001(\t\"o\n\006Result\022\022\n\016RESULT_UNKNO"
-  "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\'\n#RESULT_INFOR"
-  "MATION_NOT_RECEIVED_YET\020\002\022\024\n\020RESULT_NO_S"
-  "YSTEM\020\0032\235\004\n\013InfoService\022y\n\024GetFlightInfo"
-  "rmation\022,.mavsdk.rpc.info.GetFlightInfor"
-  "mationRequest\032-.mavsdk.rpc.info.GetFligh"
-  "tInformationResponse\"\004\200\265\030\001\022p\n\021GetIdentif"
-  "ication\022).mavsdk.rpc.info.GetIdentificat"
-  "ionRequest\032*.mavsdk.rpc.info.GetIdentifi"
-  "cationResponse\"\004\200\265\030\001\022[\n\nGetProduct\022\".mav"
-  "sdk.rpc.info.GetProductRequest\032#.mavsdk."
-  "rpc.info.GetProductResponse\"\004\200\265\030\001\022[\n\nGet"
-  "Version\022\".mavsdk.rpc.info.GetVersionRequ"
-  "est\032#.mavsdk.rpc.info.GetVersionResponse"
-  "\"\004\200\265\030\001\022g\n\016GetSpeedFactor\022&.mavsdk.rpc.in"
-  "fo.GetSpeedFactorRequest\032\'.mavsdk.rpc.in"
-  "fo.GetSpeedFactorResponse\"\004\200\265\030\001B\033\n\016io.ma"
-  "vsdk.infoB\tInfoProtob\006proto3"
+  "h\030\013 \001(\t\022R\n\026flight_sw_version_type\030\014 \001(\0162"
+  "2.mavsdk.rpc.info.Version.FlightSoftware"
+  "VersionType\"\211\002\n\031FlightSoftwareVersionTyp"
+  "e\022(\n$FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOW"
+  "N\020\000\022$\n FLIGHT_SOFTWARE_VERSION_TYPE_DEV\020"
+  "\001\022&\n\"FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA\020"
+  "\002\022%\n!FLIGHT_SOFTWARE_VERSION_TYPE_BETA\020\003"
+  "\022#\n\037FLIGHT_SOFTWARE_VERSION_TYPE_RC\020\004\022(\n"
+  "$FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE\020\005\""
+  "\305\001\n\nInfoResult\0222\n\006result\030\001 \001(\0162\".mavsdk."
+  "rpc.info.InfoResult.Result\022\022\n\nresult_str"
+  "\030\002 \001(\t\"o\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016"
+  "RESULT_SUCCESS\020\001\022\'\n#RESULT_INFORMATION_N"
+  "OT_RECEIVED_YET\020\002\022\024\n\020RESULT_NO_SYSTEM\020\0032"
+  "\235\004\n\013InfoService\022y\n\024GetFlightInformation\022"
+  ",.mavsdk.rpc.info.GetFlightInformationRe"
+  "quest\032-.mavsdk.rpc.info.GetFlightInforma"
+  "tionResponse\"\004\200\265\030\001\022p\n\021GetIdentification\022"
+  ").mavsdk.rpc.info.GetIdentificationReque"
+  "st\032*.mavsdk.rpc.info.GetIdentificationRe"
+  "sponse\"\004\200\265\030\001\022[\n\nGetProduct\022\".mavsdk.rpc."
+  "info.GetProductRequest\032#.mavsdk.rpc.info"
+  ".GetProductResponse\"\004\200\265\030\001\022[\n\nGetVersion\022"
+  "\".mavsdk.rpc.info.GetVersionRequest\032#.ma"
+  "vsdk.rpc.info.GetVersionResponse\"\004\200\265\030\001\022g"
+  "\n\016GetSpeedFactor\022&.mavsdk.rpc.info.GetSp"
+  "eedFactorRequest\032\'.mavsdk.rpc.info.GetSp"
+  "eedFactorResponse\"\004\200\265\030\001B\033\n\016io.mavsdk.inf"
+  "oB\tInfoProtob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_info_2finfo_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_info_2finfo_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_info_2finfo_2eproto = {
-    false, false, 2068, descriptor_table_protodef_info_2finfo_2eproto,
+    false, false, 2420, descriptor_table_protodef_info_2finfo_2eproto,
     "info/info.proto",
     &descriptor_table_info_2finfo_2eproto_once, descriptor_table_info_2finfo_2eproto_deps, 1, 15,
     schemas, file_default_instances, TableStruct_info_2finfo_2eproto::offsets,
@@ -461,9 +473,38 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_in
 namespace mavsdk {
 namespace rpc {
 namespace info {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* InfoResult_Result_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Version_FlightSoftwareVersionType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_info_2finfo_2eproto);
   return file_level_enum_descriptors_info_2finfo_2eproto[0];
+}
+bool Version_FlightSoftwareVersionType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+constexpr Version_FlightSoftwareVersionType Version::FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN;
+constexpr Version_FlightSoftwareVersionType Version::FLIGHT_SOFTWARE_VERSION_TYPE_DEV;
+constexpr Version_FlightSoftwareVersionType Version::FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA;
+constexpr Version_FlightSoftwareVersionType Version::FLIGHT_SOFTWARE_VERSION_TYPE_BETA;
+constexpr Version_FlightSoftwareVersionType Version::FLIGHT_SOFTWARE_VERSION_TYPE_RC;
+constexpr Version_FlightSoftwareVersionType Version::FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE;
+constexpr Version_FlightSoftwareVersionType Version::FlightSoftwareVersionType_MIN;
+constexpr Version_FlightSoftwareVersionType Version::FlightSoftwareVersionType_MAX;
+constexpr int Version::FlightSoftwareVersionType_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* InfoResult_Result_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_info_2finfo_2eproto);
+  return file_level_enum_descriptors_info_2finfo_2eproto[1];
 }
 bool InfoResult_Result_IsValid(int value) {
   switch (value) {
@@ -2614,8 +2655,8 @@ Version::Version(const Version& from)
       GetArenaForAllocation());
   }
   ::memcpy(&flight_sw_major_, &from.flight_sw_major_,
-    static_cast<size_t>(reinterpret_cast<char*>(&os_sw_patch_) -
-    reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(os_sw_patch_));
+    static_cast<size_t>(reinterpret_cast<char*>(&flight_sw_version_type_) -
+    reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(flight_sw_version_type_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.info.Version)
 }
 
@@ -2630,8 +2671,8 @@ os_sw_git_hash_.InitDefault();
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&flight_sw_major_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&os_sw_patch_) -
-    reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(os_sw_patch_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&flight_sw_version_type_) -
+    reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(flight_sw_version_type_));
 }
 
 Version::~Version() {
@@ -2662,8 +2703,8 @@ void Version::Clear() {
   flight_sw_git_hash_.ClearToEmpty();
   os_sw_git_hash_.ClearToEmpty();
   ::memset(&flight_sw_major_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&os_sw_patch_) -
-      reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(os_sw_patch_));
+      reinterpret_cast<char*>(&flight_sw_version_type_) -
+      reinterpret_cast<char*>(&flight_sw_major_)) + sizeof(flight_sw_version_type_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2762,6 +2803,15 @@ const char* Version::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.info.Version.os_sw_git_hash"));
+        } else
+          goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.info.Version.FlightSoftwareVersionType flight_sw_version_type = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 96)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_flight_sw_version_type(static_cast<::mavsdk::rpc::info::Version_FlightSoftwareVersionType>(val));
         } else
           goto handle_unusual;
         continue;
@@ -2868,6 +2918,13 @@ uint8_t* Version::_InternalSerialize(
         11, this->_internal_os_sw_git_hash(), target);
   }
 
+  // .mavsdk.rpc.info.Version.FlightSoftwareVersionType flight_sw_version_type = 12;
+  if (this->_internal_flight_sw_version_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      12, this->_internal_flight_sw_version_type(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2943,6 +3000,12 @@ size_t Version::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_os_sw_patch());
   }
 
+  // .mavsdk.rpc.info.Version.FlightSoftwareVersionType flight_sw_version_type = 12;
+  if (this->_internal_flight_sw_version_type() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_flight_sw_version_type());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -2998,6 +3061,9 @@ void Version::MergeFrom(const Version& from) {
   if (from._internal_os_sw_patch() != 0) {
     _internal_set_os_sw_patch(from._internal_os_sw_patch());
   }
+  if (from._internal_flight_sw_version_type() != 0) {
+    _internal_set_flight_sw_version_type(from._internal_flight_sw_version_type());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -3026,8 +3092,8 @@ void Version::InternalSwap(Version* other) {
       &other->os_sw_git_hash_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Version, os_sw_patch_)
-      + sizeof(Version::os_sw_patch_)
+      PROTOBUF_FIELD_OFFSET(Version, flight_sw_version_type_)
+      + sizeof(Version::flight_sw_version_type_)
       - PROTOBUF_FIELD_OFFSET(Version, flight_sw_major_)>(
           reinterpret_cast<char*>(&flight_sw_major_),
           reinterpret_cast<char*>(&other->flight_sw_major_));

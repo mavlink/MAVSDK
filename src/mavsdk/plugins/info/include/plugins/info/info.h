@@ -134,6 +134,27 @@ public:
      * @brief System version information.
      */
     struct Version {
+        /**
+         * @brief These values define the type of firmware/flight software release
+         */
+        enum class FlightSoftwareVersionType {
+            Unknown, /**< @brief Unknown type. */
+            Dev, /**< @brief Development release. */
+            Alpha, /**< @brief Alpha release. */
+            Beta, /**< @brief Beta release. */
+            Rc, /**< @brief Release candidate. */
+            Release, /**< @brief Official stable release. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Info::FlightSoftwareVersionType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            Info::Version::FlightSoftwareVersionType const& flight_software_version_type);
+
         int32_t flight_sw_major{}; /**< @brief Flight software major version */
         int32_t flight_sw_minor{}; /**< @brief Flight software minor version */
         int32_t flight_sw_patch{}; /**< @brief Flight software patch version */
@@ -145,6 +166,8 @@ public:
         int32_t os_sw_patch{}; /**< @brief Operating system software patch version */
         std::string flight_sw_git_hash{}; /**< @brief Flight software git hash */
         std::string os_sw_git_hash{}; /**< @brief Operating system software git hash */
+        FlightSoftwareVersionType
+            flight_sw_version_type{}; /**< @brief Flight software version type */
     };
 
     /**
