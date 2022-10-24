@@ -38,6 +38,7 @@ using AngularVelocityFrd = Telemetry::AngularVelocityFrd;
 using MagneticFieldFrd = Telemetry::MagneticFieldFrd;
 using Imu = Telemetry::Imu;
 using GpsGlobalOrigin = Telemetry::GpsGlobalOrigin;
+using Altitude = Telemetry::Altitude;
 
 Telemetry::Telemetry(System& system) : PluginBase(), _impl{std::make_unique<TelemetryImpl>(system)}
 {}
@@ -556,6 +557,21 @@ Telemetry::Heading Telemetry::heading() const
     return _impl->heading();
 }
 
+Telemetry::AltitudeHandle Telemetry::subscribe_altitude(const AltitudeCallback& callback)
+{
+    return _impl->subscribe_altitude(callback);
+}
+
+void Telemetry::unsubscribe_altitude(AltitudeHandle handle)
+{
+    _impl->unsubscribe_altitude(handle);
+}
+
+Telemetry::Altitude Telemetry::altitude() const
+{
+    return _impl->altitude();
+}
+
 void Telemetry::set_rate_position_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_position_async(rate_hz, callback);
@@ -785,6 +801,16 @@ void Telemetry::set_rate_distance_sensor_async(double rate_hz, const ResultCallb
 Telemetry::Result Telemetry::set_rate_distance_sensor(double rate_hz) const
 {
     return _impl->set_rate_distance_sensor(rate_hz);
+}
+
+void Telemetry::set_rate_altitude_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_altitude_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_altitude(double rate_hz) const
+{
+    return _impl->set_rate_altitude(rate_hz);
 }
 
 void Telemetry::get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback)
@@ -1445,6 +1471,33 @@ std::ostream& operator<<(std::ostream& str, Telemetry::GpsGlobalOrigin const& gp
     str << "    latitude_deg: " << gps_global_origin.latitude_deg << '\n';
     str << "    longitude_deg: " << gps_global_origin.longitude_deg << '\n';
     str << "    altitude_m: " << gps_global_origin.altitude_m << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Telemetry::Altitude& lhs, const Telemetry::Altitude& rhs)
+{
+    return ((std::isnan(rhs.altitude_monotonic_m) && std::isnan(lhs.altitude_monotonic_m)) ||
+            rhs.altitude_monotonic_m == lhs.altitude_monotonic_m) &&
+           ((std::isnan(rhs.altitude_amsl_m) && std::isnan(lhs.altitude_amsl_m)) ||
+            rhs.altitude_amsl_m == lhs.altitude_amsl_m) &&
+           ((std::isnan(rhs.altitude_local_m) && std::isnan(lhs.altitude_local_m)) ||
+            rhs.altitude_local_m == lhs.altitude_local_m) &&
+           ((std::isnan(rhs.altitude_relative_m) && std::isnan(lhs.altitude_relative_m)) ||
+            rhs.altitude_relative_m == lhs.altitude_relative_m) &&
+           ((std::isnan(rhs.altitude_terrain_m) && std::isnan(lhs.altitude_terrain_m)) ||
+            rhs.altitude_terrain_m == lhs.altitude_terrain_m);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude)
+{
+    str << std::setprecision(15);
+    str << "altitude:" << '\n' << "{\n";
+    str << "    altitude_monotonic_m: " << altitude.altitude_monotonic_m << '\n';
+    str << "    altitude_amsl_m: " << altitude.altitude_amsl_m << '\n';
+    str << "    altitude_local_m: " << altitude.altitude_local_m << '\n';
+    str << "    altitude_relative_m: " << altitude.altitude_relative_m << '\n';
+    str << "    altitude_terrain_m: " << altitude.altitude_terrain_m << '\n';
     str << '}';
     return str;
 }

@@ -32,6 +32,7 @@ static void print_position_velocity_ned(Telemetry::PositionVelocityNed position_
 static void print_unix_epoch_time_us(uint64_t time_us);
 static void print_actuator_control_target(Telemetry::ActuatorControlTarget actuator_control_target);
 static void print_actuator_output_status(Telemetry::ActuatorOutputStatus actuator_output_status);
+static void print_altitude(Telemetry::Altitude altitude);
 
 static bool _set_rate_error = false;
 static bool _received_position = false;
@@ -55,6 +56,7 @@ static bool _received_rc_status = false;
 static bool _received_position_velocity_ned = false;
 static bool _received_actuator_control_target = false;
 static bool _received_actuator_output_status = false;
+static bool _received_altitude = false;
 
 TEST_F(SitlTest, PX4TelemetryAsync)
 {
@@ -119,6 +121,10 @@ TEST_F(SitlTest, PX4TelemetryAsync)
 
     telemetry->set_rate_ground_truth_async(
         10.0, [](Telemetry::Result result) { return receive_result(result); });
+
+    telemetry->set_rate_altitude_async(
+        10.0, [](Telemetry::Result result) { return receive_result(result); });
+
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     telemetry->subscribe_position([](Telemetry::Position position) { print_position(position); });
@@ -186,6 +192,8 @@ TEST_F(SitlTest, PX4TelemetryAsync)
             print_actuator_output_status(actuator_output_status);
         });
 
+    telemetry->subscribe_altitude([](Telemetry::Altitude altitude) { print_altitude(altitude); });
+
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     EXPECT_FALSE(_set_rate_error);
@@ -206,6 +214,7 @@ TEST_F(SitlTest, PX4TelemetryAsync)
     EXPECT_TRUE(_received_imu);
     EXPECT_TRUE(_received_gps_info);
     EXPECT_TRUE(_received_battery);
+    EXPECT_TRUE(_received_altitude);
     // EXPECT_TRUE(_received_rc_status); // No RC is sent in SITL.
     EXPECT_TRUE(_received_position_velocity_ned);
     // EXPECT_TRUE(_received_actuator_control_target); TODO check is that sent in SITL.
@@ -353,6 +362,17 @@ void print_position_velocity_ned(Telemetry::PositionVelocityNed position_velocit
               << "velocity down: " << position_velocity_ned.velocity.down_m_s << " m/s" << '\n';
 
     _received_position_velocity_ned = true;
+}
+
+void print_altitude(Telemetry::Altitude altitude)
+{
+    std::cout << "altitude_monotonic: " << altitude.altitude_monotonic_m << "m, "
+              << "altitude_local" << altitude.altitude_local_m << "m, "
+              << "altitude_amsl" << altitude.altitude_amsl_m << "m, "
+              << "altitude_relative" << altitude.altitude_relative_m << "m, "
+              << "altitude_terrain" << altitude.altitude_terrain_m << "m" << std::endl;
+
+    _received_altitude = true;
 }
 
 void print_unix_epoch_time_us(uint64_t time_us)

@@ -65,6 +65,12 @@ extern ActuatorOutputStatusDefaultTypeInternal _ActuatorOutputStatus_default_ins
 class ActuatorOutputStatusResponse;
 struct ActuatorOutputStatusResponseDefaultTypeInternal;
 extern ActuatorOutputStatusResponseDefaultTypeInternal _ActuatorOutputStatusResponse_default_instance_;
+class Altitude;
+struct AltitudeDefaultTypeInternal;
+extern AltitudeDefaultTypeInternal _Altitude_default_instance_;
+class AltitudeResponse;
+struct AltitudeResponseDefaultTypeInternal;
+extern AltitudeResponseDefaultTypeInternal _AltitudeResponse_default_instance_;
 class AngularVelocityBody;
 struct AngularVelocityBodyDefaultTypeInternal;
 extern AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
@@ -233,6 +239,12 @@ extern SetRateActuatorOutputStatusRequestDefaultTypeInternal _SetRateActuatorOut
 class SetRateActuatorOutputStatusResponse;
 struct SetRateActuatorOutputStatusResponseDefaultTypeInternal;
 extern SetRateActuatorOutputStatusResponseDefaultTypeInternal _SetRateActuatorOutputStatusResponse_default_instance_;
+class SetRateAltitudeRequest;
+struct SetRateAltitudeRequestDefaultTypeInternal;
+extern SetRateAltitudeRequestDefaultTypeInternal _SetRateAltitudeRequest_default_instance_;
+class SetRateAltitudeResponse;
+struct SetRateAltitudeResponseDefaultTypeInternal;
+extern SetRateAltitudeResponseDefaultTypeInternal _SetRateAltitudeResponse_default_instance_;
 class SetRateAttitudeAngularVelocityBodyRequest;
 struct SetRateAttitudeAngularVelocityBodyRequestDefaultTypeInternal;
 extern SetRateAttitudeAngularVelocityBodyRequestDefaultTypeInternal _SetRateAttitudeAngularVelocityBodyRequest_default_instance_;
@@ -386,6 +398,9 @@ extern SubscribeActuatorControlTargetRequestDefaultTypeInternal _SubscribeActuat
 class SubscribeActuatorOutputStatusRequest;
 struct SubscribeActuatorOutputStatusRequestDefaultTypeInternal;
 extern SubscribeActuatorOutputStatusRequestDefaultTypeInternal _SubscribeActuatorOutputStatusRequest_default_instance_;
+class SubscribeAltitudeRequest;
+struct SubscribeAltitudeRequestDefaultTypeInternal;
+extern SubscribeAltitudeRequestDefaultTypeInternal _SubscribeAltitudeRequest_default_instance_;
 class SubscribeArmedRequest;
 struct SubscribeArmedRequestDefaultTypeInternal;
 extern SubscribeArmedRequestDefaultTypeInternal _SubscribeArmedRequest_default_instance_;
@@ -506,6 +521,8 @@ template<> ::mavsdk::rpc::telemetry::ActuatorControlTarget* Arena::CreateMaybeMe
 template<> ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::ActuatorOutputStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorOutputStatus>(Arena*);
 template<> ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::Altitude* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Altitude>(Arena*);
+template<> ::mavsdk::rpc::telemetry::AltitudeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::AltitudeResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::AngularVelocityBody* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::AngularVelocityBody>(Arena*);
 template<> ::mavsdk::rpc::telemetry::AngularVelocityFrd* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::AngularVelocityFrd>(Arena*);
 template<> ::mavsdk::rpc::telemetry::ArmedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ArmedResponse>(Arena*);
@@ -562,6 +579,8 @@ template<> ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest* Arena:
 template<> ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateAltitudeRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateAltitudeResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SetRateAttitudeEulerRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SetRateAttitudeEulerRequest>(Arena*);
@@ -613,6 +632,7 @@ template<> ::mavsdk::rpc::telemetry::StatusText* Arena::CreateMaybeMessage<::mav
 template<> ::mavsdk::rpc::telemetry::StatusTextResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::StatusTextResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeAltitudeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeAltitudeRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeArmedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeArmedRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest>(Arena*);
@@ -9651,6 +9671,274 @@ class HeadingResponse final :
 };
 // -------------------------------------------------------------------
 
+class SubscribeAltitudeRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeAltitudeRequest) */ {
+ public:
+  inline SubscribeAltitudeRequest() : SubscribeAltitudeRequest(nullptr) {}
+  explicit PROTOBUF_CONSTEXPR SubscribeAltitudeRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SubscribeAltitudeRequest(const SubscribeAltitudeRequest& from);
+  SubscribeAltitudeRequest(SubscribeAltitudeRequest&& from) noexcept
+    : SubscribeAltitudeRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeAltitudeRequest& operator=(const SubscribeAltitudeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeAltitudeRequest& operator=(SubscribeAltitudeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeAltitudeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeAltitudeRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeAltitudeRequest*>(
+               &_SubscribeAltitudeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    66;
+
+  friend void swap(SubscribeAltitudeRequest& a, SubscribeAltitudeRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeAltitudeRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeAltitudeRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeAltitudeRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SubscribeAltitudeRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeAltitudeRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(this, from);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeAltitudeRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(this, from);
+  }
+  public:
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SubscribeAltitudeRequest";
+  }
+  protected:
+  explicit SubscribeAltitudeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeAltitudeRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AltitudeResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.AltitudeResponse) */ {
+ public:
+  inline AltitudeResponse() : AltitudeResponse(nullptr) {}
+  ~AltitudeResponse() override;
+  explicit PROTOBUF_CONSTEXPR AltitudeResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AltitudeResponse(const AltitudeResponse& from);
+  AltitudeResponse(AltitudeResponse&& from) noexcept
+    : AltitudeResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline AltitudeResponse& operator=(const AltitudeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AltitudeResponse& operator=(AltitudeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AltitudeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AltitudeResponse* internal_default_instance() {
+    return reinterpret_cast<const AltitudeResponse*>(
+               &_AltitudeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    67;
+
+  friend void swap(AltitudeResponse& a, AltitudeResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AltitudeResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AltitudeResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AltitudeResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AltitudeResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AltitudeResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const AltitudeResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AltitudeResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.AltitudeResponse";
+  }
+  protected:
+  explicit AltitudeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAltitudeFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.Altitude altitude = 1;
+  bool has_altitude() const;
+  private:
+  bool _internal_has_altitude() const;
+  public:
+  void clear_altitude();
+  const ::mavsdk::rpc::telemetry::Altitude& altitude() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::Altitude* release_altitude();
+  ::mavsdk::rpc::telemetry::Altitude* mutable_altitude();
+  void set_allocated_altitude(::mavsdk::rpc::telemetry::Altitude* altitude);
+  private:
+  const ::mavsdk::rpc::telemetry::Altitude& _internal_altitude() const;
+  ::mavsdk::rpc::telemetry::Altitude* _internal_mutable_altitude();
+  public:
+  void unsafe_arena_set_allocated_altitude(
+      ::mavsdk::rpc::telemetry::Altitude* altitude);
+  ::mavsdk::rpc::telemetry::Altitude* unsafe_arena_release_altitude();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.AltitudeResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::Altitude* altitude_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SetRatePositionRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRatePositionRequest) */ {
  public:
@@ -9699,7 +9987,7 @@ class SetRatePositionRequest final :
                &_SetRatePositionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    66;
+    68;
 
   friend void swap(SetRatePositionRequest& a, SetRatePositionRequest& b) {
     a.Swap(&b);
@@ -9842,7 +10130,7 @@ class SetRatePositionResponse final :
                &_SetRatePositionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    67;
+    69;
 
   friend void swap(SetRatePositionResponse& a, SetRatePositionResponse& b) {
     a.Swap(&b);
@@ -9994,7 +10282,7 @@ class SetRateHomeRequest final :
                &_SetRateHomeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    68;
+    70;
 
   friend void swap(SetRateHomeRequest& a, SetRateHomeRequest& b) {
     a.Swap(&b);
@@ -10137,7 +10425,7 @@ class SetRateHomeResponse final :
                &_SetRateHomeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    69;
+    71;
 
   friend void swap(SetRateHomeResponse& a, SetRateHomeResponse& b) {
     a.Swap(&b);
@@ -10289,7 +10577,7 @@ class SetRateInAirRequest final :
                &_SetRateInAirRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    70;
+    72;
 
   friend void swap(SetRateInAirRequest& a, SetRateInAirRequest& b) {
     a.Swap(&b);
@@ -10432,7 +10720,7 @@ class SetRateInAirResponse final :
                &_SetRateInAirResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    71;
+    73;
 
   friend void swap(SetRateInAirResponse& a, SetRateInAirResponse& b) {
     a.Swap(&b);
@@ -10584,7 +10872,7 @@ class SetRateLandedStateRequest final :
                &_SetRateLandedStateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    72;
+    74;
 
   friend void swap(SetRateLandedStateRequest& a, SetRateLandedStateRequest& b) {
     a.Swap(&b);
@@ -10727,7 +11015,7 @@ class SetRateLandedStateResponse final :
                &_SetRateLandedStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    73;
+    75;
 
   friend void swap(SetRateLandedStateResponse& a, SetRateLandedStateResponse& b) {
     a.Swap(&b);
@@ -10879,7 +11167,7 @@ class SetRateVtolStateRequest final :
                &_SetRateVtolStateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    74;
+    76;
 
   friend void swap(SetRateVtolStateRequest& a, SetRateVtolStateRequest& b) {
     a.Swap(&b);
@@ -11022,7 +11310,7 @@ class SetRateVtolStateResponse final :
                &_SetRateVtolStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    75;
+    77;
 
   friend void swap(SetRateVtolStateResponse& a, SetRateVtolStateResponse& b) {
     a.Swap(&b);
@@ -11174,7 +11462,7 @@ class SetRateAttitudeEulerRequest final :
                &_SetRateAttitudeEulerRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    76;
+    78;
 
   friend void swap(SetRateAttitudeEulerRequest& a, SetRateAttitudeEulerRequest& b) {
     a.Swap(&b);
@@ -11317,7 +11605,7 @@ class SetRateAttitudeEulerResponse final :
                &_SetRateAttitudeEulerResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    77;
+    79;
 
   friend void swap(SetRateAttitudeEulerResponse& a, SetRateAttitudeEulerResponse& b) {
     a.Swap(&b);
@@ -11469,7 +11757,7 @@ class SetRateAttitudeQuaternionRequest final :
                &_SetRateAttitudeQuaternionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    78;
+    80;
 
   friend void swap(SetRateAttitudeQuaternionRequest& a, SetRateAttitudeQuaternionRequest& b) {
     a.Swap(&b);
@@ -11612,7 +11900,7 @@ class SetRateAttitudeQuaternionResponse final :
                &_SetRateAttitudeQuaternionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    79;
+    81;
 
   friend void swap(SetRateAttitudeQuaternionResponse& a, SetRateAttitudeQuaternionResponse& b) {
     a.Swap(&b);
@@ -11764,7 +12052,7 @@ class SetRateAttitudeAngularVelocityBodyRequest final :
                &_SetRateAttitudeAngularVelocityBodyRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    80;
+    82;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyRequest& a, SetRateAttitudeAngularVelocityBodyRequest& b) {
     a.Swap(&b);
@@ -11907,7 +12195,7 @@ class SetRateAttitudeAngularVelocityBodyResponse final :
                &_SetRateAttitudeAngularVelocityBodyResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    81;
+    83;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyResponse& a, SetRateAttitudeAngularVelocityBodyResponse& b) {
     a.Swap(&b);
@@ -12059,7 +12347,7 @@ class SetRateCameraAttitudeQuaternionRequest final :
                &_SetRateCameraAttitudeQuaternionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    82;
+    84;
 
   friend void swap(SetRateCameraAttitudeQuaternionRequest& a, SetRateCameraAttitudeQuaternionRequest& b) {
     a.Swap(&b);
@@ -12202,7 +12490,7 @@ class SetRateCameraAttitudeQuaternionResponse final :
                &_SetRateCameraAttitudeQuaternionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    83;
+    85;
 
   friend void swap(SetRateCameraAttitudeQuaternionResponse& a, SetRateCameraAttitudeQuaternionResponse& b) {
     a.Swap(&b);
@@ -12354,7 +12642,7 @@ class SetRateCameraAttitudeRequest final :
                &_SetRateCameraAttitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    84;
+    86;
 
   friend void swap(SetRateCameraAttitudeRequest& a, SetRateCameraAttitudeRequest& b) {
     a.Swap(&b);
@@ -12497,7 +12785,7 @@ class SetRateCameraAttitudeResponse final :
                &_SetRateCameraAttitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    85;
+    87;
 
   friend void swap(SetRateCameraAttitudeResponse& a, SetRateCameraAttitudeResponse& b) {
     a.Swap(&b);
@@ -12649,7 +12937,7 @@ class SetRateVelocityNedRequest final :
                &_SetRateVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    86;
+    88;
 
   friend void swap(SetRateVelocityNedRequest& a, SetRateVelocityNedRequest& b) {
     a.Swap(&b);
@@ -12792,7 +13080,7 @@ class SetRateVelocityNedResponse final :
                &_SetRateVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    87;
+    89;
 
   friend void swap(SetRateVelocityNedResponse& a, SetRateVelocityNedResponse& b) {
     a.Swap(&b);
@@ -12944,7 +13232,7 @@ class SetRateGpsInfoRequest final :
                &_SetRateGpsInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    88;
+    90;
 
   friend void swap(SetRateGpsInfoRequest& a, SetRateGpsInfoRequest& b) {
     a.Swap(&b);
@@ -13087,7 +13375,7 @@ class SetRateGpsInfoResponse final :
                &_SetRateGpsInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    89;
+    91;
 
   friend void swap(SetRateGpsInfoResponse& a, SetRateGpsInfoResponse& b) {
     a.Swap(&b);
@@ -13239,7 +13527,7 @@ class SetRateRawGpsRequest final :
                &_SetRateRawGpsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    90;
+    92;
 
   friend void swap(SetRateRawGpsRequest& a, SetRateRawGpsRequest& b) {
     a.Swap(&b);
@@ -13382,7 +13670,7 @@ class SetRateBatteryRequest final :
                &_SetRateBatteryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    91;
+    93;
 
   friend void swap(SetRateBatteryRequest& a, SetRateBatteryRequest& b) {
     a.Swap(&b);
@@ -13525,7 +13813,7 @@ class SetRateBatteryResponse final :
                &_SetRateBatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    92;
+    94;
 
   friend void swap(SetRateBatteryResponse& a, SetRateBatteryResponse& b) {
     a.Swap(&b);
@@ -13677,7 +13965,7 @@ class SetRateRcStatusRequest final :
                &_SetRateRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    93;
+    95;
 
   friend void swap(SetRateRcStatusRequest& a, SetRateRcStatusRequest& b) {
     a.Swap(&b);
@@ -13820,7 +14108,7 @@ class SetRateRcStatusResponse final :
                &_SetRateRcStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    94;
+    96;
 
   friend void swap(SetRateRcStatusResponse& a, SetRateRcStatusResponse& b) {
     a.Swap(&b);
@@ -13972,7 +14260,7 @@ class SetRateActuatorControlTargetRequest final :
                &_SetRateActuatorControlTargetRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    95;
+    97;
 
   friend void swap(SetRateActuatorControlTargetRequest& a, SetRateActuatorControlTargetRequest& b) {
     a.Swap(&b);
@@ -14115,7 +14403,7 @@ class SetRateActuatorControlTargetResponse final :
                &_SetRateActuatorControlTargetResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    96;
+    98;
 
   friend void swap(SetRateActuatorControlTargetResponse& a, SetRateActuatorControlTargetResponse& b) {
     a.Swap(&b);
@@ -14267,7 +14555,7 @@ class SetRateActuatorOutputStatusRequest final :
                &_SetRateActuatorOutputStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    97;
+    99;
 
   friend void swap(SetRateActuatorOutputStatusRequest& a, SetRateActuatorOutputStatusRequest& b) {
     a.Swap(&b);
@@ -14410,7 +14698,7 @@ class SetRateActuatorOutputStatusResponse final :
                &_SetRateActuatorOutputStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    98;
+    100;
 
   friend void swap(SetRateActuatorOutputStatusResponse& a, SetRateActuatorOutputStatusResponse& b) {
     a.Swap(&b);
@@ -14562,7 +14850,7 @@ class SetRateOdometryRequest final :
                &_SetRateOdometryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    99;
+    101;
 
   friend void swap(SetRateOdometryRequest& a, SetRateOdometryRequest& b) {
     a.Swap(&b);
@@ -14705,7 +14993,7 @@ class SetRateOdometryResponse final :
                &_SetRateOdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    100;
+    102;
 
   friend void swap(SetRateOdometryResponse& a, SetRateOdometryResponse& b) {
     a.Swap(&b);
@@ -14857,7 +15145,7 @@ class SetRatePositionVelocityNedRequest final :
                &_SetRatePositionVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    101;
+    103;
 
   friend void swap(SetRatePositionVelocityNedRequest& a, SetRatePositionVelocityNedRequest& b) {
     a.Swap(&b);
@@ -15000,7 +15288,7 @@ class SetRatePositionVelocityNedResponse final :
                &_SetRatePositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    102;
+    104;
 
   friend void swap(SetRatePositionVelocityNedResponse& a, SetRatePositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -15152,7 +15440,7 @@ class SetRateGroundTruthRequest final :
                &_SetRateGroundTruthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    103;
+    105;
 
   friend void swap(SetRateGroundTruthRequest& a, SetRateGroundTruthRequest& b) {
     a.Swap(&b);
@@ -15295,7 +15583,7 @@ class SetRateGroundTruthResponse final :
                &_SetRateGroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    104;
+    106;
 
   friend void swap(SetRateGroundTruthResponse& a, SetRateGroundTruthResponse& b) {
     a.Swap(&b);
@@ -15447,7 +15735,7 @@ class SetRateFixedwingMetricsRequest final :
                &_SetRateFixedwingMetricsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    105;
+    107;
 
   friend void swap(SetRateFixedwingMetricsRequest& a, SetRateFixedwingMetricsRequest& b) {
     a.Swap(&b);
@@ -15590,7 +15878,7 @@ class SetRateFixedwingMetricsResponse final :
                &_SetRateFixedwingMetricsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    106;
+    108;
 
   friend void swap(SetRateFixedwingMetricsResponse& a, SetRateFixedwingMetricsResponse& b) {
     a.Swap(&b);
@@ -15742,7 +16030,7 @@ class SetRateImuRequest final :
                &_SetRateImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    107;
+    109;
 
   friend void swap(SetRateImuRequest& a, SetRateImuRequest& b) {
     a.Swap(&b);
@@ -15885,7 +16173,7 @@ class SetRateImuResponse final :
                &_SetRateImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    108;
+    110;
 
   friend void swap(SetRateImuResponse& a, SetRateImuResponse& b) {
     a.Swap(&b);
@@ -16037,7 +16325,7 @@ class SetRateScaledImuRequest final :
                &_SetRateScaledImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    109;
+    111;
 
   friend void swap(SetRateScaledImuRequest& a, SetRateScaledImuRequest& b) {
     a.Swap(&b);
@@ -16180,7 +16468,7 @@ class SetRateScaledImuResponse final :
                &_SetRateScaledImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    110;
+    112;
 
   friend void swap(SetRateScaledImuResponse& a, SetRateScaledImuResponse& b) {
     a.Swap(&b);
@@ -16332,7 +16620,7 @@ class SetRateRawImuRequest final :
                &_SetRateRawImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    111;
+    113;
 
   friend void swap(SetRateRawImuRequest& a, SetRateRawImuRequest& b) {
     a.Swap(&b);
@@ -16475,7 +16763,7 @@ class SetRateRawImuResponse final :
                &_SetRateRawImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    112;
+    114;
 
   friend void swap(SetRateRawImuResponse& a, SetRateRawImuResponse& b) {
     a.Swap(&b);
@@ -16627,7 +16915,7 @@ class SetRateUnixEpochTimeRequest final :
                &_SetRateUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    113;
+    115;
 
   friend void swap(SetRateUnixEpochTimeRequest& a, SetRateUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -16770,7 +17058,7 @@ class SetRateUnixEpochTimeResponse final :
                &_SetRateUnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    114;
+    116;
 
   friend void swap(SetRateUnixEpochTimeResponse& a, SetRateUnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -16922,7 +17210,7 @@ class SetRateDistanceSensorRequest final :
                &_SetRateDistanceSensorRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    115;
+    117;
 
   friend void swap(SetRateDistanceSensorRequest& a, SetRateDistanceSensorRequest& b) {
     a.Swap(&b);
@@ -17065,7 +17353,7 @@ class SetRateDistanceSensorResponse final :
                &_SetRateDistanceSensorResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    116;
+    118;
 
   friend void swap(SetRateDistanceSensorResponse& a, SetRateDistanceSensorResponse& b) {
     a.Swap(&b);
@@ -17216,7 +17504,7 @@ class GetGpsGlobalOriginRequest final :
                &_GetGpsGlobalOriginRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    117;
+    119;
 
   friend void swap(GetGpsGlobalOriginRequest& a, GetGpsGlobalOriginRequest& b) {
     a.Swap(&b);
@@ -17333,7 +17621,7 @@ class GetGpsGlobalOriginResponse final :
                &_GetGpsGlobalOriginResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    118;
+    120;
 
   friend void swap(GetGpsGlobalOriginResponse& a, GetGpsGlobalOriginResponse& b) {
     a.Swap(&b);
@@ -17457,6 +17745,301 @@ class GetGpsGlobalOriginResponse final :
 };
 // -------------------------------------------------------------------
 
+class SetRateAltitudeRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateAltitudeRequest) */ {
+ public:
+  inline SetRateAltitudeRequest() : SetRateAltitudeRequest(nullptr) {}
+  ~SetRateAltitudeRequest() override;
+  explicit PROTOBUF_CONSTEXPR SetRateAltitudeRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SetRateAltitudeRequest(const SetRateAltitudeRequest& from);
+  SetRateAltitudeRequest(SetRateAltitudeRequest&& from) noexcept
+    : SetRateAltitudeRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRateAltitudeRequest& operator=(const SetRateAltitudeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateAltitudeRequest& operator=(SetRateAltitudeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetRateAltitudeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetRateAltitudeRequest* internal_default_instance() {
+    return reinterpret_cast<const SetRateAltitudeRequest*>(
+               &_SetRateAltitudeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    121;
+
+  friend void swap(SetRateAltitudeRequest& a, SetRateAltitudeRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRateAltitudeRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetRateAltitudeRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetRateAltitudeRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SetRateAltitudeRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SetRateAltitudeRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SetRateAltitudeRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRateAltitudeRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SetRateAltitudeRequest";
+  }
+  protected:
+  explicit SetRateAltitudeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRateHzFieldNumber = 1,
+  };
+  // double rate_hz = 1;
+  void clear_rate_hz();
+  double rate_hz() const;
+  void set_rate_hz(double value);
+  private:
+  double _internal_rate_hz() const;
+  void _internal_set_rate_hz(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateAltitudeRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  double rate_hz_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetRateAltitudeResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateAltitudeResponse) */ {
+ public:
+  inline SetRateAltitudeResponse() : SetRateAltitudeResponse(nullptr) {}
+  ~SetRateAltitudeResponse() override;
+  explicit PROTOBUF_CONSTEXPR SetRateAltitudeResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SetRateAltitudeResponse(const SetRateAltitudeResponse& from);
+  SetRateAltitudeResponse(SetRateAltitudeResponse&& from) noexcept
+    : SetRateAltitudeResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetRateAltitudeResponse& operator=(const SetRateAltitudeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateAltitudeResponse& operator=(SetRateAltitudeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetRateAltitudeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetRateAltitudeResponse* internal_default_instance() {
+    return reinterpret_cast<const SetRateAltitudeResponse*>(
+               &_SetRateAltitudeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    122;
+
+  friend void swap(SetRateAltitudeResponse& a, SetRateAltitudeResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetRateAltitudeResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetRateAltitudeResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetRateAltitudeResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SetRateAltitudeResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SetRateAltitudeResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SetRateAltitudeResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SetRateAltitudeResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SetRateAltitudeResponse";
+  }
+  protected:
+  explicit SetRateAltitudeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTelemetryResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+  bool has_telemetry_result() const;
+  private:
+  bool _internal_has_telemetry_result() const;
+  public:
+  void clear_telemetry_result();
+  const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::TelemetryResult* release_telemetry_result();
+  ::mavsdk::rpc::telemetry::TelemetryResult* mutable_telemetry_result();
+  void set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  private:
+  const ::mavsdk::rpc::telemetry::TelemetryResult& _internal_telemetry_result() const;
+  ::mavsdk::rpc::telemetry::TelemetryResult* _internal_mutable_telemetry_result();
+  public:
+  void unsafe_arena_set_allocated_telemetry_result(
+      ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result);
+  ::mavsdk::rpc::telemetry::TelemetryResult* unsafe_arena_release_telemetry_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateAltitudeResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Position final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.Position) */ {
  public:
@@ -17505,7 +18088,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    119;
+    123;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -17681,7 +18264,7 @@ class Heading final :
                &_Heading_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    120;
+    124;
 
   friend void swap(Heading& a, Heading& b) {
     a.Swap(&b);
@@ -17824,7 +18407,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    121;
+    125;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -18011,7 +18594,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    122;
+    126;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -18187,7 +18770,7 @@ class AngularVelocityBody final :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    123;
+    127;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -18352,7 +18935,7 @@ class GpsInfo final :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    124;
+    128;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -18506,7 +19089,7 @@ class RawGps final :
                &_RawGps_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    125;
+    129;
 
   friend void swap(RawGps& a, RawGps& b) {
     a.Swap(&b);
@@ -18792,7 +19375,7 @@ class Battery final :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    126;
+    130;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -18957,7 +19540,7 @@ class Health final :
                &_Health_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    127;
+    131;
 
   friend void swap(Health& a, Health& b) {
     a.Swap(&b);
@@ -19166,7 +19749,7 @@ class RcStatus final :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    128;
+    132;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -19331,7 +19914,7 @@ class StatusText final :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    129;
+    133;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -19490,7 +20073,7 @@ class ActuatorControlTarget final :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    130;
+    134;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -19657,7 +20240,7 @@ class ActuatorOutputStatus final :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    131;
+    135;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -19824,7 +20407,7 @@ class Covariance final :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    132;
+    136;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -19980,7 +20563,7 @@ class VelocityBody final :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    133;
+    137;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -20145,7 +20728,7 @@ class PositionBody final :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    134;
+    138;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -20310,7 +20893,7 @@ class Odometry final :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    135;
+    139;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -20629,7 +21212,7 @@ class DistanceSensor final :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    136;
+    140;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -20794,7 +21377,7 @@ class ScaledPressure final :
                &_ScaledPressure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    137;
+    141;
 
   friend void swap(ScaledPressure& a, ScaledPressure& b) {
     a.Swap(&b);
@@ -20981,7 +21564,7 @@ class PositionNed final :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    138;
+    142;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -21146,7 +21729,7 @@ class VelocityNed final :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    139;
+    143;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -21311,7 +21894,7 @@ class PositionVelocityNed final :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    140;
+    144;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -21483,7 +22066,7 @@ class GroundTruth final :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    141;
+    145;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -21648,7 +22231,7 @@ class FixedwingMetrics final :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    142;
+    146;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -21813,7 +22396,7 @@ class AccelerationFrd final :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    143;
+    147;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -21978,7 +22561,7 @@ class AngularVelocityFrd final :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    144;
+    148;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -22143,7 +22726,7 @@ class MagneticFieldFrd final :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    145;
+    149;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -22308,7 +22891,7 @@ class Imu final :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    146;
+    150;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -22522,7 +23105,7 @@ class GpsGlobalOrigin final :
                &_GpsGlobalOrigin_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    147;
+    151;
 
   friend void swap(GpsGlobalOrigin& a, GpsGlobalOrigin& b) {
     a.Swap(&b);
@@ -22639,6 +23222,193 @@ class GpsGlobalOrigin final :
 };
 // -------------------------------------------------------------------
 
+class Altitude final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.Altitude) */ {
+ public:
+  inline Altitude() : Altitude(nullptr) {}
+  ~Altitude() override;
+  explicit PROTOBUF_CONSTEXPR Altitude(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Altitude(const Altitude& from);
+  Altitude(Altitude&& from) noexcept
+    : Altitude() {
+    *this = ::std::move(from);
+  }
+
+  inline Altitude& operator=(const Altitude& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Altitude& operator=(Altitude&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Altitude& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Altitude* internal_default_instance() {
+    return reinterpret_cast<const Altitude*>(
+               &_Altitude_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    152;
+
+  friend void swap(Altitude& a, Altitude& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Altitude* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Altitude* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Altitude* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Altitude>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const Altitude& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const Altitude& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Altitude* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.Altitude";
+  }
+  protected:
+  explicit Altitude(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAltitudeMonotonicMFieldNumber = 1,
+    kAltitudeAmslMFieldNumber = 2,
+    kAltitudeLocalMFieldNumber = 3,
+    kAltitudeRelativeMFieldNumber = 4,
+    kAltitudeTerrainMFieldNumber = 5,
+  };
+  // float altitude_monotonic_m = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_altitude_monotonic_m();
+  float altitude_monotonic_m() const;
+  void set_altitude_monotonic_m(float value);
+  private:
+  float _internal_altitude_monotonic_m() const;
+  void _internal_set_altitude_monotonic_m(float value);
+  public:
+
+  // float altitude_amsl_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_altitude_amsl_m();
+  float altitude_amsl_m() const;
+  void set_altitude_amsl_m(float value);
+  private:
+  float _internal_altitude_amsl_m() const;
+  void _internal_set_altitude_amsl_m(float value);
+  public:
+
+  // float altitude_local_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_altitude_local_m();
+  float altitude_local_m() const;
+  void set_altitude_local_m(float value);
+  private:
+  float _internal_altitude_local_m() const;
+  void _internal_set_altitude_local_m(float value);
+  public:
+
+  // float altitude_relative_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_altitude_relative_m();
+  float altitude_relative_m() const;
+  void set_altitude_relative_m(float value);
+  private:
+  float _internal_altitude_relative_m() const;
+  void _internal_set_altitude_relative_m(float value);
+  public:
+
+  // float altitude_terrain_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_altitude_terrain_m();
+  float altitude_terrain_m() const;
+  void set_altitude_terrain_m(float value);
+  private:
+  float _internal_altitude_terrain_m() const;
+  void _internal_set_altitude_terrain_m(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Altitude)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  float altitude_monotonic_m_;
+  float altitude_amsl_m_;
+  float altitude_local_m_;
+  float altitude_relative_m_;
+  float altitude_terrain_m_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class TelemetryResult final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.TelemetryResult) */ {
  public:
@@ -22687,7 +23457,7 @@ class TelemetryResult final :
                &_TelemetryResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    148;
+    153;
 
   friend void swap(TelemetryResult& a, TelemetryResult& b) {
     a.Swap(&b);
@@ -25587,6 +26357,104 @@ inline void HeadingResponse::set_allocated_heading_deg(::mavsdk::rpc::telemetry:
   }
   heading_deg_ = heading_deg;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.HeadingResponse.heading_deg)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeAltitudeRequest
+
+// -------------------------------------------------------------------
+
+// AltitudeResponse
+
+// .mavsdk.rpc.telemetry.Altitude altitude = 1;
+inline bool AltitudeResponse::_internal_has_altitude() const {
+  return this != internal_default_instance() && altitude_ != nullptr;
+}
+inline bool AltitudeResponse::has_altitude() const {
+  return _internal_has_altitude();
+}
+inline void AltitudeResponse::clear_altitude() {
+  if (GetArenaForAllocation() == nullptr && altitude_ != nullptr) {
+    delete altitude_;
+  }
+  altitude_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::Altitude& AltitudeResponse::_internal_altitude() const {
+  const ::mavsdk::rpc::telemetry::Altitude* p = altitude_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::Altitude&>(
+      ::mavsdk::rpc::telemetry::_Altitude_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::Altitude& AltitudeResponse::altitude() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.AltitudeResponse.altitude)
+  return _internal_altitude();
+}
+inline void AltitudeResponse::unsafe_arena_set_allocated_altitude(
+    ::mavsdk::rpc::telemetry::Altitude* altitude) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(altitude_);
+  }
+  altitude_ = altitude;
+  if (altitude) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.AltitudeResponse.altitude)
+}
+inline ::mavsdk::rpc::telemetry::Altitude* AltitudeResponse::release_altitude() {
+  
+  ::mavsdk::rpc::telemetry::Altitude* temp = altitude_;
+  altitude_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Altitude* AltitudeResponse::unsafe_arena_release_altitude() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.AltitudeResponse.altitude)
+  
+  ::mavsdk::rpc::telemetry::Altitude* temp = altitude_;
+  altitude_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Altitude* AltitudeResponse::_internal_mutable_altitude() {
+  
+  if (altitude_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::Altitude>(GetArenaForAllocation());
+    altitude_ = p;
+  }
+  return altitude_;
+}
+inline ::mavsdk::rpc::telemetry::Altitude* AltitudeResponse::mutable_altitude() {
+  ::mavsdk::rpc::telemetry::Altitude* _msg = _internal_mutable_altitude();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.AltitudeResponse.altitude)
+  return _msg;
+}
+inline void AltitudeResponse::set_allocated_altitude(::mavsdk::rpc::telemetry::Altitude* altitude) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete altitude_;
+  }
+  if (altitude) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(altitude);
+    if (message_arena != submessage_arena) {
+      altitude = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, altitude, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  altitude_ = altitude;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.AltitudeResponse.altitude)
 }
 
 // -------------------------------------------------------------------
@@ -28753,6 +29621,124 @@ inline void GetGpsGlobalOriginResponse::set_allocated_gps_global_origin(::mavsdk
 
 // -------------------------------------------------------------------
 
+// SetRateAltitudeRequest
+
+// double rate_hz = 1;
+inline void SetRateAltitudeRequest::clear_rate_hz() {
+  rate_hz_ = 0;
+}
+inline double SetRateAltitudeRequest::_internal_rate_hz() const {
+  return rate_hz_;
+}
+inline double SetRateAltitudeRequest::rate_hz() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateAltitudeRequest.rate_hz)
+  return _internal_rate_hz();
+}
+inline void SetRateAltitudeRequest::_internal_set_rate_hz(double value) {
+  
+  rate_hz_ = value;
+}
+inline void SetRateAltitudeRequest::set_rate_hz(double value) {
+  _internal_set_rate_hz(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SetRateAltitudeRequest.rate_hz)
+}
+
+// -------------------------------------------------------------------
+
+// SetRateAltitudeResponse
+
+// .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+inline bool SetRateAltitudeResponse::_internal_has_telemetry_result() const {
+  return this != internal_default_instance() && telemetry_result_ != nullptr;
+}
+inline bool SetRateAltitudeResponse::has_telemetry_result() const {
+  return _internal_has_telemetry_result();
+}
+inline void SetRateAltitudeResponse::clear_telemetry_result() {
+  if (GetArenaForAllocation() == nullptr && telemetry_result_ != nullptr) {
+    delete telemetry_result_;
+  }
+  telemetry_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateAltitudeResponse::_internal_telemetry_result() const {
+  const ::mavsdk::rpc::telemetry::TelemetryResult* p = telemetry_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::TelemetryResult&>(
+      ::mavsdk::rpc::telemetry::_TelemetryResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateAltitudeResponse::telemetry_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateAltitudeResponse.telemetry_result)
+  return _internal_telemetry_result();
+}
+inline void SetRateAltitudeResponse::unsafe_arena_set_allocated_telemetry_result(
+    ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(telemetry_result_);
+  }
+  telemetry_result_ = telemetry_result;
+  if (telemetry_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.SetRateAltitudeResponse.telemetry_result)
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateAltitudeResponse::release_telemetry_result() {
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateAltitudeResponse::unsafe_arena_release_telemetry_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.SetRateAltitudeResponse.telemetry_result)
+  
+  ::mavsdk::rpc::telemetry::TelemetryResult* temp = telemetry_result_;
+  telemetry_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateAltitudeResponse::_internal_mutable_telemetry_result() {
+  
+  if (telemetry_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(GetArenaForAllocation());
+    telemetry_result_ = p;
+  }
+  return telemetry_result_;
+}
+inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateAltitudeResponse::mutable_telemetry_result() {
+  ::mavsdk::rpc::telemetry::TelemetryResult* _msg = _internal_mutable_telemetry_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.SetRateAltitudeResponse.telemetry_result)
+  return _msg;
+}
+inline void SetRateAltitudeResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete telemetry_result_;
+  }
+  if (telemetry_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(telemetry_result);
+    if (message_arena != submessage_arena) {
+      telemetry_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, telemetry_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  telemetry_result_ = telemetry_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateAltitudeResponse.telemetry_result)
+}
+
+// -------------------------------------------------------------------
+
 // Position
 
 // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
@@ -31890,6 +32876,110 @@ inline void GpsGlobalOrigin::set_altitude_m(float value) {
 
 // -------------------------------------------------------------------
 
+// Altitude
+
+// float altitude_monotonic_m = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void Altitude::clear_altitude_monotonic_m() {
+  altitude_monotonic_m_ = 0;
+}
+inline float Altitude::_internal_altitude_monotonic_m() const {
+  return altitude_monotonic_m_;
+}
+inline float Altitude::altitude_monotonic_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Altitude.altitude_monotonic_m)
+  return _internal_altitude_monotonic_m();
+}
+inline void Altitude::_internal_set_altitude_monotonic_m(float value) {
+  
+  altitude_monotonic_m_ = value;
+}
+inline void Altitude::set_altitude_monotonic_m(float value) {
+  _internal_set_altitude_monotonic_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.altitude_monotonic_m)
+}
+
+// float altitude_amsl_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void Altitude::clear_altitude_amsl_m() {
+  altitude_amsl_m_ = 0;
+}
+inline float Altitude::_internal_altitude_amsl_m() const {
+  return altitude_amsl_m_;
+}
+inline float Altitude::altitude_amsl_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Altitude.altitude_amsl_m)
+  return _internal_altitude_amsl_m();
+}
+inline void Altitude::_internal_set_altitude_amsl_m(float value) {
+  
+  altitude_amsl_m_ = value;
+}
+inline void Altitude::set_altitude_amsl_m(float value) {
+  _internal_set_altitude_amsl_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.altitude_amsl_m)
+}
+
+// float altitude_local_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void Altitude::clear_altitude_local_m() {
+  altitude_local_m_ = 0;
+}
+inline float Altitude::_internal_altitude_local_m() const {
+  return altitude_local_m_;
+}
+inline float Altitude::altitude_local_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Altitude.altitude_local_m)
+  return _internal_altitude_local_m();
+}
+inline void Altitude::_internal_set_altitude_local_m(float value) {
+  
+  altitude_local_m_ = value;
+}
+inline void Altitude::set_altitude_local_m(float value) {
+  _internal_set_altitude_local_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.altitude_local_m)
+}
+
+// float altitude_relative_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void Altitude::clear_altitude_relative_m() {
+  altitude_relative_m_ = 0;
+}
+inline float Altitude::_internal_altitude_relative_m() const {
+  return altitude_relative_m_;
+}
+inline float Altitude::altitude_relative_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Altitude.altitude_relative_m)
+  return _internal_altitude_relative_m();
+}
+inline void Altitude::_internal_set_altitude_relative_m(float value) {
+  
+  altitude_relative_m_ = value;
+}
+inline void Altitude::set_altitude_relative_m(float value) {
+  _internal_set_altitude_relative_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.altitude_relative_m)
+}
+
+// float altitude_terrain_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void Altitude::clear_altitude_terrain_m() {
+  altitude_terrain_m_ = 0;
+}
+inline float Altitude::_internal_altitude_terrain_m() const {
+  return altitude_terrain_m_;
+}
+inline float Altitude::altitude_terrain_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Altitude.altitude_terrain_m)
+  return _internal_altitude_terrain_m();
+}
+inline void Altitude::_internal_set_altitude_terrain_m(float value) {
+  
+  altitude_terrain_m_ = value;
+}
+inline void Altitude::set_altitude_terrain_m(float value) {
+  _internal_set_altitude_terrain_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.altitude_terrain_m)
+}
+
+// -------------------------------------------------------------------
+
 // TelemetryResult
 
 // .mavsdk.rpc.telemetry.TelemetryResult.Result result = 1;
@@ -31965,6 +33055,16 @@ inline void TelemetryResult::set_allocated_result_str(std::string* result_str) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

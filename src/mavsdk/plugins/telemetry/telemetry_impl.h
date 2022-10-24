@@ -50,6 +50,7 @@ public:
     Telemetry::Result set_rate_distance_sensor(double rate_hz);
     Telemetry::Result set_rate_scaled_pressure(double rate_hz);
     Telemetry::Result set_rate_unix_epoch_time(double rate_hz);
+    Telemetry::Result set_rate_altitude(double rate_hz);
 
     void set_rate_position_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_position_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -75,6 +76,7 @@ public:
     void set_rate_distance_sensor_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_scaled_pressure_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_altitude_async(double rate_hz, Telemetry::ResultCallback callback);
 
     void get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback);
     std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin();
@@ -112,6 +114,7 @@ public:
     Telemetry::ScaledPressure scaled_pressure() const;
     uint64_t unix_epoch_time() const;
     Telemetry::Heading heading() const;
+    Telemetry::Altitude altitude() const;
 
     Telemetry::PositionVelocityNedHandle
     subscribe_position_velocity_ned(const Telemetry::PositionVelocityNedCallback& callback);
@@ -198,6 +201,8 @@ public:
     void unsubscribe_scaled_pressure(Telemetry::ScaledPressureHandle handle);
     Telemetry::HeadingHandle subscribe_heading(const Telemetry::HeadingCallback& callback);
     void unsubscribe_heading(Telemetry::HeadingHandle handle);
+    Telemetry::AltitudeHandle subscribe_altitude(const Telemetry::AltitudeCallback& callback);
+    void unsubscribe_altitude(Telemetry::AltitudeHandle handle);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
@@ -238,6 +243,7 @@ private:
     void set_distance_sensor(Telemetry::DistanceSensor& distance_sensor);
     void set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressure);
     void set_heading(Telemetry::Heading heading);
+    void set_altitude(Telemetry::Altitude altitude);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);
@@ -263,6 +269,7 @@ private:
     void process_odometry(const mavlink_message_t& message);
     void process_distance_sensor(const mavlink_message_t& message);
     void process_scaled_pressure(const mavlink_message_t& message);
+    void process_altitude(const mavlink_message_t& message);
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
@@ -393,6 +400,9 @@ private:
     mutable std::mutex _scaled_pressure_mutex{};
     Telemetry::ScaledPressure _scaled_pressure{};
 
+    mutable std::mutex _altitude_mutex{};
+    Telemetry::Altitude _altitude{};
+
     mutable std::mutex _request_home_position_mutex{};
 
     std::atomic<bool> _hitl_enabled{false};
@@ -431,6 +441,7 @@ private:
     CallbackList<Telemetry::DistanceSensor> _distance_sensor_subscriptions{};
     CallbackList<Telemetry::ScaledPressure> _scaled_pressure_subscriptions{};
     CallbackList<Telemetry::Heading> _heading_subscriptions{};
+    CallbackList<Telemetry::Altitude> _altitude_subscriptions{};
 
     // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // we just use the faster between the two.
