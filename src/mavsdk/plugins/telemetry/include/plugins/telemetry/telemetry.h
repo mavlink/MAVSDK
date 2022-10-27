@@ -959,7 +959,6 @@ public:
 
     /**
      * @brief Altitude message type
-     * For more info see: https://mavlink.io/en/messages/common.html#ALTITUDE
      */
     struct Altitude {
         float altitude_monotonic_m{float(
