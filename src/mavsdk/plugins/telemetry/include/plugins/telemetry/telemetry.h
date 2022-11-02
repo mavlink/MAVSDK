@@ -958,6 +958,33 @@ public:
     operator<<(std::ostream& str, Telemetry::GpsGlobalOrigin const& gps_global_origin);
 
     /**
+     * @brief Altitude message type
+     */
+    struct Altitude {
+        float altitude_monotonic_m{float(
+            NAN)}; /**< @brief Altitude in meters is initialized on system boot and monotonic */
+        float altitude_amsl_m{
+            float(NAN)}; /**< @brief  Altitude AMSL (above mean sea level) in meters */
+        float altitude_local_m{float(NAN)}; /**< @brief Local altitude in meters */
+        float altitude_relative_m{float(NAN)}; /**< @brief Altitude above home position in meters */
+        float altitude_terrain_m{float(NAN)}; /**< @brief Altitude above terrain in meters */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::Altitude` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Telemetry::Altitude& lhs, const Telemetry::Altitude& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::Altitude`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude);
+
+    /**
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {
@@ -1882,6 +1909,33 @@ public:
     Heading heading() const;
 
     /**
+     * @brief Callback type for subscribe_altitude.
+     */
+    using AltitudeCallback = std::function<void(Altitude)>;
+
+    /**
+     * @brief Handle type for subscribe_altitude.
+     */
+    using AltitudeHandle = Handle<Altitude>;
+
+    /**
+     * @brief Subscribe to 'Altitude' updates.
+     */
+    AltitudeHandle subscribe_altitude(const AltitudeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_altitude
+     */
+    void unsubscribe_altitude(AltitudeHandle handle);
+
+    /**
+     * @brief Poll for 'Altitude' (blocking).
+     *
+     * @return One Altitude update.
+     */
+    Altitude altitude() const;
+
+    /**
      * @brief Set rate to 'position' updates.
      *
      * This function is non-blocking. See 'set_rate_position' for the blocking counterpart.
@@ -2264,6 +2318,22 @@ public:
      * @return Result of request.
      */
     Result set_rate_distance_sensor(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'Altitude' updates.
+     *
+     * This function is non-blocking. See 'set_rate_altitude' for the blocking counterpart.
+     */
+    void set_rate_altitude_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Altitude' updates.
+     *
+     * This function is blocking. See 'set_rate_altitude_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_altitude(double rate_hz) const;
 
     /**
      * @brief Callback type for get_gps_global_origin_async.

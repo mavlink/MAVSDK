@@ -30,6 +30,7 @@ TEST_F(SitlTest, PX4TelemetrySync)
     EXPECT_EQ(telemetry->set_rate_actuator_control_target(10.0), Telemetry::Result::Success);
     EXPECT_EQ(telemetry->set_rate_fixedwing_metrics(10.0), Telemetry::Result::Success);
     EXPECT_EQ(telemetry->set_rate_ground_truth(10.0), Telemetry::Result::Success);
+    EXPECT_EQ(telemetry->set_rate_altitude(10.0), Telemetry::Result::Success);
 
     for (unsigned i = 0; i < 10; ++i) {
         std::cout << "Position: " << telemetry->position() << '\n';
@@ -46,6 +47,7 @@ TEST_F(SitlTest, PX4TelemetrySync)
         std::cout << "Flight mode: " << telemetry->flight_mode() << '\n';
         std::cout << "Landed state: " << telemetry->landed_state()
                   << "(in air: " << telemetry->in_air() << ")" << '\n';
+        std::cout << "Altitude: " << telemetry->altitude() << '\n';
 
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }

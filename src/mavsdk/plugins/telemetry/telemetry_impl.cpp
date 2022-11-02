@@ -39,6 +39,7 @@ template class CallbackList<Telemetry::Odometry>;
 template class CallbackList<Telemetry::DistanceSensor>;
 template class CallbackList<Telemetry::ScaledPressure>;
 template class CallbackList<Telemetry::Heading>;
+template class CallbackList<Telemetry::Altitude>;
 
 TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
 {
@@ -177,6 +178,11 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
         [this](const mavlink_message_t& message) { process_ground_truth(message); },
+        this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ALTITUDE,
+        [this](const mavlink_message_t& message) { process_altitude(message); },
         this);
 
     _parent->register_param_changed_handler(
@@ -395,6 +401,12 @@ Telemetry::Result TelemetryImpl::set_rate_unix_epoch_time(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_UTM_GLOBAL_POSITION, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_altitude(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ALTITUDE, rate_hz));
+}
+
 void TelemetryImpl::set_rate_position_velocity_ned_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
@@ -443,6 +455,16 @@ void TelemetryImpl::set_rate_landed_state_async(double rate_hz, Telemetry::Resul
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+        rate_hz,
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
+}
+
+void TelemetryImpl::set_rate_altitude_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_ALTITUDE,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
@@ -807,6 +829,25 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     _attitude_angular_velocity_body_subscriptions.queue(
         attitude_angular_velocity_body(),
         [this](const auto& func) { _parent->call_user_callback(func); });
+}
+
+void TelemetryImpl::process_altitude(const mavlink_message_t& message)
+{
+    mavlink_altitude_t mavlink_altitude;
+    mavlink_msg_altitude_decode(&message, &mavlink_altitude);
+
+    Telemetry::Altitude new_altitude;
+    new_altitude.altitude_monotonic_m = mavlink_altitude.altitude_monotonic;
+    new_altitude.altitude_amsl_m = mavlink_altitude.altitude_amsl;
+    new_altitude.altitude_local_m = mavlink_altitude.altitude_local;
+    new_altitude.altitude_relative_m = mavlink_altitude.altitude_relative;
+    new_altitude.altitude_terrain_m = mavlink_altitude.altitude_terrain;
+
+    set_altitude(new_altitude);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _altitude_subscriptions.queue(
+        altitude(), [this](const auto& func) { _parent->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
@@ -1719,6 +1760,18 @@ void TelemetryImpl::set_heading(Telemetry::Heading heading)
     _heading = heading;
 }
 
+Telemetry::Altitude TelemetryImpl::altitude() const
+{
+    std::lock_guard<std::mutex> lock(_altitude_mutex);
+    return _altitude;
+}
+
+void TelemetryImpl::set_altitude(Telemetry::Altitude altitude)
+{
+    std::lock_guard<std::mutex> lock(_altitude_mutex);
+    _altitude = altitude;
+}
+
 Telemetry::Position TelemetryImpl::home() const
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
@@ -2541,6 +2594,19 @@ void TelemetryImpl::unsubscribe_heading(Telemetry::HeadingHandle handle)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _heading_subscriptions.unsubscribe(handle);
+}
+
+Telemetry::AltitudeHandle
+TelemetryImpl::subscribe_altitude(const Telemetry::AltitudeCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    return _altitude_subscriptions.subscribe(callback);
+}
+
+void TelemetryImpl::unsubscribe_altitude(Telemetry::AltitudeHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _altitude_subscriptions.unsubscribe(handle);
 }
 
 void TelemetryImpl::request_home_position_async()
