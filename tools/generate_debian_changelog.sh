@@ -66,6 +66,6 @@ done
 
 echo "mavsdk ($VERSION-$PRE_RELEASE) unstable; urgency=medium"
 echo ""
-echo "  * Auterion MAVSDK release"
+echo "  * MAVSDK release"
 echo ""
 echo " -- $AUTHOR <$EMAIL>  $DATE"
