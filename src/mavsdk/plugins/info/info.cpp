@@ -94,6 +94,26 @@ std::ostream& operator<<(std::ostream& str, Info::Product const& product)
     return str;
 }
 
+std::ostream& operator<<(
+    std::ostream& str, Info::Version::FlightSoftwareVersionType const& flight_software_version_type)
+{
+    switch (flight_software_version_type) {
+        case Info::Version::FlightSoftwareVersionType::Unknown:
+            return str << "Unknown";
+        case Info::Version::FlightSoftwareVersionType::Dev:
+            return str << "Dev";
+        case Info::Version::FlightSoftwareVersionType::Alpha:
+            return str << "Alpha";
+        case Info::Version::FlightSoftwareVersionType::Beta:
+            return str << "Beta";
+        case Info::Version::FlightSoftwareVersionType::Rc:
+            return str << "Rc";
+        case Info::Version::FlightSoftwareVersionType::Release:
+            return str << "Release";
+        default:
+            return str << "Unknown";
+    }
+}
 bool operator==(const Info::Version& lhs, const Info::Version& rhs)
 {
     return (rhs.flight_sw_major == lhs.flight_sw_major) &&
@@ -105,7 +125,8 @@ bool operator==(const Info::Version& lhs, const Info::Version& rhs)
            (rhs.os_sw_major == lhs.os_sw_major) && (rhs.os_sw_minor == lhs.os_sw_minor) &&
            (rhs.os_sw_patch == lhs.os_sw_patch) &&
            (rhs.flight_sw_git_hash == lhs.flight_sw_git_hash) &&
-           (rhs.os_sw_git_hash == lhs.os_sw_git_hash);
+           (rhs.os_sw_git_hash == lhs.os_sw_git_hash) &&
+           (rhs.flight_sw_version_type == lhs.flight_sw_version_type);
 }
 
 std::ostream& operator<<(std::ostream& str, Info::Version const& version)
@@ -123,6 +144,7 @@ std::ostream& operator<<(std::ostream& str, Info::Version const& version)
     str << "    os_sw_patch: " << version.os_sw_patch << '\n';
     str << "    flight_sw_git_hash: " << version.flight_sw_git_hash << '\n';
     str << "    os_sw_git_hash: " << version.os_sw_git_hash << '\n';
+    str << "    flight_sw_version_type: " << version.flight_sw_version_type << '\n';
     str << '}';
     return str;
 }

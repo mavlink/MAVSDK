@@ -119,6 +119,35 @@ namespace mavsdk {
 namespace rpc {
 namespace info {
 
+enum Version_FlightSoftwareVersionType : int {
+  Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN = 0,
+  Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_DEV = 1,
+  Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA = 2,
+  Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_BETA = 3,
+  Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RC = 4,
+  Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE = 5,
+  Version_FlightSoftwareVersionType_Version_FlightSoftwareVersionType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  Version_FlightSoftwareVersionType_Version_FlightSoftwareVersionType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool Version_FlightSoftwareVersionType_IsValid(int value);
+constexpr Version_FlightSoftwareVersionType Version_FlightSoftwareVersionType_FlightSoftwareVersionType_MIN = Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN;
+constexpr Version_FlightSoftwareVersionType Version_FlightSoftwareVersionType_FlightSoftwareVersionType_MAX = Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE;
+constexpr int Version_FlightSoftwareVersionType_FlightSoftwareVersionType_ARRAYSIZE = Version_FlightSoftwareVersionType_FlightSoftwareVersionType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Version_FlightSoftwareVersionType_descriptor();
+template<typename T>
+inline const std::string& Version_FlightSoftwareVersionType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, Version_FlightSoftwareVersionType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function Version_FlightSoftwareVersionType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    Version_FlightSoftwareVersionType_descriptor(), enum_t_value);
+}
+inline bool Version_FlightSoftwareVersionType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, Version_FlightSoftwareVersionType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Version_FlightSoftwareVersionType>(
+    Version_FlightSoftwareVersionType_descriptor(), name, value);
+}
 enum InfoResult_Result : int {
   InfoResult_Result_RESULT_UNKNOWN = 0,
   InfoResult_Result_RESULT_SUCCESS = 1,
@@ -2194,6 +2223,44 @@ class Version final :
 
   // nested types ----------------------------------------------------
 
+  typedef Version_FlightSoftwareVersionType FlightSoftwareVersionType;
+  static constexpr FlightSoftwareVersionType FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN =
+    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN;
+  static constexpr FlightSoftwareVersionType FLIGHT_SOFTWARE_VERSION_TYPE_DEV =
+    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_DEV;
+  static constexpr FlightSoftwareVersionType FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA =
+    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA;
+  static constexpr FlightSoftwareVersionType FLIGHT_SOFTWARE_VERSION_TYPE_BETA =
+    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_BETA;
+  static constexpr FlightSoftwareVersionType FLIGHT_SOFTWARE_VERSION_TYPE_RC =
+    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RC;
+  static constexpr FlightSoftwareVersionType FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE =
+    Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE;
+  static inline bool FlightSoftwareVersionType_IsValid(int value) {
+    return Version_FlightSoftwareVersionType_IsValid(value);
+  }
+  static constexpr FlightSoftwareVersionType FlightSoftwareVersionType_MIN =
+    Version_FlightSoftwareVersionType_FlightSoftwareVersionType_MIN;
+  static constexpr FlightSoftwareVersionType FlightSoftwareVersionType_MAX =
+    Version_FlightSoftwareVersionType_FlightSoftwareVersionType_MAX;
+  static constexpr int FlightSoftwareVersionType_ARRAYSIZE =
+    Version_FlightSoftwareVersionType_FlightSoftwareVersionType_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  FlightSoftwareVersionType_descriptor() {
+    return Version_FlightSoftwareVersionType_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& FlightSoftwareVersionType_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, FlightSoftwareVersionType>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function FlightSoftwareVersionType_Name.");
+    return Version_FlightSoftwareVersionType_Name(enum_t_value);
+  }
+  static inline bool FlightSoftwareVersionType_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      FlightSoftwareVersionType* value) {
+    return Version_FlightSoftwareVersionType_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
@@ -2208,6 +2275,7 @@ class Version final :
     kOsSwMajorFieldNumber = 7,
     kOsSwMinorFieldNumber = 8,
     kOsSwPatchFieldNumber = 9,
+    kFlightSwVersionTypeFieldNumber = 12,
   };
   // string flight_sw_git_hash = 10;
   void clear_flight_sw_git_hash();
@@ -2318,6 +2386,15 @@ class Version final :
   void _internal_set_os_sw_patch(int32_t value);
   public:
 
+  // .mavsdk.rpc.info.Version.FlightSoftwareVersionType flight_sw_version_type = 12;
+  void clear_flight_sw_version_type();
+  ::mavsdk::rpc::info::Version_FlightSoftwareVersionType flight_sw_version_type() const;
+  void set_flight_sw_version_type(::mavsdk::rpc::info::Version_FlightSoftwareVersionType value);
+  private:
+  ::mavsdk::rpc::info::Version_FlightSoftwareVersionType _internal_flight_sw_version_type() const;
+  void _internal_set_flight_sw_version_type(::mavsdk::rpc::info::Version_FlightSoftwareVersionType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.Version)
  private:
   class _Internal;
@@ -2336,6 +2413,7 @@ class Version final :
   int32_t os_sw_major_;
   int32_t os_sw_minor_;
   int32_t os_sw_patch_;
+  int flight_sw_version_type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_info_2finfo_2eproto;
 };
@@ -3955,6 +4033,26 @@ inline void Version::set_allocated_os_sw_git_hash(std::string* os_sw_git_hash) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.Version.os_sw_git_hash)
 }
 
+// .mavsdk.rpc.info.Version.FlightSoftwareVersionType flight_sw_version_type = 12;
+inline void Version::clear_flight_sw_version_type() {
+  flight_sw_version_type_ = 0;
+}
+inline ::mavsdk::rpc::info::Version_FlightSoftwareVersionType Version::_internal_flight_sw_version_type() const {
+  return static_cast< ::mavsdk::rpc::info::Version_FlightSoftwareVersionType >(flight_sw_version_type_);
+}
+inline ::mavsdk::rpc::info::Version_FlightSoftwareVersionType Version::flight_sw_version_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.Version.flight_sw_version_type)
+  return _internal_flight_sw_version_type();
+}
+inline void Version::_internal_set_flight_sw_version_type(::mavsdk::rpc::info::Version_FlightSoftwareVersionType value) {
+  
+  flight_sw_version_type_ = value;
+}
+inline void Version::set_flight_sw_version_type(::mavsdk::rpc::info::Version_FlightSoftwareVersionType value) {
+  _internal_set_flight_sw_version_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.info.Version.flight_sw_version_type)
+}
+
 // -------------------------------------------------------------------
 
 // InfoResult
@@ -4069,6 +4167,11 @@ inline void InfoResult::set_allocated_result_str(std::string* result_str) {
 
 PROTOBUF_NAMESPACE_OPEN
 
+template <> struct is_proto_enum< ::mavsdk::rpc::info::Version_FlightSoftwareVersionType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::info::Version_FlightSoftwareVersionType>() {
+  return ::mavsdk::rpc::info::Version_FlightSoftwareVersionType_descriptor();
+}
 template <> struct is_proto_enum< ::mavsdk::rpc::info::InfoResult_Result> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::info::InfoResult_Result>() {
