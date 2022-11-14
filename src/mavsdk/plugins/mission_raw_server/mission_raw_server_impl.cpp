@@ -362,7 +362,10 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
         _server_component_impl->get_own_system_id(),
         _server_component_impl->get_own_component_id(),
         &mission_current,
-        static_cast<uint16_t>(_current_seq));
+        static_cast<uint16_t>(_current_seq),
+        0,
+        0,
+        0);
     _server_component_impl->send_message(mission_current);
 }
 
