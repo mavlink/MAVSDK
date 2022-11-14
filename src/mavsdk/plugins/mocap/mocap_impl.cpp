@@ -234,7 +234,8 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
         pose_covariance.data(),
         velocity_covariance.data(),
         0,
-        MAV_ESTIMATOR_TYPE_MOCAP);
+        MAV_ESTIMATOR_TYPE_MOCAP,
+        0);
 
     return _parent->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
 }
