@@ -107,6 +107,81 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Info::Identification const& identification);
 
     /**
+     * @brief System capabilities
+     */
+    struct Capabilities {
+        /**
+         * @brief Bitmask of autopilot capabilities (64 bit). If a bit is set, the autopilot
+         * supports this capability.
+         */
+        enum class ProtocolCapability {
+            Unknown, /**< @brief Unknown. */
+            MissionFloat, /**< @brief Autopilot supports the MISSION_ITEM float message type. Note
+                             that MISSION_ITEM is deprecated, and autopilots should use MISSION_INT
+                             instead.. */
+            ParamFloat, /**< @brief DEPRECATED: Replaced by PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST
+                           (2022-03). Autopilot supports the new param float message type.. */
+            MissionInt, /**< @brief Autopilot supports MISSION_ITEM_INT scaled integer message type.
+                           Note that this flag must always be set if missions are supported, because
+                           missions must always use MISSION_ITEM_INT (rather than MISSION_ITEM,
+                           which is deprecated).. */
+            CommandInt, /**< @brief Autopilot supports COMMAND_INT scaled integer message type.. */
+            ParamEncodeBytewise, /**< @brief Parameter protocol uses byte-wise encoding of parameter
+                                    values into param_value (float) fields:
+                                    https://mavlink.io/en/services/parameter.html#parameter-encoding.
+                                    Note that either this flag or
+                                    MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST should be set if the
+                                    parameter protocol is supported.. */
+            Ftp, /**< @brief Autopilot supports the File Transfer Protocol v1:
+                    https://mavlink.io/en/services/ftp.html.. */
+            SetAttitudeTarget, /**< @brief Autopilot supports commanding attitude offboard.. */
+            SetPositionTargetLocalNed, /**< @brief Autopilot supports commanding position and
+                                          velocity targets in local NED frame.. */
+            SetPositionTargetGlobalInt, /**< @brief Autopilot supports commanding position and
+                                           velocity targets in global scaled integers.. */
+            Terrain, /**< @brief Autopilot supports terrain protocol / data handling.. */
+            SetActuatorTarget, /**< @brief Autopilot supports direct actuator control.. */
+            FlightTermination, /**< @brief Autopilot supports the MAV_CMD_DO_FLIGHTTERMINATION
+                                  command (flight termination).. */
+            CompassCalibration, /**< @brief Autopilot supports onboard compass calibration.. */
+            Mavlink2, /**< @brief Autopilot supports MAVLink version 2.. */
+            MissionFence, /**< @brief Autopilot supports mission fence protocol.. */
+            MissionRally, /**< @brief Autopilot supports mission rally point protocol.. */
+            Reserved2, /**< @brief Reserved for future use.. */
+            ParamEncodeCCast, /**< @brief Parameter protocol uses C-cast of parameter values to set
+                                 the param_value (float) fields:
+                                 https://mavlink.io/en/services/parameter.html#parameter-encoding.
+                                 Note that either this flag or
+                                 PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be set if the
+                                 parameter protocol is supported.. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Info::ProtocolCapability`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str, Info::Capabilities::ProtocolCapability const& protocol_capability);
+
+        int32_t capabilities{}; /**< @brief Bitmap of capabilities. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Info::Capabilities` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Info::Capabilities& lhs, const Info::Capabilities& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Info::Capabilities`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Info::Capabilities const& capabilities);
+
+    /**
      * @brief System product information.
      */
     struct Product {
@@ -223,6 +298,15 @@ public:
      * @return Result of request.
      */
     std::pair<Result, Info::Identification> get_identification() const;
+
+    /**
+     * @brief Get the capabilities of the system.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, Info::Capabilities> get_capabilities() const;
 
     /**
      * @brief Get product information of the system.

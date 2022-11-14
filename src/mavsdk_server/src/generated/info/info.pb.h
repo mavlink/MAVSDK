@@ -50,9 +50,18 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 namespace mavsdk {
 namespace rpc {
 namespace info {
+class Capabilities;
+struct CapabilitiesDefaultTypeInternal;
+extern CapabilitiesDefaultTypeInternal _Capabilities_default_instance_;
 class FlightInfo;
 struct FlightInfoDefaultTypeInternal;
 extern FlightInfoDefaultTypeInternal _FlightInfo_default_instance_;
+class GetCapabilitiesRequest;
+struct GetCapabilitiesRequestDefaultTypeInternal;
+extern GetCapabilitiesRequestDefaultTypeInternal _GetCapabilitiesRequest_default_instance_;
+class GetCapabilitiesResponse;
+struct GetCapabilitiesResponseDefaultTypeInternal;
+extern GetCapabilitiesResponseDefaultTypeInternal _GetCapabilitiesResponse_default_instance_;
 class GetFlightInformationRequest;
 struct GetFlightInformationRequestDefaultTypeInternal;
 extern GetFlightInformationRequestDefaultTypeInternal _GetFlightInformationRequest_default_instance_;
@@ -99,7 +108,10 @@ extern VersionDefaultTypeInternal _Version_default_instance_;
 }  // namespace rpc
 }  // namespace mavsdk
 PROTOBUF_NAMESPACE_OPEN
+template<> ::mavsdk::rpc::info::Capabilities* Arena::CreateMaybeMessage<::mavsdk::rpc::info::Capabilities>(Arena*);
 template<> ::mavsdk::rpc::info::FlightInfo* Arena::CreateMaybeMessage<::mavsdk::rpc::info::FlightInfo>(Arena*);
+template<> ::mavsdk::rpc::info::GetCapabilitiesRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::info::GetCapabilitiesRequest>(Arena*);
+template<> ::mavsdk::rpc::info::GetCapabilitiesResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::info::GetCapabilitiesResponse>(Arena*);
 template<> ::mavsdk::rpc::info::GetFlightInformationRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::info::GetFlightInformationRequest>(Arena*);
 template<> ::mavsdk::rpc::info::GetFlightInformationResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::info::GetFlightInformationResponse>(Arena*);
 template<> ::mavsdk::rpc::info::GetIdentificationRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::info::GetIdentificationRequest>(Arena*);
@@ -119,6 +131,48 @@ namespace mavsdk {
 namespace rpc {
 namespace info {
 
+enum Capabilities_ProtocolCapability : int {
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_UNKNOWN = 0,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FLOAT = 1,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_FLOAT = 2,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_INT = 4,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMMAND_INT = 8,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE = 16,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FTP = 32,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET = 64,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED = 128,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_GLOBAL_INT = 256,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_TERRAIN = 512,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET = 1024,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION = 2048,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMPASS_CALIBRATION = 4096,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MAVLINK2 = 8192,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FENCE = 16384,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_RALLY = 32768,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_RESERVED2 = 65536,
+  Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST = 131072,
+  Capabilities_ProtocolCapability_Capabilities_ProtocolCapability_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  Capabilities_ProtocolCapability_Capabilities_ProtocolCapability_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool Capabilities_ProtocolCapability_IsValid(int value);
+constexpr Capabilities_ProtocolCapability Capabilities_ProtocolCapability_ProtocolCapability_MIN = Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_UNKNOWN;
+constexpr Capabilities_ProtocolCapability Capabilities_ProtocolCapability_ProtocolCapability_MAX = Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST;
+constexpr int Capabilities_ProtocolCapability_ProtocolCapability_ARRAYSIZE = Capabilities_ProtocolCapability_ProtocolCapability_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Capabilities_ProtocolCapability_descriptor();
+template<typename T>
+inline const std::string& Capabilities_ProtocolCapability_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, Capabilities_ProtocolCapability>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function Capabilities_ProtocolCapability_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    Capabilities_ProtocolCapability_descriptor(), enum_t_value);
+}
+inline bool Capabilities_ProtocolCapability_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, Capabilities_ProtocolCapability* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Capabilities_ProtocolCapability>(
+    Capabilities_ProtocolCapability_descriptor(), name, value);
+}
 enum Version_FlightSoftwareVersionType : int {
   Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN = 0,
   Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_DEV = 1,
@@ -753,6 +807,294 @@ class GetIdentificationResponse final :
 };
 // -------------------------------------------------------------------
 
+class GetCapabilitiesRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.GetCapabilitiesRequest) */ {
+ public:
+  inline GetCapabilitiesRequest() : GetCapabilitiesRequest(nullptr) {}
+  explicit PROTOBUF_CONSTEXPR GetCapabilitiesRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  GetCapabilitiesRequest(const GetCapabilitiesRequest& from);
+  GetCapabilitiesRequest(GetCapabilitiesRequest&& from) noexcept
+    : GetCapabilitiesRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetCapabilitiesRequest& operator=(const GetCapabilitiesRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetCapabilitiesRequest& operator=(GetCapabilitiesRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetCapabilitiesRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetCapabilitiesRequest* internal_default_instance() {
+    return reinterpret_cast<const GetCapabilitiesRequest*>(
+               &_GetCapabilitiesRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(GetCapabilitiesRequest& a, GetCapabilitiesRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetCapabilitiesRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetCapabilitiesRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetCapabilitiesRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetCapabilitiesRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const GetCapabilitiesRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(this, from);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const GetCapabilitiesRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(this, from);
+  }
+  public:
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.info.GetCapabilitiesRequest";
+  }
+  protected:
+  explicit GetCapabilitiesRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.GetCapabilitiesRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  friend struct ::TableStruct_info_2finfo_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetCapabilitiesResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.GetCapabilitiesResponse) */ {
+ public:
+  inline GetCapabilitiesResponse() : GetCapabilitiesResponse(nullptr) {}
+  ~GetCapabilitiesResponse() override;
+  explicit PROTOBUF_CONSTEXPR GetCapabilitiesResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  GetCapabilitiesResponse(const GetCapabilitiesResponse& from);
+  GetCapabilitiesResponse(GetCapabilitiesResponse&& from) noexcept
+    : GetCapabilitiesResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetCapabilitiesResponse& operator=(const GetCapabilitiesResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetCapabilitiesResponse& operator=(GetCapabilitiesResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetCapabilitiesResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetCapabilitiesResponse* internal_default_instance() {
+    return reinterpret_cast<const GetCapabilitiesResponse*>(
+               &_GetCapabilitiesResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(GetCapabilitiesResponse& a, GetCapabilitiesResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetCapabilitiesResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetCapabilitiesResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetCapabilitiesResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetCapabilitiesResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const GetCapabilitiesResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const GetCapabilitiesResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetCapabilitiesResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.info.GetCapabilitiesResponse";
+  }
+  protected:
+  explicit GetCapabilitiesResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kInfoResultFieldNumber = 1,
+    kCapabilitiesFieldNumber = 2,
+  };
+  // .mavsdk.rpc.info.InfoResult info_result = 1;
+  bool has_info_result() const;
+  private:
+  bool _internal_has_info_result() const;
+  public:
+  void clear_info_result();
+  const ::mavsdk::rpc::info::InfoResult& info_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::info::InfoResult* release_info_result();
+  ::mavsdk::rpc::info::InfoResult* mutable_info_result();
+  void set_allocated_info_result(::mavsdk::rpc::info::InfoResult* info_result);
+  private:
+  const ::mavsdk::rpc::info::InfoResult& _internal_info_result() const;
+  ::mavsdk::rpc::info::InfoResult* _internal_mutable_info_result();
+  public:
+  void unsafe_arena_set_allocated_info_result(
+      ::mavsdk::rpc::info::InfoResult* info_result);
+  ::mavsdk::rpc::info::InfoResult* unsafe_arena_release_info_result();
+
+  // .mavsdk.rpc.info.Capabilities capabilities = 2;
+  bool has_capabilities() const;
+  private:
+  bool _internal_has_capabilities() const;
+  public:
+  void clear_capabilities();
+  const ::mavsdk::rpc::info::Capabilities& capabilities() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::info::Capabilities* release_capabilities();
+  ::mavsdk::rpc::info::Capabilities* mutable_capabilities();
+  void set_allocated_capabilities(::mavsdk::rpc::info::Capabilities* capabilities);
+  private:
+  const ::mavsdk::rpc::info::Capabilities& _internal_capabilities() const;
+  ::mavsdk::rpc::info::Capabilities* _internal_mutable_capabilities();
+  public:
+  void unsafe_arena_set_allocated_capabilities(
+      ::mavsdk::rpc::info::Capabilities* capabilities);
+  ::mavsdk::rpc::info::Capabilities* unsafe_arena_release_capabilities();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.GetCapabilitiesResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::info::InfoResult* info_result_;
+  ::mavsdk::rpc::info::Capabilities* capabilities_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_info_2finfo_2eproto;
+};
+// -------------------------------------------------------------------
+
 class GetProductRequest final :
     public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.GetProductRequest) */ {
  public:
@@ -800,7 +1142,7 @@ class GetProductRequest final :
                &_GetProductRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    6;
 
   friend void swap(GetProductRequest& a, GetProductRequest& b) {
     a.Swap(&b);
@@ -917,7 +1259,7 @@ class GetProductResponse final :
                &_GetProductResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   friend void swap(GetProductResponse& a, GetProductResponse& b) {
     a.Swap(&b);
@@ -1088,7 +1430,7 @@ class GetVersionRequest final :
                &_GetVersionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    8;
 
   friend void swap(GetVersionRequest& a, GetVersionRequest& b) {
     a.Swap(&b);
@@ -1205,7 +1547,7 @@ class GetVersionResponse final :
                &_GetVersionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    9;
 
   friend void swap(GetVersionResponse& a, GetVersionResponse& b) {
     a.Swap(&b);
@@ -1376,7 +1718,7 @@ class GetSpeedFactorRequest final :
                &_GetSpeedFactorRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    10;
 
   friend void swap(GetSpeedFactorRequest& a, GetSpeedFactorRequest& b) {
     a.Swap(&b);
@@ -1493,7 +1835,7 @@ class GetSpeedFactorResponse final :
                &_GetSpeedFactorResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    11;
 
   friend void swap(GetSpeedFactorResponse& a, GetSpeedFactorResponse& b) {
     a.Swap(&b);
@@ -1656,7 +1998,7 @@ class FlightInfo final :
                &_FlightInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    12;
 
   friend void swap(FlightInfo& a, FlightInfo& b) {
     a.Swap(&b);
@@ -1810,7 +2152,7 @@ class Identification final :
                &_Identification_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    13;
 
   friend void swap(Identification& a, Identification& b) {
     a.Swap(&b);
@@ -1921,6 +2263,213 @@ class Identification final :
 };
 // -------------------------------------------------------------------
 
+class Capabilities final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.Capabilities) */ {
+ public:
+  inline Capabilities() : Capabilities(nullptr) {}
+  ~Capabilities() override;
+  explicit PROTOBUF_CONSTEXPR Capabilities(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Capabilities(const Capabilities& from);
+  Capabilities(Capabilities&& from) noexcept
+    : Capabilities() {
+    *this = ::std::move(from);
+  }
+
+  inline Capabilities& operator=(const Capabilities& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Capabilities& operator=(Capabilities&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Capabilities& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Capabilities* internal_default_instance() {
+    return reinterpret_cast<const Capabilities*>(
+               &_Capabilities_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    14;
+
+  friend void swap(Capabilities& a, Capabilities& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Capabilities* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Capabilities* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Capabilities* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Capabilities>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const Capabilities& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const Capabilities& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Capabilities* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.info.Capabilities";
+  }
+  protected:
+  explicit Capabilities(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  typedef Capabilities_ProtocolCapability ProtocolCapability;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_UNKNOWN =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_UNKNOWN;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_MISSION_FLOAT =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FLOAT;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_PARAM_FLOAT =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_FLOAT;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_MISSION_INT =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_INT;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_COMMAND_INT =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMMAND_INT;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_FTP =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FTP;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_SET_POSITION_TARGET_GLOBAL_INT =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_GLOBAL_INT;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_TERRAIN =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_TERRAIN;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_FLIGHT_TERMINATION =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_COMPASS_CALIBRATION =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMPASS_CALIBRATION;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_MAVLINK2 =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MAVLINK2;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_MISSION_FENCE =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FENCE;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_MISSION_RALLY =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_RALLY;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_RESERVED2 =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_RESERVED2;
+  static constexpr ProtocolCapability PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST =
+    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST;
+  static inline bool ProtocolCapability_IsValid(int value) {
+    return Capabilities_ProtocolCapability_IsValid(value);
+  }
+  static constexpr ProtocolCapability ProtocolCapability_MIN =
+    Capabilities_ProtocolCapability_ProtocolCapability_MIN;
+  static constexpr ProtocolCapability ProtocolCapability_MAX =
+    Capabilities_ProtocolCapability_ProtocolCapability_MAX;
+  static constexpr int ProtocolCapability_ARRAYSIZE =
+    Capabilities_ProtocolCapability_ProtocolCapability_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  ProtocolCapability_descriptor() {
+    return Capabilities_ProtocolCapability_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& ProtocolCapability_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, ProtocolCapability>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function ProtocolCapability_Name.");
+    return Capabilities_ProtocolCapability_Name(enum_t_value);
+  }
+  static inline bool ProtocolCapability_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      ProtocolCapability* value) {
+    return Capabilities_ProtocolCapability_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCapabilitiesFieldNumber = 1,
+  };
+  // int32 capabilities = 1;
+  void clear_capabilities();
+  int32_t capabilities() const;
+  void set_capabilities(int32_t value);
+  private:
+  int32_t _internal_capabilities() const;
+  void _internal_set_capabilities(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.Capabilities)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  int32_t capabilities_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_info_2finfo_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Product final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.Product) */ {
  public:
@@ -1969,7 +2518,7 @@ class Product final :
                &_Product_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    15;
 
   friend void swap(Product& a, Product& b) {
     a.Swap(&b);
@@ -2155,7 +2704,7 @@ class Version final :
                &_Version_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    16;
 
   friend void swap(Version& a, Version& b) {
     a.Swap(&b);
@@ -2467,7 +3016,7 @@ class InfoResult final :
                &_InfoResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    17;
 
   friend void swap(InfoResult& a, InfoResult& b) {
     a.Swap(&b);
@@ -2991,6 +3540,194 @@ inline void GetIdentificationResponse::set_allocated_identification(::mavsdk::rp
   }
   identification_ = identification;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.GetIdentificationResponse.identification)
+}
+
+// -------------------------------------------------------------------
+
+// GetCapabilitiesRequest
+
+// -------------------------------------------------------------------
+
+// GetCapabilitiesResponse
+
+// .mavsdk.rpc.info.InfoResult info_result = 1;
+inline bool GetCapabilitiesResponse::_internal_has_info_result() const {
+  return this != internal_default_instance() && info_result_ != nullptr;
+}
+inline bool GetCapabilitiesResponse::has_info_result() const {
+  return _internal_has_info_result();
+}
+inline void GetCapabilitiesResponse::clear_info_result() {
+  if (GetArenaForAllocation() == nullptr && info_result_ != nullptr) {
+    delete info_result_;
+  }
+  info_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::info::InfoResult& GetCapabilitiesResponse::_internal_info_result() const {
+  const ::mavsdk::rpc::info::InfoResult* p = info_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::info::InfoResult&>(
+      ::mavsdk::rpc::info::_InfoResult_default_instance_);
+}
+inline const ::mavsdk::rpc::info::InfoResult& GetCapabilitiesResponse::info_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.GetCapabilitiesResponse.info_result)
+  return _internal_info_result();
+}
+inline void GetCapabilitiesResponse::unsafe_arena_set_allocated_info_result(
+    ::mavsdk::rpc::info::InfoResult* info_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(info_result_);
+  }
+  info_result_ = info_result;
+  if (info_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.info.GetCapabilitiesResponse.info_result)
+}
+inline ::mavsdk::rpc::info::InfoResult* GetCapabilitiesResponse::release_info_result() {
+  
+  ::mavsdk::rpc::info::InfoResult* temp = info_result_;
+  info_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::info::InfoResult* GetCapabilitiesResponse::unsafe_arena_release_info_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.info.GetCapabilitiesResponse.info_result)
+  
+  ::mavsdk::rpc::info::InfoResult* temp = info_result_;
+  info_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::info::InfoResult* GetCapabilitiesResponse::_internal_mutable_info_result() {
+  
+  if (info_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::info::InfoResult>(GetArenaForAllocation());
+    info_result_ = p;
+  }
+  return info_result_;
+}
+inline ::mavsdk::rpc::info::InfoResult* GetCapabilitiesResponse::mutable_info_result() {
+  ::mavsdk::rpc::info::InfoResult* _msg = _internal_mutable_info_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.info.GetCapabilitiesResponse.info_result)
+  return _msg;
+}
+inline void GetCapabilitiesResponse::set_allocated_info_result(::mavsdk::rpc::info::InfoResult* info_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete info_result_;
+  }
+  if (info_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(info_result);
+    if (message_arena != submessage_arena) {
+      info_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, info_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  info_result_ = info_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.GetCapabilitiesResponse.info_result)
+}
+
+// .mavsdk.rpc.info.Capabilities capabilities = 2;
+inline bool GetCapabilitiesResponse::_internal_has_capabilities() const {
+  return this != internal_default_instance() && capabilities_ != nullptr;
+}
+inline bool GetCapabilitiesResponse::has_capabilities() const {
+  return _internal_has_capabilities();
+}
+inline void GetCapabilitiesResponse::clear_capabilities() {
+  if (GetArenaForAllocation() == nullptr && capabilities_ != nullptr) {
+    delete capabilities_;
+  }
+  capabilities_ = nullptr;
+}
+inline const ::mavsdk::rpc::info::Capabilities& GetCapabilitiesResponse::_internal_capabilities() const {
+  const ::mavsdk::rpc::info::Capabilities* p = capabilities_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::info::Capabilities&>(
+      ::mavsdk::rpc::info::_Capabilities_default_instance_);
+}
+inline const ::mavsdk::rpc::info::Capabilities& GetCapabilitiesResponse::capabilities() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.GetCapabilitiesResponse.capabilities)
+  return _internal_capabilities();
+}
+inline void GetCapabilitiesResponse::unsafe_arena_set_allocated_capabilities(
+    ::mavsdk::rpc::info::Capabilities* capabilities) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(capabilities_);
+  }
+  capabilities_ = capabilities;
+  if (capabilities) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.info.GetCapabilitiesResponse.capabilities)
+}
+inline ::mavsdk::rpc::info::Capabilities* GetCapabilitiesResponse::release_capabilities() {
+  
+  ::mavsdk::rpc::info::Capabilities* temp = capabilities_;
+  capabilities_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::info::Capabilities* GetCapabilitiesResponse::unsafe_arena_release_capabilities() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.info.GetCapabilitiesResponse.capabilities)
+  
+  ::mavsdk::rpc::info::Capabilities* temp = capabilities_;
+  capabilities_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::info::Capabilities* GetCapabilitiesResponse::_internal_mutable_capabilities() {
+  
+  if (capabilities_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::info::Capabilities>(GetArenaForAllocation());
+    capabilities_ = p;
+  }
+  return capabilities_;
+}
+inline ::mavsdk::rpc::info::Capabilities* GetCapabilitiesResponse::mutable_capabilities() {
+  ::mavsdk::rpc::info::Capabilities* _msg = _internal_mutable_capabilities();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.info.GetCapabilitiesResponse.capabilities)
+  return _msg;
+}
+inline void GetCapabilitiesResponse::set_allocated_capabilities(::mavsdk::rpc::info::Capabilities* capabilities) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete capabilities_;
+  }
+  if (capabilities) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(capabilities);
+    if (message_arena != submessage_arena) {
+      capabilities = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, capabilities, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  capabilities_ = capabilities;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.GetCapabilitiesResponse.capabilities)
 }
 
 // -------------------------------------------------------------------
@@ -3607,6 +4344,30 @@ inline void Identification::set_legacy_uid(uint64_t value) {
 
 // -------------------------------------------------------------------
 
+// Capabilities
+
+// int32 capabilities = 1;
+inline void Capabilities::clear_capabilities() {
+  capabilities_ = 0;
+}
+inline int32_t Capabilities::_internal_capabilities() const {
+  return capabilities_;
+}
+inline int32_t Capabilities::capabilities() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.Capabilities.capabilities)
+  return _internal_capabilities();
+}
+inline void Capabilities::_internal_set_capabilities(int32_t value) {
+  
+  capabilities_ = value;
+}
+inline void Capabilities::set_capabilities(int32_t value) {
+  _internal_set_capabilities(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.info.Capabilities.capabilities)
+}
+
+// -------------------------------------------------------------------
+
 // Product
 
 // int32 vendor_id = 1;
@@ -4158,6 +4919,12 @@ inline void InfoResult::set_allocated_result_str(std::string* result_str) {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -4167,6 +4934,11 @@ inline void InfoResult::set_allocated_result_str(std::string* result_str) {
 
 PROTOBUF_NAMESPACE_OPEN
 
+template <> struct is_proto_enum< ::mavsdk::rpc::info::Capabilities_ProtocolCapability> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::info::Capabilities_ProtocolCapability>() {
+  return ::mavsdk::rpc::info::Capabilities_ProtocolCapability_descriptor();
+}
 template <> struct is_proto_enum< ::mavsdk::rpc::info::Version_FlightSoftwareVersionType> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::mavsdk::rpc::info::Version_FlightSoftwareVersionType>() {

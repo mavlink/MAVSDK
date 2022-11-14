@@ -103,6 +103,8 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
+    _capabilities.capabilities = autopilot_version.capabilities;
+
     _version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
     _version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
     _version.flight_sw_patch = (autopilot_version.flight_sw_version >> (8 * 1)) & 0xFF;
@@ -222,6 +224,14 @@ std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() con
     return std::make_pair<>(
         (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
         _identification);
+}
+
+std::pair<Info::Result, Info::Capabilities> InfoImpl::get_capabilities() const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return std::make_pair<>(
+        (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
+        _capabilities);
 }
 
 std::pair<Info::Result, Info::Version> InfoImpl::get_version() const

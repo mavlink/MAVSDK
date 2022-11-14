@@ -22,6 +22,7 @@ public:
     void disable() override;
 
     std::pair<Info::Result, Info::Identification> get_identification() const;
+    std::pair<Info::Result, Info::Capabilities> get_capabilities() const;
     std::pair<Info::Result, Info::Version> get_version() const;
     std::pair<Info::Result, Info::Product> get_product() const;
     std::pair<Info::Result, Info::FlightInfo> get_flight_information() const;
@@ -45,6 +46,7 @@ private:
 
     Info::Version _version{};
     Info::Product _product{};
+    Info::Capabilities _capabilities{};
     Info::Identification _identification{};
     Info::FlightInfo _flight_info{};
     bool _information_received{false};

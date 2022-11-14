@@ -11,6 +11,7 @@ namespace mavsdk {
 
 using FlightInfo = Info::FlightInfo;
 using Identification = Info::Identification;
+using Capabilities = Info::Capabilities;
 using Product = Info::Product;
 using Version = Info::Version;
 
@@ -29,6 +30,11 @@ std::pair<Info::Result, Info::FlightInfo> Info::get_flight_information() const
 std::pair<Info::Result, Info::Identification> Info::get_identification() const
 {
     return _impl->get_identification();
+}
+
+std::pair<Info::Result, Info::Capabilities> Info::get_capabilities() const
+{
+    return _impl->get_capabilities();
 }
 
 std::pair<Info::Result, Info::Product> Info::get_product() const
@@ -72,6 +78,66 @@ std::ostream& operator<<(std::ostream& str, Info::Identification const& identifi
     str << "identification:" << '\n' << "{\n";
     str << "    hardware_uid: " << identification.hardware_uid << '\n';
     str << "    legacy_uid: " << identification.legacy_uid << '\n';
+    str << '}';
+    return str;
+}
+
+std::ostream&
+operator<<(std::ostream& str, Info::Capabilities::ProtocolCapability const& protocol_capability)
+{
+    switch (protocol_capability) {
+        case Info::Capabilities::ProtocolCapability::Unknown:
+            return str << "Unknown";
+        case Info::Capabilities::ProtocolCapability::MissionFloat:
+            return str << "Mission Float";
+        case Info::Capabilities::ProtocolCapability::ParamFloat:
+            return str << "Param Float";
+        case Info::Capabilities::ProtocolCapability::MissionInt:
+            return str << "Mission Int";
+        case Info::Capabilities::ProtocolCapability::CommandInt:
+            return str << "Command Int";
+        case Info::Capabilities::ProtocolCapability::ParamEncodeBytewise:
+            return str << "Param Encode Bytewise";
+        case Info::Capabilities::ProtocolCapability::Ftp:
+            return str << "Ftp";
+        case Info::Capabilities::ProtocolCapability::SetAttitudeTarget:
+            return str << "Set Attitude Target";
+        case Info::Capabilities::ProtocolCapability::SetPositionTargetLocalNed:
+            return str << "Set Position Target Local Ned";
+        case Info::Capabilities::ProtocolCapability::SetPositionTargetGlobalInt:
+            return str << "Set Position Target Global Int";
+        case Info::Capabilities::ProtocolCapability::Terrain:
+            return str << "Terrain";
+        case Info::Capabilities::ProtocolCapability::SetActuatorTarget:
+            return str << "Set Actuator Target";
+        case Info::Capabilities::ProtocolCapability::FlightTermination:
+            return str << "Flight Termination";
+        case Info::Capabilities::ProtocolCapability::CompassCalibration:
+            return str << "Compass Calibration";
+        case Info::Capabilities::ProtocolCapability::Mavlink2:
+            return str << "Mavlink2";
+        case Info::Capabilities::ProtocolCapability::MissionFence:
+            return str << "Mission Fence";
+        case Info::Capabilities::ProtocolCapability::MissionRally:
+            return str << "Mission Rally";
+        case Info::Capabilities::ProtocolCapability::Reserved2:
+            return str << "Reserved2";
+        case Info::Capabilities::ProtocolCapability::ParamEncodeCCast:
+            return str << "Param Encode C Cast";
+        default:
+            return str << "Unknown";
+    }
+}
+bool operator==(const Info::Capabilities& lhs, const Info::Capabilities& rhs)
+{
+    return (rhs.capabilities == lhs.capabilities);
+}
+
+std::ostream& operator<<(std::ostream& str, Info::Capabilities const& capabilities)
+{
+    str << std::setprecision(15);
+    str << "capabilities:" << '\n' << "{\n";
+    str << "    capabilities: " << capabilities.capabilities << '\n';
     str << '}';
     return str;
 }

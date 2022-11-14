@@ -58,13 +58,26 @@ TEST_F(SitlTest, PX4Info)
 
         std::pair<Info::Result, Info::Identification> identification_result =
             info->get_identification();
-
         EXPECT_EQ(identification_result.first, Info::Result::Success);
 
         if (identification_result.first == Info::Result::Success) {
             std::cout << "Hardware UID: " << identification_result.second.hardware_uid << '\n';
         } else {
             LogWarn() << "Identification request result: " << identification_result.first;
+        }
+
+        std::pair<Info::Result, Info::Capabilities> capabilities_result = info->get_capabilities();
+        EXPECT_EQ(capabilities_result.first, Info::Result::Success);
+
+        if (capabilities_result.first == Info::Result::Success) {
+            if ((capabilities_result.second.capabilities &
+                 (int32_t)Info::Capabilities::ProtocolCapability::Mavlink2) ==
+                (int32_t)Info::Capabilities::ProtocolCapability::Mavlink2) {
+                std::cout << "Autopilot supports "
+                          << Info::Capabilities::ProtocolCapability::Mavlink2 << '\n';
+            }
+        } else {
+            LogWarn() << "Identification request result: " << capabilities_result.first;
         }
 
         std::pair<Info::Result, Info::FlightInfo> flight_info_result =

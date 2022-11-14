@@ -89,6 +89,135 @@ public:
         return obj;
     }
 
+    static rpc::info::Capabilities::ProtocolCapability translateToRpcProtocolCapability(
+        const mavsdk::Info::Capabilities::ProtocolCapability& protocol_capability)
+    {
+        switch (protocol_capability) {
+            default:
+                LogErr() << "Unknown protocol_capability enum value: "
+                         << static_cast<int>(protocol_capability);
+            // FALLTHROUGH
+            case mavsdk::Info::Capabilities::ProtocolCapability::Unknown:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_UNKNOWN;
+            case mavsdk::Info::Capabilities::ProtocolCapability::MissionFloat:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FLOAT;
+            case mavsdk::Info::Capabilities::ProtocolCapability::ParamFloat:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_FLOAT;
+            case mavsdk::Info::Capabilities::ProtocolCapability::MissionInt:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_INT;
+            case mavsdk::Info::Capabilities::ProtocolCapability::CommandInt:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMMAND_INT;
+            case mavsdk::Info::Capabilities::ProtocolCapability::ParamEncodeBytewise:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE;
+            case mavsdk::Info::Capabilities::ProtocolCapability::Ftp:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FTP;
+            case mavsdk::Info::Capabilities::ProtocolCapability::SetAttitudeTarget:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET;
+            case mavsdk::Info::Capabilities::ProtocolCapability::SetPositionTargetLocalNed:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED;
+            case mavsdk::Info::Capabilities::ProtocolCapability::SetPositionTargetGlobalInt:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_GLOBAL_INT;
+            case mavsdk::Info::Capabilities::ProtocolCapability::Terrain:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_TERRAIN;
+            case mavsdk::Info::Capabilities::ProtocolCapability::SetActuatorTarget:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET;
+            case mavsdk::Info::Capabilities::ProtocolCapability::FlightTermination:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION;
+            case mavsdk::Info::Capabilities::ProtocolCapability::CompassCalibration:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMPASS_CALIBRATION;
+            case mavsdk::Info::Capabilities::ProtocolCapability::Mavlink2:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MAVLINK2;
+            case mavsdk::Info::Capabilities::ProtocolCapability::MissionFence:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FENCE;
+            case mavsdk::Info::Capabilities::ProtocolCapability::MissionRally:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_RALLY;
+            case mavsdk::Info::Capabilities::ProtocolCapability::Reserved2:
+                return rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_RESERVED2;
+            case mavsdk::Info::Capabilities::ProtocolCapability::ParamEncodeCCast:
+                return rpc::info::
+                    Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST;
+        }
+    }
+
+    static mavsdk::Info::Capabilities::ProtocolCapability translateFromRpcProtocolCapability(
+        const rpc::info::Capabilities::ProtocolCapability protocol_capability)
+    {
+        switch (protocol_capability) {
+            default:
+                LogErr() << "Unknown protocol_capability enum value: "
+                         << static_cast<int>(protocol_capability);
+            // FALLTHROUGH
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_UNKNOWN:
+                return mavsdk::Info::Capabilities::ProtocolCapability::Unknown;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FLOAT:
+                return mavsdk::Info::Capabilities::ProtocolCapability::MissionFloat;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_FLOAT:
+                return mavsdk::Info::Capabilities::ProtocolCapability::ParamFloat;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_INT:
+                return mavsdk::Info::Capabilities::ProtocolCapability::MissionInt;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMMAND_INT:
+                return mavsdk::Info::Capabilities::ProtocolCapability::CommandInt;
+            case rpc::info::
+                Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE:
+                return mavsdk::Info::Capabilities::ProtocolCapability::ParamEncodeBytewise;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FTP:
+                return mavsdk::Info::Capabilities::ProtocolCapability::Ftp;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET:
+                return mavsdk::Info::Capabilities::ProtocolCapability::SetAttitudeTarget;
+            case rpc::info::
+                Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED:
+                return mavsdk::Info::Capabilities::ProtocolCapability::SetPositionTargetLocalNed;
+            case rpc::info::
+                Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_GLOBAL_INT:
+                return mavsdk::Info::Capabilities::ProtocolCapability::SetPositionTargetGlobalInt;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_TERRAIN:
+                return mavsdk::Info::Capabilities::ProtocolCapability::Terrain;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET:
+                return mavsdk::Info::Capabilities::ProtocolCapability::SetActuatorTarget;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION:
+                return mavsdk::Info::Capabilities::ProtocolCapability::FlightTermination;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_COMPASS_CALIBRATION:
+                return mavsdk::Info::Capabilities::ProtocolCapability::CompassCalibration;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MAVLINK2:
+                return mavsdk::Info::Capabilities::ProtocolCapability::Mavlink2;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_FENCE:
+                return mavsdk::Info::Capabilities::ProtocolCapability::MissionFence;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_MISSION_RALLY:
+                return mavsdk::Info::Capabilities::ProtocolCapability::MissionRally;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_RESERVED2:
+                return mavsdk::Info::Capabilities::ProtocolCapability::Reserved2;
+            case rpc::info::Capabilities_ProtocolCapability_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST:
+                return mavsdk::Info::Capabilities::ProtocolCapability::ParamEncodeCCast;
+        }
+    }
+
+    static std::unique_ptr<rpc::info::Capabilities>
+    translateToRpcCapabilities(const mavsdk::Info::Capabilities& capabilities)
+    {
+        auto rpc_obj = std::make_unique<rpc::info::Capabilities>();
+
+        rpc_obj->set_capabilities(capabilities.capabilities);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Info::Capabilities
+    translateFromRpcCapabilities(const rpc::info::Capabilities& capabilities)
+    {
+        mavsdk::Info::Capabilities obj;
+
+        obj.capabilities = capabilities.capabilities();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::info::Product>
     translateToRpcProduct(const mavsdk::Info::Product& product)
     {
@@ -317,6 +446,32 @@ public:
 
             response->set_allocated_identification(
                 translateToRpcIdentification(result.second).release());
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status GetCapabilities(
+        grpc::ServerContext* /* context */,
+        const rpc::info::GetCapabilitiesRequest* /* request */,
+        rpc::info::GetCapabilitiesResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Info::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_capabilities();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_capabilities(
+                translateToRpcCapabilities(result.second).release());
         }
 
         return grpc::Status::OK;

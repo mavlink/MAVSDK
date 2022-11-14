@@ -54,6 +54,14 @@ class InfoService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>> PrepareAsyncGetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>>(PrepareAsyncGetIdentificationRaw(context, request, cq));
     }
+    // Get the capabilities of the system.
+    virtual ::grpc::Status GetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetCapabilitiesResponse>> AsyncGetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetCapabilitiesResponse>>(AsyncGetCapabilitiesRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetCapabilitiesResponse>> PrepareAsyncGetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetCapabilitiesResponse>>(PrepareAsyncGetCapabilitiesRaw(context, request, cq));
+    }
     // Get product information of the system.
     virtual ::grpc::Status GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::mavsdk::rpc::info::GetProductResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>> AsyncGetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) {
@@ -87,6 +95,9 @@ class InfoService final {
       // Get the identification of the system.
       virtual void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Get the capabilities of the system.
+      virtual void GetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest* request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest* request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Get product information of the system.
       virtual void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -105,6 +116,8 @@ class InfoService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetFlightInformationResponse>* PrepareAsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>* AsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetIdentificationResponse>* PrepareAsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetCapabilitiesResponse>* AsyncGetCapabilitiesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetCapabilitiesResponse>* PrepareAsyncGetCapabilitiesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>* AsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetProductResponse>* PrepareAsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>* AsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -128,6 +141,13 @@ class InfoService final {
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>> PrepareAsyncGetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>>(PrepareAsyncGetIdentificationRaw(context, request, cq));
+    }
+    ::grpc::Status GetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetCapabilitiesResponse>> AsyncGetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetCapabilitiesResponse>>(AsyncGetCapabilitiesRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetCapabilitiesResponse>> PrepareAsyncGetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetCapabilitiesResponse>>(PrepareAsyncGetCapabilitiesRaw(context, request, cq));
     }
     ::grpc::Status GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::mavsdk::rpc::info::GetProductResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>> AsyncGetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) {
@@ -157,6 +177,8 @@ class InfoService final {
       void GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, std::function<void(::grpc::Status)>) override;
       void GetIdentification(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest* request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetCapabilities(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest* request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, std::function<void(::grpc::Status)>) override;
       void GetProduct(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) override;
@@ -178,6 +200,8 @@ class InfoService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetFlightInformationResponse>* PrepareAsyncGetFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>* AsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetIdentificationResponse>* PrepareAsyncGetIdentificationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetCapabilitiesResponse>* AsyncGetCapabilitiesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetCapabilitiesResponse>* PrepareAsyncGetCapabilitiesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>* AsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetProductResponse>* PrepareAsyncGetProductRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetProductRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>* AsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -186,6 +210,7 @@ class InfoService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>* PrepareAsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetFlightInformation_;
     const ::grpc::internal::RpcMethod rpcmethod_GetIdentification_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetCapabilities_;
     const ::grpc::internal::RpcMethod rpcmethod_GetProduct_;
     const ::grpc::internal::RpcMethod rpcmethod_GetVersion_;
     const ::grpc::internal::RpcMethod rpcmethod_GetSpeedFactor_;
@@ -200,6 +225,8 @@ class InfoService final {
     virtual ::grpc::Status GetFlightInformation(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest* request, ::mavsdk::rpc::info::GetFlightInformationResponse* response);
     // Get the identification of the system.
     virtual ::grpc::Status GetIdentification(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetIdentificationRequest* request, ::mavsdk::rpc::info::GetIdentificationResponse* response);
+    // Get the capabilities of the system.
+    virtual ::grpc::Status GetCapabilities(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest* request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response);
     // Get product information of the system.
     virtual ::grpc::Status GetProduct(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response);
     // Get the version information of the system.
@@ -248,12 +275,32 @@ class InfoService final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_GetCapabilities : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetCapabilities() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_GetCapabilities() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetCapabilities(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetCapabilitiesRequest* /*request*/, ::mavsdk::rpc::info::GetCapabilitiesResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetCapabilities(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetCapabilitiesRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetCapabilitiesResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetProduct() {
-      ::grpc::Service::MarkMethodAsync(2);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_GetProduct() override {
       BaseClassMustBeDerivedFromService(this);
@@ -264,7 +311,7 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetProduct(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetProductRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetProductResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -273,7 +320,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetVersion() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(4);
     }
     ~WithAsyncMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
@@ -284,7 +331,7 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetVersion(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetVersionRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetVersionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -293,7 +340,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetSpeedFactor() {
-      ::grpc::Service::MarkMethodAsync(4);
+      ::grpc::Service::MarkMethodAsync(5);
     }
     ~WithAsyncMethod_GetSpeedFactor() override {
       BaseClassMustBeDerivedFromService(this);
@@ -304,10 +351,10 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetSpeedFactor(::grpc::ServerContext* context, ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::info::GetSpeedFactorResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<WithAsyncMethod_GetSpeedFactor<Service > > > > > AsyncService;
+  typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetCapabilities<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<WithAsyncMethod_GetSpeedFactor<Service > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_GetFlightInformation : public BaseClass {
    private:
@@ -363,18 +410,45 @@ class InfoService final {
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetIdentificationRequest* /*request*/, ::mavsdk::rpc::info::GetIdentificationResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithCallbackMethod_GetCapabilities : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_GetCapabilities() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetCapabilitiesRequest, ::mavsdk::rpc::info::GetCapabilitiesResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetCapabilitiesRequest* request, ::mavsdk::rpc::info::GetCapabilitiesResponse* response) { return this->GetCapabilities(context, request, response); }));}
+    void SetMessageAllocatorFor_GetCapabilities(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetCapabilitiesRequest, ::mavsdk::rpc::info::GetCapabilitiesResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetCapabilitiesRequest, ::mavsdk::rpc::info::GetCapabilitiesResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_GetCapabilities() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetCapabilities(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetCapabilitiesRequest* /*request*/, ::mavsdk::rpc::info::GetCapabilitiesResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* GetCapabilities(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetCapabilitiesRequest* /*request*/, ::mavsdk::rpc::info::GetCapabilitiesResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithCallbackMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_GetProduct() {
-      ::grpc::Service::MarkMethodCallback(2,
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetProductRequest* request, ::mavsdk::rpc::info::GetProductResponse* response) { return this->GetProduct(context, request, response); }));}
     void SetMessageAllocatorFor_GetProduct(
         ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -395,13 +469,13 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_GetVersion() {
-      ::grpc::Service::MarkMethodCallback(3,
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) { return this->GetVersion(context, request, response); }));}
     void SetMessageAllocatorFor_GetVersion(
         ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -422,13 +496,13 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_GetSpeedFactor() {
-      ::grpc::Service::MarkMethodCallback(4,
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response) { return this->GetSpeedFactor(context, request, response); }));}
     void SetMessageAllocatorFor_GetSpeedFactor(
         ::grpc::MessageAllocator< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -443,7 +517,7 @@ class InfoService final {
     virtual ::grpc::ServerUnaryReactor* GetSpeedFactor(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetFlightInformation<WithCallbackMethod_GetIdentification<WithCallbackMethod_GetProduct<WithCallbackMethod_GetVersion<WithCallbackMethod_GetSpeedFactor<Service > > > > > CallbackService;
+  typedef WithCallbackMethod_GetFlightInformation<WithCallbackMethod_GetIdentification<WithCallbackMethod_GetCapabilities<WithCallbackMethod_GetProduct<WithCallbackMethod_GetVersion<WithCallbackMethod_GetSpeedFactor<Service > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetFlightInformation : public BaseClass {
@@ -480,12 +554,29 @@ class InfoService final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_GetCapabilities : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetCapabilities() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_GetCapabilities() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetCapabilities(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetCapabilitiesRequest* /*request*/, ::mavsdk::rpc::info::GetCapabilitiesResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetProduct() {
-      ::grpc::Service::MarkMethodGeneric(2);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_GetProduct() override {
       BaseClassMustBeDerivedFromService(this);
@@ -502,7 +593,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetVersion() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(4);
     }
     ~WithGenericMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
@@ -519,7 +610,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetSpeedFactor() {
-      ::grpc::Service::MarkMethodGeneric(4);
+      ::grpc::Service::MarkMethodGeneric(5);
     }
     ~WithGenericMethod_GetSpeedFactor() override {
       BaseClassMustBeDerivedFromService(this);
@@ -571,12 +662,32 @@ class InfoService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_GetCapabilities : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetCapabilities() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_GetCapabilities() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetCapabilities(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetCapabilitiesRequest* /*request*/, ::mavsdk::rpc::info::GetCapabilitiesResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetCapabilities(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetProduct() {
-      ::grpc::Service::MarkMethodRaw(2);
+      ::grpc::Service::MarkMethodRaw(3);
     }
     ~WithRawMethod_GetProduct() override {
       BaseClassMustBeDerivedFromService(this);
@@ -587,7 +698,7 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetProduct(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -596,7 +707,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetVersion() {
-      ::grpc::Service::MarkMethodRaw(3);
+      ::grpc::Service::MarkMethodRaw(4);
     }
     ~WithRawMethod_GetVersion() override {
       BaseClassMustBeDerivedFromService(this);
@@ -607,7 +718,7 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetVersion(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -616,7 +727,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetSpeedFactor() {
-      ::grpc::Service::MarkMethodRaw(4);
+      ::grpc::Service::MarkMethodRaw(5);
     }
     ~WithRawMethod_GetSpeedFactor() override {
       BaseClassMustBeDerivedFromService(this);
@@ -627,7 +738,7 @@ class InfoService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetSpeedFactor(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -675,12 +786,34 @@ class InfoService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_GetCapabilities : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_GetCapabilities() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetCapabilities(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_GetCapabilities() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetCapabilities(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetCapabilitiesRequest* /*request*/, ::mavsdk::rpc::info::GetCapabilitiesResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* GetCapabilities(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_GetProduct() {
-      ::grpc::Service::MarkMethodRawCallback(2,
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetProduct(context, request, response); }));
@@ -702,7 +835,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_GetVersion() {
-      ::grpc::Service::MarkMethodRawCallback(3,
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetVersion(context, request, response); }));
@@ -724,7 +857,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_GetSpeedFactor() {
-      ::grpc::Service::MarkMethodRawCallback(4,
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetSpeedFactor(context, request, response); }));
@@ -795,12 +928,39 @@ class InfoService final {
     virtual ::grpc::Status StreamedGetIdentification(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetIdentificationRequest,::mavsdk::rpc::info::GetIdentificationResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_GetCapabilities : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetCapabilities() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::info::GetCapabilitiesRequest, ::mavsdk::rpc::info::GetCapabilitiesResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::info::GetCapabilitiesRequest, ::mavsdk::rpc::info::GetCapabilitiesResponse>* streamer) {
+                       return this->StreamedGetCapabilities(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_GetCapabilities() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetCapabilities(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetCapabilitiesRequest* /*request*/, ::mavsdk::rpc::info::GetCapabilitiesResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetCapabilities(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetCapabilitiesRequest,::mavsdk::rpc::info::GetCapabilitiesResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_GetProduct : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetProduct() {
-      ::grpc::Service::MarkMethodStreamed(2,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::info::GetProductRequest, ::mavsdk::rpc::info::GetProductResponse>(
             [this](::grpc::ServerContext* context,
@@ -827,7 +987,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetVersion() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(4,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>(
             [this](::grpc::ServerContext* context,
@@ -854,7 +1014,7 @@ class InfoService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetSpeedFactor() {
-      ::grpc::Service::MarkMethodStreamed(4,
+      ::grpc::Service::MarkMethodStreamed(5,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::info::GetSpeedFactorRequest, ::mavsdk::rpc::info::GetSpeedFactorResponse>(
             [this](::grpc::ServerContext* context,
@@ -875,9 +1035,9 @@ class InfoService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetSpeedFactor(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetSpeedFactorRequest,::mavsdk::rpc::info::GetSpeedFactorResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetCapabilities<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetCapabilities<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > > StreamedService;
 };
 
 }  // namespace info
