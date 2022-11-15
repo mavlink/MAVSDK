@@ -968,6 +968,9 @@ public:
         float altitude_local_m{float(NAN)}; /**< @brief Local altitude in meters */
         float altitude_relative_m{float(NAN)}; /**< @brief Altitude above home position in meters */
         float altitude_terrain_m{float(NAN)}; /**< @brief Altitude above terrain in meters */
+        float bottom_clearance_m{
+            float(NAN)}; /**< @brief This is not the altitude, but the clear space below the system
+                            according to the fused clearance estimate in meters. */
     };
 
     /**

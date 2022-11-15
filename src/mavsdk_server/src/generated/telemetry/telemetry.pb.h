@@ -23346,6 +23346,7 @@ class Altitude final :
     kAltitudeLocalMFieldNumber = 3,
     kAltitudeRelativeMFieldNumber = 4,
     kAltitudeTerrainMFieldNumber = 5,
+    kBottomClearanceMFieldNumber = 6,
   };
   // float altitude_monotonic_m = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_altitude_monotonic_m();
@@ -23392,6 +23393,15 @@ class Altitude final :
   void _internal_set_altitude_terrain_m(float value);
   public:
 
+  // float bottom_clearance_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_bottom_clearance_m();
+  float bottom_clearance_m() const;
+  void set_bottom_clearance_m(float value);
+  private:
+  float _internal_bottom_clearance_m() const;
+  void _internal_set_bottom_clearance_m(float value);
+  public:
+
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Altitude)
  private:
   class _Internal;
@@ -23404,6 +23414,7 @@ class Altitude final :
   float altitude_local_m_;
   float altitude_relative_m_;
   float altitude_terrain_m_;
+  float bottom_clearance_m_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -32976,6 +32987,26 @@ inline void Altitude::_internal_set_altitude_terrain_m(float value) {
 inline void Altitude::set_altitude_terrain_m(float value) {
   _internal_set_altitude_terrain_m(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.altitude_terrain_m)
+}
+
+// float bottom_clearance_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+inline void Altitude::clear_bottom_clearance_m() {
+  bottom_clearance_m_ = 0;
+}
+inline float Altitude::_internal_bottom_clearance_m() const {
+  return bottom_clearance_m_;
+}
+inline float Altitude::bottom_clearance_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Altitude.bottom_clearance_m)
+  return _internal_bottom_clearance_m();
+}
+inline void Altitude::_internal_set_bottom_clearance_m(float value) {
+  
+  bottom_clearance_m_ = value;
+}
+inline void Altitude::set_bottom_clearance_m(float value) {
+  _internal_set_bottom_clearance_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.bottom_clearance_m)
 }
 
 // -------------------------------------------------------------------
