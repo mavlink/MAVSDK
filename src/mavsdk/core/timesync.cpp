@@ -70,7 +70,9 @@ void Timesync::send_timesync(uint64_t tc1, uint64_t ts1)
         _parent.get_own_component_id(),
         &message,
         static_cast<int64_t>(tc1),
-        static_cast<int64_t>(ts1));
+        static_cast<int64_t>(ts1),
+        0,
+        0);
     _parent.send_message(message);
 }
 

@@ -1815,7 +1815,7 @@ mavlink_message_t make_mission_current(uint16_t seq)
 {
     mavlink_message_t message;
     mavlink_msg_mission_current_pack(
-        own_address.system_id, own_address.component_id, &message, seq);
+        own_address.system_id, own_address.component_id, &message, seq, 0, 0, 0);
     return message;
 }
 
