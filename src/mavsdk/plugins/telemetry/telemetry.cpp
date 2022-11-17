@@ -1486,7 +1486,9 @@ bool operator==(const Telemetry::Altitude& lhs, const Telemetry::Altitude& rhs)
            ((std::isnan(rhs.altitude_relative_m) && std::isnan(lhs.altitude_relative_m)) ||
             rhs.altitude_relative_m == lhs.altitude_relative_m) &&
            ((std::isnan(rhs.altitude_terrain_m) && std::isnan(lhs.altitude_terrain_m)) ||
-            rhs.altitude_terrain_m == lhs.altitude_terrain_m);
+            rhs.altitude_terrain_m == lhs.altitude_terrain_m) &&
+           ((std::isnan(rhs.bottom_clearance_m) && std::isnan(lhs.bottom_clearance_m)) ||
+            rhs.bottom_clearance_m == lhs.bottom_clearance_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude)
@@ -1498,6 +1500,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude)
     str << "    altitude_local_m: " << altitude.altitude_local_m << '\n';
     str << "    altitude_relative_m: " << altitude.altitude_relative_m << '\n';
     str << "    altitude_terrain_m: " << altitude.altitude_terrain_m << '\n';
+    str << "    bottom_clearance_m: " << altitude.bottom_clearance_m << '\n';
     str << '}';
     return str;
 }

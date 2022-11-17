@@ -842,6 +842,7 @@ void TelemetryImpl::process_altitude(const mavlink_message_t& message)
     new_altitude.altitude_local_m = mavlink_altitude.altitude_local;
     new_altitude.altitude_relative_m = mavlink_altitude.altitude_relative;
     new_altitude.altitude_terrain_m = mavlink_altitude.altitude_terrain;
+    new_altitude.bottom_clearance_m = mavlink_altitude.bottom_clearance;
 
     set_altitude(new_altitude);
 

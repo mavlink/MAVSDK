@@ -1267,6 +1267,8 @@ public:
 
         rpc_obj->set_altitude_terrain_m(altitude.altitude_terrain_m);
 
+        rpc_obj->set_bottom_clearance_m(altitude.bottom_clearance_m);
+
         return rpc_obj;
     }
 
@@ -1284,6 +1286,8 @@ public:
         obj.altitude_relative_m = altitude.altitude_relative_m();
 
         obj.altitude_terrain_m = altitude.altitude_terrain_m();
+
+        obj.bottom_clearance_m = altitude.bottom_clearance_m();
 
         return obj;
     }
