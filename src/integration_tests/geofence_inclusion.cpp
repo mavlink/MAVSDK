@@ -42,12 +42,15 @@ TEST_F(SitlTest, PX4GeofenceInclusion)
 
     std::vector<Geofence::Polygon> polygons;
     Geofence::Polygon new_polygon{};
-    new_polygon.fence_type = Geofence::Polygon::FenceType::Inclusion;
+    new_polygon.fence_type = Geofence::FenceType::Inclusion;
     new_polygon.points = points;
 
     polygons.push_back(new_polygon);
 
-    EXPECT_EQ(Geofence::Result::Success, geofence->upload_geofence(polygons));
+    Geofence::GeofenceData geofence_data{};
+    geofence_data.polygons = polygons;
+
+    EXPECT_EQ(Geofence::Result::Success, geofence->upload_geofence(geofence_data));
 
     EXPECT_EQ(Geofence::Result::Success, geofence->clear_geofence());
 }
