@@ -41,6 +41,34 @@ public:
         response->set_allocated_geofence_result(rpc_geofence_result);
     }
 
+    static rpc::geofence::FenceType
+    translateToRpcFenceType(const mavsdk::Geofence::FenceType& fence_type)
+    {
+        switch (fence_type) {
+            default:
+                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
+            // FALLTHROUGH
+            case mavsdk::Geofence::FenceType::Inclusion:
+                return rpc::geofence::FENCE_TYPE_INCLUSION;
+            case mavsdk::Geofence::FenceType::Exclusion:
+                return rpc::geofence::FENCE_TYPE_EXCLUSION;
+        }
+    }
+
+    static mavsdk::Geofence::FenceType
+    translateFromRpcFenceType(const rpc::geofence::FenceType fence_type)
+    {
+        switch (fence_type) {
+            default:
+                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
+            // FALLTHROUGH
+            case rpc::geofence::FENCE_TYPE_INCLUSION:
+                return mavsdk::Geofence::FenceType::Inclusion;
+            case rpc::geofence::FENCE_TYPE_EXCLUSION:
+                return mavsdk::Geofence::FenceType::Exclusion;
+        }
+    }
+
     static std::unique_ptr<rpc::geofence::Point>
     translateToRpcPoint(const mavsdk::Geofence::Point& point)
     {
@@ -62,34 +90,6 @@ public:
         obj.longitude_deg = point.longitude_deg();
 
         return obj;
-    }
-
-    static rpc::geofence::Polygon::FenceType
-    translateToRpcFenceType(const mavsdk::Geofence::Polygon::FenceType& fence_type)
-    {
-        switch (fence_type) {
-            default:
-                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
-            // FALLTHROUGH
-            case mavsdk::Geofence::Polygon::FenceType::Inclusion:
-                return rpc::geofence::Polygon_FenceType_FENCE_TYPE_INCLUSION;
-            case mavsdk::Geofence::Polygon::FenceType::Exclusion:
-                return rpc::geofence::Polygon_FenceType_FENCE_TYPE_EXCLUSION;
-        }
-    }
-
-    static mavsdk::Geofence::Polygon::FenceType
-    translateFromRpcFenceType(const rpc::geofence::Polygon::FenceType fence_type)
-    {
-        switch (fence_type) {
-            default:
-                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
-            // FALLTHROUGH
-            case rpc::geofence::Polygon_FenceType_FENCE_TYPE_INCLUSION:
-                return mavsdk::Geofence::Polygon::FenceType::Inclusion;
-            case rpc::geofence::Polygon_FenceType_FENCE_TYPE_EXCLUSION:
-                return mavsdk::Geofence::Polygon::FenceType::Exclusion;
-        }
     }
 
     static std::unique_ptr<rpc::geofence::Polygon>
@@ -117,6 +117,69 @@ public:
         }
 
         obj.fence_type = translateFromRpcFenceType(polygon.fence_type());
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::geofence::Circle>
+    translateToRpcCircle(const mavsdk::Geofence::Circle& circle)
+    {
+        auto rpc_obj = std::make_unique<rpc::geofence::Circle>();
+
+        rpc_obj->set_allocated_point(translateToRpcPoint(circle.point).release());
+
+        rpc_obj->set_radius(circle.radius);
+
+        rpc_obj->set_fence_type(translateToRpcFenceType(circle.fence_type));
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Geofence::Circle translateFromRpcCircle(const rpc::geofence::Circle& circle)
+    {
+        mavsdk::Geofence::Circle obj;
+
+        obj.point = translateFromRpcPoint(circle.point());
+
+        obj.radius = circle.radius();
+
+        obj.fence_type = translateFromRpcFenceType(circle.fence_type());
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::geofence::GeofenceData>
+    translateToRpcGeofenceData(const mavsdk::Geofence::GeofenceData& geofence_data)
+    {
+        auto rpc_obj = std::make_unique<rpc::geofence::GeofenceData>();
+
+        for (const auto& elem : geofence_data.polygons) {
+            auto* ptr = rpc_obj->add_polygons();
+            ptr->CopyFrom(*translateToRpcPolygon(elem).release());
+        }
+
+        for (const auto& elem : geofence_data.circles) {
+            auto* ptr = rpc_obj->add_circles();
+            ptr->CopyFrom(*translateToRpcCircle(elem).release());
+        }
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Geofence::GeofenceData
+    translateFromRpcGeofenceData(const rpc::geofence::GeofenceData& geofence_data)
+    {
+        mavsdk::Geofence::GeofenceData obj;
+
+        for (const auto& elem : geofence_data.polygons()) {
+            obj.polygons.push_back(
+                translateFromRpcPolygon(static_cast<mavsdk::rpc::geofence::Polygon>(elem)));
+        }
+
+        for (const auto& elem : geofence_data.circles()) {
+            obj.circles.push_back(
+                translateFromRpcCircle(static_cast<mavsdk::rpc::geofence::Circle>(elem)));
+        }
 
         return obj;
     }
@@ -192,12 +255,8 @@ public:
             return grpc::Status::OK;
         }
 
-        std::vector<mavsdk::Geofence::Polygon> polygons_vec;
-        for (const auto& elem : request->polygons()) {
-            polygons_vec.push_back(translateFromRpcPolygon(elem));
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->upload_geofence(polygons_vec);
+        auto result = _lazy_plugin.maybe_plugin()->upload_geofence(
+            translateFromRpcGeofenceData(request->geofence_data()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

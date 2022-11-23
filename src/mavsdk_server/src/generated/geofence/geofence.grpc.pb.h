@@ -39,9 +39,9 @@ class GeofenceService final {
    public:
     virtual ~StubInterface() {}
     //
-    // Upload a geofence.
+    // Upload geofences.
     //
-    // Polygons are uploaded to a drone. Once uploaded, the geofence will remain
+    // Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
     // on the drone even if a connection is lost.
     virtual ::grpc::Status UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>> AsyncUploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
@@ -63,9 +63,9 @@ class GeofenceService final {
      public:
       virtual ~async_interface() {}
       //
-      // Upload a geofence.
+      // Upload geofences.
       //
-      // Polygons are uploaded to a drone. Once uploaded, the geofence will remain
+      // Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
       // on the drone even if a connection is lost.
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -132,9 +132,9 @@ class GeofenceService final {
     Service();
     virtual ~Service();
     //
-    // Upload a geofence.
+    // Upload geofences.
     //
-    // Polygons are uploaded to a drone. Once uploaded, the geofence will remain
+    // Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
     // on the drone even if a connection is lost.
     virtual ::grpc::Status UploadGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response);
     //
