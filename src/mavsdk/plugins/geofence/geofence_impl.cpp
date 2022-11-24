@@ -82,9 +82,10 @@ GeofenceImpl::assemble_items(const Geofence::GeofenceData& geofence_data)
     uint16_t sequence = 0;
 
     for (auto& polygon : geofence_data.polygons) {
-        const uint16_t command = polygon.fence_type == Geofence::FenceType::Inclusion ?
-                                     MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION :
-                                     MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION;
+        const uint16_t command =
+            (polygon.fence_type == Geofence::FenceType::Inclusion ?
+                 MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION :
+                 MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION);
 
         for (auto& point : polygon.points) {
             const uint8_t current = (sequence == 0 ? 1 : 0);
@@ -112,9 +113,10 @@ GeofenceImpl::assemble_items(const Geofence::GeofenceData& geofence_data)
     for (auto& circle : geofence_data.circles) {
         const uint8_t current = (sequence == 0 ? 1 : 0);
         const uint8_t autocontinue = 0;
-        const uint8_t command = circle.fence_type == Geofence::FenceType::Inclusion ?
-                                    MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION :
-                                    MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION;
+        const uint16_t command =
+            (circle.fence_type == Geofence::FenceType::Inclusion ?
+                 MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION :
+                 MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION);
 
         items.push_back(MavlinkMissionTransfer::ItemInt{
             sequence,
