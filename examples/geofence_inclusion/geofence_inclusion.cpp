@@ -102,15 +102,18 @@ int main(int argc, char** argv)
 
     std::vector<Geofence::Polygon> polygons;
     Geofence::Polygon new_polygon{};
-    new_polygon.fence_type = Geofence::Polygon::FenceType::Inclusion;
+    new_polygon.fence_type = Geofence::FenceType::Inclusion;
     new_polygon.points = points;
 
     polygons.push_back(new_polygon);
 
+    Geofence::GeofenceData geofence_data{};
+    geofence_data.polygons = polygons;
+
     {
         std::cout << "Uploading geofence...\n";
 
-        const Geofence::Result result = geofence.upload_geofence(polygons);
+        const Geofence::Result result = geofence.upload_geofence(geofence_data);
 
         if (result != Geofence::Result::Success) {
             std::cerr << "Geofence upload failed: " << result << ", exiting.\n";
