@@ -83,7 +83,6 @@ ServerUtilityImpl::send_status_text(ServerUtility::StatusTextType type, std::str
         const char* pos = &text.c_str()[chunk_seq * chunk_size];
         char tmp_buf[chunk_size]{};
         const unsigned copy_len = std::min(chunk_size, static_cast<unsigned>(strlen(pos)));
-        LogWarn() << "Copy: " << copy_len;
         memcpy(tmp_buf, pos, copy_len);
 
         mavlink_message_t message;
