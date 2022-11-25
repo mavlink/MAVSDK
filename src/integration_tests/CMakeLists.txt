@@ -21,7 +21,7 @@ add_executable(integration_tests_runner
     camera_test_helpers.cpp
     connection.cpp
     follow_me.cpp
-    geofence_inclusion.cpp
+    geofence.cpp
     gimbal.cpp
     info.cpp
     offboard_attitude.cpp

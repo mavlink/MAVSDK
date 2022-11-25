@@ -92,35 +92,70 @@ int main(int argc, char** argv)
     }
 
     std::cout << "System ready\n";
-    std::cout << "Creating and uploading geofence\n";
-
-    std::vector<Geofence::Point> points;
-    points.emplace_back(add_point(47.39929240, 8.54296524));
-    points.emplace_back(add_point(47.39696482, 8.54161340));
-    points.emplace_back(add_point(47.39626761, 8.54527193));
-    points.emplace_back(add_point(47.39980072, 8.54736050));
+    std::cout << "Creating and uploading geofences\n";
 
     std::vector<Geofence::Polygon> polygons;
-    Geofence::Polygon new_polygon{};
-    new_polygon.fence_type = Geofence::FenceType::Inclusion;
-    new_polygon.points = points;
+    std::vector<Geofence::Circle> circles;
 
-    polygons.push_back(new_polygon);
+    // Polygon inclusion
+    {
+        std::vector<Geofence::Point> points;
+        points.emplace_back(add_point(47.40029181357694, 8.540208324993841));
+        points.emplace_back(add_point(47.400173434578114, 8.547689686153717));
+        points.emplace_back(add_point(47.39677781722575, 8.547444838745832));
+        points.emplace_back(add_point(47.39709351430107, 8.539753608416305));
+        Geofence::Polygon new_polygon{};
+        new_polygon.fence_type = Geofence::FenceType::Inclusion;
+        new_polygon.points = points;
+        polygons.push_back(new_polygon);
+    }
+
+    // Polygon exclusion
+    {
+        std::vector<Geofence::Point> points;
+        points.emplace_back(add_point(47.39845295869903, 8.543682820794851));
+        points.emplace_back(add_point(47.39837403681116, 8.545066315854541));
+        points.emplace_back(add_point(47.39759073790796, 8.544926413920791));
+        points.emplace_back(add_point(47.39762230688655, 8.543531259263398));
+        Geofence::Polygon new_polygon{};
+        new_polygon.fence_type = Geofence::FenceType::Exclusion;
+        new_polygon.points = points;
+        polygons.push_back(new_polygon);
+    }
+
+    // Circle inclusion
+    {
+        Geofence::Point center = add_point(47.39867310982157, 8.54379160368353);
+        Geofence::Circle new_circle{};
+        new_circle.point = center;
+        new_circle.fence_type = Geofence::FenceType::Inclusion;
+        new_circle.radius = 319.54F;
+        circles.push_back(new_circle);
+    }
+
+    // Circle exclusion
+    {
+        Geofence::Point center = add_point(47.39928080314044, 8.54540060087578);
+        Geofence::Circle new_circle{};
+        new_circle.point = center;
+        new_circle.fence_type = Geofence::FenceType::Exclusion;
+        new_circle.radius = 49.52F;
+        circles.push_back(new_circle);
+    }
 
     Geofence::GeofenceData geofence_data{};
     geofence_data.polygons = polygons;
+    geofence_data.circles = circles;
 
-    {
-        std::cout << "Uploading geofence...\n";
+    std::cout << "Uploading geofence...\n";
 
-        const Geofence::Result result = geofence.upload_geofence(geofence_data);
+    const Geofence::Result result = geofence.upload_geofence(geofence_data);
 
-        if (result != Geofence::Result::Success) {
-            std::cerr << "Geofence upload failed: " << result << ", exiting.\n";
-            return 1;
-        }
-        std::cout << "Geofence uploaded.\n";
+    if (result != Geofence::Result::Success) {
+        std::cerr << "Geofence upload failed: " << result << ", exiting.\n";
+        return 1;
     }
+    std::cout << "Geofence uploaded.\n";
 
     return 0;
 }
