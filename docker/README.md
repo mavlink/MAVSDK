@@ -16,7 +16,7 @@ To create an image :
 
 ```bash
 cd /whereever/MAVSDK/docker
-docker build -t mavsdk/mavsdk-ubuntu-18.04 -f Dockerfile-Ubuntu-18.04 .
+docker build -t mavsdk/mavsdk-ubuntu-20.04 -f Dockerfile-Ubuntu-20.04 .
 ```
 
 To use the image :
