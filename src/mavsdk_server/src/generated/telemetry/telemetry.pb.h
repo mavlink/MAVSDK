@@ -19446,11 +19446,32 @@ class Battery final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kVoltageVFieldNumber = 1,
-    kRemainingPercentFieldNumber = 2,
-    kIdFieldNumber = 3,
+    kIdFieldNumber = 1,
+    kTemperatureDegcFieldNumber = 2,
+    kVoltageVFieldNumber = 3,
+    kCurrentBatteryAFieldNumber = 4,
+    kCapacityConsumedAhFieldNumber = 5,
+    kRemainingPercentFieldNumber = 6,
   };
-  // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
+  // uint32 id = 1 [(.mavsdk.options.default_value) = "0"];
+  void clear_id();
+  uint32_t id() const;
+  void set_id(uint32_t value);
+  private:
+  uint32_t _internal_id() const;
+  void _internal_set_id(uint32_t value);
+  public:
+
+  // float temperature_degc = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_temperature_degc();
+  float temperature_degc() const;
+  void set_temperature_degc(float value);
+  private:
+  float _internal_temperature_degc() const;
+  void _internal_set_temperature_degc(float value);
+  public:
+
+  // float voltage_v = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_voltage_v();
   float voltage_v() const;
   void set_voltage_v(float value);
@@ -19459,22 +19480,31 @@ class Battery final :
   void _internal_set_voltage_v(float value);
   public:
 
-  // float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
+  // float current_battery_a = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_current_battery_a();
+  float current_battery_a() const;
+  void set_current_battery_a(float value);
+  private:
+  float _internal_current_battery_a() const;
+  void _internal_set_current_battery_a(float value);
+  public:
+
+  // float capacity_consumed_ah = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_capacity_consumed_ah();
+  float capacity_consumed_ah() const;
+  void set_capacity_consumed_ah(float value);
+  private:
+  float _internal_capacity_consumed_ah() const;
+  void _internal_set_capacity_consumed_ah(float value);
+  public:
+
+  // float remaining_percent = 6 [(.mavsdk.options.default_value) = "NaN"];
   void clear_remaining_percent();
   float remaining_percent() const;
   void set_remaining_percent(float value);
   private:
   float _internal_remaining_percent() const;
   void _internal_set_remaining_percent(float value);
-  public:
-
-  // uint32 id = 3 [(.mavsdk.options.default_value) = "0"];
-  void clear_id();
-  uint32_t id() const;
-  void set_id(uint32_t value);
-  private:
-  uint32_t _internal_id() const;
-  void _internal_set_id(uint32_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Battery)
@@ -19484,9 +19514,12 @@ class Battery final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  float voltage_v_;
-  float remaining_percent_;
   uint32_t id_;
+  float temperature_degc_;
+  float voltage_v_;
+  float current_battery_a_;
+  float capacity_consumed_ah_;
+  float remaining_percent_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -30440,7 +30473,7 @@ inline void RawGps::set_yaw_deg(float value) {
 
 // Battery
 
-// uint32 id = 3 [(.mavsdk.options.default_value) = "0"];
+// uint32 id = 1 [(.mavsdk.options.default_value) = "0"];
 inline void Battery::clear_id() {
   id_ = 0u;
 }
@@ -30460,7 +30493,27 @@ inline void Battery::set_id(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.id)
 }
 
-// float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
+// float temperature_degc = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void Battery::clear_temperature_degc() {
+  temperature_degc_ = 0;
+}
+inline float Battery::_internal_temperature_degc() const {
+  return temperature_degc_;
+}
+inline float Battery::temperature_degc() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.temperature_degc)
+  return _internal_temperature_degc();
+}
+inline void Battery::_internal_set_temperature_degc(float value) {
+  
+  temperature_degc_ = value;
+}
+inline void Battery::set_temperature_degc(float value) {
+  _internal_set_temperature_degc(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.temperature_degc)
+}
+
+// float voltage_v = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void Battery::clear_voltage_v() {
   voltage_v_ = 0;
 }
@@ -30480,7 +30533,47 @@ inline void Battery::set_voltage_v(float value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.voltage_v)
 }
 
-// float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
+// float current_battery_a = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void Battery::clear_current_battery_a() {
+  current_battery_a_ = 0;
+}
+inline float Battery::_internal_current_battery_a() const {
+  return current_battery_a_;
+}
+inline float Battery::current_battery_a() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.current_battery_a)
+  return _internal_current_battery_a();
+}
+inline void Battery::_internal_set_current_battery_a(float value) {
+  
+  current_battery_a_ = value;
+}
+inline void Battery::set_current_battery_a(float value) {
+  _internal_set_current_battery_a(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.current_battery_a)
+}
+
+// float capacity_consumed_ah = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void Battery::clear_capacity_consumed_ah() {
+  capacity_consumed_ah_ = 0;
+}
+inline float Battery::_internal_capacity_consumed_ah() const {
+  return capacity_consumed_ah_;
+}
+inline float Battery::capacity_consumed_ah() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.capacity_consumed_ah)
+  return _internal_capacity_consumed_ah();
+}
+inline void Battery::_internal_set_capacity_consumed_ah(float value) {
+  
+  capacity_consumed_ah_ = value;
+}
+inline void Battery::set_capacity_consumed_ah(float value) {
+  _internal_set_capacity_consumed_ah(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.capacity_consumed_ah)
+}
+
+// float remaining_percent = 6 [(.mavsdk.options.default_value) = "NaN"];
 inline void Battery::clear_remaining_percent() {
   remaining_percent_ = 0;
 }

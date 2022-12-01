@@ -999,8 +999,14 @@ std::ostream& operator<<(std::ostream& str, Telemetry::RawGps const& raw_gps)
 bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
 {
     return (rhs.id == lhs.id) &&
+           ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) ||
+            rhs.temperature_degc == lhs.temperature_degc) &&
            ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
             rhs.voltage_v == lhs.voltage_v) &&
+           ((std::isnan(rhs.current_battery_a) && std::isnan(lhs.current_battery_a)) ||
+            rhs.current_battery_a == lhs.current_battery_a) &&
+           ((std::isnan(rhs.capacity_consumed_ah) && std::isnan(lhs.capacity_consumed_ah)) ||
+            rhs.capacity_consumed_ah == lhs.capacity_consumed_ah) &&
            ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) ||
             rhs.remaining_percent == lhs.remaining_percent);
 }
@@ -1010,7 +1016,10 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
     str << std::setprecision(15);
     str << "battery:" << '\n' << "{\n";
     str << "    id: " << battery.id << '\n';
+    str << "    temperature_degc: " << battery.temperature_degc << '\n';
     str << "    voltage_v: " << battery.voltage_v << '\n';
+    str << "    current_battery_a: " << battery.current_battery_a << '\n';
+    str << "    capacity_consumed_ah: " << battery.capacity_consumed_ah << '\n';
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
     str << '}';
     return str;

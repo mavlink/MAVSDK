@@ -373,9 +373,16 @@ public:
      */
     struct Battery {
         uint32_t id{0}; /**< @brief Battery ID, for systems with multiple batteries */
+        float temperature_degc{float(NAN)}; /**< @brief Temperature of the battery in degrees
+                                               Celsius. NAN for unknown temperature */
         float voltage_v{float(NAN)}; /**< @brief Voltage in volts */
+        float current_battery_a{float(NAN)}; /**< @brief Battery current in Amps, NAN if autopilot
+                                                does not measure the current */
+        float capacity_consumed_ah{
+            float(NAN)}; /**< @brief Consumed charge in Amp hours, NAN if autopilot does not provide
+                            consumption estimate */
         float remaining_percent{
-            float(NAN)}; /**< @brief Estimated battery remaining (range: 0.0 to 1.0) */
+            float(NAN)}; /**< @brief Estimated battery remaining (range: 0 to 100) */
     };
 
     /**
