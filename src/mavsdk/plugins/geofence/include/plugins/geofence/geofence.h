@@ -59,6 +59,21 @@ public:
     ~Geofence() override;
 
     /**
+     * @brief Geofence types.
+     */
+    enum class FenceType {
+        Inclusion, /**< @brief Type representing an inclusion fence. */
+        Exclusion, /**< @brief Type representing an exclusion fence. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Geofence::FenceType`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Geofence::FenceType const& fence_type);
+
+    /**
      * @brief Point type.
      */
     struct Point {
@@ -84,22 +99,6 @@ public:
      * @brief Polygon type.
      */
     struct Polygon {
-        /**
-         * @brief Geofence polygon types.
-         */
-        enum class FenceType {
-            Inclusion, /**< @brief Type representing an inclusion fence. */
-            Exclusion, /**< @brief Type representing an exclusion fence. */
-        };
-
-        /**
-         * @brief Stream operator to print information about a `Geofence::FenceType`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream&
-        operator<<(std::ostream& str, Geofence::Polygon::FenceType const& fence_type);
-
         std::vector<Point> points{}; /**< @brief Points defining the polygon */
         FenceType fence_type{}; /**< @brief Fence type */
     };
@@ -119,13 +118,58 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon);
 
     /**
+     * @brief Circular type.
+     */
+    struct Circle {
+        Point point{}; /**< @brief Point defining the center */
+        float radius{float(NAN)}; /**< @brief Radius of the circular fence */
+        FenceType fence_type{}; /**< @brief Fence type */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Geofence::Circle` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Geofence::Circle& lhs, const Geofence::Circle& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Geofence::Circle`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Geofence::Circle const& circle);
+
+    /**
+     * @brief Geofence data type.
+     */
+    struct GeofenceData {
+        std::vector<Polygon> polygons{}; /**< @brief Polygon(s) representing the geofence(s) */
+        std::vector<Circle> circles{}; /**< @brief Circle(s) representing the geofence(s) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Geofence::GeofenceData` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Geofence::GeofenceData& lhs, const Geofence::GeofenceData& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Geofence::GeofenceData`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data);
+
+    /**
      * @brief Possible results returned for geofence requests.
      */
     enum class Result {
         Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Request succeeded. */
         Error, /**< @brief Error. */
-        TooManyGeofenceItems, /**< @brief Too many Polygon objects in the geofence. */
+        TooManyGeofenceItems, /**< @brief Too many objects in the geofence. */
         Busy, /**< @brief Vehicle is busy. */
         Timeout, /**< @brief Request timed out. */
         InvalidArgument, /**< @brief Invalid argument. */
@@ -145,26 +189,26 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
-     * @brief Upload a geofence.
+     * @brief Upload geofences.
      *
-     * Polygons are uploaded to a drone. Once uploaded, the geofence will remain
-     * on the drone even if a connection is lost.
+     * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will
+     * remain on the drone even if a connection is lost.
      *
      * This function is non-blocking. See 'upload_geofence' for the blocking counterpart.
      */
-    void upload_geofence_async(std::vector<Polygon> polygons, const ResultCallback callback);
+    void upload_geofence_async(GeofenceData geofence_data, const ResultCallback callback);
 
     /**
-     * @brief Upload a geofence.
+     * @brief Upload geofences.
      *
-     * Polygons are uploaded to a drone. Once uploaded, the geofence will remain
-     * on the drone even if a connection is lost.
+     * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will
+     * remain on the drone even if a connection is lost.
      *
      * This function is blocking. See 'upload_geofence_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
-    Result upload_geofence(std::vector<Polygon> polygons) const;
+    Result upload_geofence(GeofenceData geofence_data) const;
 
     /**
      * @brief Clear all geofences saved on the vehicle.

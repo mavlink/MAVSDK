@@ -27,21 +27,22 @@ void GeofenceImpl::enable() {}
 
 void GeofenceImpl::disable() {}
 
-Geofence::Result GeofenceImpl::upload_geofence(const std::vector<Geofence::Polygon>& polygons)
+Geofence::Result GeofenceImpl::upload_geofence(const Geofence::GeofenceData& geofence_data)
 {
     auto prom = std::promise<Geofence::Result>();
     auto fut = prom.get_future();
 
-    upload_geofence_async(polygons, [&prom](Geofence::Result result) { prom.set_value(result); });
+    upload_geofence_async(
+        geofence_data, [&prom](Geofence::Result result) { prom.set_value(result); });
     return fut.get();
 }
 
 void GeofenceImpl::upload_geofence_async(
-    const std::vector<Geofence::Polygon>& polygons, const Geofence::ResultCallback& callback)
+    const Geofence::GeofenceData& geofence_data, const Geofence::ResultCallback& callback)
 {
     // We can just create these items on the stack because they get copied
     // later in the MavlinkMissionTransfer constructor.
-    const auto items = assemble_items(polygons);
+    const auto items = assemble_items(geofence_data);
 
     _parent->mission_transfer().upload_items_async(
         MAV_MISSION_TYPE_FENCE, items, [this, callback](MavlinkMissionTransfer::Result result) {
@@ -74,27 +75,19 @@ void GeofenceImpl::clear_geofence_async(const Geofence::ResultCallback& callback
 }
 
 std::vector<MavlinkMissionTransfer::ItemInt>
-GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
+GeofenceImpl::assemble_items(const Geofence::GeofenceData& geofence_data)
 {
     std::vector<MavlinkMissionTransfer::ItemInt> items;
 
     uint16_t sequence = 0;
-    for (auto& polygon : polygons) {
-        uint16_t command;
-        switch (polygon.fence_type) {
-            case Geofence::Polygon::FenceType::Inclusion:
-                command = MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION;
-                break;
-            case Geofence::Polygon::FenceType::Exclusion:
-                command = MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION;
-                break;
-            default:
-                LogErr() << "Unknown type";
-                continue;
-        }
+
+    for (auto& polygon : geofence_data.polygons) {
+        const uint16_t command =
+            (polygon.fence_type == Geofence::FenceType::Inclusion ?
+                 MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION :
+                 MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION);
 
         for (auto& point : polygon.points) {
-            // FIXME: check if these two  make sense.
             const uint8_t current = (sequence == 0 ? 1 : 0);
             const uint8_t autocontinue = 0;
             const float param1 = float(polygon.points.size());
@@ -116,6 +109,32 @@ GeofenceImpl::assemble_items(const std::vector<Geofence::Polygon>& polygons)
             ++sequence;
         }
     }
+
+    for (auto& circle : geofence_data.circles) {
+        const uint8_t current = (sequence == 0 ? 1 : 0);
+        const uint8_t autocontinue = 0;
+        const uint16_t command =
+            (circle.fence_type == Geofence::FenceType::Inclusion ?
+                 MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION :
+                 MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION);
+
+        items.push_back(MavlinkMissionTransfer::ItemInt{
+            sequence,
+            MAV_FRAME_GLOBAL_INT,
+            command,
+            current,
+            autocontinue,
+            circle.radius,
+            0.0f,
+            0.0f,
+            0.0f,
+            int32_t(std::round(circle.point.latitude_deg * 1e7)),
+            int32_t(std::round(circle.point.longitude_deg * 1e7)),
+            0.0f,
+            MAV_MISSION_TYPE_FENCE});
+        ++sequence;
+    }
+
     return items;
 }
 

@@ -23,10 +23,10 @@ public:
     void enable() override;
     void disable() override;
 
-    Geofence::Result upload_geofence(const std::vector<Geofence::Polygon>& polygons);
+    Geofence::Result upload_geofence(const Geofence::GeofenceData& geofence_data);
 
     void upload_geofence_async(
-        const std::vector<Geofence::Polygon>& polygons, const Geofence::ResultCallback& callback);
+        const Geofence::GeofenceData& geofence_data, const Geofence::ResultCallback& callback);
 
     Geofence::Result clear_geofence();
 
@@ -38,7 +38,7 @@ public:
 
 private:
     std::vector<MavlinkMissionTransfer::ItemInt>
-    assemble_items(const std::vector<Geofence::Polygon>& polygons);
+    assemble_items(const Geofence::GeofenceData& geofence_data);
 
     static Geofence::Result convert_result(MavlinkMissionTransfer::Result result);
 };
