@@ -97,11 +97,22 @@ int main(int argc, char** argv)
         for (auto entry : get_entries_result.second) {
             std::cerr << "Got log file with ID " << entry.id << " and date " << entry.date
                       << std::endl;
-            auto result =
-                log_files.download_log_file(entry, std::string("log-") + entry.date + ".ulg");
-            if (result.first != LogFiles::Result::Success) {
+
+            auto prom = std::promise<LogFiles::Result>{};
+            auto future_result = prom.get_future();
+            log_files.download_log_file_async(
+                entry,
+                std::string("log-") + entry.date + ".ulg",
+                [&prom](LogFiles::Result result, LogFiles::ProgressData progress) {
+                    if (result != LogFiles::Result::Next) {
+                        prom.set_value(result);
+                    }
+                });
+
+            auto result = future_result.get();
+            if (result != LogFiles::Result::Success) {
                 download_failure = true;
-                std::cerr << "LogFiles::download_log_file failed: " << result.first << std::endl;
+                std::cerr << "LogFiles::download_log_file failed: " << result << std::endl;
             }
         }
         if (!download_failure && remove_log_files) {

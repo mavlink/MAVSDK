@@ -25,6 +25,7 @@ public:
 
     std::pair<LogFiles::Result, LogFiles::ProgressData>
     download_log_file(LogFiles::Entry entry, const std::string& file_path);
+
     void download_log_file_async(
         LogFiles::Entry entry,
         const std::string& file_path,
