@@ -12,10 +12,8 @@ if (NOT MAVLINK_DIALECT)
 endif()
 
 
-if(NOT CMAKE_CROSSCOMPILING)
 set(CONFIGURE_COMMAND
     Python3::Interpreter -m pip install -r pymavlink/requirements.txt)
-endif()
 
 ExternalProject_add(
     mavlink
