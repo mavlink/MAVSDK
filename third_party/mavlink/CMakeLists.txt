@@ -3,13 +3,18 @@ cmake_minimum_required(VERSION 3.13)
 project(external-mavlink)
 include(ExternalProject)
 
+# Without this GitHub actions picks the wrong python3 executable.
+set(Python3_FIND_REGISTRY "NEVER")
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
 if (NOT MAVLINK_DIALECT)
     set(MAVLINK_DIALECT common)
 endif()
 
+
 if(NOT CMAKE_CROSSCOMPILING)
 set(CONFIGURE_COMMAND
-    python3 -m pip install -r pymavlink/requirements.txt)
+    Python3::Interpreter -m pip install -r pymavlink/requirements.txt)
 endif()
 
 ExternalProject_add(
@@ -18,7 +23,7 @@ ExternalProject_add(
     GIT_TAG c65c498efd2d9673e1d7da37025686daa5a7d568
     PREFIX mavlink
     CONFIGURE_COMMAND ${CONFIGURE_COMMAND}
-    COMMAND python3
+    COMMAND Python3::Interpreter
         -m pymavlink.tools.mavgen
         --lang=C
         --wire-protocol=2.0
