@@ -223,37 +223,6 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status DownloadLogFile(
-        grpc::ServerContext* /* context */,
-        const rpc::log_files::DownloadLogFileRequest* request,
-        rpc::log_files::DownloadLogFileResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::LogFiles::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "DownloadLogFile sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->download_log_file(
-            translateFromRpcEntry(request->entry()), request->path());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result.first);
-
-            response->set_allocated_progress(translateToRpcProgressData(result.second).release());
-        }
-
-        return grpc::Status::OK;
-    }
-
     grpc::Status EraseAllLogFiles(
         grpc::ServerContext* /* context */,
         const rpc::log_files::EraseAllLogFilesRequest* /* request */,

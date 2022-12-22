@@ -57,14 +57,6 @@ class LogFilesService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>> PrepareAsyncSubscribeDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>>(PrepareAsyncSubscribeDownloadLogFileRaw(context, request, cq));
     }
-    // Download log file synchronously.
-    virtual ::grpc::Status DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>> AsyncDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>>(AsyncDownloadLogFileRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>> PrepareAsyncDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>>(PrepareAsyncDownloadLogFileRaw(context, request, cq));
-    }
     // Erase all log files.
     virtual ::grpc::Status EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>> AsyncEraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) {
@@ -81,9 +73,6 @@ class LogFilesService final {
       virtual void GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Download log file.
       virtual void SubscribeDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* reactor) = 0;
-      // Download log file synchronously.
-      virtual void DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Erase all log files.
       virtual void EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -97,8 +86,6 @@ class LogFilesService final {
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* SubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* AsyncSubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* PrepareAsyncSubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* AsyncDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* PrepareAsyncDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* AsyncEraseAllLogFilesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* PrepareAsyncEraseAllLogFilesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -121,13 +108,6 @@ class LogFilesService final {
     std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>> PrepareAsyncSubscribeDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>>(PrepareAsyncSubscribeDownloadLogFileRaw(context, request, cq));
     }
-    ::grpc::Status DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>> AsyncDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>>(AsyncDownloadLogFileRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>> PrepareAsyncDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>>(PrepareAsyncDownloadLogFileRaw(context, request, cq));
-    }
     ::grpc::Status EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>> AsyncEraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>>(AsyncEraseAllLogFilesRaw(context, request, cq));
@@ -141,8 +121,6 @@ class LogFilesService final {
       void GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, std::function<void(::grpc::Status)>) override;
       void GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SubscribeDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* reactor) override;
-      void DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response, std::function<void(::grpc::Status)>) override;
-      void DownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response, std::function<void(::grpc::Status)>) override;
       void EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
@@ -161,13 +139,10 @@ class LogFilesService final {
     ::grpc::ClientReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* SubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* AsyncSubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* PrepareAsyncSubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* AsyncDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* PrepareAsyncDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* AsyncEraseAllLogFilesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* PrepareAsyncEraseAllLogFilesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetEntries_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeDownloadLogFile_;
-    const ::grpc::internal::RpcMethod rpcmethod_DownloadLogFile_;
     const ::grpc::internal::RpcMethod rpcmethod_EraseAllLogFiles_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -180,8 +155,6 @@ class LogFilesService final {
     virtual ::grpc::Status GetEntries(::grpc::ServerContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest* request, ::mavsdk::rpc::log_files::GetEntriesResponse* response);
     // Download log file.
     virtual ::grpc::Status SubscribeDownloadLogFile(::grpc::ServerContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* writer);
-    // Download log file synchronously.
-    virtual ::grpc::Status DownloadLogFile(::grpc::ServerContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response);
     // Erase all log files.
     virtual ::grpc::Status EraseAllLogFiles(::grpc::ServerContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response);
   };
@@ -226,32 +199,12 @@ class LogFilesService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_DownloadLogFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithAsyncMethod_DownloadLogFile() {
-      ::grpc::Service::MarkMethodAsync(2);
-    }
-    ~WithAsyncMethod_DownloadLogFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status DownloadLogFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* /*request*/, ::mavsdk::rpc::log_files::DownloadLogFileResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestDownloadLogFile(::grpc::ServerContext* context, ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
   class WithAsyncMethod_EraseAllLogFiles : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_EraseAllLogFiles() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_EraseAllLogFiles() override {
       BaseClassMustBeDerivedFromService(this);
@@ -262,10 +215,10 @@ class LogFilesService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestEraseAllLogFiles(::grpc::ServerContext* context, ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetEntries<WithAsyncMethod_SubscribeDownloadLogFile<WithAsyncMethod_DownloadLogFile<WithAsyncMethod_EraseAllLogFiles<Service > > > > AsyncService;
+  typedef WithAsyncMethod_GetEntries<WithAsyncMethod_SubscribeDownloadLogFile<WithAsyncMethod_EraseAllLogFiles<Service > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_GetEntries : public BaseClass {
    private:
@@ -316,45 +269,18 @@ class LogFilesService final {
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_DownloadLogFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_DownloadLogFile() {
-      ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* request, ::mavsdk::rpc::log_files::DownloadLogFileResponse* response) { return this->DownloadLogFile(context, request, response); }));}
-    void SetMessageAllocatorFor_DownloadLogFile(
-        ::grpc::MessageAllocator< ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse>*>(handler)
-              ->SetMessageAllocator(allocator);
-    }
-    ~WithCallbackMethod_DownloadLogFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status DownloadLogFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* /*request*/, ::mavsdk::rpc::log_files::DownloadLogFileResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerUnaryReactor* DownloadLogFile(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* /*request*/, ::mavsdk::rpc::log_files::DownloadLogFileResponse* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
   class WithCallbackMethod_EraseAllLogFiles : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_EraseAllLogFiles() {
-      ::grpc::Service::MarkMethodCallback(3,
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response) { return this->EraseAllLogFiles(context, request, response); }));}
     void SetMessageAllocatorFor_EraseAllLogFiles(
         ::grpc::MessageAllocator< ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -369,7 +295,7 @@ class LogFilesService final {
     virtual ::grpc::ServerUnaryReactor* EraseAllLogFiles(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest* /*request*/, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetEntries<WithCallbackMethod_SubscribeDownloadLogFile<WithCallbackMethod_DownloadLogFile<WithCallbackMethod_EraseAllLogFiles<Service > > > > CallbackService;
+  typedef WithCallbackMethod_GetEntries<WithCallbackMethod_SubscribeDownloadLogFile<WithCallbackMethod_EraseAllLogFiles<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetEntries : public BaseClass {
@@ -406,29 +332,12 @@ class LogFilesService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_DownloadLogFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_DownloadLogFile() {
-      ::grpc::Service::MarkMethodGeneric(2);
-    }
-    ~WithGenericMethod_DownloadLogFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status DownloadLogFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* /*request*/, ::mavsdk::rpc::log_files::DownloadLogFileResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
   class WithGenericMethod_EraseAllLogFiles : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_EraseAllLogFiles() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_EraseAllLogFiles() override {
       BaseClassMustBeDerivedFromService(this);
@@ -480,32 +389,12 @@ class LogFilesService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_DownloadLogFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawMethod_DownloadLogFile() {
-      ::grpc::Service::MarkMethodRaw(2);
-    }
-    ~WithRawMethod_DownloadLogFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status DownloadLogFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* /*request*/, ::mavsdk::rpc::log_files::DownloadLogFileResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestDownloadLogFile(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
   class WithRawMethod_EraseAllLogFiles : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_EraseAllLogFiles() {
-      ::grpc::Service::MarkMethodRaw(3);
+      ::grpc::Service::MarkMethodRaw(2);
     }
     ~WithRawMethod_EraseAllLogFiles() override {
       BaseClassMustBeDerivedFromService(this);
@@ -516,7 +405,7 @@ class LogFilesService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestEraseAllLogFiles(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -564,34 +453,12 @@ class LogFilesService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_DownloadLogFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_DownloadLogFile() {
-      ::grpc::Service::MarkMethodRawCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DownloadLogFile(context, request, response); }));
-    }
-    ~WithRawCallbackMethod_DownloadLogFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status DownloadLogFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* /*request*/, ::mavsdk::rpc::log_files::DownloadLogFileResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerUnaryReactor* DownloadLogFile(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
   class WithRawCallbackMethod_EraseAllLogFiles : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_EraseAllLogFiles() {
-      ::grpc::Service::MarkMethodRawCallback(3,
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->EraseAllLogFiles(context, request, response); }));
@@ -635,39 +502,12 @@ class LogFilesService final {
     virtual ::grpc::Status StreamedGetEntries(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::log_files::GetEntriesRequest,::mavsdk::rpc::log_files::GetEntriesResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_DownloadLogFile : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithStreamedUnaryMethod_DownloadLogFile() {
-      ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::log_files::DownloadLogFileRequest, ::mavsdk::rpc::log_files::DownloadLogFileResponse>* streamer) {
-                       return this->StreamedDownloadLogFile(context,
-                         streamer);
-                  }));
-    }
-    ~WithStreamedUnaryMethod_DownloadLogFile() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status DownloadLogFile(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::log_files::DownloadLogFileRequest* /*request*/, ::mavsdk::rpc::log_files::DownloadLogFileResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedDownloadLogFile(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::log_files::DownloadLogFileRequest,::mavsdk::rpc::log_files::DownloadLogFileResponse>* server_unary_streamer) = 0;
-  };
-  template <class BaseClass>
   class WithStreamedUnaryMethod_EraseAllLogFiles : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_EraseAllLogFiles() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse>(
             [this](::grpc::ServerContext* context,
@@ -688,7 +528,7 @@ class LogFilesService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedEraseAllLogFiles(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::log_files::EraseAllLogFilesRequest,::mavsdk::rpc::log_files::EraseAllLogFilesResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetEntries<WithStreamedUnaryMethod_DownloadLogFile<WithStreamedUnaryMethod_EraseAllLogFiles<Service > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetEntries<WithStreamedUnaryMethod_EraseAllLogFiles<Service > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeDownloadLogFile : public BaseClass {
    private:
@@ -717,7 +557,7 @@ class LogFilesService final {
     virtual ::grpc::Status StreamedSubscribeDownloadLogFile(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest,::mavsdk::rpc::log_files::DownloadLogFileResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeDownloadLogFile<Service > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetEntries<WithSplitStreamingMethod_SubscribeDownloadLogFile<WithStreamedUnaryMethod_DownloadLogFile<WithStreamedUnaryMethod_EraseAllLogFiles<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetEntries<WithSplitStreamingMethod_SubscribeDownloadLogFile<WithStreamedUnaryMethod_EraseAllLogFiles<Service > > > StreamedService;
 };
 
 }  // namespace log_files
