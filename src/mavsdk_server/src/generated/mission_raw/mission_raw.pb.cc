@@ -329,6 +329,31 @@ struct ImportQgroundcontrolMissionResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ImportQgroundcontrolMissionResponseDefaultTypeInternal _ImportQgroundcontrolMissionResponse_default_instance_;
+PROTOBUF_CONSTEXPR ImportQgroundcontrolMissionFromStringRequest::ImportQgroundcontrolMissionFromStringRequest(
+    ::_pbi::ConstantInitialized)
+  : qgc_plan_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+struct ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal() {}
+  union {
+    ImportQgroundcontrolMissionFromStringRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal _ImportQgroundcontrolMissionFromStringRequest_default_instance_;
+PROTOBUF_CONSTEXPR ImportQgroundcontrolMissionFromStringResponse::ImportQgroundcontrolMissionFromStringResponse(
+    ::_pbi::ConstantInitialized)
+  : mission_raw_result_(nullptr)
+  , mission_import_data_(nullptr){}
+struct ImportQgroundcontrolMissionFromStringResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ImportQgroundcontrolMissionFromStringResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ImportQgroundcontrolMissionFromStringResponseDefaultTypeInternal() {}
+  union {
+    ImportQgroundcontrolMissionFromStringResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ImportQgroundcontrolMissionFromStringResponseDefaultTypeInternal _ImportQgroundcontrolMissionFromStringResponse_default_instance_;
 PROTOBUF_CONSTEXPR MissionProgress::MissionProgress(
     ::_pbi::ConstantInitialized)
   : current_(0)
@@ -397,7 +422,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 }  // namespace mission_raw
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[30];
+static ::_pb::Metadata file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[32];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_mission_5fraw_2fmission_5fraw_2eproto[1];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_mission_5fraw_2fmission_5fraw_2eproto = nullptr;
 
@@ -579,6 +604,21 @@ const uint32_t TableStruct_mission_5fraw_2fmission_5fraw_2eproto::offsets[] PROT
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, mission_raw_result_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse, mission_import_data_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest, qgc_plan_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse, mission_raw_result_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse, mission_import_data_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mission_raw::MissionProgress, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -650,10 +690,12 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 154, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionChangedResponse)},
   { 161, -1, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest)},
   { 168, -1, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse)},
-  { 176, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionProgress)},
-  { 184, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionItem)},
-  { 203, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionImportData)},
-  { 212, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionRawResult)},
+  { 176, -1, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest)},
+  { 183, -1, -1, sizeof(::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse)},
+  { 191, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionProgress)},
+  { 199, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionItem)},
+  { 218, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionImportData)},
+  { 227, -1, -1, sizeof(::mavsdk::rpc::mission_raw::MissionRawResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -683,6 +725,8 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::mavsdk::rpc::mission_raw::_MissionChangedResponse_default_instance_._instance,
   &::mavsdk::rpc::mission_raw::_ImportQgroundcontrolMissionRequest_default_instance_._instance,
   &::mavsdk::rpc::mission_raw::_ImportQgroundcontrolMissionResponse_default_instance_._instance,
+  &::mavsdk::rpc::mission_raw::_ImportQgroundcontrolMissionFromStringRequest_default_instance_._instance,
+  &::mavsdk::rpc::mission_raw::_ImportQgroundcontrolMissionFromStringResponse_default_instance_._instance,
   &::mavsdk::rpc::mission_raw::_MissionProgress_default_instance_._instance,
   &::mavsdk::rpc::mission_raw::_MissionItem_default_instance_._instance,
   &::mavsdk::rpc::mission_raw::_MissionImportData_default_instance_._instance,
@@ -740,87 +784,98 @@ const char descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto[] PRO
   "onResponse\022D\n\022mission_raw_result\030\001 \001(\0132("
   ".mavsdk.rpc.mission_raw.MissionRawResult"
   "\022F\n\023mission_import_data\030\002 \001(\0132).mavsdk.r"
-  "pc.mission_raw.MissionImportData\"1\n\017Miss"
-  "ionProgress\022\017\n\007current\030\001 \001(\005\022\r\n\005total\030\002 "
-  "\001(\005\"\330\001\n\013MissionItem\022\013\n\003seq\030\001 \001(\r\022\r\n\005fram"
-  "e\030\002 \001(\r\022\017\n\007command\030\003 \001(\r\022\017\n\007current\030\004 \001("
-  "\r\022\024\n\014autocontinue\030\005 \001(\r\022\016\n\006param1\030\006 \001(\002\022"
-  "\016\n\006param2\030\007 \001(\002\022\016\n\006param3\030\010 \001(\002\022\016\n\006param"
-  "4\030\t \001(\002\022\t\n\001x\030\n \001(\005\022\t\n\001y\030\013 \001(\005\022\t\n\001z\030\014 \001(\002"
-  "\022\024\n\014mission_type\030\r \001(\r\"\306\001\n\021MissionImport"
-  "Data\022:\n\rmission_items\030\001 \003(\0132#.mavsdk.rpc"
-  ".mission_raw.MissionItem\022;\n\016geofence_ite"
-  "ms\030\002 \003(\0132#.mavsdk.rpc.mission_raw.Missio"
-  "nItem\0228\n\013rally_items\030\003 \003(\0132#.mavsdk.rpc."
-  "mission_raw.MissionItem\"\376\004\n\020MissionRawRe"
-  "sult\022\?\n\006result\030\001 \001(\0162/.mavsdk.rpc.missio"
-  "n_raw.MissionRawResult.Result\022\022\n\nresult_"
-  "str\030\002 \001(\t\"\224\004\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000"
-  "\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022!"
-  "\n\035RESULT_TOO_MANY_MISSION_ITEMS\020\003\022\017\n\013RES"
-  "ULT_BUSY\020\004\022\022\n\016RESULT_TIMEOUT\020\005\022\033\n\027RESULT"
-  "_INVALID_ARGUMENT\020\006\022\026\n\022RESULT_UNSUPPORTE"
-  "D\020\007\022\037\n\033RESULT_NO_MISSION_AVAILABLE\020\010\022\035\n\031"
-  "RESULT_TRANSFER_CANCELLED\020\t\022\"\n\036RESULT_FA"
-  "ILED_TO_OPEN_QGC_PLAN\020\n\022#\n\037RESULT_FAILED"
-  "_TO_PARSE_QGC_PLAN\020\013\022\024\n\020RESULT_NO_SYSTEM"
-  "\020\014\022\021\n\rRESULT_DENIED\020\r\022&\n\"RESULT_MISSION_"
-  "TYPE_NOT_CONSISTENT\020\016\022\033\n\027RESULT_INVALID_"
-  "SEQUENCE\020\017\022\032\n\026RESULT_CURRENT_INVALID\020\020\022\031"
-  "\n\025RESULT_PROTOCOL_ERROR\020\021\022%\n!RESULT_INT_"
-  "MESSAGES_NOT_SUPPORTED\020\0222\202\r\n\021MissionRawS"
-  "ervice\022n\n\rUploadMission\022,.mavsdk.rpc.mis"
-  "sion_raw.UploadMissionRequest\032-.mavsdk.r"
-  "pc.mission_raw.UploadMissionResponse\"\000\022q"
-  "\n\016UploadGeofence\022-.mavsdk.rpc.mission_ra"
-  "w.UploadGeofenceRequest\032..mavsdk.rpc.mis"
-  "sion_raw.UploadGeofenceResponse\"\000\022z\n\021Upl"
-  "oadRallyPoints\0220.mavsdk.rpc.mission_raw."
-  "UploadRallyPointsRequest\0321.mavsdk.rpc.mi"
-  "ssion_raw.UploadRallyPointsResponse\"\000\022\204\001"
-  "\n\023CancelMissionUpload\0222.mavsdk.rpc.missi"
-  "on_raw.CancelMissionUploadRequest\0323.mavs"
-  "dk.rpc.mission_raw.CancelMissionUploadRe"
-  "sponse\"\004\200\265\030\001\022t\n\017DownloadMission\022..mavsdk"
-  ".rpc.mission_raw.DownloadMissionRequest\032"
-  "/.mavsdk.rpc.mission_raw.DownloadMission"
-  "Response\"\000\022\212\001\n\025CancelMissionDownload\0224.m"
-  "avsdk.rpc.mission_raw.CancelMissionDownl"
-  "oadRequest\0325.mavsdk.rpc.mission_raw.Canc"
-  "elMissionDownloadResponse\"\004\200\265\030\001\022k\n\014Start"
-  "Mission\022+.mavsdk.rpc.mission_raw.StartMi"
-  "ssionRequest\032,.mavsdk.rpc.mission_raw.St"
-  "artMissionResponse\"\000\022k\n\014PauseMission\022+.m"
-  "avsdk.rpc.mission_raw.PauseMissionReques"
-  "t\032,.mavsdk.rpc.mission_raw.PauseMissionR"
-  "esponse\"\000\022k\n\014ClearMission\022+.mavsdk.rpc.m"
-  "ission_raw.ClearMissionRequest\032,.mavsdk."
-  "rpc.mission_raw.ClearMissionResponse\"\000\022\206"
-  "\001\n\025SetCurrentMissionItem\0224.mavsdk.rpc.mi"
-  "ssion_raw.SetCurrentMissionItemRequest\0325"
-  ".mavsdk.rpc.mission_raw.SetCurrentMissio"
-  "nItemResponse\"\000\022\210\001\n\030SubscribeMissionProg"
-  "ress\0227.mavsdk.rpc.mission_raw.SubscribeM"
-  "issionProgressRequest\032/.mavsdk.rpc.missi"
-  "on_raw.MissionProgressResponse\"\0000\001\022\211\001\n\027S"
-  "ubscribeMissionChanged\0226.mavsdk.rpc.miss"
-  "ion_raw.SubscribeMissionChangedRequest\032."
-  ".mavsdk.rpc.mission_raw.MissionChangedRe"
-  "sponse\"\004\200\265\030\0000\001\022\234\001\n\033ImportQgroundcontrolM"
-  "ission\022:.mavsdk.rpc.mission_raw.ImportQg"
-  "roundcontrolMissionRequest\032;.mavsdk.rpc."
-  "mission_raw.ImportQgroundcontrolMissionR"
-  "esponse\"\004\200\265\030\001B(\n\025io.mavsdk.mission_rawB\017"
-  "MissionRawProtob\006proto3"
+  "pc.mission_raw.MissionImportData\"@\n,Impo"
+  "rtQgroundcontrolMissionFromStringRequest"
+  "\022\020\n\010qgc_plan\030\001 \001(\t\"\275\001\n-ImportQgroundcont"
+  "rolMissionFromStringResponse\022D\n\022mission_"
+  "raw_result\030\001 \001(\0132(.mavsdk.rpc.mission_ra"
+  "w.MissionRawResult\022F\n\023mission_import_dat"
+  "a\030\002 \001(\0132).mavsdk.rpc.mission_raw.Mission"
+  "ImportData\"1\n\017MissionProgress\022\017\n\007current"
+  "\030\001 \001(\005\022\r\n\005total\030\002 \001(\005\"\330\001\n\013MissionItem\022\013\n"
+  "\003seq\030\001 \001(\r\022\r\n\005frame\030\002 \001(\r\022\017\n\007command\030\003 \001"
+  "(\r\022\017\n\007current\030\004 \001(\r\022\024\n\014autocontinue\030\005 \001("
+  "\r\022\016\n\006param1\030\006 \001(\002\022\016\n\006param2\030\007 \001(\002\022\016\n\006par"
+  "am3\030\010 \001(\002\022\016\n\006param4\030\t \001(\002\022\t\n\001x\030\n \001(\005\022\t\n\001"
+  "y\030\013 \001(\005\022\t\n\001z\030\014 \001(\002\022\024\n\014mission_type\030\r \001(\r"
+  "\"\306\001\n\021MissionImportData\022:\n\rmission_items\030"
+  "\001 \003(\0132#.mavsdk.rpc.mission_raw.MissionIt"
+  "em\022;\n\016geofence_items\030\002 \003(\0132#.mavsdk.rpc."
+  "mission_raw.MissionItem\0228\n\013rally_items\030\003"
+  " \003(\0132#.mavsdk.rpc.mission_raw.MissionIte"
+  "m\"\376\004\n\020MissionRawResult\022\?\n\006result\030\001 \001(\0162/"
+  ".mavsdk.rpc.mission_raw.MissionRawResult"
+  ".Result\022\022\n\nresult_str\030\002 \001(\t\"\224\004\n\006Result\022\022"
+  "\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020"
+  "\n\014RESULT_ERROR\020\002\022!\n\035RESULT_TOO_MANY_MISS"
+  "ION_ITEMS\020\003\022\017\n\013RESULT_BUSY\020\004\022\022\n\016RESULT_T"
+  "IMEOUT\020\005\022\033\n\027RESULT_INVALID_ARGUMENT\020\006\022\026\n"
+  "\022RESULT_UNSUPPORTED\020\007\022\037\n\033RESULT_NO_MISSI"
+  "ON_AVAILABLE\020\010\022\035\n\031RESULT_TRANSFER_CANCEL"
+  "LED\020\t\022\"\n\036RESULT_FAILED_TO_OPEN_QGC_PLAN\020"
+  "\n\022#\n\037RESULT_FAILED_TO_PARSE_QGC_PLAN\020\013\022\024"
+  "\n\020RESULT_NO_SYSTEM\020\014\022\021\n\rRESULT_DENIED\020\r\022"
+  "&\n\"RESULT_MISSION_TYPE_NOT_CONSISTENT\020\016\022"
+  "\033\n\027RESULT_INVALID_SEQUENCE\020\017\022\032\n\026RESULT_C"
+  "URRENT_INVALID\020\020\022\031\n\025RESULT_PROTOCOL_ERRO"
+  "R\020\021\022%\n!RESULT_INT_MESSAGES_NOT_SUPPORTED"
+  "\020\0222\277\016\n\021MissionRawService\022n\n\rUploadMissio"
+  "n\022,.mavsdk.rpc.mission_raw.UploadMission"
+  "Request\032-.mavsdk.rpc.mission_raw.UploadM"
+  "issionResponse\"\000\022q\n\016UploadGeofence\022-.mav"
+  "sdk.rpc.mission_raw.UploadGeofenceReques"
+  "t\032..mavsdk.rpc.mission_raw.UploadGeofenc"
+  "eResponse\"\000\022z\n\021UploadRallyPoints\0220.mavsd"
+  "k.rpc.mission_raw.UploadRallyPointsReque"
+  "st\0321.mavsdk.rpc.mission_raw.UploadRallyP"
+  "ointsResponse\"\000\022\204\001\n\023CancelMissionUpload\022"
+  "2.mavsdk.rpc.mission_raw.CancelMissionUp"
+  "loadRequest\0323.mavsdk.rpc.mission_raw.Can"
+  "celMissionUploadResponse\"\004\200\265\030\001\022t\n\017Downlo"
+  "adMission\022..mavsdk.rpc.mission_raw.Downl"
+  "oadMissionRequest\032/.mavsdk.rpc.mission_r"
+  "aw.DownloadMissionResponse\"\000\022\212\001\n\025CancelM"
+  "issionDownload\0224.mavsdk.rpc.mission_raw."
+  "CancelMissionDownloadRequest\0325.mavsdk.rp"
+  "c.mission_raw.CancelMissionDownloadRespo"
+  "nse\"\004\200\265\030\001\022k\n\014StartMission\022+.mavsdk.rpc.m"
+  "ission_raw.StartMissionRequest\032,.mavsdk."
+  "rpc.mission_raw.StartMissionResponse\"\000\022k"
+  "\n\014PauseMission\022+.mavsdk.rpc.mission_raw."
+  "PauseMissionRequest\032,.mavsdk.rpc.mission"
+  "_raw.PauseMissionResponse\"\000\022k\n\014ClearMiss"
+  "ion\022+.mavsdk.rpc.mission_raw.ClearMissio"
+  "nRequest\032,.mavsdk.rpc.mission_raw.ClearM"
+  "issionResponse\"\000\022\206\001\n\025SetCurrentMissionIt"
+  "em\0224.mavsdk.rpc.mission_raw.SetCurrentMi"
+  "ssionItemRequest\0325.mavsdk.rpc.mission_ra"
+  "w.SetCurrentMissionItemResponse\"\000\022\210\001\n\030Su"
+  "bscribeMissionProgress\0227.mavsdk.rpc.miss"
+  "ion_raw.SubscribeMissionProgressRequest\032"
+  "/.mavsdk.rpc.mission_raw.MissionProgress"
+  "Response\"\0000\001\022\211\001\n\027SubscribeMissionChanged"
+  "\0226.mavsdk.rpc.mission_raw.SubscribeMissi"
+  "onChangedRequest\032..mavsdk.rpc.mission_ra"
+  "w.MissionChangedResponse\"\004\200\265\030\0000\001\022\234\001\n\033Imp"
+  "ortQgroundcontrolMission\022:.mavsdk.rpc.mi"
+  "ssion_raw.ImportQgroundcontrolMissionReq"
+  "uest\032;.mavsdk.rpc.mission_raw.ImportQgro"
+  "undcontrolMissionResponse\"\004\200\265\030\001\022\272\001\n%Impo"
+  "rtQgroundcontrolMissionFromString\022D.mavs"
+  "dk.rpc.mission_raw.ImportQgroundcontrolM"
+  "issionFromStringRequest\032E.mavsdk.rpc.mis"
+  "sion_raw.ImportQgroundcontrolMissionFrom"
+  "StringResponse\"\004\200\265\030\001B(\n\025io.mavsdk.missio"
+  "n_rawB\017MissionRawProtob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_mission_5fraw_2fmission_5fraw_2eproto = {
-    false, false, 4863, descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto,
+    false, false, 5310, descriptor_table_protodef_mission_5fraw_2fmission_5fraw_2eproto,
     "mission_raw/mission_raw.proto",
-    &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once, descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps, 1, 30,
+    &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once, descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_deps, 1, 32,
     schemas, file_default_instances, TableStruct_mission_5fraw_2fmission_5fraw_2eproto::offsets,
     file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto, file_level_enum_descriptors_mission_5fraw_2fmission_5fraw_2eproto,
     file_level_service_descriptors_mission_5fraw_2fmission_5fraw_2eproto,
@@ -4600,6 +4655,436 @@ void ImportQgroundcontrolMissionResponse::InternalSwap(ImportQgroundcontrolMissi
 
 // ===================================================================
 
+class ImportQgroundcontrolMissionFromStringRequest::_Internal {
+ public:
+};
+
+ImportQgroundcontrolMissionFromStringRequest::ImportQgroundcontrolMissionFromStringRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+}
+ImportQgroundcontrolMissionFromStringRequest::ImportQgroundcontrolMissionFromStringRequest(const ImportQgroundcontrolMissionFromStringRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  qgc_plan_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    qgc_plan_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_qgc_plan().empty()) {
+    qgc_plan_.Set(from._internal_qgc_plan(), 
+      GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+}
+
+inline void ImportQgroundcontrolMissionFromStringRequest::SharedCtor() {
+qgc_plan_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  qgc_plan_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+ImportQgroundcontrolMissionFromStringRequest::~ImportQgroundcontrolMissionFromStringRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ImportQgroundcontrolMissionFromStringRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  qgc_plan_.Destroy();
+}
+
+void ImportQgroundcontrolMissionFromStringRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ImportQgroundcontrolMissionFromStringRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  qgc_plan_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ImportQgroundcontrolMissionFromStringRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string qgc_plan = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_qgc_plan();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest.qgc_plan"));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ImportQgroundcontrolMissionFromStringRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string qgc_plan = 1;
+  if (!this->_internal_qgc_plan().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_qgc_plan().data(), static_cast<int>(this->_internal_qgc_plan().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest.qgc_plan");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_qgc_plan(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+  return target;
+}
+
+size_t ImportQgroundcontrolMissionFromStringRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string qgc_plan = 1;
+  if (!this->_internal_qgc_plan().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_qgc_plan());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ImportQgroundcontrolMissionFromStringRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ImportQgroundcontrolMissionFromStringRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ImportQgroundcontrolMissionFromStringRequest::GetClassData() const { return &_class_data_; }
+
+void ImportQgroundcontrolMissionFromStringRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ImportQgroundcontrolMissionFromStringRequest *>(to)->MergeFrom(
+      static_cast<const ImportQgroundcontrolMissionFromStringRequest &>(from));
+}
+
+
+void ImportQgroundcontrolMissionFromStringRequest::MergeFrom(const ImportQgroundcontrolMissionFromStringRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_qgc_plan().empty()) {
+    _internal_set_qgc_plan(from._internal_qgc_plan());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ImportQgroundcontrolMissionFromStringRequest::CopyFrom(const ImportQgroundcontrolMissionFromStringRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ImportQgroundcontrolMissionFromStringRequest::IsInitialized() const {
+  return true;
+}
+
+void ImportQgroundcontrolMissionFromStringRequest::InternalSwap(ImportQgroundcontrolMissionFromStringRequest* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &qgc_plan_, lhs_arena,
+      &other->qgc_plan_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ImportQgroundcontrolMissionFromStringRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[26]);
+}
+
+// ===================================================================
+
+class ImportQgroundcontrolMissionFromStringResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result(const ImportQgroundcontrolMissionFromStringResponse* msg);
+  static const ::mavsdk::rpc::mission_raw::MissionImportData& mission_import_data(const ImportQgroundcontrolMissionFromStringResponse* msg);
+};
+
+const ::mavsdk::rpc::mission_raw::MissionRawResult&
+ImportQgroundcontrolMissionFromStringResponse::_Internal::mission_raw_result(const ImportQgroundcontrolMissionFromStringResponse* msg) {
+  return *msg->mission_raw_result_;
+}
+const ::mavsdk::rpc::mission_raw::MissionImportData&
+ImportQgroundcontrolMissionFromStringResponse::_Internal::mission_import_data(const ImportQgroundcontrolMissionFromStringResponse* msg) {
+  return *msg->mission_import_data_;
+}
+ImportQgroundcontrolMissionFromStringResponse::ImportQgroundcontrolMissionFromStringResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+}
+ImportQgroundcontrolMissionFromStringResponse::ImportQgroundcontrolMissionFromStringResponse(const ImportQgroundcontrolMissionFromStringResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_mission_raw_result()) {
+    mission_raw_result_ = new ::mavsdk::rpc::mission_raw::MissionRawResult(*from.mission_raw_result_);
+  } else {
+    mission_raw_result_ = nullptr;
+  }
+  if (from._internal_has_mission_import_data()) {
+    mission_import_data_ = new ::mavsdk::rpc::mission_raw::MissionImportData(*from.mission_import_data_);
+  } else {
+    mission_import_data_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+}
+
+inline void ImportQgroundcontrolMissionFromStringResponse::SharedCtor() {
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&mission_raw_result_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&mission_import_data_) -
+    reinterpret_cast<char*>(&mission_raw_result_)) + sizeof(mission_import_data_));
+}
+
+ImportQgroundcontrolMissionFromStringResponse::~ImportQgroundcontrolMissionFromStringResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ImportQgroundcontrolMissionFromStringResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete mission_raw_result_;
+  if (this != internal_default_instance()) delete mission_import_data_;
+}
+
+void ImportQgroundcontrolMissionFromStringResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ImportQgroundcontrolMissionFromStringResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && mission_raw_result_ != nullptr) {
+    delete mission_raw_result_;
+  }
+  mission_raw_result_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && mission_import_data_ != nullptr) {
+    delete mission_import_data_;
+  }
+  mission_import_data_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ImportQgroundcontrolMissionFromStringResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_mission_raw_result(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .mavsdk.rpc.mission_raw.MissionImportData mission_import_data = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_mission_import_data(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ImportQgroundcontrolMissionFromStringResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  if (this->_internal_has_mission_raw_result()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::mission_raw_result(this),
+        _Internal::mission_raw_result(this).GetCachedSize(), target, stream);
+  }
+
+  // .mavsdk.rpc.mission_raw.MissionImportData mission_import_data = 2;
+  if (this->_internal_has_mission_import_data()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::mission_import_data(this),
+        _Internal::mission_import_data(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+  return target;
+}
+
+size_t ImportQgroundcontrolMissionFromStringResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  if (this->_internal_has_mission_raw_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *mission_raw_result_);
+  }
+
+  // .mavsdk.rpc.mission_raw.MissionImportData mission_import_data = 2;
+  if (this->_internal_has_mission_import_data()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *mission_import_data_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ImportQgroundcontrolMissionFromStringResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ImportQgroundcontrolMissionFromStringResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ImportQgroundcontrolMissionFromStringResponse::GetClassData() const { return &_class_data_; }
+
+void ImportQgroundcontrolMissionFromStringResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ImportQgroundcontrolMissionFromStringResponse *>(to)->MergeFrom(
+      static_cast<const ImportQgroundcontrolMissionFromStringResponse &>(from));
+}
+
+
+void ImportQgroundcontrolMissionFromStringResponse::MergeFrom(const ImportQgroundcontrolMissionFromStringResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_mission_raw_result()) {
+    _internal_mutable_mission_raw_result()->::mavsdk::rpc::mission_raw::MissionRawResult::MergeFrom(from._internal_mission_raw_result());
+  }
+  if (from._internal_has_mission_import_data()) {
+    _internal_mutable_mission_import_data()->::mavsdk::rpc::mission_raw::MissionImportData::MergeFrom(from._internal_mission_import_data());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ImportQgroundcontrolMissionFromStringResponse::CopyFrom(const ImportQgroundcontrolMissionFromStringResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ImportQgroundcontrolMissionFromStringResponse::IsInitialized() const {
+  return true;
+}
+
+void ImportQgroundcontrolMissionFromStringResponse::InternalSwap(ImportQgroundcontrolMissionFromStringResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ImportQgroundcontrolMissionFromStringResponse, mission_import_data_)
+      + sizeof(ImportQgroundcontrolMissionFromStringResponse::mission_import_data_)
+      - PROTOBUF_FIELD_OFFSET(ImportQgroundcontrolMissionFromStringResponse, mission_raw_result_)>(
+          reinterpret_cast<char*>(&mission_raw_result_),
+          reinterpret_cast<char*>(&other->mission_raw_result_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ImportQgroundcontrolMissionFromStringResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[27]);
+}
+
+// ===================================================================
+
 class MissionProgress::_Internal {
  public:
 };
@@ -4800,7 +5285,7 @@ void MissionProgress::InternalSwap(MissionProgress* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionProgress::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[26]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[28]);
 }
 
 // ===================================================================
@@ -5307,7 +5792,7 @@ void MissionItem::InternalSwap(MissionItem* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionItem::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[27]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[29]);
 }
 
 // ===================================================================
@@ -5551,7 +6036,7 @@ void MissionImportData::InternalSwap(MissionImportData* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionImportData::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[28]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[30]);
 }
 
 // ===================================================================
@@ -5775,7 +6260,7 @@ void MissionRawResult::InternalSwap(MissionRawResult* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MissionRawResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_getter, &descriptor_table_mission_5fraw_2fmission_5fraw_2eproto_once,
-      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[29]);
+      file_level_metadata_mission_5fraw_2fmission_5fraw_2eproto[31]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -5886,6 +6371,14 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissi
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::mission_raw::MissionProgress*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::mission_raw::MissionProgress >(Arena* arena) {

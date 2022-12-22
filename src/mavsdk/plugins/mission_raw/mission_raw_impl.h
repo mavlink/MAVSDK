@@ -65,6 +65,9 @@ public:
     std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
     import_qgroundcontrol_mission(std::string qgc_plan_path);
 
+    std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+    import_qgroundcontrol_mission_from_string(const std::string& qgc_plan);
+
 #if 0
     void import_qgroundcontrol_mission_async(
         std::string qgc_plan_path, const MissionRaw::ImportQgroundcontrolMissionCallback callback);

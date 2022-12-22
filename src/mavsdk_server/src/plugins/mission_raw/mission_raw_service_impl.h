@@ -660,6 +660,39 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status ImportQgroundcontrolMissionFromString(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request,
+        rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn()
+                << "ImportQgroundcontrolMissionFromString sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->import_qgroundcontrol_mission_from_string(
+            request->qgc_plan());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_mission_import_data(
+                translateToRpcMissionImportData(result.second).release());
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

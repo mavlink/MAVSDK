@@ -417,7 +417,7 @@ public:
     void unsubscribe_mission_changed(MissionChangedHandle handle);
 
     /**
-     * @brief Import a QGroundControl missions in JSON .plan format.
+     * @brief Import a QGroundControl missions in JSON .plan format, from a file.
      *
      * Supported:
      * - Waypoints
@@ -431,6 +431,22 @@ public:
      */
     std::pair<Result, MissionRaw::MissionImportData>
     import_qgroundcontrol_mission(std::string qgc_plan_path) const;
+
+    /**
+     * @brief Import a QGroundControl missions in JSON .plan format, from a string.
+     *
+     * Supported:
+     * - Waypoints
+     * - Survey
+     * Not supported:
+     * - Structure Scan
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, MissionRaw::MissionImportData>
+    import_qgroundcontrol_mission_from_string(std::string qgc_plan) const;
 
     /**
      * @brief Copy constructor.

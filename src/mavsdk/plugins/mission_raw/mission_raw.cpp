@@ -152,6 +152,12 @@ MissionRaw::import_qgroundcontrol_mission(std::string qgc_plan_path) const
     return _impl->import_qgroundcontrol_mission(qgc_plan_path);
 }
 
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRaw::import_qgroundcontrol_mission_from_string(std::string qgc_plan) const
+{
+    return _impl->import_qgroundcontrol_mission_from_string(qgc_plan);
+}
+
 bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
 {
     return (rhs.current == lhs.current) && (rhs.total == lhs.total);
