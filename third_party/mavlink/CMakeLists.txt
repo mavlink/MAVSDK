@@ -5,6 +5,7 @@ include(ExternalProject)
 
 # Without this GitHub actions picks the wrong python3 executable.
 set(Python3_FIND_REGISTRY "NEVER")
+set(Python3_FIND_FRAMEWORK "NEVER")
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
 if (NOT MAVLINK_DIALECT)
