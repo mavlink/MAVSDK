@@ -543,6 +543,12 @@ MissionRawImpl::import_qgroundcontrol_mission(std::string qgc_plan_path)
     return MissionImport::parse_json(buf.str(), _parent->autopilot());
 }
 
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRawImpl::import_qgroundcontrol_mission_from_string(const std::string& qgc_plan)
+{
+    return MissionImport::parse_json(qgc_plan, _parent->autopilot());
+}
+
 MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransfer::Result result)
 {
     switch (result) {
