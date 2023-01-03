@@ -36,7 +36,7 @@ if(ANDROID)
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
-        BUILD_COMMAND make
+        BUILD_COMMAND ${CMAKE_MAKE_PROGRAM}
         )
 elseif(IOS)
     # OpenSSL 3 has issues with bitcode. Let's stay with OpenSSL 1 until we can drop bitcode (with Xcode 14).
@@ -78,7 +78,7 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
-        BUILD_COMMAND make
+        BUILD_COMMAND ${CMAKE_MAKE_PROGRAM}
         )
 elseif(MSVC)
     message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
@@ -92,8 +92,8 @@ elseif(MSVC)
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm
-        BUILD_COMMAND set MAKEFLAGS= && nmake
-        INSTALL_COMMAND set MAKEFLAGS= && nmake install
+        BUILD_COMMAND set MAKEFLAGS= && ${CMAKE_MAKE_PROGRAM}
+        INSTALL_COMMAND set MAKEFLAGS= && ${CMAKE_MAKE_PROGRAM} install
         )
 else()
     ExternalProject_add(
