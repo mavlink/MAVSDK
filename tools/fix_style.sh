@@ -22,7 +22,7 @@ elif command -v clang-format >/dev/null; then
     clang_format=clang-format
 else
     echo "clang-format not found"
-    echo "--> check: https://mavsdk.mavlink.io/main/en/contributing/code_style.html#formatting-and-white-space"
+    echo "--> check: https://mavsdk.mavlink.io/main/en/cpp/guide/code_style.html#formatting-and-white-space"
     exit 1
 fi
 
