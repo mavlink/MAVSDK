@@ -163,12 +163,8 @@ void CameraImpl::prepare_async(const Camera::ResultCallback& callback)
         _system_impl->call_user_callback(
             [temp_callback]() { temp_callback(Camera::Result::Success); });
     } else {
-        _camera_definition_callback = [this, temp_callback](bool has_succeeded) {
-            if (has_succeeded) {
-                temp_callback(Camera::Result::Success);
-            } else {
-                temp_callback(Camera::Result::Error);
-            }
+        _camera_definition_callback = [this, temp_callback](Camera::Result result) {
+            temp_callback(result);
             _camera_definition_callback = nullptr;
         };
 
@@ -1162,19 +1158,28 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
 
         std::thread([this, camera_information]() {
             std::string content{};
-            const auto has_succeeded = fetch_camera_definition(camera_information, content);
+            const auto result = fetch_camera_definition(camera_information, content);
 
-            if (has_succeeded) {
+            if (result == Camera::Result::Success) {
                 LogDebug() << "Successfully loaded camera definition";
 
                 if (_camera_definition_callback) {
                     _system_impl->call_user_callback(
-                        [this]() { _camera_definition_callback(true); });
+                        [this, result]() { _camera_definition_callback(result); });
                 }
 
                 _camera_definition.reset(new CameraDefinition());
                 _camera_definition->load_string(content);
                 refresh_params();
+
+            } else if (result == Camera::Result::ProtocolUnsupported) {
+                LogWarn() << "Protocol for " << camera_information.cam_definition_uri
+                          << " not supported";
+                if (_camera_definition_callback) {
+                    _system_impl->call_user_callback(
+                        [this, result]() { _camera_definition_callback(result); });
+                }
+
             } else {
                 LogDebug() << "Failed to fetch camera definition!";
 
@@ -1186,7 +1191,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
 
                     if (_camera_definition_callback) {
                         _system_impl->call_user_callback(
-                            [this]() { _camera_definition_callback(false); });
+                            [this, result]() { _camera_definition_callback(result); });
                     }
                 }
             }
@@ -1203,33 +1208,39 @@ bool CameraImpl::should_fetch_camera_definition(const std::string& uri) const
            !_has_camera_definition_timed_out;
 }
 
-bool CameraImpl::fetch_camera_definition(
+Camera::Result CameraImpl::fetch_camera_definition(
     const mavlink_camera_information_t& camera_information, std::string& camera_definition_out)
 {
-    auto download_succeeded =
+    auto result =
         download_definition_file(camera_information.cam_definition_uri, camera_definition_out);
 
-    if (download_succeeded) {
-        return true;
+    if (result == Camera::Result::Success) {
+        return result;
     }
 
     return load_stored_definition(camera_information, camera_definition_out);
 }
 
-bool CameraImpl::download_definition_file(
-    const std::string& uri, std::string& camera_definition_out)
+Camera::Result
+CameraImpl::download_definition_file(const std::string& uri, std::string& camera_definition_out)
 {
+#if BUILD_WITHOUT_CURL == 1
+    UNUSED(uri);
+    UNUSED(camera_definition_out);
+    return Camera::Result::ProtocolUnsupported;
+#else
     HttpLoader http_loader;
     LogInfo() << "Downloading camera definition from: " << uri;
     if (!http_loader.download_text_sync(uri, camera_definition_out)) {
         LogErr() << "Failed to download camera definition.";
-        return false;
+        return Camera::Result::Error;
     }
+#endif
 
-    return true;
+    return Camera::Result::Success;
 }
 
-bool CameraImpl::load_stored_definition(
+Camera::Result CameraImpl::load_stored_definition(
     const mavlink_camera_information_t& camera_information, std::string& camera_definition_out)
 {
     // TODO: we might also try to support the correct version of the xml files.
@@ -1246,33 +1257,33 @@ bool CameraImpl::load_stored_definition(
         if (model_name == "E90") {
             LogInfo() << "Using cached file for Yuneec E90.";
             camera_definition_out = e90xml;
-            return true;
+            return Camera::Result::Success;
         } else if (model_name == "E50") {
             LogInfo() << "Using cached file for Yuneec E50.";
             camera_definition_out = e50xml;
-            return true;
+            return Camera::Result::Success;
         } else if (model_name == "CGOET") {
             LogInfo() << "Using cached file for Yuneec ET.";
             camera_definition_out = cgoetxml;
-            return true;
+            return Camera::Result::Success;
         } else if (model_name == "E10T") {
             LogInfo() << "Using cached file for Yuneec E10T.";
             camera_definition_out = e10txml;
-            return true;
+            return Camera::Result::Success;
         } else if (model_name == "E30Z") {
             LogInfo() << "Using cached file for Yuneec E30Z.";
             camera_definition_out = e30zxml;
-            return true;
+            return Camera::Result::Success;
         }
     } else if (vendor_name == "Sony") {
         if (model_name == "ILCE-7RM4") {
             LogInfo() << "Using cached file for Sony ILCE-7RM4.";
             camera_definition_out = ILCE7RM4xml;
-            return true;
+            return Camera::Result::Success;
         }
     }
 
-    return false;
+    return Camera::Result::Error;
 }
 
 void CameraImpl::process_video_information(const mavlink_message_t& message)

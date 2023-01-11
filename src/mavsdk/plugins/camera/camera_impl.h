@@ -158,10 +158,11 @@ private:
     void check_status();
 
     bool should_fetch_camera_definition(const std::string& uri) const;
-    bool fetch_camera_definition(
+    Camera::Result fetch_camera_definition(
         const mavlink_camera_information_t& camera_information, std::string& camera_definition_out);
-    bool download_definition_file(const std::string& uri, std::string& camera_definition_out);
-    bool
+    Camera::Result
+    download_definition_file(const std::string& uri, std::string& camera_definition_out);
+    Camera::Result
     load_stored_definition(const mavlink_camera_information_t&, std::string& camera_definition_out);
 
     void refresh_params();
@@ -209,7 +210,7 @@ private:
     bool _is_fetching_camera_definition{false};
     bool _has_camera_definition_timed_out{false};
     size_t _camera_definition_fetch_count{0};
-    using CameraDefinitionCallback = std::function<void(bool)>;
+    using CameraDefinitionCallback = std::function<void(Camera::Result)>;
     CameraDefinitionCallback _camera_definition_callback{};
 
     std::atomic<size_t> _camera_id{0};
