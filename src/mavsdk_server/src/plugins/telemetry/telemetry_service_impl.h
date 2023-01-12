@@ -552,7 +552,13 @@ public:
 
         rpc_obj->set_id(battery.id);
 
+        rpc_obj->set_temperature_degc(battery.temperature_degc);
+
         rpc_obj->set_voltage_v(battery.voltage_v);
+
+        rpc_obj->set_current_battery_a(battery.current_battery_a);
+
+        rpc_obj->set_capacity_consumed_ah(battery.capacity_consumed_ah);
 
         rpc_obj->set_remaining_percent(battery.remaining_percent);
 
@@ -566,7 +572,13 @@ public:
 
         obj.id = battery.id();
 
+        obj.temperature_degc = battery.temperature_degc();
+
         obj.voltage_v = battery.voltage_v();
+
+        obj.current_battery_a = battery.current_battery_a();
+
+        obj.capacity_consumed_ah = battery.capacity_consumed_ah();
 
         obj.remaining_percent = battery.remaining_percent();
 

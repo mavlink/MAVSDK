@@ -1121,8 +1121,7 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
     if (!_has_bat_status) {
         Telemetry::Battery new_battery;
         new_battery.voltage_v = sys_status.voltage_battery * 1e-3f;
-        // FIXME: it is strange calling it percent when the range goes from 0 to 1.
-        new_battery.remaining_percent = sys_status.battery_remaining * 1e-2f;
+        new_battery.remaining_percent = sys_status.battery_remaining;
 
         set_battery(new_battery);
 
@@ -1213,14 +1212,22 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
 
     Telemetry::Battery new_battery;
     new_battery.id = bat_status.id;
+    new_battery.temperature_degc = (bat_status.temperature == std::numeric_limits<int16_t>::max()) ?
+                                       static_cast<float>(NAN) :
+                                       bat_status.temperature * 1e-2f; // cdegC to degC
     new_battery.voltage_v = 0.0f;
     for (int i = 0; i < 255; i++) {
         if (bat_status.voltages[i] == std::numeric_limits<uint16_t>::max())
             break;
         new_battery.voltage_v += static_cast<float>(bat_status.voltages[i]) * 1e-3f;
     }
-    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
-    new_battery.remaining_percent = bat_status.battery_remaining * 1e-2f;
+    new_battery.remaining_percent = bat_status.battery_remaining;
+    new_battery.current_battery_a = (bat_status.current_battery == -1) ?
+                                        static_cast<float>(NAN) :
+                                        bat_status.current_battery * 1e-2f; // cA to A
+    new_battery.capacity_consumed_ah = (bat_status.current_consumed == -1) ?
+                                           static_cast<float>(NAN) :
+                                           bat_status.current_consumed * 1e-3f; // mAh to Ah
 
     set_battery(new_battery);
 
