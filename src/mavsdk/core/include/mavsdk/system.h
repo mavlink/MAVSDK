@@ -3,6 +3,7 @@
 #include <memory>
 #include <array>
 #include <functional>
+#include <string>
 #include <vector>
 
 #include "deprecated.h"
