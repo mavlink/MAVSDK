@@ -252,6 +252,8 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /github/workspace
+      - name: install pymavlink dependencies
+        run: python3 -m pip install future
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -Bbuild/release -H.
       - name: build
