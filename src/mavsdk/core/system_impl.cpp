@@ -850,7 +850,6 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
         case MAV_TYPE::MAV_TYPE_VTOL_TILTROTOR:
         case MAV_TYPE::MAV_TYPE_VTOL_FIXEDROTOR:
         case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER:
-        case MAV_TYPE::MAV_TYPE_VTOL_RESERVED4:
         case MAV_TYPE::MAV_TYPE_VTOL_RESERVED5: {
             const auto new_mode = flight_mode_to_ardupilot_plane_mode(flight_mode);
             if (new_mode == ardupilot::PlaneMode::Unknown) {

@@ -116,6 +116,11 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_CELLULAR_STATUS,
+        [this](const mavlink_message_t& message) { process_cellular_status(message); },
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
@@ -365,6 +370,13 @@ Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
     return Telemetry::Result::Unsupported;
 }
 
+Telemetry::Result TelemetryImpl::set_rate_cellular_status(double rate_hz)
+{
+    UNUSED(rate_hz);
+    LogWarn() << "System status is usually fixed at 1 Hz";
+    return Telemetry::Result::Unsupported;
+}
+
 Telemetry::Result TelemetryImpl::set_rate_actuator_control_target(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -589,6 +601,14 @@ void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCall
 }
 
 void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    UNUSED(rate_hz);
+    LogWarn() << "System status is usually fixed at 1 Hz";
+    _parent->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
+}
+
+void TelemetryImpl::set_rate_cellular_status_async(
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     UNUSED(rate_hz);
     LogWarn() << "System status is usually fixed at 1 Hz";
@@ -1235,6 +1255,30 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
         std::lock_guard<std::mutex> lock(_subscription_mutex);
         _battery_subscriptions.queue(
             battery(), [this](const auto& func) { _parent->call_user_callback(func); });
+    }
+}
+
+void TelemetryImpl::process_cellular_status(const mavlink_message_t& message)
+{
+    mavlink_cellular_status_t cell_status;
+    mavlink_msg_cellular_status_decode(&message, &cell_status);
+
+    Telemetry::CellularStatus new_cell_status;
+    new_cell_status.id = cell_status.id;
+    new_cell_status.status = cell_status.status;
+    new_cell_status.failure_reason = cell_status.failure_reason;
+    new_cell_status.type = cell_status.type;
+    new_cell_status.quality = cell_status.quality;
+    new_cell_status.mcc = cell_status.mcc;
+    new_cell_status.mnc = cell_status.mnc;
+    new_cell_status.lac = cell_status.lac;
+
+    set_cellular_status(new_cell_status);
+
+    {
+        std::lock_guard<std::mutex> lock(_subscription_mutex);
+        _cellular_status_subscriptions.queue(
+            cellular_status(), [this](const auto& func) { _parent->call_user_callback(func); });
     }
 }
 
@@ -2015,6 +2059,12 @@ Telemetry::RcStatus TelemetryImpl::rc_status() const
     return _rc_status;
 }
 
+Telemetry::CellularStatus TelemetryImpl::cellular_status() const
+{
+    std::lock_guard<std::mutex> lock(_cellular_status_mutex);
+    return _cellular_status;
+}
+
 uint64_t TelemetryImpl::unix_epoch_time() const
 {
     std::lock_guard<std::mutex> lock(_unix_epoch_time_mutex);
@@ -2138,6 +2188,12 @@ void TelemetryImpl::set_rc_status(
     if (maybe_signal_strength_percent) {
         _rc_status.signal_strength_percent = maybe_signal_strength_percent.value();
     }
+}
+
+void TelemetryImpl::set_cellular_status(Telemetry::CellularStatus cellular_status)
+{
+    std::lock_guard<std::mutex> lock(_cellular_status_mutex);
+    _cellular_status = cellular_status;
 }
 
 void TelemetryImpl::set_unix_epoch_time_us(uint64_t time_us)
@@ -2510,6 +2566,19 @@ void TelemetryImpl::unsubscribe_rc_status(Telemetry::RcStatusHandle handle)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _rc_status_subscriptions.unsubscribe(handle);
+}
+
+Telemetry::CellularStatusHandle
+TelemetryImpl::subscribe_cellular_status(const Telemetry::CellularStatusCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    return _cellular_status_subscriptions.subscribe(callback);
+}
+
+void TelemetryImpl::unsubscribe_cellular_status(Telemetry::CellularStatusHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _cellular_status_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::UnixEpochTimeHandle

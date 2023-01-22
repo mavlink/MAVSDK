@@ -44,6 +44,7 @@ public:
     Telemetry::Result set_rate_gps_info(double rate_hz);
     Telemetry::Result set_rate_battery(double rate_hz);
     Telemetry::Result set_rate_rc_status(double rate_hz);
+    Telemetry::Result set_rate_cellular_status(double rate_hz);
     Telemetry::Result set_rate_actuator_control_target(double rate_hz);
     Telemetry::Result set_rate_actuator_output_status(double rate_hz);
     Telemetry::Result set_rate_odometry(double rate_hz);
@@ -70,6 +71,7 @@ public:
     void set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_battery_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_cellular_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_actuator_control_target_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_actuator_output_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -107,6 +109,7 @@ public:
     Telemetry::Health health() const;
     bool health_all_ok() const;
     Telemetry::RcStatus rc_status() const;
+    Telemetry::CellularStatus cellular_status() const;
     Telemetry::ActuatorControlTarget actuator_control_target() const;
     Telemetry::ActuatorOutputStatus actuator_output_status() const;
     Telemetry::Odometry odometry() const;
@@ -182,6 +185,9 @@ public:
     void unsubscribe_landed_state(Telemetry::LandedStateHandle handle);
     Telemetry::RcStatusHandle subscribe_rc_status(const Telemetry::RcStatusCallback& callback);
     void unsubscribe_rc_status(Telemetry::RcStatusHandle handle);
+    Telemetry::CellularStatusHandle
+    subscribe_cellular_status(const Telemetry::CellularStatusCallback& callback);
+    void unsubscribe_cellular_status(Telemetry::CellularStatusHandle handle);
     Telemetry::UnixEpochTimeHandle
     subscribe_unix_epoch_time(const Telemetry::UnixEpochTimeCallback& callback);
     void unsubscribe_unix_epoch_time(Telemetry::UnixEpochTimeHandle handle);
@@ -228,6 +234,7 @@ private:
     void set_gps_info(Telemetry::GpsInfo gps_info);
     void set_raw_gps(Telemetry::RawGps raw_gps);
     void set_battery(Telemetry::Battery battery);
+    void set_cellular_status(Telemetry::CellularStatus cellular_status);
     void set_health_local_position(bool ok);
     void set_health_global_position(bool ok);
     void set_health_home_position(bool ok);
@@ -236,6 +243,8 @@ private:
     void set_health_magnetometer_calibration(bool ok);
     void set_health_armable(bool ok);
     void set_rc_status(std::optional<bool> available, std::optional<float> signal_strength_percent);
+    void set_cellular_status(
+        std::optional<bool> available, std::optional<float> signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
     void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);
     void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
@@ -261,6 +270,7 @@ private:
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
     void process_battery_status(const mavlink_message_t& message);
+    void process_cellular_status(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
     void process_unix_epoch_time(const mavlink_message_t& message);
@@ -382,6 +392,9 @@ private:
     mutable std::mutex _rc_status_mutex{};
     Telemetry::RcStatus _rc_status{};
 
+    mutable std::mutex _cellular_status_mutex{};
+    Telemetry::CellularStatus _cellular_status{};
+
     mutable std::mutex _unix_epoch_time_mutex{};
     uint64_t _unix_epoch_time_us{};
 
@@ -434,6 +447,7 @@ private:
     CallbackList<Telemetry::VtolState> _vtol_state_subscriptions{};
     CallbackList<Telemetry::LandedState> _landed_state_subscriptions{};
     CallbackList<Telemetry::RcStatus> _rc_status_subscriptions{};
+    CallbackList<Telemetry::CellularStatus> _cellular_status_subscriptions{};
     CallbackList<uint64_t> _unix_epoch_time_subscriptions{};
     CallbackList<Telemetry::ActuatorControlTarget> _actuator_control_target_subscriptions{};
     CallbackList<Telemetry::ActuatorOutputStatus> _actuator_output_status_subscriptions{};

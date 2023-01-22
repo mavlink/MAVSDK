@@ -19,6 +19,7 @@ using GpsInfo = TelemetryServer::GpsInfo;
 using RawGps = TelemetryServer::RawGps;
 using Battery = TelemetryServer::Battery;
 using RcStatus = TelemetryServer::RcStatus;
+using CellularStatus = TelemetryServer::CellularStatus;
 using StatusText = TelemetryServer::StatusText;
 using ActuatorControlTarget = TelemetryServer::ActuatorControlTarget;
 using ActuatorOutputStatus = TelemetryServer::ActuatorOutputStatus;
@@ -332,6 +333,36 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::RcStatus const& rc_
     str << "    was_available_once: " << rc_status.was_available_once << '\n';
     str << "    is_available: " << rc_status.is_available << '\n';
     str << "    signal_strength_percent: " << rc_status.signal_strength_percent << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(
+    const TelemetryServer::CellularStatus& lhs, const TelemetryServer::CellularStatus& rhs)
+{
+    return (rhs.status == lhs.status) && (rhs.failure_reason == lhs.failure_reason) &&
+           (rhs.type == lhs.type) && (rhs.quality == lhs.quality) && (rhs.mcc == lhs.mcc) &&
+           (rhs.mnc == lhs.mnc) && (rhs.lac == lhs.lac) &&
+           ((std::isnan(rhs.signal_strength_percent) && std::isnan(lhs.signal_strength_percent)) ||
+            rhs.signal_strength_percent == lhs.signal_strength_percent) &&
+           (rhs.is_available == lhs.is_available) &&
+           (rhs.was_available_once == lhs.was_available_once);
+}
+
+std::ostream& operator<<(std::ostream& str, TelemetryServer::CellularStatus const& cellular_status)
+{
+    str << std::setprecision(15);
+    str << "cellular_status:" << '\n' << "{\n";
+    str << "    status: " << cellular_status.status << '\n';
+    str << "    failure_reason: " << cellular_status.failure_reason << '\n';
+    str << "    type: " << cellular_status.type << '\n';
+    str << "    quality: " << cellular_status.quality << '\n';
+    str << "    mcc: " << cellular_status.mcc << '\n';
+    str << "    mnc: " << cellular_status.mnc << '\n';
+    str << "    lac: " << cellular_status.lac << '\n';
+    str << "    signal_strength_percent: " << cellular_status.signal_strength_percent << '\n';
+    str << "    is_available: " << cellular_status.is_available << '\n';
+    str << "    was_available_once: " << cellular_status.was_available_once << '\n';
     str << '}';
     return str;
 }

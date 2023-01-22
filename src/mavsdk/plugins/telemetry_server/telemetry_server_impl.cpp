@@ -191,6 +191,53 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
 }
 
 TelemetryServer::Result
+TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cellular_status)
+{
+    mavlink_message_t msg;
+
+    /*
+
+    status	uint8_t	CELLULAR_STATUS_FLAG	Cellular modem status
+    failure_reason	uint8_t	CELLULAR_NETWORK_FAILED_REASON	Failure reason when status in in
+    CELLULAR_STATUS_FLAG_FAILED type	uint8_t	CELLULAR_NETWORK_RADIO_TYPE
+    Cellular network radio type: gsm, cdma, lte... quality	uint8_t		Signal quality in
+    percent. If unknown, set to UINT8_MAX mcc	uint16_t		Mobile country code. If
+    unknown, set to UINT16_MAX
+    mnc	uint16_t		Mobile network code. If unknown, set to UINT16_MAX
+    lac	uint16_t
+
+    */
+
+    cellular_status.cell_id.resize(sizeof(mavlink_cellular_status_t::cell_id));
+
+    mavlink_msg_cellular_status_pack(
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
+        &msg,
+        static_cast<uint8_t>(cellular_status.id),
+        static_cast<uint8_t>(cellular_status.status),
+        static_cast<uint8_t>(cellular_status.failure_reason),
+        static_cast<uint8_t>(cellular_status.type),
+        static_cast<uint8_t>(cellular_status.quality),
+        static_cast<uint16_t>(cellular_status.mcc),
+        static_cast<uint16_t>(cellular_status.mnc),
+        static_cast<uint16_t>(cellular_status.lac),
+        static_cast<uint8_t>(cellular_status.slot_number),
+        static_cast<uint8_t>(cellular_status.rx_level),
+        static_cast<uint8_t>(cellular_status.signal_to_noise),
+        static_cast<uint8_t>(cellular_status.band_number),
+        cellular_status.arfcn,
+        cellular_status.cell_id.data(),
+        cellular_status.download_rate,
+        cellular_status.upload_rate);
+
+    add_msg_cache(MAVLINK_MSG_ID_CELLULAR_STATUS, msg);
+
+    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
+                                                       TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result
 TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text)
 {
     mavlink_message_t msg;

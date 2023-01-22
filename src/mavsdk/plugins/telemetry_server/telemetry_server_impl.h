@@ -41,6 +41,9 @@ public:
 
     TelemetryServer::Result publish_status_text(TelemetryServer::StatusText status_text);
 
+    TelemetryServer::Result
+    publish_cellular_status(TelemetryServer::CellularStatus cellular_status);
+
     TelemetryServer::Result publish_odometry(TelemetryServer::Odometry odometry);
 
     TelemetryServer::Result

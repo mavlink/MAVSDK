@@ -3,4 +3,4 @@
 	url = https://github.com/google/googletest
 [submodule "mavsdk-proto"]
 	path = proto
-	url = https://github.com/mavlink/MAVSDK-Proto.git
+	url = https://github.com/akkawimo/MAVSDK-Proto.git
