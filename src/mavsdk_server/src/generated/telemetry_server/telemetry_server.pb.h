@@ -67,6 +67,9 @@ extern AngularVelocityFrdDefaultTypeInternal _AngularVelocityFrd_default_instanc
 class Battery;
 struct BatteryDefaultTypeInternal;
 extern BatteryDefaultTypeInternal _Battery_default_instance_;
+class CellularStatus;
+struct CellularStatusDefaultTypeInternal;
+extern CellularStatusDefaultTypeInternal _CellularStatus_default_instance_;
 class Covariance;
 struct CovarianceDefaultTypeInternal;
 extern CovarianceDefaultTypeInternal _Covariance_default_instance_;
@@ -115,6 +118,12 @@ extern PublishBatteryRequestDefaultTypeInternal _PublishBatteryRequest_default_i
 class PublishBatteryResponse;
 struct PublishBatteryResponseDefaultTypeInternal;
 extern PublishBatteryResponseDefaultTypeInternal _PublishBatteryResponse_default_instance_;
+class PublishCellularStatusRequest;
+struct PublishCellularStatusRequestDefaultTypeInternal;
+extern PublishCellularStatusRequestDefaultTypeInternal _PublishCellularStatusRequest_default_instance_;
+class PublishCellularStatusResponse;
+struct PublishCellularStatusResponseDefaultTypeInternal;
+extern PublishCellularStatusResponseDefaultTypeInternal _PublishCellularStatusResponse_default_instance_;
 class PublishExtendedSysStateRequest;
 struct PublishExtendedSysStateRequestDefaultTypeInternal;
 extern PublishExtendedSysStateRequestDefaultTypeInternal _PublishExtendedSysStateRequest_default_instance_;
@@ -236,6 +245,7 @@ template<> ::mavsdk::rpc::telemetry_server::ActuatorOutputStatus* Arena::CreateM
 template<> ::mavsdk::rpc::telemetry_server::AngularVelocityBody* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::AngularVelocityBody>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::AngularVelocityFrd* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::AngularVelocityFrd>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Battery* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Battery>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::CellularStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::CellularStatus>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Covariance* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Covariance>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::DistanceSensor* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::DistanceSensor>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::EulerAngle* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::EulerAngle>(Arena*);
@@ -252,6 +262,8 @@ template<> ::mavsdk::rpc::telemetry_server::PositionNed* Arena::CreateMaybeMessa
 template<> ::mavsdk::rpc::telemetry_server::PositionVelocityNed* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PositionVelocityNed>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishBatteryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishBatteryRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishBatteryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishBatteryResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::PublishCellularStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishCellularStatusRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::PublishCellularStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishCellularStatusResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest>(Arena*);
@@ -1786,6 +1798,158 @@ class PublishBatteryRequest final :
 };
 // -------------------------------------------------------------------
 
+class PublishCellularStatusRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest) */ {
+ public:
+  inline PublishCellularStatusRequest() : PublishCellularStatusRequest(nullptr) {}
+  ~PublishCellularStatusRequest() override;
+  explicit PROTOBUF_CONSTEXPR PublishCellularStatusRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PublishCellularStatusRequest(const PublishCellularStatusRequest& from);
+  PublishCellularStatusRequest(PublishCellularStatusRequest&& from) noexcept
+    : PublishCellularStatusRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline PublishCellularStatusRequest& operator=(const PublishCellularStatusRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishCellularStatusRequest& operator=(PublishCellularStatusRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishCellularStatusRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishCellularStatusRequest* internal_default_instance() {
+    return reinterpret_cast<const PublishCellularStatusRequest*>(
+               &_PublishCellularStatusRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(PublishCellularStatusRequest& a, PublishCellularStatusRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PublishCellularStatusRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishCellularStatusRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishCellularStatusRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PublishCellularStatusRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PublishCellularStatusRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PublishCellularStatusRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PublishCellularStatusRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.PublishCellularStatusRequest";
+  }
+  protected:
+  explicit PublishCellularStatusRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCellularStatusFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.CellularStatus cellular_status = 1;
+  bool has_cellular_status() const;
+  private:
+  bool _internal_has_cellular_status() const;
+  public:
+  void clear_cellular_status();
+  const ::mavsdk::rpc::telemetry_server::CellularStatus& cellular_status() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::CellularStatus* release_cellular_status();
+  ::mavsdk::rpc::telemetry_server::CellularStatus* mutable_cellular_status();
+  void set_allocated_cellular_status(::mavsdk::rpc::telemetry_server::CellularStatus* cellular_status);
+  private:
+  const ::mavsdk::rpc::telemetry_server::CellularStatus& _internal_cellular_status() const;
+  ::mavsdk::rpc::telemetry_server::CellularStatus* _internal_mutable_cellular_status();
+  public:
+  void unsafe_arena_set_allocated_cellular_status(
+      ::mavsdk::rpc::telemetry_server::CellularStatus* cellular_status);
+  ::mavsdk::rpc::telemetry_server::CellularStatus* unsafe_arena_release_cellular_status();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry_server::CellularStatus* cellular_status_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PublishRcStatusRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishRcStatusRequest) */ {
  public:
@@ -1834,7 +1998,7 @@ class PublishRcStatusRequest final :
                &_PublishRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(PublishRcStatusRequest& a, PublishRcStatusRequest& b) {
     a.Swap(&b);
@@ -1986,7 +2150,7 @@ class PublishStatusTextRequest final :
                &_PublishStatusTextRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(PublishStatusTextRequest& a, PublishStatusTextRequest& b) {
     a.Swap(&b);
@@ -2138,7 +2302,7 @@ class PublishOdometryRequest final :
                &_PublishOdometryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(PublishOdometryRequest& a, PublishOdometryRequest& b) {
     a.Swap(&b);
@@ -2290,7 +2454,7 @@ class PublishPositionVelocityNedRequest final :
                &_PublishPositionVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(PublishPositionVelocityNedRequest& a, PublishPositionVelocityNedRequest& b) {
     a.Swap(&b);
@@ -2442,7 +2606,7 @@ class PublishGroundTruthRequest final :
                &_PublishGroundTruthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(PublishGroundTruthRequest& a, PublishGroundTruthRequest& b) {
     a.Swap(&b);
@@ -2594,7 +2758,7 @@ class PublishImuRequest final :
                &_PublishImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(PublishImuRequest& a, PublishImuRequest& b) {
     a.Swap(&b);
@@ -2746,7 +2910,7 @@ class PublishScaledImuRequest final :
                &_PublishScaledImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(PublishScaledImuRequest& a, PublishScaledImuRequest& b) {
     a.Swap(&b);
@@ -2898,7 +3062,7 @@ class PublishRawImuRequest final :
                &_PublishRawImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(PublishRawImuRequest& a, PublishRawImuRequest& b) {
     a.Swap(&b);
@@ -3050,7 +3214,7 @@ class PublishUnixEpochTimeRequest final :
                &_PublishUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(PublishUnixEpochTimeRequest& a, PublishUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -3193,7 +3357,7 @@ class PublishPositionResponse final :
                &_PublishPositionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   friend void swap(PublishPositionResponse& a, PublishPositionResponse& b) {
     a.Swap(&b);
@@ -3345,7 +3509,7 @@ class PublishHomeResponse final :
                &_PublishHomeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(PublishHomeResponse& a, PublishHomeResponse& b) {
     a.Swap(&b);
@@ -3497,7 +3661,7 @@ class PublishSysStatusResponse final :
                &_PublishSysStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    20;
 
   friend void swap(PublishSysStatusResponse& a, PublishSysStatusResponse& b) {
     a.Swap(&b);
@@ -3649,7 +3813,7 @@ class PublishExtendedSysStateResponse final :
                &_PublishExtendedSysStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   friend void swap(PublishExtendedSysStateResponse& a, PublishExtendedSysStateResponse& b) {
     a.Swap(&b);
@@ -3801,7 +3965,7 @@ class PublishRawGpsResponse final :
                &_PublishRawGpsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    22;
 
   friend void swap(PublishRawGpsResponse& a, PublishRawGpsResponse& b) {
     a.Swap(&b);
@@ -3953,7 +4117,7 @@ class PublishBatteryResponse final :
                &_PublishBatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    23;
 
   friend void swap(PublishBatteryResponse& a, PublishBatteryResponse& b) {
     a.Swap(&b);
@@ -4057,6 +4221,158 @@ class PublishBatteryResponse final :
 };
 // -------------------------------------------------------------------
 
+class PublishCellularStatusResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse) */ {
+ public:
+  inline PublishCellularStatusResponse() : PublishCellularStatusResponse(nullptr) {}
+  ~PublishCellularStatusResponse() override;
+  explicit PROTOBUF_CONSTEXPR PublishCellularStatusResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PublishCellularStatusResponse(const PublishCellularStatusResponse& from);
+  PublishCellularStatusResponse(PublishCellularStatusResponse&& from) noexcept
+    : PublishCellularStatusResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline PublishCellularStatusResponse& operator=(const PublishCellularStatusResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishCellularStatusResponse& operator=(PublishCellularStatusResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishCellularStatusResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishCellularStatusResponse* internal_default_instance() {
+    return reinterpret_cast<const PublishCellularStatusResponse*>(
+               &_PublishCellularStatusResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    24;
+
+  friend void swap(PublishCellularStatusResponse& a, PublishCellularStatusResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PublishCellularStatusResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishCellularStatusResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishCellularStatusResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PublishCellularStatusResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PublishCellularStatusResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PublishCellularStatusResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PublishCellularStatusResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.PublishCellularStatusResponse";
+  }
+  protected:
+  explicit PublishCellularStatusResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTelemetryServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+  bool has_telemetry_server_result() const;
+  private:
+  bool _internal_has_telemetry_server_result() const;
+  public:
+  void clear_telemetry_server_result();
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& telemetry_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::TelemetryServerResult* release_telemetry_server_result();
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* mutable_telemetry_server_result();
+  void set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result);
+  private:
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& _internal_telemetry_server_result() const;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _internal_mutable_telemetry_server_result();
+  public:
+  void unsafe_arena_set_allocated_telemetry_server_result(
+      ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result);
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* unsafe_arena_release_telemetry_server_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PublishStatusTextResponse final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishStatusTextResponse) */ {
  public:
@@ -4105,7 +4421,7 @@ class PublishStatusTextResponse final :
                &_PublishStatusTextResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
   friend void swap(PublishStatusTextResponse& a, PublishStatusTextResponse& b) {
     a.Swap(&b);
@@ -4257,7 +4573,7 @@ class PublishOdometryResponse final :
                &_PublishOdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    26;
 
   friend void swap(PublishOdometryResponse& a, PublishOdometryResponse& b) {
     a.Swap(&b);
@@ -4409,7 +4725,7 @@ class PublishPositionVelocityNedResponse final :
                &_PublishPositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    27;
 
   friend void swap(PublishPositionVelocityNedResponse& a, PublishPositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -4561,7 +4877,7 @@ class PublishGroundTruthResponse final :
                &_PublishGroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    28;
 
   friend void swap(PublishGroundTruthResponse& a, PublishGroundTruthResponse& b) {
     a.Swap(&b);
@@ -4713,7 +5029,7 @@ class PublishImuResponse final :
                &_PublishImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    29;
 
   friend void swap(PublishImuResponse& a, PublishImuResponse& b) {
     a.Swap(&b);
@@ -4865,7 +5181,7 @@ class PublishScaledImuResponse final :
                &_PublishScaledImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    30;
 
   friend void swap(PublishScaledImuResponse& a, PublishScaledImuResponse& b) {
     a.Swap(&b);
@@ -5017,7 +5333,7 @@ class PublishRawImuResponse final :
                &_PublishRawImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    31;
 
   friend void swap(PublishRawImuResponse& a, PublishRawImuResponse& b) {
     a.Swap(&b);
@@ -5169,7 +5485,7 @@ class PublishUnixEpochTimeResponse final :
                &_PublishUnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    32;
 
   friend void swap(PublishUnixEpochTimeResponse& a, PublishUnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -5321,7 +5637,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    33;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -5497,7 +5813,7 @@ class Heading final :
                &_Heading_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    34;
 
   friend void swap(Heading& a, Heading& b) {
     a.Swap(&b);
@@ -5640,7 +5956,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    35;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -5827,7 +6143,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    36;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -6003,7 +6319,7 @@ class AngularVelocityBody final :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    37;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -6168,7 +6484,7 @@ class GpsInfo final :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    38;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -6322,7 +6638,7 @@ class RawGps final :
                &_RawGps_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    39;
 
   friend void swap(RawGps& a, RawGps& b) {
     a.Swap(&b);
@@ -6608,7 +6924,7 @@ class Battery final :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    40;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -6762,7 +7078,7 @@ class RcStatus final :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    41;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -6879,6 +7195,319 @@ class RcStatus final :
 };
 // -------------------------------------------------------------------
 
+class CellularStatus final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.CellularStatus) */ {
+ public:
+  inline CellularStatus() : CellularStatus(nullptr) {}
+  ~CellularStatus() override;
+  explicit PROTOBUF_CONSTEXPR CellularStatus(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CellularStatus(const CellularStatus& from);
+  CellularStatus(CellularStatus&& from) noexcept
+    : CellularStatus() {
+    *this = ::std::move(from);
+  }
+
+  inline CellularStatus& operator=(const CellularStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CellularStatus& operator=(CellularStatus&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CellularStatus& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CellularStatus* internal_default_instance() {
+    return reinterpret_cast<const CellularStatus*>(
+               &_CellularStatus_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    42;
+
+  friend void swap(CellularStatus& a, CellularStatus& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CellularStatus* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CellularStatus* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CellularStatus* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CellularStatus>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CellularStatus& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const CellularStatus& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CellularStatus* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.CellularStatus";
+  }
+  protected:
+  explicit CellularStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCellIdFieldNumber = 14,
+    kIdFieldNumber = 1,
+    kStatusFieldNumber = 2,
+    kFailureReasonFieldNumber = 3,
+    kTypeFieldNumber = 4,
+    kQualityFieldNumber = 5,
+    kMccFieldNumber = 6,
+    kMncFieldNumber = 7,
+    kLacFieldNumber = 8,
+    kSlotNumberFieldNumber = 9,
+    kRxLevelFieldNumber = 10,
+    kSignalToNoiseFieldNumber = 11,
+    kBandNumberFieldNumber = 12,
+    kArfcnFieldNumber = 13,
+    kDownloadRateFieldNumber = 15,
+    kUploadRateFieldNumber = 16,
+  };
+  // string cell_id = 14;
+  void clear_cell_id();
+  const std::string& cell_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_cell_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_cell_id();
+  PROTOBUF_NODISCARD std::string* release_cell_id();
+  void set_allocated_cell_id(std::string* cell_id);
+  private:
+  const std::string& _internal_cell_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cell_id(const std::string& value);
+  std::string* _internal_mutable_cell_id();
+  public:
+
+  // uint32 id = 1;
+  void clear_id();
+  uint32_t id() const;
+  void set_id(uint32_t value);
+  private:
+  uint32_t _internal_id() const;
+  void _internal_set_id(uint32_t value);
+  public:
+
+  // uint32 status = 2;
+  void clear_status();
+  uint32_t status() const;
+  void set_status(uint32_t value);
+  private:
+  uint32_t _internal_status() const;
+  void _internal_set_status(uint32_t value);
+  public:
+
+  // uint32 failure_reason = 3;
+  void clear_failure_reason();
+  uint32_t failure_reason() const;
+  void set_failure_reason(uint32_t value);
+  private:
+  uint32_t _internal_failure_reason() const;
+  void _internal_set_failure_reason(uint32_t value);
+  public:
+
+  // uint32 type = 4;
+  void clear_type();
+  uint32_t type() const;
+  void set_type(uint32_t value);
+  private:
+  uint32_t _internal_type() const;
+  void _internal_set_type(uint32_t value);
+  public:
+
+  // uint32 quality = 5;
+  void clear_quality();
+  uint32_t quality() const;
+  void set_quality(uint32_t value);
+  private:
+  uint32_t _internal_quality() const;
+  void _internal_set_quality(uint32_t value);
+  public:
+
+  // uint32 mcc = 6;
+  void clear_mcc();
+  uint32_t mcc() const;
+  void set_mcc(uint32_t value);
+  private:
+  uint32_t _internal_mcc() const;
+  void _internal_set_mcc(uint32_t value);
+  public:
+
+  // uint32 mnc = 7;
+  void clear_mnc();
+  uint32_t mnc() const;
+  void set_mnc(uint32_t value);
+  private:
+  uint32_t _internal_mnc() const;
+  void _internal_set_mnc(uint32_t value);
+  public:
+
+  // uint32 lac = 8;
+  void clear_lac();
+  uint32_t lac() const;
+  void set_lac(uint32_t value);
+  private:
+  uint32_t _internal_lac() const;
+  void _internal_set_lac(uint32_t value);
+  public:
+
+  // uint32 slot_number = 9;
+  void clear_slot_number();
+  uint32_t slot_number() const;
+  void set_slot_number(uint32_t value);
+  private:
+  uint32_t _internal_slot_number() const;
+  void _internal_set_slot_number(uint32_t value);
+  public:
+
+  // uint32 rx_level = 10;
+  void clear_rx_level();
+  uint32_t rx_level() const;
+  void set_rx_level(uint32_t value);
+  private:
+  uint32_t _internal_rx_level() const;
+  void _internal_set_rx_level(uint32_t value);
+  public:
+
+  // uint32 signal_to_noise = 11;
+  void clear_signal_to_noise();
+  uint32_t signal_to_noise() const;
+  void set_signal_to_noise(uint32_t value);
+  private:
+  uint32_t _internal_signal_to_noise() const;
+  void _internal_set_signal_to_noise(uint32_t value);
+  public:
+
+  // uint32 band_number = 12;
+  void clear_band_number();
+  uint32_t band_number() const;
+  void set_band_number(uint32_t value);
+  private:
+  uint32_t _internal_band_number() const;
+  void _internal_set_band_number(uint32_t value);
+  public:
+
+  // uint32 arfcn = 13;
+  void clear_arfcn();
+  uint32_t arfcn() const;
+  void set_arfcn(uint32_t value);
+  private:
+  uint32_t _internal_arfcn() const;
+  void _internal_set_arfcn(uint32_t value);
+  public:
+
+  // float download_rate = 15;
+  void clear_download_rate();
+  float download_rate() const;
+  void set_download_rate(float value);
+  private:
+  float _internal_download_rate() const;
+  void _internal_set_download_rate(float value);
+  public:
+
+  // float upload_rate = 16;
+  void clear_upload_rate();
+  float upload_rate() const;
+  void set_upload_rate(float value);
+  private:
+  float _internal_upload_rate() const;
+  void _internal_set_upload_rate(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.CellularStatus)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cell_id_;
+  uint32_t id_;
+  uint32_t status_;
+  uint32_t failure_reason_;
+  uint32_t type_;
+  uint32_t quality_;
+  uint32_t mcc_;
+  uint32_t mnc_;
+  uint32_t lac_;
+  uint32_t slot_number_;
+  uint32_t rx_level_;
+  uint32_t signal_to_noise_;
+  uint32_t band_number_;
+  uint32_t arfcn_;
+  float download_rate_;
+  float upload_rate_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class StatusText final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.StatusText) */ {
  public:
@@ -6927,7 +7556,7 @@ class StatusText final :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    43;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -7086,7 +7715,7 @@ class ActuatorControlTarget final :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    44;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -7253,7 +7882,7 @@ class ActuatorOutputStatus final :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    45;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -7420,7 +8049,7 @@ class Covariance final :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    46;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -7576,7 +8205,7 @@ class VelocityBody final :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    47;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -7741,7 +8370,7 @@ class PositionBody final :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    48;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -7906,7 +8535,7 @@ class Odometry final :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    49;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -8225,7 +8854,7 @@ class DistanceSensor final :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    50;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -8390,7 +9019,7 @@ class ScaledPressure final :
                &_ScaledPressure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    51;
 
   friend void swap(ScaledPressure& a, ScaledPressure& b) {
     a.Swap(&b);
@@ -8577,7 +9206,7 @@ class PositionNed final :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    52;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -8742,7 +9371,7 @@ class VelocityNed final :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    53;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -8907,7 +9536,7 @@ class PositionVelocityNed final :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    54;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -9079,7 +9708,7 @@ class GroundTruth final :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    55;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -9244,7 +9873,7 @@ class FixedwingMetrics final :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    56;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -9409,7 +10038,7 @@ class AccelerationFrd final :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    57;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -9574,7 +10203,7 @@ class AngularVelocityFrd final :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    58;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -9739,7 +10368,7 @@ class MagneticFieldFrd final :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    59;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -9904,7 +10533,7 @@ class Imu final :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    60;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -10118,7 +10747,7 @@ class TelemetryServerResult final :
                &_TelemetryServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    61;
 
   friend void swap(TelemetryServerResult& a, TelemetryServerResult& b) {
     a.Swap(&b);
@@ -11206,6 +11835,100 @@ inline void PublishBatteryRequest::set_allocated_battery(::mavsdk::rpc::telemetr
   }
   battery_ = battery;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishBatteryRequest.battery)
+}
+
+// -------------------------------------------------------------------
+
+// PublishCellularStatusRequest
+
+// .mavsdk.rpc.telemetry_server.CellularStatus cellular_status = 1;
+inline bool PublishCellularStatusRequest::_internal_has_cellular_status() const {
+  return this != internal_default_instance() && cellular_status_ != nullptr;
+}
+inline bool PublishCellularStatusRequest::has_cellular_status() const {
+  return _internal_has_cellular_status();
+}
+inline void PublishCellularStatusRequest::clear_cellular_status() {
+  if (GetArenaForAllocation() == nullptr && cellular_status_ != nullptr) {
+    delete cellular_status_;
+  }
+  cellular_status_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry_server::CellularStatus& PublishCellularStatusRequest::_internal_cellular_status() const {
+  const ::mavsdk::rpc::telemetry_server::CellularStatus* p = cellular_status_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::CellularStatus&>(
+      ::mavsdk::rpc::telemetry_server::_CellularStatus_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::CellularStatus& PublishCellularStatusRequest::cellular_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest.cellular_status)
+  return _internal_cellular_status();
+}
+inline void PublishCellularStatusRequest::unsafe_arena_set_allocated_cellular_status(
+    ::mavsdk::rpc::telemetry_server::CellularStatus* cellular_status) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellular_status_);
+  }
+  cellular_status_ = cellular_status;
+  if (cellular_status) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest.cellular_status)
+}
+inline ::mavsdk::rpc::telemetry_server::CellularStatus* PublishCellularStatusRequest::release_cellular_status() {
+  
+  ::mavsdk::rpc::telemetry_server::CellularStatus* temp = cellular_status_;
+  cellular_status_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::CellularStatus* PublishCellularStatusRequest::unsafe_arena_release_cellular_status() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest.cellular_status)
+  
+  ::mavsdk::rpc::telemetry_server::CellularStatus* temp = cellular_status_;
+  cellular_status_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::CellularStatus* PublishCellularStatusRequest::_internal_mutable_cellular_status() {
+  
+  if (cellular_status_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry_server::CellularStatus>(GetArenaForAllocation());
+    cellular_status_ = p;
+  }
+  return cellular_status_;
+}
+inline ::mavsdk::rpc::telemetry_server::CellularStatus* PublishCellularStatusRequest::mutable_cellular_status() {
+  ::mavsdk::rpc::telemetry_server::CellularStatus* _msg = _internal_mutable_cellular_status();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest.cellular_status)
+  return _msg;
+}
+inline void PublishCellularStatusRequest::set_allocated_cellular_status(::mavsdk::rpc::telemetry_server::CellularStatus* cellular_status) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete cellular_status_;
+  }
+  if (cellular_status) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(cellular_status);
+    if (message_arena != submessage_arena) {
+      cellular_status = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cellular_status, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  cellular_status_ = cellular_status;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest.cellular_status)
 }
 
 // -------------------------------------------------------------------
@@ -12546,6 +13269,100 @@ inline void PublishBatteryResponse::set_allocated_telemetry_server_result(::mavs
   }
   telemetry_server_result_ = telemetry_server_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishBatteryResponse.telemetry_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// PublishCellularStatusResponse
+
+// .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+inline bool PublishCellularStatusResponse::_internal_has_telemetry_server_result() const {
+  return this != internal_default_instance() && telemetry_server_result_ != nullptr;
+}
+inline bool PublishCellularStatusResponse::has_telemetry_server_result() const {
+  return _internal_has_telemetry_server_result();
+}
+inline void PublishCellularStatusResponse::clear_telemetry_server_result() {
+  if (GetArenaForAllocation() == nullptr && telemetry_server_result_ != nullptr) {
+    delete telemetry_server_result_;
+  }
+  telemetry_server_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishCellularStatusResponse::_internal_telemetry_server_result() const {
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult* p = telemetry_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&>(
+      ::mavsdk::rpc::telemetry_server::_TelemetryServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishCellularStatusResponse::telemetry_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse.telemetry_server_result)
+  return _internal_telemetry_server_result();
+}
+inline void PublishCellularStatusResponse::unsafe_arena_set_allocated_telemetry_server_result(
+    ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(telemetry_server_result_);
+  }
+  telemetry_server_result_ = telemetry_server_result;
+  if (telemetry_server_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse.telemetry_server_result)
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishCellularStatusResponse::release_telemetry_server_result() {
+  
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = telemetry_server_result_;
+  telemetry_server_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishCellularStatusResponse::unsafe_arena_release_telemetry_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse.telemetry_server_result)
+  
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = telemetry_server_result_;
+  telemetry_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishCellularStatusResponse::_internal_mutable_telemetry_server_result() {
+  
+  if (telemetry_server_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(GetArenaForAllocation());
+    telemetry_server_result_ = p;
+  }
+  return telemetry_server_result_;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishCellularStatusResponse::mutable_telemetry_server_result() {
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _msg = _internal_mutable_telemetry_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse.telemetry_server_result)
+  return _msg;
+}
+inline void PublishCellularStatusResponse::set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete telemetry_server_result_;
+  }
+  if (telemetry_server_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(telemetry_server_result);
+    if (message_arena != submessage_arena) {
+      telemetry_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, telemetry_server_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  telemetry_server_result_ = telemetry_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse.telemetry_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -14094,6 +14911,360 @@ inline void RcStatus::_internal_set_signal_strength_percent(float value) {
 inline void RcStatus::set_signal_strength_percent(float value) {
   _internal_set_signal_strength_percent(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.RcStatus.signal_strength_percent)
+}
+
+// -------------------------------------------------------------------
+
+// CellularStatus
+
+// uint32 id = 1;
+inline void CellularStatus::clear_id() {
+  id_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_id() const {
+  return id_;
+}
+inline uint32_t CellularStatus::id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.id)
+  return _internal_id();
+}
+inline void CellularStatus::_internal_set_id(uint32_t value) {
+  
+  id_ = value;
+}
+inline void CellularStatus::set_id(uint32_t value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.id)
+}
+
+// uint32 status = 2;
+inline void CellularStatus::clear_status() {
+  status_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_status() const {
+  return status_;
+}
+inline uint32_t CellularStatus::status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.status)
+  return _internal_status();
+}
+inline void CellularStatus::_internal_set_status(uint32_t value) {
+  
+  status_ = value;
+}
+inline void CellularStatus::set_status(uint32_t value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.status)
+}
+
+// uint32 failure_reason = 3;
+inline void CellularStatus::clear_failure_reason() {
+  failure_reason_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_failure_reason() const {
+  return failure_reason_;
+}
+inline uint32_t CellularStatus::failure_reason() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.failure_reason)
+  return _internal_failure_reason();
+}
+inline void CellularStatus::_internal_set_failure_reason(uint32_t value) {
+  
+  failure_reason_ = value;
+}
+inline void CellularStatus::set_failure_reason(uint32_t value) {
+  _internal_set_failure_reason(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.failure_reason)
+}
+
+// uint32 type = 4;
+inline void CellularStatus::clear_type() {
+  type_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_type() const {
+  return type_;
+}
+inline uint32_t CellularStatus::type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.type)
+  return _internal_type();
+}
+inline void CellularStatus::_internal_set_type(uint32_t value) {
+  
+  type_ = value;
+}
+inline void CellularStatus::set_type(uint32_t value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.type)
+}
+
+// uint32 quality = 5;
+inline void CellularStatus::clear_quality() {
+  quality_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_quality() const {
+  return quality_;
+}
+inline uint32_t CellularStatus::quality() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.quality)
+  return _internal_quality();
+}
+inline void CellularStatus::_internal_set_quality(uint32_t value) {
+  
+  quality_ = value;
+}
+inline void CellularStatus::set_quality(uint32_t value) {
+  _internal_set_quality(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.quality)
+}
+
+// uint32 mcc = 6;
+inline void CellularStatus::clear_mcc() {
+  mcc_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_mcc() const {
+  return mcc_;
+}
+inline uint32_t CellularStatus::mcc() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.mcc)
+  return _internal_mcc();
+}
+inline void CellularStatus::_internal_set_mcc(uint32_t value) {
+  
+  mcc_ = value;
+}
+inline void CellularStatus::set_mcc(uint32_t value) {
+  _internal_set_mcc(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.mcc)
+}
+
+// uint32 mnc = 7;
+inline void CellularStatus::clear_mnc() {
+  mnc_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_mnc() const {
+  return mnc_;
+}
+inline uint32_t CellularStatus::mnc() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.mnc)
+  return _internal_mnc();
+}
+inline void CellularStatus::_internal_set_mnc(uint32_t value) {
+  
+  mnc_ = value;
+}
+inline void CellularStatus::set_mnc(uint32_t value) {
+  _internal_set_mnc(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.mnc)
+}
+
+// uint32 lac = 8;
+inline void CellularStatus::clear_lac() {
+  lac_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_lac() const {
+  return lac_;
+}
+inline uint32_t CellularStatus::lac() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.lac)
+  return _internal_lac();
+}
+inline void CellularStatus::_internal_set_lac(uint32_t value) {
+  
+  lac_ = value;
+}
+inline void CellularStatus::set_lac(uint32_t value) {
+  _internal_set_lac(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.lac)
+}
+
+// uint32 slot_number = 9;
+inline void CellularStatus::clear_slot_number() {
+  slot_number_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_slot_number() const {
+  return slot_number_;
+}
+inline uint32_t CellularStatus::slot_number() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.slot_number)
+  return _internal_slot_number();
+}
+inline void CellularStatus::_internal_set_slot_number(uint32_t value) {
+  
+  slot_number_ = value;
+}
+inline void CellularStatus::set_slot_number(uint32_t value) {
+  _internal_set_slot_number(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.slot_number)
+}
+
+// uint32 rx_level = 10;
+inline void CellularStatus::clear_rx_level() {
+  rx_level_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_rx_level() const {
+  return rx_level_;
+}
+inline uint32_t CellularStatus::rx_level() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.rx_level)
+  return _internal_rx_level();
+}
+inline void CellularStatus::_internal_set_rx_level(uint32_t value) {
+  
+  rx_level_ = value;
+}
+inline void CellularStatus::set_rx_level(uint32_t value) {
+  _internal_set_rx_level(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.rx_level)
+}
+
+// uint32 signal_to_noise = 11;
+inline void CellularStatus::clear_signal_to_noise() {
+  signal_to_noise_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_signal_to_noise() const {
+  return signal_to_noise_;
+}
+inline uint32_t CellularStatus::signal_to_noise() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.signal_to_noise)
+  return _internal_signal_to_noise();
+}
+inline void CellularStatus::_internal_set_signal_to_noise(uint32_t value) {
+  
+  signal_to_noise_ = value;
+}
+inline void CellularStatus::set_signal_to_noise(uint32_t value) {
+  _internal_set_signal_to_noise(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.signal_to_noise)
+}
+
+// uint32 band_number = 12;
+inline void CellularStatus::clear_band_number() {
+  band_number_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_band_number() const {
+  return band_number_;
+}
+inline uint32_t CellularStatus::band_number() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.band_number)
+  return _internal_band_number();
+}
+inline void CellularStatus::_internal_set_band_number(uint32_t value) {
+  
+  band_number_ = value;
+}
+inline void CellularStatus::set_band_number(uint32_t value) {
+  _internal_set_band_number(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.band_number)
+}
+
+// uint32 arfcn = 13;
+inline void CellularStatus::clear_arfcn() {
+  arfcn_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_arfcn() const {
+  return arfcn_;
+}
+inline uint32_t CellularStatus::arfcn() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.arfcn)
+  return _internal_arfcn();
+}
+inline void CellularStatus::_internal_set_arfcn(uint32_t value) {
+  
+  arfcn_ = value;
+}
+inline void CellularStatus::set_arfcn(uint32_t value) {
+  _internal_set_arfcn(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.arfcn)
+}
+
+// string cell_id = 14;
+inline void CellularStatus::clear_cell_id() {
+  cell_id_.ClearToEmpty();
+}
+inline const std::string& CellularStatus::cell_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+  return _internal_cell_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CellularStatus::set_cell_id(ArgT0&& arg0, ArgT... args) {
+ 
+ cell_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+}
+inline std::string* CellularStatus::mutable_cell_id() {
+  std::string* _s = _internal_mutable_cell_id();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+  return _s;
+}
+inline const std::string& CellularStatus::_internal_cell_id() const {
+  return cell_id_.Get();
+}
+inline void CellularStatus::_internal_set_cell_id(const std::string& value) {
+  
+  cell_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CellularStatus::_internal_mutable_cell_id() {
+  
+  return cell_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CellularStatus::release_cell_id() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+  return cell_id_.Release();
+}
+inline void CellularStatus::set_allocated_cell_id(std::string* cell_id) {
+  if (cell_id != nullptr) {
+    
+  } else {
+    
+  }
+  cell_id_.SetAllocated(cell_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (cell_id_.IsDefault()) {
+    cell_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+}
+
+// float download_rate = 15;
+inline void CellularStatus::clear_download_rate() {
+  download_rate_ = 0;
+}
+inline float CellularStatus::_internal_download_rate() const {
+  return download_rate_;
+}
+inline float CellularStatus::download_rate() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.download_rate)
+  return _internal_download_rate();
+}
+inline void CellularStatus::_internal_set_download_rate(float value) {
+  
+  download_rate_ = value;
+}
+inline void CellularStatus::set_download_rate(float value) {
+  _internal_set_download_rate(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.download_rate)
+}
+
+// float upload_rate = 16;
+inline void CellularStatus::clear_upload_rate() {
+  upload_rate_ = 0;
+}
+inline float CellularStatus::_internal_upload_rate() const {
+  return upload_rate_;
+}
+inline float CellularStatus::upload_rate() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.upload_rate)
+  return _internal_upload_rate();
+}
+inline void CellularStatus::_internal_set_upload_rate(float value) {
+  
+  upload_rate_ = value;
+}
+inline void CellularStatus::set_upload_rate(float value) {
+  _internal_set_upload_rate(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.upload_rate)
 }
 
 // -------------------------------------------------------------------
@@ -16286,6 +17457,12 @@ inline void TelemetryServerResult::set_allocated_result_str(std::string* result_
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

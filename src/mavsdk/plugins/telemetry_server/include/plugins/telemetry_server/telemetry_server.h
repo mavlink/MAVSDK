@@ -385,6 +385,44 @@ public:
     friend std::ostream& operator<<(std::ostream& str, TelemetryServer::RcStatus const& rc_status);
 
     /**
+     * @brief Cellular modem status type.
+     */
+    struct CellularStatus {
+        uint32_t id{}; /**< @brief (actually uint8_t) */
+        uint32_t status{}; /**< @brief (actually uint8_t) */
+        uint32_t failure_reason{}; /**< @brief (actually uint8_t) */
+        uint32_t type{}; /**< @brief(actually uint8_t) */
+        uint32_t quality{}; /**< @brief Signal strength */
+        uint32_t mcc{}; /**< @brief  (actually uint16_t) */
+        uint32_t mnc{}; /**< @brief  (actually uint16_t) */
+        uint32_t lac{}; /**< @brief (actually uint16_t) */
+        uint32_t slot_number{}; /**< @brief(actually uint8_t) */
+        uint32_t rx_level{}; /**< @brief(actually uint8_t) */
+        uint32_t signal_to_noise{}; /**< @brief(actually uint8_t) */
+        uint32_t band_number{}; /**< @brief(actually uint8_t) */
+        uint32_t arfcn{}; /**< @brief */
+        std::string cell_id{}; /**< @brief char[9] */
+        float download_rate{}; /**< @brief */
+        float upload_rate{}; /**< @brief */
+    };
+
+    /**
+     * @brief Equal operator to compare two `TelemetryServer::CellularStatus` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const TelemetryServer::CellularStatus& lhs, const TelemetryServer::CellularStatus& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `TelemetryServer::CellularStatus`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::CellularStatus const& cellular_status);
+
+    /**
      * @brief StatusText information type.
      */
     struct StatusText {
@@ -970,6 +1008,15 @@ public:
      * @return Result of request.
      */
     Result publish_battery(Battery battery) const;
+
+    /**
+     * @brief Publish to 'cellular_status' updates.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result publish_cellular_status(CellularStatus cellular_status) const;
 
     /**
      * @brief Publish to 'status text' updates.

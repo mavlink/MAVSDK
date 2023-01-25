@@ -456,6 +456,44 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus const& rc_status);
 
     /**
+     * @brief Cellular modem status type.
+     */
+    struct CellularStatus {
+        uint32_t id{}; /**< @brief (actually uint8_t) */
+        uint32_t status{}; /**< @brief (actually uint8_t) */
+        uint32_t failure_reason{}; /**< @brief (actually uint8_t) */
+        uint32_t type{}; /**< @brief(actually uint8_t) */
+        uint32_t quality{}; /**< @brief Signal strength */
+        uint32_t mcc{}; /**< @brief  (actually uint16_t) */
+        uint32_t mnc{}; /**< @brief  (actually uint16_t) */
+        uint32_t lac{}; /**< @brief (actually uint16_t) */
+        uint32_t slot_number{}; /**< @brief(actually uint8_t) */
+        uint32_t rx_level{}; /**< @brief(actually uint8_t) */
+        uint32_t signal_to_noise{}; /**< @brief(actually uint8_t) */
+        uint32_t band_number{}; /**< @brief(actually uint8_t) */
+        uint32_t arfcn{}; /**< @brief */
+        std::string cell_id{}; /**< @brief char[9] */
+        float download_rate{}; /**< @brief */
+        float upload_rate{}; /**< @brief */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::CellularStatus` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Telemetry::CellularStatus& lhs, const Telemetry::CellularStatus& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::CellularStatus`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Telemetry::CellularStatus const& cellular_status);
+
+    /**
      * @brief StatusText information type.
      */
     struct StatusText {
@@ -1511,6 +1549,33 @@ public:
     RcStatus rc_status() const;
 
     /**
+     * @brief Callback type for subscribe_cellular_status.
+     */
+    using CellularStatusCallback = std::function<void(CellularStatus)>;
+
+    /**
+     * @brief Handle type for subscribe_cellular_status.
+     */
+    using CellularStatusHandle = Handle<CellularStatus>;
+
+    /**
+     * @brief Subscribe to 'Cellular status' updates.
+     */
+    CellularStatusHandle subscribe_cellular_status(const CellularStatusCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_cellular_status
+     */
+    void unsubscribe_cellular_status(CellularStatusHandle handle);
+
+    /**
+     * @brief Poll for 'CellularStatus' (blocking).
+     *
+     * @return One CellularStatus update.
+     */
+    CellularStatus cellular_status() const;
+
+    /**
      * @brief Callback type for subscribe_status_text.
      */
     using StatusTextCallback = std::function<void(StatusText)>;
@@ -2142,6 +2207,23 @@ public:
      * @return Result of request.
      */
     Result set_rate_rc_status(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'Cellular status' updates.
+     *
+     * This function is non-blocking. See 'set_rate_cellular_status' for the blocking counterpart.
+     */
+    void set_rate_cellular_status_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Cellular status' updates.
+     *
+     * This function is blocking. See 'set_rate_cellular_status_async' for the non-blocking
+     * counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_cellular_status(double rate_hz) const;
 
     /**
      * @brief Set rate to 'actuator control target' updates.

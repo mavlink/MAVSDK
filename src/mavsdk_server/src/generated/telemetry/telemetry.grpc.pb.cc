@@ -42,6 +42,7 @@ static const char* TelemetryService_method_names[] = {
   "/mavsdk.rpc.telemetry.TelemetryService/SubscribeFlightMode",
   "/mavsdk.rpc.telemetry.TelemetryService/SubscribeHealth",
   "/mavsdk.rpc.telemetry.TelemetryService/SubscribeRcStatus",
+  "/mavsdk.rpc.telemetry.TelemetryService/SubscribeCellularStatus",
   "/mavsdk.rpc.telemetry.TelemetryService/SubscribeStatusText",
   "/mavsdk.rpc.telemetry.TelemetryService/SubscribeActuatorControlTarget",
   "/mavsdk.rpc.telemetry.TelemetryService/SubscribeActuatorOutputStatus",
@@ -70,6 +71,7 @@ static const char* TelemetryService_method_names[] = {
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateGpsInfo",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateBattery",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateRcStatus",
+  "/mavsdk.rpc.telemetry.TelemetryService/SetRateCellularStatus",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateActuatorControlTarget",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateActuatorOutputStatus",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateOdometry",
@@ -110,47 +112,49 @@ TelemetryService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& c
   , rpcmethod_SubscribeFlightMode_(TelemetryService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_SubscribeHealth_(TelemetryService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_SubscribeRcStatus_(TelemetryService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeStatusText_(TelemetryService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeActuatorControlTarget_(TelemetryService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeActuatorOutputStatus_(TelemetryService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeOdometry_(TelemetryService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribePositionVelocityNed_(TelemetryService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeGroundTruth_(TelemetryService_method_names[23], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeFixedwingMetrics_(TelemetryService_method_names[24], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeImu_(TelemetryService_method_names[25], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeScaledImu_(TelemetryService_method_names[26], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeRawImu_(TelemetryService_method_names[27], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeHealthAllOk_(TelemetryService_method_names[28], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeUnixEpochTime_(TelemetryService_method_names[29], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeDistanceSensor_(TelemetryService_method_names[30], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeScaledPressure_(TelemetryService_method_names[31], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeHeading_(TelemetryService_method_names[32], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeAltitude_(TelemetryService_method_names[33], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SetRatePosition_(TelemetryService_method_names[34], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateHome_(TelemetryService_method_names[35], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateInAir_(TelemetryService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateLandedState_(TelemetryService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateVtolState_(TelemetryService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateAttitudeQuaternion_(TelemetryService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateAttitudeEuler_(TelemetryService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateCameraAttitude_(TelemetryService_method_names[41], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateVelocityNed_(TelemetryService_method_names[42], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateGpsInfo_(TelemetryService_method_names[43], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateBattery_(TelemetryService_method_names[44], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateRcStatus_(TelemetryService_method_names[45], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateActuatorControlTarget_(TelemetryService_method_names[46], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateActuatorOutputStatus_(TelemetryService_method_names[47], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateOdometry_(TelemetryService_method_names[48], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRatePositionVelocityNed_(TelemetryService_method_names[49], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateGroundTruth_(TelemetryService_method_names[50], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateFixedwingMetrics_(TelemetryService_method_names[51], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateImu_(TelemetryService_method_names[52], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateScaledImu_(TelemetryService_method_names[53], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateRawImu_(TelemetryService_method_names[54], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateUnixEpochTime_(TelemetryService_method_names[55], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateDistanceSensor_(TelemetryService_method_names[56], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRateAltitude_(TelemetryService_method_names[57], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetGpsGlobalOrigin_(TelemetryService_method_names[58], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeCellularStatus_(TelemetryService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeStatusText_(TelemetryService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeActuatorControlTarget_(TelemetryService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeActuatorOutputStatus_(TelemetryService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeOdometry_(TelemetryService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribePositionVelocityNed_(TelemetryService_method_names[23], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeGroundTruth_(TelemetryService_method_names[24], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeFixedwingMetrics_(TelemetryService_method_names[25], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeImu_(TelemetryService_method_names[26], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeScaledImu_(TelemetryService_method_names[27], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeRawImu_(TelemetryService_method_names[28], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeHealthAllOk_(TelemetryService_method_names[29], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeUnixEpochTime_(TelemetryService_method_names[30], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeDistanceSensor_(TelemetryService_method_names[31], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeScaledPressure_(TelemetryService_method_names[32], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeHeading_(TelemetryService_method_names[33], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeAltitude_(TelemetryService_method_names[34], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SetRatePosition_(TelemetryService_method_names[35], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateHome_(TelemetryService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateInAir_(TelemetryService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateLandedState_(TelemetryService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateVtolState_(TelemetryService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateAttitudeQuaternion_(TelemetryService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateAttitudeEuler_(TelemetryService_method_names[41], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateCameraAttitude_(TelemetryService_method_names[42], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateVelocityNed_(TelemetryService_method_names[43], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateGpsInfo_(TelemetryService_method_names[44], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateBattery_(TelemetryService_method_names[45], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateRcStatus_(TelemetryService_method_names[46], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateCellularStatus_(TelemetryService_method_names[47], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateActuatorControlTarget_(TelemetryService_method_names[48], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateActuatorOutputStatus_(TelemetryService_method_names[49], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateOdometry_(TelemetryService_method_names[50], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRatePositionVelocityNed_(TelemetryService_method_names[51], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateGroundTruth_(TelemetryService_method_names[52], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateFixedwingMetrics_(TelemetryService_method_names[53], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateImu_(TelemetryService_method_names[54], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateScaledImu_(TelemetryService_method_names[55], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateRawImu_(TelemetryService_method_names[56], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateUnixEpochTime_(TelemetryService_method_names[57], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateDistanceSensor_(TelemetryService_method_names[58], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateAltitude_(TelemetryService_method_names[59], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetGpsGlobalOrigin_(TelemetryService_method_names[60], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::PositionResponse>* TelemetryService::Stub::SubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request) {
@@ -439,6 +443,22 @@ void TelemetryService::Stub::async::SubscribeRcStatus(::grpc::ClientContext* con
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::RcStatusResponse>* TelemetryService::Stub::PrepareAsyncSubscribeRcStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRcStatus_, context, request, false, nullptr);
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::telemetry::CellularStatusResponse>* TelemetryService::Stub::SubscribeCellularStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::CellularStatusResponse>::Create(channel_.get(), rpcmethod_SubscribeCellularStatus_, context, request);
+}
+
+void TelemetryService::Stub::async::SubscribeCellularStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::CellularStatusResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::CellularStatusResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCellularStatus_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CellularStatusResponse>* TelemetryService::Stub::AsyncSubscribeCellularStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CellularStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCellularStatus_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CellularStatusResponse>* TelemetryService::Stub::PrepareAsyncSubscribeCellularStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CellularStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCellularStatus_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::StatusTextResponse>* TelemetryService::Stub::SubscribeStatusTextRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest& request) {
@@ -973,6 +993,29 @@ void TelemetryService::Stub::async::SetRateRcStatus(::grpc::ClientContext* conte
   return result;
 }
 
+::grpc::Status TelemetryService::Stub::SetRateCellularStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest& request, ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest, ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetRateCellularStatus_, context, request, response);
+}
+
+void TelemetryService::Stub::async::SetRateCellularStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest, ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetRateCellularStatus_, context, request, response, std::move(f));
+}
+
+void TelemetryService::Stub::async::SetRateCellularStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetRateCellularStatus_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse>* TelemetryService::Stub::PrepareAsyncSetRateCellularStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse, ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetRateCellularStatus_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse>* TelemetryService::Stub::AsyncSetRateCellularStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetRateCellularStatusRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ::grpc::Status TelemetryService::Stub::SetRateActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest& request, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetRateActuatorControlTarget_, context, request, response);
 }
@@ -1456,6 +1499,16 @@ TelemetryService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TelemetryService_method_names[18],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest, ::mavsdk::rpc::telemetry::CellularStatusResponse>(
+          [](TelemetryService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::telemetry::CellularStatusResponse>* writer) {
+               return service->SubscribeCellularStatus(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TelemetryService_method_names[19],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest, ::mavsdk::rpc::telemetry::StatusTextResponse>(
           [](TelemetryService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -1464,7 +1517,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeStatusText(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[19],
+      TelemetryService_method_names[20],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>(
           [](TelemetryService::Service* service,
@@ -1474,7 +1527,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeActuatorControlTarget(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[20],
+      TelemetryService_method_names[21],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>(
           [](TelemetryService::Service* service,
@@ -1484,7 +1537,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeActuatorOutputStatus(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[21],
+      TelemetryService_method_names[22],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeOdometryRequest, ::mavsdk::rpc::telemetry::OdometryResponse>(
           [](TelemetryService::Service* service,
@@ -1494,7 +1547,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeOdometry(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[22],
+      TelemetryService_method_names[23],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest, ::mavsdk::rpc::telemetry::PositionVelocityNedResponse>(
           [](TelemetryService::Service* service,
@@ -1504,7 +1557,7 @@ TelemetryService::Service::Service() {
                return service->SubscribePositionVelocityNed(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[23],
+      TelemetryService_method_names[24],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest, ::mavsdk::rpc::telemetry::GroundTruthResponse>(
           [](TelemetryService::Service* service,
@@ -1514,7 +1567,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeGroundTruth(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[24],
+      TelemetryService_method_names[25],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest, ::mavsdk::rpc::telemetry::FixedwingMetricsResponse>(
           [](TelemetryService::Service* service,
@@ -1524,7 +1577,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeFixedwingMetrics(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[25],
+      TelemetryService_method_names[26],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeImuRequest, ::mavsdk::rpc::telemetry::ImuResponse>(
           [](TelemetryService::Service* service,
@@ -1534,7 +1587,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeImu(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[26],
+      TelemetryService_method_names[27],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest, ::mavsdk::rpc::telemetry::ScaledImuResponse>(
           [](TelemetryService::Service* service,
@@ -1544,7 +1597,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeScaledImu(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[27],
+      TelemetryService_method_names[28],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeRawImuRequest, ::mavsdk::rpc::telemetry::RawImuResponse>(
           [](TelemetryService::Service* service,
@@ -1554,7 +1607,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeRawImu(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[28],
+      TelemetryService_method_names[29],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest, ::mavsdk::rpc::telemetry::HealthAllOkResponse>(
           [](TelemetryService::Service* service,
@@ -1564,7 +1617,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeHealthAllOk(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[29],
+      TelemetryService_method_names[30],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest, ::mavsdk::rpc::telemetry::UnixEpochTimeResponse>(
           [](TelemetryService::Service* service,
@@ -1574,7 +1627,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeUnixEpochTime(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[30],
+      TelemetryService_method_names[31],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest, ::mavsdk::rpc::telemetry::DistanceSensorResponse>(
           [](TelemetryService::Service* service,
@@ -1584,7 +1637,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeDistanceSensor(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[31],
+      TelemetryService_method_names[32],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest, ::mavsdk::rpc::telemetry::ScaledPressureResponse>(
           [](TelemetryService::Service* service,
@@ -1594,7 +1647,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeScaledPressure(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[32],
+      TelemetryService_method_names[33],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeHeadingRequest, ::mavsdk::rpc::telemetry::HeadingResponse>(
           [](TelemetryService::Service* service,
@@ -1604,7 +1657,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeHeading(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[33],
+      TelemetryService_method_names[34],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SubscribeAltitudeRequest, ::mavsdk::rpc::telemetry::AltitudeResponse>(
           [](TelemetryService::Service* service,
@@ -1614,7 +1667,7 @@ TelemetryService::Service::Service() {
                return service->SubscribeAltitude(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[34],
+      TelemetryService_method_names[35],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRatePositionRequest, ::mavsdk::rpc::telemetry::SetRatePositionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1624,7 +1677,7 @@ TelemetryService::Service::Service() {
                return service->SetRatePosition(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[35],
+      TelemetryService_method_names[36],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateHomeRequest, ::mavsdk::rpc::telemetry::SetRateHomeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1634,7 +1687,7 @@ TelemetryService::Service::Service() {
                return service->SetRateHome(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[36],
+      TelemetryService_method_names[37],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateInAirRequest, ::mavsdk::rpc::telemetry::SetRateInAirResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1644,7 +1697,7 @@ TelemetryService::Service::Service() {
                return service->SetRateInAir(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[37],
+      TelemetryService_method_names[38],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateLandedStateRequest, ::mavsdk::rpc::telemetry::SetRateLandedStateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1654,7 +1707,7 @@ TelemetryService::Service::Service() {
                return service->SetRateLandedState(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[38],
+      TelemetryService_method_names[39],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateVtolStateRequest, ::mavsdk::rpc::telemetry::SetRateVtolStateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1664,7 +1717,7 @@ TelemetryService::Service::Service() {
                return service->SetRateVtolState(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[39],
+      TelemetryService_method_names[40],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionRequest, ::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1674,7 +1727,7 @@ TelemetryService::Service::Service() {
                return service->SetRateAttitudeQuaternion(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[40],
+      TelemetryService_method_names[41],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateAttitudeEulerRequest, ::mavsdk::rpc::telemetry::SetRateAttitudeEulerResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1684,7 +1737,7 @@ TelemetryService::Service::Service() {
                return service->SetRateAttitudeEuler(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[41],
+      TelemetryService_method_names[42],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest, ::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1694,7 +1747,7 @@ TelemetryService::Service::Service() {
                return service->SetRateCameraAttitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[42],
+      TelemetryService_method_names[43],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRateVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1704,7 +1757,7 @@ TelemetryService::Service::Service() {
                return service->SetRateVelocityNed(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[43],
+      TelemetryService_method_names[44],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateGpsInfoRequest, ::mavsdk::rpc::telemetry::SetRateGpsInfoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1714,7 +1767,7 @@ TelemetryService::Service::Service() {
                return service->SetRateGpsInfo(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[44],
+      TelemetryService_method_names[45],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateBatteryRequest, ::mavsdk::rpc::telemetry::SetRateBatteryResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1724,7 +1777,7 @@ TelemetryService::Service::Service() {
                return service->SetRateBattery(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[45],
+      TelemetryService_method_names[46],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateRcStatusRequest, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1734,7 +1787,17 @@ TelemetryService::Service::Service() {
                return service->SetRateRcStatus(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[46],
+      TelemetryService_method_names[47],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest, ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](TelemetryService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest* req,
+             ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse* resp) {
+               return service->SetRateCellularStatus(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TelemetryService_method_names[48],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest, ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1744,7 +1807,7 @@ TelemetryService::Service::Service() {
                return service->SetRateActuatorControlTarget(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[47],
+      TelemetryService_method_names[49],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest, ::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1754,7 +1817,7 @@ TelemetryService::Service::Service() {
                return service->SetRateActuatorOutputStatus(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[48],
+      TelemetryService_method_names[50],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateOdometryRequest, ::mavsdk::rpc::telemetry::SetRateOdometryResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1764,7 +1827,7 @@ TelemetryService::Service::Service() {
                return service->SetRateOdometry(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[49],
+      TelemetryService_method_names[51],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest, ::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1774,7 +1837,7 @@ TelemetryService::Service::Service() {
                return service->SetRatePositionVelocityNed(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[50],
+      TelemetryService_method_names[52],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateGroundTruthRequest, ::mavsdk::rpc::telemetry::SetRateGroundTruthResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1784,7 +1847,7 @@ TelemetryService::Service::Service() {
                return service->SetRateGroundTruth(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[51],
+      TelemetryService_method_names[53],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest, ::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1794,7 +1857,7 @@ TelemetryService::Service::Service() {
                return service->SetRateFixedwingMetrics(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[52],
+      TelemetryService_method_names[54],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateImuRequest, ::mavsdk::rpc::telemetry::SetRateImuResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1804,7 +1867,7 @@ TelemetryService::Service::Service() {
                return service->SetRateImu(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[53],
+      TelemetryService_method_names[55],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateScaledImuRequest, ::mavsdk::rpc::telemetry::SetRateScaledImuResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1814,7 +1877,7 @@ TelemetryService::Service::Service() {
                return service->SetRateScaledImu(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[54],
+      TelemetryService_method_names[56],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateRawImuRequest, ::mavsdk::rpc::telemetry::SetRateRawImuResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1824,7 +1887,7 @@ TelemetryService::Service::Service() {
                return service->SetRateRawImu(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[55],
+      TelemetryService_method_names[57],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest, ::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1834,7 +1897,7 @@ TelemetryService::Service::Service() {
                return service->SetRateUnixEpochTime(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[56],
+      TelemetryService_method_names[58],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1844,7 +1907,7 @@ TelemetryService::Service::Service() {
                return service->SetRateDistanceSensor(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[57],
+      TelemetryService_method_names[59],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateAltitudeRequest, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1854,7 +1917,7 @@ TelemetryService::Service::Service() {
                return service->SetRateAltitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryService_method_names[58],
+      TelemetryService_method_names[60],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
@@ -1988,6 +2051,13 @@ TelemetryService::Service::~Service() {
 }
 
 ::grpc::Status TelemetryService::Service::SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TelemetryService::Service::SubscribeCellularStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::CellularStatusResponse>* writer) {
   (void) context;
   (void) request;
   (void) writer;
@@ -2184,6 +2254,13 @@ TelemetryService::Service::~Service() {
 }
 
 ::grpc::Status TelemetryService::Service::SetRateRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateRcStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateRcStatusResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TelemetryService::Service::SetRateCellularStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest* request, ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse* response) {
   (void) context;
   (void) request;
   (void) response;

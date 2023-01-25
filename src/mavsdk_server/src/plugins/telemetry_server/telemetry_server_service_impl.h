@@ -525,6 +525,86 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::telemetry_server::CellularStatus>
+    translateToRpcCellularStatus(const mavsdk::TelemetryServer::CellularStatus& cellular_status)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry_server::CellularStatus>();
+
+        rpc_obj->set_id(cellular_status.id);
+
+        rpc_obj->set_status(cellular_status.status);
+
+        rpc_obj->set_failure_reason(cellular_status.failure_reason);
+
+        rpc_obj->set_type(cellular_status.type);
+
+        rpc_obj->set_quality(cellular_status.quality);
+
+        rpc_obj->set_mcc(cellular_status.mcc);
+
+        rpc_obj->set_mnc(cellular_status.mnc);
+
+        rpc_obj->set_lac(cellular_status.lac);
+
+        rpc_obj->set_slot_number(cellular_status.slot_number);
+
+        rpc_obj->set_rx_level(cellular_status.rx_level);
+
+        rpc_obj->set_signal_to_noise(cellular_status.signal_to_noise);
+
+        rpc_obj->set_band_number(cellular_status.band_number);
+
+        rpc_obj->set_arfcn(cellular_status.arfcn);
+
+        rpc_obj->set_cell_id(cellular_status.cell_id);
+
+        rpc_obj->set_download_rate(cellular_status.download_rate);
+
+        rpc_obj->set_upload_rate(cellular_status.upload_rate);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::TelemetryServer::CellularStatus
+    translateFromRpcCellularStatus(const rpc::telemetry_server::CellularStatus& cellular_status)
+    {
+        mavsdk::TelemetryServer::CellularStatus obj;
+
+        obj.id = cellular_status.id();
+
+        obj.status = cellular_status.status();
+
+        obj.failure_reason = cellular_status.failure_reason();
+
+        obj.type = cellular_status.type();
+
+        obj.quality = cellular_status.quality();
+
+        obj.mcc = cellular_status.mcc();
+
+        obj.mnc = cellular_status.mnc();
+
+        obj.lac = cellular_status.lac();
+
+        obj.slot_number = cellular_status.slot_number();
+
+        obj.rx_level = cellular_status.rx_level();
+
+        obj.signal_to_noise = cellular_status.signal_to_noise();
+
+        obj.band_number = cellular_status.band_number();
+
+        obj.arfcn = cellular_status.arfcn();
+
+        obj.cell_id = cellular_status.cell_id();
+
+        obj.download_rate = cellular_status.download_rate();
+
+        obj.upload_rate = cellular_status.upload_rate();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::telemetry_server::StatusText>
     translateToRpcStatusText(const mavsdk::TelemetryServer::StatusText& status_text)
     {
@@ -1348,6 +1428,37 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->publish_battery(
             translateFromRpcBattery(request->battery()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status PublishCellularStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry_server::PublishCellularStatusRequest* request,
+        rpc::telemetry_server::PublishCellularStatusResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "PublishCellularStatus sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->publish_cellular_status(
+            translateFromRpcCellularStatus(request->cellular_status()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
