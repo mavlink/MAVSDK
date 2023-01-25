@@ -343,7 +343,7 @@ void MissionRawServerImpl::set_current_item_complete()
 
 void MissionRawServerImpl::set_current_seq(std::size_t seq)
 {
-    if (_current_mission.size() < static_cast<size_t>(seq)) {
+    if (_current_mission.size() < static_cast<size_t>(seq) || _current_mission.empty()) {
         return;
     }
 
