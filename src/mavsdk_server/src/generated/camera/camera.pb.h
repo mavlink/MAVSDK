@@ -285,12 +285,13 @@ enum CameraResult_Result : int {
   CameraResult_Result_RESULT_TIMEOUT = 6,
   CameraResult_Result_RESULT_WRONG_ARGUMENT = 7,
   CameraResult_Result_RESULT_NO_SYSTEM = 8,
+  CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED = 9,
   CameraResult_Result_CameraResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   CameraResult_Result_CameraResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool CameraResult_Result_IsValid(int value);
 constexpr CameraResult_Result CameraResult_Result_Result_MIN = CameraResult_Result_RESULT_UNKNOWN;
-constexpr CameraResult_Result CameraResult_Result_Result_MAX = CameraResult_Result_RESULT_NO_SYSTEM;
+constexpr CameraResult_Result CameraResult_Result_Result_MAX = CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED;
 constexpr int CameraResult_Result_Result_ARRAYSIZE = CameraResult_Result_Result_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CameraResult_Result_descriptor();
@@ -6441,6 +6442,8 @@ class CameraResult final :
     CameraResult_Result_RESULT_WRONG_ARGUMENT;
   static constexpr Result RESULT_NO_SYSTEM =
     CameraResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_PROTOCOL_UNSUPPORTED =
+    CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return CameraResult_Result_IsValid(value);
   }
