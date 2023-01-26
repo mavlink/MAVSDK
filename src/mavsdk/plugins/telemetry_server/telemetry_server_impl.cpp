@@ -1,5 +1,6 @@
 #include "telemetry_server_impl.h"
 #include "unused.h"
+#include <array>
 
 namespace mavsdk {
 
@@ -185,6 +186,36 @@ TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Ba
         0);
 
     add_msg_cache(MAVLINK_MSG_ID_BATTERY_STATUS, msg);
+
+    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
+                                                       TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result
+TelemetryServerImpl::publish_distance_sensor(TelemetryServer::DistanceSensor distance_sensor)
+{
+    mavlink_message_t msg;
+
+    std::array<float, 4> q{0}; // Invalid Quaternion per mavlink spec
+
+    mavlink_msg_distance_sensor_pack(
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
+        &msg,
+        0,
+        static_cast<uint16_t>(static_cast<double>(distance_sensor.minimum_distance_m) * 1e2),
+        static_cast<uint16_t>(static_cast<double>(distance_sensor.maximum_distance_m) * 1e2),
+        static_cast<uint16_t>(static_cast<double>(distance_sensor.current_distance_m) * 1e2),
+        MAV_DISTANCE_SENSOR_UNKNOWN,
+        0,
+        MAV_SENSOR_ROTATION_NONE,
+        255,
+        0,
+        0,
+        q.data(),
+        0);
+
+    add_msg_cache(MAVLINK_MSG_ID_DISTANCE_SENSOR, msg);
 
     return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
                                                        TelemetryServer::Result::Unsupported;

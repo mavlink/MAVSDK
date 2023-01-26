@@ -115,6 +115,12 @@ extern PublishBatteryRequestDefaultTypeInternal _PublishBatteryRequest_default_i
 class PublishBatteryResponse;
 struct PublishBatteryResponseDefaultTypeInternal;
 extern PublishBatteryResponseDefaultTypeInternal _PublishBatteryResponse_default_instance_;
+class PublishDistanceSensorRequest;
+struct PublishDistanceSensorRequestDefaultTypeInternal;
+extern PublishDistanceSensorRequestDefaultTypeInternal _PublishDistanceSensorRequest_default_instance_;
+class PublishDistanceSensorResponse;
+struct PublishDistanceSensorResponseDefaultTypeInternal;
+extern PublishDistanceSensorResponseDefaultTypeInternal _PublishDistanceSensorResponse_default_instance_;
 class PublishExtendedSysStateRequest;
 struct PublishExtendedSysStateRequestDefaultTypeInternal;
 extern PublishExtendedSysStateRequestDefaultTypeInternal _PublishExtendedSysStateRequest_default_instance_;
@@ -252,6 +258,8 @@ template<> ::mavsdk::rpc::telemetry_server::PositionNed* Arena::CreateMaybeMessa
 template<> ::mavsdk::rpc::telemetry_server::PositionVelocityNed* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PositionVelocityNed>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishBatteryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishBatteryRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishBatteryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishBatteryResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest>(Arena*);
@@ -3145,6 +3153,158 @@ class PublishUnixEpochTimeRequest final :
 };
 // -------------------------------------------------------------------
 
+class PublishDistanceSensorRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest) */ {
+ public:
+  inline PublishDistanceSensorRequest() : PublishDistanceSensorRequest(nullptr) {}
+  ~PublishDistanceSensorRequest() override;
+  explicit PROTOBUF_CONSTEXPR PublishDistanceSensorRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PublishDistanceSensorRequest(const PublishDistanceSensorRequest& from);
+  PublishDistanceSensorRequest(PublishDistanceSensorRequest&& from) noexcept
+    : PublishDistanceSensorRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline PublishDistanceSensorRequest& operator=(const PublishDistanceSensorRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishDistanceSensorRequest& operator=(PublishDistanceSensorRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishDistanceSensorRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishDistanceSensorRequest* internal_default_instance() {
+    return reinterpret_cast<const PublishDistanceSensorRequest*>(
+               &_PublishDistanceSensorRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    17;
+
+  friend void swap(PublishDistanceSensorRequest& a, PublishDistanceSensorRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PublishDistanceSensorRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishDistanceSensorRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishDistanceSensorRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PublishDistanceSensorRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PublishDistanceSensorRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PublishDistanceSensorRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PublishDistanceSensorRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest";
+  }
+  protected:
+  explicit PublishDistanceSensorRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDistanceSensorFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.DistanceSensor distance_sensor = 1;
+  bool has_distance_sensor() const;
+  private:
+  bool _internal_has_distance_sensor() const;
+  public:
+  void clear_distance_sensor();
+  const ::mavsdk::rpc::telemetry_server::DistanceSensor& distance_sensor() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::DistanceSensor* release_distance_sensor();
+  ::mavsdk::rpc::telemetry_server::DistanceSensor* mutable_distance_sensor();
+  void set_allocated_distance_sensor(::mavsdk::rpc::telemetry_server::DistanceSensor* distance_sensor);
+  private:
+  const ::mavsdk::rpc::telemetry_server::DistanceSensor& _internal_distance_sensor() const;
+  ::mavsdk::rpc::telemetry_server::DistanceSensor* _internal_mutable_distance_sensor();
+  public:
+  void unsafe_arena_set_allocated_distance_sensor(
+      ::mavsdk::rpc::telemetry_server::DistanceSensor* distance_sensor);
+  ::mavsdk::rpc::telemetry_server::DistanceSensor* unsafe_arena_release_distance_sensor();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry_server::DistanceSensor* distance_sensor_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PublishPositionResponse final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishPositionResponse) */ {
  public:
@@ -3193,7 +3353,7 @@ class PublishPositionResponse final :
                &_PublishPositionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   friend void swap(PublishPositionResponse& a, PublishPositionResponse& b) {
     a.Swap(&b);
@@ -3345,7 +3505,7 @@ class PublishHomeResponse final :
                &_PublishHomeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(PublishHomeResponse& a, PublishHomeResponse& b) {
     a.Swap(&b);
@@ -3497,7 +3657,7 @@ class PublishSysStatusResponse final :
                &_PublishSysStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    20;
 
   friend void swap(PublishSysStatusResponse& a, PublishSysStatusResponse& b) {
     a.Swap(&b);
@@ -3649,7 +3809,7 @@ class PublishExtendedSysStateResponse final :
                &_PublishExtendedSysStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   friend void swap(PublishExtendedSysStateResponse& a, PublishExtendedSysStateResponse& b) {
     a.Swap(&b);
@@ -3801,7 +3961,7 @@ class PublishRawGpsResponse final :
                &_PublishRawGpsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    22;
 
   friend void swap(PublishRawGpsResponse& a, PublishRawGpsResponse& b) {
     a.Swap(&b);
@@ -3953,7 +4113,7 @@ class PublishBatteryResponse final :
                &_PublishBatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    23;
 
   friend void swap(PublishBatteryResponse& a, PublishBatteryResponse& b) {
     a.Swap(&b);
@@ -4105,7 +4265,7 @@ class PublishStatusTextResponse final :
                &_PublishStatusTextResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    24;
 
   friend void swap(PublishStatusTextResponse& a, PublishStatusTextResponse& b) {
     a.Swap(&b);
@@ -4257,7 +4417,7 @@ class PublishOdometryResponse final :
                &_PublishOdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    25;
 
   friend void swap(PublishOdometryResponse& a, PublishOdometryResponse& b) {
     a.Swap(&b);
@@ -4409,7 +4569,7 @@ class PublishPositionVelocityNedResponse final :
                &_PublishPositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    26;
 
   friend void swap(PublishPositionVelocityNedResponse& a, PublishPositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -4561,7 +4721,7 @@ class PublishGroundTruthResponse final :
                &_PublishGroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    27;
 
   friend void swap(PublishGroundTruthResponse& a, PublishGroundTruthResponse& b) {
     a.Swap(&b);
@@ -4713,7 +4873,7 @@ class PublishImuResponse final :
                &_PublishImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    28;
 
   friend void swap(PublishImuResponse& a, PublishImuResponse& b) {
     a.Swap(&b);
@@ -4865,7 +5025,7 @@ class PublishScaledImuResponse final :
                &_PublishScaledImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    29;
 
   friend void swap(PublishScaledImuResponse& a, PublishScaledImuResponse& b) {
     a.Swap(&b);
@@ -5017,7 +5177,7 @@ class PublishRawImuResponse final :
                &_PublishRawImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    30;
 
   friend void swap(PublishRawImuResponse& a, PublishRawImuResponse& b) {
     a.Swap(&b);
@@ -5169,7 +5329,7 @@ class PublishUnixEpochTimeResponse final :
                &_PublishUnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    31;
 
   friend void swap(PublishUnixEpochTimeResponse& a, PublishUnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -5273,6 +5433,158 @@ class PublishUnixEpochTimeResponse final :
 };
 // -------------------------------------------------------------------
 
+class PublishDistanceSensorResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse) */ {
+ public:
+  inline PublishDistanceSensorResponse() : PublishDistanceSensorResponse(nullptr) {}
+  ~PublishDistanceSensorResponse() override;
+  explicit PROTOBUF_CONSTEXPR PublishDistanceSensorResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PublishDistanceSensorResponse(const PublishDistanceSensorResponse& from);
+  PublishDistanceSensorResponse(PublishDistanceSensorResponse&& from) noexcept
+    : PublishDistanceSensorResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline PublishDistanceSensorResponse& operator=(const PublishDistanceSensorResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishDistanceSensorResponse& operator=(PublishDistanceSensorResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishDistanceSensorResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishDistanceSensorResponse* internal_default_instance() {
+    return reinterpret_cast<const PublishDistanceSensorResponse*>(
+               &_PublishDistanceSensorResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    32;
+
+  friend void swap(PublishDistanceSensorResponse& a, PublishDistanceSensorResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PublishDistanceSensorResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishDistanceSensorResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishDistanceSensorResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PublishDistanceSensorResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PublishDistanceSensorResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PublishDistanceSensorResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PublishDistanceSensorResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse";
+  }
+  protected:
+  explicit PublishDistanceSensorResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTelemetryServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+  bool has_telemetry_server_result() const;
+  private:
+  bool _internal_has_telemetry_server_result() const;
+  public:
+  void clear_telemetry_server_result();
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& telemetry_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::TelemetryServerResult* release_telemetry_server_result();
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* mutable_telemetry_server_result();
+  void set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result);
+  private:
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& _internal_telemetry_server_result() const;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _internal_mutable_telemetry_server_result();
+  public:
+  void unsafe_arena_set_allocated_telemetry_server_result(
+      ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result);
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* unsafe_arena_release_telemetry_server_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Position final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.Position) */ {
  public:
@@ -5321,7 +5633,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    33;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -5497,7 +5809,7 @@ class Heading final :
                &_Heading_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    34;
 
   friend void swap(Heading& a, Heading& b) {
     a.Swap(&b);
@@ -5640,7 +5952,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    35;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -5827,7 +6139,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    36;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -6003,7 +6315,7 @@ class AngularVelocityBody final :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    37;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -6168,7 +6480,7 @@ class GpsInfo final :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    38;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -6322,7 +6634,7 @@ class RawGps final :
                &_RawGps_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    39;
 
   friend void swap(RawGps& a, RawGps& b) {
     a.Swap(&b);
@@ -6608,7 +6920,7 @@ class Battery final :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    40;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -6762,7 +7074,7 @@ class RcStatus final :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    41;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -6927,7 +7239,7 @@ class StatusText final :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    42;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -7086,7 +7398,7 @@ class ActuatorControlTarget final :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    43;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -7253,7 +7565,7 @@ class ActuatorOutputStatus final :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    44;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -7420,7 +7732,7 @@ class Covariance final :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    45;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -7576,7 +7888,7 @@ class VelocityBody final :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    46;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -7741,7 +8053,7 @@ class PositionBody final :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    47;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -7906,7 +8218,7 @@ class Odometry final :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    48;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -8225,7 +8537,7 @@ class DistanceSensor final :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    49;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -8390,7 +8702,7 @@ class ScaledPressure final :
                &_ScaledPressure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    50;
 
   friend void swap(ScaledPressure& a, ScaledPressure& b) {
     a.Swap(&b);
@@ -8577,7 +8889,7 @@ class PositionNed final :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    51;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -8742,7 +9054,7 @@ class VelocityNed final :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    52;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -8907,7 +9219,7 @@ class PositionVelocityNed final :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    53;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -9079,7 +9391,7 @@ class GroundTruth final :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    54;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -9244,7 +9556,7 @@ class FixedwingMetrics final :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    55;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -9409,7 +9721,7 @@ class AccelerationFrd final :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    56;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -9574,7 +9886,7 @@ class AngularVelocityFrd final :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    57;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -9739,7 +10051,7 @@ class MagneticFieldFrd final :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    58;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -9904,7 +10216,7 @@ class Imu final :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    59;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -10118,7 +10430,7 @@ class TelemetryServerResult final :
                &_TelemetryServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    60;
 
   friend void swap(TelemetryServerResult& a, TelemetryServerResult& b) {
     a.Swap(&b);
@@ -11986,6 +12298,100 @@ inline void PublishUnixEpochTimeRequest::set_time_us(uint64_t value) {
 
 // -------------------------------------------------------------------
 
+// PublishDistanceSensorRequest
+
+// .mavsdk.rpc.telemetry_server.DistanceSensor distance_sensor = 1;
+inline bool PublishDistanceSensorRequest::_internal_has_distance_sensor() const {
+  return this != internal_default_instance() && distance_sensor_ != nullptr;
+}
+inline bool PublishDistanceSensorRequest::has_distance_sensor() const {
+  return _internal_has_distance_sensor();
+}
+inline void PublishDistanceSensorRequest::clear_distance_sensor() {
+  if (GetArenaForAllocation() == nullptr && distance_sensor_ != nullptr) {
+    delete distance_sensor_;
+  }
+  distance_sensor_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry_server::DistanceSensor& PublishDistanceSensorRequest::_internal_distance_sensor() const {
+  const ::mavsdk::rpc::telemetry_server::DistanceSensor* p = distance_sensor_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::DistanceSensor&>(
+      ::mavsdk::rpc::telemetry_server::_DistanceSensor_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::DistanceSensor& PublishDistanceSensorRequest::distance_sensor() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest.distance_sensor)
+  return _internal_distance_sensor();
+}
+inline void PublishDistanceSensorRequest::unsafe_arena_set_allocated_distance_sensor(
+    ::mavsdk::rpc::telemetry_server::DistanceSensor* distance_sensor) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(distance_sensor_);
+  }
+  distance_sensor_ = distance_sensor;
+  if (distance_sensor) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest.distance_sensor)
+}
+inline ::mavsdk::rpc::telemetry_server::DistanceSensor* PublishDistanceSensorRequest::release_distance_sensor() {
+  
+  ::mavsdk::rpc::telemetry_server::DistanceSensor* temp = distance_sensor_;
+  distance_sensor_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::DistanceSensor* PublishDistanceSensorRequest::unsafe_arena_release_distance_sensor() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest.distance_sensor)
+  
+  ::mavsdk::rpc::telemetry_server::DistanceSensor* temp = distance_sensor_;
+  distance_sensor_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::DistanceSensor* PublishDistanceSensorRequest::_internal_mutable_distance_sensor() {
+  
+  if (distance_sensor_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry_server::DistanceSensor>(GetArenaForAllocation());
+    distance_sensor_ = p;
+  }
+  return distance_sensor_;
+}
+inline ::mavsdk::rpc::telemetry_server::DistanceSensor* PublishDistanceSensorRequest::mutable_distance_sensor() {
+  ::mavsdk::rpc::telemetry_server::DistanceSensor* _msg = _internal_mutable_distance_sensor();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest.distance_sensor)
+  return _msg;
+}
+inline void PublishDistanceSensorRequest::set_allocated_distance_sensor(::mavsdk::rpc::telemetry_server::DistanceSensor* distance_sensor) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete distance_sensor_;
+  }
+  if (distance_sensor) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(distance_sensor);
+    if (message_arena != submessage_arena) {
+      distance_sensor = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, distance_sensor, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  distance_sensor_ = distance_sensor;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest.distance_sensor)
+}
+
+// -------------------------------------------------------------------
+
 // PublishPositionResponse
 
 // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
@@ -13298,6 +13704,100 @@ inline void PublishUnixEpochTimeResponse::set_allocated_telemetry_server_result(
   }
   telemetry_server_result_ = telemetry_server_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse.telemetry_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// PublishDistanceSensorResponse
+
+// .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+inline bool PublishDistanceSensorResponse::_internal_has_telemetry_server_result() const {
+  return this != internal_default_instance() && telemetry_server_result_ != nullptr;
+}
+inline bool PublishDistanceSensorResponse::has_telemetry_server_result() const {
+  return _internal_has_telemetry_server_result();
+}
+inline void PublishDistanceSensorResponse::clear_telemetry_server_result() {
+  if (GetArenaForAllocation() == nullptr && telemetry_server_result_ != nullptr) {
+    delete telemetry_server_result_;
+  }
+  telemetry_server_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishDistanceSensorResponse::_internal_telemetry_server_result() const {
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult* p = telemetry_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&>(
+      ::mavsdk::rpc::telemetry_server::_TelemetryServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishDistanceSensorResponse::telemetry_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse.telemetry_server_result)
+  return _internal_telemetry_server_result();
+}
+inline void PublishDistanceSensorResponse::unsafe_arena_set_allocated_telemetry_server_result(
+    ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(telemetry_server_result_);
+  }
+  telemetry_server_result_ = telemetry_server_result;
+  if (telemetry_server_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse.telemetry_server_result)
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishDistanceSensorResponse::release_telemetry_server_result() {
+  
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = telemetry_server_result_;
+  telemetry_server_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishDistanceSensorResponse::unsafe_arena_release_telemetry_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse.telemetry_server_result)
+  
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = telemetry_server_result_;
+  telemetry_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishDistanceSensorResponse::_internal_mutable_telemetry_server_result() {
+  
+  if (telemetry_server_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(GetArenaForAllocation());
+    telemetry_server_result_ = p;
+  }
+  return telemetry_server_result_;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishDistanceSensorResponse::mutable_telemetry_server_result() {
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _msg = _internal_mutable_telemetry_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse.telemetry_server_result)
+  return _msg;
+}
+inline void PublishDistanceSensorResponse::set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete telemetry_server_result_;
+  }
+  if (telemetry_server_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(telemetry_server_result);
+    if (message_arena != submessage_arena) {
+      telemetry_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, telemetry_server_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  telemetry_server_result_ = telemetry_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse.telemetry_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -16286,6 +16786,10 @@ inline void TelemetryServerResult::set_allocated_result_str(std::string* result_
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

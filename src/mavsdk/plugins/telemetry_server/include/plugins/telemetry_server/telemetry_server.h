@@ -1044,6 +1044,15 @@ public:
     Result publish_unix_epoch_time(uint64_t time_us) const;
 
     /**
+     * @brief Publish to "distance sensor" updates.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result publish_distance_sensor(DistanceSensor distance_sensor) const;
+
+    /**
      * @brief Copy constructor.
      */
     TelemetryServer(const TelemetryServer& other);

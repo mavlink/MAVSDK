@@ -38,6 +38,7 @@ static const char* TelemetryServerService_method_names[] = {
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishScaledImu",
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishRawImu",
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishUnixEpochTime",
+  "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishDistanceSensor",
 };
 
 std::unique_ptr< TelemetryServerService::Stub> TelemetryServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -61,6 +62,7 @@ TelemetryServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterfa
   , rpcmethod_PublishScaledImu_(TelemetryServerService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_PublishRawImu_(TelemetryServerService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_PublishUnixEpochTime_(TelemetryServerService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishDistanceSensor_(TelemetryServerService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status TelemetryServerService::Stub::PublishPosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishPositionRequest& request, ::mavsdk::rpc::telemetry_server::PublishPositionResponse* response) {
@@ -385,6 +387,29 @@ void TelemetryServerService::Stub::async::PublishUnixEpochTime(::grpc::ClientCon
   return result;
 }
 
+::grpc::Status TelemetryServerService::Stub::PublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PublishDistanceSensor_, context, request, response);
+}
+
+void TelemetryServerService::Stub::async::PublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishDistanceSensor_, context, request, response, std::move(f));
+}
+
+void TelemetryServerService::Stub::async::PublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishDistanceSensor_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>* TelemetryServerService::Stub::PrepareAsyncPublishDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PublishDistanceSensor_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>* TelemetryServerService::Stub::AsyncPublishDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncPublishDistanceSensorRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 TelemetryServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TelemetryServerService_method_names[0],
@@ -526,6 +551,16 @@ TelemetryServerService::Service::Service() {
              ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse* resp) {
                return service->PublishUnixEpochTime(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TelemetryServerService_method_names[14],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](TelemetryServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* req,
+             ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* resp) {
+               return service->PublishDistanceSensor(ctx, req, resp);
+             }, this)));
 }
 
 TelemetryServerService::Service::~Service() {
@@ -623,6 +658,13 @@ TelemetryServerService::Service::~Service() {
 }
 
 ::grpc::Status TelemetryServerService::Service::PublishUnixEpochTime(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TelemetryServerService::Service::PublishDistanceSensor(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response) {
   (void) context;
   (void) request;
   (void) response;
