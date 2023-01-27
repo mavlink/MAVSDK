@@ -208,13 +208,12 @@ TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cel
 
     */
 
-    cellular_status.cell_id.resize(sizeof(mavlink_cellular_status_t::cell_id));
+    cellular_status.cell_tower_id.resize(sizeof(mavlink_cellular_status_t::cell_tower_id));
 
     mavlink_msg_cellular_status_pack(
         _server_component_impl->get_own_system_id(),
         _server_component_impl->get_own_component_id(),
         &msg,
-        static_cast<uint8_t>(cellular_status.id),
         static_cast<uint8_t>(cellular_status.status),
         static_cast<uint8_t>(cellular_status.failure_reason),
         static_cast<uint8_t>(cellular_status.type),
@@ -222,14 +221,18 @@ TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cel
         static_cast<uint16_t>(cellular_status.mcc),
         static_cast<uint16_t>(cellular_status.mnc),
         static_cast<uint16_t>(cellular_status.lac),
-        static_cast<uint8_t>(cellular_status.slot_number),
-        static_cast<uint8_t>(cellular_status.rx_level),
-        static_cast<uint8_t>(cellular_status.signal_to_noise),
-        static_cast<uint8_t>(cellular_status.band_number),
-        cellular_status.arfcn,
-        cellular_status.cell_id.data(),
+        static_cast<uint8_t>(cellular_status.instance_number),
         cellular_status.download_rate,
-        cellular_status.upload_rate);
+        cellular_status.upload_rate,
+        cellular_status.ber,
+        cellular_status.rx_level,
+        cellular_status.tx_level,
+        cellular_status.signal_to_noise,
+        cellular_status.cell_tower_id.data(),
+        static_cast<uint8_t>(cellular_status.band_number),
+        cellular_status.band_frequency,
+        cellular_status.arfcn
+);
 
     add_msg_cache(MAVLINK_MSG_ID_CELLULAR_STATUS, msg);
 
