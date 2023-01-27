@@ -224,7 +224,7 @@ TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cel
         static_cast<uint8_t>(cellular_status.instance_number),
         cellular_status.download_rate,
         cellular_status.upload_rate,
-        cellular_status.ber,
+        cellular_status.bit_error_rate,
         cellular_status.rx_level,
         cellular_status.tx_level,
         cellular_status.signal_to_noise,
@@ -235,6 +235,31 @@ TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cel
 );
 
     add_msg_cache(MAVLINK_MSG_ID_CELLULAR_STATUS, msg);
+
+    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
+                                                       TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result
+TelemetryServerImpl::publish_nic_info(TelemetryServer::NicInfo nic_info)
+{
+    mavlink_message_t msg;
+
+    nic_info.nic_model_name.resize(sizeof(mavlink_nic_info_t::nic_model));
+
+    mavlink_msg_nic_info_pack(
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
+        &msg,
+        static_cast<uint8_t>(nic_info.instance_number),
+        static_cast<uint8_t>(nic_info.nic_id),
+        nic_info.nic_model_name.data(),
+        nic_info.imei,
+        nic_info.iccid,
+        nic_info.imsi,
+        nic_info.firmware_version);
+
+    add_msg_cache(MAVLINK_MSG_ID_NIC_INFO, msg);
 
     return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
                                                        TelemetryServer::Result::Unsupported;
