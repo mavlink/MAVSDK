@@ -68,6 +68,7 @@ public:
     std::vector<std::shared_ptr<System>> systems() const;
 
     void set_configuration(Mavsdk::Configuration new_configuration);
+    Mavsdk::Configuration get_configuration() const;
 
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;

@@ -532,6 +532,15 @@ ConnectionResult MavsdkImpl::add_serial_connection(
     if (ret == ConnectionResult::Success) {
         add_connection(new_conn);
     }
+
+    auto new_configuration = get_configuration();
+
+    // PX4 starting with v1.13 does not send heartbeats by default, so we need
+    // to initiate the MAVLink connection by sending heartbeats.
+    // Therefore, we override the default here and enable sending heartbeats.
+    new_configuration.set_always_send_heartbeats(true);
+    set_configuration(new_configuration);
+
     return ret;
 }
 
@@ -539,6 +548,11 @@ void MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connectio
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
     _connections.push_back(new_connection);
+}
+
+Mavsdk::Configuration MavsdkImpl::get_configuration() const
+{
+    return _configuration;
 }
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
