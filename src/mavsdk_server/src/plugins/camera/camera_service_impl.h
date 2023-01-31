@@ -124,6 +124,8 @@ public:
                 return rpc::camera::CameraResult_Result_RESULT_WRONG_ARGUMENT;
             case mavsdk::Camera::Result::NoSystem:
                 return rpc::camera::CameraResult_Result_RESULT_NO_SYSTEM;
+            case mavsdk::Camera::Result::ProtocolUnsupported:
+                return rpc::camera::CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED;
         }
     }
 
@@ -152,6 +154,8 @@ public:
                 return mavsdk::Camera::Result::WrongArgument;
             case rpc::camera::CameraResult_Result_RESULT_NO_SYSTEM:
                 return mavsdk::Camera::Result::NoSystem;
+            case rpc::camera::CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED:
+                return mavsdk::Camera::Result::ProtocolUnsupported;
         }
     }
 

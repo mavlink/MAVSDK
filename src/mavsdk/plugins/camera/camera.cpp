@@ -275,6 +275,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
             return str << "Wrong Argument";
         case Camera::Result::NoSystem:
             return str << "No System";
+        case Camera::Result::ProtocolUnsupported:
+            return str << "Protocol Unsupported";
         default:
             return str << "Unknown";
     }
