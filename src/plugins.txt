@@ -10,6 +10,7 @@ follow_me
 ftp
 geofence
 gimbal
+gripper
 info
 log_files
 manual_control
@@ -28,3 +29,4 @@ telemetry_server
 tracking_server
 transponder
 tune
+winch
