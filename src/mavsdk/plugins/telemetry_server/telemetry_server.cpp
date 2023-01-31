@@ -125,6 +125,12 @@ TelemetryServer::Result TelemetryServer::publish_unix_epoch_time(uint64_t time_u
     return _impl->publish_unix_epoch_time(time_us);
 }
 
+TelemetryServer::Result
+TelemetryServer::publish_distance_sensor(DistanceSensor distance_sensor) const
+{
+    return _impl->publish_distance_sensor(distance_sensor);
+}
+
 bool operator==(const TelemetryServer::Position& lhs, const TelemetryServer::Position& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||

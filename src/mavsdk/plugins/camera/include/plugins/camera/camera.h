@@ -108,6 +108,7 @@ public:
         Timeout, /**< @brief Command timed out. */
         WrongArgument, /**< @brief Command has wrong argument(s). */
         NoSystem, /**< @brief No system connected. */
+        ProtocolUnsupported, /**< @brief Definition file protocol not supported. */
     };
 
     /**

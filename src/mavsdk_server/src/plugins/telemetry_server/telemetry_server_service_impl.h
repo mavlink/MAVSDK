@@ -1602,6 +1602,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status PublishDistanceSensor(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry_server::PublishDistanceSensorRequest* request,
+        rpc::telemetry_server::PublishDistanceSensorResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "PublishDistanceSensor sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->publish_distance_sensor(
+            translateFromRpcDistanceSensor(request->distance_sensor()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);
