@@ -118,7 +118,7 @@ void WinchImpl::relax_async(uint32_t instance, const Winch::ResultCallback callb
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_WINCH;
-    command.params.maybe_param1 = instance;
+    command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(Winch::WinchAction::Relaxed);
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
