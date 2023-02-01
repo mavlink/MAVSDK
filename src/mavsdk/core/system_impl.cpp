@@ -340,6 +340,8 @@ std::string SystemImpl::component_name(uint8_t component_id)
             return "Gimbal";
         case MAV_COMP_ID_MISSIONPLANNER:
             return "Ground station";
+        case MAV_COMP_ID_WINCH:
+            return "Winch";
         default:
             return "Unsupported component";
     }

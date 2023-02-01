@@ -74,6 +74,11 @@
 #include "gimbal/gimbal_service_impl.h"
 #endif
 
+#ifdef GRIPPER_ENABLED
+#include "plugins/gripper/gripper.h"
+#include "gripper/gripper_service_impl.h"
+#endif
+
 #ifdef INFO_ENABLED
 #include "plugins/info/info.h"
 #include "info/info_service_impl.h"
@@ -164,6 +169,11 @@
 #include "tune/tune_service_impl.h"
 #endif
 
+#ifdef WINCH_ENABLED
+#include "plugins/winch/winch.h"
+#include "winch/winch_service_impl.h"
+#endif
+
 namespace mavsdk {
 namespace mavsdk_server {
 
@@ -230,6 +240,11 @@ public:
 #ifdef GIMBAL_ENABLED
         _gimbal_lazy_plugin(mavsdk),
         _gimbal_service(_gimbal_lazy_plugin),
+#endif
+
+#ifdef GRIPPER_ENABLED
+        _gripper_lazy_plugin(mavsdk),
+        _gripper_service(_gripper_lazy_plugin),
 #endif
 
 #ifdef INFO_ENABLED
@@ -319,7 +334,12 @@ public:
 
 #ifdef TUNE_ENABLED
         _tune_lazy_plugin(mavsdk),
-        _tune_service(_tune_lazy_plugin)
+        _tune_service(_tune_lazy_plugin),
+#endif
+
+#ifdef WINCH_ENABLED
+        _winch_lazy_plugin(mavsdk),
+        _winch_service(_winch_lazy_plugin)
 #endif
 
     {}
@@ -416,6 +436,13 @@ private:
     LazyPlugin<Gimbal> _gimbal_lazy_plugin;
 
     GimbalServiceImpl<> _gimbal_service;
+#endif
+
+#ifdef GRIPPER_ENABLED
+
+    LazyPlugin<Gripper> _gripper_lazy_plugin;
+
+    GripperServiceImpl<> _gripper_service;
 #endif
 
 #ifdef INFO_ENABLED
@@ -542,6 +569,13 @@ private:
     LazyPlugin<Tune> _tune_lazy_plugin;
 
     TuneServiceImpl<> _tune_service;
+#endif
+
+#ifdef WINCH_ENABLED
+
+    LazyPlugin<Winch> _winch_lazy_plugin;
+
+    WinchServiceImpl<> _winch_service;
 #endif
 
     std::unique_ptr<grpc::Server> _server;
