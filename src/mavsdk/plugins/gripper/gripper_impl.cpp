@@ -30,7 +30,7 @@ void GripperImpl::grab_async(uint32_t instance, const Gripper::ResultCallback ca
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_GRIPPER;
-    command.params.maybe_param1 = instance;
+    command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(Gripper::GripperAction::Grab);
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH; // TODO
@@ -56,7 +56,7 @@ void GripperImpl::release_async(uint32_t instance, const Gripper::ResultCallback
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_GRIPPER;
-    command.params.maybe_param1 = instance;
+    command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(Gripper::GripperAction::Release);
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH; // TODO
