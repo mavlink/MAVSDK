@@ -448,7 +448,7 @@ MissionRaw::Result MissionRawImpl::set_current_mission_item(int index)
 void MissionRawImpl::set_current_mission_item_async(
     int index, const MissionRaw::ResultCallback& callback)
 {
-    if (index < 0 && index >= _mission_progress.last.total) {
+    if (index < 0 || index >= _mission_progress.last.total) {
         _parent->call_user_callback([callback]() {
             if (callback) {
                 callback(MissionRaw::Result::InvalidArgument);
