@@ -11,7 +11,7 @@ target_include_directories(mavsdk
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/generated>
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:include/mavsdk>
     )
 
 install(FILES
