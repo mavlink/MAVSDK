@@ -256,7 +256,6 @@ Calibration::Result CalibrationImpl::cancel()
     command.params.maybe_param6 = 0.0f;
     command.params.maybe_param7 = 0.0f;
     command.target_component_id = target_component_id;
-    _parent->send_command_async(command, nullptr);
 
     auto prom = std::promise<Calibration::Result>();
     auto fut = prom.get_future();
