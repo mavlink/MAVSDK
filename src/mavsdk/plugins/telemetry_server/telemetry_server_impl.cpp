@@ -195,19 +195,6 @@ TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cel
 {
     mavlink_message_t msg;
 
-    /*
-
-    status	uint8_t	CELLULAR_STATUS_FLAG	Cellular modem status
-    failure_reason	uint8_t	CELLULAR_NETWORK_FAILED_REASON	Failure reason when status in in
-    CELLULAR_STATUS_FLAG_FAILED type	uint8_t	CELLULAR_NETWORK_RADIO_TYPE
-    Cellular network radio type: gsm, cdma, lte... quality	uint8_t		Signal quality in
-    percent. If unknown, set to UINT8_MAX mcc	uint16_t		Mobile country code. If
-    unknown, set to UINT16_MAX
-    mnc	uint16_t		Mobile network code. If unknown, set to UINT16_MAX
-    lac	uint16_t
-
-    */
-
     cellular_status.cell_tower_id.resize(sizeof(mavlink_cellular_status_t::cell_tower_id));
 
     mavlink_msg_cellular_status_pack(
@@ -221,18 +208,17 @@ TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cel
         static_cast<uint16_t>(cellular_status.mcc),
         static_cast<uint16_t>(cellular_status.mnc),
         static_cast<uint16_t>(cellular_status.lac),
-        static_cast<uint8_t>(cellular_status.instance_number),
-        cellular_status.download_rate,
-        cellular_status.upload_rate,
-        cellular_status.bit_error_rate,
-        cellular_status.rx_level,
-        cellular_status.tx_level,
-        cellular_status.signal_to_noise,
-        cellular_status.cell_tower_id.data(),
         static_cast<uint8_t>(cellular_status.band_number),
         cellular_status.band_frequency,
-        cellular_status.arfcn
-);
+        static_cast<uint16_t>(cellular_status.channel_number),
+        cellular_status.rx_level,
+        cellular_status.tx_level,
+        cellular_status.rx_quality,
+        cellular_status.link_tx_rate,
+        cellular_status.link_rx_rate,
+        static_cast<uint16_t>(cellular_status.bit_error_rate),
+        static_cast<uint8_t>(cellular_status.instance_number),
+        cellular_status.cell_tower_id.data());
 
     add_msg_cache(MAVLINK_MSG_ID_CELLULAR_STATUS, msg);
 
@@ -241,25 +227,27 @@ TelemetryServerImpl::publish_cellular_status(TelemetryServer::CellularStatus cel
 }
 
 TelemetryServer::Result
-TelemetryServerImpl::publish_nic_info(TelemetryServer::NicInfo nic_info)
+TelemetryServerImpl::publish_modem_info(TelemetryServer::ModemInfo modem_info)
 {
     mavlink_message_t msg;
 
-    nic_info.nic_model_name.resize(sizeof(mavlink_nic_info_t::nic_model));
+    modem_info.modem_id.resize(sizeof(mavlink_cellular_modem_information_t::modem_id));
+    modem_info.firmware_version.resize(sizeof(mavlink_cellular_modem_information_t::firmware));
+    modem_info.modem_model_name.resize(sizeof(mavlink_cellular_modem_information_t::modem_model));
 
-    mavlink_msg_nic_info_pack(
+    mavlink_msg_cellular_modem_information_pack(
         _server_component_impl->get_own_system_id(),
         _server_component_impl->get_own_component_id(),
         &msg,
-        static_cast<uint8_t>(nic_info.instance_number),
-        static_cast<uint8_t>(nic_info.nic_id),
-        nic_info.nic_model_name.data(),
-        nic_info.imei,
-        nic_info.iccid,
-        nic_info.imsi,
-        nic_info.firmware_version);
+        static_cast<uint8_t>(modem_info.instance_number),
+        modem_info.imei,
+        modem_info.iccid,
+        modem_info.imsi,
+        modem_info.modem_id.data(),
+        modem_info.firmware_version.data(),
+        modem_info.modem_model_name.data());
 
-    add_msg_cache(MAVLINK_MSG_ID_NIC_INFO, msg);
+    add_msg_cache(MAVLINK_MSG_ID_CELLULAR_MODEM_INFORMATION, msg);
 
     return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
                                                        TelemetryServer::Result::Unsupported;

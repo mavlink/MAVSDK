@@ -121,8 +121,8 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_NIC_INFO,
-        [this](const mavlink_message_t& message) { process_nic_info(message); },
+        MAVLINK_MSG_ID_CELLULAR_MODEM_INFORMATION,
+        [this](const mavlink_message_t& message) { process_modem_info(message); },
         this);
 
     _parent->register_mavlink_message_handler(
@@ -382,7 +382,7 @@ Telemetry::Result TelemetryImpl::set_rate_cellular_status(double rate_hz)
     return Telemetry::Result::Unsupported;
 }
 
-Telemetry::Result TelemetryImpl::set_rate_nic_info(double rate_hz)
+Telemetry::Result TelemetryImpl::set_rate_modem_info(double rate_hz)
 {
     UNUSED(rate_hz);
     LogWarn() << "System status is usually fixed at 1 Hz";
@@ -627,14 +627,12 @@ void TelemetryImpl::set_rate_cellular_status_async(
     _parent->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
 }
 
-void TelemetryImpl::set_rate_nic_info_async(
-    double rate_hz, Telemetry::ResultCallback callback)
+void TelemetryImpl::set_rate_modem_info_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     UNUSED(rate_hz);
     LogWarn() << "System status is usually fixed at 1 Hz";
     _parent->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
 }
-
 
 void TelemetryImpl::set_rate_unix_epoch_time_async(
     double rate_hz, Telemetry::ResultCallback callback)
@@ -1294,17 +1292,17 @@ void TelemetryImpl::process_cellular_status(const mavlink_message_t& message)
     new_cell_status.mnc = cell_status.mnc;
     new_cell_status.lac = cell_status.lac;
 
-    new_cell_status.download_rate = cell_status.download_rate;
-    new_cell_status.upload_rate = cell_status.upload_rate;
-    new_cell_status.bit_error_rate = cell_status.ber;
-    new_cell_status.rx_level = cell_status.rx_level;
-    new_cell_status.tx_level = cell_status.tx_level;
-    new_cell_status.signal_to_noise = cell_status.signal_to_noise;
-    new_cell_status.cell_tower_id = cell_status.cell_tower_id;
     new_cell_status.band_number = cell_status.band_number;
     new_cell_status.band_frequency = cell_status.band_frequency;
-    new_cell_status.arfcn = cell_status.arfcn;
-
+    new_cell_status.channel_number = cell_status.channel_number;
+    new_cell_status.rx_level = cell_status.rx_level;
+    new_cell_status.tx_level = cell_status.tx_level;
+    new_cell_status.rx_quality = cell_status.rx_quality;
+    new_cell_status.link_tx_rate = cell_status.link_tx_rate;
+    new_cell_status.link_rx_rate = cell_status.link_rx_rate;
+    new_cell_status.bit_error_rate = cell_status.ber;
+    new_cell_status.instance_number = cell_status.id;
+    new_cell_status.cell_tower_id = cell_status.cell_tower_id;
 
     set_cellular_status(new_cell_status);
 
@@ -1315,26 +1313,27 @@ void TelemetryImpl::process_cellular_status(const mavlink_message_t& message)
     }
 }
 
-void TelemetryImpl::process_nic_info(const mavlink_message_t& message)
+void TelemetryImpl::process_modem_info(const mavlink_message_t& message)
 {
-    mavlink_nic_info_t network_interface_card_info;
-    mavlink_msg_nic_info_decode(&message, &network_interface_card_info);
+    mavlink_cellular_modem_information_t cellular_modem_info;
+    mavlink_msg_cellular_modem_information_decode(&message, &cellular_modem_info);
 
-    Telemetry::NicInfo new_nic_info;
-    new_nic_info.instance_number = network_interface_card_info.id;
-    new_nic_info.nic_id = network_interface_card_info.nic_id;
-    new_nic_info.nic_model_name = network_interface_card_info.nic_model;
-    new_nic_info.imei = network_interface_card_info.imei;
-    new_nic_info.iccid = network_interface_card_info.iccid;
-    new_nic_info.imsi = network_interface_card_info.imsi;
-    new_nic_info.firmware_version = network_interface_card_info.firmware_version;
+    Telemetry::ModemInfo new_modem_info;
+    new_modem_info.instance_number = cellular_modem_info.id;
 
-    set_nic_info(new_nic_info);
+    new_modem_info.imei = cellular_modem_info.imei;
+    new_modem_info.iccid = cellular_modem_info.iccid;
+    new_modem_info.imsi = cellular_modem_info.imsi;
+    new_modem_info.modem_id = cellular_modem_info.modem_id;
+    new_modem_info.firmware_version = cellular_modem_info.firmware;
+    new_modem_info.modem_model_name = cellular_modem_info.modem_model;
 
-    {   
+    set_modem_info(new_modem_info);
+
+    {
         std::lock_guard<std::mutex> lock(_subscription_mutex);
-        _nic_info_subscriptions.queue(
-            nic_info(), [this](const auto& func) { _parent->call_user_callback(func); });
+        _modem_info_subscriptions.queue(
+            modem_info(), [this](const auto& func) { _parent->call_user_callback(func); });
     }
 }
 
@@ -2121,10 +2120,10 @@ Telemetry::CellularStatus TelemetryImpl::cellular_status() const
     return _cellular_status;
 }
 
-Telemetry::NicInfo TelemetryImpl::nic_info() const
+Telemetry::ModemInfo TelemetryImpl::modem_info() const
 {
-    std::lock_guard<std::mutex> lock(_nic_info_mutex);
-    return _nic_info;
+    std::lock_guard<std::mutex> lock(_modem_info_mutex);
+    return _modem_info;
 }
 
 uint64_t TelemetryImpl::unix_epoch_time() const
@@ -2258,10 +2257,10 @@ void TelemetryImpl::set_cellular_status(Telemetry::CellularStatus cellular_statu
     _cellular_status = cellular_status;
 }
 
-void TelemetryImpl::set_nic_info(Telemetry::NicInfo nic_info)
+void TelemetryImpl::set_modem_info(Telemetry::ModemInfo modem_info)
 {
-    std::lock_guard<std::mutex> lock(_nic_info_mutex);
-    _nic_info = nic_info;
+    std::lock_guard<std::mutex> lock(_modem_info_mutex);
+    _modem_info = modem_info;
 }
 
 void TelemetryImpl::set_unix_epoch_time_us(uint64_t time_us)
@@ -2649,17 +2648,17 @@ void TelemetryImpl::unsubscribe_cellular_status(Telemetry::CellularStatusHandle 
     _cellular_status_subscriptions.unsubscribe(handle);
 }
 
-Telemetry::NicInfoHandle
-TelemetryImpl::subscribe_nic_info(const Telemetry::NicInfoCallback& callback)
+Telemetry::ModemInfoHandle
+TelemetryImpl::subscribe_modem_info(const Telemetry::ModemInfoCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    return _nic_info_subscriptions.subscribe(callback);
+    return _modem_info_subscriptions.subscribe(callback);
 }
 
-void TelemetryImpl::unsubscribe_nic_info(Telemetry::NicInfoHandle handle)
+void TelemetryImpl::unsubscribe_modem_info(Telemetry::ModemInfoHandle handle)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _nic_info_subscriptions.unsubscribe(handle);
+    _modem_info_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::UnixEpochTimeHandle
