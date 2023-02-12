@@ -530,8 +530,6 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::telemetry_server::CellularStatus>();
 
-        rpc_obj->set_id(cellular_status.id);
-
         rpc_obj->set_status(cellular_status.status);
 
         rpc_obj->set_failure_reason(cellular_status.failure_reason);
@@ -546,21 +544,27 @@ public:
 
         rpc_obj->set_lac(cellular_status.lac);
 
-        rpc_obj->set_slot_number(cellular_status.slot_number);
+        rpc_obj->set_band_number(cellular_status.band_number);
+
+        rpc_obj->set_band_frequency(cellular_status.band_frequency);
+
+        rpc_obj->set_channel_number(cellular_status.channel_number);
 
         rpc_obj->set_rx_level(cellular_status.rx_level);
 
-        rpc_obj->set_signal_to_noise(cellular_status.signal_to_noise);
+        rpc_obj->set_tx_level(cellular_status.tx_level);
 
-        rpc_obj->set_band_number(cellular_status.band_number);
+        rpc_obj->set_rx_quality(cellular_status.rx_quality);
 
-        rpc_obj->set_arfcn(cellular_status.arfcn);
+        rpc_obj->set_link_tx_rate(cellular_status.link_tx_rate);
 
-        rpc_obj->set_cell_id(cellular_status.cell_id);
+        rpc_obj->set_link_rx_rate(cellular_status.link_rx_rate);
 
-        rpc_obj->set_download_rate(cellular_status.download_rate);
+        rpc_obj->set_bit_error_rate(cellular_status.bit_error_rate);
 
-        rpc_obj->set_upload_rate(cellular_status.upload_rate);
+        rpc_obj->set_instance_number(cellular_status.instance_number);
+
+        rpc_obj->set_cell_tower_id(cellular_status.cell_tower_id);
 
         return rpc_obj;
     }
@@ -569,8 +573,6 @@ public:
     translateFromRpcCellularStatus(const rpc::telemetry_server::CellularStatus& cellular_status)
     {
         mavsdk::TelemetryServer::CellularStatus obj;
-
-        obj.id = cellular_status.id();
 
         obj.status = cellular_status.status();
 
@@ -586,21 +588,71 @@ public:
 
         obj.lac = cellular_status.lac();
 
-        obj.slot_number = cellular_status.slot_number();
+        obj.band_number = cellular_status.band_number();
+
+        obj.band_frequency = cellular_status.band_frequency();
+
+        obj.channel_number = cellular_status.channel_number();
 
         obj.rx_level = cellular_status.rx_level();
 
-        obj.signal_to_noise = cellular_status.signal_to_noise();
+        obj.tx_level = cellular_status.tx_level();
 
-        obj.band_number = cellular_status.band_number();
+        obj.rx_quality = cellular_status.rx_quality();
 
-        obj.arfcn = cellular_status.arfcn();
+        obj.link_tx_rate = cellular_status.link_tx_rate();
 
-        obj.cell_id = cellular_status.cell_id();
+        obj.link_rx_rate = cellular_status.link_rx_rate();
 
-        obj.download_rate = cellular_status.download_rate();
+        obj.bit_error_rate = cellular_status.bit_error_rate();
 
-        obj.upload_rate = cellular_status.upload_rate();
+        obj.instance_number = cellular_status.instance_number();
+
+        obj.cell_tower_id = cellular_status.cell_tower_id();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::telemetry_server::ModemInfo>
+    translateToRpcModemInfo(const mavsdk::TelemetryServer::ModemInfo& modem_info)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry_server::ModemInfo>();
+
+        rpc_obj->set_instance_number(modem_info.instance_number);
+
+        rpc_obj->set_imei(modem_info.imei);
+
+        rpc_obj->set_iccid(modem_info.iccid);
+
+        rpc_obj->set_imsi(modem_info.imsi);
+
+        rpc_obj->set_modem_id(modem_info.modem_id);
+
+        rpc_obj->set_firmware_version(modem_info.firmware_version);
+
+        rpc_obj->set_modem_model_name(modem_info.modem_model_name);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::TelemetryServer::ModemInfo
+    translateFromRpcModemInfo(const rpc::telemetry_server::ModemInfo& modem_info)
+    {
+        mavsdk::TelemetryServer::ModemInfo obj;
+
+        obj.instance_number = modem_info.instance_number();
+
+        obj.imei = modem_info.imei();
+
+        obj.iccid = modem_info.iccid();
+
+        obj.imsi = modem_info.imsi();
+
+        obj.modem_id = modem_info.modem_id();
+
+        obj.firmware_version = modem_info.firmware_version();
+
+        obj.modem_model_name = modem_info.modem_model_name();
 
         return obj;
     }
@@ -1459,6 +1511,37 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->publish_cellular_status(
             translateFromRpcCellularStatus(request->cellular_status()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status PublishModemInfo(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry_server::PublishModemInfoRequest* request,
+        rpc::telemetry_server::PublishModemInfoResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "PublishModemInfo sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->publish_modem_info(
+            translateFromRpcModemInfo(request->modem_info()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

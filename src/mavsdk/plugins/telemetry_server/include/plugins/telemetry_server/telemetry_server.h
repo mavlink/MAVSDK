@@ -388,22 +388,24 @@ public:
      * @brief Cellular modem status type.
      */
     struct CellularStatus {
-        uint32_t id{}; /**< @brief (actually uint8_t) */
-        uint32_t status{}; /**< @brief (actually uint8_t) */
-        uint32_t failure_reason{}; /**< @brief (actually uint8_t) */
-        uint32_t type{}; /**< @brief(actually uint8_t) */
-        uint32_t quality{}; /**< @brief Signal strength */
-        uint32_t mcc{}; /**< @brief  (actually uint16_t) */
-        uint32_t mnc{}; /**< @brief  (actually uint16_t) */
-        uint32_t lac{}; /**< @brief (actually uint16_t) */
-        uint32_t slot_number{}; /**< @brief(actually uint8_t) */
-        uint32_t rx_level{}; /**< @brief(actually uint8_t) */
-        uint32_t signal_to_noise{}; /**< @brief(actually uint8_t) */
-        uint32_t band_number{}; /**< @brief(actually uint8_t) */
-        uint32_t arfcn{}; /**< @brief */
-        std::string cell_id{}; /**< @brief char[9] */
-        float download_rate{}; /**< @brief */
-        float upload_rate{}; /**< @brief */
+        uint32_t status{}; /**< @brief */
+        uint32_t failure_reason{}; /**< @brief */
+        uint32_t type{}; /**< @brief */
+        uint32_t quality{}; /**< @brief */
+        uint32_t mcc{}; /**< @brief */
+        uint32_t mnc{}; /**< @brief */
+        uint32_t lac{}; /**< @brief */
+        uint32_t band_number{}; /**< @brief */
+        float band_frequency{}; /**< @brief */
+        uint32_t channel_number{}; /**< @brief */
+        float rx_level{}; /**< @brief */
+        float tx_level{}; /**< @brief */
+        float rx_quality{}; /**< @brief */
+        uint32_t link_tx_rate{}; /**< @brief */
+        uint32_t link_rx_rate{}; /**< @brief */
+        uint32_t bit_error_rate{}; /**< @brief */
+        uint32_t instance_number{}; /**< @brief */
+        std::string cell_tower_id{}; /**< @brief */
     };
 
     /**
@@ -421,6 +423,35 @@ public:
      */
     friend std::ostream&
     operator<<(std::ostream& str, TelemetryServer::CellularStatus const& cellular_status);
+
+    /**
+     * @brief Modem information.
+     */
+    struct ModemInfo {
+        uint32_t instance_number{}; /**< @brief */
+        uint64_t imei{}; /**< @briefUnique Modem International Mobile Equipment Identity Number */
+        uint64_t iccid{}; /**< @briefIntegrated Circuit Card Identification Number of SIM Card */
+        uint64_t imsi{}; /**< @briefCurrent SIM International mobile subscriber identity. */
+        std::string modem_id{}; /**< @brief */
+        std::string firmware_version{}; /**< @briefThe firmware version installed on the modem */
+        std::string modem_model_name{}; /**< @brief */
+    };
+
+    /**
+     * @brief Equal operator to compare two `TelemetryServer::ModemInfo` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const TelemetryServer::ModemInfo& lhs, const TelemetryServer::ModemInfo& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `TelemetryServer::ModemInfo`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::ModemInfo const& modem_info);
 
     /**
      * @brief StatusText information type.
@@ -1017,6 +1048,15 @@ public:
      * @return Result of request.
      */
     Result publish_cellular_status(CellularStatus cellular_status) const;
+
+    /**
+     * @brief Publish to 'modem_info' updates.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result publish_modem_info(ModemInfo modem_info) const;
 
     /**
      * @brief Publish to 'status text' updates.

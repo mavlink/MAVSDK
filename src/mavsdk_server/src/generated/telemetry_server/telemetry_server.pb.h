@@ -97,6 +97,9 @@ extern ImuDefaultTypeInternal _Imu_default_instance_;
 class MagneticFieldFrd;
 struct MagneticFieldFrdDefaultTypeInternal;
 extern MagneticFieldFrdDefaultTypeInternal _MagneticFieldFrd_default_instance_;
+class ModemInfo;
+struct ModemInfoDefaultTypeInternal;
+extern ModemInfoDefaultTypeInternal _ModemInfo_default_instance_;
 class Odometry;
 struct OdometryDefaultTypeInternal;
 extern OdometryDefaultTypeInternal _Odometry_default_instance_;
@@ -154,6 +157,12 @@ extern PublishInAirRequestDefaultTypeInternal _PublishInAirRequest_default_insta
 class PublishLandedStateRequest;
 struct PublishLandedStateRequestDefaultTypeInternal;
 extern PublishLandedStateRequestDefaultTypeInternal _PublishLandedStateRequest_default_instance_;
+class PublishModemInfoRequest;
+struct PublishModemInfoRequestDefaultTypeInternal;
+extern PublishModemInfoRequestDefaultTypeInternal _PublishModemInfoRequest_default_instance_;
+class PublishModemInfoResponse;
+struct PublishModemInfoResponseDefaultTypeInternal;
+extern PublishModemInfoResponseDefaultTypeInternal _PublishModemInfoResponse_default_instance_;
 class PublishOdometryRequest;
 struct PublishOdometryRequestDefaultTypeInternal;
 extern PublishOdometryRequestDefaultTypeInternal _PublishOdometryRequest_default_instance_;
@@ -255,6 +264,7 @@ template<> ::mavsdk::rpc::telemetry_server::GroundTruth* Arena::CreateMaybeMessa
 template<> ::mavsdk::rpc::telemetry_server::Heading* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Heading>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Imu* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Imu>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::MagneticFieldFrd* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::MagneticFieldFrd>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::ModemInfo* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::ModemInfo>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Odometry* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Odometry>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::Position* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Position>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PositionBody* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PositionBody>(Arena*);
@@ -274,6 +284,8 @@ template<> ::mavsdk::rpc::telemetry_server::PublishImuRequest* Arena::CreateMayb
 template<> ::mavsdk::rpc::telemetry_server::PublishImuResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishImuResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishInAirRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishInAirRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishLandedStateRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishLandedStateRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::PublishModemInfoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishModemInfoRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry_server::PublishModemInfoResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishModemInfoResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishOdometryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishOdometryRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishOdometryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishOdometryResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry_server::PublishPositionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PublishPositionRequest>(Arena*);
@@ -1950,6 +1962,158 @@ class PublishCellularStatusRequest final :
 };
 // -------------------------------------------------------------------
 
+class PublishModemInfoRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishModemInfoRequest) */ {
+ public:
+  inline PublishModemInfoRequest() : PublishModemInfoRequest(nullptr) {}
+  ~PublishModemInfoRequest() override;
+  explicit PROTOBUF_CONSTEXPR PublishModemInfoRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PublishModemInfoRequest(const PublishModemInfoRequest& from);
+  PublishModemInfoRequest(PublishModemInfoRequest&& from) noexcept
+    : PublishModemInfoRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline PublishModemInfoRequest& operator=(const PublishModemInfoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishModemInfoRequest& operator=(PublishModemInfoRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishModemInfoRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishModemInfoRequest* internal_default_instance() {
+    return reinterpret_cast<const PublishModemInfoRequest*>(
+               &_PublishModemInfoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  friend void swap(PublishModemInfoRequest& a, PublishModemInfoRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PublishModemInfoRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishModemInfoRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishModemInfoRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PublishModemInfoRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PublishModemInfoRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PublishModemInfoRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PublishModemInfoRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.PublishModemInfoRequest";
+  }
+  protected:
+  explicit PublishModemInfoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kModemInfoFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.ModemInfo modem_info = 1;
+  bool has_modem_info() const;
+  private:
+  bool _internal_has_modem_info() const;
+  public:
+  void clear_modem_info();
+  const ::mavsdk::rpc::telemetry_server::ModemInfo& modem_info() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::ModemInfo* release_modem_info();
+  ::mavsdk::rpc::telemetry_server::ModemInfo* mutable_modem_info();
+  void set_allocated_modem_info(::mavsdk::rpc::telemetry_server::ModemInfo* modem_info);
+  private:
+  const ::mavsdk::rpc::telemetry_server::ModemInfo& _internal_modem_info() const;
+  ::mavsdk::rpc::telemetry_server::ModemInfo* _internal_mutable_modem_info();
+  public:
+  void unsafe_arena_set_allocated_modem_info(
+      ::mavsdk::rpc::telemetry_server::ModemInfo* modem_info);
+  ::mavsdk::rpc::telemetry_server::ModemInfo* unsafe_arena_release_modem_info();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishModemInfoRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry_server::ModemInfo* modem_info_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PublishRcStatusRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishRcStatusRequest) */ {
  public:
@@ -1998,7 +2162,7 @@ class PublishRcStatusRequest final :
                &_PublishRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(PublishRcStatusRequest& a, PublishRcStatusRequest& b) {
     a.Swap(&b);
@@ -2150,7 +2314,7 @@ class PublishStatusTextRequest final :
                &_PublishStatusTextRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(PublishStatusTextRequest& a, PublishStatusTextRequest& b) {
     a.Swap(&b);
@@ -2302,7 +2466,7 @@ class PublishOdometryRequest final :
                &_PublishOdometryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(PublishOdometryRequest& a, PublishOdometryRequest& b) {
     a.Swap(&b);
@@ -2454,7 +2618,7 @@ class PublishPositionVelocityNedRequest final :
                &_PublishPositionVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(PublishPositionVelocityNedRequest& a, PublishPositionVelocityNedRequest& b) {
     a.Swap(&b);
@@ -2606,7 +2770,7 @@ class PublishGroundTruthRequest final :
                &_PublishGroundTruthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(PublishGroundTruthRequest& a, PublishGroundTruthRequest& b) {
     a.Swap(&b);
@@ -2758,7 +2922,7 @@ class PublishImuRequest final :
                &_PublishImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(PublishImuRequest& a, PublishImuRequest& b) {
     a.Swap(&b);
@@ -2910,7 +3074,7 @@ class PublishScaledImuRequest final :
                &_PublishScaledImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(PublishScaledImuRequest& a, PublishScaledImuRequest& b) {
     a.Swap(&b);
@@ -3062,7 +3226,7 @@ class PublishRawImuRequest final :
                &_PublishRawImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(PublishRawImuRequest& a, PublishRawImuRequest& b) {
     a.Swap(&b);
@@ -3214,7 +3378,7 @@ class PublishUnixEpochTimeRequest final :
                &_PublishUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   friend void swap(PublishUnixEpochTimeRequest& a, PublishUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -3357,7 +3521,7 @@ class PublishPositionResponse final :
                &_PublishPositionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(PublishPositionResponse& a, PublishPositionResponse& b) {
     a.Swap(&b);
@@ -3509,7 +3673,7 @@ class PublishHomeResponse final :
                &_PublishHomeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    20;
 
   friend void swap(PublishHomeResponse& a, PublishHomeResponse& b) {
     a.Swap(&b);
@@ -3661,7 +3825,7 @@ class PublishSysStatusResponse final :
                &_PublishSysStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   friend void swap(PublishSysStatusResponse& a, PublishSysStatusResponse& b) {
     a.Swap(&b);
@@ -3813,7 +3977,7 @@ class PublishExtendedSysStateResponse final :
                &_PublishExtendedSysStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    22;
 
   friend void swap(PublishExtendedSysStateResponse& a, PublishExtendedSysStateResponse& b) {
     a.Swap(&b);
@@ -3965,7 +4129,7 @@ class PublishRawGpsResponse final :
                &_PublishRawGpsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    23;
 
   friend void swap(PublishRawGpsResponse& a, PublishRawGpsResponse& b) {
     a.Swap(&b);
@@ -4117,7 +4281,7 @@ class PublishBatteryResponse final :
                &_PublishBatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    24;
 
   friend void swap(PublishBatteryResponse& a, PublishBatteryResponse& b) {
     a.Swap(&b);
@@ -4269,7 +4433,7 @@ class PublishCellularStatusResponse final :
                &_PublishCellularStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    25;
 
   friend void swap(PublishCellularStatusResponse& a, PublishCellularStatusResponse& b) {
     a.Swap(&b);
@@ -4373,6 +4537,158 @@ class PublishCellularStatusResponse final :
 };
 // -------------------------------------------------------------------
 
+class PublishModemInfoResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishModemInfoResponse) */ {
+ public:
+  inline PublishModemInfoResponse() : PublishModemInfoResponse(nullptr) {}
+  ~PublishModemInfoResponse() override;
+  explicit PROTOBUF_CONSTEXPR PublishModemInfoResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PublishModemInfoResponse(const PublishModemInfoResponse& from);
+  PublishModemInfoResponse(PublishModemInfoResponse&& from) noexcept
+    : PublishModemInfoResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline PublishModemInfoResponse& operator=(const PublishModemInfoResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishModemInfoResponse& operator=(PublishModemInfoResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishModemInfoResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishModemInfoResponse* internal_default_instance() {
+    return reinterpret_cast<const PublishModemInfoResponse*>(
+               &_PublishModemInfoResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    26;
+
+  friend void swap(PublishModemInfoResponse& a, PublishModemInfoResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PublishModemInfoResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishModemInfoResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishModemInfoResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PublishModemInfoResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PublishModemInfoResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const PublishModemInfoResponse& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PublishModemInfoResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.PublishModemInfoResponse";
+  }
+  protected:
+  explicit PublishModemInfoResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTelemetryServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+  bool has_telemetry_server_result() const;
+  private:
+  bool _internal_has_telemetry_server_result() const;
+  public:
+  void clear_telemetry_server_result();
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& telemetry_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::TelemetryServerResult* release_telemetry_server_result();
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* mutable_telemetry_server_result();
+  void set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result);
+  private:
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& _internal_telemetry_server_result() const;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _internal_mutable_telemetry_server_result();
+  public:
+  void unsafe_arena_set_allocated_telemetry_server_result(
+      ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result);
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* unsafe_arena_release_telemetry_server_result();
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishModemInfoResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PublishStatusTextResponse final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishStatusTextResponse) */ {
  public:
@@ -4421,7 +4737,7 @@ class PublishStatusTextResponse final :
                &_PublishStatusTextResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    27;
 
   friend void swap(PublishStatusTextResponse& a, PublishStatusTextResponse& b) {
     a.Swap(&b);
@@ -4573,7 +4889,7 @@ class PublishOdometryResponse final :
                &_PublishOdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    28;
 
   friend void swap(PublishOdometryResponse& a, PublishOdometryResponse& b) {
     a.Swap(&b);
@@ -4725,7 +5041,7 @@ class PublishPositionVelocityNedResponse final :
                &_PublishPositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    29;
 
   friend void swap(PublishPositionVelocityNedResponse& a, PublishPositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -4877,7 +5193,7 @@ class PublishGroundTruthResponse final :
                &_PublishGroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    30;
 
   friend void swap(PublishGroundTruthResponse& a, PublishGroundTruthResponse& b) {
     a.Swap(&b);
@@ -5029,7 +5345,7 @@ class PublishImuResponse final :
                &_PublishImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    31;
 
   friend void swap(PublishImuResponse& a, PublishImuResponse& b) {
     a.Swap(&b);
@@ -5181,7 +5497,7 @@ class PublishScaledImuResponse final :
                &_PublishScaledImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    32;
 
   friend void swap(PublishScaledImuResponse& a, PublishScaledImuResponse& b) {
     a.Swap(&b);
@@ -5333,7 +5649,7 @@ class PublishRawImuResponse final :
                &_PublishRawImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    33;
 
   friend void swap(PublishRawImuResponse& a, PublishRawImuResponse& b) {
     a.Swap(&b);
@@ -5485,7 +5801,7 @@ class PublishUnixEpochTimeResponse final :
                &_PublishUnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    34;
 
   friend void swap(PublishUnixEpochTimeResponse& a, PublishUnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -5637,7 +5953,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    35;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -5813,7 +6129,7 @@ class Heading final :
                &_Heading_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    36;
 
   friend void swap(Heading& a, Heading& b) {
     a.Swap(&b);
@@ -5956,7 +6272,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    37;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -6143,7 +6459,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    38;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -6319,7 +6635,7 @@ class AngularVelocityBody final :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    39;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -6484,7 +6800,7 @@ class GpsInfo final :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    40;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -6638,7 +6954,7 @@ class RawGps final :
                &_RawGps_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    41;
 
   friend void swap(RawGps& a, RawGps& b) {
     a.Swap(&b);
@@ -6924,7 +7240,7 @@ class Battery final :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    42;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -7078,7 +7394,7 @@ class RcStatus final :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    43;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -7243,7 +7559,7 @@ class CellularStatus final :
                &_CellularStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    44;
 
   friend void swap(CellularStatus& a, CellularStatus& b) {
     a.Swap(&b);
@@ -7314,47 +7630,40 @@ class CellularStatus final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kCellIdFieldNumber = 14,
-    kIdFieldNumber = 1,
-    kStatusFieldNumber = 2,
-    kFailureReasonFieldNumber = 3,
-    kTypeFieldNumber = 4,
-    kQualityFieldNumber = 5,
-    kMccFieldNumber = 6,
-    kMncFieldNumber = 7,
-    kLacFieldNumber = 8,
-    kSlotNumberFieldNumber = 9,
-    kRxLevelFieldNumber = 10,
-    kSignalToNoiseFieldNumber = 11,
-    kBandNumberFieldNumber = 12,
-    kArfcnFieldNumber = 13,
-    kDownloadRateFieldNumber = 15,
-    kUploadRateFieldNumber = 16,
+    kCellTowerIdFieldNumber = 18,
+    kStatusFieldNumber = 1,
+    kFailureReasonFieldNumber = 2,
+    kTypeFieldNumber = 3,
+    kQualityFieldNumber = 4,
+    kMccFieldNumber = 5,
+    kMncFieldNumber = 6,
+    kLacFieldNumber = 7,
+    kBandNumberFieldNumber = 8,
+    kBandFrequencyFieldNumber = 9,
+    kChannelNumberFieldNumber = 10,
+    kRxLevelFieldNumber = 11,
+    kTxLevelFieldNumber = 12,
+    kRxQualityFieldNumber = 13,
+    kLinkTxRateFieldNumber = 14,
+    kLinkRxRateFieldNumber = 15,
+    kBitErrorRateFieldNumber = 16,
+    kInstanceNumberFieldNumber = 17,
   };
-  // string cell_id = 14;
-  void clear_cell_id();
-  const std::string& cell_id() const;
+  // string cell_tower_id = 18;
+  void clear_cell_tower_id();
+  const std::string& cell_tower_id() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_cell_id(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_cell_id();
-  PROTOBUF_NODISCARD std::string* release_cell_id();
-  void set_allocated_cell_id(std::string* cell_id);
+  void set_cell_tower_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_cell_tower_id();
+  PROTOBUF_NODISCARD std::string* release_cell_tower_id();
+  void set_allocated_cell_tower_id(std::string* cell_tower_id);
   private:
-  const std::string& _internal_cell_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cell_id(const std::string& value);
-  std::string* _internal_mutable_cell_id();
+  const std::string& _internal_cell_tower_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cell_tower_id(const std::string& value);
+  std::string* _internal_mutable_cell_tower_id();
   public:
 
-  // uint32 id = 1;
-  void clear_id();
-  uint32_t id() const;
-  void set_id(uint32_t value);
-  private:
-  uint32_t _internal_id() const;
-  void _internal_set_id(uint32_t value);
-  public:
-
-  // uint32 status = 2;
+  // uint32 status = 1;
   void clear_status();
   uint32_t status() const;
   void set_status(uint32_t value);
@@ -7363,7 +7672,7 @@ class CellularStatus final :
   void _internal_set_status(uint32_t value);
   public:
 
-  // uint32 failure_reason = 3;
+  // uint32 failure_reason = 2;
   void clear_failure_reason();
   uint32_t failure_reason() const;
   void set_failure_reason(uint32_t value);
@@ -7372,7 +7681,7 @@ class CellularStatus final :
   void _internal_set_failure_reason(uint32_t value);
   public:
 
-  // uint32 type = 4;
+  // uint32 type = 3;
   void clear_type();
   uint32_t type() const;
   void set_type(uint32_t value);
@@ -7381,7 +7690,7 @@ class CellularStatus final :
   void _internal_set_type(uint32_t value);
   public:
 
-  // uint32 quality = 5;
+  // uint32 quality = 4;
   void clear_quality();
   uint32_t quality() const;
   void set_quality(uint32_t value);
@@ -7390,7 +7699,7 @@ class CellularStatus final :
   void _internal_set_quality(uint32_t value);
   public:
 
-  // uint32 mcc = 6;
+  // uint32 mcc = 5;
   void clear_mcc();
   uint32_t mcc() const;
   void set_mcc(uint32_t value);
@@ -7399,7 +7708,7 @@ class CellularStatus final :
   void _internal_set_mcc(uint32_t value);
   public:
 
-  // uint32 mnc = 7;
+  // uint32 mnc = 6;
   void clear_mnc();
   uint32_t mnc() const;
   void set_mnc(uint32_t value);
@@ -7408,7 +7717,7 @@ class CellularStatus final :
   void _internal_set_mnc(uint32_t value);
   public:
 
-  // uint32 lac = 8;
+  // uint32 lac = 7;
   void clear_lac();
   uint32_t lac() const;
   void set_lac(uint32_t value);
@@ -7417,34 +7726,7 @@ class CellularStatus final :
   void _internal_set_lac(uint32_t value);
   public:
 
-  // uint32 slot_number = 9;
-  void clear_slot_number();
-  uint32_t slot_number() const;
-  void set_slot_number(uint32_t value);
-  private:
-  uint32_t _internal_slot_number() const;
-  void _internal_set_slot_number(uint32_t value);
-  public:
-
-  // uint32 rx_level = 10;
-  void clear_rx_level();
-  uint32_t rx_level() const;
-  void set_rx_level(uint32_t value);
-  private:
-  uint32_t _internal_rx_level() const;
-  void _internal_set_rx_level(uint32_t value);
-  public:
-
-  // uint32 signal_to_noise = 11;
-  void clear_signal_to_noise();
-  uint32_t signal_to_noise() const;
-  void set_signal_to_noise(uint32_t value);
-  private:
-  uint32_t _internal_signal_to_noise() const;
-  void _internal_set_signal_to_noise(uint32_t value);
-  public:
-
-  // uint32 band_number = 12;
+  // uint32 band_number = 8;
   void clear_band_number();
   uint32_t band_number() const;
   void set_band_number(uint32_t value);
@@ -7453,31 +7735,85 @@ class CellularStatus final :
   void _internal_set_band_number(uint32_t value);
   public:
 
-  // uint32 arfcn = 13;
-  void clear_arfcn();
-  uint32_t arfcn() const;
-  void set_arfcn(uint32_t value);
+  // float band_frequency = 9;
+  void clear_band_frequency();
+  float band_frequency() const;
+  void set_band_frequency(float value);
   private:
-  uint32_t _internal_arfcn() const;
-  void _internal_set_arfcn(uint32_t value);
+  float _internal_band_frequency() const;
+  void _internal_set_band_frequency(float value);
   public:
 
-  // float download_rate = 15;
-  void clear_download_rate();
-  float download_rate() const;
-  void set_download_rate(float value);
+  // uint32 channel_number = 10;
+  void clear_channel_number();
+  uint32_t channel_number() const;
+  void set_channel_number(uint32_t value);
   private:
-  float _internal_download_rate() const;
-  void _internal_set_download_rate(float value);
+  uint32_t _internal_channel_number() const;
+  void _internal_set_channel_number(uint32_t value);
   public:
 
-  // float upload_rate = 16;
-  void clear_upload_rate();
-  float upload_rate() const;
-  void set_upload_rate(float value);
+  // float rx_level = 11;
+  void clear_rx_level();
+  float rx_level() const;
+  void set_rx_level(float value);
   private:
-  float _internal_upload_rate() const;
-  void _internal_set_upload_rate(float value);
+  float _internal_rx_level() const;
+  void _internal_set_rx_level(float value);
+  public:
+
+  // float tx_level = 12;
+  void clear_tx_level();
+  float tx_level() const;
+  void set_tx_level(float value);
+  private:
+  float _internal_tx_level() const;
+  void _internal_set_tx_level(float value);
+  public:
+
+  // float rx_quality = 13;
+  void clear_rx_quality();
+  float rx_quality() const;
+  void set_rx_quality(float value);
+  private:
+  float _internal_rx_quality() const;
+  void _internal_set_rx_quality(float value);
+  public:
+
+  // uint32 link_tx_rate = 14;
+  void clear_link_tx_rate();
+  uint32_t link_tx_rate() const;
+  void set_link_tx_rate(uint32_t value);
+  private:
+  uint32_t _internal_link_tx_rate() const;
+  void _internal_set_link_tx_rate(uint32_t value);
+  public:
+
+  // uint32 link_rx_rate = 15;
+  void clear_link_rx_rate();
+  uint32_t link_rx_rate() const;
+  void set_link_rx_rate(uint32_t value);
+  private:
+  uint32_t _internal_link_rx_rate() const;
+  void _internal_set_link_rx_rate(uint32_t value);
+  public:
+
+  // uint32 bit_error_rate = 16;
+  void clear_bit_error_rate();
+  uint32_t bit_error_rate() const;
+  void set_bit_error_rate(uint32_t value);
+  private:
+  uint32_t _internal_bit_error_rate() const;
+  void _internal_set_bit_error_rate(uint32_t value);
+  public:
+
+  // uint32 instance_number = 17;
+  void clear_instance_number();
+  uint32_t instance_number() const;
+  void set_instance_number(uint32_t value);
+  private:
+  uint32_t _internal_instance_number() const;
+  void _internal_set_instance_number(uint32_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.CellularStatus)
@@ -7487,8 +7823,7 @@ class CellularStatus final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cell_id_;
-  uint32_t id_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cell_tower_id_;
   uint32_t status_;
   uint32_t failure_reason_;
   uint32_t type_;
@@ -7496,13 +7831,240 @@ class CellularStatus final :
   uint32_t mcc_;
   uint32_t mnc_;
   uint32_t lac_;
-  uint32_t slot_number_;
-  uint32_t rx_level_;
-  uint32_t signal_to_noise_;
   uint32_t band_number_;
-  uint32_t arfcn_;
-  float download_rate_;
-  float upload_rate_;
+  float band_frequency_;
+  uint32_t channel_number_;
+  float rx_level_;
+  float tx_level_;
+  float rx_quality_;
+  uint32_t link_tx_rate_;
+  uint32_t link_rx_rate_;
+  uint32_t bit_error_rate_;
+  uint32_t instance_number_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ModemInfo final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.ModemInfo) */ {
+ public:
+  inline ModemInfo() : ModemInfo(nullptr) {}
+  ~ModemInfo() override;
+  explicit PROTOBUF_CONSTEXPR ModemInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  ModemInfo(const ModemInfo& from);
+  ModemInfo(ModemInfo&& from) noexcept
+    : ModemInfo() {
+    *this = ::std::move(from);
+  }
+
+  inline ModemInfo& operator=(const ModemInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ModemInfo& operator=(ModemInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ModemInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ModemInfo* internal_default_instance() {
+    return reinterpret_cast<const ModemInfo*>(
+               &_ModemInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    45;
+
+  friend void swap(ModemInfo& a, ModemInfo& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ModemInfo* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ModemInfo* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ModemInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ModemInfo>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const ModemInfo& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const ModemInfo& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ModemInfo* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry_server.ModemInfo";
+  }
+  protected:
+  explicit ModemInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kModemIdFieldNumber = 5,
+    kFirmwareVersionFieldNumber = 6,
+    kModemModelNameFieldNumber = 7,
+    kImeiFieldNumber = 2,
+    kIccidFieldNumber = 3,
+    kImsiFieldNumber = 4,
+    kInstanceNumberFieldNumber = 1,
+  };
+  // string modem_id = 5;
+  void clear_modem_id();
+  const std::string& modem_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_modem_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_modem_id();
+  PROTOBUF_NODISCARD std::string* release_modem_id();
+  void set_allocated_modem_id(std::string* modem_id);
+  private:
+  const std::string& _internal_modem_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_modem_id(const std::string& value);
+  std::string* _internal_mutable_modem_id();
+  public:
+
+  // string firmware_version = 6;
+  void clear_firmware_version();
+  const std::string& firmware_version() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_firmware_version(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_firmware_version();
+  PROTOBUF_NODISCARD std::string* release_firmware_version();
+  void set_allocated_firmware_version(std::string* firmware_version);
+  private:
+  const std::string& _internal_firmware_version() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_firmware_version(const std::string& value);
+  std::string* _internal_mutable_firmware_version();
+  public:
+
+  // string modem_model_name = 7;
+  void clear_modem_model_name();
+  const std::string& modem_model_name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_modem_model_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_modem_model_name();
+  PROTOBUF_NODISCARD std::string* release_modem_model_name();
+  void set_allocated_modem_model_name(std::string* modem_model_name);
+  private:
+  const std::string& _internal_modem_model_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_modem_model_name(const std::string& value);
+  std::string* _internal_mutable_modem_model_name();
+  public:
+
+  // uint64 imei = 2;
+  void clear_imei();
+  uint64_t imei() const;
+  void set_imei(uint64_t value);
+  private:
+  uint64_t _internal_imei() const;
+  void _internal_set_imei(uint64_t value);
+  public:
+
+  // uint64 iccid = 3;
+  void clear_iccid();
+  uint64_t iccid() const;
+  void set_iccid(uint64_t value);
+  private:
+  uint64_t _internal_iccid() const;
+  void _internal_set_iccid(uint64_t value);
+  public:
+
+  // uint64 imsi = 4;
+  void clear_imsi();
+  uint64_t imsi() const;
+  void set_imsi(uint64_t value);
+  private:
+  uint64_t _internal_imsi() const;
+  void _internal_set_imsi(uint64_t value);
+  public:
+
+  // uint32 instance_number = 1;
+  void clear_instance_number();
+  uint32_t instance_number() const;
+  void set_instance_number(uint32_t value);
+  private:
+  uint32_t _internal_instance_number() const;
+  void _internal_set_instance_number(uint32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.ModemInfo)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr modem_id_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr firmware_version_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr modem_model_name_;
+  uint64_t imei_;
+  uint64_t iccid_;
+  uint64_t imsi_;
+  uint32_t instance_number_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
 };
@@ -7556,7 +8118,7 @@ class StatusText final :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    46;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -7715,7 +8277,7 @@ class ActuatorControlTarget final :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    47;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -7882,7 +8444,7 @@ class ActuatorOutputStatus final :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    48;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -8049,7 +8611,7 @@ class Covariance final :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    49;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -8205,7 +8767,7 @@ class VelocityBody final :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    50;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -8370,7 +8932,7 @@ class PositionBody final :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    51;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -8535,7 +9097,7 @@ class Odometry final :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    52;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -8854,7 +9416,7 @@ class DistanceSensor final :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    53;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -9019,7 +9581,7 @@ class ScaledPressure final :
                &_ScaledPressure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    54;
 
   friend void swap(ScaledPressure& a, ScaledPressure& b) {
     a.Swap(&b);
@@ -9206,7 +9768,7 @@ class PositionNed final :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    55;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -9371,7 +9933,7 @@ class VelocityNed final :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    56;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -9536,7 +10098,7 @@ class PositionVelocityNed final :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    57;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -9708,7 +10270,7 @@ class GroundTruth final :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    58;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -9873,7 +10435,7 @@ class FixedwingMetrics final :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    59;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -10038,7 +10600,7 @@ class AccelerationFrd final :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    60;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -10203,7 +10765,7 @@ class AngularVelocityFrd final :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    61;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -10368,7 +10930,7 @@ class MagneticFieldFrd final :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    59;
+    62;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -10533,7 +11095,7 @@ class Imu final :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    60;
+    63;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -10747,7 +11309,7 @@ class TelemetryServerResult final :
                &_TelemetryServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    61;
+    64;
 
   friend void swap(TelemetryServerResult& a, TelemetryServerResult& b) {
     a.Swap(&b);
@@ -11929,6 +12491,100 @@ inline void PublishCellularStatusRequest::set_allocated_cellular_status(::mavsdk
   }
   cellular_status_ = cellular_status;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishCellularStatusRequest.cellular_status)
+}
+
+// -------------------------------------------------------------------
+
+// PublishModemInfoRequest
+
+// .mavsdk.rpc.telemetry_server.ModemInfo modem_info = 1;
+inline bool PublishModemInfoRequest::_internal_has_modem_info() const {
+  return this != internal_default_instance() && modem_info_ != nullptr;
+}
+inline bool PublishModemInfoRequest::has_modem_info() const {
+  return _internal_has_modem_info();
+}
+inline void PublishModemInfoRequest::clear_modem_info() {
+  if (GetArenaForAllocation() == nullptr && modem_info_ != nullptr) {
+    delete modem_info_;
+  }
+  modem_info_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry_server::ModemInfo& PublishModemInfoRequest::_internal_modem_info() const {
+  const ::mavsdk::rpc::telemetry_server::ModemInfo* p = modem_info_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::ModemInfo&>(
+      ::mavsdk::rpc::telemetry_server::_ModemInfo_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::ModemInfo& PublishModemInfoRequest::modem_info() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishModemInfoRequest.modem_info)
+  return _internal_modem_info();
+}
+inline void PublishModemInfoRequest::unsafe_arena_set_allocated_modem_info(
+    ::mavsdk::rpc::telemetry_server::ModemInfo* modem_info) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(modem_info_);
+  }
+  modem_info_ = modem_info;
+  if (modem_info) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishModemInfoRequest.modem_info)
+}
+inline ::mavsdk::rpc::telemetry_server::ModemInfo* PublishModemInfoRequest::release_modem_info() {
+  
+  ::mavsdk::rpc::telemetry_server::ModemInfo* temp = modem_info_;
+  modem_info_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::ModemInfo* PublishModemInfoRequest::unsafe_arena_release_modem_info() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishModemInfoRequest.modem_info)
+  
+  ::mavsdk::rpc::telemetry_server::ModemInfo* temp = modem_info_;
+  modem_info_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::ModemInfo* PublishModemInfoRequest::_internal_mutable_modem_info() {
+  
+  if (modem_info_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry_server::ModemInfo>(GetArenaForAllocation());
+    modem_info_ = p;
+  }
+  return modem_info_;
+}
+inline ::mavsdk::rpc::telemetry_server::ModemInfo* PublishModemInfoRequest::mutable_modem_info() {
+  ::mavsdk::rpc::telemetry_server::ModemInfo* _msg = _internal_mutable_modem_info();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishModemInfoRequest.modem_info)
+  return _msg;
+}
+inline void PublishModemInfoRequest::set_allocated_modem_info(::mavsdk::rpc::telemetry_server::ModemInfo* modem_info) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete modem_info_;
+  }
+  if (modem_info) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(modem_info);
+    if (message_arena != submessage_arena) {
+      modem_info = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, modem_info, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  modem_info_ = modem_info;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishModemInfoRequest.modem_info)
 }
 
 // -------------------------------------------------------------------
@@ -13363,6 +14019,100 @@ inline void PublishCellularStatusResponse::set_allocated_telemetry_server_result
   }
   telemetry_server_result_ = telemetry_server_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishCellularStatusResponse.telemetry_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// PublishModemInfoResponse
+
+// .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+inline bool PublishModemInfoResponse::_internal_has_telemetry_server_result() const {
+  return this != internal_default_instance() && telemetry_server_result_ != nullptr;
+}
+inline bool PublishModemInfoResponse::has_telemetry_server_result() const {
+  return _internal_has_telemetry_server_result();
+}
+inline void PublishModemInfoResponse::clear_telemetry_server_result() {
+  if (GetArenaForAllocation() == nullptr && telemetry_server_result_ != nullptr) {
+    delete telemetry_server_result_;
+  }
+  telemetry_server_result_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishModemInfoResponse::_internal_telemetry_server_result() const {
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult* p = telemetry_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&>(
+      ::mavsdk::rpc::telemetry_server::_TelemetryServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishModemInfoResponse::telemetry_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishModemInfoResponse.telemetry_server_result)
+  return _internal_telemetry_server_result();
+}
+inline void PublishModemInfoResponse::unsafe_arena_set_allocated_telemetry_server_result(
+    ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(telemetry_server_result_);
+  }
+  telemetry_server_result_ = telemetry_server_result;
+  if (telemetry_server_result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishModemInfoResponse.telemetry_server_result)
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishModemInfoResponse::release_telemetry_server_result() {
+  
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = telemetry_server_result_;
+  telemetry_server_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishModemInfoResponse::unsafe_arena_release_telemetry_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishModemInfoResponse.telemetry_server_result)
+  
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = telemetry_server_result_;
+  telemetry_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishModemInfoResponse::_internal_mutable_telemetry_server_result() {
+  
+  if (telemetry_server_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(GetArenaForAllocation());
+    telemetry_server_result_ = p;
+  }
+  return telemetry_server_result_;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishModemInfoResponse::mutable_telemetry_server_result() {
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _msg = _internal_mutable_telemetry_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishModemInfoResponse.telemetry_server_result)
+  return _msg;
+}
+inline void PublishModemInfoResponse::set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete telemetry_server_result_;
+  }
+  if (telemetry_server_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(telemetry_server_result);
+    if (message_arena != submessage_arena) {
+      telemetry_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, telemetry_server_result, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  telemetry_server_result_ = telemetry_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishModemInfoResponse.telemetry_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -14917,27 +15667,7 @@ inline void RcStatus::set_signal_strength_percent(float value) {
 
 // CellularStatus
 
-// uint32 id = 1;
-inline void CellularStatus::clear_id() {
-  id_ = 0u;
-}
-inline uint32_t CellularStatus::_internal_id() const {
-  return id_;
-}
-inline uint32_t CellularStatus::id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.id)
-  return _internal_id();
-}
-inline void CellularStatus::_internal_set_id(uint32_t value) {
-  
-  id_ = value;
-}
-inline void CellularStatus::set_id(uint32_t value) {
-  _internal_set_id(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.id)
-}
-
-// uint32 status = 2;
+// uint32 status = 1;
 inline void CellularStatus::clear_status() {
   status_ = 0u;
 }
@@ -14957,7 +15687,7 @@ inline void CellularStatus::set_status(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.status)
 }
 
-// uint32 failure_reason = 3;
+// uint32 failure_reason = 2;
 inline void CellularStatus::clear_failure_reason() {
   failure_reason_ = 0u;
 }
@@ -14977,7 +15707,7 @@ inline void CellularStatus::set_failure_reason(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.failure_reason)
 }
 
-// uint32 type = 4;
+// uint32 type = 3;
 inline void CellularStatus::clear_type() {
   type_ = 0u;
 }
@@ -14997,7 +15727,7 @@ inline void CellularStatus::set_type(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.type)
 }
 
-// uint32 quality = 5;
+// uint32 quality = 4;
 inline void CellularStatus::clear_quality() {
   quality_ = 0u;
 }
@@ -15017,7 +15747,7 @@ inline void CellularStatus::set_quality(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.quality)
 }
 
-// uint32 mcc = 6;
+// uint32 mcc = 5;
 inline void CellularStatus::clear_mcc() {
   mcc_ = 0u;
 }
@@ -15037,7 +15767,7 @@ inline void CellularStatus::set_mcc(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.mcc)
 }
 
-// uint32 mnc = 7;
+// uint32 mnc = 6;
 inline void CellularStatus::clear_mnc() {
   mnc_ = 0u;
 }
@@ -15057,7 +15787,7 @@ inline void CellularStatus::set_mnc(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.mnc)
 }
 
-// uint32 lac = 8;
+// uint32 lac = 7;
 inline void CellularStatus::clear_lac() {
   lac_ = 0u;
 }
@@ -15077,67 +15807,7 @@ inline void CellularStatus::set_lac(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.lac)
 }
 
-// uint32 slot_number = 9;
-inline void CellularStatus::clear_slot_number() {
-  slot_number_ = 0u;
-}
-inline uint32_t CellularStatus::_internal_slot_number() const {
-  return slot_number_;
-}
-inline uint32_t CellularStatus::slot_number() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.slot_number)
-  return _internal_slot_number();
-}
-inline void CellularStatus::_internal_set_slot_number(uint32_t value) {
-  
-  slot_number_ = value;
-}
-inline void CellularStatus::set_slot_number(uint32_t value) {
-  _internal_set_slot_number(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.slot_number)
-}
-
-// uint32 rx_level = 10;
-inline void CellularStatus::clear_rx_level() {
-  rx_level_ = 0u;
-}
-inline uint32_t CellularStatus::_internal_rx_level() const {
-  return rx_level_;
-}
-inline uint32_t CellularStatus::rx_level() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.rx_level)
-  return _internal_rx_level();
-}
-inline void CellularStatus::_internal_set_rx_level(uint32_t value) {
-  
-  rx_level_ = value;
-}
-inline void CellularStatus::set_rx_level(uint32_t value) {
-  _internal_set_rx_level(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.rx_level)
-}
-
-// uint32 signal_to_noise = 11;
-inline void CellularStatus::clear_signal_to_noise() {
-  signal_to_noise_ = 0u;
-}
-inline uint32_t CellularStatus::_internal_signal_to_noise() const {
-  return signal_to_noise_;
-}
-inline uint32_t CellularStatus::signal_to_noise() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.signal_to_noise)
-  return _internal_signal_to_noise();
-}
-inline void CellularStatus::_internal_set_signal_to_noise(uint32_t value) {
-  
-  signal_to_noise_ = value;
-}
-inline void CellularStatus::set_signal_to_noise(uint32_t value) {
-  _internal_set_signal_to_noise(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.signal_to_noise)
-}
-
-// uint32 band_number = 12;
+// uint32 band_number = 8;
 inline void CellularStatus::clear_band_number() {
   band_number_ = 0u;
 }
@@ -15157,114 +15827,468 @@ inline void CellularStatus::set_band_number(uint32_t value) {
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.band_number)
 }
 
-// uint32 arfcn = 13;
-inline void CellularStatus::clear_arfcn() {
-  arfcn_ = 0u;
+// float band_frequency = 9;
+inline void CellularStatus::clear_band_frequency() {
+  band_frequency_ = 0;
 }
-inline uint32_t CellularStatus::_internal_arfcn() const {
-  return arfcn_;
+inline float CellularStatus::_internal_band_frequency() const {
+  return band_frequency_;
 }
-inline uint32_t CellularStatus::arfcn() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.arfcn)
-  return _internal_arfcn();
+inline float CellularStatus::band_frequency() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.band_frequency)
+  return _internal_band_frequency();
 }
-inline void CellularStatus::_internal_set_arfcn(uint32_t value) {
+inline void CellularStatus::_internal_set_band_frequency(float value) {
   
-  arfcn_ = value;
+  band_frequency_ = value;
 }
-inline void CellularStatus::set_arfcn(uint32_t value) {
-  _internal_set_arfcn(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.arfcn)
+inline void CellularStatus::set_band_frequency(float value) {
+  _internal_set_band_frequency(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.band_frequency)
 }
 
-// string cell_id = 14;
-inline void CellularStatus::clear_cell_id() {
-  cell_id_.ClearToEmpty();
+// uint32 channel_number = 10;
+inline void CellularStatus::clear_channel_number() {
+  channel_number_ = 0u;
 }
-inline const std::string& CellularStatus::cell_id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
-  return _internal_cell_id();
+inline uint32_t CellularStatus::_internal_channel_number() const {
+  return channel_number_;
+}
+inline uint32_t CellularStatus::channel_number() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.channel_number)
+  return _internal_channel_number();
+}
+inline void CellularStatus::_internal_set_channel_number(uint32_t value) {
+  
+  channel_number_ = value;
+}
+inline void CellularStatus::set_channel_number(uint32_t value) {
+  _internal_set_channel_number(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.channel_number)
+}
+
+// float rx_level = 11;
+inline void CellularStatus::clear_rx_level() {
+  rx_level_ = 0;
+}
+inline float CellularStatus::_internal_rx_level() const {
+  return rx_level_;
+}
+inline float CellularStatus::rx_level() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.rx_level)
+  return _internal_rx_level();
+}
+inline void CellularStatus::_internal_set_rx_level(float value) {
+  
+  rx_level_ = value;
+}
+inline void CellularStatus::set_rx_level(float value) {
+  _internal_set_rx_level(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.rx_level)
+}
+
+// float tx_level = 12;
+inline void CellularStatus::clear_tx_level() {
+  tx_level_ = 0;
+}
+inline float CellularStatus::_internal_tx_level() const {
+  return tx_level_;
+}
+inline float CellularStatus::tx_level() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.tx_level)
+  return _internal_tx_level();
+}
+inline void CellularStatus::_internal_set_tx_level(float value) {
+  
+  tx_level_ = value;
+}
+inline void CellularStatus::set_tx_level(float value) {
+  _internal_set_tx_level(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.tx_level)
+}
+
+// float rx_quality = 13;
+inline void CellularStatus::clear_rx_quality() {
+  rx_quality_ = 0;
+}
+inline float CellularStatus::_internal_rx_quality() const {
+  return rx_quality_;
+}
+inline float CellularStatus::rx_quality() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.rx_quality)
+  return _internal_rx_quality();
+}
+inline void CellularStatus::_internal_set_rx_quality(float value) {
+  
+  rx_quality_ = value;
+}
+inline void CellularStatus::set_rx_quality(float value) {
+  _internal_set_rx_quality(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.rx_quality)
+}
+
+// uint32 link_tx_rate = 14;
+inline void CellularStatus::clear_link_tx_rate() {
+  link_tx_rate_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_link_tx_rate() const {
+  return link_tx_rate_;
+}
+inline uint32_t CellularStatus::link_tx_rate() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.link_tx_rate)
+  return _internal_link_tx_rate();
+}
+inline void CellularStatus::_internal_set_link_tx_rate(uint32_t value) {
+  
+  link_tx_rate_ = value;
+}
+inline void CellularStatus::set_link_tx_rate(uint32_t value) {
+  _internal_set_link_tx_rate(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.link_tx_rate)
+}
+
+// uint32 link_rx_rate = 15;
+inline void CellularStatus::clear_link_rx_rate() {
+  link_rx_rate_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_link_rx_rate() const {
+  return link_rx_rate_;
+}
+inline uint32_t CellularStatus::link_rx_rate() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.link_rx_rate)
+  return _internal_link_rx_rate();
+}
+inline void CellularStatus::_internal_set_link_rx_rate(uint32_t value) {
+  
+  link_rx_rate_ = value;
+}
+inline void CellularStatus::set_link_rx_rate(uint32_t value) {
+  _internal_set_link_rx_rate(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.link_rx_rate)
+}
+
+// uint32 bit_error_rate = 16;
+inline void CellularStatus::clear_bit_error_rate() {
+  bit_error_rate_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_bit_error_rate() const {
+  return bit_error_rate_;
+}
+inline uint32_t CellularStatus::bit_error_rate() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.bit_error_rate)
+  return _internal_bit_error_rate();
+}
+inline void CellularStatus::_internal_set_bit_error_rate(uint32_t value) {
+  
+  bit_error_rate_ = value;
+}
+inline void CellularStatus::set_bit_error_rate(uint32_t value) {
+  _internal_set_bit_error_rate(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.bit_error_rate)
+}
+
+// uint32 instance_number = 17;
+inline void CellularStatus::clear_instance_number() {
+  instance_number_ = 0u;
+}
+inline uint32_t CellularStatus::_internal_instance_number() const {
+  return instance_number_;
+}
+inline uint32_t CellularStatus::instance_number() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.instance_number)
+  return _internal_instance_number();
+}
+inline void CellularStatus::_internal_set_instance_number(uint32_t value) {
+  
+  instance_number_ = value;
+}
+inline void CellularStatus::set_instance_number(uint32_t value) {
+  _internal_set_instance_number(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.instance_number)
+}
+
+// string cell_tower_id = 18;
+inline void CellularStatus::clear_cell_tower_id() {
+  cell_tower_id_.ClearToEmpty();
+}
+inline const std::string& CellularStatus::cell_tower_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.cell_tower_id)
+  return _internal_cell_tower_id();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CellularStatus::set_cell_id(ArgT0&& arg0, ArgT... args) {
+void CellularStatus::set_cell_tower_id(ArgT0&& arg0, ArgT... args) {
  
- cell_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+ cell_tower_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.cell_tower_id)
 }
-inline std::string* CellularStatus::mutable_cell_id() {
-  std::string* _s = _internal_mutable_cell_id();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+inline std::string* CellularStatus::mutable_cell_tower_id() {
+  std::string* _s = _internal_mutable_cell_tower_id();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.CellularStatus.cell_tower_id)
   return _s;
 }
-inline const std::string& CellularStatus::_internal_cell_id() const {
-  return cell_id_.Get();
+inline const std::string& CellularStatus::_internal_cell_tower_id() const {
+  return cell_tower_id_.Get();
 }
-inline void CellularStatus::_internal_set_cell_id(const std::string& value) {
+inline void CellularStatus::_internal_set_cell_tower_id(const std::string& value) {
   
-  cell_id_.Set(value, GetArenaForAllocation());
+  cell_tower_id_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CellularStatus::_internal_mutable_cell_id() {
+inline std::string* CellularStatus::_internal_mutable_cell_tower_id() {
   
-  return cell_id_.Mutable(GetArenaForAllocation());
+  return cell_tower_id_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CellularStatus::release_cell_id() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
-  return cell_id_.Release();
+inline std::string* CellularStatus::release_cell_tower_id() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.CellularStatus.cell_tower_id)
+  return cell_tower_id_.Release();
 }
-inline void CellularStatus::set_allocated_cell_id(std::string* cell_id) {
-  if (cell_id != nullptr) {
+inline void CellularStatus::set_allocated_cell_tower_id(std::string* cell_tower_id) {
+  if (cell_tower_id != nullptr) {
     
   } else {
     
   }
-  cell_id_.SetAllocated(cell_id, GetArenaForAllocation());
+  cell_tower_id_.SetAllocated(cell_tower_id, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (cell_id_.IsDefault()) {
-    cell_id_.Set("", GetArenaForAllocation());
+  if (cell_tower_id_.IsDefault()) {
+    cell_tower_id_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.CellularStatus.cell_id)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.CellularStatus.cell_tower_id)
 }
 
-// float download_rate = 15;
-inline void CellularStatus::clear_download_rate() {
-  download_rate_ = 0;
+// -------------------------------------------------------------------
+
+// ModemInfo
+
+// uint32 instance_number = 1;
+inline void ModemInfo::clear_instance_number() {
+  instance_number_ = 0u;
 }
-inline float CellularStatus::_internal_download_rate() const {
-  return download_rate_;
+inline uint32_t ModemInfo::_internal_instance_number() const {
+  return instance_number_;
 }
-inline float CellularStatus::download_rate() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.download_rate)
-  return _internal_download_rate();
+inline uint32_t ModemInfo::instance_number() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.ModemInfo.instance_number)
+  return _internal_instance_number();
 }
-inline void CellularStatus::_internal_set_download_rate(float value) {
+inline void ModemInfo::_internal_set_instance_number(uint32_t value) {
   
-  download_rate_ = value;
+  instance_number_ = value;
 }
-inline void CellularStatus::set_download_rate(float value) {
-  _internal_set_download_rate(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.download_rate)
+inline void ModemInfo::set_instance_number(uint32_t value) {
+  _internal_set_instance_number(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.ModemInfo.instance_number)
 }
 
-// float upload_rate = 16;
-inline void CellularStatus::clear_upload_rate() {
-  upload_rate_ = 0;
+// uint64 imei = 2;
+inline void ModemInfo::clear_imei() {
+  imei_ = uint64_t{0u};
 }
-inline float CellularStatus::_internal_upload_rate() const {
-  return upload_rate_;
+inline uint64_t ModemInfo::_internal_imei() const {
+  return imei_;
 }
-inline float CellularStatus::upload_rate() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.CellularStatus.upload_rate)
-  return _internal_upload_rate();
+inline uint64_t ModemInfo::imei() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.ModemInfo.imei)
+  return _internal_imei();
 }
-inline void CellularStatus::_internal_set_upload_rate(float value) {
+inline void ModemInfo::_internal_set_imei(uint64_t value) {
   
-  upload_rate_ = value;
+  imei_ = value;
 }
-inline void CellularStatus::set_upload_rate(float value) {
-  _internal_set_upload_rate(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.CellularStatus.upload_rate)
+inline void ModemInfo::set_imei(uint64_t value) {
+  _internal_set_imei(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.ModemInfo.imei)
+}
+
+// uint64 iccid = 3;
+inline void ModemInfo::clear_iccid() {
+  iccid_ = uint64_t{0u};
+}
+inline uint64_t ModemInfo::_internal_iccid() const {
+  return iccid_;
+}
+inline uint64_t ModemInfo::iccid() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.ModemInfo.iccid)
+  return _internal_iccid();
+}
+inline void ModemInfo::_internal_set_iccid(uint64_t value) {
+  
+  iccid_ = value;
+}
+inline void ModemInfo::set_iccid(uint64_t value) {
+  _internal_set_iccid(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.ModemInfo.iccid)
+}
+
+// uint64 imsi = 4;
+inline void ModemInfo::clear_imsi() {
+  imsi_ = uint64_t{0u};
+}
+inline uint64_t ModemInfo::_internal_imsi() const {
+  return imsi_;
+}
+inline uint64_t ModemInfo::imsi() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.ModemInfo.imsi)
+  return _internal_imsi();
+}
+inline void ModemInfo::_internal_set_imsi(uint64_t value) {
+  
+  imsi_ = value;
+}
+inline void ModemInfo::set_imsi(uint64_t value) {
+  _internal_set_imsi(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.ModemInfo.imsi)
+}
+
+// string modem_id = 5;
+inline void ModemInfo::clear_modem_id() {
+  modem_id_.ClearToEmpty();
+}
+inline const std::string& ModemInfo::modem_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.ModemInfo.modem_id)
+  return _internal_modem_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void ModemInfo::set_modem_id(ArgT0&& arg0, ArgT... args) {
+ 
+ modem_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.ModemInfo.modem_id)
+}
+inline std::string* ModemInfo::mutable_modem_id() {
+  std::string* _s = _internal_mutable_modem_id();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.ModemInfo.modem_id)
+  return _s;
+}
+inline const std::string& ModemInfo::_internal_modem_id() const {
+  return modem_id_.Get();
+}
+inline void ModemInfo::_internal_set_modem_id(const std::string& value) {
+  
+  modem_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* ModemInfo::_internal_mutable_modem_id() {
+  
+  return modem_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* ModemInfo::release_modem_id() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.ModemInfo.modem_id)
+  return modem_id_.Release();
+}
+inline void ModemInfo::set_allocated_modem_id(std::string* modem_id) {
+  if (modem_id != nullptr) {
+    
+  } else {
+    
+  }
+  modem_id_.SetAllocated(modem_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (modem_id_.IsDefault()) {
+    modem_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.ModemInfo.modem_id)
+}
+
+// string firmware_version = 6;
+inline void ModemInfo::clear_firmware_version() {
+  firmware_version_.ClearToEmpty();
+}
+inline const std::string& ModemInfo::firmware_version() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.ModemInfo.firmware_version)
+  return _internal_firmware_version();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void ModemInfo::set_firmware_version(ArgT0&& arg0, ArgT... args) {
+ 
+ firmware_version_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.ModemInfo.firmware_version)
+}
+inline std::string* ModemInfo::mutable_firmware_version() {
+  std::string* _s = _internal_mutable_firmware_version();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.ModemInfo.firmware_version)
+  return _s;
+}
+inline const std::string& ModemInfo::_internal_firmware_version() const {
+  return firmware_version_.Get();
+}
+inline void ModemInfo::_internal_set_firmware_version(const std::string& value) {
+  
+  firmware_version_.Set(value, GetArenaForAllocation());
+}
+inline std::string* ModemInfo::_internal_mutable_firmware_version() {
+  
+  return firmware_version_.Mutable(GetArenaForAllocation());
+}
+inline std::string* ModemInfo::release_firmware_version() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.ModemInfo.firmware_version)
+  return firmware_version_.Release();
+}
+inline void ModemInfo::set_allocated_firmware_version(std::string* firmware_version) {
+  if (firmware_version != nullptr) {
+    
+  } else {
+    
+  }
+  firmware_version_.SetAllocated(firmware_version, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (firmware_version_.IsDefault()) {
+    firmware_version_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.ModemInfo.firmware_version)
+}
+
+// string modem_model_name = 7;
+inline void ModemInfo::clear_modem_model_name() {
+  modem_model_name_.ClearToEmpty();
+}
+inline const std::string& ModemInfo::modem_model_name() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.ModemInfo.modem_model_name)
+  return _internal_modem_model_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void ModemInfo::set_modem_model_name(ArgT0&& arg0, ArgT... args) {
+ 
+ modem_model_name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.ModemInfo.modem_model_name)
+}
+inline std::string* ModemInfo::mutable_modem_model_name() {
+  std::string* _s = _internal_mutable_modem_model_name();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.ModemInfo.modem_model_name)
+  return _s;
+}
+inline const std::string& ModemInfo::_internal_modem_model_name() const {
+  return modem_model_name_.Get();
+}
+inline void ModemInfo::_internal_set_modem_model_name(const std::string& value) {
+  
+  modem_model_name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* ModemInfo::_internal_mutable_modem_model_name() {
+  
+  return modem_model_name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* ModemInfo::release_modem_model_name() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.ModemInfo.modem_model_name)
+  return modem_model_name_.Release();
+}
+inline void ModemInfo::set_allocated_modem_model_name(std::string* modem_model_name) {
+  if (modem_model_name != nullptr) {
+    
+  } else {
+    
+  }
+  modem_model_name_.SetAllocated(modem_model_name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (modem_model_name_.IsDefault()) {
+    modem_model_name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.ModemInfo.modem_model_name)
 }
 
 // -------------------------------------------------------------------
@@ -17457,6 +18481,12 @@ inline void TelemetryServerResult::set_allocated_result_str(std::string* result_
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -459,22 +459,24 @@ public:
      * @brief Cellular modem status type.
      */
     struct CellularStatus {
-        uint32_t id{}; /**< @brief (actually uint8_t) */
-        uint32_t status{}; /**< @brief (actually uint8_t) */
-        uint32_t failure_reason{}; /**< @brief (actually uint8_t) */
-        uint32_t type{}; /**< @brief(actually uint8_t) */
-        uint32_t quality{}; /**< @brief Signal strength */
-        uint32_t mcc{}; /**< @brief  (actually uint16_t) */
-        uint32_t mnc{}; /**< @brief  (actually uint16_t) */
-        uint32_t lac{}; /**< @brief (actually uint16_t) */
-        uint32_t slot_number{}; /**< @brief(actually uint8_t) */
-        uint32_t rx_level{}; /**< @brief(actually uint8_t) */
-        uint32_t signal_to_noise{}; /**< @brief(actually uint8_t) */
-        uint32_t band_number{}; /**< @brief(actually uint8_t) */
-        uint32_t arfcn{}; /**< @brief */
-        std::string cell_id{}; /**< @brief char[9] */
-        float download_rate{}; /**< @brief */
-        float upload_rate{}; /**< @brief */
+        uint32_t status{}; /**< @brief */
+        uint32_t failure_reason{}; /**< @brief */
+        uint32_t type{}; /**< @brief */
+        uint32_t quality{}; /**< @brief */
+        uint32_t mcc{}; /**< @brief */
+        uint32_t mnc{}; /**< @brief */
+        uint32_t lac{}; /**< @brief */
+        uint32_t band_number{}; /**< @brief */
+        float band_frequency{}; /**< @brief */
+        uint32_t channel_number{}; /**< @brief */
+        float rx_level{}; /**< @brief */
+        float tx_level{}; /**< @brief */
+        float rx_quality{}; /**< @brief */
+        uint32_t link_tx_rate{}; /**< @brief */
+        uint32_t link_rx_rate{}; /**< @brief */
+        uint32_t bit_error_rate{}; /**< @brief */
+        uint32_t instance_number{}; /**< @brief */
+        std::string cell_tower_id{}; /**< @brief */
     };
 
     /**
@@ -492,6 +494,33 @@ public:
      */
     friend std::ostream&
     operator<<(std::ostream& str, Telemetry::CellularStatus const& cellular_status);
+
+    /**
+     * @brief Modem information.
+     */
+    struct ModemInfo {
+        uint32_t instance_number{}; /**< @brief */
+        uint64_t imei{}; /**< @briefUnique Modem International Mobile Equipment Identity Number */
+        uint64_t iccid{}; /**< @briefIntegrated Circuit Card Identification Number of SIM Card */
+        uint64_t imsi{}; /**< @briefCurrent SIM International mobile subscriber identity. */
+        std::string modem_id{}; /**< @brief */
+        std::string firmware_version{}; /**< @briefThe firmware version installed on the modem */
+        std::string modem_model_name{}; /**< @brief */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::ModemInfo` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Telemetry::ModemInfo& lhs, const Telemetry::ModemInfo& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::ModemInfo`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::ModemInfo const& modem_info);
 
     /**
      * @brief StatusText information type.
@@ -1576,6 +1605,33 @@ public:
     CellularStatus cellular_status() const;
 
     /**
+     * @brief Callback type for subscribe_modem_info.
+     */
+    using ModemInfoCallback = std::function<void(ModemInfo)>;
+
+    /**
+     * @brief Handle type for subscribe_modem_info.
+     */
+    using ModemInfoHandle = Handle<ModemInfo>;
+
+    /**
+     * @brief Subscribe to 'MODEM_INFO' updates.
+     */
+    ModemInfoHandle subscribe_modem_info(const ModemInfoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_modem_info
+     */
+    void unsubscribe_modem_info(ModemInfoHandle handle);
+
+    /**
+     * @brief Poll for 'ModemInfo' (blocking).
+     *
+     * @return One ModemInfo update.
+     */
+    ModemInfo modem_info() const;
+
+    /**
      * @brief Callback type for subscribe_status_text.
      */
     using StatusTextCallback = std::function<void(StatusText)>;
@@ -2224,6 +2280,22 @@ public:
      * @return Result of request.
      */
     Result set_rate_cellular_status(double rate_hz) const;
+
+    /**
+     * @brief Set rate to 'MODEM_INFO' updates.
+     *
+     * This function is non-blocking. See 'set_rate_modem_info' for the blocking counterpart.
+     */
+    void set_rate_modem_info_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'MODEM_INFO' updates.
+     *
+     * This function is blocking. See 'set_rate_modem_info_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_rate_modem_info(double rate_hz) const;
 
     /**
      * @brief Set rate to 'actuator control target' updates.

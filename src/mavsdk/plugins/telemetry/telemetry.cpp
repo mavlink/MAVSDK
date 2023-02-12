@@ -20,6 +20,7 @@ using Battery = Telemetry::Battery;
 using Health = Telemetry::Health;
 using RcStatus = Telemetry::RcStatus;
 using CellularStatus = Telemetry::CellularStatus;
+using ModemInfo = Telemetry::ModemInfo;
 using StatusText = Telemetry::StatusText;
 using ActuatorControlTarget = Telemetry::ActuatorControlTarget;
 using ActuatorOutputStatus = Telemetry::ActuatorOutputStatus;
@@ -340,6 +341,21 @@ void Telemetry::unsubscribe_cellular_status(CellularStatusHandle handle)
 Telemetry::CellularStatus Telemetry::cellular_status() const
 {
     return _impl->cellular_status();
+}
+
+Telemetry::ModemInfoHandle Telemetry::subscribe_modem_info(const ModemInfoCallback& callback)
+{
+    return _impl->subscribe_modem_info(callback);
+}
+
+void Telemetry::unsubscribe_modem_info(ModemInfoHandle handle)
+{
+    _impl->unsubscribe_modem_info(handle);
+}
+
+Telemetry::ModemInfo Telemetry::modem_info() const
+{
+    return _impl->modem_info();
 }
 
 Telemetry::StatusTextHandle Telemetry::subscribe_status_text(const StatusTextCallback& callback)
@@ -717,6 +733,16 @@ void Telemetry::set_rate_cellular_status_async(double rate_hz, const ResultCallb
 Telemetry::Result Telemetry::set_rate_cellular_status(double rate_hz) const
 {
     return _impl->set_rate_cellular_status(rate_hz);
+}
+
+void Telemetry::set_rate_modem_info_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_modem_info_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_modem_info(double rate_hz) const
+{
+    return _impl->set_rate_modem_info(rate_hz);
 }
 
 void Telemetry::set_rate_actuator_control_target_async(
@@ -1100,24 +1126,27 @@ std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus const& rc_status
 
 bool operator==(const Telemetry::CellularStatus& lhs, const Telemetry::CellularStatus& rhs)
 {
-    return (rhs.id == lhs.id) && (rhs.status == lhs.status) &&
-           (rhs.failure_reason == lhs.failure_reason) && (rhs.type == lhs.type) &&
-           (rhs.quality == lhs.quality) && (rhs.mcc == lhs.mcc) && (rhs.mnc == lhs.mnc) &&
-           (rhs.lac == lhs.lac) && (rhs.slot_number == lhs.slot_number) &&
-           (rhs.rx_level == lhs.rx_level) && (rhs.signal_to_noise == lhs.signal_to_noise) &&
-           (rhs.band_number == lhs.band_number) && (rhs.arfcn == lhs.arfcn) &&
-           (rhs.cell_id == lhs.cell_id) &&
-           ((std::isnan(rhs.download_rate) && std::isnan(lhs.download_rate)) ||
-            rhs.download_rate == lhs.download_rate) &&
-           ((std::isnan(rhs.upload_rate) && std::isnan(lhs.upload_rate)) ||
-            rhs.upload_rate == lhs.upload_rate);
+    return (rhs.status == lhs.status) && (rhs.failure_reason == lhs.failure_reason) &&
+           (rhs.type == lhs.type) && (rhs.quality == lhs.quality) && (rhs.mcc == lhs.mcc) &&
+           (rhs.mnc == lhs.mnc) && (rhs.lac == lhs.lac) && (rhs.band_number == lhs.band_number) &&
+           ((std::isnan(rhs.band_frequency) && std::isnan(lhs.band_frequency)) ||
+            rhs.band_frequency == lhs.band_frequency) &&
+           (rhs.channel_number == lhs.channel_number) &&
+           ((std::isnan(rhs.rx_level) && std::isnan(lhs.rx_level)) ||
+            rhs.rx_level == lhs.rx_level) &&
+           ((std::isnan(rhs.tx_level) && std::isnan(lhs.tx_level)) ||
+            rhs.tx_level == lhs.tx_level) &&
+           ((std::isnan(rhs.rx_quality) && std::isnan(lhs.rx_quality)) ||
+            rhs.rx_quality == lhs.rx_quality) &&
+           (rhs.link_tx_rate == lhs.link_tx_rate) && (rhs.link_rx_rate == lhs.link_rx_rate) &&
+           (rhs.bit_error_rate == lhs.bit_error_rate) &&
+           (rhs.instance_number == lhs.instance_number) && (rhs.cell_tower_id == lhs.cell_tower_id);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::CellularStatus const& cellular_status)
 {
     str << std::setprecision(15);
     str << "cellular_status:" << '\n' << "{\n";
-    str << "    id: " << cellular_status.id << '\n';
     str << "    status: " << cellular_status.status << '\n';
     str << "    failure_reason: " << cellular_status.failure_reason << '\n';
     str << "    type: " << cellular_status.type << '\n';
@@ -1125,14 +1154,40 @@ std::ostream& operator<<(std::ostream& str, Telemetry::CellularStatus const& cel
     str << "    mcc: " << cellular_status.mcc << '\n';
     str << "    mnc: " << cellular_status.mnc << '\n';
     str << "    lac: " << cellular_status.lac << '\n';
-    str << "    slot_number: " << cellular_status.slot_number << '\n';
-    str << "    rx_level: " << cellular_status.rx_level << '\n';
-    str << "    signal_to_noise: " << cellular_status.signal_to_noise << '\n';
     str << "    band_number: " << cellular_status.band_number << '\n';
-    str << "    arfcn: " << cellular_status.arfcn << '\n';
-    str << "    cell_id: " << cellular_status.cell_id << '\n';
-    str << "    download_rate: " << cellular_status.download_rate << '\n';
-    str << "    upload_rate: " << cellular_status.upload_rate << '\n';
+    str << "    band_frequency: " << cellular_status.band_frequency << '\n';
+    str << "    channel_number: " << cellular_status.channel_number << '\n';
+    str << "    rx_level: " << cellular_status.rx_level << '\n';
+    str << "    tx_level: " << cellular_status.tx_level << '\n';
+    str << "    rx_quality: " << cellular_status.rx_quality << '\n';
+    str << "    link_tx_rate: " << cellular_status.link_tx_rate << '\n';
+    str << "    link_rx_rate: " << cellular_status.link_rx_rate << '\n';
+    str << "    bit_error_rate: " << cellular_status.bit_error_rate << '\n';
+    str << "    instance_number: " << cellular_status.instance_number << '\n';
+    str << "    cell_tower_id: " << cellular_status.cell_tower_id << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Telemetry::ModemInfo& lhs, const Telemetry::ModemInfo& rhs)
+{
+    return (rhs.instance_number == lhs.instance_number) && (rhs.imei == lhs.imei) &&
+           (rhs.iccid == lhs.iccid) && (rhs.imsi == lhs.imsi) && (rhs.modem_id == lhs.modem_id) &&
+           (rhs.firmware_version == lhs.firmware_version) &&
+           (rhs.modem_model_name == lhs.modem_model_name);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::ModemInfo const& modem_info)
+{
+    str << std::setprecision(15);
+    str << "modem_info:" << '\n' << "{\n";
+    str << "    instance_number: " << modem_info.instance_number << '\n';
+    str << "    imei: " << modem_info.imei << '\n';
+    str << "    iccid: " << modem_info.iccid << '\n';
+    str << "    imsi: " << modem_info.imsi << '\n';
+    str << "    modem_id: " << modem_info.modem_id << '\n';
+    str << "    firmware_version: " << modem_info.firmware_version << '\n';
+    str << "    modem_model_name: " << modem_info.modem_model_name << '\n';
     str << '}';
     return str;
 }

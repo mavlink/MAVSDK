@@ -463,6 +463,29 @@ struct CellularStatusResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CellularStatusResponseDefaultTypeInternal _CellularStatusResponse_default_instance_;
+PROTOBUF_CONSTEXPR SubscribeModemInfoRequest::SubscribeModemInfoRequest(
+    ::_pbi::ConstantInitialized){}
+struct SubscribeModemInfoRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeModemInfoRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeModemInfoRequestDefaultTypeInternal() {}
+  union {
+    SubscribeModemInfoRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeModemInfoRequestDefaultTypeInternal _SubscribeModemInfoRequest_default_instance_;
+PROTOBUF_CONSTEXPR ModemInfoResponse::ModemInfoResponse(
+    ::_pbi::ConstantInitialized)
+  : modem_info_(nullptr){}
+struct ModemInfoResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ModemInfoResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ModemInfoResponseDefaultTypeInternal() {}
+  union {
+    ModemInfoResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ModemInfoResponseDefaultTypeInternal _ModemInfoResponse_default_instance_;
 PROTOBUF_CONSTEXPR SubscribeStatusTextRequest::SubscribeStatusTextRequest(
     ::_pbi::ConstantInitialized){}
 struct SubscribeStatusTextRequestDefaultTypeInternal {
@@ -1179,6 +1202,18 @@ struct SetRateCellularStatusRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateCellularStatusRequestDefaultTypeInternal _SetRateCellularStatusRequest_default_instance_;
+PROTOBUF_CONSTEXPR SetRateModemInfoRequest::SetRateModemInfoRequest(
+    ::_pbi::ConstantInitialized)
+  : rate_hz_(0){}
+struct SetRateModemInfoRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetRateModemInfoRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetRateModemInfoRequestDefaultTypeInternal() {}
+  union {
+    SetRateModemInfoRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateModemInfoRequestDefaultTypeInternal _SetRateModemInfoRequest_default_instance_;
 PROTOBUF_CONSTEXPR SetRateRcStatusResponse::SetRateRcStatusResponse(
     ::_pbi::ConstantInitialized)
   : telemetry_result_(nullptr){}
@@ -1203,6 +1238,18 @@ struct SetRateCellularStatusResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateCellularStatusResponseDefaultTypeInternal _SetRateCellularStatusResponse_default_instance_;
+PROTOBUF_CONSTEXPR SetRateModemInfoResponse::SetRateModemInfoResponse(
+    ::_pbi::ConstantInitialized)
+  : telemetry_result_(nullptr){}
+struct SetRateModemInfoResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetRateModemInfoResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetRateModemInfoResponseDefaultTypeInternal() {}
+  union {
+    SetRateModemInfoResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateModemInfoResponseDefaultTypeInternal _SetRateModemInfoResponse_default_instance_;
 PROTOBUF_CONSTEXPR SetRateActuatorControlTargetRequest::SetRateActuatorControlTargetRequest(
     ::_pbi::ConstantInitialized)
   : rate_hz_(0){}
@@ -1677,8 +1724,7 @@ struct RcStatusDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RcStatusDefaultTypeInternal _RcStatus_default_instance_;
 PROTOBUF_CONSTEXPR CellularStatus::CellularStatus(
     ::_pbi::ConstantInitialized)
-  : cell_id_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , id_(0u)
+  : cell_tower_id_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , status_(0u)
   , failure_reason_(0u)
   , type_(0u)
@@ -1686,13 +1732,16 @@ PROTOBUF_CONSTEXPR CellularStatus::CellularStatus(
   , mcc_(0u)
   , mnc_(0u)
   , lac_(0u)
-  , slot_number_(0u)
-  , rx_level_(0u)
-  , signal_to_noise_(0u)
   , band_number_(0u)
-  , arfcn_(0u)
-  , download_rate_(0)
-  , upload_rate_(0){}
+  , band_frequency_(0)
+  , channel_number_(0u)
+  , rx_level_(0)
+  , tx_level_(0)
+  , rx_quality_(0)
+  , link_tx_rate_(0u)
+  , link_rx_rate_(0u)
+  , bit_error_rate_(0u)
+  , instance_number_(0u){}
 struct CellularStatusDefaultTypeInternal {
   PROTOBUF_CONSTEXPR CellularStatusDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -1702,6 +1751,24 @@ struct CellularStatusDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CellularStatusDefaultTypeInternal _CellularStatus_default_instance_;
+PROTOBUF_CONSTEXPR ModemInfo::ModemInfo(
+    ::_pbi::ConstantInitialized)
+  : modem_id_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , firmware_version_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , modem_model_name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , imei_(uint64_t{0u})
+  , iccid_(uint64_t{0u})
+  , imsi_(uint64_t{0u})
+  , instance_number_(0u){}
+struct ModemInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ModemInfoDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ModemInfoDefaultTypeInternal() {}
+  union {
+    ModemInfo _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ModemInfoDefaultTypeInternal _ModemInfo_default_instance_;
 PROTOBUF_CONSTEXPR StatusText::StatusText(
     ::_pbi::ConstantInitialized)
   : text_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
@@ -2009,7 +2076,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 }  // namespace telemetry
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[159];
+static ::_pb::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[164];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[7];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_telemetry_2ftelemetry_2eproto = nullptr;
 
@@ -2261,6 +2328,19 @@ const uint32_t TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_SEC
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatusResponse, cellular_status_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribeModemInfoRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfoResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfoResponse, modem_info_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribeStatusTextRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2673,6 +2753,13 @@ const uint32_t TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_SEC
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCellularStatusRequest, rate_hz_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateModemInfoRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateModemInfoRequest, rate_hz_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateRcStatusResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -2686,6 +2773,13 @@ const uint32_t TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_SEC
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCellularStatusResponse, telemetry_result_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateModemInfoResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateModemInfoResponse, telemetry_result_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2983,7 +3077,6 @@ const uint32_t TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_SEC
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, id_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, status_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, failure_reason_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, type_),
@@ -2991,14 +3084,30 @@ const uint32_t TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_SEC
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, mcc_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, mnc_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, lac_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, slot_number_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, rx_level_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, signal_to_noise_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, band_number_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, arfcn_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, cell_id_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, download_rate_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, upload_rate_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, band_frequency_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, channel_number_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, rx_level_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, tx_level_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, rx_quality_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, link_tx_rate_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, link_rx_rate_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, bit_error_rate_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, instance_number_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CellularStatus, cell_tower_id_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, instance_number_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, imei_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, iccid_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, imsi_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, modem_id_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, firmware_version_),
+  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ModemInfo, modem_model_name_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::StatusText, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -3234,127 +3343,132 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 227, -1, -1, sizeof(::mavsdk::rpc::telemetry::RcStatusResponse)},
   { 234, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeCellularStatusRequest)},
   { 240, -1, -1, sizeof(::mavsdk::rpc::telemetry::CellularStatusResponse)},
-  { 247, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeStatusTextRequest)},
-  { 253, -1, -1, sizeof(::mavsdk::rpc::telemetry::StatusTextResponse)},
-  { 260, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest)},
-  { 266, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTargetResponse)},
-  { 273, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest)},
-  { 279, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse)},
-  { 286, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeOdometryRequest)},
-  { 292, -1, -1, sizeof(::mavsdk::rpc::telemetry::OdometryResponse)},
-  { 299, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest)},
-  { 305, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNedResponse)},
-  { 312, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest)},
-  { 318, -1, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruthResponse)},
-  { 325, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest)},
-  { 331, -1, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetricsResponse)},
-  { 338, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeImuRequest)},
-  { 344, -1, -1, sizeof(::mavsdk::rpc::telemetry::ImuResponse)},
-  { 351, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledImuRequest)},
-  { 357, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledImuResponse)},
-  { 364, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawImuRequest)},
-  { 370, -1, -1, sizeof(::mavsdk::rpc::telemetry::RawImuResponse)},
-  { 377, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest)},
-  { 383, -1, -1, sizeof(::mavsdk::rpc::telemetry::HealthAllOkResponse)},
-  { 390, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest)},
-  { 396, -1, -1, sizeof(::mavsdk::rpc::telemetry::UnixEpochTimeResponse)},
-  { 403, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest)},
-  { 409, -1, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensorResponse)},
-  { 416, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest)},
-  { 422, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressureResponse)},
-  { 429, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHeadingRequest)},
-  { 435, -1, -1, sizeof(::mavsdk::rpc::telemetry::HeadingResponse)},
-  { 442, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeAltitudeRequest)},
-  { 448, -1, -1, sizeof(::mavsdk::rpc::telemetry::AltitudeResponse)},
-  { 455, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionRequest)},
-  { 462, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionResponse)},
-  { 469, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeRequest)},
-  { 476, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeResponse)},
-  { 483, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirRequest)},
-  { 490, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirResponse)},
-  { 497, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateRequest)},
-  { 504, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateResponse)},
-  { 511, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateRequest)},
-  { 518, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateResponse)},
-  { 525, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerRequest)},
-  { 532, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerResponse)},
-  { 539, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionRequest)},
-  { 546, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionResponse)},
-  { 553, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest)},
-  { 560, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse)},
-  { 567, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionRequest)},
-  { 574, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse)},
-  { 581, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest)},
-  { 588, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse)},
-  { 595, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedRequest)},
-  { 602, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedResponse)},
-  { 609, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoRequest)},
-  { 616, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoResponse)},
-  { 623, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawGpsRequest)},
-  { 630, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryRequest)},
-  { 637, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryResponse)},
-  { 644, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusRequest)},
-  { 651, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCellularStatusRequest)},
-  { 658, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusResponse)},
-  { 665, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCellularStatusResponse)},
-  { 672, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest)},
-  { 679, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse)},
-  { 686, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest)},
-  { 693, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse)},
-  { 700, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryRequest)},
-  { 707, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryResponse)},
-  { 714, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest)},
-  { 721, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse)},
-  { 728, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthRequest)},
-  { 735, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthResponse)},
-  { 742, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest)},
-  { 749, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse)},
-  { 756, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuRequest)},
-  { 763, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuResponse)},
-  { 770, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuRequest)},
-  { 777, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuResponse)},
-  { 784, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuRequest)},
-  { 791, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuResponse)},
-  { 798, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest)},
-  { 805, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse)},
-  { 812, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest)},
-  { 819, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse)},
-  { 826, -1, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest)},
-  { 832, -1, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse)},
-  { 840, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeRequest)},
-  { 847, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeResponse)},
-  { 854, -1, -1, sizeof(::mavsdk::rpc::telemetry::Position)},
-  { 864, -1, -1, sizeof(::mavsdk::rpc::telemetry::Heading)},
-  { 871, -1, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
-  { 882, -1, -1, sizeof(::mavsdk::rpc::telemetry::EulerAngle)},
-  { 892, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityBody)},
-  { 901, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfo)},
-  { 909, -1, -1, sizeof(::mavsdk::rpc::telemetry::RawGps)},
-  { 929, -1, -1, sizeof(::mavsdk::rpc::telemetry::Battery)},
-  { 941, -1, -1, sizeof(::mavsdk::rpc::telemetry::Health)},
-  { 954, -1, -1, sizeof(::mavsdk::rpc::telemetry::RcStatus)},
-  { 963, -1, -1, sizeof(::mavsdk::rpc::telemetry::CellularStatus)},
-  { 985, -1, -1, sizeof(::mavsdk::rpc::telemetry::StatusText)},
-  { 993, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTarget)},
-  { 1001, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatus)},
-  { 1009, -1, -1, sizeof(::mavsdk::rpc::telemetry::Covariance)},
-  { 1016, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityBody)},
-  { 1025, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionBody)},
-  { 1034, -1, -1, sizeof(::mavsdk::rpc::telemetry::Odometry)},
-  { 1049, -1, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensor)},
-  { 1058, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressure)},
-  { 1069, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionNed)},
-  { 1078, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNed)},
-  { 1087, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNed)},
-  { 1095, -1, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruth)},
-  { 1104, -1, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetrics)},
-  { 1113, -1, -1, sizeof(::mavsdk::rpc::telemetry::AccelerationFrd)},
-  { 1122, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityFrd)},
-  { 1131, -1, -1, sizeof(::mavsdk::rpc::telemetry::MagneticFieldFrd)},
-  { 1140, -1, -1, sizeof(::mavsdk::rpc::telemetry::Imu)},
-  { 1151, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsGlobalOrigin)},
-  { 1160, -1, -1, sizeof(::mavsdk::rpc::telemetry::Altitude)},
-  { 1172, -1, -1, sizeof(::mavsdk::rpc::telemetry::TelemetryResult)},
+  { 247, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeModemInfoRequest)},
+  { 253, -1, -1, sizeof(::mavsdk::rpc::telemetry::ModemInfoResponse)},
+  { 260, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeStatusTextRequest)},
+  { 266, -1, -1, sizeof(::mavsdk::rpc::telemetry::StatusTextResponse)},
+  { 273, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest)},
+  { 279, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTargetResponse)},
+  { 286, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest)},
+  { 292, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse)},
+  { 299, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeOdometryRequest)},
+  { 305, -1, -1, sizeof(::mavsdk::rpc::telemetry::OdometryResponse)},
+  { 312, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest)},
+  { 318, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNedResponse)},
+  { 325, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest)},
+  { 331, -1, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruthResponse)},
+  { 338, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest)},
+  { 344, -1, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetricsResponse)},
+  { 351, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeImuRequest)},
+  { 357, -1, -1, sizeof(::mavsdk::rpc::telemetry::ImuResponse)},
+  { 364, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledImuRequest)},
+  { 370, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledImuResponse)},
+  { 377, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawImuRequest)},
+  { 383, -1, -1, sizeof(::mavsdk::rpc::telemetry::RawImuResponse)},
+  { 390, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest)},
+  { 396, -1, -1, sizeof(::mavsdk::rpc::telemetry::HealthAllOkResponse)},
+  { 403, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest)},
+  { 409, -1, -1, sizeof(::mavsdk::rpc::telemetry::UnixEpochTimeResponse)},
+  { 416, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest)},
+  { 422, -1, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensorResponse)},
+  { 429, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest)},
+  { 435, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressureResponse)},
+  { 442, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHeadingRequest)},
+  { 448, -1, -1, sizeof(::mavsdk::rpc::telemetry::HeadingResponse)},
+  { 455, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeAltitudeRequest)},
+  { 461, -1, -1, sizeof(::mavsdk::rpc::telemetry::AltitudeResponse)},
+  { 468, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionRequest)},
+  { 475, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionResponse)},
+  { 482, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeRequest)},
+  { 489, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeResponse)},
+  { 496, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirRequest)},
+  { 503, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirResponse)},
+  { 510, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateRequest)},
+  { 517, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateResponse)},
+  { 524, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateRequest)},
+  { 531, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateResponse)},
+  { 538, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerRequest)},
+  { 545, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerResponse)},
+  { 552, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionRequest)},
+  { 559, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionResponse)},
+  { 566, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest)},
+  { 573, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse)},
+  { 580, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionRequest)},
+  { 587, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse)},
+  { 594, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest)},
+  { 601, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse)},
+  { 608, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedRequest)},
+  { 615, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedResponse)},
+  { 622, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoRequest)},
+  { 629, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoResponse)},
+  { 636, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawGpsRequest)},
+  { 643, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryRequest)},
+  { 650, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryResponse)},
+  { 657, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusRequest)},
+  { 664, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCellularStatusRequest)},
+  { 671, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateModemInfoRequest)},
+  { 678, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusResponse)},
+  { 685, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCellularStatusResponse)},
+  { 692, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateModemInfoResponse)},
+  { 699, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest)},
+  { 706, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse)},
+  { 713, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest)},
+  { 720, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse)},
+  { 727, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryRequest)},
+  { 734, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryResponse)},
+  { 741, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest)},
+  { 748, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse)},
+  { 755, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthRequest)},
+  { 762, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthResponse)},
+  { 769, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest)},
+  { 776, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse)},
+  { 783, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuRequest)},
+  { 790, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuResponse)},
+  { 797, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuRequest)},
+  { 804, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuResponse)},
+  { 811, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuRequest)},
+  { 818, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuResponse)},
+  { 825, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest)},
+  { 832, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse)},
+  { 839, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest)},
+  { 846, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse)},
+  { 853, -1, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest)},
+  { 859, -1, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse)},
+  { 867, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeRequest)},
+  { 874, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeResponse)},
+  { 881, -1, -1, sizeof(::mavsdk::rpc::telemetry::Position)},
+  { 891, -1, -1, sizeof(::mavsdk::rpc::telemetry::Heading)},
+  { 898, -1, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
+  { 909, -1, -1, sizeof(::mavsdk::rpc::telemetry::EulerAngle)},
+  { 919, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityBody)},
+  { 928, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfo)},
+  { 936, -1, -1, sizeof(::mavsdk::rpc::telemetry::RawGps)},
+  { 956, -1, -1, sizeof(::mavsdk::rpc::telemetry::Battery)},
+  { 968, -1, -1, sizeof(::mavsdk::rpc::telemetry::Health)},
+  { 981, -1, -1, sizeof(::mavsdk::rpc::telemetry::RcStatus)},
+  { 990, -1, -1, sizeof(::mavsdk::rpc::telemetry::CellularStatus)},
+  { 1014, -1, -1, sizeof(::mavsdk::rpc::telemetry::ModemInfo)},
+  { 1027, -1, -1, sizeof(::mavsdk::rpc::telemetry::StatusText)},
+  { 1035, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTarget)},
+  { 1043, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatus)},
+  { 1051, -1, -1, sizeof(::mavsdk::rpc::telemetry::Covariance)},
+  { 1058, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityBody)},
+  { 1067, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionBody)},
+  { 1076, -1, -1, sizeof(::mavsdk::rpc::telemetry::Odometry)},
+  { 1091, -1, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensor)},
+  { 1100, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressure)},
+  { 1111, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionNed)},
+  { 1120, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNed)},
+  { 1129, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNed)},
+  { 1137, -1, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruth)},
+  { 1146, -1, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetrics)},
+  { 1155, -1, -1, sizeof(::mavsdk::rpc::telemetry::AccelerationFrd)},
+  { 1164, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityFrd)},
+  { 1173, -1, -1, sizeof(::mavsdk::rpc::telemetry::MagneticFieldFrd)},
+  { 1182, -1, -1, sizeof(::mavsdk::rpc::telemetry::Imu)},
+  { 1193, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsGlobalOrigin)},
+  { 1202, -1, -1, sizeof(::mavsdk::rpc::telemetry::Altitude)},
+  { 1214, -1, -1, sizeof(::mavsdk::rpc::telemetry::TelemetryResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -3396,6 +3510,8 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::mavsdk::rpc::telemetry::_RcStatusResponse_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SubscribeCellularStatusRequest_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_CellularStatusResponse_default_instance_._instance,
+  &::mavsdk::rpc::telemetry::_SubscribeModemInfoRequest_default_instance_._instance,
+  &::mavsdk::rpc::telemetry::_ModemInfoResponse_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SubscribeStatusTextRequest_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_StatusTextResponse_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SubscribeActuatorControlTargetRequest_default_instance_._instance,
@@ -3457,8 +3573,10 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::mavsdk::rpc::telemetry::_SetRateBatteryResponse_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SetRateRcStatusRequest_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SetRateCellularStatusRequest_default_instance_._instance,
+  &::mavsdk::rpc::telemetry::_SetRateModemInfoRequest_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SetRateRcStatusResponse_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SetRateCellularStatusResponse_default_instance_._instance,
+  &::mavsdk::rpc::telemetry::_SetRateModemInfoResponse_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SetRateActuatorControlTargetRequest_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SetRateActuatorControlTargetResponse_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_SetRateActuatorOutputStatusRequest_default_instance_._instance,
@@ -3496,6 +3614,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::mavsdk::rpc::telemetry::_Health_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_RcStatus_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_CellularStatus_default_instance_._instance,
+  &::mavsdk::rpc::telemetry::_ModemInfo_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_StatusText_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_ActuatorControlTarget_default_instance_._instance,
   &::mavsdk::rpc::telemetry::_ActuatorOutputStatus_default_instance_._instance,
@@ -3572,103 +3691,109 @@ const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] PROTOBUF_SE
   "atus\" \n\036SubscribeCellularStatusRequest\"W"
   "\n\026CellularStatusResponse\022=\n\017cellular_sta"
   "tus\030\001 \001(\0132$.mavsdk.rpc.telemetry.Cellula"
-  "rStatus\"\034\n\032SubscribeStatusTextRequest\"K\n"
-  "\022StatusTextResponse\0225\n\013status_text\030\001 \001(\013"
-  "2 .mavsdk.rpc.telemetry.StatusText\"\'\n%Su"
-  "bscribeActuatorControlTargetRequest\"m\n\035A"
-  "ctuatorControlTargetResponse\022L\n\027actuator"
-  "_control_target\030\001 \001(\0132+.mavsdk.rpc.telem"
-  "etry.ActuatorControlTarget\"&\n$SubscribeA"
-  "ctuatorOutputStatusRequest\"j\n\034ActuatorOu"
-  "tputStatusResponse\022J\n\026actuator_output_st"
-  "atus\030\001 \001(\0132*.mavsdk.rpc.telemetry.Actuat"
-  "orOutputStatus\"\032\n\030SubscribeOdometryReque"
-  "st\"D\n\020OdometryResponse\0220\n\010odometry\030\001 \001(\013"
-  "2\036.mavsdk.rpc.telemetry.Odometry\"%\n#Subs"
-  "cribePositionVelocityNedRequest\"g\n\033Posit"
-  "ionVelocityNedResponse\022H\n\025position_veloc"
-  "ity_ned\030\001 \001(\0132).mavsdk.rpc.telemetry.Pos"
-  "itionVelocityNed\"\035\n\033SubscribeGroundTruth"
-  "Request\"N\n\023GroundTruthResponse\0227\n\014ground"
-  "_truth\030\001 \001(\0132!.mavsdk.rpc.telemetry.Grou"
-  "ndTruth\"\"\n SubscribeFixedwingMetricsRequ"
-  "est\"]\n\030FixedwingMetricsResponse\022A\n\021fixed"
-  "wing_metrics\030\001 \001(\0132&.mavsdk.rpc.telemetr"
-  "y.FixedwingMetrics\"\025\n\023SubscribeImuReques"
-  "t\"5\n\013ImuResponse\022&\n\003imu\030\001 \001(\0132\031.mavsdk.r"
-  "pc.telemetry.Imu\"\033\n\031SubscribeScaledImuRe"
-  "quest\";\n\021ScaledImuResponse\022&\n\003imu\030\001 \001(\0132"
-  "\031.mavsdk.rpc.telemetry.Imu\"\030\n\026SubscribeR"
-  "awImuRequest\"8\n\016RawImuResponse\022&\n\003imu\030\001 "
-  "\001(\0132\031.mavsdk.rpc.telemetry.Imu\"\035\n\033Subscr"
-  "ibeHealthAllOkRequest\"/\n\023HealthAllOkResp"
-  "onse\022\030\n\020is_health_all_ok\030\001 \001(\010\"\037\n\035Subscr"
-  "ibeUnixEpochTimeRequest\"(\n\025UnixEpochTime"
-  "Response\022\017\n\007time_us\030\001 \001(\004\" \n\036SubscribeDi"
-  "stanceSensorRequest\"W\n\026DistanceSensorRes"
-  "ponse\022=\n\017distance_sensor\030\001 \001(\0132$.mavsdk."
-  "rpc.telemetry.DistanceSensor\" \n\036Subscrib"
-  "eScaledPressureRequest\"W\n\026ScaledPressure"
-  "Response\022=\n\017scaled_pressure\030\001 \001(\0132$.mavs"
-  "dk.rpc.telemetry.ScaledPressure\"\031\n\027Subsc"
-  "ribeHeadingRequest\"E\n\017HeadingResponse\0222\n"
-  "\013heading_deg\030\001 \001(\0132\035.mavsdk.rpc.telemetr"
-  "y.Heading\"\032\n\030SubscribeAltitudeRequest\"D\n"
-  "\020AltitudeResponse\0220\n\010altitude\030\001 \001(\0132\036.ma"
-  "vsdk.rpc.telemetry.Altitude\")\n\026SetRatePo"
-  "sitionRequest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRat"
-  "ePositionResponse\022\?\n\020telemetry_result\030\001 "
-  "\001(\0132%.mavsdk.rpc.telemetry.TelemetryResu"
-  "lt\"%\n\022SetRateHomeRequest\022\017\n\007rate_hz\030\001 \001("
-  "\001\"V\n\023SetRateHomeResponse\022\?\n\020telemetry_re"
-  "sult\030\001 \001(\0132%.mavsdk.rpc.telemetry.Teleme"
-  "tryResult\"&\n\023SetRateInAirRequest\022\017\n\007rate"
-  "_hz\030\001 \001(\001\"W\n\024SetRateInAirResponse\022\?\n\020tel"
-  "emetry_result\030\001 \001(\0132%.mavsdk.rpc.telemet"
-  "ry.TelemetryResult\",\n\031SetRateLandedState"
-  "Request\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRateLande"
-  "dStateResponse\022\?\n\020telemetry_result\030\001 \001(\013"
-  "2%.mavsdk.rpc.telemetry.TelemetryResult\""
-  "*\n\027SetRateVtolStateRequest\022\017\n\007rate_hz\030\001 "
-  "\001(\001\"[\n\030SetRateVtolStateResponse\022\?\n\020telem"
-  "etry_result\030\001 \001(\0132%.mavsdk.rpc.telemetry"
-  ".TelemetryResult\".\n\033SetRateAttitudeEuler"
-  "Request\022\017\n\007rate_hz\030\001 \001(\001\"_\n\034SetRateAttit"
-  "udeEulerResponse\022\?\n\020telemetry_result\030\001 \001"
+  "rStatus\"\033\n\031SubscribeModemInfoRequest\"H\n\021"
+  "ModemInfoResponse\0223\n\nmodem_info\030\001 \001(\0132\037."
+  "mavsdk.rpc.telemetry.ModemInfo\"\034\n\032Subscr"
+  "ibeStatusTextRequest\"K\n\022StatusTextRespon"
+  "se\0225\n\013status_text\030\001 \001(\0132 .mavsdk.rpc.tel"
+  "emetry.StatusText\"\'\n%SubscribeActuatorCo"
+  "ntrolTargetRequest\"m\n\035ActuatorControlTar"
+  "getResponse\022L\n\027actuator_control_target\030\001"
+  " \001(\0132+.mavsdk.rpc.telemetry.ActuatorCont"
+  "rolTarget\"&\n$SubscribeActuatorOutputStat"
+  "usRequest\"j\n\034ActuatorOutputStatusRespons"
+  "e\022J\n\026actuator_output_status\030\001 \001(\0132*.mavs"
+  "dk.rpc.telemetry.ActuatorOutputStatus\"\032\n"
+  "\030SubscribeOdometryRequest\"D\n\020OdometryRes"
+  "ponse\0220\n\010odometry\030\001 \001(\0132\036.mavsdk.rpc.tel"
+  "emetry.Odometry\"%\n#SubscribePositionVelo"
+  "cityNedRequest\"g\n\033PositionVelocityNedRes"
+  "ponse\022H\n\025position_velocity_ned\030\001 \001(\0132).m"
+  "avsdk.rpc.telemetry.PositionVelocityNed\""
+  "\035\n\033SubscribeGroundTruthRequest\"N\n\023Ground"
+  "TruthResponse\0227\n\014ground_truth\030\001 \001(\0132!.ma"
+  "vsdk.rpc.telemetry.GroundTruth\"\"\n Subscr"
+  "ibeFixedwingMetricsRequest\"]\n\030FixedwingM"
+  "etricsResponse\022A\n\021fixedwing_metrics\030\001 \001("
+  "\0132&.mavsdk.rpc.telemetry.FixedwingMetric"
+  "s\"\025\n\023SubscribeImuRequest\"5\n\013ImuResponse\022"
+  "&\n\003imu\030\001 \001(\0132\031.mavsdk.rpc.telemetry.Imu\""
+  "\033\n\031SubscribeScaledImuRequest\";\n\021ScaledIm"
+  "uResponse\022&\n\003imu\030\001 \001(\0132\031.mavsdk.rpc.tele"
+  "metry.Imu\"\030\n\026SubscribeRawImuRequest\"8\n\016R"
+  "awImuResponse\022&\n\003imu\030\001 \001(\0132\031.mavsdk.rpc."
+  "telemetry.Imu\"\035\n\033SubscribeHealthAllOkReq"
+  "uest\"/\n\023HealthAllOkResponse\022\030\n\020is_health"
+  "_all_ok\030\001 \001(\010\"\037\n\035SubscribeUnixEpochTimeR"
+  "equest\"(\n\025UnixEpochTimeResponse\022\017\n\007time_"
+  "us\030\001 \001(\004\" \n\036SubscribeDistanceSensorReque"
+  "st\"W\n\026DistanceSensorResponse\022=\n\017distance"
+  "_sensor\030\001 \001(\0132$.mavsdk.rpc.telemetry.Dis"
+  "tanceSensor\" \n\036SubscribeScaledPressureRe"
+  "quest\"W\n\026ScaledPressureResponse\022=\n\017scale"
+  "d_pressure\030\001 \001(\0132$.mavsdk.rpc.telemetry."
+  "ScaledPressure\"\031\n\027SubscribeHeadingReques"
+  "t\"E\n\017HeadingResponse\0222\n\013heading_deg\030\001 \001("
+  "\0132\035.mavsdk.rpc.telemetry.Heading\"\032\n\030Subs"
+  "cribeAltitudeRequest\"D\n\020AltitudeResponse"
+  "\0220\n\010altitude\030\001 \001(\0132\036.mavsdk.rpc.telemetr"
+  "y.Altitude\")\n\026SetRatePositionRequest\022\017\n\007"
+  "rate_hz\030\001 \001(\001\"Z\n\027SetRatePositionResponse"
+  "\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc."
+  "telemetry.TelemetryResult\"%\n\022SetRateHome"
+  "Request\022\017\n\007rate_hz\030\001 \001(\001\"V\n\023SetRateHomeR"
+  "esponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavs"
+  "dk.rpc.telemetry.TelemetryResult\"&\n\023SetR"
+  "ateInAirRequest\022\017\n\007rate_hz\030\001 \001(\001\"W\n\024SetR"
+  "ateInAirResponse\022\?\n\020telemetry_result\030\001 \001"
   "(\0132%.mavsdk.rpc.telemetry.TelemetryResul"
-  "t\"3\n SetRateAttitudeQuaternionRequest\022\017\n"
-  "\007rate_hz\030\001 \001(\001\"d\n!SetRateAttitudeQuatern"
-  "ionResponse\022\?\n\020telemetry_result\030\001 \001(\0132%."
-  "mavsdk.rpc.telemetry.TelemetryResult\"<\n)"
-  "SetRateAttitudeAngularVelocityBodyReques"
-  "t\022\017\n\007rate_hz\030\001 \001(\001\"m\n*SetRateAttitudeAng"
-  "ularVelocityBodyResponse\022\?\n\020telemetry_re"
-  "sult\030\001 \001(\0132%.mavsdk.rpc.telemetry.Teleme"
-  "tryResult\"9\n&SetRateCameraAttitudeQuater"
-  "nionRequest\022\017\n\007rate_hz\030\001 \001(\001\"j\n\'SetRateC"
-  "ameraAttitudeQuaternionResponse\022\?\n\020telem"
-  "etry_result\030\001 \001(\0132%.mavsdk.rpc.telemetry"
-  ".TelemetryResult\"/\n\034SetRateCameraAttitud"
-  "eRequest\022\017\n\007rate_hz\030\001 \001(\001\"`\n\035SetRateCame"
-  "raAttitudeResponse\022\?\n\020telemetry_result\030\001"
-  " \001(\0132%.mavsdk.rpc.telemetry.TelemetryRes"
-  "ult\",\n\031SetRateVelocityNedRequest\022\017\n\007rate"
-  "_hz\030\001 \001(\001\"]\n\032SetRateVelocityNedResponse\022"
+  "t\",\n\031SetRateLandedStateRequest\022\017\n\007rate_h"
+  "z\030\001 \001(\001\"]\n\032SetRateLandedStateResponse\022\?\n"
+  "\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.tel"
+  "emetry.TelemetryResult\"*\n\027SetRateVtolSta"
+  "teRequest\022\017\n\007rate_hz\030\001 \001(\001\"[\n\030SetRateVto"
+  "lStateResponse\022\?\n\020telemetry_result\030\001 \001(\013"
+  "2%.mavsdk.rpc.telemetry.TelemetryResult\""
+  ".\n\033SetRateAttitudeEulerRequest\022\017\n\007rate_h"
+  "z\030\001 \001(\001\"_\n\034SetRateAttitudeEulerResponse\022"
   "\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.t"
-  "elemetry.TelemetryResult\"(\n\025SetRateGpsIn"
-  "foRequest\022\017\n\007rate_hz\030\001 \001(\001\"Y\n\026SetRateGps"
-  "InfoResponse\022\?\n\020telemetry_result\030\001 \001(\0132%"
-  ".mavsdk.rpc.telemetry.TelemetryResult\"\'\n"
-  "\024SetRateRawGpsRequest\022\017\n\007rate_hz\030\001 \001(\001\"("
-  "\n\025SetRateBatteryRequest\022\017\n\007rate_hz\030\001 \001(\001"
-  "\"Y\n\026SetRateBatteryResponse\022\?\n\020telemetry_"
-  "result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Tele"
-  "metryResult\")\n\026SetRateRcStatusRequest\022\017\n"
-  "\007rate_hz\030\001 \001(\001\"/\n\034SetRateCellularStatusR"
-  "equest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRateRcStat"
-  "usResponse\022\?\n\020telemetry_result\030\001 \001(\0132%.m"
-  "avsdk.rpc.telemetry.TelemetryResult\"`\n\035S"
-  "etRateCellularStatusResponse\022\?\n\020telemetr"
+  "elemetry.TelemetryResult\"3\n SetRateAttit"
+  "udeQuaternionRequest\022\017\n\007rate_hz\030\001 \001(\001\"d\n"
+  "!SetRateAttitudeQuaternionResponse\022\?\n\020te"
+  "lemetry_result\030\001 \001(\0132%.mavsdk.rpc.teleme"
+  "try.TelemetryResult\"<\n)SetRateAttitudeAn"
+  "gularVelocityBodyRequest\022\017\n\007rate_hz\030\001 \001("
+  "\001\"m\n*SetRateAttitudeAngularVelocityBodyR"
+  "esponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavs"
+  "dk.rpc.telemetry.TelemetryResult\"9\n&SetR"
+  "ateCameraAttitudeQuaternionRequest\022\017\n\007ra"
+  "te_hz\030\001 \001(\001\"j\n\'SetRateCameraAttitudeQuat"
+  "ernionResponse\022\?\n\020telemetry_result\030\001 \001(\013"
+  "2%.mavsdk.rpc.telemetry.TelemetryResult\""
+  "/\n\034SetRateCameraAttitudeRequest\022\017\n\007rate_"
+  "hz\030\001 \001(\001\"`\n\035SetRateCameraAttitudeRespons"
+  "e\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc"
+  ".telemetry.TelemetryResult\",\n\031SetRateVel"
+  "ocityNedRequest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetR"
+  "ateVelocityNedResponse\022\?\n\020telemetry_resu"
+  "lt\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetr"
+  "yResult\"(\n\025SetRateGpsInfoRequest\022\017\n\007rate"
+  "_hz\030\001 \001(\001\"Y\n\026SetRateGpsInfoResponse\022\?\n\020t"
+  "elemetry_result\030\001 \001(\0132%.mavsdk.rpc.telem"
+  "etry.TelemetryResult\"\'\n\024SetRateRawGpsReq"
+  "uest\022\017\n\007rate_hz\030\001 \001(\001\"(\n\025SetRateBatteryR"
+  "equest\022\017\n\007rate_hz\030\001 \001(\001\"Y\n\026SetRateBatter"
+  "yResponse\022\?\n\020telemetry_result\030\001 \001(\0132%.ma"
+  "vsdk.rpc.telemetry.TelemetryResult\")\n\026Se"
+  "tRateRcStatusRequest\022\017\n\007rate_hz\030\001 \001(\001\"/\n"
+  "\034SetRateCellularStatusRequest\022\017\n\007rate_hz"
+  "\030\001 \001(\001\"*\n\027SetRateModemInfoRequest\022\017\n\007rat"
+  "e_hz\030\001 \001(\001\"Z\n\027SetRateRcStatusResponse\022\?\n"
+  "\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.tel"
+  "emetry.TelemetryResult\"`\n\035SetRateCellula"
+  "rStatusResponse\022\?\n\020telemetry_result\030\001 \001("
+  "\0132%.mavsdk.rpc.telemetry.TelemetryResult"
+  "\"[\n\030SetRateModemInfoResponse\022\?\n\020telemetr"
   "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
   "lemetryResult\"6\n#SetRateActuatorControlT"
   "argetRequest\022\017\n\007rate_hz\030\001 \001(\001\"g\n$SetRate"
@@ -3758,318 +3883,330 @@ const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] PROTOBUF_SE
   "\035\n\nis_armable\030\010 \001(\010B\t\202\265\030\005false\"|\n\010RcStat"
   "us\022%\n\022was_available_once\030\001 \001(\010B\t\202\265\030\005fals"
   "e\022\037\n\014is_available\030\002 \001(\010B\t\202\265\030\005false\022(\n\027si"
-  "gnal_strength_percent\030\003 \001(\002B\007\202\265\030\003NaN\"\253\002\n"
-  "\016CellularStatus\022\n\n\002id\030\001 \001(\r\022\016\n\006status\030\002 "
-  "\001(\r\022\026\n\016failure_reason\030\003 \001(\r\022\014\n\004type\030\004 \001("
-  "\r\022\017\n\007quality\030\005 \001(\r\022\013\n\003mcc\030\006 \001(\r\022\013\n\003mnc\030\007"
-  " \001(\r\022\013\n\003lac\030\010 \001(\r\022\023\n\013slot_number\030\t \001(\r\022\020"
-  "\n\010rx_level\030\n \001(\r\022\027\n\017signal_to_noise\030\013 \001("
-  "\r\022\023\n\013band_number\030\014 \001(\r\022\r\n\005arfcn\030\r \001(\r\022\017\n"
-  "\007cell_id\030\016 \001(\t\022\025\n\rdownload_rate\030\017 \001(\002\022\023\n"
-  "\013upload_rate\030\020 \001(\002\"N\n\nStatusText\0222\n\004type"
-  "\030\001 \001(\0162$.mavsdk.rpc.telemetry.StatusText"
-  "Type\022\014\n\004text\030\002 \001(\t\"\?\n\025ActuatorControlTar"
-  "get\022\024\n\005group\030\001 \001(\005B\005\202\265\030\0010\022\020\n\010controls\030\002 "
-  "\003(\002\"\?\n\024ActuatorOutputStatus\022\025\n\006active\030\001 "
-  "\001(\rB\005\202\265\030\0010\022\020\n\010actuator\030\002 \003(\002\"\'\n\nCovarian"
-  "ce\022\031\n\021covariance_matrix\030\001 \003(\002\";\n\014Velocit"
-  "yBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m_s\030\002 \001(\002\022\r\n\005z"
-  "_m_s\030\003 \001(\002\"5\n\014PositionBody\022\013\n\003x_m\030\001 \001(\002\022"
-  "\013\n\003y_m\030\002 \001(\002\022\013\n\003z_m\030\003 \001(\002\"\354\004\n\010Odometry\022\021"
-  "\n\ttime_usec\030\001 \001(\004\0229\n\010frame_id\030\002 \001(\0162\'.ma"
-  "vsdk.rpc.telemetry.Odometry.MavFrame\022\?\n\016"
-  "child_frame_id\030\003 \001(\0162\'.mavsdk.rpc.teleme"
-  "try.Odometry.MavFrame\0229\n\rposition_body\030\004"
-  " \001(\0132\".mavsdk.rpc.telemetry.PositionBody"
-  "\022+\n\001q\030\005 \001(\0132 .mavsdk.rpc.telemetry.Quate"
-  "rnion\0229\n\rvelocity_body\030\006 \001(\0132\".mavsdk.rp"
-  "c.telemetry.VelocityBody\022H\n\025angular_velo"
-  "city_body\030\007 \001(\0132).mavsdk.rpc.telemetry.A"
-  "ngularVelocityBody\0229\n\017pose_covariance\030\010 "
-  "\001(\0132 .mavsdk.rpc.telemetry.Covariance\022=\n"
-  "\023velocity_covariance\030\t \001(\0132 .mavsdk.rpc."
-  "telemetry.Covariance\"j\n\010MavFrame\022\023\n\017MAV_"
-  "FRAME_UNDEF\020\000\022\026\n\022MAV_FRAME_BODY_NED\020\010\022\030\n"
-  "\024MAV_FRAME_VISION_NED\020\020\022\027\n\023MAV_FRAME_EST"
-  "IM_NED\020\022\"\177\n\016DistanceSensor\022#\n\022minimum_di"
-  "stance_m\030\001 \001(\002B\007\202\265\030\003NaN\022#\n\022maximum_dista"
-  "nce_m\030\002 \001(\002B\007\202\265\030\003NaN\022#\n\022current_distance"
-  "_m\030\003 \001(\002B\007\202\265\030\003NaN\"\260\001\n\016ScaledPressure\022\024\n\014"
-  "timestamp_us\030\001 \001(\004\022\035\n\025absolute_pressure_"
-  "hpa\030\002 \001(\002\022!\n\031differential_pressure_hpa\030\003"
-  " \001(\002\022\027\n\017temperature_deg\030\004 \001(\002\022-\n%differe"
-  "ntial_pressure_temperature_deg\030\005 \001(\002\"Y\n\013"
-  "PositionNed\022\030\n\007north_m\030\001 \001(\002B\007\202\265\030\003NaN\022\027\n"
-  "\006east_m\030\002 \001(\002B\007\202\265\030\003NaN\022\027\n\006down_m\030\003 \001(\002B\007"
-  "\202\265\030\003NaN\"D\n\013VelocityNed\022\021\n\tnorth_m_s\030\001 \001("
-  "\002\022\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\"\177\n"
-  "\023PositionVelocityNed\0223\n\010position\030\001 \001(\0132!"
-  ".mavsdk.rpc.telemetry.PositionNed\0223\n\010vel"
-  "ocity\030\002 \001(\0132!.mavsdk.rpc.telemetry.Veloc"
-  "ityNed\"r\n\013GroundTruth\022\035\n\014latitude_deg\030\001 "
-  "\001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B\007\202\265\030"
-  "\003NaN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202\265\030\003N"
-  "aN\"x\n\020FixedwingMetrics\022\035\n\014airspeed_m_s\030\001"
-  " \001(\002B\007\202\265\030\003NaN\022$\n\023throttle_percentage\030\002 \001"
-  "(\002B\007\202\265\030\003NaN\022\037\n\016climb_rate_m_s\030\003 \001(\002B\007\202\265\030"
-  "\003NaN\"i\n\017AccelerationFrd\022\035\n\014forward_m_s2\030"
-  "\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nright_m_s2\030\002 \001(\002B\007\202\265\030\003"
-  "NaN\022\032\n\tdown_m_s2\030\003 \001(\002B\007\202\265\030\003NaN\"o\n\022Angul"
-  "arVelocityFrd\022\036\n\rforward_rad_s\030\001 \001(\002B\007\202\265"
-  "\030\003NaN\022\034\n\013right_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\nd"
-  "own_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"m\n\020MagneticFiel"
-  "dFrd\022\036\n\rforward_gauss\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013"
-  "right_gauss\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_gauss"
-  "\030\003 \001(\002B\007\202\265\030\003NaN\"\213\002\n\003Imu\022\?\n\020acceleration_"
-  "frd\030\001 \001(\0132%.mavsdk.rpc.telemetry.Acceler"
-  "ationFrd\022F\n\024angular_velocity_frd\030\002 \001(\0132("
-  ".mavsdk.rpc.telemetry.AngularVelocityFrd"
-  "\022B\n\022magnetic_field_frd\030\003 \001(\0132&.mavsdk.rp"
-  "c.telemetry.MagneticFieldFrd\022!\n\020temperat"
-  "ure_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us\030"
-  "\005 \001(\004\"m\n\017GpsGlobalOrigin\022\035\n\014latitude_deg"
-  "\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B\007"
-  "\202\265\030\003NaN\022\033\n\naltitude_m\030\003 \001(\002B\007\202\265\030\003NaN\"\346\001\n"
-  "\010Altitude\022%\n\024altitude_monotonic_m\030\001 \001(\002B"
-  "\007\202\265\030\003NaN\022 \n\017altitude_amsl_m\030\002 \001(\002B\007\202\265\030\003N"
-  "aN\022!\n\020altitude_local_m\030\003 \001(\002B\007\202\265\030\003NaN\022$\n"
-  "\023altitude_relative_m\030\004 \001(\002B\007\202\265\030\003NaN\022#\n\022a"
-  "ltitude_terrain_m\030\005 \001(\002B\007\202\265\030\003NaN\022#\n\022bott"
-  "om_clearance_m\030\006 \001(\002B\007\202\265\030\003NaN\"\241\002\n\017Teleme"
-  "tryResult\022<\n\006result\030\001 \001(\0162,.mavsdk.rpc.t"
-  "elemetry.TelemetryResult.Result\022\022\n\nresul"
-  "t_str\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNKNOWN"
-  "\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYST"
-  "EM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RES"
-  "ULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n"
-  "\016RESULT_TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPORTED\020"
-  "\007*\244\001\n\007FixType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n\017FI"
-  "X_TYPE_NO_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022\023\n\017"
-  "FIX_TYPE_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DGPS\020\004"
-  "\022\026\n\022FIX_TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_RTK"
-  "_FIXED\020\006*\206\003\n\nFlightMode\022\027\n\023FLIGHT_MODE_U"
-  "NKNOWN\020\000\022\025\n\021FLIGHT_MODE_READY\020\001\022\027\n\023FLIGH"
-  "T_MODE_TAKEOFF\020\002\022\024\n\020FLIGHT_MODE_HOLD\020\003\022\027"
-  "\n\023FLIGHT_MODE_MISSION\020\004\022 \n\034FLIGHT_MODE_R"
-  "ETURN_TO_LAUNCH\020\005\022\024\n\020FLIGHT_MODE_LAND\020\006\022"
-  "\030\n\024FLIGHT_MODE_OFFBOARD\020\007\022\031\n\025FLIGHT_MODE"
-  "_FOLLOW_ME\020\010\022\026\n\022FLIGHT_MODE_MANUAL\020\t\022\026\n\022"
-  "FLIGHT_MODE_ALTCTL\020\n\022\026\n\022FLIGHT_MODE_POSC"
-  "TL\020\013\022\024\n\020FLIGHT_MODE_ACRO\020\014\022\032\n\026FLIGHT_MOD"
-  "E_STABILIZED\020\r\022\031\n\025FLIGHT_MODE_RATTITUDE\020"
-  "\016*\371\001\n\016StatusTextType\022\032\n\026STATUS_TEXT_TYPE"
-  "_DEBUG\020\000\022\031\n\025STATUS_TEXT_TYPE_INFO\020\001\022\033\n\027S"
-  "TATUS_TEXT_TYPE_NOTICE\020\002\022\034\n\030STATUS_TEXT_"
-  "TYPE_WARNING\020\003\022\032\n\026STATUS_TEXT_TYPE_ERROR"
-  "\020\004\022\035\n\031STATUS_TEXT_TYPE_CRITICAL\020\005\022\032\n\026STA"
-  "TUS_TEXT_TYPE_ALERT\020\006\022\036\n\032STATUS_TEXT_TYP"
-  "E_EMERGENCY\020\007*\223\001\n\013LandedState\022\030\n\024LANDED_"
-  "STATE_UNKNOWN\020\000\022\032\n\026LANDED_STATE_ON_GROUN"
-  "D\020\001\022\027\n\023LANDED_STATE_IN_AIR\020\002\022\033\n\027LANDED_S"
-  "TATE_TAKING_OFF\020\003\022\030\n\024LANDED_STATE_LANDIN"
-  "G\020\004*\215\001\n\tVtolState\022\030\n\024VTOL_STATE_UNDEFINE"
-  "D\020\000\022\037\n\033VTOL_STATE_TRANSITION_TO_FW\020\001\022\037\n\033"
-  "VTOL_STATE_TRANSITION_TO_MC\020\002\022\021\n\rVTOL_ST"
-  "ATE_MC\020\003\022\021\n\rVTOL_STATE_FW\020\0042\212;\n\020Telemetr"
-  "yService\022o\n\021SubscribePosition\022..mavsdk.r"
-  "pc.telemetry.SubscribePositionRequest\032&."
-  "mavsdk.rpc.telemetry.PositionResponse\"\0000"
-  "\001\022c\n\rSubscribeHome\022*.mavsdk.rpc.telemetr"
-  "y.SubscribeHomeRequest\032\".mavsdk.rpc.tele"
-  "metry.HomeResponse\"\0000\001\022f\n\016SubscribeInAir"
-  "\022+.mavsdk.rpc.telemetry.SubscribeInAirRe"
-  "quest\032#.mavsdk.rpc.telemetry.InAirRespon"
-  "se\"\0000\001\022x\n\024SubscribeLandedState\0221.mavsdk."
-  "rpc.telemetry.SubscribeLandedStateReques"
-  "t\032).mavsdk.rpc.telemetry.LandedStateResp"
-  "onse\"\0000\001\022f\n\016SubscribeArmed\022+.mavsdk.rpc."
-  "telemetry.SubscribeArmedRequest\032#.mavsdk"
-  ".rpc.telemetry.ArmedResponse\"\0000\001\022r\n\022Subs"
-  "cribeVtolState\022/.mavsdk.rpc.telemetry.Su"
-  "bscribeVtolStateRequest\032\'.mavsdk.rpc.tel"
-  "emetry.VtolStateResponse\"\0000\001\022\215\001\n\033Subscri"
-  "beAttitudeQuaternion\0228.mavsdk.rpc.teleme"
-  "try.SubscribeAttitudeQuaternionRequest\0320"
-  ".mavsdk.rpc.telemetry.AttitudeQuaternion"
-  "Response\"\0000\001\022~\n\026SubscribeAttitudeEuler\0223"
-  ".mavsdk.rpc.telemetry.SubscribeAttitudeE"
-  "ulerRequest\032+.mavsdk.rpc.telemetry.Attit"
-  "udeEulerResponse\"\0000\001\022\250\001\n$SubscribeAttitu"
-  "deAngularVelocityBody\022A.mavsdk.rpc.telem"
-  "etry.SubscribeAttitudeAngularVelocityBod"
-  "yRequest\0329.mavsdk.rpc.telemetry.Attitude"
-  "AngularVelocityBodyResponse\"\0000\001\022\237\001\n!Subs"
-  "cribeCameraAttitudeQuaternion\022>.mavsdk.r"
-  "pc.telemetry.SubscribeCameraAttitudeQuat"
-  "ernionRequest\0326.mavsdk.rpc.telemetry.Cam"
-  "eraAttitudeQuaternionResponse\"\0000\001\022\220\001\n\034Su"
-  "bscribeCameraAttitudeEuler\0229.mavsdk.rpc."
-  "telemetry.SubscribeCameraAttitudeEulerRe"
-  "quest\0321.mavsdk.rpc.telemetry.CameraAttit"
-  "udeEulerResponse\"\0000\001\022x\n\024SubscribeVelocit"
-  "yNed\0221.mavsdk.rpc.telemetry.SubscribeVel"
-  "ocityNedRequest\032).mavsdk.rpc.telemetry.V"
-  "elocityNedResponse\"\0000\001\022l\n\020SubscribeGpsIn"
-  "fo\022-.mavsdk.rpc.telemetry.SubscribeGpsIn"
-  "foRequest\032%.mavsdk.rpc.telemetry.GpsInfo"
-  "Response\"\0000\001\022i\n\017SubscribeRawGps\022,.mavsdk"
-  ".rpc.telemetry.SubscribeRawGpsRequest\032$."
-  "mavsdk.rpc.telemetry.RawGpsResponse\"\0000\001\022"
-  "l\n\020SubscribeBattery\022-.mavsdk.rpc.telemet"
-  "ry.SubscribeBatteryRequest\032%.mavsdk.rpc."
-  "telemetry.BatteryResponse\"\0000\001\022u\n\023Subscri"
-  "beFlightMode\0220.mavsdk.rpc.telemetry.Subs"
-  "cribeFlightModeRequest\032(.mavsdk.rpc.tele"
-  "metry.FlightModeResponse\"\0000\001\022i\n\017Subscrib"
-  "eHealth\022,.mavsdk.rpc.telemetry.Subscribe"
-  "HealthRequest\032$.mavsdk.rpc.telemetry.Hea"
-  "lthResponse\"\0000\001\022o\n\021SubscribeRcStatus\022..m"
-  "avsdk.rpc.telemetry.SubscribeRcStatusReq"
-  "uest\032&.mavsdk.rpc.telemetry.RcStatusResp"
-  "onse\"\0000\001\022\201\001\n\027SubscribeCellularStatus\0224.m"
-  "avsdk.rpc.telemetry.SubscribeCellularSta"
-  "tusRequest\032,.mavsdk.rpc.telemetry.Cellul"
-  "arStatusResponse\"\0000\001\022u\n\023SubscribeStatusT"
-  "ext\0220.mavsdk.rpc.telemetry.SubscribeStat"
-  "usTextRequest\032(.mavsdk.rpc.telemetry.Sta"
-  "tusTextResponse\"\0000\001\022\226\001\n\036SubscribeActuato"
-  "rControlTarget\022;.mavsdk.rpc.telemetry.Su"
-  "bscribeActuatorControlTargetRequest\0323.ma"
-  "vsdk.rpc.telemetry.ActuatorControlTarget"
-  "Response\"\0000\001\022\223\001\n\035SubscribeActuatorOutput"
-  "Status\022:.mavsdk.rpc.telemetry.SubscribeA"
-  "ctuatorOutputStatusRequest\0322.mavsdk.rpc."
-  "telemetry.ActuatorOutputStatusResponse\"\000"
-  "0\001\022o\n\021SubscribeOdometry\022..mavsdk.rpc.tel"
-  "emetry.SubscribeOdometryRequest\032&.mavsdk"
-  ".rpc.telemetry.OdometryResponse\"\0000\001\022\220\001\n\034"
-  "SubscribePositionVelocityNed\0229.mavsdk.rp"
-  "c.telemetry.SubscribePositionVelocityNed"
-  "Request\0321.mavsdk.rpc.telemetry.PositionV"
-  "elocityNedResponse\"\0000\001\022x\n\024SubscribeGroun"
-  "dTruth\0221.mavsdk.rpc.telemetry.SubscribeG"
-  "roundTruthRequest\032).mavsdk.rpc.telemetry"
-  ".GroundTruthResponse\"\0000\001\022\207\001\n\031SubscribeFi"
-  "xedwingMetrics\0226.mavsdk.rpc.telemetry.Su"
-  "bscribeFixedwingMetricsRequest\032..mavsdk."
-  "rpc.telemetry.FixedwingMetricsResponse\"\000"
-  "0\001\022`\n\014SubscribeImu\022).mavsdk.rpc.telemetr"
-  "y.SubscribeImuRequest\032!.mavsdk.rpc.telem"
-  "etry.ImuResponse\"\0000\001\022r\n\022SubscribeScaledI"
-  "mu\022/.mavsdk.rpc.telemetry.SubscribeScale"
-  "dImuRequest\032\'.mavsdk.rpc.telemetry.Scale"
-  "dImuResponse\"\0000\001\022i\n\017SubscribeRawImu\022,.ma"
-  "vsdk.rpc.telemetry.SubscribeRawImuReques"
-  "t\032$.mavsdk.rpc.telemetry.RawImuResponse\""
-  "\0000\001\022x\n\024SubscribeHealthAllOk\0221.mavsdk.rpc"
-  ".telemetry.SubscribeHealthAllOkRequest\032)"
-  ".mavsdk.rpc.telemetry.HealthAllOkRespons"
-  "e\"\0000\001\022~\n\026SubscribeUnixEpochTime\0223.mavsdk"
-  ".rpc.telemetry.SubscribeUnixEpochTimeReq"
-  "uest\032+.mavsdk.rpc.telemetry.UnixEpochTim"
-  "eResponse\"\0000\001\022\201\001\n\027SubscribeDistanceSenso"
-  "r\0224.mavsdk.rpc.telemetry.SubscribeDistan"
-  "ceSensorRequest\032,.mavsdk.rpc.telemetry.D"
-  "istanceSensorResponse\"\0000\001\022\201\001\n\027SubscribeS"
-  "caledPressure\0224.mavsdk.rpc.telemetry.Sub"
-  "scribeScaledPressureRequest\032,.mavsdk.rpc"
-  ".telemetry.ScaledPressureResponse\"\0000\001\022l\n"
-  "\020SubscribeHeading\022-.mavsdk.rpc.telemetry"
-  ".SubscribeHeadingRequest\032%.mavsdk.rpc.te"
-  "lemetry.HeadingResponse\"\0000\001\022o\n\021Subscribe"
-  "Altitude\022..mavsdk.rpc.telemetry.Subscrib"
-  "eAltitudeRequest\032&.mavsdk.rpc.telemetry."
-  "AltitudeResponse\"\0000\001\022p\n\017SetRatePosition\022"
-  ",.mavsdk.rpc.telemetry.SetRatePositionRe"
-  "quest\032-.mavsdk.rpc.telemetry.SetRatePosi"
-  "tionResponse\"\000\022d\n\013SetRateHome\022(.mavsdk.r"
-  "pc.telemetry.SetRateHomeRequest\032).mavsdk"
-  ".rpc.telemetry.SetRateHomeResponse\"\000\022g\n\014"
-  "SetRateInAir\022).mavsdk.rpc.telemetry.SetR"
-  "ateInAirRequest\032*.mavsdk.rpc.telemetry.S"
-  "etRateInAirResponse\"\000\022y\n\022SetRateLandedSt"
-  "ate\022/.mavsdk.rpc.telemetry.SetRateLanded"
-  "StateRequest\0320.mavsdk.rpc.telemetry.SetR"
-  "ateLandedStateResponse\"\000\022s\n\020SetRateVtolS"
-  "tate\022-.mavsdk.rpc.telemetry.SetRateVtolS"
-  "tateRequest\032..mavsdk.rpc.telemetry.SetRa"
-  "teVtolStateResponse\"\000\022\216\001\n\031SetRateAttitud"
-  "eQuaternion\0226.mavsdk.rpc.telemetry.SetRa"
-  "teAttitudeQuaternionRequest\0327.mavsdk.rpc"
-  ".telemetry.SetRateAttitudeQuaternionResp"
-  "onse\"\000\022\177\n\024SetRateAttitudeEuler\0221.mavsdk."
-  "rpc.telemetry.SetRateAttitudeEulerReques"
-  "t\0322.mavsdk.rpc.telemetry.SetRateAttitude"
-  "EulerResponse\"\000\022\202\001\n\025SetRateCameraAttitud"
-  "e\0222.mavsdk.rpc.telemetry.SetRateCameraAt"
-  "titudeRequest\0323.mavsdk.rpc.telemetry.Set"
-  "RateCameraAttitudeResponse\"\000\022y\n\022SetRateV"
-  "elocityNed\022/.mavsdk.rpc.telemetry.SetRat"
-  "eVelocityNedRequest\0320.mavsdk.rpc.telemet"
-  "ry.SetRateVelocityNedResponse\"\000\022m\n\016SetRa"
-  "teGpsInfo\022+.mavsdk.rpc.telemetry.SetRate"
-  "GpsInfoRequest\032,.mavsdk.rpc.telemetry.Se"
-  "tRateGpsInfoResponse\"\000\022m\n\016SetRateBattery"
-  "\022+.mavsdk.rpc.telemetry.SetRateBatteryRe"
-  "quest\032,.mavsdk.rpc.telemetry.SetRateBatt"
-  "eryResponse\"\000\022p\n\017SetRateRcStatus\022,.mavsd"
-  "k.rpc.telemetry.SetRateRcStatusRequest\032-"
-  ".mavsdk.rpc.telemetry.SetRateRcStatusRes"
-  "ponse\"\000\022\202\001\n\025SetRateCellularStatus\0222.mavs"
-  "dk.rpc.telemetry.SetRateCellularStatusRe"
-  "quest\0323.mavsdk.rpc.telemetry.SetRateCell"
-  "ularStatusResponse\"\000\022\227\001\n\034SetRateActuator"
-  "ControlTarget\0229.mavsdk.rpc.telemetry.Set"
-  "RateActuatorControlTargetRequest\032:.mavsd"
-  "k.rpc.telemetry.SetRateActuatorControlTa"
-  "rgetResponse\"\000\022\224\001\n\033SetRateActuatorOutput"
-  "Status\0228.mavsdk.rpc.telemetry.SetRateAct"
-  "uatorOutputStatusRequest\0329.mavsdk.rpc.te"
-  "lemetry.SetRateActuatorOutputStatusRespo"
-  "nse\"\000\022p\n\017SetRateOdometry\022,.mavsdk.rpc.te"
-  "lemetry.SetRateOdometryRequest\032-.mavsdk."
-  "rpc.telemetry.SetRateOdometryResponse\"\000\022"
-  "\221\001\n\032SetRatePositionVelocityNed\0227.mavsdk."
-  "rpc.telemetry.SetRatePositionVelocityNed"
-  "Request\0328.mavsdk.rpc.telemetry.SetRatePo"
-  "sitionVelocityNedResponse\"\000\022y\n\022SetRateGr"
-  "oundTruth\022/.mavsdk.rpc.telemetry.SetRate"
-  "GroundTruthRequest\0320.mavsdk.rpc.telemetr"
-  "y.SetRateGroundTruthResponse\"\000\022\210\001\n\027SetRa"
-  "teFixedwingMetrics\0224.mavsdk.rpc.telemetr"
-  "y.SetRateFixedwingMetricsRequest\0325.mavsd"
-  "k.rpc.telemetry.SetRateFixedwingMetricsR"
-  "esponse\"\000\022a\n\nSetRateImu\022\'.mavsdk.rpc.tel"
-  "emetry.SetRateImuRequest\032(.mavsdk.rpc.te"
-  "lemetry.SetRateImuResponse\"\000\022s\n\020SetRateS"
-  "caledImu\022-.mavsdk.rpc.telemetry.SetRateS"
-  "caledImuRequest\032..mavsdk.rpc.telemetry.S"
-  "etRateScaledImuResponse\"\000\022j\n\rSetRateRawI"
-  "mu\022*.mavsdk.rpc.telemetry.SetRateRawImuR"
-  "equest\032+.mavsdk.rpc.telemetry.SetRateRaw"
-  "ImuResponse\"\000\022\177\n\024SetRateUnixEpochTime\0221."
-  "mavsdk.rpc.telemetry.SetRateUnixEpochTim"
-  "eRequest\0322.mavsdk.rpc.telemetry.SetRateU"
-  "nixEpochTimeResponse\"\000\022\202\001\n\025SetRateDistan"
-  "ceSensor\0222.mavsdk.rpc.telemetry.SetRateD"
-  "istanceSensorRequest\0323.mavsdk.rpc.teleme"
-  "try.SetRateDistanceSensorResponse\"\000\022p\n\017S"
-  "etRateAltitude\022,.mavsdk.rpc.telemetry.Se"
-  "tRateAltitudeRequest\032-.mavsdk.rpc.teleme"
-  "try.SetRateAltitudeResponse\"\000\022y\n\022GetGpsG"
-  "lobalOrigin\022/.mavsdk.rpc.telemetry.GetGp"
-  "sGlobalOriginRequest\0320.mavsdk.rpc.teleme"
-  "try.GetGpsGlobalOriginResponse\"\000B%\n\023io.m"
-  "avsdk.telemetryB\016TelemetryProtob\006proto3"
+  "gnal_strength_percent\030\003 \001(\002B\007\202\265\030\003NaN\"\357\002\n"
+  "\016CellularStatus\022\016\n\006status\030\001 \001(\r\022\026\n\016failu"
+  "re_reason\030\002 \001(\r\022\014\n\004type\030\003 \001(\r\022\017\n\007quality"
+  "\030\004 \001(\r\022\013\n\003mcc\030\005 \001(\r\022\013\n\003mnc\030\006 \001(\r\022\013\n\003lac\030"
+  "\007 \001(\r\022\023\n\013band_number\030\010 \001(\r\022\026\n\016band_frequ"
+  "ency\030\t \001(\002\022\026\n\016channel_number\030\n \001(\r\022\020\n\010rx"
+  "_level\030\013 \001(\002\022\020\n\010tx_level\030\014 \001(\002\022\022\n\nrx_qua"
+  "lity\030\r \001(\002\022\024\n\014link_tx_rate\030\016 \001(\r\022\024\n\014link"
+  "_rx_rate\030\017 \001(\r\022\026\n\016bit_error_rate\030\020 \001(\r\022\027"
+  "\n\017instance_number\030\021 \001(\r\022\025\n\rcell_tower_id"
+  "\030\022 \001(\t\"\225\001\n\tModemInfo\022\027\n\017instance_number\030"
+  "\001 \001(\r\022\014\n\004imei\030\002 \001(\004\022\r\n\005iccid\030\003 \001(\004\022\014\n\004im"
+  "si\030\004 \001(\004\022\020\n\010modem_id\030\005 \001(\t\022\030\n\020firmware_v"
+  "ersion\030\006 \001(\t\022\030\n\020modem_model_name\030\007 \001(\t\"N"
+  "\n\nStatusText\0222\n\004type\030\001 \001(\0162$.mavsdk.rpc."
+  "telemetry.StatusTextType\022\014\n\004text\030\002 \001(\t\"\?"
+  "\n\025ActuatorControlTarget\022\024\n\005group\030\001 \001(\005B\005"
+  "\202\265\030\0010\022\020\n\010controls\030\002 \003(\002\"\?\n\024ActuatorOutpu"
+  "tStatus\022\025\n\006active\030\001 \001(\rB\005\202\265\030\0010\022\020\n\010actuat"
+  "or\030\002 \003(\002\"\'\n\nCovariance\022\031\n\021covariance_mat"
+  "rix\030\001 \003(\002\";\n\014VelocityBody\022\r\n\005x_m_s\030\001 \001(\002"
+  "\022\r\n\005y_m_s\030\002 \001(\002\022\r\n\005z_m_s\030\003 \001(\002\"5\n\014Positi"
+  "onBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030\002 \001(\002\022\013\n\003z_m\030"
+  "\003 \001(\002\"\354\004\n\010Odometry\022\021\n\ttime_usec\030\001 \001(\004\0229\n"
+  "\010frame_id\030\002 \001(\0162\'.mavsdk.rpc.telemetry.O"
+  "dometry.MavFrame\022\?\n\016child_frame_id\030\003 \001(\016"
+  "2\'.mavsdk.rpc.telemetry.Odometry.MavFram"
+  "e\0229\n\rposition_body\030\004 \001(\0132\".mavsdk.rpc.te"
+  "lemetry.PositionBody\022+\n\001q\030\005 \001(\0132 .mavsdk"
+  ".rpc.telemetry.Quaternion\0229\n\rvelocity_bo"
+  "dy\030\006 \001(\0132\".mavsdk.rpc.telemetry.Velocity"
+  "Body\022H\n\025angular_velocity_body\030\007 \001(\0132).ma"
+  "vsdk.rpc.telemetry.AngularVelocityBody\0229"
+  "\n\017pose_covariance\030\010 \001(\0132 .mavsdk.rpc.tel"
+  "emetry.Covariance\022=\n\023velocity_covariance"
+  "\030\t \001(\0132 .mavsdk.rpc.telemetry.Covariance"
+  "\"j\n\010MavFrame\022\023\n\017MAV_FRAME_UNDEF\020\000\022\026\n\022MAV"
+  "_FRAME_BODY_NED\020\010\022\030\n\024MAV_FRAME_VISION_NE"
+  "D\020\020\022\027\n\023MAV_FRAME_ESTIM_NED\020\022\"\177\n\016Distance"
+  "Sensor\022#\n\022minimum_distance_m\030\001 \001(\002B\007\202\265\030\003"
+  "NaN\022#\n\022maximum_distance_m\030\002 \001(\002B\007\202\265\030\003NaN"
+  "\022#\n\022current_distance_m\030\003 \001(\002B\007\202\265\030\003NaN\"\260\001"
+  "\n\016ScaledPressure\022\024\n\014timestamp_us\030\001 \001(\004\022\035"
+  "\n\025absolute_pressure_hpa\030\002 \001(\002\022!\n\031differe"
+  "ntial_pressure_hpa\030\003 \001(\002\022\027\n\017temperature_"
+  "deg\030\004 \001(\002\022-\n%differential_pressure_tempe"
+  "rature_deg\030\005 \001(\002\"Y\n\013PositionNed\022\030\n\007north"
+  "_m\030\001 \001(\002B\007\202\265\030\003NaN\022\027\n\006east_m\030\002 \001(\002B\007\202\265\030\003N"
+  "aN\022\027\n\006down_m\030\003 \001(\002B\007\202\265\030\003NaN\"D\n\013VelocityN"
+  "ed\022\021\n\tnorth_m_s\030\001 \001(\002\022\020\n\010east_m_s\030\002 \001(\002\022"
+  "\020\n\010down_m_s\030\003 \001(\002\"\177\n\023PositionVelocityNed"
+  "\0223\n\010position\030\001 \001(\0132!.mavsdk.rpc.telemetr"
+  "y.PositionNed\0223\n\010velocity\030\002 \001(\0132!.mavsdk"
+  ".rpc.telemetry.VelocityNed\"r\n\013GroundTrut"
+  "h\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlong"
+  "itude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_alt"
+  "itude_m\030\003 \001(\002B\007\202\265\030\003NaN\"x\n\020FixedwingMetri"
+  "cs\022\035\n\014airspeed_m_s\030\001 \001(\002B\007\202\265\030\003NaN\022$\n\023thr"
+  "ottle_percentage\030\002 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb"
+  "_rate_m_s\030\003 \001(\002B\007\202\265\030\003NaN\"i\n\017Acceleration"
+  "Frd\022\035\n\014forward_m_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nri"
+  "ght_m_s2\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001"
+  "(\002B\007\202\265\030\003NaN\"o\n\022AngularVelocityFrd\022\036\n\rfor"
+  "ward_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_rad_s"
+  "\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_rad_s\030\003 \001(\002B\007\202\265\030"
+  "\003NaN\"m\n\020MagneticFieldFrd\022\036\n\rforward_gaus"
+  "s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_gauss\030\002 \001(\002B\007\202"
+  "\265\030\003NaN\022\033\n\ndown_gauss\030\003 \001(\002B\007\202\265\030\003NaN\"\213\002\n\003"
+  "Imu\022\?\n\020acceleration_frd\030\001 \001(\0132%.mavsdk.r"
+  "pc.telemetry.AccelerationFrd\022F\n\024angular_"
+  "velocity_frd\030\002 \001(\0132(.mavsdk.rpc.telemetr"
+  "y.AngularVelocityFrd\022B\n\022magnetic_field_f"
+  "rd\030\003 \001(\0132&.mavsdk.rpc.telemetry.Magnetic"
+  "FieldFrd\022!\n\020temperature_degc\030\004 \001(\002B\007\202\265\030\003"
+  "NaN\022\024\n\014timestamp_us\030\005 \001(\004\"m\n\017GpsGlobalOr"
+  "igin\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rl"
+  "ongitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022\033\n\naltitude_"
+  "m\030\003 \001(\002B\007\202\265\030\003NaN\"\346\001\n\010Altitude\022%\n\024altitud"
+  "e_monotonic_m\030\001 \001(\002B\007\202\265\030\003NaN\022 \n\017altitude"
+  "_amsl_m\030\002 \001(\002B\007\202\265\030\003NaN\022!\n\020altitude_local"
+  "_m\030\003 \001(\002B\007\202\265\030\003NaN\022$\n\023altitude_relative_m"
+  "\030\004 \001(\002B\007\202\265\030\003NaN\022#\n\022altitude_terrain_m\030\005 "
+  "\001(\002B\007\202\265\030\003NaN\022#\n\022bottom_clearance_m\030\006 \001(\002"
+  "B\007\202\265\030\003NaN\"\241\002\n\017TelemetryResult\022<\n\006result\030"
+  "\001 \001(\0162,.mavsdk.rpc.telemetry.TelemetryRe"
+  "sult.Result\022\022\n\nresult_str\030\002 \001(\t\"\273\001\n\006Resu"
+  "lt\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS"
+  "\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNE"
+  "CTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT"
+  "_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\026\n"
+  "\022RESULT_UNSUPPORTED\020\007*\244\001\n\007FixType\022\023\n\017FIX"
+  "_TYPE_NO_GPS\020\000\022\023\n\017FIX_TYPE_NO_FIX\020\001\022\023\n\017F"
+  "IX_TYPE_FIX_2D\020\002\022\023\n\017FIX_TYPE_FIX_3D\020\003\022\025\n"
+  "\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022FIX_TYPE_RTK_FLO"
+  "AT\020\005\022\026\n\022FIX_TYPE_RTK_FIXED\020\006*\206\003\n\nFlightM"
+  "ode\022\027\n\023FLIGHT_MODE_UNKNOWN\020\000\022\025\n\021FLIGHT_M"
+  "ODE_READY\020\001\022\027\n\023FLIGHT_MODE_TAKEOFF\020\002\022\024\n\020"
+  "FLIGHT_MODE_HOLD\020\003\022\027\n\023FLIGHT_MODE_MISSIO"
+  "N\020\004\022 \n\034FLIGHT_MODE_RETURN_TO_LAUNCH\020\005\022\024\n"
+  "\020FLIGHT_MODE_LAND\020\006\022\030\n\024FLIGHT_MODE_OFFBO"
+  "ARD\020\007\022\031\n\025FLIGHT_MODE_FOLLOW_ME\020\010\022\026\n\022FLIG"
+  "HT_MODE_MANUAL\020\t\022\026\n\022FLIGHT_MODE_ALTCTL\020\n"
+  "\022\026\n\022FLIGHT_MODE_POSCTL\020\013\022\024\n\020FLIGHT_MODE_"
+  "ACRO\020\014\022\032\n\026FLIGHT_MODE_STABILIZED\020\r\022\031\n\025FL"
+  "IGHT_MODE_RATTITUDE\020\016*\371\001\n\016StatusTextType"
+  "\022\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000\022\031\n\025STATUS_T"
+  "EXT_TYPE_INFO\020\001\022\033\n\027STATUS_TEXT_TYPE_NOTI"
+  "CE\020\002\022\034\n\030STATUS_TEXT_TYPE_WARNING\020\003\022\032\n\026ST"
+  "ATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031STATUS_TEXT_TY"
+  "PE_CRITICAL\020\005\022\032\n\026STATUS_TEXT_TYPE_ALERT\020"
+  "\006\022\036\n\032STATUS_TEXT_TYPE_EMERGENCY\020\007*\223\001\n\013La"
+  "ndedState\022\030\n\024LANDED_STATE_UNKNOWN\020\000\022\032\n\026L"
+  "ANDED_STATE_ON_GROUND\020\001\022\027\n\023LANDED_STATE_"
+  "IN_AIR\020\002\022\033\n\027LANDED_STATE_TAKING_OFF\020\003\022\030\n"
+  "\024LANDED_STATE_LANDING\020\004*\215\001\n\tVtolState\022\030\n"
+  "\024VTOL_STATE_UNDEFINED\020\000\022\037\n\033VTOL_STATE_TR"
+  "ANSITION_TO_FW\020\001\022\037\n\033VTOL_STATE_TRANSITIO"
+  "N_TO_MC\020\002\022\021\n\rVTOL_STATE_MC\020\003\022\021\n\rVTOL_STA"
+  "TE_FW\020\0042\363<\n\020TelemetryService\022o\n\021Subscrib"
+  "ePosition\022..mavsdk.rpc.telemetry.Subscri"
+  "bePositionRequest\032&.mavsdk.rpc.telemetry"
+  ".PositionResponse\"\0000\001\022c\n\rSubscribeHome\022*"
+  ".mavsdk.rpc.telemetry.SubscribeHomeReque"
+  "st\032\".mavsdk.rpc.telemetry.HomeResponse\"\000"
+  "0\001\022f\n\016SubscribeInAir\022+.mavsdk.rpc.teleme"
+  "try.SubscribeInAirRequest\032#.mavsdk.rpc.t"
+  "elemetry.InAirResponse\"\0000\001\022x\n\024SubscribeL"
+  "andedState\0221.mavsdk.rpc.telemetry.Subscr"
+  "ibeLandedStateRequest\032).mavsdk.rpc.telem"
+  "etry.LandedStateResponse\"\0000\001\022f\n\016Subscrib"
+  "eArmed\022+.mavsdk.rpc.telemetry.SubscribeA"
+  "rmedRequest\032#.mavsdk.rpc.telemetry.Armed"
+  "Response\"\0000\001\022r\n\022SubscribeVtolState\022/.mav"
+  "sdk.rpc.telemetry.SubscribeVtolStateRequ"
+  "est\032\'.mavsdk.rpc.telemetry.VtolStateResp"
+  "onse\"\0000\001\022\215\001\n\033SubscribeAttitudeQuaternion"
+  "\0228.mavsdk.rpc.telemetry.SubscribeAttitud"
+  "eQuaternionRequest\0320.mavsdk.rpc.telemetr"
+  "y.AttitudeQuaternionResponse\"\0000\001\022~\n\026Subs"
+  "cribeAttitudeEuler\0223.mavsdk.rpc.telemetr"
+  "y.SubscribeAttitudeEulerRequest\032+.mavsdk"
+  ".rpc.telemetry.AttitudeEulerResponse\"\0000\001"
+  "\022\250\001\n$SubscribeAttitudeAngularVelocityBod"
+  "y\022A.mavsdk.rpc.telemetry.SubscribeAttitu"
+  "deAngularVelocityBodyRequest\0329.mavsdk.rp"
+  "c.telemetry.AttitudeAngularVelocityBodyR"
+  "esponse\"\0000\001\022\237\001\n!SubscribeCameraAttitudeQ"
+  "uaternion\022>.mavsdk.rpc.telemetry.Subscri"
+  "beCameraAttitudeQuaternionRequest\0326.mavs"
+  "dk.rpc.telemetry.CameraAttitudeQuaternio"
+  "nResponse\"\0000\001\022\220\001\n\034SubscribeCameraAttitud"
+  "eEuler\0229.mavsdk.rpc.telemetry.SubscribeC"
+  "ameraAttitudeEulerRequest\0321.mavsdk.rpc.t"
+  "elemetry.CameraAttitudeEulerResponse\"\0000\001"
+  "\022x\n\024SubscribeVelocityNed\0221.mavsdk.rpc.te"
+  "lemetry.SubscribeVelocityNedRequest\032).ma"
+  "vsdk.rpc.telemetry.VelocityNedResponse\"\000"
+  "0\001\022l\n\020SubscribeGpsInfo\022-.mavsdk.rpc.tele"
+  "metry.SubscribeGpsInfoRequest\032%.mavsdk.r"
+  "pc.telemetry.GpsInfoResponse\"\0000\001\022i\n\017Subs"
+  "cribeRawGps\022,.mavsdk.rpc.telemetry.Subsc"
+  "ribeRawGpsRequest\032$.mavsdk.rpc.telemetry"
+  ".RawGpsResponse\"\0000\001\022l\n\020SubscribeBattery\022"
+  "-.mavsdk.rpc.telemetry.SubscribeBatteryR"
+  "equest\032%.mavsdk.rpc.telemetry.BatteryRes"
+  "ponse\"\0000\001\022u\n\023SubscribeFlightMode\0220.mavsd"
+  "k.rpc.telemetry.SubscribeFlightModeReque"
+  "st\032(.mavsdk.rpc.telemetry.FlightModeResp"
+  "onse\"\0000\001\022i\n\017SubscribeHealth\022,.mavsdk.rpc"
+  ".telemetry.SubscribeHealthRequest\032$.mavs"
+  "dk.rpc.telemetry.HealthResponse\"\0000\001\022o\n\021S"
+  "ubscribeRcStatus\022..mavsdk.rpc.telemetry."
+  "SubscribeRcStatusRequest\032&.mavsdk.rpc.te"
+  "lemetry.RcStatusResponse\"\0000\001\022\201\001\n\027Subscri"
+  "beCellularStatus\0224.mavsdk.rpc.telemetry."
+  "SubscribeCellularStatusRequest\032,.mavsdk."
+  "rpc.telemetry.CellularStatusResponse\"\0000\001"
+  "\022r\n\022SubscribeModemInfo\022/.mavsdk.rpc.tele"
+  "metry.SubscribeModemInfoRequest\032\'.mavsdk"
+  ".rpc.telemetry.ModemInfoResponse\"\0000\001\022u\n\023"
+  "SubscribeStatusText\0220.mavsdk.rpc.telemet"
+  "ry.SubscribeStatusTextRequest\032(.mavsdk.r"
+  "pc.telemetry.StatusTextResponse\"\0000\001\022\226\001\n\036"
+  "SubscribeActuatorControlTarget\022;.mavsdk."
+  "rpc.telemetry.SubscribeActuatorControlTa"
+  "rgetRequest\0323.mavsdk.rpc.telemetry.Actua"
+  "torControlTargetResponse\"\0000\001\022\223\001\n\035Subscri"
+  "beActuatorOutputStatus\022:.mavsdk.rpc.tele"
+  "metry.SubscribeActuatorOutputStatusReque"
+  "st\0322.mavsdk.rpc.telemetry.ActuatorOutput"
+  "StatusResponse\"\0000\001\022o\n\021SubscribeOdometry\022"
+  "..mavsdk.rpc.telemetry.SubscribeOdometry"
+  "Request\032&.mavsdk.rpc.telemetry.OdometryR"
+  "esponse\"\0000\001\022\220\001\n\034SubscribePositionVelocit"
+  "yNed\0229.mavsdk.rpc.telemetry.SubscribePos"
+  "itionVelocityNedRequest\0321.mavsdk.rpc.tel"
+  "emetry.PositionVelocityNedResponse\"\0000\001\022x"
+  "\n\024SubscribeGroundTruth\0221.mavsdk.rpc.tele"
+  "metry.SubscribeGroundTruthRequest\032).mavs"
+  "dk.rpc.telemetry.GroundTruthResponse\"\0000\001"
+  "\022\207\001\n\031SubscribeFixedwingMetrics\0226.mavsdk."
+  "rpc.telemetry.SubscribeFixedwingMetricsR"
+  "equest\032..mavsdk.rpc.telemetry.FixedwingM"
+  "etricsResponse\"\0000\001\022`\n\014SubscribeImu\022).mav"
+  "sdk.rpc.telemetry.SubscribeImuRequest\032!."
+  "mavsdk.rpc.telemetry.ImuResponse\"\0000\001\022r\n\022"
+  "SubscribeScaledImu\022/.mavsdk.rpc.telemetr"
+  "y.SubscribeScaledImuRequest\032\'.mavsdk.rpc"
+  ".telemetry.ScaledImuResponse\"\0000\001\022i\n\017Subs"
+  "cribeRawImu\022,.mavsdk.rpc.telemetry.Subsc"
+  "ribeRawImuRequest\032$.mavsdk.rpc.telemetry"
+  ".RawImuResponse\"\0000\001\022x\n\024SubscribeHealthAl"
+  "lOk\0221.mavsdk.rpc.telemetry.SubscribeHeal"
+  "thAllOkRequest\032).mavsdk.rpc.telemetry.He"
+  "althAllOkResponse\"\0000\001\022~\n\026SubscribeUnixEp"
+  "ochTime\0223.mavsdk.rpc.telemetry.Subscribe"
+  "UnixEpochTimeRequest\032+.mavsdk.rpc.teleme"
+  "try.UnixEpochTimeResponse\"\0000\001\022\201\001\n\027Subscr"
+  "ibeDistanceSensor\0224.mavsdk.rpc.telemetry"
+  ".SubscribeDistanceSensorRequest\032,.mavsdk"
+  ".rpc.telemetry.DistanceSensorResponse\"\0000"
+  "\001\022\201\001\n\027SubscribeScaledPressure\0224.mavsdk.r"
+  "pc.telemetry.SubscribeScaledPressureRequ"
+  "est\032,.mavsdk.rpc.telemetry.ScaledPressur"
+  "eResponse\"\0000\001\022l\n\020SubscribeHeading\022-.mavs"
+  "dk.rpc.telemetry.SubscribeHeadingRequest"
+  "\032%.mavsdk.rpc.telemetry.HeadingResponse\""
+  "\0000\001\022o\n\021SubscribeAltitude\022..mavsdk.rpc.te"
+  "lemetry.SubscribeAltitudeRequest\032&.mavsd"
+  "k.rpc.telemetry.AltitudeResponse\"\0000\001\022p\n\017"
+  "SetRatePosition\022,.mavsdk.rpc.telemetry.S"
+  "etRatePositionRequest\032-.mavsdk.rpc.telem"
+  "etry.SetRatePositionResponse\"\000\022d\n\013SetRat"
+  "eHome\022(.mavsdk.rpc.telemetry.SetRateHome"
+  "Request\032).mavsdk.rpc.telemetry.SetRateHo"
+  "meResponse\"\000\022g\n\014SetRateInAir\022).mavsdk.rp"
+  "c.telemetry.SetRateInAirRequest\032*.mavsdk"
+  ".rpc.telemetry.SetRateInAirResponse\"\000\022y\n"
+  "\022SetRateLandedState\022/.mavsdk.rpc.telemet"
+  "ry.SetRateLandedStateRequest\0320.mavsdk.rp"
+  "c.telemetry.SetRateLandedStateResponse\"\000"
+  "\022s\n\020SetRateVtolState\022-.mavsdk.rpc.teleme"
+  "try.SetRateVtolStateRequest\032..mavsdk.rpc"
+  ".telemetry.SetRateVtolStateResponse\"\000\022\216\001"
+  "\n\031SetRateAttitudeQuaternion\0226.mavsdk.rpc"
+  ".telemetry.SetRateAttitudeQuaternionRequ"
+  "est\0327.mavsdk.rpc.telemetry.SetRateAttitu"
+  "deQuaternionResponse\"\000\022\177\n\024SetRateAttitud"
+  "eEuler\0221.mavsdk.rpc.telemetry.SetRateAtt"
+  "itudeEulerRequest\0322.mavsdk.rpc.telemetry"
+  ".SetRateAttitudeEulerResponse\"\000\022\202\001\n\025SetR"
+  "ateCameraAttitude\0222.mavsdk.rpc.telemetry"
+  ".SetRateCameraAttitudeRequest\0323.mavsdk.r"
+  "pc.telemetry.SetRateCameraAttitudeRespon"
+  "se\"\000\022y\n\022SetRateVelocityNed\022/.mavsdk.rpc."
+  "telemetry.SetRateVelocityNedRequest\0320.ma"
+  "vsdk.rpc.telemetry.SetRateVelocityNedRes"
+  "ponse\"\000\022m\n\016SetRateGpsInfo\022+.mavsdk.rpc.t"
+  "elemetry.SetRateGpsInfoRequest\032,.mavsdk."
+  "rpc.telemetry.SetRateGpsInfoResponse\"\000\022m"
+  "\n\016SetRateBattery\022+.mavsdk.rpc.telemetry."
+  "SetRateBatteryRequest\032,.mavsdk.rpc.telem"
+  "etry.SetRateBatteryResponse\"\000\022p\n\017SetRate"
+  "RcStatus\022,.mavsdk.rpc.telemetry.SetRateR"
+  "cStatusRequest\032-.mavsdk.rpc.telemetry.Se"
+  "tRateRcStatusResponse\"\000\022\202\001\n\025SetRateCellu"
+  "larStatus\0222.mavsdk.rpc.telemetry.SetRate"
+  "CellularStatusRequest\0323.mavsdk.rpc.telem"
+  "etry.SetRateCellularStatusResponse\"\000\022s\n\020"
+  "SetRateModemInfo\022-.mavsdk.rpc.telemetry."
+  "SetRateModemInfoRequest\032..mavsdk.rpc.tel"
+  "emetry.SetRateModemInfoResponse\"\000\022\227\001\n\034Se"
+  "tRateActuatorControlTarget\0229.mavsdk.rpc."
+  "telemetry.SetRateActuatorControlTargetRe"
+  "quest\032:.mavsdk.rpc.telemetry.SetRateActu"
+  "atorControlTargetResponse\"\000\022\224\001\n\033SetRateA"
+  "ctuatorOutputStatus\0228.mavsdk.rpc.telemet"
+  "ry.SetRateActuatorOutputStatusRequest\0329."
+  "mavsdk.rpc.telemetry.SetRateActuatorOutp"
+  "utStatusResponse\"\000\022p\n\017SetRateOdometry\022,."
+  "mavsdk.rpc.telemetry.SetRateOdometryRequ"
+  "est\032-.mavsdk.rpc.telemetry.SetRateOdomet"
+  "ryResponse\"\000\022\221\001\n\032SetRatePositionVelocity"
+  "Ned\0227.mavsdk.rpc.telemetry.SetRatePositi"
+  "onVelocityNedRequest\0328.mavsdk.rpc.teleme"
+  "try.SetRatePositionVelocityNedResponse\"\000"
+  "\022y\n\022SetRateGroundTruth\022/.mavsdk.rpc.tele"
+  "metry.SetRateGroundTruthRequest\0320.mavsdk"
+  ".rpc.telemetry.SetRateGroundTruthRespons"
+  "e\"\000\022\210\001\n\027SetRateFixedwingMetrics\0224.mavsdk"
+  ".rpc.telemetry.SetRateFixedwingMetricsRe"
+  "quest\0325.mavsdk.rpc.telemetry.SetRateFixe"
+  "dwingMetricsResponse\"\000\022a\n\nSetRateImu\022\'.m"
+  "avsdk.rpc.telemetry.SetRateImuRequest\032(."
+  "mavsdk.rpc.telemetry.SetRateImuResponse\""
+  "\000\022s\n\020SetRateScaledImu\022-.mavsdk.rpc.telem"
+  "etry.SetRateScaledImuRequest\032..mavsdk.rp"
+  "c.telemetry.SetRateScaledImuResponse\"\000\022j"
+  "\n\rSetRateRawImu\022*.mavsdk.rpc.telemetry.S"
+  "etRateRawImuRequest\032+.mavsdk.rpc.telemet"
+  "ry.SetRateRawImuResponse\"\000\022\177\n\024SetRateUni"
+  "xEpochTime\0221.mavsdk.rpc.telemetry.SetRat"
+  "eUnixEpochTimeRequest\0322.mavsdk.rpc.telem"
+  "etry.SetRateUnixEpochTimeResponse\"\000\022\202\001\n\025"
+  "SetRateDistanceSensor\0222.mavsdk.rpc.telem"
+  "etry.SetRateDistanceSensorRequest\0323.mavs"
+  "dk.rpc.telemetry.SetRateDistanceSensorRe"
+  "sponse\"\000\022p\n\017SetRateAltitude\022,.mavsdk.rpc"
+  ".telemetry.SetRateAltitudeRequest\032-.mavs"
+  "dk.rpc.telemetry.SetRateAltitudeResponse"
+  "\"\000\022y\n\022GetGpsGlobalOrigin\022/.mavsdk.rpc.te"
+  "lemetry.GetGpsGlobalOriginRequest\0320.mavs"
+  "dk.rpc.telemetry.GetGpsGlobalOriginRespo"
+  "nse\"\000B%\n\023io.mavsdk.telemetryB\016TelemetryP"
+  "rotob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_telemetry_2ftelemetry_2eproto_deps[1] = {
   &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_telemetry_2ftelemetry_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_telemetry_2ftelemetry_2eproto = {
-    false, false, 21639, descriptor_table_protodef_telemetry_2ftelemetry_2eproto,
+    false, false, 22332, descriptor_table_protodef_telemetry_2ftelemetry_2eproto,
     "telemetry/telemetry.proto",
-    &descriptor_table_telemetry_2ftelemetry_2eproto_once, descriptor_table_telemetry_2ftelemetry_2eproto_deps, 1, 159,
+    &descriptor_table_telemetry_2ftelemetry_2eproto_once, descriptor_table_telemetry_2ftelemetry_2eproto_deps, 1, 164,
     schemas, file_default_instances, TableStruct_telemetry_2ftelemetry_2eproto::offsets,
     file_level_metadata_telemetry_2ftelemetry_2eproto, file_level_enum_descriptors_telemetry_2ftelemetry_2eproto,
     file_level_service_descriptors_telemetry_2ftelemetry_2eproto,
@@ -8467,6 +8604,232 @@ void CellularStatusResponse::InternalSwap(CellularStatusResponse* other) {
 
 // ===================================================================
 
+class SubscribeModemInfoRequest::_Internal {
+ public:
+};
+
+SubscribeModemInfoRequest::SubscribeModemInfoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SubscribeModemInfoRequest)
+}
+SubscribeModemInfoRequest::SubscribeModemInfoRequest(const SubscribeModemInfoRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeModemInfoRequest)
+}
+
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SubscribeModemInfoRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeModemInfoRequest::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeModemInfoRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
+      file_level_metadata_telemetry_2ftelemetry_2eproto[38]);
+}
+
+// ===================================================================
+
+class ModemInfoResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::telemetry::ModemInfo& modem_info(const ModemInfoResponse* msg);
+};
+
+const ::mavsdk::rpc::telemetry::ModemInfo&
+ModemInfoResponse::_Internal::modem_info(const ModemInfoResponse* msg) {
+  return *msg->modem_info_;
+}
+ModemInfoResponse::ModemInfoResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.ModemInfoResponse)
+}
+ModemInfoResponse::ModemInfoResponse(const ModemInfoResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_modem_info()) {
+    modem_info_ = new ::mavsdk::rpc::telemetry::ModemInfo(*from.modem_info_);
+  } else {
+    modem_info_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.ModemInfoResponse)
+}
+
+inline void ModemInfoResponse::SharedCtor() {
+modem_info_ = nullptr;
+}
+
+ModemInfoResponse::~ModemInfoResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.ModemInfoResponse)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ModemInfoResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete modem_info_;
+}
+
+void ModemInfoResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ModemInfoResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.ModemInfoResponse)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && modem_info_ != nullptr) {
+    delete modem_info_;
+  }
+  modem_info_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ModemInfoResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.telemetry.ModemInfo modem_info = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_modem_info(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ModemInfoResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.ModemInfoResponse)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.telemetry.ModemInfo modem_info = 1;
+  if (this->_internal_has_modem_info()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::modem_info(this),
+        _Internal::modem_info(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.ModemInfoResponse)
+  return target;
+}
+
+size_t ModemInfoResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.ModemInfoResponse)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.telemetry.ModemInfo modem_info = 1;
+  if (this->_internal_has_modem_info()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *modem_info_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ModemInfoResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ModemInfoResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ModemInfoResponse::GetClassData() const { return &_class_data_; }
+
+void ModemInfoResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ModemInfoResponse *>(to)->MergeFrom(
+      static_cast<const ModemInfoResponse &>(from));
+}
+
+
+void ModemInfoResponse::MergeFrom(const ModemInfoResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.ModemInfoResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_modem_info()) {
+    _internal_mutable_modem_info()->::mavsdk::rpc::telemetry::ModemInfo::MergeFrom(from._internal_modem_info());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ModemInfoResponse::CopyFrom(const ModemInfoResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.ModemInfoResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModemInfoResponse::IsInitialized() const {
+  return true;
+}
+
+void ModemInfoResponse::InternalSwap(ModemInfoResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(modem_info_, other->modem_info_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ModemInfoResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
+      file_level_metadata_telemetry_2ftelemetry_2eproto[39]);
+}
+
+// ===================================================================
+
 class SubscribeStatusTextRequest::_Internal {
  public:
 };
@@ -8501,7 +8864,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeStatusTextRequest::Ge
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeStatusTextRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[38]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[40]);
 }
 
 // ===================================================================
@@ -8688,7 +9051,7 @@ void StatusTextResponse::InternalSwap(StatusTextResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata StatusTextResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[39]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[41]);
 }
 
 // ===================================================================
@@ -8727,7 +9090,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeActuatorControlTarget
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeActuatorControlTargetRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[40]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[42]);
 }
 
 // ===================================================================
@@ -8914,7 +9277,7 @@ void ActuatorControlTargetResponse::InternalSwap(ActuatorControlTargetResponse* 
 ::PROTOBUF_NAMESPACE_ID::Metadata ActuatorControlTargetResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[41]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[43]);
 }
 
 // ===================================================================
@@ -8953,7 +9316,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeActuatorOutputStatusR
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeActuatorOutputStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[42]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[44]);
 }
 
 // ===================================================================
@@ -9140,7 +9503,7 @@ void ActuatorOutputStatusResponse::InternalSwap(ActuatorOutputStatusResponse* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata ActuatorOutputStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[43]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[45]);
 }
 
 // ===================================================================
@@ -9179,7 +9542,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeOdometryRequest::GetC
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeOdometryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[44]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[46]);
 }
 
 // ===================================================================
@@ -9366,7 +9729,7 @@ void OdometryResponse::InternalSwap(OdometryResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata OdometryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[45]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[47]);
 }
 
 // ===================================================================
@@ -9405,7 +9768,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribePositionVelocityNedRe
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribePositionVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[46]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[48]);
 }
 
 // ===================================================================
@@ -9592,7 +9955,7 @@ void PositionVelocityNedResponse::InternalSwap(PositionVelocityNedResponse* othe
 ::PROTOBUF_NAMESPACE_ID::Metadata PositionVelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[47]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[49]);
 }
 
 // ===================================================================
@@ -9631,7 +9994,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeGroundTruthRequest::G
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeGroundTruthRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[48]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[50]);
 }
 
 // ===================================================================
@@ -9818,7 +10181,7 @@ void GroundTruthResponse::InternalSwap(GroundTruthResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GroundTruthResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[49]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[51]);
 }
 
 // ===================================================================
@@ -9857,7 +10220,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeFixedwingMetricsReque
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeFixedwingMetricsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[50]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[52]);
 }
 
 // ===================================================================
@@ -10044,7 +10407,7 @@ void FixedwingMetricsResponse::InternalSwap(FixedwingMetricsResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata FixedwingMetricsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[51]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[53]);
 }
 
 // ===================================================================
@@ -10083,7 +10446,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeImuRequest::GetClassD
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[52]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[54]);
 }
 
 // ===================================================================
@@ -10270,7 +10633,7 @@ void ImuResponse::InternalSwap(ImuResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[53]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[55]);
 }
 
 // ===================================================================
@@ -10309,7 +10672,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeScaledImuRequest::Get
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeScaledImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[54]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[56]);
 }
 
 // ===================================================================
@@ -10496,7 +10859,7 @@ void ScaledImuResponse::InternalSwap(ScaledImuResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ScaledImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[55]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[57]);
 }
 
 // ===================================================================
@@ -10535,7 +10898,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeRawImuRequest::GetCla
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeRawImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[56]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[58]);
 }
 
 // ===================================================================
@@ -10722,7 +11085,7 @@ void RawImuResponse::InternalSwap(RawImuResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RawImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[57]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[59]);
 }
 
 // ===================================================================
@@ -10761,7 +11124,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeHealthAllOkRequest::G
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeHealthAllOkRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[58]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[60]);
 }
 
 // ===================================================================
@@ -10932,7 +11295,7 @@ void HealthAllOkResponse::InternalSwap(HealthAllOkResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata HealthAllOkResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[59]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[61]);
 }
 
 // ===================================================================
@@ -10971,7 +11334,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeUnixEpochTimeRequest:
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeUnixEpochTimeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[60]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[62]);
 }
 
 // ===================================================================
@@ -11142,7 +11505,7 @@ void UnixEpochTimeResponse::InternalSwap(UnixEpochTimeResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata UnixEpochTimeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[61]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[63]);
 }
 
 // ===================================================================
@@ -11181,7 +11544,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeDistanceSensorRequest
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeDistanceSensorRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[62]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[64]);
 }
 
 // ===================================================================
@@ -11368,7 +11731,7 @@ void DistanceSensorResponse::InternalSwap(DistanceSensorResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DistanceSensorResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[63]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[65]);
 }
 
 // ===================================================================
@@ -11407,7 +11770,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeScaledPressureRequest
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeScaledPressureRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[64]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[66]);
 }
 
 // ===================================================================
@@ -11594,7 +11957,7 @@ void ScaledPressureResponse::InternalSwap(ScaledPressureResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ScaledPressureResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[65]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[67]);
 }
 
 // ===================================================================
@@ -11633,7 +11996,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeHeadingRequest::GetCl
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeHeadingRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[66]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[68]);
 }
 
 // ===================================================================
@@ -11820,7 +12183,7 @@ void HeadingResponse::InternalSwap(HeadingResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata HeadingResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[67]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[69]);
 }
 
 // ===================================================================
@@ -11859,7 +12222,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeAltitudeRequest::GetC
 ::PROTOBUF_NAMESPACE_ID::Metadata SubscribeAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[68]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[70]);
 }
 
 // ===================================================================
@@ -12046,7 +12409,7 @@ void AltitudeResponse::InternalSwap(AltitudeResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[69]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[71]);
 }
 
 // ===================================================================
@@ -12229,7 +12592,7 @@ void SetRatePositionRequest::InternalSwap(SetRatePositionRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRatePositionRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[70]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[72]);
 }
 
 // ===================================================================
@@ -12416,7 +12779,7 @@ void SetRatePositionResponse::InternalSwap(SetRatePositionResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRatePositionResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[71]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[73]);
 }
 
 // ===================================================================
@@ -12599,7 +12962,7 @@ void SetRateHomeRequest::InternalSwap(SetRateHomeRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateHomeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[72]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[74]);
 }
 
 // ===================================================================
@@ -12786,7 +13149,7 @@ void SetRateHomeResponse::InternalSwap(SetRateHomeResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateHomeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[73]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[75]);
 }
 
 // ===================================================================
@@ -12969,7 +13332,7 @@ void SetRateInAirRequest::InternalSwap(SetRateInAirRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateInAirRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[74]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[76]);
 }
 
 // ===================================================================
@@ -13156,7 +13519,7 @@ void SetRateInAirResponse::InternalSwap(SetRateInAirResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateInAirResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[75]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[77]);
 }
 
 // ===================================================================
@@ -13339,7 +13702,7 @@ void SetRateLandedStateRequest::InternalSwap(SetRateLandedStateRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateLandedStateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[76]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[78]);
 }
 
 // ===================================================================
@@ -13526,7 +13889,7 @@ void SetRateLandedStateResponse::InternalSwap(SetRateLandedStateResponse* other)
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateLandedStateResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[77]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[79]);
 }
 
 // ===================================================================
@@ -13709,7 +14072,7 @@ void SetRateVtolStateRequest::InternalSwap(SetRateVtolStateRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateVtolStateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[78]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[80]);
 }
 
 // ===================================================================
@@ -13896,7 +14259,7 @@ void SetRateVtolStateResponse::InternalSwap(SetRateVtolStateResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateVtolStateResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[79]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[81]);
 }
 
 // ===================================================================
@@ -14079,7 +14442,7 @@ void SetRateAttitudeEulerRequest::InternalSwap(SetRateAttitudeEulerRequest* othe
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAttitudeEulerRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[80]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[82]);
 }
 
 // ===================================================================
@@ -14266,7 +14629,7 @@ void SetRateAttitudeEulerResponse::InternalSwap(SetRateAttitudeEulerResponse* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAttitudeEulerResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[81]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[83]);
 }
 
 // ===================================================================
@@ -14449,7 +14812,7 @@ void SetRateAttitudeQuaternionRequest::InternalSwap(SetRateAttitudeQuaternionReq
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAttitudeQuaternionRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[82]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[84]);
 }
 
 // ===================================================================
@@ -14636,7 +14999,7 @@ void SetRateAttitudeQuaternionResponse::InternalSwap(SetRateAttitudeQuaternionRe
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAttitudeQuaternionResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[83]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[85]);
 }
 
 // ===================================================================
@@ -14819,7 +15182,7 @@ void SetRateAttitudeAngularVelocityBodyRequest::InternalSwap(SetRateAttitudeAngu
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAttitudeAngularVelocityBodyRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[84]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[86]);
 }
 
 // ===================================================================
@@ -15006,7 +15369,7 @@ void SetRateAttitudeAngularVelocityBodyResponse::InternalSwap(SetRateAttitudeAng
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAttitudeAngularVelocityBodyResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[85]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[87]);
 }
 
 // ===================================================================
@@ -15189,7 +15552,7 @@ void SetRateCameraAttitudeQuaternionRequest::InternalSwap(SetRateCameraAttitudeQ
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateCameraAttitudeQuaternionRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[86]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[88]);
 }
 
 // ===================================================================
@@ -15376,7 +15739,7 @@ void SetRateCameraAttitudeQuaternionResponse::InternalSwap(SetRateCameraAttitude
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateCameraAttitudeQuaternionResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[87]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[89]);
 }
 
 // ===================================================================
@@ -15559,7 +15922,7 @@ void SetRateCameraAttitudeRequest::InternalSwap(SetRateCameraAttitudeRequest* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateCameraAttitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[88]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[90]);
 }
 
 // ===================================================================
@@ -15746,7 +16109,7 @@ void SetRateCameraAttitudeResponse::InternalSwap(SetRateCameraAttitudeResponse* 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateCameraAttitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[89]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[91]);
 }
 
 // ===================================================================
@@ -15929,7 +16292,7 @@ void SetRateVelocityNedRequest::InternalSwap(SetRateVelocityNedRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[90]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[92]);
 }
 
 // ===================================================================
@@ -16116,7 +16479,7 @@ void SetRateVelocityNedResponse::InternalSwap(SetRateVelocityNedResponse* other)
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateVelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[91]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[93]);
 }
 
 // ===================================================================
@@ -16299,7 +16662,7 @@ void SetRateGpsInfoRequest::InternalSwap(SetRateGpsInfoRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateGpsInfoRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[92]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[94]);
 }
 
 // ===================================================================
@@ -16486,7 +16849,7 @@ void SetRateGpsInfoResponse::InternalSwap(SetRateGpsInfoResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateGpsInfoResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[93]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[95]);
 }
 
 // ===================================================================
@@ -16669,7 +17032,7 @@ void SetRateRawGpsRequest::InternalSwap(SetRateRawGpsRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateRawGpsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[94]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[96]);
 }
 
 // ===================================================================
@@ -16852,7 +17215,7 @@ void SetRateBatteryRequest::InternalSwap(SetRateBatteryRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateBatteryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[95]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[97]);
 }
 
 // ===================================================================
@@ -17039,7 +17402,7 @@ void SetRateBatteryResponse::InternalSwap(SetRateBatteryResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateBatteryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[96]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[98]);
 }
 
 // ===================================================================
@@ -17222,7 +17585,7 @@ void SetRateRcStatusRequest::InternalSwap(SetRateRcStatusRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateRcStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[97]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[99]);
 }
 
 // ===================================================================
@@ -17405,7 +17768,190 @@ void SetRateCellularStatusRequest::InternalSwap(SetRateCellularStatusRequest* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateCellularStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[98]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[100]);
+}
+
+// ===================================================================
+
+class SetRateModemInfoRequest::_Internal {
+ public:
+};
+
+SetRateModemInfoRequest::SetRateModemInfoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+}
+SetRateModemInfoRequest::SetRateModemInfoRequest(const SetRateModemInfoRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  rate_hz_ = from.rate_hz_;
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+}
+
+inline void SetRateModemInfoRequest::SharedCtor() {
+rate_hz_ = 0;
+}
+
+SetRateModemInfoRequest::~SetRateModemInfoRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void SetRateModemInfoRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void SetRateModemInfoRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void SetRateModemInfoRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  rate_hz_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetRateModemInfoRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // double rate_hz = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 9)) {
+          rate_hz_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* SetRateModemInfoRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // double rate_hz = 1;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_rate_hz = this->_internal_rate_hz();
+  uint64_t raw_rate_hz;
+  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
+  if (raw_rate_hz != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(1, this->_internal_rate_hz(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+  return target;
+}
+
+size_t SetRateModemInfoRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // double rate_hz = 1;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_rate_hz = this->_internal_rate_hz();
+  uint64_t raw_rate_hz;
+  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
+  if (raw_rate_hz != 0) {
+    total_size += 1 + 8;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRateModemInfoRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SetRateModemInfoRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRateModemInfoRequest::GetClassData() const { return &_class_data_; }
+
+void SetRateModemInfoRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<SetRateModemInfoRequest *>(to)->MergeFrom(
+      static_cast<const SetRateModemInfoRequest &>(from));
+}
+
+
+void SetRateModemInfoRequest::MergeFrom(const SetRateModemInfoRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_rate_hz = from._internal_rate_hz();
+  uint64_t raw_rate_hz;
+  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
+  if (raw_rate_hz != 0) {
+    _internal_set_rate_hz(from._internal_rate_hz());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetRateModemInfoRequest::CopyFrom(const SetRateModemInfoRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SetRateModemInfoRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetRateModemInfoRequest::IsInitialized() const {
+  return true;
+}
+
+void SetRateModemInfoRequest::InternalSwap(SetRateModemInfoRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(rate_hz_, other->rate_hz_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetRateModemInfoRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
+      file_level_metadata_telemetry_2ftelemetry_2eproto[101]);
 }
 
 // ===================================================================
@@ -17592,7 +18138,7 @@ void SetRateRcStatusResponse::InternalSwap(SetRateRcStatusResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateRcStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[99]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[102]);
 }
 
 // ===================================================================
@@ -17779,7 +18325,194 @@ void SetRateCellularStatusResponse::InternalSwap(SetRateCellularStatusResponse* 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateCellularStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[100]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[103]);
+}
+
+// ===================================================================
+
+class SetRateModemInfoResponse::_Internal {
+ public:
+  static const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result(const SetRateModemInfoResponse* msg);
+};
+
+const ::mavsdk::rpc::telemetry::TelemetryResult&
+SetRateModemInfoResponse::_Internal::telemetry_result(const SetRateModemInfoResponse* msg) {
+  return *msg->telemetry_result_;
+}
+SetRateModemInfoResponse::SetRateModemInfoResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+}
+SetRateModemInfoResponse::SetRateModemInfoResponse(const SetRateModemInfoResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_telemetry_result()) {
+    telemetry_result_ = new ::mavsdk::rpc::telemetry::TelemetryResult(*from.telemetry_result_);
+  } else {
+    telemetry_result_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+}
+
+inline void SetRateModemInfoResponse::SharedCtor() {
+telemetry_result_ = nullptr;
+}
+
+SetRateModemInfoResponse::~SetRateModemInfoResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void SetRateModemInfoResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete telemetry_result_;
+}
+
+void SetRateModemInfoResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void SetRateModemInfoResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && telemetry_result_ != nullptr) {
+    delete telemetry_result_;
+  }
+  telemetry_result_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SetRateModemInfoResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_telemetry_result(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* SetRateModemInfoResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+  if (this->_internal_has_telemetry_result()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::telemetry_result(this),
+        _Internal::telemetry_result(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+  return target;
+}
+
+size_t SetRateModemInfoResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
+  if (this->_internal_has_telemetry_result()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *telemetry_result_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRateModemInfoResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SetRateModemInfoResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRateModemInfoResponse::GetClassData() const { return &_class_data_; }
+
+void SetRateModemInfoResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<SetRateModemInfoResponse *>(to)->MergeFrom(
+      static_cast<const SetRateModemInfoResponse &>(from));
+}
+
+
+void SetRateModemInfoResponse::MergeFrom(const SetRateModemInfoResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_telemetry_result()) {
+    _internal_mutable_telemetry_result()->::mavsdk::rpc::telemetry::TelemetryResult::MergeFrom(from._internal_telemetry_result());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetRateModemInfoResponse::CopyFrom(const SetRateModemInfoResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SetRateModemInfoResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetRateModemInfoResponse::IsInitialized() const {
+  return true;
+}
+
+void SetRateModemInfoResponse::InternalSwap(SetRateModemInfoResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(telemetry_result_, other->telemetry_result_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SetRateModemInfoResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
+      file_level_metadata_telemetry_2ftelemetry_2eproto[104]);
 }
 
 // ===================================================================
@@ -17962,7 +18695,7 @@ void SetRateActuatorControlTargetRequest::InternalSwap(SetRateActuatorControlTar
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateActuatorControlTargetRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[101]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[105]);
 }
 
 // ===================================================================
@@ -18149,7 +18882,7 @@ void SetRateActuatorControlTargetResponse::InternalSwap(SetRateActuatorControlTa
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateActuatorControlTargetResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[102]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[106]);
 }
 
 // ===================================================================
@@ -18332,7 +19065,7 @@ void SetRateActuatorOutputStatusRequest::InternalSwap(SetRateActuatorOutputStatu
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateActuatorOutputStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[103]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[107]);
 }
 
 // ===================================================================
@@ -18519,7 +19252,7 @@ void SetRateActuatorOutputStatusResponse::InternalSwap(SetRateActuatorOutputStat
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateActuatorOutputStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[104]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[108]);
 }
 
 // ===================================================================
@@ -18702,7 +19435,7 @@ void SetRateOdometryRequest::InternalSwap(SetRateOdometryRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateOdometryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[105]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[109]);
 }
 
 // ===================================================================
@@ -18889,7 +19622,7 @@ void SetRateOdometryResponse::InternalSwap(SetRateOdometryResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateOdometryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[106]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[110]);
 }
 
 // ===================================================================
@@ -19072,7 +19805,7 @@ void SetRatePositionVelocityNedRequest::InternalSwap(SetRatePositionVelocityNedR
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRatePositionVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[107]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[111]);
 }
 
 // ===================================================================
@@ -19259,7 +19992,7 @@ void SetRatePositionVelocityNedResponse::InternalSwap(SetRatePositionVelocityNed
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRatePositionVelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[108]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[112]);
 }
 
 // ===================================================================
@@ -19442,7 +20175,7 @@ void SetRateGroundTruthRequest::InternalSwap(SetRateGroundTruthRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateGroundTruthRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[109]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[113]);
 }
 
 // ===================================================================
@@ -19629,7 +20362,7 @@ void SetRateGroundTruthResponse::InternalSwap(SetRateGroundTruthResponse* other)
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateGroundTruthResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[110]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[114]);
 }
 
 // ===================================================================
@@ -19812,7 +20545,7 @@ void SetRateFixedwingMetricsRequest::InternalSwap(SetRateFixedwingMetricsRequest
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateFixedwingMetricsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[111]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[115]);
 }
 
 // ===================================================================
@@ -19999,7 +20732,7 @@ void SetRateFixedwingMetricsResponse::InternalSwap(SetRateFixedwingMetricsRespon
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateFixedwingMetricsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[112]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[116]);
 }
 
 // ===================================================================
@@ -20182,7 +20915,7 @@ void SetRateImuRequest::InternalSwap(SetRateImuRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[113]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[117]);
 }
 
 // ===================================================================
@@ -20369,7 +21102,7 @@ void SetRateImuResponse::InternalSwap(SetRateImuResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[114]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[118]);
 }
 
 // ===================================================================
@@ -20552,7 +21285,7 @@ void SetRateScaledImuRequest::InternalSwap(SetRateScaledImuRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateScaledImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[115]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[119]);
 }
 
 // ===================================================================
@@ -20739,7 +21472,7 @@ void SetRateScaledImuResponse::InternalSwap(SetRateScaledImuResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateScaledImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[116]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[120]);
 }
 
 // ===================================================================
@@ -20922,7 +21655,7 @@ void SetRateRawImuRequest::InternalSwap(SetRateRawImuRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateRawImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[117]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[121]);
 }
 
 // ===================================================================
@@ -21109,7 +21842,7 @@ void SetRateRawImuResponse::InternalSwap(SetRateRawImuResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateRawImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[118]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[122]);
 }
 
 // ===================================================================
@@ -21292,7 +22025,7 @@ void SetRateUnixEpochTimeRequest::InternalSwap(SetRateUnixEpochTimeRequest* othe
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateUnixEpochTimeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[119]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[123]);
 }
 
 // ===================================================================
@@ -21479,7 +22212,7 @@ void SetRateUnixEpochTimeResponse::InternalSwap(SetRateUnixEpochTimeResponse* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateUnixEpochTimeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[120]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[124]);
 }
 
 // ===================================================================
@@ -21662,7 +22395,7 @@ void SetRateDistanceSensorRequest::InternalSwap(SetRateDistanceSensorRequest* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateDistanceSensorRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[121]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[125]);
 }
 
 // ===================================================================
@@ -21849,7 +22582,7 @@ void SetRateDistanceSensorResponse::InternalSwap(SetRateDistanceSensorResponse* 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateDistanceSensorResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[122]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[126]);
 }
 
 // ===================================================================
@@ -21888,7 +22621,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetGpsGlobalOriginRequest::Get
 ::PROTOBUF_NAMESPACE_ID::Metadata GetGpsGlobalOriginRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[123]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[127]);
 }
 
 // ===================================================================
@@ -22123,7 +22856,7 @@ void GetGpsGlobalOriginResponse::InternalSwap(GetGpsGlobalOriginResponse* other)
 ::PROTOBUF_NAMESPACE_ID::Metadata GetGpsGlobalOriginResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[124]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[128]);
 }
 
 // ===================================================================
@@ -22306,7 +23039,7 @@ void SetRateAltitudeRequest::InternalSwap(SetRateAltitudeRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[125]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[129]);
 }
 
 // ===================================================================
@@ -22493,7 +23226,7 @@ void SetRateAltitudeResponse::InternalSwap(SetRateAltitudeResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRateAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[126]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[130]);
 }
 
 // ===================================================================
@@ -22790,7 +23523,7 @@ void Position::InternalSwap(Position* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Position::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[127]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[131]);
 }
 
 // ===================================================================
@@ -22973,7 +23706,7 @@ void Heading::InternalSwap(Heading* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Heading::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[128]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[132]);
 }
 
 // ===================================================================
@@ -23292,7 +24025,7 @@ void Quaternion::InternalSwap(Quaternion* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Quaternion::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[129]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[133]);
 }
 
 // ===================================================================
@@ -23577,7 +24310,7 @@ void EulerAngle::InternalSwap(EulerAngle* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata EulerAngle::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[130]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[134]);
 }
 
 // ===================================================================
@@ -23840,7 +24573,7 @@ void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AngularVelocityBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[131]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[135]);
 }
 
 // ===================================================================
@@ -24048,7 +24781,7 @@ void GpsInfo::InternalSwap(GpsInfo* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GpsInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[132]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[136]);
 }
 
 // ===================================================================
@@ -24673,7 +25406,7 @@ void RawGps::InternalSwap(RawGps* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RawGps::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[133]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[137]);
 }
 
 // ===================================================================
@@ -25026,7 +25759,7 @@ void Battery::InternalSwap(Battery* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Battery::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[134]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[138]);
 }
 
 // ===================================================================
@@ -25341,7 +26074,7 @@ void Health::InternalSwap(Health* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Health::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[135]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[139]);
 }
 
 // ===================================================================
@@ -25580,7 +26313,7 @@ void RcStatus::InternalSwap(RcStatus* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RcStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[136]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[140]);
 }
 
 // ===================================================================
@@ -25598,29 +26331,29 @@ CellularStatus::CellularStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 CellularStatus::CellularStatus(const CellularStatus& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  cell_id_.InitDefault();
+  cell_tower_id_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    cell_id_.Set("", GetArenaForAllocation());
+    cell_tower_id_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_cell_id().empty()) {
-    cell_id_.Set(from._internal_cell_id(), 
+  if (!from._internal_cell_tower_id().empty()) {
+    cell_tower_id_.Set(from._internal_cell_tower_id(), 
       GetArenaForAllocation());
   }
-  ::memcpy(&id_, &from.id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&upload_rate_) -
-    reinterpret_cast<char*>(&id_)) + sizeof(upload_rate_));
+  ::memcpy(&status_, &from.status_,
+    static_cast<size_t>(reinterpret_cast<char*>(&instance_number_) -
+    reinterpret_cast<char*>(&status_)) + sizeof(instance_number_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.CellularStatus)
 }
 
 inline void CellularStatus::SharedCtor() {
-cell_id_.InitDefault();
+cell_tower_id_.InitDefault();
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  cell_id_.Set("", GetArenaForAllocation());
+  cell_tower_id_.Set("", GetArenaForAllocation());
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&id_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&upload_rate_) -
-    reinterpret_cast<char*>(&id_)) + sizeof(upload_rate_));
+    reinterpret_cast<char*>(&status_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&instance_number_) -
+    reinterpret_cast<char*>(&status_)) + sizeof(instance_number_));
 }
 
 CellularStatus::~CellularStatus() {
@@ -25634,7 +26367,7 @@ CellularStatus::~CellularStatus() {
 
 inline void CellularStatus::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  cell_id_.Destroy();
+  cell_tower_id_.Destroy();
 }
 
 void CellularStatus::SetCachedSize(int size) const {
@@ -25647,10 +26380,10 @@ void CellularStatus::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cell_id_.ClearToEmpty();
-  ::memset(&id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&upload_rate_) -
-      reinterpret_cast<char*>(&id_)) + sizeof(upload_rate_));
+  cell_tower_id_.ClearToEmpty();
+  ::memset(&status_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&instance_number_) -
+      reinterpret_cast<char*>(&status_)) + sizeof(instance_number_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -25660,133 +26393,149 @@ const char* CellularStatus::_InternalParse(const char* ptr, ::_pbi::ParseContext
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // uint32 id = 1;
+      // uint32 status = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint32 status = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 failure_reason = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+      // uint32 failure_reason = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           failure_reason_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 type = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+      // uint32 type = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           type_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 quality = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+      // uint32 quality = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
           quality_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 mcc = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+      // uint32 mcc = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
           mcc_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 mnc = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
+      // uint32 mnc = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
           mnc_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 lac = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
+      // uint32 lac = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
           lac_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 slot_number = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
-          slot_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint32 rx_level = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
-          rx_level_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint32 signal_to_noise = 11;
-      case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
-          signal_to_noise_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint32 band_number = 12;
-      case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 96)) {
+      // uint32 band_number = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
           band_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 arfcn = 13;
-      case 13:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 104)) {
-          arfcn_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+      // float band_frequency = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 77)) {
+          band_frequency_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 channel_number = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
+          channel_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // string cell_id = 14;
+      // float rx_level = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 93)) {
+          rx_level_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float tx_level = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 101)) {
+          tx_level_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float rx_quality = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 109)) {
+          rx_quality_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 link_tx_rate = 14;
       case 14:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 114)) {
-          auto str = _internal_mutable_cell_id();
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 112)) {
+          link_tx_rate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 link_rx_rate = 15;
+      case 15:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 120)) {
+          link_rx_rate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 bit_error_rate = 16;
+      case 16:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 128)) {
+          bit_error_rate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 instance_number = 17;
+      case 17:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 136)) {
+          instance_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string cell_tower_id = 18;
+      case 18:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 146)) {
+          auto str = _internal_mutable_cell_tower_id();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.telemetry.CellularStatus.cell_id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // float download_rate = 15;
-      case 15:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 125)) {
-          download_rate_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float upload_rate = 16;
-      case 16:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 133)) {
-          upload_rate_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.telemetry.CellularStatus.cell_tower_id"));
         } else
           goto handle_unusual;
         continue;
@@ -25819,112 +26568,132 @@ uint8_t* CellularStatus::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint32 id = 1;
-  if (this->_internal_id() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_id(), target);
-  }
-
-  // uint32 status = 2;
+  // uint32 status = 1;
   if (this->_internal_status() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(2, this->_internal_status(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_status(), target);
   }
 
-  // uint32 failure_reason = 3;
+  // uint32 failure_reason = 2;
   if (this->_internal_failure_reason() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(3, this->_internal_failure_reason(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(2, this->_internal_failure_reason(), target);
   }
 
-  // uint32 type = 4;
+  // uint32 type = 3;
   if (this->_internal_type() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(4, this->_internal_type(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(3, this->_internal_type(), target);
   }
 
-  // uint32 quality = 5;
+  // uint32 quality = 4;
   if (this->_internal_quality() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(5, this->_internal_quality(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(4, this->_internal_quality(), target);
   }
 
-  // uint32 mcc = 6;
+  // uint32 mcc = 5;
   if (this->_internal_mcc() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(6, this->_internal_mcc(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(5, this->_internal_mcc(), target);
   }
 
-  // uint32 mnc = 7;
+  // uint32 mnc = 6;
   if (this->_internal_mnc() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(7, this->_internal_mnc(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(6, this->_internal_mnc(), target);
   }
 
-  // uint32 lac = 8;
+  // uint32 lac = 7;
   if (this->_internal_lac() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(8, this->_internal_lac(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(7, this->_internal_lac(), target);
   }
 
-  // uint32 slot_number = 9;
-  if (this->_internal_slot_number() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(9, this->_internal_slot_number(), target);
-  }
-
-  // uint32 rx_level = 10;
-  if (this->_internal_rx_level() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(10, this->_internal_rx_level(), target);
-  }
-
-  // uint32 signal_to_noise = 11;
-  if (this->_internal_signal_to_noise() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(11, this->_internal_signal_to_noise(), target);
-  }
-
-  // uint32 band_number = 12;
+  // uint32 band_number = 8;
   if (this->_internal_band_number() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(12, this->_internal_band_number(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(8, this->_internal_band_number(), target);
   }
 
-  // uint32 arfcn = 13;
-  if (this->_internal_arfcn() != 0) {
+  // float band_frequency = 9;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_band_frequency = this->_internal_band_frequency();
+  uint32_t raw_band_frequency;
+  memcpy(&raw_band_frequency, &tmp_band_frequency, sizeof(tmp_band_frequency));
+  if (raw_band_frequency != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(13, this->_internal_arfcn(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(9, this->_internal_band_frequency(), target);
   }
 
-  // string cell_id = 14;
-  if (!this->_internal_cell_id().empty()) {
+  // uint32 channel_number = 10;
+  if (this->_internal_channel_number() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(10, this->_internal_channel_number(), target);
+  }
+
+  // float rx_level = 11;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_rx_level = this->_internal_rx_level();
+  uint32_t raw_rx_level;
+  memcpy(&raw_rx_level, &tmp_rx_level, sizeof(tmp_rx_level));
+  if (raw_rx_level != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(11, this->_internal_rx_level(), target);
+  }
+
+  // float tx_level = 12;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_tx_level = this->_internal_tx_level();
+  uint32_t raw_tx_level;
+  memcpy(&raw_tx_level, &tmp_tx_level, sizeof(tmp_tx_level));
+  if (raw_tx_level != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(12, this->_internal_tx_level(), target);
+  }
+
+  // float rx_quality = 13;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_rx_quality = this->_internal_rx_quality();
+  uint32_t raw_rx_quality;
+  memcpy(&raw_rx_quality, &tmp_rx_quality, sizeof(tmp_rx_quality));
+  if (raw_rx_quality != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(13, this->_internal_rx_quality(), target);
+  }
+
+  // uint32 link_tx_rate = 14;
+  if (this->_internal_link_tx_rate() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(14, this->_internal_link_tx_rate(), target);
+  }
+
+  // uint32 link_rx_rate = 15;
+  if (this->_internal_link_rx_rate() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(15, this->_internal_link_rx_rate(), target);
+  }
+
+  // uint32 bit_error_rate = 16;
+  if (this->_internal_bit_error_rate() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(16, this->_internal_bit_error_rate(), target);
+  }
+
+  // uint32 instance_number = 17;
+  if (this->_internal_instance_number() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(17, this->_internal_instance_number(), target);
+  }
+
+  // string cell_tower_id = 18;
+  if (!this->_internal_cell_tower_id().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_cell_id().data(), static_cast<int>(this->_internal_cell_id().length()),
+      this->_internal_cell_tower_id().data(), static_cast<int>(this->_internal_cell_tower_id().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.telemetry.CellularStatus.cell_id");
+      "mavsdk.rpc.telemetry.CellularStatus.cell_tower_id");
     target = stream->WriteStringMaybeAliased(
-        14, this->_internal_cell_id(), target);
-  }
-
-  // float download_rate = 15;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_download_rate = this->_internal_download_rate();
-  uint32_t raw_download_rate;
-  memcpy(&raw_download_rate, &tmp_download_rate, sizeof(tmp_download_rate));
-  if (raw_download_rate != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(15, this->_internal_download_rate(), target);
-  }
-
-  // float upload_rate = 16;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_upload_rate = this->_internal_upload_rate();
-  uint32_t raw_upload_rate;
-  memcpy(&raw_upload_rate, &tmp_upload_rate, sizeof(tmp_upload_rate));
-  if (raw_upload_rate != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(16, this->_internal_upload_rate(), target);
+        18, this->_internal_cell_tower_id(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -25943,94 +26712,116 @@ size_t CellularStatus::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string cell_id = 14;
-  if (!this->_internal_cell_id().empty()) {
-    total_size += 1 +
+  // string cell_tower_id = 18;
+  if (!this->_internal_cell_tower_id().empty()) {
+    total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_cell_id());
+        this->_internal_cell_tower_id());
   }
 
-  // uint32 id = 1;
-  if (this->_internal_id() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_id());
-  }
-
-  // uint32 status = 2;
+  // uint32 status = 1;
   if (this->_internal_status() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_status());
   }
 
-  // uint32 failure_reason = 3;
+  // uint32 failure_reason = 2;
   if (this->_internal_failure_reason() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_failure_reason());
   }
 
-  // uint32 type = 4;
+  // uint32 type = 3;
   if (this->_internal_type() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_type());
   }
 
-  // uint32 quality = 5;
+  // uint32 quality = 4;
   if (this->_internal_quality() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_quality());
   }
 
-  // uint32 mcc = 6;
+  // uint32 mcc = 5;
   if (this->_internal_mcc() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_mcc());
   }
 
-  // uint32 mnc = 7;
+  // uint32 mnc = 6;
   if (this->_internal_mnc() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_mnc());
   }
 
-  // uint32 lac = 8;
+  // uint32 lac = 7;
   if (this->_internal_lac() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_lac());
   }
 
-  // uint32 slot_number = 9;
-  if (this->_internal_slot_number() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_slot_number());
-  }
-
-  // uint32 rx_level = 10;
-  if (this->_internal_rx_level() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_rx_level());
-  }
-
-  // uint32 signal_to_noise = 11;
-  if (this->_internal_signal_to_noise() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_signal_to_noise());
-  }
-
-  // uint32 band_number = 12;
+  // uint32 band_number = 8;
   if (this->_internal_band_number() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_band_number());
   }
 
-  // uint32 arfcn = 13;
-  if (this->_internal_arfcn() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_arfcn());
-  }
-
-  // float download_rate = 15;
+  // float band_frequency = 9;
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_download_rate = this->_internal_download_rate();
-  uint32_t raw_download_rate;
-  memcpy(&raw_download_rate, &tmp_download_rate, sizeof(tmp_download_rate));
-  if (raw_download_rate != 0) {
+  float tmp_band_frequency = this->_internal_band_frequency();
+  uint32_t raw_band_frequency;
+  memcpy(&raw_band_frequency, &tmp_band_frequency, sizeof(tmp_band_frequency));
+  if (raw_band_frequency != 0) {
     total_size += 1 + 4;
   }
 
-  // float upload_rate = 16;
+  // uint32 channel_number = 10;
+  if (this->_internal_channel_number() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_channel_number());
+  }
+
+  // float rx_level = 11;
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_upload_rate = this->_internal_upload_rate();
-  uint32_t raw_upload_rate;
-  memcpy(&raw_upload_rate, &tmp_upload_rate, sizeof(tmp_upload_rate));
-  if (raw_upload_rate != 0) {
-    total_size += 2 + 4;
+  float tmp_rx_level = this->_internal_rx_level();
+  uint32_t raw_rx_level;
+  memcpy(&raw_rx_level, &tmp_rx_level, sizeof(tmp_rx_level));
+  if (raw_rx_level != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float tx_level = 12;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_tx_level = this->_internal_tx_level();
+  uint32_t raw_tx_level;
+  memcpy(&raw_tx_level, &tmp_tx_level, sizeof(tmp_tx_level));
+  if (raw_tx_level != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float rx_quality = 13;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_rx_quality = this->_internal_rx_quality();
+  uint32_t raw_rx_quality;
+  memcpy(&raw_rx_quality, &tmp_rx_quality, sizeof(tmp_rx_quality));
+  if (raw_rx_quality != 0) {
+    total_size += 1 + 4;
+  }
+
+  // uint32 link_tx_rate = 14;
+  if (this->_internal_link_tx_rate() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_link_tx_rate());
+  }
+
+  // uint32 link_rx_rate = 15;
+  if (this->_internal_link_rx_rate() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_link_rx_rate());
+  }
+
+  // uint32 bit_error_rate = 16;
+  if (this->_internal_bit_error_rate() != 0) {
+    total_size += 2 +
+      ::_pbi::WireFormatLite::UInt32Size(
+        this->_internal_bit_error_rate());
+  }
+
+  // uint32 instance_number = 17;
+  if (this->_internal_instance_number() != 0) {
+    total_size += 2 +
+      ::_pbi::WireFormatLite::UInt32Size(
+        this->_internal_instance_number());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -26055,11 +26846,8 @@ void CellularStatus::MergeFrom(const CellularStatus& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_cell_id().empty()) {
-    _internal_set_cell_id(from._internal_cell_id());
-  }
-  if (from._internal_id() != 0) {
-    _internal_set_id(from._internal_id());
+  if (!from._internal_cell_tower_id().empty()) {
+    _internal_set_cell_tower_id(from._internal_cell_tower_id());
   }
   if (from._internal_status() != 0) {
     _internal_set_status(from._internal_status());
@@ -26082,34 +26870,51 @@ void CellularStatus::MergeFrom(const CellularStatus& from) {
   if (from._internal_lac() != 0) {
     _internal_set_lac(from._internal_lac());
   }
-  if (from._internal_slot_number() != 0) {
-    _internal_set_slot_number(from._internal_slot_number());
-  }
-  if (from._internal_rx_level() != 0) {
-    _internal_set_rx_level(from._internal_rx_level());
-  }
-  if (from._internal_signal_to_noise() != 0) {
-    _internal_set_signal_to_noise(from._internal_signal_to_noise());
-  }
   if (from._internal_band_number() != 0) {
     _internal_set_band_number(from._internal_band_number());
   }
-  if (from._internal_arfcn() != 0) {
-    _internal_set_arfcn(from._internal_arfcn());
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_band_frequency = from._internal_band_frequency();
+  uint32_t raw_band_frequency;
+  memcpy(&raw_band_frequency, &tmp_band_frequency, sizeof(tmp_band_frequency));
+  if (raw_band_frequency != 0) {
+    _internal_set_band_frequency(from._internal_band_frequency());
+  }
+  if (from._internal_channel_number() != 0) {
+    _internal_set_channel_number(from._internal_channel_number());
   }
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_download_rate = from._internal_download_rate();
-  uint32_t raw_download_rate;
-  memcpy(&raw_download_rate, &tmp_download_rate, sizeof(tmp_download_rate));
-  if (raw_download_rate != 0) {
-    _internal_set_download_rate(from._internal_download_rate());
+  float tmp_rx_level = from._internal_rx_level();
+  uint32_t raw_rx_level;
+  memcpy(&raw_rx_level, &tmp_rx_level, sizeof(tmp_rx_level));
+  if (raw_rx_level != 0) {
+    _internal_set_rx_level(from._internal_rx_level());
   }
   static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_upload_rate = from._internal_upload_rate();
-  uint32_t raw_upload_rate;
-  memcpy(&raw_upload_rate, &tmp_upload_rate, sizeof(tmp_upload_rate));
-  if (raw_upload_rate != 0) {
-    _internal_set_upload_rate(from._internal_upload_rate());
+  float tmp_tx_level = from._internal_tx_level();
+  uint32_t raw_tx_level;
+  memcpy(&raw_tx_level, &tmp_tx_level, sizeof(tmp_tx_level));
+  if (raw_tx_level != 0) {
+    _internal_set_tx_level(from._internal_tx_level());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_rx_quality = from._internal_rx_quality();
+  uint32_t raw_rx_quality;
+  memcpy(&raw_rx_quality, &tmp_rx_quality, sizeof(tmp_rx_quality));
+  if (raw_rx_quality != 0) {
+    _internal_set_rx_quality(from._internal_rx_quality());
+  }
+  if (from._internal_link_tx_rate() != 0) {
+    _internal_set_link_tx_rate(from._internal_link_tx_rate());
+  }
+  if (from._internal_link_rx_rate() != 0) {
+    _internal_set_link_rx_rate(from._internal_link_rx_rate());
+  }
+  if (from._internal_bit_error_rate() != 0) {
+    _internal_set_bit_error_rate(from._internal_bit_error_rate());
+  }
+  if (from._internal_instance_number() != 0) {
+    _internal_set_instance_number(from._internal_instance_number());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -26131,21 +26936,416 @@ void CellularStatus::InternalSwap(CellularStatus* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &cell_id_, lhs_arena,
-      &other->cell_id_, rhs_arena
+      &cell_tower_id_, lhs_arena,
+      &other->cell_tower_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(CellularStatus, upload_rate_)
-      + sizeof(CellularStatus::upload_rate_)
-      - PROTOBUF_FIELD_OFFSET(CellularStatus, id_)>(
-          reinterpret_cast<char*>(&id_),
-          reinterpret_cast<char*>(&other->id_));
+      PROTOBUF_FIELD_OFFSET(CellularStatus, instance_number_)
+      + sizeof(CellularStatus::instance_number_)
+      - PROTOBUF_FIELD_OFFSET(CellularStatus, status_)>(
+          reinterpret_cast<char*>(&status_),
+          reinterpret_cast<char*>(&other->status_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CellularStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[137]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[141]);
+}
+
+// ===================================================================
+
+class ModemInfo::_Internal {
+ public:
+};
+
+ModemInfo::ModemInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.ModemInfo)
+}
+ModemInfo::ModemInfo(const ModemInfo& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  modem_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    modem_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_modem_id().empty()) {
+    modem_id_.Set(from._internal_modem_id(), 
+      GetArenaForAllocation());
+  }
+  firmware_version_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    firmware_version_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_firmware_version().empty()) {
+    firmware_version_.Set(from._internal_firmware_version(), 
+      GetArenaForAllocation());
+  }
+  modem_model_name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    modem_model_name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_modem_model_name().empty()) {
+    modem_model_name_.Set(from._internal_modem_model_name(), 
+      GetArenaForAllocation());
+  }
+  ::memcpy(&imei_, &from.imei_,
+    static_cast<size_t>(reinterpret_cast<char*>(&instance_number_) -
+    reinterpret_cast<char*>(&imei_)) + sizeof(instance_number_));
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.ModemInfo)
+}
+
+inline void ModemInfo::SharedCtor() {
+modem_id_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  modem_id_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+firmware_version_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  firmware_version_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+modem_model_name_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  modem_model_name_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&imei_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&instance_number_) -
+    reinterpret_cast<char*>(&imei_)) + sizeof(instance_number_));
+}
+
+ModemInfo::~ModemInfo() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.ModemInfo)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ModemInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  modem_id_.Destroy();
+  firmware_version_.Destroy();
+  modem_model_name_.Destroy();
+}
+
+void ModemInfo::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ModemInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.ModemInfo)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  modem_id_.ClearToEmpty();
+  firmware_version_.ClearToEmpty();
+  modem_model_name_.ClearToEmpty();
+  ::memset(&imei_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&instance_number_) -
+      reinterpret_cast<char*>(&imei_)) + sizeof(instance_number_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ModemInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // uint32 instance_number = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          instance_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 imei = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          imei_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 iccid = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          iccid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 imsi = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          imsi_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string modem_id = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          auto str = _internal_mutable_modem_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.telemetry.ModemInfo.modem_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string firmware_version = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          auto str = _internal_mutable_firmware_version();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.telemetry.ModemInfo.firmware_version"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string modem_model_name = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          auto str = _internal_mutable_modem_model_name();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.telemetry.ModemInfo.modem_model_name"));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ModemInfo::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.ModemInfo)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint32 instance_number = 1;
+  if (this->_internal_instance_number() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance_number(), target);
+  }
+
+  // uint64 imei = 2;
+  if (this->_internal_imei() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_imei(), target);
+  }
+
+  // uint64 iccid = 3;
+  if (this->_internal_iccid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(3, this->_internal_iccid(), target);
+  }
+
+  // uint64 imsi = 4;
+  if (this->_internal_imsi() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(4, this->_internal_imsi(), target);
+  }
+
+  // string modem_id = 5;
+  if (!this->_internal_modem_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_modem_id().data(), static_cast<int>(this->_internal_modem_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "mavsdk.rpc.telemetry.ModemInfo.modem_id");
+    target = stream->WriteStringMaybeAliased(
+        5, this->_internal_modem_id(), target);
+  }
+
+  // string firmware_version = 6;
+  if (!this->_internal_firmware_version().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_firmware_version().data(), static_cast<int>(this->_internal_firmware_version().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "mavsdk.rpc.telemetry.ModemInfo.firmware_version");
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_firmware_version(), target);
+  }
+
+  // string modem_model_name = 7;
+  if (!this->_internal_modem_model_name().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_modem_model_name().data(), static_cast<int>(this->_internal_modem_model_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "mavsdk.rpc.telemetry.ModemInfo.modem_model_name");
+    target = stream->WriteStringMaybeAliased(
+        7, this->_internal_modem_model_name(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.ModemInfo)
+  return target;
+}
+
+size_t ModemInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.ModemInfo)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string modem_id = 5;
+  if (!this->_internal_modem_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_modem_id());
+  }
+
+  // string firmware_version = 6;
+  if (!this->_internal_firmware_version().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_firmware_version());
+  }
+
+  // string modem_model_name = 7;
+  if (!this->_internal_modem_model_name().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_modem_model_name());
+  }
+
+  // uint64 imei = 2;
+  if (this->_internal_imei() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_imei());
+  }
+
+  // uint64 iccid = 3;
+  if (this->_internal_iccid() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_iccid());
+  }
+
+  // uint64 imsi = 4;
+  if (this->_internal_imsi() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_imsi());
+  }
+
+  // uint32 instance_number = 1;
+  if (this->_internal_instance_number() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance_number());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ModemInfo::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ModemInfo::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ModemInfo::GetClassData() const { return &_class_data_; }
+
+void ModemInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ModemInfo *>(to)->MergeFrom(
+      static_cast<const ModemInfo &>(from));
+}
+
+
+void ModemInfo::MergeFrom(const ModemInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.ModemInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_modem_id().empty()) {
+    _internal_set_modem_id(from._internal_modem_id());
+  }
+  if (!from._internal_firmware_version().empty()) {
+    _internal_set_firmware_version(from._internal_firmware_version());
+  }
+  if (!from._internal_modem_model_name().empty()) {
+    _internal_set_modem_model_name(from._internal_modem_model_name());
+  }
+  if (from._internal_imei() != 0) {
+    _internal_set_imei(from._internal_imei());
+  }
+  if (from._internal_iccid() != 0) {
+    _internal_set_iccid(from._internal_iccid());
+  }
+  if (from._internal_imsi() != 0) {
+    _internal_set_imsi(from._internal_imsi());
+  }
+  if (from._internal_instance_number() != 0) {
+    _internal_set_instance_number(from._internal_instance_number());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ModemInfo::CopyFrom(const ModemInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.ModemInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModemInfo::IsInitialized() const {
+  return true;
+}
+
+void ModemInfo::InternalSwap(ModemInfo* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &modem_id_, lhs_arena,
+      &other->modem_id_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &firmware_version_, lhs_arena,
+      &other->firmware_version_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &modem_model_name_, lhs_arena,
+      &other->modem_model_name_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ModemInfo, instance_number_)
+      + sizeof(ModemInfo::instance_number_)
+      - PROTOBUF_FIELD_OFFSET(ModemInfo, imei_)>(
+          reinterpret_cast<char*>(&imei_),
+          reinterpret_cast<char*>(&other->imei_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ModemInfo::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
+      file_level_metadata_telemetry_2ftelemetry_2eproto[142]);
 }
 
 // ===================================================================
@@ -26369,7 +27569,7 @@ void StatusText::InternalSwap(StatusText* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata StatusText::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[138]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[143]);
 }
 
 // ===================================================================
@@ -26572,7 +27772,7 @@ void ActuatorControlTarget::InternalSwap(ActuatorControlTarget* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ActuatorControlTarget::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[139]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[144]);
 }
 
 // ===================================================================
@@ -26775,7 +27975,7 @@ void ActuatorOutputStatus::InternalSwap(ActuatorOutputStatus* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ActuatorOutputStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[140]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[145]);
 }
 
 // ===================================================================
@@ -26952,7 +28152,7 @@ void Covariance::InternalSwap(Covariance* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Covariance::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[141]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[146]);
 }
 
 // ===================================================================
@@ -27215,7 +28415,7 @@ void VelocityBody::InternalSwap(VelocityBody* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata VelocityBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[142]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[147]);
 }
 
 // ===================================================================
@@ -27478,7 +28678,7 @@ void PositionBody::InternalSwap(PositionBody* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PositionBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[143]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[148]);
 }
 
 // ===================================================================
@@ -27951,7 +29151,7 @@ void Odometry::InternalSwap(Odometry* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Odometry::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[144]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[149]);
 }
 
 // ===================================================================
@@ -28214,7 +29414,7 @@ void DistanceSensor::InternalSwap(DistanceSensor* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DistanceSensor::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[145]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[150]);
 }
 
 // ===================================================================
@@ -28533,7 +29733,7 @@ void ScaledPressure::InternalSwap(ScaledPressure* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ScaledPressure::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[146]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[151]);
 }
 
 // ===================================================================
@@ -28796,7 +29996,7 @@ void PositionNed::InternalSwap(PositionNed* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PositionNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[147]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[152]);
 }
 
 // ===================================================================
@@ -29059,7 +30259,7 @@ void VelocityNed::InternalSwap(VelocityNed* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata VelocityNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[148]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[153]);
 }
 
 // ===================================================================
@@ -29294,7 +30494,7 @@ void PositionVelocityNed::InternalSwap(PositionVelocityNed* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PositionVelocityNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[149]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[154]);
 }
 
 // ===================================================================
@@ -29557,7 +30757,7 @@ void GroundTruth::InternalSwap(GroundTruth* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GroundTruth::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[150]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[155]);
 }
 
 // ===================================================================
@@ -29820,7 +31020,7 @@ void FixedwingMetrics::InternalSwap(FixedwingMetrics* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata FixedwingMetrics::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[151]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[156]);
 }
 
 // ===================================================================
@@ -30083,7 +31283,7 @@ void AccelerationFrd::InternalSwap(AccelerationFrd* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AccelerationFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[152]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[157]);
 }
 
 // ===================================================================
@@ -30346,7 +31546,7 @@ void AngularVelocityFrd::InternalSwap(AngularVelocityFrd* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AngularVelocityFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[153]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[158]);
 }
 
 // ===================================================================
@@ -30609,7 +31809,7 @@ void MagneticFieldFrd::InternalSwap(MagneticFieldFrd* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MagneticFieldFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[154]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[159]);
 }
 
 // ===================================================================
@@ -30946,7 +32146,7 @@ void Imu::InternalSwap(Imu* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Imu::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[155]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[160]);
 }
 
 // ===================================================================
@@ -31209,7 +32409,7 @@ void GpsGlobalOrigin::InternalSwap(GpsGlobalOrigin* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GpsGlobalOrigin::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[156]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[161]);
 }
 
 // ===================================================================
@@ -31574,7 +32774,7 @@ void Altitude::InternalSwap(Altitude* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Altitude::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[157]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[162]);
 }
 
 // ===================================================================
@@ -31798,7 +32998,7 @@ void TelemetryResult::InternalSwap(TelemetryResult* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata TelemetryResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[158]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[163]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -31957,6 +33157,14 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SubscribeCellularStatusRequ
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::CellularStatusResponse*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::CellularStatusResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::CellularStatusResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SubscribeModemInfoRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SubscribeModemInfoRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SubscribeModemInfoRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::ModemInfoResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::ModemInfoResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::ModemInfoResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest >(Arena* arena) {
@@ -32202,6 +33410,10 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateCellularStatusRequ
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateCellularStatusRequest >(arena);
 }
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateModemInfoRequest*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateModemInfoRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateModemInfoRequest >(arena);
+}
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateRcStatusResponse*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateRcStatusResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateRcStatusResponse >(arena);
@@ -32209,6 +33421,10 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateRcStatusResponse >(A
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateCellularStatusResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateModemInfoResponse*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateModemInfoResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::SetRateModemInfoResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest >(Arena* arena) {
@@ -32357,6 +33573,10 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::RcStatus >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::CellularStatus*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::CellularStatus >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::CellularStatus >(arena);
+}
+template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::ModemInfo*
+Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::ModemInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry::ModemInfo >(arena);
 }
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::StatusText*
 Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::StatusText >(Arena* arena) {
