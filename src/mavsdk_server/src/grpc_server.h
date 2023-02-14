@@ -164,6 +164,7 @@
 #include "tune/tune_service_impl.h"
 #endif
 
+
 namespace mavsdk {
 namespace mavsdk_server {
 
@@ -173,153 +174,153 @@ public:
         _core(mavsdk),
 
 #ifdef ACTION_ENABLED
-        _action_lazy_plugin(mavsdk),
-        _action_service(_action_lazy_plugin),
+    _action_lazy_plugin(mavsdk),
+    _action_service(_action_lazy_plugin),
 #endif
 
 #ifdef ACTION_SERVER_ENABLED
-        _action_server_lazy_plugin(mavsdk),
-        _action_server_service(_action_server_lazy_plugin),
+    _action_server_lazy_plugin(mavsdk),
+    _action_server_service(_action_server_lazy_plugin),
 #endif
 
 #ifdef CALIBRATION_ENABLED
-        _calibration_lazy_plugin(mavsdk),
-        _calibration_service(_calibration_lazy_plugin),
+    _calibration_lazy_plugin(mavsdk),
+    _calibration_service(_calibration_lazy_plugin),
 #endif
 
 #ifdef CAMERA_ENABLED
-        _camera_lazy_plugin(mavsdk),
-        _camera_service(_camera_lazy_plugin),
+    _camera_lazy_plugin(mavsdk),
+    _camera_service(_camera_lazy_plugin),
 #endif
 
 #ifdef CAMERA_SERVER_ENABLED
-        _camera_server_lazy_plugin(mavsdk),
-        _camera_server_service(_camera_server_lazy_plugin),
+    _camera_server_lazy_plugin(mavsdk),
+    _camera_server_service(_camera_server_lazy_plugin),
 #endif
 
 #ifdef COMPONENT_INFORMATION_ENABLED
-        _component_information_lazy_plugin(mavsdk),
-        _component_information_service(_component_information_lazy_plugin),
+    _component_information_lazy_plugin(mavsdk),
+    _component_information_service(_component_information_lazy_plugin),
 #endif
 
 #ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-        _component_information_server_lazy_plugin(mavsdk),
-        _component_information_server_service(_component_information_server_lazy_plugin),
+    _component_information_server_lazy_plugin(mavsdk),
+    _component_information_server_service(_component_information_server_lazy_plugin),
 #endif
 
 #ifdef FAILURE_ENABLED
-        _failure_lazy_plugin(mavsdk),
-        _failure_service(_failure_lazy_plugin),
+    _failure_lazy_plugin(mavsdk),
+    _failure_service(_failure_lazy_plugin),
 #endif
 
 #ifdef FOLLOW_ME_ENABLED
-        _follow_me_lazy_plugin(mavsdk),
-        _follow_me_service(_follow_me_lazy_plugin),
+    _follow_me_lazy_plugin(mavsdk),
+    _follow_me_service(_follow_me_lazy_plugin),
 #endif
 
 #ifdef FTP_ENABLED
-        _ftp_lazy_plugin(mavsdk),
-        _ftp_service(_ftp_lazy_plugin),
+    _ftp_lazy_plugin(mavsdk),
+    _ftp_service(_ftp_lazy_plugin),
 #endif
 
 #ifdef GEOFENCE_ENABLED
-        _geofence_lazy_plugin(mavsdk),
-        _geofence_service(_geofence_lazy_plugin),
+    _geofence_lazy_plugin(mavsdk),
+    _geofence_service(_geofence_lazy_plugin),
 #endif
 
 #ifdef GIMBAL_ENABLED
-        _gimbal_lazy_plugin(mavsdk),
-        _gimbal_service(_gimbal_lazy_plugin),
+    _gimbal_lazy_plugin(mavsdk),
+    _gimbal_service(_gimbal_lazy_plugin),
 #endif
 
 #ifdef INFO_ENABLED
-        _info_lazy_plugin(mavsdk),
-        _info_service(_info_lazy_plugin),
+    _info_lazy_plugin(mavsdk),
+    _info_service(_info_lazy_plugin),
 #endif
 
 #ifdef LOG_FILES_ENABLED
-        _log_files_lazy_plugin(mavsdk),
-        _log_files_service(_log_files_lazy_plugin),
+    _log_files_lazy_plugin(mavsdk),
+    _log_files_service(_log_files_lazy_plugin),
 #endif
 
 #ifdef MANUAL_CONTROL_ENABLED
-        _manual_control_lazy_plugin(mavsdk),
-        _manual_control_service(_manual_control_lazy_plugin),
+    _manual_control_lazy_plugin(mavsdk),
+    _manual_control_service(_manual_control_lazy_plugin),
 #endif
 
 #ifdef MISSION_ENABLED
-        _mission_lazy_plugin(mavsdk),
-        _mission_service(_mission_lazy_plugin),
+    _mission_lazy_plugin(mavsdk),
+    _mission_service(_mission_lazy_plugin),
 #endif
 
 #ifdef MISSION_RAW_ENABLED
-        _mission_raw_lazy_plugin(mavsdk),
-        _mission_raw_service(_mission_raw_lazy_plugin),
+    _mission_raw_lazy_plugin(mavsdk),
+    _mission_raw_service(_mission_raw_lazy_plugin),
 #endif
 
 #ifdef MISSION_RAW_SERVER_ENABLED
-        _mission_raw_server_lazy_plugin(mavsdk),
-        _mission_raw_server_service(_mission_raw_server_lazy_plugin),
+    _mission_raw_server_lazy_plugin(mavsdk),
+    _mission_raw_server_service(_mission_raw_server_lazy_plugin),
 #endif
 
 #ifdef MOCAP_ENABLED
-        _mocap_lazy_plugin(mavsdk),
-        _mocap_service(_mocap_lazy_plugin),
+    _mocap_lazy_plugin(mavsdk),
+    _mocap_service(_mocap_lazy_plugin),
 #endif
 
 #ifdef OFFBOARD_ENABLED
-        _offboard_lazy_plugin(mavsdk),
-        _offboard_service(_offboard_lazy_plugin),
+    _offboard_lazy_plugin(mavsdk),
+    _offboard_service(_offboard_lazy_plugin),
 #endif
 
 #ifdef PARAM_ENABLED
-        _param_lazy_plugin(mavsdk),
-        _param_service(_param_lazy_plugin),
+    _param_lazy_plugin(mavsdk),
+    _param_service(_param_lazy_plugin),
 #endif
 
 #ifdef PARAM_SERVER_ENABLED
-        _param_server_lazy_plugin(mavsdk),
-        _param_server_service(_param_server_lazy_plugin),
+    _param_server_lazy_plugin(mavsdk),
+    _param_server_service(_param_server_lazy_plugin),
 #endif
 
 #ifdef RTK_ENABLED
-        _rtk_lazy_plugin(mavsdk),
-        _rtk_service(_rtk_lazy_plugin),
+    _rtk_lazy_plugin(mavsdk),
+    _rtk_service(_rtk_lazy_plugin),
 #endif
 
 #ifdef SERVER_UTILITY_ENABLED
-        _server_utility_lazy_plugin(mavsdk),
-        _server_utility_service(_server_utility_lazy_plugin),
+    _server_utility_lazy_plugin(mavsdk),
+    _server_utility_service(_server_utility_lazy_plugin),
 #endif
 
 #ifdef SHELL_ENABLED
-        _shell_lazy_plugin(mavsdk),
-        _shell_service(_shell_lazy_plugin),
+    _shell_lazy_plugin(mavsdk),
+    _shell_service(_shell_lazy_plugin),
 #endif
 
 #ifdef TELEMETRY_ENABLED
-        _telemetry_lazy_plugin(mavsdk),
-        _telemetry_service(_telemetry_lazy_plugin),
+    _telemetry_lazy_plugin(mavsdk),
+    _telemetry_service(_telemetry_lazy_plugin),
 #endif
 
 #ifdef TELEMETRY_SERVER_ENABLED
-        _telemetry_server_lazy_plugin(mavsdk),
-        _telemetry_server_service(_telemetry_server_lazy_plugin),
+    _telemetry_server_lazy_plugin(mavsdk),
+    _telemetry_server_service(_telemetry_server_lazy_plugin),
 #endif
 
 #ifdef TRACKING_SERVER_ENABLED
-        _tracking_server_lazy_plugin(mavsdk),
-        _tracking_server_service(_tracking_server_lazy_plugin),
+    _tracking_server_lazy_plugin(mavsdk),
+    _tracking_server_service(_tracking_server_lazy_plugin),
 #endif
 
 #ifdef TRANSPONDER_ENABLED
-        _transponder_lazy_plugin(mavsdk),
-        _transponder_service(_transponder_lazy_plugin),
+    _transponder_lazy_plugin(mavsdk),
+    _transponder_service(_transponder_lazy_plugin),
 #endif
 
 #ifdef TUNE_ENABLED
-        _tune_lazy_plugin(mavsdk),
-        _tune_service(_tune_lazy_plugin)
+    _tune_lazy_plugin(mavsdk),
+    _tune_service(_tune_lazy_plugin)
 #endif
 
     {}
@@ -543,6 +544,7 @@ private:
 
     TuneServiceImpl<> _tune_service;
 #endif
+
 
     std::unique_ptr<grpc::Server> _server;
 

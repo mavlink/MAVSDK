@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class ParamImpl;
+
+class System;class ParamImpl;
 
 /**
  * @brief Provide raw access to get and set parameters.
  */
 class Param : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,15 +55,21 @@ public:
      */
     explicit Param(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~Param() override;
 
+
+
+
+
     /**
      * @brief Type for integer parameters.
      */
     struct IntParam {
+        
         std::string name{}; /**< @brief Name of the parameter */
         int32_t value{}; /**< @brief Value of the parameter */
     };
@@ -80,10 +88,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param);
 
+
+
+
     /**
      * @brief Type for float parameters.
      */
     struct FloatParam {
+        
         std::string name{}; /**< @brief Name of the parameter */
         float value{}; /**< @brief Value of the parameter */
     };
@@ -102,10 +114,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param);
 
+
+
+
     /**
      * @brief Type for custom parameters
      */
     struct CustomParam {
+        
         std::string name{}; /**< @brief Name of the parameter */
         std::string value{}; /**< @brief Value of the parameter (max len 128 bytes) */
     };
@@ -124,16 +140,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_param);
 
+
+
+
     /**
      * @brief Type collecting all integer, float, and custom parameters.
      */
     struct AllParams {
-        std::vector<IntParam>
-            int_params{}; /**< @brief Collection of all parameter names and values of type int */
-        std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and
-                                                   values of type float */
-        std::vector<CustomParam> custom_params{}; /**< @brief Collection of all parameter names and
-                                                     values of type custom */
+        
+        std::vector<IntParam> int_params{}; /**< @brief Collection of all parameter names and values of type int */
+        std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and values of type float */
+        std::vector<CustomParam> custom_params{}; /**< @brief Collection of all parameter names and values of type custom */
     };
 
     /**
@@ -149,6 +166,10 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params);
+
+
+
+
 
     /**
      * @brief Possible results returned for param requests.
@@ -171,10 +192,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Param::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Param calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+
 
     /**
      * @brief Get an int parameter.
@@ -187,6 +215,11 @@ public:
      */
     std::pair<Result, int32_t> get_param_int(std::string name) const;
 
+
+
+
+
+
     /**
      * @brief Set an int parameter.
      *
@@ -197,6 +230,11 @@ public:
      * @return Result of request.
      */
     Result set_param_int(std::string name, int32_t value) const;
+
+
+
+
+
 
     /**
      * @brief Get a float parameter.
@@ -209,6 +247,11 @@ public:
      */
     std::pair<Result, float> get_param_float(std::string name) const;
 
+
+
+
+
+
     /**
      * @brief Set a float parameter.
      *
@@ -219,6 +262,11 @@ public:
      * @return Result of request.
      */
     Result set_param_float(std::string name, float value) const;
+
+
+
+
+
 
     /**
      * @brief Get a custom parameter.
@@ -231,6 +279,11 @@ public:
      */
     std::pair<Result, std::string> get_param_custom(std::string name) const;
 
+
+
+
+
+
     /**
      * @brief Set a custom parameter.
      *
@@ -242,6 +295,11 @@ public:
      */
     Result set_param_custom(std::string name, std::string value) const;
 
+
+
+
+
+
     /**
      * @brief Get all parameters.
      *
@@ -250,6 +308,9 @@ public:
      * @return Result of request.
      */
     Param::AllParams get_all_params() const;
+
+
+
 
     /**
      * @brief Copy constructor.

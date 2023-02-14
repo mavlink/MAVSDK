@@ -13,11 +13,13 @@
 #include <utility>
 #include <vector>
 
+
 #include "server_plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
+
 
 class ServerComponent;
 class CameraServerImpl;
@@ -27,6 +29,7 @@ class CameraServerImpl;
  */
 class CameraServer : public ServerPluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
      *
@@ -40,10 +43,12 @@ public:
      */
     explicit CameraServer(std::shared_ptr<ServerComponent> server_component);
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~CameraServer() override;
+
 
     /**
      * @brief Possible results when taking a photo.
@@ -60,27 +65,27 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback);
+    friend std::ostream& operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback);
+
+
+
 
     /**
      * @brief Type to represent a camera information.
      */
     struct Information {
+        
         std::string vendor_name{}; /**< @brief Name of the camera vendor */
         std::string model_name{}; /**< @brief Name of the camera model */
-        std::string firmware_version{}; /**< @brief Camera firmware version in
-                                           major[.minor[.patch[.dev]]] format */
+        std::string firmware_version{}; /**< @brief Camera firmware version in major[.minor[.patch[.dev]]] format */
         float focal_length_mm{}; /**< @brief Focal length */
         float horizontal_sensor_size_mm{}; /**< @brief Horizontal sensor size */
         float vertical_sensor_size_mm{}; /**< @brief Vertical sensor size */
         uint32_t horizontal_resolution_px{}; /**< @brief Horizontal image resolution in pixels */
         uint32_t vertical_resolution_px{}; /**< @brief Vertical image resolution in pixels */
         uint32_t lens_id{}; /**< @brief Lens ID */
-        uint32_t
-            definition_file_version{}; /**< @brief Camera definition file version (iteration) */
-        std::string
-            definition_file_uri{}; /**< @brief Camera definition URI (http or mavlink ftp) */
+        uint32_t definition_file_version{}; /**< @brief Camera definition file version (iteration) */
+        std::string definition_file_uri{}; /**< @brief Camera definition URI (http or mavlink ftp) */
     };
 
     /**
@@ -88,21 +93,23 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs);
+    friend bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs);
 
     /**
      * @brief Stream operator to print information about a `CameraServer::Information`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, CameraServer::Information const& information);
+    friend std::ostream& operator<<(std::ostream& str, CameraServer::Information const& information);
+
+
+
 
     /**
      * @brief Position type in global coordinates.
      */
     struct Position {
+        
         double latitude_deg{}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{}; /**< @brief Longitude in degrees (range: -180 to +180) */
         float absolute_altitude_m{}; /**< @brief Altitude AMSL (above mean sea level) in metres */
@@ -123,6 +130,9 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, CameraServer::Position const& position);
 
+
+
+
     /**
      * @brief Quaternion type.
      *
@@ -134,6 +144,7 @@ public:
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
+        
         float w{}; /**< @brief Quaternion entry 0, also denoted as a */
         float x{}; /**< @brief Quaternion entry 1, also denoted as b */
         float y{}; /**< @brief Quaternion entry 2, also denoted as c */
@@ -145,8 +156,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const CameraServer::Quaternion& lhs, const CameraServer::Quaternion& rhs);
+    friend bool operator==(const CameraServer::Quaternion& lhs, const CameraServer::Quaternion& rhs);
 
     /**
      * @brief Stream operator to print information about a `CameraServer::Quaternion`.
@@ -155,13 +165,16 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, CameraServer::Quaternion const& quaternion);
 
+
+
+
     /**
      * @brief Information about a picture just captured.
      */
     struct CaptureInfo {
+        
         Position position{}; /**< @brief Location where the picture was taken */
-        Quaternion attitude_quaternion{}; /**< @brief Attitude of the camera when the picture was
-                                             taken (quaternion) */
+        Quaternion attitude_quaternion{}; /**< @brief Attitude of the camera when the picture was taken (quaternion) */
         uint64_t time_utc_us{}; /**< @brief Timestamp in UTC (since UNIX epoch) in microseconds */
         bool is_success{}; /**< @brief True if the capture was successful */
         int32_t index{}; /**< @brief Index from TakePhotoResponse */
@@ -173,16 +186,18 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const CameraServer::CaptureInfo& lhs, const CameraServer::CaptureInfo& rhs);
+    friend bool operator==(const CameraServer::CaptureInfo& lhs, const CameraServer::CaptureInfo& rhs);
 
     /**
      * @brief Stream operator to print information about a `CameraServer::CaptureInfo`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, CameraServer::CaptureInfo const& capture_info);
+    friend std::ostream& operator<<(std::ostream& str, CameraServer::CaptureInfo const& capture_info);
+
+
+
+
 
     /**
      * @brief Possible results returned for action requests.
@@ -206,14 +221,20 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous CameraServer calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
+
+
+
+
+
     /**
-     * @brief Sets the camera information. This must be called as soon as the camera server is
-     * created.
+     * @brief Sets the camera information. This must be called as soon as the camera server is created.
      *
      * This function is blocking.
      *
@@ -221,15 +242,24 @@ public:
      */
     Result set_information(Information information) const;
 
+
+
+
+
+
     /**
-     * @brief Sets image capture in progress status flags. This should be set to true when the
-     * camera is busy taking a photo and false when it is done.
+     * @brief Sets image capture in progress status flags. This should be set to true when the camera is busy taking a photo and false when it is done.
      *
      * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_in_progress(bool in_progress) const;
+
+
+
+
+        
 
     /**
      * @brief Callback type for subscribe_take_photo.
@@ -242,8 +272,7 @@ public:
     using TakePhotoHandle = Handle<int32_t>;
 
     /**
-     * @brief Subscribe to image capture requests. Each request received should respond to using
-     * RespondTakePhoto.
+     * @brief Subscribe to image capture requests. Each request received should respond to using RespondTakePhoto.
      */
     TakePhotoHandle subscribe_take_photo(const TakePhotoCallback& callback);
 
@@ -252,6 +281,15 @@ public:
      */
     void unsubscribe_take_photo(TakePhotoHandle handle);
 
+        
+
+
+
+
+
+
+
+
     /**
      * @brief Respond to an image capture request from SubscribeTakePhoto.
      *
@@ -259,8 +297,10 @@ public:
      *
      * @return Result of request.
      */
-    Result
-    respond_take_photo(TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const;
+    Result respond_take_photo(TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const;
+
+
+
 
     /**
      * @brief Copy constructor.

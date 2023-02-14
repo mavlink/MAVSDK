@@ -21,11 +21,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename Telemetry = Telemetry, typename LazyPlugin = LazyPlugin<Telemetry>>
 
 class TelemetryServiceImpl final : public rpc::telemetry::TelemetryService::Service {
 public:
+
     TelemetryServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Telemetry::Result& result) const
@@ -40,6 +44,7 @@ public:
 
         response->set_allocated_telemetry_result(rpc_telemetry_result);
     }
+
 
     static rpc::telemetry::FixType translateToRpcFixType(const mavsdk::Telemetry::FixType& fix_type)
     {
@@ -64,8 +69,7 @@ public:
         }
     }
 
-    static mavsdk::Telemetry::FixType
-    translateFromRpcFixType(const rpc::telemetry::FixType fix_type)
+    static mavsdk::Telemetry::FixType translateFromRpcFixType(const rpc::telemetry::FixType fix_type)
     {
         switch (fix_type) {
             default:
@@ -88,8 +92,7 @@ public:
         }
     }
 
-    static rpc::telemetry::FlightMode
-    translateToRpcFlightMode(const mavsdk::Telemetry::FlightMode& flight_mode)
+    static rpc::telemetry::FlightMode translateToRpcFlightMode(const mavsdk::Telemetry::FlightMode& flight_mode)
     {
         switch (flight_mode) {
             default:
@@ -128,8 +131,7 @@ public:
         }
     }
 
-    static mavsdk::Telemetry::FlightMode
-    translateFromRpcFlightMode(const rpc::telemetry::FlightMode flight_mode)
+    static mavsdk::Telemetry::FlightMode translateFromRpcFlightMode(const rpc::telemetry::FlightMode flight_mode)
     {
         switch (flight_mode) {
             default:
@@ -168,13 +170,11 @@ public:
         }
     }
 
-    static rpc::telemetry::StatusTextType
-    translateToRpcStatusTextType(const mavsdk::Telemetry::StatusTextType& status_text_type)
+    static rpc::telemetry::StatusTextType translateToRpcStatusTextType(const mavsdk::Telemetry::StatusTextType& status_text_type)
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr() << "Unknown status_text_type enum value: " << static_cast<int>(status_text_type);
             // FALLTHROUGH
             case mavsdk::Telemetry::StatusTextType::Debug:
                 return rpc::telemetry::STATUS_TEXT_TYPE_DEBUG;
@@ -195,13 +195,11 @@ public:
         }
     }
 
-    static mavsdk::Telemetry::StatusTextType
-    translateFromRpcStatusTextType(const rpc::telemetry::StatusTextType status_text_type)
+    static mavsdk::Telemetry::StatusTextType translateFromRpcStatusTextType(const rpc::telemetry::StatusTextType status_text_type)
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr() << "Unknown status_text_type enum value: " << static_cast<int>(status_text_type);
             // FALLTHROUGH
             case rpc::telemetry::STATUS_TEXT_TYPE_DEBUG:
                 return mavsdk::Telemetry::StatusTextType::Debug;
@@ -222,8 +220,7 @@ public:
         }
     }
 
-    static rpc::telemetry::LandedState
-    translateToRpcLandedState(const mavsdk::Telemetry::LandedState& landed_state)
+    static rpc::telemetry::LandedState translateToRpcLandedState(const mavsdk::Telemetry::LandedState& landed_state)
     {
         switch (landed_state) {
             default:
@@ -242,8 +239,7 @@ public:
         }
     }
 
-    static mavsdk::Telemetry::LandedState
-    translateFromRpcLandedState(const rpc::telemetry::LandedState landed_state)
+    static mavsdk::Telemetry::LandedState translateFromRpcLandedState(const rpc::telemetry::LandedState landed_state)
     {
         switch (landed_state) {
             default:
@@ -262,8 +258,7 @@ public:
         }
     }
 
-    static rpc::telemetry::VtolState
-    translateToRpcVtolState(const mavsdk::Telemetry::VtolState& vtol_state)
+    static rpc::telemetry::VtolState translateToRpcVtolState(const mavsdk::Telemetry::VtolState& vtol_state)
     {
         switch (vtol_state) {
             default:
@@ -282,8 +277,7 @@ public:
         }
     }
 
-    static mavsdk::Telemetry::VtolState
-    translateFromRpcVtolState(const rpc::telemetry::VtolState vtol_state)
+    static mavsdk::Telemetry::VtolState translateFromRpcVtolState(const rpc::telemetry::VtolState vtol_state)
     {
         switch (vtol_state) {
             default:
@@ -302,210 +296,349 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::telemetry::Position>
-    translateToRpcPosition(const mavsdk::Telemetry::Position& position)
+
+
+    static std::unique_ptr<rpc::telemetry::Position> translateToRpcPosition(const mavsdk::Telemetry::Position &position)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Position>();
 
+
+            
         rpc_obj->set_latitude_deg(position.latitude_deg);
-
+            
+        
+            
         rpc_obj->set_longitude_deg(position.longitude_deg);
-
+            
+        
+            
         rpc_obj->set_absolute_altitude_m(position.absolute_altitude_m);
-
+            
+        
+            
         rpc_obj->set_relative_altitude_m(position.relative_altitude_m);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::Position
-    translateFromRpcPosition(const rpc::telemetry::Position& position)
+    static mavsdk::Telemetry::Position translateFromRpcPosition(const rpc::telemetry::Position& position)
     {
         mavsdk::Telemetry::Position obj;
 
+
+            
         obj.latitude_deg = position.latitude_deg();
-
+            
+        
+            
         obj.longitude_deg = position.longitude_deg();
-
+            
+        
+            
         obj.absolute_altitude_m = position.absolute_altitude_m();
-
+            
+        
+            
         obj.relative_altitude_m = position.relative_altitude_m();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::Heading>
-    translateToRpcHeading(const mavsdk::Telemetry::Heading& heading)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Heading> translateToRpcHeading(const mavsdk::Telemetry::Heading &heading)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Heading>();
 
+
+            
         rpc_obj->set_heading_deg(heading.heading_deg);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::Heading
-    translateFromRpcHeading(const rpc::telemetry::Heading& heading)
+    static mavsdk::Telemetry::Heading translateFromRpcHeading(const rpc::telemetry::Heading& heading)
     {
         mavsdk::Telemetry::Heading obj;
 
-        obj.heading_deg = heading.heading_deg();
 
+            
+        obj.heading_deg = heading.heading_deg();
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::Quaternion>
-    translateToRpcQuaternion(const mavsdk::Telemetry::Quaternion& quaternion)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Quaternion> translateToRpcQuaternion(const mavsdk::Telemetry::Quaternion &quaternion)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Quaternion>();
 
+
+            
         rpc_obj->set_w(quaternion.w);
-
+            
+        
+            
         rpc_obj->set_x(quaternion.x);
-
+            
+        
+            
         rpc_obj->set_y(quaternion.y);
-
+            
+        
+            
         rpc_obj->set_z(quaternion.z);
-
+            
+        
+            
         rpc_obj->set_timestamp_us(quaternion.timestamp_us);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::Quaternion
-    translateFromRpcQuaternion(const rpc::telemetry::Quaternion& quaternion)
+    static mavsdk::Telemetry::Quaternion translateFromRpcQuaternion(const rpc::telemetry::Quaternion& quaternion)
     {
         mavsdk::Telemetry::Quaternion obj;
 
+
+            
         obj.w = quaternion.w();
-
+            
+        
+            
         obj.x = quaternion.x();
-
+            
+        
+            
         obj.y = quaternion.y();
-
+            
+        
+            
         obj.z = quaternion.z();
-
+            
+        
+            
         obj.timestamp_us = quaternion.timestamp_us();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::EulerAngle>
-    translateToRpcEulerAngle(const mavsdk::Telemetry::EulerAngle& euler_angle)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::EulerAngle> translateToRpcEulerAngle(const mavsdk::Telemetry::EulerAngle &euler_angle)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::EulerAngle>();
 
+
+            
         rpc_obj->set_roll_deg(euler_angle.roll_deg);
-
+            
+        
+            
         rpc_obj->set_pitch_deg(euler_angle.pitch_deg);
-
+            
+        
+            
         rpc_obj->set_yaw_deg(euler_angle.yaw_deg);
-
+            
+        
+            
         rpc_obj->set_timestamp_us(euler_angle.timestamp_us);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::EulerAngle
-    translateFromRpcEulerAngle(const rpc::telemetry::EulerAngle& euler_angle)
+    static mavsdk::Telemetry::EulerAngle translateFromRpcEulerAngle(const rpc::telemetry::EulerAngle& euler_angle)
     {
         mavsdk::Telemetry::EulerAngle obj;
 
+
+            
         obj.roll_deg = euler_angle.roll_deg();
-
+            
+        
+            
         obj.pitch_deg = euler_angle.pitch_deg();
-
+            
+        
+            
         obj.yaw_deg = euler_angle.yaw_deg();
-
+            
+        
+            
         obj.timestamp_us = euler_angle.timestamp_us();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::AngularVelocityBody> translateToRpcAngularVelocityBody(
-        const mavsdk::Telemetry::AngularVelocityBody& angular_velocity_body)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::AngularVelocityBody> translateToRpcAngularVelocityBody(const mavsdk::Telemetry::AngularVelocityBody &angular_velocity_body)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::AngularVelocityBody>();
 
+
+            
         rpc_obj->set_roll_rad_s(angular_velocity_body.roll_rad_s);
-
+            
+        
+            
         rpc_obj->set_pitch_rad_s(angular_velocity_body.pitch_rad_s);
-
+            
+        
+            
         rpc_obj->set_yaw_rad_s(angular_velocity_body.yaw_rad_s);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::AngularVelocityBody translateFromRpcAngularVelocityBody(
-        const rpc::telemetry::AngularVelocityBody& angular_velocity_body)
+    static mavsdk::Telemetry::AngularVelocityBody translateFromRpcAngularVelocityBody(const rpc::telemetry::AngularVelocityBody& angular_velocity_body)
     {
         mavsdk::Telemetry::AngularVelocityBody obj;
 
+
+            
         obj.roll_rad_s = angular_velocity_body.roll_rad_s();
-
+            
+        
+            
         obj.pitch_rad_s = angular_velocity_body.pitch_rad_s();
-
+            
+        
+            
         obj.yaw_rad_s = angular_velocity_body.yaw_rad_s();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::GpsInfo>
-    translateToRpcGpsInfo(const mavsdk::Telemetry::GpsInfo& gps_info)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::GpsInfo> translateToRpcGpsInfo(const mavsdk::Telemetry::GpsInfo &gps_info)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::GpsInfo>();
 
-        rpc_obj->set_num_satellites(gps_info.num_satellites);
 
+            
+        rpc_obj->set_num_satellites(gps_info.num_satellites);
+            
+        
+            
+                
         rpc_obj->set_fix_type(translateToRpcFixType(gps_info.fix_type));
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::GpsInfo
-    translateFromRpcGpsInfo(const rpc::telemetry::GpsInfo& gps_info)
+    static mavsdk::Telemetry::GpsInfo translateFromRpcGpsInfo(const rpc::telemetry::GpsInfo& gps_info)
     {
         mavsdk::Telemetry::GpsInfo obj;
 
+
+            
         obj.num_satellites = gps_info.num_satellites();
-
+            
+        
+            
         obj.fix_type = translateFromRpcFixType(gps_info.fix_type());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::RawGps>
-    translateToRpcRawGps(const mavsdk::Telemetry::RawGps& raw_gps)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::RawGps> translateToRpcRawGps(const mavsdk::Telemetry::RawGps &raw_gps)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::RawGps>();
 
+
+            
         rpc_obj->set_timestamp_us(raw_gps.timestamp_us);
-
+            
+        
+            
         rpc_obj->set_latitude_deg(raw_gps.latitude_deg);
-
+            
+        
+            
         rpc_obj->set_longitude_deg(raw_gps.longitude_deg);
-
+            
+        
+            
         rpc_obj->set_absolute_altitude_m(raw_gps.absolute_altitude_m);
-
+            
+        
+            
         rpc_obj->set_hdop(raw_gps.hdop);
-
+            
+        
+            
         rpc_obj->set_vdop(raw_gps.vdop);
-
+            
+        
+            
         rpc_obj->set_velocity_m_s(raw_gps.velocity_m_s);
-
+            
+        
+            
         rpc_obj->set_cog_deg(raw_gps.cog_deg);
-
+            
+        
+            
         rpc_obj->set_altitude_ellipsoid_m(raw_gps.altitude_ellipsoid_m);
-
+            
+        
+            
         rpc_obj->set_horizontal_uncertainty_m(raw_gps.horizontal_uncertainty_m);
-
+            
+        
+            
         rpc_obj->set_vertical_uncertainty_m(raw_gps.vertical_uncertainty_m);
-
+            
+        
+            
         rpc_obj->set_velocity_uncertainty_m_s(raw_gps.velocity_uncertainty_m_s);
-
+            
+        
+            
         rpc_obj->set_heading_uncertainty_deg(raw_gps.heading_uncertainty_deg);
-
+            
+        
+            
         rpc_obj->set_yaw_deg(raw_gps.yaw_deg);
+            
+        
 
         return rpc_obj;
     }
@@ -514,95 +647,172 @@ public:
     {
         mavsdk::Telemetry::RawGps obj;
 
+
+            
         obj.timestamp_us = raw_gps.timestamp_us();
-
+            
+        
+            
         obj.latitude_deg = raw_gps.latitude_deg();
-
+            
+        
+            
         obj.longitude_deg = raw_gps.longitude_deg();
-
+            
+        
+            
         obj.absolute_altitude_m = raw_gps.absolute_altitude_m();
-
+            
+        
+            
         obj.hdop = raw_gps.hdop();
-
+            
+        
+            
         obj.vdop = raw_gps.vdop();
-
+            
+        
+            
         obj.velocity_m_s = raw_gps.velocity_m_s();
-
+            
+        
+            
         obj.cog_deg = raw_gps.cog_deg();
-
+            
+        
+            
         obj.altitude_ellipsoid_m = raw_gps.altitude_ellipsoid_m();
-
+            
+        
+            
         obj.horizontal_uncertainty_m = raw_gps.horizontal_uncertainty_m();
-
+            
+        
+            
         obj.vertical_uncertainty_m = raw_gps.vertical_uncertainty_m();
-
+            
+        
+            
         obj.velocity_uncertainty_m_s = raw_gps.velocity_uncertainty_m_s();
-
+            
+        
+            
         obj.heading_uncertainty_deg = raw_gps.heading_uncertainty_deg();
-
+            
+        
+            
         obj.yaw_deg = raw_gps.yaw_deg();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::Battery>
-    translateToRpcBattery(const mavsdk::Telemetry::Battery& battery)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Battery> translateToRpcBattery(const mavsdk::Telemetry::Battery &battery)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Battery>();
 
+
+            
         rpc_obj->set_id(battery.id);
-
+            
+        
+            
         rpc_obj->set_temperature_degc(battery.temperature_degc);
-
+            
+        
+            
         rpc_obj->set_voltage_v(battery.voltage_v);
-
+            
+        
+            
         rpc_obj->set_current_battery_a(battery.current_battery_a);
-
+            
+        
+            
         rpc_obj->set_capacity_consumed_ah(battery.capacity_consumed_ah);
-
+            
+        
+            
         rpc_obj->set_remaining_percent(battery.remaining_percent);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::Battery
-    translateFromRpcBattery(const rpc::telemetry::Battery& battery)
+    static mavsdk::Telemetry::Battery translateFromRpcBattery(const rpc::telemetry::Battery& battery)
     {
         mavsdk::Telemetry::Battery obj;
 
+
+            
         obj.id = battery.id();
-
+            
+        
+            
         obj.temperature_degc = battery.temperature_degc();
-
+            
+        
+            
         obj.voltage_v = battery.voltage_v();
-
+            
+        
+            
         obj.current_battery_a = battery.current_battery_a();
-
+            
+        
+            
         obj.capacity_consumed_ah = battery.capacity_consumed_ah();
-
+            
+        
+            
         obj.remaining_percent = battery.remaining_percent();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::Health>
-    translateToRpcHealth(const mavsdk::Telemetry::Health& health)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Health> translateToRpcHealth(const mavsdk::Telemetry::Health &health)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Health>();
 
+
+            
         rpc_obj->set_is_gyrometer_calibration_ok(health.is_gyrometer_calibration_ok);
-
+            
+        
+            
         rpc_obj->set_is_accelerometer_calibration_ok(health.is_accelerometer_calibration_ok);
-
+            
+        
+            
         rpc_obj->set_is_magnetometer_calibration_ok(health.is_magnetometer_calibration_ok);
-
+            
+        
+            
         rpc_obj->set_is_local_position_ok(health.is_local_position_ok);
-
+            
+        
+            
         rpc_obj->set_is_global_position_ok(health.is_global_position_ok);
-
+            
+        
+            
         rpc_obj->set_is_home_position_ok(health.is_home_position_ok);
-
+            
+        
+            
         rpc_obj->set_is_armable(health.is_armable);
+            
+        
 
         return rpc_obj;
     }
@@ -611,346 +821,887 @@ public:
     {
         mavsdk::Telemetry::Health obj;
 
+
+            
         obj.is_gyrometer_calibration_ok = health.is_gyrometer_calibration_ok();
-
+            
+        
+            
         obj.is_accelerometer_calibration_ok = health.is_accelerometer_calibration_ok();
-
+            
+        
+            
         obj.is_magnetometer_calibration_ok = health.is_magnetometer_calibration_ok();
-
+            
+        
+            
         obj.is_local_position_ok = health.is_local_position_ok();
-
+            
+        
+            
         obj.is_global_position_ok = health.is_global_position_ok();
-
+            
+        
+            
         obj.is_home_position_ok = health.is_home_position_ok();
-
+            
+        
+            
         obj.is_armable = health.is_armable();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::RcStatus>
-    translateToRpcRcStatus(const mavsdk::Telemetry::RcStatus& rc_status)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::RcStatus> translateToRpcRcStatus(const mavsdk::Telemetry::RcStatus &rc_status)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::RcStatus>();
 
+
+            
         rpc_obj->set_was_available_once(rc_status.was_available_once);
-
+            
+        
+            
         rpc_obj->set_is_available(rc_status.is_available);
-
+            
+        
+            
         rpc_obj->set_signal_strength_percent(rc_status.signal_strength_percent);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::RcStatus
-    translateFromRpcRcStatus(const rpc::telemetry::RcStatus& rc_status)
+    static mavsdk::Telemetry::RcStatus translateFromRpcRcStatus(const rpc::telemetry::RcStatus& rc_status)
     {
         mavsdk::Telemetry::RcStatus obj;
 
+
+            
         obj.was_available_once = rc_status.was_available_once();
-
+            
+        
+            
         obj.is_available = rc_status.is_available();
-
+            
+        
+            
         obj.signal_strength_percent = rc_status.signal_strength_percent();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::CellularStatus>
-    translateToRpcCellularStatus(const mavsdk::Telemetry::CellularStatus& cellular_status)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::CellularStatus> translateToRpcCellularStatus(const mavsdk::Telemetry::CellularStatus &cellular_status)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::CellularStatus>();
 
+
+            
         rpc_obj->set_status(cellular_status.status);
-
+            
+        
+            
         rpc_obj->set_failure_reason(cellular_status.failure_reason);
-
+            
+        
+            
         rpc_obj->set_type(cellular_status.type);
-
+            
+        
+            
         rpc_obj->set_quality(cellular_status.quality);
-
+            
+        
+            
         rpc_obj->set_mcc(cellular_status.mcc);
-
+            
+        
+            
         rpc_obj->set_mnc(cellular_status.mnc);
-
+            
+        
+            
         rpc_obj->set_lac(cellular_status.lac);
-
+            
+        
+            
         rpc_obj->set_band_number(cellular_status.band_number);
-
+            
+        
+            
         rpc_obj->set_band_frequency(cellular_status.band_frequency);
-
+            
+        
+            
         rpc_obj->set_channel_number(cellular_status.channel_number);
-
+            
+        
+            
         rpc_obj->set_rx_level(cellular_status.rx_level);
-
+            
+        
+            
         rpc_obj->set_tx_level(cellular_status.tx_level);
-
+            
+        
+            
         rpc_obj->set_rx_quality(cellular_status.rx_quality);
-
+            
+        
+            
         rpc_obj->set_link_tx_rate(cellular_status.link_tx_rate);
-
+            
+        
+            
         rpc_obj->set_link_rx_rate(cellular_status.link_rx_rate);
-
+            
+        
+            
         rpc_obj->set_bit_error_rate(cellular_status.bit_error_rate);
-
+            
+        
+            
         rpc_obj->set_instance_number(cellular_status.instance_number);
-
+            
+        
+            
         rpc_obj->set_cell_tower_id(cellular_status.cell_tower_id);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::CellularStatus
-    translateFromRpcCellularStatus(const rpc::telemetry::CellularStatus& cellular_status)
+    static mavsdk::Telemetry::CellularStatus translateFromRpcCellularStatus(const rpc::telemetry::CellularStatus& cellular_status)
     {
         mavsdk::Telemetry::CellularStatus obj;
 
+
+            
         obj.status = cellular_status.status();
-
+            
+        
+            
         obj.failure_reason = cellular_status.failure_reason();
-
+            
+        
+            
         obj.type = cellular_status.type();
-
+            
+        
+            
         obj.quality = cellular_status.quality();
-
+            
+        
+            
         obj.mcc = cellular_status.mcc();
-
+            
+        
+            
         obj.mnc = cellular_status.mnc();
-
+            
+        
+            
         obj.lac = cellular_status.lac();
-
+            
+        
+            
         obj.band_number = cellular_status.band_number();
-
+            
+        
+            
         obj.band_frequency = cellular_status.band_frequency();
-
+            
+        
+            
         obj.channel_number = cellular_status.channel_number();
-
+            
+        
+            
         obj.rx_level = cellular_status.rx_level();
-
+            
+        
+            
         obj.tx_level = cellular_status.tx_level();
-
+            
+        
+            
         obj.rx_quality = cellular_status.rx_quality();
-
+            
+        
+            
         obj.link_tx_rate = cellular_status.link_tx_rate();
-
+            
+        
+            
         obj.link_rx_rate = cellular_status.link_rx_rate();
-
+            
+        
+            
         obj.bit_error_rate = cellular_status.bit_error_rate();
-
+            
+        
+            
         obj.instance_number = cellular_status.instance_number();
-
+            
+        
+            
         obj.cell_tower_id = cellular_status.cell_tower_id();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::ModemInfo>
-    translateToRpcModemInfo(const mavsdk::Telemetry::ModemInfo& modem_info)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::ModemInfo> translateToRpcModemInfo(const mavsdk::Telemetry::ModemInfo &modem_info)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::ModemInfo>();
 
+
+            
         rpc_obj->set_instance_number(modem_info.instance_number);
-
+            
+        
+            
         rpc_obj->set_imei(modem_info.imei);
-
-        rpc_obj->set_iccid(modem_info.iccid);
-
+            
+        
+            
         rpc_obj->set_imsi(modem_info.imsi);
-
+            
+        
+            
         rpc_obj->set_modem_id(modem_info.modem_id);
-
+            
+        
+            
+        rpc_obj->set_iccid(modem_info.iccid);
+            
+        
+            
         rpc_obj->set_firmware_version(modem_info.firmware_version);
-
+            
+        
+            
         rpc_obj->set_modem_model_name(modem_info.modem_model_name);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::ModemInfo
-    translateFromRpcModemInfo(const rpc::telemetry::ModemInfo& modem_info)
+    static mavsdk::Telemetry::ModemInfo translateFromRpcModemInfo(const rpc::telemetry::ModemInfo& modem_info)
     {
         mavsdk::Telemetry::ModemInfo obj;
 
+
+            
         obj.instance_number = modem_info.instance_number();
-
+            
+        
+            
         obj.imei = modem_info.imei();
-
-        obj.iccid = modem_info.iccid();
-
+            
+        
+            
         obj.imsi = modem_info.imsi();
-
+            
+        
+            
         obj.modem_id = modem_info.modem_id();
-
+            
+        
+            
+        obj.iccid = modem_info.iccid();
+            
+        
+            
         obj.firmware_version = modem_info.firmware_version();
-
+            
+        
+            
         obj.modem_model_name = modem_info.modem_model_name();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::StatusText>
-    translateToRpcStatusText(const mavsdk::Telemetry::StatusText& status_text)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::OnboardComputerStatus> translateToRpcOnboardComputerStatus(const mavsdk::Telemetry::OnboardComputerStatus &onboard_computer_status)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry::OnboardComputerStatus>();
+
+
+            
+        rpc_obj->set_time_usec(onboard_computer_status.time_usec);
+            
+        
+            
+        rpc_obj->set_uptime(onboard_computer_status.uptime);
+            
+        
+            
+        rpc_obj->set_type(onboard_computer_status.type);
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.cpu_cores) {
+            rpc_obj->add_cpu_cores(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.cpu_combined) {
+            rpc_obj->add_cpu_combined(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.gpu_cores) {
+            rpc_obj->add_gpu_cores(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.gpu_combined) {
+            rpc_obj->add_gpu_combined(elem);
+        }
+            
+        
+            
+        rpc_obj->set_temperature_board(onboard_computer_status.temperature_board);
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.temperature_core) {
+            rpc_obj->add_temperature_core(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.fan_speed) {
+            rpc_obj->add_fan_speed(elem);
+        }
+            
+        
+            
+        rpc_obj->set_ram_usage(onboard_computer_status.ram_usage);
+            
+        
+            
+        rpc_obj->set_ram_total(onboard_computer_status.ram_total);
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.storage_type) {
+            rpc_obj->add_storage_type(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.storage_usage) {
+            rpc_obj->add_storage_usage(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.storage_total) {
+            rpc_obj->add_storage_total(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.link_type) {
+            rpc_obj->add_link_type(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.link_tx_rate) {
+            rpc_obj->add_link_tx_rate(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.link_rx_rate) {
+            rpc_obj->add_link_rx_rate(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.link_tx_max) {
+            rpc_obj->add_link_tx_max(elem);
+        }
+            
+        
+            
+        for (const auto& elem : onboard_computer_status.link_rx_max) {
+            rpc_obj->add_link_rx_max(elem);
+        }
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::OnboardComputerStatus translateFromRpcOnboardComputerStatus(const rpc::telemetry::OnboardComputerStatus& onboard_computer_status)
+    {
+        mavsdk::Telemetry::OnboardComputerStatus obj;
+
+
+            
+        obj.time_usec = onboard_computer_status.time_usec();
+            
+        
+            
+        obj.uptime = onboard_computer_status.uptime();
+            
+        
+            
+        obj.type = onboard_computer_status.type();
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.cpu_cores()) {
+                    obj.cpu_cores.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.cpu_combined()) {
+                    obj.cpu_combined.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.gpu_cores()) {
+                    obj.gpu_cores.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.gpu_combined()) {
+                    obj.gpu_combined.push_back(elem);
+                }
+            
+        
+            
+        obj.temperature_board = onboard_computer_status.temperature_board();
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.temperature_core()) {
+                    obj.temperature_core.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.fan_speed()) {
+                    obj.fan_speed.push_back(elem);
+                }
+            
+        
+            
+        obj.ram_usage = onboard_computer_status.ram_usage();
+            
+        
+            
+        obj.ram_total = onboard_computer_status.ram_total();
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.storage_type()) {
+                    obj.storage_type.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.storage_usage()) {
+                    obj.storage_usage.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.storage_total()) {
+                    obj.storage_total.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.link_type()) {
+                    obj.link_type.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.link_tx_rate()) {
+                    obj.link_tx_rate.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.link_rx_rate()) {
+                    obj.link_rx_rate.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.link_tx_max()) {
+                    obj.link_tx_max.push_back(elem);
+                }
+            
+        
+            
+                for (const auto& elem : onboard_computer_status.link_rx_max()) {
+                    obj.link_rx_max.push_back(elem);
+                }
+            
+        
+        return obj;
+    }
+
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::ComponentInfoBasic> translateToRpcComponentInfoBasic(const mavsdk::Telemetry::ComponentInfoBasic &component_info_basic)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry::ComponentInfoBasic>();
+
+
+            
+        rpc_obj->set_time_boot_ms(component_info_basic.time_boot_ms);
+            
+        
+            
+        rpc_obj->set_capabilities(component_info_basic.capabilities);
+            
+        
+            
+        rpc_obj->set_vendor_name(component_info_basic.vendor_name);
+            
+        
+            
+        rpc_obj->set_model_name(component_info_basic.model_name);
+            
+        
+            
+        rpc_obj->set_software_version(component_info_basic.software_version);
+            
+        
+            
+        rpc_obj->set_hardware_version(component_info_basic.hardware_version);
+            
+        
+            
+        rpc_obj->set_serial_number(component_info_basic.serial_number);
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::ComponentInfoBasic translateFromRpcComponentInfoBasic(const rpc::telemetry::ComponentInfoBasic& component_info_basic)
+    {
+        mavsdk::Telemetry::ComponentInfoBasic obj;
+
+
+            
+        obj.time_boot_ms = component_info_basic.time_boot_ms();
+            
+        
+            
+        obj.capabilities = component_info_basic.capabilities();
+            
+        
+            
+        obj.vendor_name = component_info_basic.vendor_name();
+            
+        
+            
+        obj.model_name = component_info_basic.model_name();
+            
+        
+            
+        obj.software_version = component_info_basic.software_version();
+            
+        
+            
+        obj.hardware_version = component_info_basic.hardware_version();
+            
+        
+            
+        obj.serial_number = component_info_basic.serial_number();
+            
+        
+        return obj;
+    }
+
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::StatusText> translateToRpcStatusText(const mavsdk::Telemetry::StatusText &status_text)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::StatusText>();
 
-        rpc_obj->set_type(translateToRpcStatusTextType(status_text.type));
 
+            
+                
+        rpc_obj->set_type(translateToRpcStatusTextType(status_text.type));
+                
+            
+        
+            
         rpc_obj->set_text(status_text.text);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::StatusText
-    translateFromRpcStatusText(const rpc::telemetry::StatusText& status_text)
+    static mavsdk::Telemetry::StatusText translateFromRpcStatusText(const rpc::telemetry::StatusText& status_text)
     {
         mavsdk::Telemetry::StatusText obj;
 
+
+            
         obj.type = translateFromRpcStatusTextType(status_text.type());
-
+            
+        
+            
         obj.text = status_text.text();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::ActuatorControlTarget>
-    translateToRpcActuatorControlTarget(
-        const mavsdk::Telemetry::ActuatorControlTarget& actuator_control_target)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::ActuatorControlTarget> translateToRpcActuatorControlTarget(const mavsdk::Telemetry::ActuatorControlTarget &actuator_control_target)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::ActuatorControlTarget>();
 
-        rpc_obj->set_group(actuator_control_target.group);
 
+            
+        rpc_obj->set_group(actuator_control_target.group);
+            
+        
+            
         for (const auto& elem : actuator_control_target.controls) {
             rpc_obj->add_controls(elem);
         }
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::ActuatorControlTarget translateFromRpcActuatorControlTarget(
-        const rpc::telemetry::ActuatorControlTarget& actuator_control_target)
+    static mavsdk::Telemetry::ActuatorControlTarget translateFromRpcActuatorControlTarget(const rpc::telemetry::ActuatorControlTarget& actuator_control_target)
     {
         mavsdk::Telemetry::ActuatorControlTarget obj;
 
+
+            
         obj.group = actuator_control_target.group();
-
-        for (const auto& elem : actuator_control_target.controls()) {
-            obj.controls.push_back(elem);
-        }
-
+            
+        
+            
+                for (const auto& elem : actuator_control_target.controls()) {
+                    obj.controls.push_back(elem);
+                }
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::ActuatorOutputStatus> translateToRpcActuatorOutputStatus(
-        const mavsdk::Telemetry::ActuatorOutputStatus& actuator_output_status)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::ActuatorOutputStatus> translateToRpcActuatorOutputStatus(const mavsdk::Telemetry::ActuatorOutputStatus &actuator_output_status)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::ActuatorOutputStatus>();
 
-        rpc_obj->set_active(actuator_output_status.active);
 
+            
+        rpc_obj->set_active(actuator_output_status.active);
+            
+        
+            
         for (const auto& elem : actuator_output_status.actuator) {
             rpc_obj->add_actuator(elem);
         }
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::ActuatorOutputStatus translateFromRpcActuatorOutputStatus(
-        const rpc::telemetry::ActuatorOutputStatus& actuator_output_status)
+    static mavsdk::Telemetry::ActuatorOutputStatus translateFromRpcActuatorOutputStatus(const rpc::telemetry::ActuatorOutputStatus& actuator_output_status)
     {
         mavsdk::Telemetry::ActuatorOutputStatus obj;
 
+
+            
         obj.active = actuator_output_status.active();
-
-        for (const auto& elem : actuator_output_status.actuator()) {
-            obj.actuator.push_back(elem);
-        }
-
+            
+        
+            
+                for (const auto& elem : actuator_output_status.actuator()) {
+                    obj.actuator.push_back(elem);
+                }
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::Covariance>
-    translateToRpcCovariance(const mavsdk::Telemetry::Covariance& covariance)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Covariance> translateToRpcCovariance(const mavsdk::Telemetry::Covariance &covariance)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Covariance>();
 
+
+            
         for (const auto& elem : covariance.covariance_matrix) {
             rpc_obj->add_covariance_matrix(elem);
         }
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::Covariance
-    translateFromRpcCovariance(const rpc::telemetry::Covariance& covariance)
+    static mavsdk::Telemetry::Covariance translateFromRpcCovariance(const rpc::telemetry::Covariance& covariance)
     {
         mavsdk::Telemetry::Covariance obj;
 
-        for (const auto& elem : covariance.covariance_matrix()) {
-            obj.covariance_matrix.push_back(elem);
-        }
 
+            
+                for (const auto& elem : covariance.covariance_matrix()) {
+                    obj.covariance_matrix.push_back(elem);
+                }
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::VelocityBody>
-    translateToRpcVelocityBody(const mavsdk::Telemetry::VelocityBody& velocity_body)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::VelocityBody> translateToRpcVelocityBody(const mavsdk::Telemetry::VelocityBody &velocity_body)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::VelocityBody>();
 
+
+            
         rpc_obj->set_x_m_s(velocity_body.x_m_s);
-
+            
+        
+            
         rpc_obj->set_y_m_s(velocity_body.y_m_s);
-
+            
+        
+            
         rpc_obj->set_z_m_s(velocity_body.z_m_s);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::VelocityBody
-    translateFromRpcVelocityBody(const rpc::telemetry::VelocityBody& velocity_body)
+    static mavsdk::Telemetry::VelocityBody translateFromRpcVelocityBody(const rpc::telemetry::VelocityBody& velocity_body)
     {
         mavsdk::Telemetry::VelocityBody obj;
 
+
+            
         obj.x_m_s = velocity_body.x_m_s();
-
+            
+        
+            
         obj.y_m_s = velocity_body.y_m_s();
-
+            
+        
+            
         obj.z_m_s = velocity_body.z_m_s();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::PositionBody>
-    translateToRpcPositionBody(const mavsdk::Telemetry::PositionBody& position_body)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::PositionBody> translateToRpcPositionBody(const mavsdk::Telemetry::PositionBody &position_body)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::PositionBody>();
 
+
+            
         rpc_obj->set_x_m(position_body.x_m);
-
+            
+        
+            
         rpc_obj->set_y_m(position_body.y_m);
-
+            
+        
+            
         rpc_obj->set_z_m(position_body.z_m);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::PositionBody
-    translateFromRpcPositionBody(const rpc::telemetry::PositionBody& position_body)
+    static mavsdk::Telemetry::PositionBody translateFromRpcPositionBody(const rpc::telemetry::PositionBody& position_body)
     {
         mavsdk::Telemetry::PositionBody obj;
 
+
+            
         obj.x_m = position_body.x_m();
-
+            
+        
+            
         obj.y_m = position_body.y_m();
-
+            
+        
+            
         obj.z_m = position_body.z_m();
-
+            
+        
         return obj;
     }
 
-    static rpc::telemetry::Odometry::MavFrame
-    translateToRpcMavFrame(const mavsdk::Telemetry::Odometry::MavFrame& mav_frame)
+
+
+
+    static rpc::telemetry::Odometry::MavFrame translateToRpcMavFrame(const mavsdk::Telemetry::Odometry::MavFrame& mav_frame)
     {
         switch (mav_frame) {
             default:
@@ -967,8 +1718,7 @@ public:
         }
     }
 
-    static mavsdk::Telemetry::Odometry::MavFrame
-    translateFromRpcMavFrame(const rpc::telemetry::Odometry::MavFrame mav_frame)
+    static mavsdk::Telemetry::Odometry::MavFrame translateFromRpcMavFrame(const rpc::telemetry::Odometry::MavFrame mav_frame)
     {
         switch (mav_frame) {
             default:
@@ -985,368 +1735,609 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::telemetry::Odometry>
-    translateToRpcOdometry(const mavsdk::Telemetry::Odometry& odometry)
+
+    static std::unique_ptr<rpc::telemetry::Odometry> translateToRpcOdometry(const mavsdk::Telemetry::Odometry &odometry)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Odometry>();
 
+
+            
         rpc_obj->set_time_usec(odometry.time_usec);
-
+            
+        
+            
+                
         rpc_obj->set_frame_id(translateToRpcMavFrame(odometry.frame_id));
-
+                
+            
+        
+            
+                
         rpc_obj->set_child_frame_id(translateToRpcMavFrame(odometry.child_frame_id));
-
-        rpc_obj->set_allocated_position_body(
-            translateToRpcPositionBody(odometry.position_body).release());
-
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_position_body(translateToRpcPositionBody(odometry.position_body).release());
+                
+            
+        
+            
+                
         rpc_obj->set_allocated_q(translateToRpcQuaternion(odometry.q).release());
-
-        rpc_obj->set_allocated_velocity_body(
-            translateToRpcVelocityBody(odometry.velocity_body).release());
-
-        rpc_obj->set_allocated_angular_velocity_body(
-            translateToRpcAngularVelocityBody(odometry.angular_velocity_body).release());
-
-        rpc_obj->set_allocated_pose_covariance(
-            translateToRpcCovariance(odometry.pose_covariance).release());
-
-        rpc_obj->set_allocated_velocity_covariance(
-            translateToRpcCovariance(odometry.velocity_covariance).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_velocity_body(translateToRpcVelocityBody(odometry.velocity_body).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_angular_velocity_body(translateToRpcAngularVelocityBody(odometry.angular_velocity_body).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_pose_covariance(translateToRpcCovariance(odometry.pose_covariance).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_velocity_covariance(translateToRpcCovariance(odometry.velocity_covariance).release());
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::Odometry
-    translateFromRpcOdometry(const rpc::telemetry::Odometry& odometry)
+    static mavsdk::Telemetry::Odometry translateFromRpcOdometry(const rpc::telemetry::Odometry& odometry)
     {
         mavsdk::Telemetry::Odometry obj;
 
+
+            
         obj.time_usec = odometry.time_usec();
-
+            
+        
+            
         obj.frame_id = translateFromRpcMavFrame(odometry.frame_id());
-
+            
+        
+            
         obj.child_frame_id = translateFromRpcMavFrame(odometry.child_frame_id());
-
+            
+        
+            
         obj.position_body = translateFromRpcPositionBody(odometry.position_body());
-
+            
+        
+            
         obj.q = translateFromRpcQuaternion(odometry.q());
-
+            
+        
+            
         obj.velocity_body = translateFromRpcVelocityBody(odometry.velocity_body());
-
-        obj.angular_velocity_body =
-            translateFromRpcAngularVelocityBody(odometry.angular_velocity_body());
-
+            
+        
+            
+        obj.angular_velocity_body = translateFromRpcAngularVelocityBody(odometry.angular_velocity_body());
+            
+        
+            
         obj.pose_covariance = translateFromRpcCovariance(odometry.pose_covariance());
-
+            
+        
+            
         obj.velocity_covariance = translateFromRpcCovariance(odometry.velocity_covariance());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::DistanceSensor>
-    translateToRpcDistanceSensor(const mavsdk::Telemetry::DistanceSensor& distance_sensor)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::DistanceSensor> translateToRpcDistanceSensor(const mavsdk::Telemetry::DistanceSensor &distance_sensor)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::DistanceSensor>();
 
+
+            
         rpc_obj->set_minimum_distance_m(distance_sensor.minimum_distance_m);
-
+            
+        
+            
         rpc_obj->set_maximum_distance_m(distance_sensor.maximum_distance_m);
-
+            
+        
+            
         rpc_obj->set_current_distance_m(distance_sensor.current_distance_m);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::DistanceSensor
-    translateFromRpcDistanceSensor(const rpc::telemetry::DistanceSensor& distance_sensor)
+    static mavsdk::Telemetry::DistanceSensor translateFromRpcDistanceSensor(const rpc::telemetry::DistanceSensor& distance_sensor)
     {
         mavsdk::Telemetry::DistanceSensor obj;
 
+
+            
         obj.minimum_distance_m = distance_sensor.minimum_distance_m();
-
+            
+        
+            
         obj.maximum_distance_m = distance_sensor.maximum_distance_m();
-
+            
+        
+            
         obj.current_distance_m = distance_sensor.current_distance_m();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::ScaledPressure>
-    translateToRpcScaledPressure(const mavsdk::Telemetry::ScaledPressure& scaled_pressure)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::ScaledPressure> translateToRpcScaledPressure(const mavsdk::Telemetry::ScaledPressure &scaled_pressure)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::ScaledPressure>();
 
+
+            
         rpc_obj->set_timestamp_us(scaled_pressure.timestamp_us);
-
+            
+        
+            
         rpc_obj->set_absolute_pressure_hpa(scaled_pressure.absolute_pressure_hpa);
-
+            
+        
+            
         rpc_obj->set_differential_pressure_hpa(scaled_pressure.differential_pressure_hpa);
-
+            
+        
+            
         rpc_obj->set_temperature_deg(scaled_pressure.temperature_deg);
-
-        rpc_obj->set_differential_pressure_temperature_deg(
-            scaled_pressure.differential_pressure_temperature_deg);
+            
+        
+            
+        rpc_obj->set_differential_pressure_temperature_deg(scaled_pressure.differential_pressure_temperature_deg);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::ScaledPressure
-    translateFromRpcScaledPressure(const rpc::telemetry::ScaledPressure& scaled_pressure)
+    static mavsdk::Telemetry::ScaledPressure translateFromRpcScaledPressure(const rpc::telemetry::ScaledPressure& scaled_pressure)
     {
         mavsdk::Telemetry::ScaledPressure obj;
 
+
+            
         obj.timestamp_us = scaled_pressure.timestamp_us();
-
+            
+        
+            
         obj.absolute_pressure_hpa = scaled_pressure.absolute_pressure_hpa();
-
+            
+        
+            
         obj.differential_pressure_hpa = scaled_pressure.differential_pressure_hpa();
-
+            
+        
+            
         obj.temperature_deg = scaled_pressure.temperature_deg();
-
-        obj.differential_pressure_temperature_deg =
-            scaled_pressure.differential_pressure_temperature_deg();
-
+            
+        
+            
+        obj.differential_pressure_temperature_deg = scaled_pressure.differential_pressure_temperature_deg();
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::PositionNed>
-    translateToRpcPositionNed(const mavsdk::Telemetry::PositionNed& position_ned)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::PositionNed> translateToRpcPositionNed(const mavsdk::Telemetry::PositionNed &position_ned)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::PositionNed>();
 
+
+            
         rpc_obj->set_north_m(position_ned.north_m);
-
+            
+        
+            
         rpc_obj->set_east_m(position_ned.east_m);
-
+            
+        
+            
         rpc_obj->set_down_m(position_ned.down_m);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::PositionNed
-    translateFromRpcPositionNed(const rpc::telemetry::PositionNed& position_ned)
+    static mavsdk::Telemetry::PositionNed translateFromRpcPositionNed(const rpc::telemetry::PositionNed& position_ned)
     {
         mavsdk::Telemetry::PositionNed obj;
 
+
+            
         obj.north_m = position_ned.north_m();
-
+            
+        
+            
         obj.east_m = position_ned.east_m();
-
+            
+        
+            
         obj.down_m = position_ned.down_m();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::VelocityNed>
-    translateToRpcVelocityNed(const mavsdk::Telemetry::VelocityNed& velocity_ned)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::VelocityNed> translateToRpcVelocityNed(const mavsdk::Telemetry::VelocityNed &velocity_ned)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::VelocityNed>();
 
+
+            
         rpc_obj->set_north_m_s(velocity_ned.north_m_s);
-
+            
+        
+            
         rpc_obj->set_east_m_s(velocity_ned.east_m_s);
-
+            
+        
+            
         rpc_obj->set_down_m_s(velocity_ned.down_m_s);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::VelocityNed
-    translateFromRpcVelocityNed(const rpc::telemetry::VelocityNed& velocity_ned)
+    static mavsdk::Telemetry::VelocityNed translateFromRpcVelocityNed(const rpc::telemetry::VelocityNed& velocity_ned)
     {
         mavsdk::Telemetry::VelocityNed obj;
 
+
+            
         obj.north_m_s = velocity_ned.north_m_s();
-
+            
+        
+            
         obj.east_m_s = velocity_ned.east_m_s();
-
+            
+        
+            
         obj.down_m_s = velocity_ned.down_m_s();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::PositionVelocityNed> translateToRpcPositionVelocityNed(
-        const mavsdk::Telemetry::PositionVelocityNed& position_velocity_ned)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::PositionVelocityNed> translateToRpcPositionVelocityNed(const mavsdk::Telemetry::PositionVelocityNed &position_velocity_ned)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::PositionVelocityNed>();
 
-        rpc_obj->set_allocated_position(
-            translateToRpcPositionNed(position_velocity_ned.position).release());
 
-        rpc_obj->set_allocated_velocity(
-            translateToRpcVelocityNed(position_velocity_ned.velocity).release());
+            
+                
+        rpc_obj->set_allocated_position(translateToRpcPositionNed(position_velocity_ned.position).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_velocity(translateToRpcVelocityNed(position_velocity_ned.velocity).release());
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::PositionVelocityNed translateFromRpcPositionVelocityNed(
-        const rpc::telemetry::PositionVelocityNed& position_velocity_ned)
+    static mavsdk::Telemetry::PositionVelocityNed translateFromRpcPositionVelocityNed(const rpc::telemetry::PositionVelocityNed& position_velocity_ned)
     {
         mavsdk::Telemetry::PositionVelocityNed obj;
 
+
+            
         obj.position = translateFromRpcPositionNed(position_velocity_ned.position());
-
+            
+        
+            
         obj.velocity = translateFromRpcVelocityNed(position_velocity_ned.velocity());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::GroundTruth>
-    translateToRpcGroundTruth(const mavsdk::Telemetry::GroundTruth& ground_truth)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::GroundTruth> translateToRpcGroundTruth(const mavsdk::Telemetry::GroundTruth &ground_truth)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::GroundTruth>();
 
+
+            
         rpc_obj->set_latitude_deg(ground_truth.latitude_deg);
-
+            
+        
+            
         rpc_obj->set_longitude_deg(ground_truth.longitude_deg);
-
+            
+        
+            
         rpc_obj->set_absolute_altitude_m(ground_truth.absolute_altitude_m);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::GroundTruth
-    translateFromRpcGroundTruth(const rpc::telemetry::GroundTruth& ground_truth)
+    static mavsdk::Telemetry::GroundTruth translateFromRpcGroundTruth(const rpc::telemetry::GroundTruth& ground_truth)
     {
         mavsdk::Telemetry::GroundTruth obj;
 
+
+            
         obj.latitude_deg = ground_truth.latitude_deg();
-
+            
+        
+            
         obj.longitude_deg = ground_truth.longitude_deg();
-
+            
+        
+            
         obj.absolute_altitude_m = ground_truth.absolute_altitude_m();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::FixedwingMetrics>
-    translateToRpcFixedwingMetrics(const mavsdk::Telemetry::FixedwingMetrics& fixedwing_metrics)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::FixedwingMetrics> translateToRpcFixedwingMetrics(const mavsdk::Telemetry::FixedwingMetrics &fixedwing_metrics)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::FixedwingMetrics>();
 
+
+            
         rpc_obj->set_airspeed_m_s(fixedwing_metrics.airspeed_m_s);
-
+            
+        
+            
         rpc_obj->set_throttle_percentage(fixedwing_metrics.throttle_percentage);
-
+            
+        
+            
         rpc_obj->set_climb_rate_m_s(fixedwing_metrics.climb_rate_m_s);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::FixedwingMetrics
-    translateFromRpcFixedwingMetrics(const rpc::telemetry::FixedwingMetrics& fixedwing_metrics)
+    static mavsdk::Telemetry::FixedwingMetrics translateFromRpcFixedwingMetrics(const rpc::telemetry::FixedwingMetrics& fixedwing_metrics)
     {
         mavsdk::Telemetry::FixedwingMetrics obj;
 
+
+            
         obj.airspeed_m_s = fixedwing_metrics.airspeed_m_s();
-
+            
+        
+            
         obj.throttle_percentage = fixedwing_metrics.throttle_percentage();
-
+            
+        
+            
         obj.climb_rate_m_s = fixedwing_metrics.climb_rate_m_s();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::AccelerationFrd>
-    translateToRpcAccelerationFrd(const mavsdk::Telemetry::AccelerationFrd& acceleration_frd)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::AccelerationFrd> translateToRpcAccelerationFrd(const mavsdk::Telemetry::AccelerationFrd &acceleration_frd)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::AccelerationFrd>();
 
+
+            
         rpc_obj->set_forward_m_s2(acceleration_frd.forward_m_s2);
-
+            
+        
+            
         rpc_obj->set_right_m_s2(acceleration_frd.right_m_s2);
-
+            
+        
+            
         rpc_obj->set_down_m_s2(acceleration_frd.down_m_s2);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::AccelerationFrd
-    translateFromRpcAccelerationFrd(const rpc::telemetry::AccelerationFrd& acceleration_frd)
+    static mavsdk::Telemetry::AccelerationFrd translateFromRpcAccelerationFrd(const rpc::telemetry::AccelerationFrd& acceleration_frd)
     {
         mavsdk::Telemetry::AccelerationFrd obj;
 
+
+            
         obj.forward_m_s2 = acceleration_frd.forward_m_s2();
-
+            
+        
+            
         obj.right_m_s2 = acceleration_frd.right_m_s2();
-
+            
+        
+            
         obj.down_m_s2 = acceleration_frd.down_m_s2();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::AngularVelocityFrd> translateToRpcAngularVelocityFrd(
-        const mavsdk::Telemetry::AngularVelocityFrd& angular_velocity_frd)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::AngularVelocityFrd> translateToRpcAngularVelocityFrd(const mavsdk::Telemetry::AngularVelocityFrd &angular_velocity_frd)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::AngularVelocityFrd>();
 
+
+            
         rpc_obj->set_forward_rad_s(angular_velocity_frd.forward_rad_s);
-
+            
+        
+            
         rpc_obj->set_right_rad_s(angular_velocity_frd.right_rad_s);
-
+            
+        
+            
         rpc_obj->set_down_rad_s(angular_velocity_frd.down_rad_s);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::AngularVelocityFrd translateFromRpcAngularVelocityFrd(
-        const rpc::telemetry::AngularVelocityFrd& angular_velocity_frd)
+    static mavsdk::Telemetry::AngularVelocityFrd translateFromRpcAngularVelocityFrd(const rpc::telemetry::AngularVelocityFrd& angular_velocity_frd)
     {
         mavsdk::Telemetry::AngularVelocityFrd obj;
 
+
+            
         obj.forward_rad_s = angular_velocity_frd.forward_rad_s();
-
+            
+        
+            
         obj.right_rad_s = angular_velocity_frd.right_rad_s();
-
+            
+        
+            
         obj.down_rad_s = angular_velocity_frd.down_rad_s();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::MagneticFieldFrd>
-    translateToRpcMagneticFieldFrd(const mavsdk::Telemetry::MagneticFieldFrd& magnetic_field_frd)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::MagneticFieldFrd> translateToRpcMagneticFieldFrd(const mavsdk::Telemetry::MagneticFieldFrd &magnetic_field_frd)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::MagneticFieldFrd>();
 
+
+            
         rpc_obj->set_forward_gauss(magnetic_field_frd.forward_gauss);
-
+            
+        
+            
         rpc_obj->set_right_gauss(magnetic_field_frd.right_gauss);
-
+            
+        
+            
         rpc_obj->set_down_gauss(magnetic_field_frd.down_gauss);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::MagneticFieldFrd
-    translateFromRpcMagneticFieldFrd(const rpc::telemetry::MagneticFieldFrd& magnetic_field_frd)
+    static mavsdk::Telemetry::MagneticFieldFrd translateFromRpcMagneticFieldFrd(const rpc::telemetry::MagneticFieldFrd& magnetic_field_frd)
     {
         mavsdk::Telemetry::MagneticFieldFrd obj;
 
+
+            
         obj.forward_gauss = magnetic_field_frd.forward_gauss();
-
+            
+        
+            
         obj.right_gauss = magnetic_field_frd.right_gauss();
-
+            
+        
+            
         obj.down_gauss = magnetic_field_frd.down_gauss();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::Imu> translateToRpcImu(const mavsdk::Telemetry::Imu& imu)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Imu> translateToRpcImu(const mavsdk::Telemetry::Imu &imu)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Imu>();
 
-        rpc_obj->set_allocated_acceleration_frd(
-            translateToRpcAccelerationFrd(imu.acceleration_frd).release());
 
-        rpc_obj->set_allocated_angular_velocity_frd(
-            translateToRpcAngularVelocityFrd(imu.angular_velocity_frd).release());
-
-        rpc_obj->set_allocated_magnetic_field_frd(
-            translateToRpcMagneticFieldFrd(imu.magnetic_field_frd).release());
-
+            
+                
+        rpc_obj->set_allocated_acceleration_frd(translateToRpcAccelerationFrd(imu.acceleration_frd).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_angular_velocity_frd(translateToRpcAngularVelocityFrd(imu.angular_velocity_frd).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_magnetic_field_frd(translateToRpcMagneticFieldFrd(imu.magnetic_field_frd).release());
+                
+            
+        
+            
         rpc_obj->set_temperature_degc(imu.temperature_degc);
-
+            
+        
+            
         rpc_obj->set_timestamp_us(imu.timestamp_us);
+            
+        
 
         return rpc_obj;
     }
@@ -1355,89 +2346,148 @@ public:
     {
         mavsdk::Telemetry::Imu obj;
 
+
+            
         obj.acceleration_frd = translateFromRpcAccelerationFrd(imu.acceleration_frd());
-
+            
+        
+            
         obj.angular_velocity_frd = translateFromRpcAngularVelocityFrd(imu.angular_velocity_frd());
-
+            
+        
+            
         obj.magnetic_field_frd = translateFromRpcMagneticFieldFrd(imu.magnetic_field_frd());
-
+            
+        
+            
         obj.temperature_degc = imu.temperature_degc();
-
+            
+        
+            
         obj.timestamp_us = imu.timestamp_us();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::GpsGlobalOrigin>
-    translateToRpcGpsGlobalOrigin(const mavsdk::Telemetry::GpsGlobalOrigin& gps_global_origin)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::GpsGlobalOrigin> translateToRpcGpsGlobalOrigin(const mavsdk::Telemetry::GpsGlobalOrigin &gps_global_origin)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::GpsGlobalOrigin>();
 
+
+            
         rpc_obj->set_latitude_deg(gps_global_origin.latitude_deg);
-
+            
+        
+            
         rpc_obj->set_longitude_deg(gps_global_origin.longitude_deg);
-
+            
+        
+            
         rpc_obj->set_altitude_m(gps_global_origin.altitude_m);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::GpsGlobalOrigin
-    translateFromRpcGpsGlobalOrigin(const rpc::telemetry::GpsGlobalOrigin& gps_global_origin)
+    static mavsdk::Telemetry::GpsGlobalOrigin translateFromRpcGpsGlobalOrigin(const rpc::telemetry::GpsGlobalOrigin& gps_global_origin)
     {
         mavsdk::Telemetry::GpsGlobalOrigin obj;
 
+
+            
         obj.latitude_deg = gps_global_origin.latitude_deg();
-
+            
+        
+            
         obj.longitude_deg = gps_global_origin.longitude_deg();
-
+            
+        
+            
         obj.altitude_m = gps_global_origin.altitude_m();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::telemetry::Altitude>
-    translateToRpcAltitude(const mavsdk::Telemetry::Altitude& altitude)
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Altitude> translateToRpcAltitude(const mavsdk::Telemetry::Altitude &altitude)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Altitude>();
 
+
+            
         rpc_obj->set_altitude_monotonic_m(altitude.altitude_monotonic_m);
-
+            
+        
+            
         rpc_obj->set_altitude_amsl_m(altitude.altitude_amsl_m);
-
+            
+        
+            
         rpc_obj->set_altitude_local_m(altitude.altitude_local_m);
-
+            
+        
+            
         rpc_obj->set_altitude_relative_m(altitude.altitude_relative_m);
-
+            
+        
+            
         rpc_obj->set_altitude_terrain_m(altitude.altitude_terrain_m);
-
+            
+        
+            
         rpc_obj->set_bottom_clearance_m(altitude.bottom_clearance_m);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Telemetry::Altitude
-    translateFromRpcAltitude(const rpc::telemetry::Altitude& altitude)
+    static mavsdk::Telemetry::Altitude translateFromRpcAltitude(const rpc::telemetry::Altitude& altitude)
     {
         mavsdk::Telemetry::Altitude obj;
 
+
+            
         obj.altitude_monotonic_m = altitude.altitude_monotonic_m();
-
+            
+        
+            
         obj.altitude_amsl_m = altitude.altitude_amsl_m();
-
+            
+        
+            
         obj.altitude_local_m = altitude.altitude_local_m();
-
+            
+        
+            
         obj.altitude_relative_m = altitude.altitude_relative_m();
-
+            
+        
+            
         obj.altitude_terrain_m = altitude.altitude_terrain_m();
-
+            
+        
+            
         obj.bottom_clearance_m = altitude.bottom_clearance_m();
-
+            
+        
         return obj;
     }
 
-    static rpc::telemetry::TelemetryResult::Result
-    translateToRpcResult(const mavsdk::Telemetry::Result& result)
+
+
+
+    static rpc::telemetry::TelemetryResult::Result translateToRpcResult(const mavsdk::Telemetry::Result& result)
     {
         switch (result) {
             default:
@@ -1462,8 +2512,7 @@ public:
         }
     }
 
-    static mavsdk::Telemetry::Result
-    translateFromRpcResult(const rpc::telemetry::TelemetryResult::Result result)
+    static mavsdk::Telemetry::Result translateFromRpcResult(const rpc::telemetry::TelemetryResult::Result result)
     {
         switch (result) {
             default:
@@ -1488,12 +2537,13 @@ public:
         }
     }
 
-    grpc::Status SubscribePosition(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribePositionRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::PositionResponse>* writer) override
+
+
+
+    grpc::Status SubscribePosition(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribePositionRequest* /* request */, grpc::ServerWriter<rpc::telemetry::PositionResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1504,23 +2554,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::PositionHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_position(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Position position) {
-                    rpc::telemetry::PositionResponse rpc_response;
+        const mavsdk::Telemetry::PositionHandle handle = _lazy_plugin.maybe_plugin()->subscribe_position(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Position position) {
 
-                    rpc_response.set_allocated_position(translateToRpcPosition(position).release());
+            rpc::telemetry::PositionResponse rpc_response;
+        
+            rpc_response.set_allocated_position(translateToRpcPosition(position).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_position(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_position(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1529,12 +2582,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeHome(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeHomeRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::HomeResponse>* writer) override
+    grpc::Status SubscribeHome(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeHomeRequest* /* request */, grpc::ServerWriter<rpc::telemetry::HomeResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1546,21 +2597,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::HomeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_home(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const mavsdk::Telemetry::Position home) {
-                rpc::telemetry::HomeResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Position home) {
 
-                rpc_response.set_allocated_home(translateToRpcPosition(home).release());
+            rpc::telemetry::HomeResponse rpc_response;
+        
+            rpc_response.set_allocated_home(translateToRpcPosition(home).release());
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_home(handle);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_home(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1569,12 +2624,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeInAir(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeInAirRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::InAirResponse>* writer) override
+    grpc::Status SubscribeInAir(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeInAirRequest* /* request */, grpc::ServerWriter<rpc::telemetry::InAirResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1586,21 +2639,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::InAirHandle handle = _lazy_plugin.maybe_plugin()->subscribe_in_air(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const bool in_air) {
-                rpc::telemetry::InAirResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const bool in_air) {
 
-                rpc_response.set_is_in_air(in_air);
+            rpc::telemetry::InAirResponse rpc_response;
+        
+            rpc_response.set_is_in_air(in_air);
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_in_air(handle);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_in_air(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1609,12 +2666,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeLandedState(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::LandedStateResponse>* writer) override
+    grpc::Status SubscribeLandedState(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeLandedStateRequest* /* request */, grpc::ServerWriter<rpc::telemetry::LandedStateResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1625,23 +2680,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::LandedStateHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_landed_state(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::LandedState landed_state) {
-                    rpc::telemetry::LandedStateResponse rpc_response;
+        const mavsdk::Telemetry::LandedStateHandle handle = _lazy_plugin.maybe_plugin()->subscribe_landed_state(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::LandedState landed_state) {
 
-                    rpc_response.set_landed_state(translateToRpcLandedState(landed_state));
+            rpc::telemetry::LandedStateResponse rpc_response;
+        
+            rpc_response.set_landed_state(translateToRpcLandedState(landed_state));
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_landed_state(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_landed_state(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1650,12 +2708,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeArmed(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeArmedRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::ArmedResponse>* writer) override
+    grpc::Status SubscribeArmed(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeArmedRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ArmedResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1667,21 +2723,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::ArmedHandle handle = _lazy_plugin.maybe_plugin()->subscribe_armed(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const bool armed) {
-                rpc::telemetry::ArmedResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const bool armed) {
 
-                rpc_response.set_is_armed(armed);
+            rpc::telemetry::ArmedResponse rpc_response;
+        
+            rpc_response.set_is_armed(armed);
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_armed(handle);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_armed(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1690,12 +2750,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeVtolState(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeVtolStateRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::VtolStateResponse>* writer) override
+    grpc::Status SubscribeVtolState(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeVtolStateRequest* /* request */, grpc::ServerWriter<rpc::telemetry::VtolStateResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1706,23 +2764,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::VtolStateHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_vtol_state(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::VtolState vtol_state) {
-                    rpc::telemetry::VtolStateResponse rpc_response;
+        const mavsdk::Telemetry::VtolStateHandle handle = _lazy_plugin.maybe_plugin()->subscribe_vtol_state(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::VtolState vtol_state) {
 
-                    rpc_response.set_vtol_state(translateToRpcVtolState(vtol_state));
+            rpc::telemetry::VtolStateResponse rpc_response;
+        
+            rpc_response.set_vtol_state(translateToRpcVtolState(vtol_state));
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_vtol_state(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_vtol_state(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1731,12 +2792,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeAttitudeQuaternion(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::AttitudeQuaternionResponse>* writer) override
+    grpc::Status SubscribeAttitudeQuaternion(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /* request */, grpc::ServerWriter<rpc::telemetry::AttitudeQuaternionResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1747,24 +2806,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::AttitudeQuaternionHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_attitude_quaternion(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Quaternion attitude_quaternion) {
-                    rpc::telemetry::AttitudeQuaternionResponse rpc_response;
+        const mavsdk::Telemetry::AttitudeQuaternionHandle handle = _lazy_plugin.maybe_plugin()->subscribe_attitude_quaternion(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Quaternion attitude_quaternion) {
 
-                    rpc_response.set_allocated_attitude_quaternion(
-                        translateToRpcQuaternion(attitude_quaternion).release());
+            rpc::telemetry::AttitudeQuaternionResponse rpc_response;
+        
+            rpc_response.set_allocated_attitude_quaternion(translateToRpcQuaternion(attitude_quaternion).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude_quaternion(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_attitude_quaternion(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1773,12 +2834,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeAttitudeEuler(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::AttitudeEulerResponse>* writer) override
+    grpc::Status SubscribeAttitudeEuler(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /* request */, grpc::ServerWriter<rpc::telemetry::AttitudeEulerResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1789,24 +2848,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::AttitudeEulerHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_attitude_euler(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::EulerAngle attitude_euler) {
-                    rpc::telemetry::AttitudeEulerResponse rpc_response;
+        const mavsdk::Telemetry::AttitudeEulerHandle handle = _lazy_plugin.maybe_plugin()->subscribe_attitude_euler(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::EulerAngle attitude_euler) {
 
-                    rpc_response.set_allocated_attitude_euler(
-                        translateToRpcEulerAngle(attitude_euler).release());
+            rpc::telemetry::AttitudeEulerResponse rpc_response;
+        
+            rpc_response.set_allocated_attitude_euler(translateToRpcEulerAngle(attitude_euler).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude_euler(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_attitude_euler(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1815,12 +2876,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeAttitudeAngularVelocityBody(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override
+    grpc::Status SubscribeAttitudeAngularVelocityBody(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* /* request */, grpc::ServerWriter<rpc::telemetry::AttitudeAngularVelocityBodyResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1831,26 +2890,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_attitude_angular_velocity_body(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
-                    rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
+        const mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle handle = _lazy_plugin.maybe_plugin()->subscribe_attitude_angular_velocity_body(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::AngularVelocityBody attitude_angular_velocity_body) {
 
-                    rpc_response.set_allocated_attitude_angular_velocity_body(
-                        translateToRpcAngularVelocityBody(attitude_angular_velocity_body)
-                            .release());
+            rpc::telemetry::AttitudeAngularVelocityBodyResponse rpc_response;
+        
+            rpc_response.set_allocated_attitude_angular_velocity_body(translateToRpcAngularVelocityBody(attitude_angular_velocity_body).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude_angular_velocity_body(
-                            handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_attitude_angular_velocity_body(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1859,12 +2918,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCameraAttitudeQuaternion(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override
+    grpc::Status SubscribeCameraAttitudeQuaternion(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /* request */, grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1875,24 +2932,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::CameraAttitudeQuaternionHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_quaternion(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
-                    rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
+        const mavsdk::Telemetry::CameraAttitudeQuaternionHandle handle = _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_quaternion(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Quaternion camera_attitude_quaternion) {
 
-                    rpc_response.set_allocated_attitude_quaternion(
-                        translateToRpcQuaternion(camera_attitude_quaternion).release());
+            rpc::telemetry::CameraAttitudeQuaternionResponse rpc_response;
+        
+            rpc_response.set_allocated_attitude_quaternion(translateToRpcQuaternion(camera_attitude_quaternion).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_camera_attitude_quaternion(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_camera_attitude_quaternion(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1901,12 +2960,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCameraAttitudeEuler(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse>* writer) override
+    grpc::Status SubscribeCameraAttitudeEuler(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /* request */, grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1917,24 +2974,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::CameraAttitudeEulerHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_euler(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
-                    rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
+        const mavsdk::Telemetry::CameraAttitudeEulerHandle handle = _lazy_plugin.maybe_plugin()->subscribe_camera_attitude_euler(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::EulerAngle camera_attitude_euler) {
 
-                    rpc_response.set_allocated_attitude_euler(
-                        translateToRpcEulerAngle(camera_attitude_euler).release());
+            rpc::telemetry::CameraAttitudeEulerResponse rpc_response;
+        
+            rpc_response.set_allocated_attitude_euler(translateToRpcEulerAngle(camera_attitude_euler).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_camera_attitude_euler(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_camera_attitude_euler(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1943,12 +3002,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeVelocityNed(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::VelocityNedResponse>* writer) override
+    grpc::Status SubscribeVelocityNed(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeVelocityNedRequest* /* request */, grpc::ServerWriter<rpc::telemetry::VelocityNedResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1959,24 +3016,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::VelocityNedHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_velocity_ned(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::VelocityNed velocity_ned) {
-                    rpc::telemetry::VelocityNedResponse rpc_response;
+        const mavsdk::Telemetry::VelocityNedHandle handle = _lazy_plugin.maybe_plugin()->subscribe_velocity_ned(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::VelocityNed velocity_ned) {
 
-                    rpc_response.set_allocated_velocity_ned(
-                        translateToRpcVelocityNed(velocity_ned).release());
+            rpc::telemetry::VelocityNedResponse rpc_response;
+        
+            rpc_response.set_allocated_velocity_ned(translateToRpcVelocityNed(velocity_ned).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_velocity_ned(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_velocity_ned(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1985,12 +3044,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeGpsInfo(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::GpsInfoResponse>* writer) override
+    grpc::Status SubscribeGpsInfo(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /* request */, grpc::ServerWriter<rpc::telemetry::GpsInfoResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2001,23 +3058,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::GpsInfoHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_gps_info(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::GpsInfo gps_info) {
-                    rpc::telemetry::GpsInfoResponse rpc_response;
+        const mavsdk::Telemetry::GpsInfoHandle handle = _lazy_plugin.maybe_plugin()->subscribe_gps_info(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::GpsInfo gps_info) {
 
-                    rpc_response.set_allocated_gps_info(translateToRpcGpsInfo(gps_info).release());
+            rpc::telemetry::GpsInfoResponse rpc_response;
+        
+            rpc_response.set_allocated_gps_info(translateToRpcGpsInfo(gps_info).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_gps_info(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_gps_info(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2026,12 +3086,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeRawGps(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeRawGpsRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::RawGpsResponse>* writer) override
+    grpc::Status SubscribeRawGps(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeRawGpsRequest* /* request */, grpc::ServerWriter<rpc::telemetry::RawGpsResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2042,23 +3100,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::RawGpsHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_raw_gps(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::RawGps raw_gps) {
-                    rpc::telemetry::RawGpsResponse rpc_response;
+        const mavsdk::Telemetry::RawGpsHandle handle = _lazy_plugin.maybe_plugin()->subscribe_raw_gps(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::RawGps raw_gps) {
 
-                    rpc_response.set_allocated_raw_gps(translateToRpcRawGps(raw_gps).release());
+            rpc::telemetry::RawGpsResponse rpc_response;
+        
+            rpc_response.set_allocated_raw_gps(translateToRpcRawGps(raw_gps).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_raw_gps(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_raw_gps(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2067,12 +3128,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeBattery(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeBatteryRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::BatteryResponse>* writer) override
+    grpc::Status SubscribeBattery(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeBatteryRequest* /* request */, grpc::ServerWriter<rpc::telemetry::BatteryResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2083,23 +3142,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::BatteryHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_battery(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Battery battery) {
-                    rpc::telemetry::BatteryResponse rpc_response;
+        const mavsdk::Telemetry::BatteryHandle handle = _lazy_plugin.maybe_plugin()->subscribe_battery(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Battery battery) {
 
-                    rpc_response.set_allocated_battery(translateToRpcBattery(battery).release());
+            rpc::telemetry::BatteryResponse rpc_response;
+        
+            rpc_response.set_allocated_battery(translateToRpcBattery(battery).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_battery(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_battery(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2108,12 +3170,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeFlightMode(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::FlightModeResponse>* writer) override
+    grpc::Status SubscribeFlightMode(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /* request */, grpc::ServerWriter<rpc::telemetry::FlightModeResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2124,23 +3184,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::FlightModeHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_flight_mode(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::FlightMode flight_mode) {
-                    rpc::telemetry::FlightModeResponse rpc_response;
+        const mavsdk::Telemetry::FlightModeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_flight_mode(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::FlightMode flight_mode) {
 
-                    rpc_response.set_flight_mode(translateToRpcFlightMode(flight_mode));
+            rpc::telemetry::FlightModeResponse rpc_response;
+        
+            rpc_response.set_flight_mode(translateToRpcFlightMode(flight_mode));
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_flight_mode(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_flight_mode(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2149,12 +3212,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeHealth(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeHealthRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::HealthResponse>* writer) override
+    grpc::Status SubscribeHealth(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeHealthRequest* /* request */, grpc::ServerWriter<rpc::telemetry::HealthResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2165,23 +3226,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::HealthHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_health(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Health health) {
-                    rpc::telemetry::HealthResponse rpc_response;
+        const mavsdk::Telemetry::HealthHandle handle = _lazy_plugin.maybe_plugin()->subscribe_health(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Health health) {
 
-                    rpc_response.set_allocated_health(translateToRpcHealth(health).release());
+            rpc::telemetry::HealthResponse rpc_response;
+        
+            rpc_response.set_allocated_health(translateToRpcHealth(health).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_health(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_health(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2190,12 +3254,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeRcStatus(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::RcStatusResponse>* writer) override
+    grpc::Status SubscribeRcStatus(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /* request */, grpc::ServerWriter<rpc::telemetry::RcStatusResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2206,24 +3268,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::RcStatusHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_rc_status(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::RcStatus rc_status) {
-                    rpc::telemetry::RcStatusResponse rpc_response;
+        const mavsdk::Telemetry::RcStatusHandle handle = _lazy_plugin.maybe_plugin()->subscribe_rc_status(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::RcStatus rc_status) {
 
-                    rpc_response.set_allocated_rc_status(
-                        translateToRpcRcStatus(rc_status).release());
+            rpc::telemetry::RcStatusResponse rpc_response;
+        
+            rpc_response.set_allocated_rc_status(translateToRpcRcStatus(rc_status).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_rc_status(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_rc_status(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2232,12 +3296,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCellularStatus(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeCellularStatusRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::CellularStatusResponse>* writer) override
+    grpc::Status SubscribeCellularStatus(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeCellularStatusRequest* /* request */, grpc::ServerWriter<rpc::telemetry::CellularStatusResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2248,24 +3310,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::CellularStatusHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_cellular_status(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::CellularStatus cellular_status) {
-                    rpc::telemetry::CellularStatusResponse rpc_response;
+        const mavsdk::Telemetry::CellularStatusHandle handle = _lazy_plugin.maybe_plugin()->subscribe_cellular_status(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::CellularStatus cellular_status) {
 
-                    rpc_response.set_allocated_cellular_status(
-                        translateToRpcCellularStatus(cellular_status).release());
+            rpc::telemetry::CellularStatusResponse rpc_response;
+        
+            rpc_response.set_allocated_cellular_status(translateToRpcCellularStatus(cellular_status).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_cellular_status(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_cellular_status(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2274,12 +3338,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeModemInfo(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeModemInfoRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::ModemInfoResponse>* writer) override
+    grpc::Status SubscribeModemInfo(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeModemInfoRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ModemInfoResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2290,24 +3352,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::ModemInfoHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_modem_info(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::ModemInfo modem_info) {
-                    rpc::telemetry::ModemInfoResponse rpc_response;
+        const mavsdk::Telemetry::ModemInfoHandle handle = _lazy_plugin.maybe_plugin()->subscribe_modem_info(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::ModemInfo modem_info) {
 
-                    rpc_response.set_allocated_modem_info(
-                        translateToRpcModemInfo(modem_info).release());
+            rpc::telemetry::ModemInfoResponse rpc_response;
+        
+            rpc_response.set_allocated_modem_info(translateToRpcModemInfo(modem_info).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_modem_info(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_modem_info(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2316,12 +3380,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeStatusText(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::StatusTextResponse>* writer) override
+    grpc::Status SubscribeOnboardComputerStatus(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeOnboardComputerStatusRequest* /* request */, grpc::ServerWriter<rpc::telemetry::OnboardComputerStatusResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2332,24 +3394,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::StatusTextHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_status_text(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::StatusText status_text) {
-                    rpc::telemetry::StatusTextResponse rpc_response;
+        const mavsdk::Telemetry::OnboardComputerStatusHandle handle = _lazy_plugin.maybe_plugin()->subscribe_onboard_computer_status(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::OnboardComputerStatus onboard_computer_status) {
 
-                    rpc_response.set_allocated_status_text(
-                        translateToRpcStatusText(status_text).release());
+            rpc::telemetry::OnboardComputerStatusResponse rpc_response;
+        
+            rpc_response.set_allocated_onboard_computer_status(translateToRpcOnboardComputerStatus(onboard_computer_status).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_status_text(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_onboard_computer_status(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2358,12 +3422,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeActuatorControlTarget(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::ActuatorControlTargetResponse>* writer) override
+    grpc::Status SubscribeComponentInfoBasic(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeComponentInfoBasicRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ComponentInfoBasicResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2374,24 +3436,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::ActuatorControlTargetHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_actuator_control_target(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
-                    rpc::telemetry::ActuatorControlTargetResponse rpc_response;
+        const mavsdk::Telemetry::ComponentInfoBasicHandle handle = _lazy_plugin.maybe_plugin()->subscribe_component_info_basic(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::ComponentInfoBasic component_info_basic) {
 
-                    rpc_response.set_allocated_actuator_control_target(
-                        translateToRpcActuatorControlTarget(actuator_control_target).release());
+            rpc::telemetry::ComponentInfoBasicResponse rpc_response;
+        
+            rpc_response.set_allocated_component_info_basic(translateToRpcComponentInfoBasic(component_info_basic).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_actuator_control_target(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_component_info_basic(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2400,12 +3464,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeActuatorOutputStatus(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::ActuatorOutputStatusResponse>* writer) override
+    grpc::Status SubscribeStatusText(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /* request */, grpc::ServerWriter<rpc::telemetry::StatusTextResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2416,24 +3478,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::ActuatorOutputStatusHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_actuator_output_status(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
-                    rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
+        const mavsdk::Telemetry::StatusTextHandle handle = _lazy_plugin.maybe_plugin()->subscribe_status_text(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::StatusText status_text) {
 
-                    rpc_response.set_allocated_actuator_output_status(
-                        translateToRpcActuatorOutputStatus(actuator_output_status).release());
+            rpc::telemetry::StatusTextResponse rpc_response;
+        
+            rpc_response.set_allocated_status_text(translateToRpcStatusText(status_text).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_actuator_output_status(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_status_text(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2442,12 +3506,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeOdometry(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeOdometryRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::OdometryResponse>* writer) override
+    grpc::Status SubscribeActuatorControlTarget(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ActuatorControlTargetResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2458,23 +3520,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::OdometryHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_odometry(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Odometry odometry) {
-                    rpc::telemetry::OdometryResponse rpc_response;
+        const mavsdk::Telemetry::ActuatorControlTargetHandle handle = _lazy_plugin.maybe_plugin()->subscribe_actuator_control_target(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
 
-                    rpc_response.set_allocated_odometry(translateToRpcOdometry(odometry).release());
+            rpc::telemetry::ActuatorControlTargetResponse rpc_response;
+        
+            rpc_response.set_allocated_actuator_control_target(translateToRpcActuatorControlTarget(actuator_control_target).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_odometry(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_actuator_control_target(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2483,12 +3548,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribePositionVelocityNed(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::PositionVelocityNedResponse>* writer) override
+    grpc::Status SubscribeActuatorOutputStatus(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ActuatorOutputStatusResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2499,24 +3562,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::PositionVelocityNedHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_position_velocity_ned(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
-                    rpc::telemetry::PositionVelocityNedResponse rpc_response;
+        const mavsdk::Telemetry::ActuatorOutputStatusHandle handle = _lazy_plugin.maybe_plugin()->subscribe_actuator_output_status(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
 
-                    rpc_response.set_allocated_position_velocity_ned(
-                        translateToRpcPositionVelocityNed(position_velocity_ned).release());
+            rpc::telemetry::ActuatorOutputStatusResponse rpc_response;
+        
+            rpc_response.set_allocated_actuator_output_status(translateToRpcActuatorOutputStatus(actuator_output_status).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_position_velocity_ned(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_actuator_output_status(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2525,12 +3590,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeGroundTruth(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::GroundTruthResponse>* writer) override
+    grpc::Status SubscribeOdometry(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeOdometryRequest* /* request */, grpc::ServerWriter<rpc::telemetry::OdometryResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2541,24 +3604,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::GroundTruthHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_ground_truth(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::GroundTruth ground_truth) {
-                    rpc::telemetry::GroundTruthResponse rpc_response;
+        const mavsdk::Telemetry::OdometryHandle handle = _lazy_plugin.maybe_plugin()->subscribe_odometry(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Odometry odometry) {
 
-                    rpc_response.set_allocated_ground_truth(
-                        translateToRpcGroundTruth(ground_truth).release());
+            rpc::telemetry::OdometryResponse rpc_response;
+        
+            rpc_response.set_allocated_odometry(translateToRpcOdometry(odometry).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_ground_truth(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_odometry(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2567,12 +3632,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeFixedwingMetrics(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::FixedwingMetricsResponse>* writer) override
+    grpc::Status SubscribePositionVelocityNed(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest* /* request */, grpc::ServerWriter<rpc::telemetry::PositionVelocityNedResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2583,24 +3646,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::FixedwingMetricsHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_fixedwing_metrics(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
-                    rpc::telemetry::FixedwingMetricsResponse rpc_response;
+        const mavsdk::Telemetry::PositionVelocityNedHandle handle = _lazy_plugin.maybe_plugin()->subscribe_position_velocity_ned(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::PositionVelocityNed position_velocity_ned) {
 
-                    rpc_response.set_allocated_fixedwing_metrics(
-                        translateToRpcFixedwingMetrics(fixedwing_metrics).release());
+            rpc::telemetry::PositionVelocityNedResponse rpc_response;
+        
+            rpc_response.set_allocated_position_velocity_ned(translateToRpcPositionVelocityNed(position_velocity_ned).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_fixedwing_metrics(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_position_velocity_ned(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2609,12 +3674,94 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeImu(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeImuRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::ImuResponse>* writer) override
+    grpc::Status SubscribeGroundTruth(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeGroundTruthRequest* /* request */, grpc::ServerWriter<rpc::telemetry::GroundTruthResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::Telemetry::GroundTruthHandle handle = _lazy_plugin.maybe_plugin()->subscribe_ground_truth(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::GroundTruth ground_truth) {
+
+            rpc::telemetry::GroundTruthResponse rpc_response;
+        
+            rpc_response.set_allocated_ground_truth(translateToRpcGroundTruth(ground_truth).release());
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_ground_truth(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeFixedwingMetrics(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest* /* request */, grpc::ServerWriter<rpc::telemetry::FixedwingMetricsResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::Telemetry::FixedwingMetricsHandle handle = _lazy_plugin.maybe_plugin()->subscribe_fixedwing_metrics(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::FixedwingMetrics fixedwing_metrics) {
+
+            rpc::telemetry::FixedwingMetricsResponse rpc_response;
+        
+            rpc_response.set_allocated_fixedwing_metrics(translateToRpcFixedwingMetrics(fixedwing_metrics).release());
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_fixedwing_metrics(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeImu(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeImuRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ImuResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2626,21 +3773,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::ImuHandle handle = _lazy_plugin.maybe_plugin()->subscribe_imu(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const mavsdk::Telemetry::Imu imu) {
-                rpc::telemetry::ImuResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Imu imu) {
 
-                rpc_response.set_allocated_imu(translateToRpcImu(imu).release());
+            rpc::telemetry::ImuResponse rpc_response;
+        
+            rpc_response.set_allocated_imu(translateToRpcImu(imu).release());
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_imu(handle);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_imu(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2649,12 +3800,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeScaledImu(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeScaledImuRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::ScaledImuResponse>* writer) override
+    grpc::Status SubscribeScaledImu(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeScaledImuRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ScaledImuResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2665,23 +3814,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::ScaledImuHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_scaled_imu(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Imu scaled_imu) {
-                    rpc::telemetry::ScaledImuResponse rpc_response;
+        const mavsdk::Telemetry::ScaledImuHandle handle = _lazy_plugin.maybe_plugin()->subscribe_scaled_imu(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Imu scaled_imu) {
 
-                    rpc_response.set_allocated_imu(translateToRpcImu(scaled_imu).release());
+            rpc::telemetry::ScaledImuResponse rpc_response;
+        
+            rpc_response.set_allocated_imu(translateToRpcImu(scaled_imu).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_scaled_imu(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_scaled_imu(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2690,12 +3842,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeRawImu(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeRawImuRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::RawImuResponse>* writer) override
+    grpc::Status SubscribeRawImu(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeRawImuRequest* /* request */, grpc::ServerWriter<rpc::telemetry::RawImuResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2706,23 +3856,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::RawImuHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_raw_imu(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Imu raw_imu) {
-                    rpc::telemetry::RawImuResponse rpc_response;
+        const mavsdk::Telemetry::RawImuHandle handle = _lazy_plugin.maybe_plugin()->subscribe_raw_imu(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Imu raw_imu) {
 
-                    rpc_response.set_allocated_imu(translateToRpcImu(raw_imu).release());
+            rpc::telemetry::RawImuResponse rpc_response;
+        
+            rpc_response.set_allocated_imu(translateToRpcImu(raw_imu).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_raw_imu(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_raw_imu(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2731,12 +3884,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeHealthAllOk(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::HealthAllOkResponse>* writer) override
+    grpc::Status SubscribeHealthAllOk(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* /* request */, grpc::ServerWriter<rpc::telemetry::HealthAllOkResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2747,23 +3898,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::HealthAllOkHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_health_all_ok(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const bool health_all_ok) {
-                    rpc::telemetry::HealthAllOkResponse rpc_response;
+        const mavsdk::Telemetry::HealthAllOkHandle handle = _lazy_plugin.maybe_plugin()->subscribe_health_all_ok(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const bool health_all_ok) {
 
-                    rpc_response.set_is_health_all_ok(health_all_ok);
+            rpc::telemetry::HealthAllOkResponse rpc_response;
+        
+            rpc_response.set_is_health_all_ok(health_all_ok);
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_health_all_ok(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_health_all_ok(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2772,12 +3926,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeUnixEpochTime(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::UnixEpochTimeResponse>* writer) override
+    grpc::Status SubscribeUnixEpochTime(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest* /* request */, grpc::ServerWriter<rpc::telemetry::UnixEpochTimeResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2788,23 +3940,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::UnixEpochTimeHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_unix_epoch_time(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const uint64_t unix_epoch_time) {
-                    rpc::telemetry::UnixEpochTimeResponse rpc_response;
+        const mavsdk::Telemetry::UnixEpochTimeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_unix_epoch_time(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const uint64_t unix_epoch_time) {
 
-                    rpc_response.set_time_us(unix_epoch_time);
+            rpc::telemetry::UnixEpochTimeResponse rpc_response;
+        
+            rpc_response.set_time_us(unix_epoch_time);
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_unix_epoch_time(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_unix_epoch_time(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2813,12 +3968,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeDistanceSensor(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::DistanceSensorResponse>* writer) override
+    grpc::Status SubscribeDistanceSensor(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest* /* request */, grpc::ServerWriter<rpc::telemetry::DistanceSensorResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2829,24 +3982,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::DistanceSensorHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_distance_sensor(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::DistanceSensor distance_sensor) {
-                    rpc::telemetry::DistanceSensorResponse rpc_response;
+        const mavsdk::Telemetry::DistanceSensorHandle handle = _lazy_plugin.maybe_plugin()->subscribe_distance_sensor(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::DistanceSensor distance_sensor) {
 
-                    rpc_response.set_allocated_distance_sensor(
-                        translateToRpcDistanceSensor(distance_sensor).release());
+            rpc::telemetry::DistanceSensorResponse rpc_response;
+        
+            rpc_response.set_allocated_distance_sensor(translateToRpcDistanceSensor(distance_sensor).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_distance_sensor(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_distance_sensor(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2855,12 +4010,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeScaledPressure(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::ScaledPressureResponse>* writer) override
+    grpc::Status SubscribeScaledPressure(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeScaledPressureRequest* /* request */, grpc::ServerWriter<rpc::telemetry::ScaledPressureResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2871,24 +4024,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::ScaledPressureHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_scaled_pressure(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::ScaledPressure scaled_pressure) {
-                    rpc::telemetry::ScaledPressureResponse rpc_response;
+        const mavsdk::Telemetry::ScaledPressureHandle handle = _lazy_plugin.maybe_plugin()->subscribe_scaled_pressure(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::ScaledPressure scaled_pressure) {
 
-                    rpc_response.set_allocated_scaled_pressure(
-                        translateToRpcScaledPressure(scaled_pressure).release());
+            rpc::telemetry::ScaledPressureResponse rpc_response;
+        
+            rpc_response.set_allocated_scaled_pressure(translateToRpcScaledPressure(scaled_pressure).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_scaled_pressure(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_scaled_pressure(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2897,12 +4052,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeHeading(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeHeadingRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::HeadingResponse>* writer) override
+    grpc::Status SubscribeHeading(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeHeadingRequest* /* request */, grpc::ServerWriter<rpc::telemetry::HeadingResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2913,24 +4066,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::HeadingHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_heading(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Heading heading) {
-                    rpc::telemetry::HeadingResponse rpc_response;
+        const mavsdk::Telemetry::HeadingHandle handle = _lazy_plugin.maybe_plugin()->subscribe_heading(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Heading heading) {
 
-                    rpc_response.set_allocated_heading_deg(
-                        translateToRpcHeading(heading).release());
+            rpc::telemetry::HeadingResponse rpc_response;
+        
+            rpc_response.set_allocated_heading_deg(translateToRpcHeading(heading).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_heading(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_heading(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2939,12 +4094,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeAltitude(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::telemetry::SubscribeAltitudeRequest* /* request */,
-        grpc::ServerWriter<rpc::telemetry::AltitudeResponse>* writer) override
+    grpc::Status SubscribeAltitude(grpc::ServerContext* /* context */, const mavsdk::rpc::telemetry::SubscribeAltitudeRequest* /* request */, grpc::ServerWriter<rpc::telemetry::AltitudeResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -2955,23 +4108,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Telemetry::AltitudeHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_altitude(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Telemetry::Altitude altitude) {
-                    rpc::telemetry::AltitudeResponse rpc_response;
+        const mavsdk::Telemetry::AltitudeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_altitude(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Altitude altitude) {
 
-                    rpc_response.set_allocated_altitude(translateToRpcAltitude(altitude).release());
+            rpc::telemetry::AltitudeResponse rpc_response;
+        
+            rpc_response.set_allocated_altitude(translateToRpcAltitude(altitude).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_altitude(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_altitude(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -2986,11 +4142,12 @@ public:
         rpc::telemetry::SetRatePositionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -2998,12 +4155,16 @@ public:
             LogWarn() << "SetRatePosition sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_position(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3014,11 +4175,12 @@ public:
         rpc::telemetry::SetRateHomeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3026,12 +4188,16 @@ public:
             LogWarn() << "SetRateHome sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_home(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3042,11 +4208,12 @@ public:
         rpc::telemetry::SetRateInAirResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3054,12 +4221,16 @@ public:
             LogWarn() << "SetRateInAir sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_in_air(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3070,11 +4241,12 @@ public:
         rpc::telemetry::SetRateLandedStateResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3082,12 +4254,16 @@ public:
             LogWarn() << "SetRateLandedState sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_landed_state(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3098,11 +4274,12 @@ public:
         rpc::telemetry::SetRateVtolStateResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3110,12 +4287,16 @@ public:
             LogWarn() << "SetRateVtolState sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_vtol_state(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3126,11 +4307,12 @@ public:
         rpc::telemetry::SetRateAttitudeQuaternionResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3138,12 +4320,16 @@ public:
             LogWarn() << "SetRateAttitudeQuaternion sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_attitude_quaternion(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3154,11 +4340,12 @@ public:
         rpc::telemetry::SetRateAttitudeEulerResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3166,12 +4353,16 @@ public:
             LogWarn() << "SetRateAttitudeEuler sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_attitude_euler(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3182,11 +4373,12 @@ public:
         rpc::telemetry::SetRateCameraAttitudeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3194,12 +4386,16 @@ public:
             LogWarn() << "SetRateCameraAttitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_camera_attitude(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3210,11 +4406,12 @@ public:
         rpc::telemetry::SetRateVelocityNedResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3222,12 +4419,16 @@ public:
             LogWarn() << "SetRateVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_velocity_ned(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3238,11 +4439,12 @@ public:
         rpc::telemetry::SetRateGpsInfoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3250,12 +4452,16 @@ public:
             LogWarn() << "SetRateGpsInfo sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_gps_info(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3266,11 +4472,12 @@ public:
         rpc::telemetry::SetRateBatteryResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3278,12 +4485,16 @@ public:
             LogWarn() << "SetRateBattery sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_battery(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3294,11 +4505,12 @@ public:
         rpc::telemetry::SetRateRcStatusResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3306,12 +4518,16 @@ public:
             LogWarn() << "SetRateRcStatus sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_rc_status(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3322,11 +4538,12 @@ public:
         rpc::telemetry::SetRateCellularStatusResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3334,12 +4551,16 @@ public:
             LogWarn() << "SetRateCellularStatus sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_cellular_status(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3350,11 +4571,12 @@ public:
         rpc::telemetry::SetRateModemInfoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3362,12 +4584,82 @@ public:
             LogWarn() << "SetRateModemInfo sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_modem_info(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRateOnboardComputerStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateOnboardComputerStatusRequest* request,
+        rpc::telemetry::SetRateOnboardComputerStatusResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetRateOnboardComputerStatus sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_onboard_computer_status(request->rate_hz());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRateComponentInfoBasic(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateComponentInfoBasicRequest* request,
+        rpc::telemetry::SetRateComponentInfoBasicResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetRateComponentInfoBasic sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_component_info_basic(request->rate_hz());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
 
         return grpc::Status::OK;
     }
@@ -3378,11 +4670,12 @@ public:
         rpc::telemetry::SetRateActuatorControlTargetResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3390,13 +4683,16 @@ public:
             LogWarn() << "SetRateActuatorControlTarget sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_actuator_control_target(request->rate_hz());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->set_rate_actuator_control_target(request->rate_hz());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3407,11 +4703,12 @@ public:
         rpc::telemetry::SetRateActuatorOutputStatusResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3419,13 +4716,16 @@ public:
             LogWarn() << "SetRateActuatorOutputStatus sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_actuator_output_status(request->rate_hz());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->set_rate_actuator_output_status(request->rate_hz());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3436,11 +4736,12 @@ public:
         rpc::telemetry::SetRateOdometryResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3448,12 +4749,16 @@ public:
             LogWarn() << "SetRateOdometry sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_odometry(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3464,11 +4769,12 @@ public:
         rpc::telemetry::SetRatePositionVelocityNedResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3476,13 +4782,16 @@ public:
             LogWarn() << "SetRatePositionVelocityNed sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_position_velocity_ned(request->rate_hz());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->set_rate_position_velocity_ned(request->rate_hz());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3493,11 +4802,12 @@ public:
         rpc::telemetry::SetRateGroundTruthResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3505,12 +4815,16 @@ public:
             LogWarn() << "SetRateGroundTruth sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_ground_truth(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3521,11 +4835,12 @@ public:
         rpc::telemetry::SetRateFixedwingMetricsResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3533,12 +4848,16 @@ public:
             LogWarn() << "SetRateFixedwingMetrics sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_fixedwing_metrics(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3549,11 +4868,12 @@ public:
         rpc::telemetry::SetRateImuResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3561,12 +4881,16 @@ public:
             LogWarn() << "SetRateImu sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_imu(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3577,11 +4901,12 @@ public:
         rpc::telemetry::SetRateScaledImuResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3589,12 +4914,16 @@ public:
             LogWarn() << "SetRateScaledImu sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_scaled_imu(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3605,11 +4934,12 @@ public:
         rpc::telemetry::SetRateRawImuResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3617,12 +4947,16 @@ public:
             LogWarn() << "SetRateRawImu sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_raw_imu(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3633,11 +4967,12 @@ public:
         rpc::telemetry::SetRateUnixEpochTimeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3645,12 +4980,16 @@ public:
             LogWarn() << "SetRateUnixEpochTime sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_unix_epoch_time(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3661,11 +5000,12 @@ public:
         rpc::telemetry::SetRateDistanceSensorResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3673,12 +5013,16 @@ public:
             LogWarn() << "SetRateDistanceSensor sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_distance_sensor(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3689,11 +5033,12 @@ public:
         rpc::telemetry::SetRateAltitudeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -3701,12 +5046,16 @@ public:
             LogWarn() << "SetRateAltitude sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_rate_altitude(request->rate_hz());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -3717,28 +5066,32 @@ public:
         rpc::telemetry::GetGpsGlobalOriginResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Telemetry::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->get_gps_global_origin();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
-            response->set_allocated_gps_global_origin(
-                translateToRpcGpsGlobalOrigin(result.second).release());
+            
+            response->set_allocated_gps_global_origin(translateToRpcGpsGlobalOrigin(result.second).release());
+            
         }
+
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -3748,8 +5101,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -3760,10 +5112,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -3772,10 +5122,11 @@ private:
         }
     }
 
+
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

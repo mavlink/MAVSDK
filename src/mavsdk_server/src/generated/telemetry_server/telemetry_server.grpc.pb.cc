@@ -32,6 +32,8 @@ static const char* TelemetryServerService_method_names[] = {
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishBattery",
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishCellularStatus",
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishModemInfo",
+  "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishOnboardComputerStatus",
+  "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishComponentInfoBasic",
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishStatusText",
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishOdometry",
   "/mavsdk.rpc.telemetry_server.TelemetryServerService/PublishPositionVelocityNed",
@@ -57,14 +59,16 @@ TelemetryServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterfa
   , rpcmethod_PublishBattery_(TelemetryServerService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_PublishCellularStatus_(TelemetryServerService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_PublishModemInfo_(TelemetryServerService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishStatusText_(TelemetryServerService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishOdometry_(TelemetryServerService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishPositionVelocityNed_(TelemetryServerService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishGroundTruth_(TelemetryServerService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishImu_(TelemetryServerService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishScaledImu_(TelemetryServerService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishRawImu_(TelemetryServerService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_PublishUnixEpochTime_(TelemetryServerService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishOnboardComputerStatus_(TelemetryServerService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishComponentInfoBasic_(TelemetryServerService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishStatusText_(TelemetryServerService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishOdometry_(TelemetryServerService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishPositionVelocityNed_(TelemetryServerService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishGroundTruth_(TelemetryServerService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishImu_(TelemetryServerService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishScaledImu_(TelemetryServerService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishRawImu_(TelemetryServerService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PublishUnixEpochTime_(TelemetryServerService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status TelemetryServerService::Stub::PublishPosition(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishPositionRequest& request, ::mavsdk::rpc::telemetry_server::PublishPositionResponse* response) {
@@ -247,6 +251,52 @@ void TelemetryServerService::Stub::async::PublishModemInfo(::grpc::ClientContext
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishModemInfoResponse>* TelemetryServerService::Stub::AsyncPublishModemInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishModemInfoRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncPublishModemInfoRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status TelemetryServerService::Stub::PublishOnboardComputerStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest& request, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PublishOnboardComputerStatus_, context, request, response);
+}
+
+void TelemetryServerService::Stub::async::PublishOnboardComputerStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest* request, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishOnboardComputerStatus_, context, request, response, std::move(f));
+}
+
+void TelemetryServerService::Stub::async::PublishOnboardComputerStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest* request, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishOnboardComputerStatus_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse>* TelemetryServerService::Stub::PrepareAsyncPublishOnboardComputerStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PublishOnboardComputerStatus_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse>* TelemetryServerService::Stub::AsyncPublishOnboardComputerStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncPublishOnboardComputerStatusRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status TelemetryServerService::Stub::PublishComponentInfoBasic(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest& request, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PublishComponentInfoBasic_, context, request, response);
+}
+
+void TelemetryServerService::Stub::async::PublishComponentInfoBasic(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest* request, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishComponentInfoBasic_, context, request, response, std::move(f));
+}
+
+void TelemetryServerService::Stub::async::PublishComponentInfoBasic(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest* request, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PublishComponentInfoBasic_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse>* TelemetryServerService::Stub::PrepareAsyncPublishComponentInfoBasicRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PublishComponentInfoBasic_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse>* TelemetryServerService::Stub::AsyncPublishComponentInfoBasicRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncPublishComponentInfoBasicRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -519,6 +569,26 @@ TelemetryServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TelemetryServerService_method_names[8],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](TelemetryServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest* req,
+             ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse* resp) {
+               return service->PublishOnboardComputerStatus(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TelemetryServerService_method_names[9],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](TelemetryServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest* req,
+             ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse* resp) {
+               return service->PublishComponentInfoBasic(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TelemetryServerService_method_names[10],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishStatusTextRequest, ::mavsdk::rpc::telemetry_server::PublishStatusTextResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -527,7 +597,7 @@ TelemetryServerService::Service::Service() {
                return service->PublishStatusText(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryServerService_method_names[9],
+      TelemetryServerService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishOdometryRequest, ::mavsdk::rpc::telemetry_server::PublishOdometryResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
@@ -537,7 +607,7 @@ TelemetryServerService::Service::Service() {
                return service->PublishOdometry(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryServerService_method_names[10],
+      TelemetryServerService_method_names[12],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedRequest, ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
@@ -547,7 +617,7 @@ TelemetryServerService::Service::Service() {
                return service->PublishPositionVelocityNed(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryServerService_method_names[11],
+      TelemetryServerService_method_names[13],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest, ::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
@@ -557,7 +627,7 @@ TelemetryServerService::Service::Service() {
                return service->PublishGroundTruth(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryServerService_method_names[12],
+      TelemetryServerService_method_names[14],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishImuRequest, ::mavsdk::rpc::telemetry_server::PublishImuResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
@@ -567,7 +637,7 @@ TelemetryServerService::Service::Service() {
                return service->PublishImu(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryServerService_method_names[13],
+      TelemetryServerService_method_names[15],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishScaledImuRequest, ::mavsdk::rpc::telemetry_server::PublishScaledImuResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
@@ -577,7 +647,7 @@ TelemetryServerService::Service::Service() {
                return service->PublishScaledImu(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryServerService_method_names[14],
+      TelemetryServerService_method_names[16],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishRawImuRequest, ::mavsdk::rpc::telemetry_server::PublishRawImuResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
@@ -587,7 +657,7 @@ TelemetryServerService::Service::Service() {
                return service->PublishRawImu(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      TelemetryServerService_method_names[15],
+      TelemetryServerService_method_names[17],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryServerService::Service, ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest, ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryServerService::Service* service,
@@ -651,6 +721,20 @@ TelemetryServerService::Service::~Service() {
 }
 
 ::grpc::Status TelemetryServerService::Service::PublishModemInfo(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishModemInfoRequest* request, ::mavsdk::rpc::telemetry_server::PublishModemInfoResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TelemetryServerService::Service::PublishOnboardComputerStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusRequest* request, ::mavsdk::rpc::telemetry_server::PublishOnboardComputerStatusResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TelemetryServerService::Service::PublishComponentInfoBasic(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicRequest* request, ::mavsdk::rpc::telemetry_server::PublishComponentInfoBasicResponse* response) {
   (void) context;
   (void) request;
   (void) response;

@@ -21,11 +21,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename Tune = Tune, typename LazyPlugin = LazyPlugin<Tune>>
 
 class TuneServiceImpl final : public rpc::tune::TuneService::Service {
 public:
+
     TuneServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Tune::Result& result) const
@@ -41,8 +45,8 @@ public:
         response->set_allocated_tune_result(rpc_tune_result);
     }
 
-    static rpc::tune::SongElement
-    translateToRpcSongElement(const mavsdk::Tune::SongElement& song_element)
+
+    static rpc::tune::SongElement translateToRpcSongElement(const mavsdk::Tune::SongElement& song_element)
     {
         switch (song_element) {
             default:
@@ -93,8 +97,7 @@ public:
         }
     }
 
-    static mavsdk::Tune::SongElement
-    translateFromRpcSongElement(const rpc::tune::SongElement song_element)
+    static mavsdk::Tune::SongElement translateFromRpcSongElement(const rpc::tune::SongElement song_element)
     {
         switch (song_element) {
             default:
@@ -145,34 +148,49 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::tune::TuneDescription>
-    translateToRpcTuneDescription(const mavsdk::Tune::TuneDescription& tune_description)
+
+
+    static std::unique_ptr<rpc::tune::TuneDescription> translateToRpcTuneDescription(const mavsdk::Tune::TuneDescription &tune_description)
     {
         auto rpc_obj = std::make_unique<rpc::tune::TuneDescription>();
 
+
+            
+                
         for (const auto& elem : tune_description.song_elements) {
             rpc_obj->add_song_elements(translateToRpcSongElement(elem));
         }
-
+                
+            
+        
+            
         rpc_obj->set_tempo(tune_description.tempo);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Tune::TuneDescription
-    translateFromRpcTuneDescription(const rpc::tune::TuneDescription& tune_description)
+    static mavsdk::Tune::TuneDescription translateFromRpcTuneDescription(const rpc::tune::TuneDescription& tune_description)
     {
         mavsdk::Tune::TuneDescription obj;
 
-        for (const auto& elem : tune_description.song_elements()) {
-            obj.song_elements.push_back(
-                translateFromRpcSongElement(static_cast<mavsdk::rpc::tune::SongElement>(elem)));
-        }
 
+            
+                for (const auto& elem : tune_description.song_elements()) {
+                    obj.song_elements.push_back(translateFromRpcSongElement(static_cast<mavsdk::rpc::tune::SongElement>(elem)));
+                }
+            
+        
+            
         obj.tempo = tune_description.tempo();
-
+            
+        
         return obj;
     }
+
+
+
 
     static rpc::tune::TuneResult::Result translateToRpcResult(const mavsdk::Tune::Result& result)
     {
@@ -216,17 +234,21 @@ public:
         }
     }
 
+
+
+
     grpc::Status PlayTune(
         grpc::ServerContext* /* context */,
         const rpc::tune::PlayTuneRequest* request,
         rpc::tune::PlayTuneResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Tune::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -234,19 +256,22 @@ public:
             LogWarn() << "PlayTune sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->play_tune(translateFromRpcTuneDescription(request->tune_description()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->play_tune(
-            translateFromRpcTuneDescription(request->tune_description()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -256,8 +281,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -268,10 +292,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -280,10 +302,11 @@ private:
         }
     }
 
+
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server
