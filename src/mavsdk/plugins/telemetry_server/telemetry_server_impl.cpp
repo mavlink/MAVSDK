@@ -232,6 +232,7 @@ TelemetryServerImpl::publish_modem_info(TelemetryServer::ModemInfo modem_info)
     mavlink_message_t msg;
 
     modem_info.modem_id.resize(sizeof(mavlink_cellular_modem_information_t::modem_id));
+    modem_info.iccid.resize(sizeof(mavlink_cellular_modem_information_t::iccid));
     modem_info.firmware_version.resize(sizeof(mavlink_cellular_modem_information_t::firmware));
     modem_info.modem_model_name.resize(sizeof(mavlink_cellular_modem_information_t::modem_model));
 
@@ -241,13 +242,82 @@ TelemetryServerImpl::publish_modem_info(TelemetryServer::ModemInfo modem_info)
         &msg,
         static_cast<uint8_t>(modem_info.instance_number),
         modem_info.imei,
-        modem_info.iccid,
         modem_info.imsi,
         modem_info.modem_id.data(),
+        modem_info.iccid.data(),
         modem_info.firmware_version.data(),
         modem_info.modem_model_name.data());
 
     add_msg_cache(MAVLINK_MSG_ID_CELLULAR_MODEM_INFORMATION, msg);
+
+    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
+                                                       TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result
+TelemetryServerImpl::publish_onboard_computer_status(TelemetryServer::OnboardComputerStatus
+                                                     onboard_computer_status)
+{
+    mavlink_message_t msg;
+
+    onboard_computer_status.cpu_cores.resize(sizeof(mavlink_onboard_computer_status_t::cpu_cores));
+
+    mavlink_msg_onboard_computer_status_pack(
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
+        &msg,
+        onboard_computer_status.time_usec,
+        onboard_computer_status.uptime,
+        onboard_computer_status.type,
+        reinterpret_cast<const uint8_t*>(onboard_computer_status.cpu_cores.data()),
+        reinterpret_cast<const uint8_t*>(onboard_computer_status.cpu_combined.data()),
+        reinterpret_cast<const uint8_t*>(onboard_computer_status.gpu_cores.data()),
+        reinterpret_cast<const uint8_t*>(onboard_computer_status.gpu_combined.data()),
+        onboard_computer_status.temperature_board,
+        reinterpret_cast<const int8_t*>(onboard_computer_status.temperature_core.data()),
+        reinterpret_cast<const int16_t*>(onboard_computer_status.fan_speed.data()),
+        onboard_computer_status.ram_usage,
+        onboard_computer_status.ram_total,
+        onboard_computer_status.storage_type.data(),
+        onboard_computer_status.storage_usage.data(),
+        onboard_computer_status.storage_total.data(),
+        onboard_computer_status.link_type.data(),
+        onboard_computer_status.link_tx_rate.data(),
+        onboard_computer_status.link_rx_rate.data(),
+        onboard_computer_status.link_tx_max.data(),
+        onboard_computer_status.link_rx_max.data());
+
+    add_msg_cache(MAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS, msg);
+
+    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
+                                                       TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result
+TelemetryServerImpl::publish_component_info_basic(TelemetryServer::ComponentInfoBasic
+                                                  component_info_basic)
+{
+    mavlink_message_t msg;
+
+    component_info_basic.vendor_name.resize(sizeof(mavlink_component_information_basic_t::vendor_name));
+    component_info_basic.model_name.resize(sizeof(mavlink_component_information_basic_t::model_name));
+    component_info_basic.software_version.resize(sizeof(mavlink_component_information_basic_t::software_version));
+    component_info_basic.hardware_version.resize(sizeof(mavlink_component_information_basic_t::hardware_version));
+    component_info_basic.serial_number.resize(sizeof(mavlink_component_information_basic_t::serial_number));
+
+    mavlink_msg_component_information_basic_pack(
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
+        &msg,
+        component_info_basic.time_boot_ms,
+        component_info_basic.capabilities,
+        component_info_basic.vendor_name.data(),
+        component_info_basic.model_name.data(),
+        component_info_basic.software_version.data(),
+        component_info_basic.hardware_version.data(),
+        component_info_basic.serial_number.data());
+
+    add_msg_cache(MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC, msg);
 
     return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
                                                        TelemetryServer::Result::Unsupported;

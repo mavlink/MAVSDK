@@ -46,6 +46,8 @@ public:
     Telemetry::Result set_rate_rc_status(double rate_hz);
     Telemetry::Result set_rate_cellular_status(double rate_hz);
     Telemetry::Result set_rate_modem_info(double rate_hz);
+    Telemetry::Result set_rate_onboard_computer_status(double rate_hz);
+    Telemetry::Result set_rate_component_info_basic(double rate_hz);
     Telemetry::Result set_rate_actuator_control_target(double rate_hz);
     Telemetry::Result set_rate_actuator_output_status(double rate_hz);
     Telemetry::Result set_rate_odometry(double rate_hz);
@@ -74,6 +76,8 @@ public:
     void set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_cellular_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_modem_info_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_onboard_computer_status_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_component_info_basic_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_actuator_control_target_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_actuator_output_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -113,6 +117,8 @@ public:
     Telemetry::RcStatus rc_status() const;
     Telemetry::CellularStatus cellular_status() const;
     Telemetry::ModemInfo modem_info() const;
+    Telemetry::OnboardComputerStatus onboard_computer_status() const;
+    Telemetry::ComponentInfoBasic component_info_basic() const;
     Telemetry::ActuatorControlTarget actuator_control_target() const;
     Telemetry::ActuatorOutputStatus actuator_output_status() const;
     Telemetry::Odometry odometry() const;
@@ -193,6 +199,10 @@ public:
     void unsubscribe_cellular_status(Telemetry::CellularStatusHandle handle);
     Telemetry::ModemInfoHandle subscribe_modem_info(const Telemetry::ModemInfoCallback& callback);
     void unsubscribe_modem_info(Telemetry::ModemInfoHandle handle);
+    Telemetry::OnboardComputerStatusHandle subscribe_onboard_computer_status(const Telemetry::OnboardComputerStatusCallback& callback);
+    void unsubscribe_onboard_computer_status(Telemetry::OnboardComputerStatusHandle handle);
+    Telemetry::ComponentInfoBasicHandle subscribe_component_info_basic(const Telemetry::ComponentInfoBasicCallback& callback);
+    void unsubscribe_component_info_basic(Telemetry::ComponentInfoBasicHandle handle);
     Telemetry::UnixEpochTimeHandle
     subscribe_unix_epoch_time(const Telemetry::UnixEpochTimeCallback& callback);
     void unsubscribe_unix_epoch_time(Telemetry::UnixEpochTimeHandle handle);
@@ -241,6 +251,8 @@ private:
     void set_battery(Telemetry::Battery battery);
     void set_cellular_status(Telemetry::CellularStatus cellular_status);
     void set_modem_info(Telemetry::ModemInfo modem_info);
+    void set_onboard_computer_status(Telemetry::OnboardComputerStatus onboard_computer_status);
+    void set_component_info_basic(Telemetry::ComponentInfoBasic component_info_basic);
     void set_health_local_position(bool ok);
     void set_health_global_position(bool ok);
     void set_health_home_position(bool ok);
@@ -249,12 +261,6 @@ private:
     void set_health_magnetometer_calibration(bool ok);
     void set_health_armable(bool ok);
     void set_rc_status(std::optional<bool> available, std::optional<float> signal_strength_percent);
-    // TODO FIX ME?
-    void set_cellular_status(
-        std::optional<bool> available, std::optional<float> signal_strength_percent);
-    // TODO FIX ME?
-    void
-    set_modem_info(std::optional<bool> available, std::optional<float> signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
     void set_actuator_control_target(uint8_t group, const std::vector<float>& controls);
     void set_actuator_output_status(uint32_t active, const std::vector<float>& actuators);
@@ -282,6 +288,8 @@ private:
     void process_battery_status(const mavlink_message_t& message);
     void process_cellular_status(const mavlink_message_t& message);
     void process_modem_info(const mavlink_message_t& message);
+    void process_onboard_computer_status(const mavlink_message_t& message);
+    void process_component_info_basic(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
     void process_unix_epoch_time(const mavlink_message_t& message);
@@ -409,6 +417,12 @@ private:
     mutable std::mutex _modem_info_mutex{};
     Telemetry::ModemInfo _modem_info{};
 
+    mutable std::mutex _onboard_computer_status_mutex{};
+    Telemetry::OnboardComputerStatus _onboard_computer_status{};
+
+    mutable std::mutex _component_info_basic_mutex{};
+    Telemetry::ComponentInfoBasic _component_info_basic{};
+
     mutable std::mutex _unix_epoch_time_mutex{};
     uint64_t _unix_epoch_time_us{};
 
@@ -463,6 +477,8 @@ private:
     CallbackList<Telemetry::RcStatus> _rc_status_subscriptions{};
     CallbackList<Telemetry::CellularStatus> _cellular_status_subscriptions{};
     CallbackList<Telemetry::ModemInfo> _modem_info_subscriptions{};
+    CallbackList<Telemetry::OnboardComputerStatus> _onboard_computer_status_subscriptions{};
+    CallbackList<Telemetry::ComponentInfoBasic> _component_info_basic_subscriptions{};
     CallbackList<uint64_t> _unix_epoch_time_subscriptions{};
     CallbackList<Telemetry::ActuatorControlTarget> _actuator_control_target_subscriptions{};
     CallbackList<Telemetry::ActuatorOutputStatus> _actuator_output_status_subscriptions{};

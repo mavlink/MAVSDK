@@ -46,6 +46,12 @@ public:
 
     TelemetryServer::Result publish_modem_info(TelemetryServer::ModemInfo modem_info);
 
+    TelemetryServer::Result publish_onboard_computer_status(
+        TelemetryServer::OnboardComputerStatus onboard_computer_status);
+    
+    TelemetryServer::Result publish_component_info_basic(
+        TelemetryServer::ComponentInfoBasic component_info_basic);
+
     TelemetryServer::Result publish_odometry(TelemetryServer::Odometry odometry);
 
     TelemetryServer::Result

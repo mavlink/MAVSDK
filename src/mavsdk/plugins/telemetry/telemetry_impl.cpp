@@ -126,6 +126,16 @@ void TelemetryImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS,
+        [this](const mavlink_message_t& message) { process_onboard_computer_status(message); },
+        this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC,
+        [this](const mavlink_message_t& message) { process_component_info_basic(message); },
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
@@ -389,6 +399,19 @@ Telemetry::Result TelemetryImpl::set_rate_modem_info(double rate_hz)
     return Telemetry::Result::Unsupported;
 }
 
+Telemetry::Result TelemetryImpl::set_rate_onboard_computer_status(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_component_info_basic(double rate_hz)
+{
+    UNUSED(rate_hz);
+    LogWarn() << "System status is usually fixed at 1 Hz";
+    return Telemetry::Result::Unsupported;
+}
+
 Telemetry::Result TelemetryImpl::set_rate_actuator_control_target(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -628,6 +651,22 @@ void TelemetryImpl::set_rate_cellular_status_async(
 }
 
 void TelemetryImpl::set_rate_modem_info_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    UNUSED(rate_hz);
+    LogWarn() << "System status is usually fixed at 1 Hz";
+    _parent->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
+}
+
+void TelemetryImpl::set_rate_onboard_computer_status_async(
+    double rate_hz, Telemetry::ResultCallback callback)
+{
+    UNUSED(rate_hz);
+    LogWarn() << "System status is usually fixed at 1 Hz";
+    _parent->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
+}
+
+void TelemetryImpl::set_rate_component_info_basic_async(
+    double rate_hz, Telemetry::ResultCallback callback)
 {
     UNUSED(rate_hz);
     LogWarn() << "System status is usually fixed at 1 Hz";
@@ -1334,6 +1373,99 @@ void TelemetryImpl::process_modem_info(const mavlink_message_t& message)
         std::lock_guard<std::mutex> lock(_subscription_mutex);
         _modem_info_subscriptions.queue(
             modem_info(), [this](const auto& func) { _parent->call_user_callback(func); });
+    }
+}
+
+void TelemetryImpl::process_onboard_computer_status(const mavlink_message_t& message)
+{
+    mavlink_onboard_computer_status_t onboard_status;
+    mavlink_msg_onboard_computer_status_decode(&message, &onboard_status);
+
+    Telemetry::OnboardComputerStatus new_onboard_computer_status;
+    
+    new_onboard_computer_status.time_usec = onboard_status.time_usec;
+    new_onboard_computer_status.uptime = onboard_status.uptime;
+    new_onboard_computer_status.type = onboard_status.type;
+
+    uint32_t* cpu_cores_ptr = reinterpret_cast<uint32_t*>(onboard_status.cpu_cores);
+    new_onboard_computer_status.cpu_cores = {cpu_cores_ptr, cpu_cores_ptr + sizeof(*onboard_status.cpu_cores) / sizeof(uint32_t)};
+
+    uint32_t* cpu_combined_ptr = reinterpret_cast<uint32_t*>(onboard_status.cpu_combined);
+    new_onboard_computer_status.cpu_combined = {cpu_combined_ptr, cpu_combined_ptr + sizeof(*onboard_status.cpu_combined) / sizeof(uint32_t)};
+
+    uint32_t* gpu_cores_ptr = reinterpret_cast<uint32_t*>(onboard_status.gpu_cores);
+    new_onboard_computer_status.gpu_cores = {gpu_cores_ptr, gpu_cores_ptr + sizeof(*onboard_status.gpu_cores) / sizeof(uint32_t)};
+
+    uint32_t* gpu_combined_ptr = reinterpret_cast<uint32_t*>(onboard_status.gpu_combined);
+    new_onboard_computer_status.gpu_combined = {gpu_combined_ptr, gpu_combined_ptr + sizeof(*onboard_status.gpu_combined) / sizeof(uint32_t)};
+
+    new_onboard_computer_status.temperature_board = onboard_status.temperature_board;
+
+    uint32_t* temperature_core_ptr = reinterpret_cast<uint32_t*>(onboard_status.temperature_core);
+    new_onboard_computer_status.temperature_core = {temperature_core_ptr, temperature_core_ptr + sizeof(*onboard_status.temperature_core) / sizeof(uint32_t)};
+
+    uint32_t* fan_speed_ptr = reinterpret_cast<uint32_t*>(onboard_status.fan_speed);
+    new_onboard_computer_status.fan_speed = {fan_speed_ptr, fan_speed_ptr + sizeof(*onboard_status.fan_speed) / sizeof(uint32_t)};
+
+    new_onboard_computer_status.ram_usage = onboard_status.ram_usage;
+    new_onboard_computer_status.ram_total = onboard_status.ram_total;
+
+    uint32_t* storage_type_ptr = reinterpret_cast<uint32_t*>(onboard_status.storage_type);
+    new_onboard_computer_status.storage_type = {storage_type_ptr, storage_type_ptr + sizeof(*onboard_status.storage_type) / sizeof(uint32_t)};
+
+    uint32_t* storage_usage_ptr = reinterpret_cast<uint32_t*>(onboard_status.storage_usage);
+    new_onboard_computer_status.storage_usage = {storage_usage_ptr, storage_usage_ptr + sizeof(*onboard_status.storage_usage) / sizeof(uint32_t)};
+
+    uint32_t* storage_total_ptr = reinterpret_cast<uint32_t*>(onboard_status.storage_total);
+    new_onboard_computer_status.storage_total = {storage_total_ptr, storage_total_ptr + sizeof(*onboard_status.storage_total) / sizeof(uint32_t)};
+
+    uint32_t* link_type_ptr = reinterpret_cast<uint32_t*>(onboard_status.link_type);
+    new_onboard_computer_status.link_type = {link_type_ptr, link_type_ptr + sizeof(*onboard_status.link_type) / sizeof(uint32_t)};
+
+    uint32_t* link_tx_rate_ptr = reinterpret_cast<uint32_t*>(onboard_status.link_tx_rate);
+    new_onboard_computer_status.link_tx_rate = {link_tx_rate_ptr, link_tx_rate_ptr + sizeof(*onboard_status.link_tx_rate) / sizeof(uint32_t)};
+
+    uint32_t* link_rx_rate_ptr = reinterpret_cast<uint32_t*>(onboard_status.link_rx_rate);
+    new_onboard_computer_status.link_rx_rate = {link_rx_rate_ptr, link_rx_rate_ptr + sizeof(*onboard_status.link_rx_rate) / sizeof(uint32_t)};
+
+    uint32_t* link_tx_max_ptr = reinterpret_cast<uint32_t*>(onboard_status.link_tx_max);
+    new_onboard_computer_status.link_tx_max = {link_tx_max_ptr, link_tx_max_ptr + sizeof(*onboard_status.link_tx_max) / sizeof(uint32_t)};
+
+    uint32_t* link_rx_max_ptr = reinterpret_cast<uint32_t*>(onboard_status.link_rx_max);
+    new_onboard_computer_status.link_rx_max = {link_rx_max_ptr, link_rx_max_ptr + sizeof(*onboard_status.link_rx_max) / sizeof(uint32_t)};
+
+
+    set_onboard_computer_status(new_onboard_computer_status);
+
+    {
+        std::lock_guard<std::mutex> lock(_subscription_mutex);
+        _onboard_computer_status_subscriptions.queue(
+            onboard_computer_status(),
+            [this](const auto& func) { _parent->call_user_callback(func); });
+    }
+}
+
+void TelemetryImpl::process_component_info_basic(const mavlink_message_t& message)
+{
+    mavlink_component_information_basic_t component_info;
+    mavlink_msg_component_information_basic_decode(&message, &component_info);
+
+    Telemetry::ComponentInfoBasic new_component_info_basic;
+    new_component_info_basic.time_boot_ms = component_info.time_boot_ms;
+    new_component_info_basic.capabilities = component_info.capabilities;
+    new_component_info_basic.vendor_name = component_info.vendor_name;
+    new_component_info_basic.model_name = component_info.model_name;
+    new_component_info_basic.software_version = component_info.software_version;
+    new_component_info_basic.hardware_version = component_info.hardware_version;
+    new_component_info_basic.serial_number = component_info.serial_number;
+
+    set_component_info_basic(new_component_info_basic);
+
+    {
+        std::lock_guard<std::mutex> lock(_subscription_mutex);
+        _component_info_basic_subscriptions.queue(
+            component_info_basic(),
+            [this](const auto& func) { _parent->call_user_callback(func); });
     }
 }
 
@@ -2126,6 +2258,18 @@ Telemetry::ModemInfo TelemetryImpl::modem_info() const
     return _modem_info;
 }
 
+Telemetry::OnboardComputerStatus TelemetryImpl::onboard_computer_status() const
+{
+    std::lock_guard<std::mutex> lock(_onboard_computer_status_mutex);
+    return _onboard_computer_status;
+}
+
+Telemetry::ComponentInfoBasic TelemetryImpl::component_info_basic() const
+{
+    std::lock_guard<std::mutex> lock(_component_info_basic_mutex);
+    return _component_info_basic;
+}
+
 uint64_t TelemetryImpl::unix_epoch_time() const
 {
     std::lock_guard<std::mutex> lock(_unix_epoch_time_mutex);
@@ -2261,6 +2405,18 @@ void TelemetryImpl::set_modem_info(Telemetry::ModemInfo modem_info)
 {
     std::lock_guard<std::mutex> lock(_modem_info_mutex);
     _modem_info = modem_info;
+}
+
+void TelemetryImpl::set_onboard_computer_status(Telemetry::OnboardComputerStatus status)
+{
+    std::lock_guard<std::mutex> lock(_onboard_computer_status_mutex);
+    _onboard_computer_status = status;
+}
+
+void TelemetryImpl::set_component_info_basic(Telemetry::ComponentInfoBasic component_info_basic)
+{
+    std::lock_guard<std::mutex> lock(_component_info_basic_mutex);
+    _component_info_basic = component_info_basic;
 }
 
 void TelemetryImpl::set_unix_epoch_time_us(uint64_t time_us)
@@ -2659,6 +2815,35 @@ void TelemetryImpl::unsubscribe_modem_info(Telemetry::ModemInfoHandle handle)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _modem_info_subscriptions.unsubscribe(handle);
+}
+
+Telemetry::ComponentInfoBasicHandle
+TelemetryImpl::subscribe_component_info_basic(const Telemetry::ComponentInfoBasicCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    return _component_info_basic_subscriptions.subscribe(callback);
+}
+
+void TelemetryImpl::unsubscribe_component_info_basic(
+    Telemetry::ComponentInfoBasicHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _component_info_basic_subscriptions.unsubscribe(handle);
+}
+
+Telemetry::OnboardComputerStatusHandle
+TelemetryImpl::subscribe_onboard_computer_status(
+    const Telemetry::OnboardComputerStatusCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    return _onboard_computer_status_subscriptions.subscribe(callback);
+}
+
+void TelemetryImpl::unsubscribe_onboard_computer_status(
+    Telemetry::OnboardComputerStatusHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _onboard_computer_status_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::UnixEpochTimeHandle
