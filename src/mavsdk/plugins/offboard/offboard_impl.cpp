@@ -372,8 +372,8 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
         }
     }
 
-    // also send it right now to reduce latency
-    return send_actuator_control();
+    // It gets sent immediately as part of add_call_every.
+    return Offboard::Result::Success;
 }
 
 Offboard::Result OffboardImpl::send_position_ned()
@@ -731,26 +731,23 @@ OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group
 
 Offboard::Result OffboardImpl::send_actuator_control()
 {
-    Offboard::ActuatorControl actuator_control = [this]() {
-        std::lock_guard<std::mutex> lock(_mutex);
-        return _actuator_control;
-    }();
+    std::lock_guard<std::mutex> lock(_mutex);
 
-    for (int i = 0; i < 2; i++) {
-        int nan_count = 0;
-        for (int j = 0; j < 8; j++) {
-            if (std::isnan(actuator_control.groups[i].controls[j])) {
-                nan_count++;
-                actuator_control.groups[i].controls[j] = 0.0f;
+    for (unsigned i = 0; i < 4 && i < _actuator_control.groups.size(); ++i) {
+        _actuator_control.groups[i].controls.resize(8, NAN);
+
+        for (unsigned j = 0; j < 8; ++j) {
+            if (std::isnan(_actuator_control.groups[i].controls[j])) {
+                _actuator_control.groups[i].controls[j] = 0.0f;
             }
         }
-        if (nan_count < 8) {
-            auto result = send_actuator_control_message(&actuator_control.groups[i].controls[0], i);
-            if (result != Offboard::Result::Success) {
-                return result;
-            }
+        auto result = send_actuator_control_message(&_actuator_control.groups[i].controls[0], i);
+
+        if (result != Offboard::Result::Success) {
+            return result;
         }
     }
+
     return Offboard::Result::Success;
 }
 
