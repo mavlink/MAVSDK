@@ -7,6 +7,7 @@ if (WERROR)
     add_compile_options(-Werror)
 endif()
 
+add_subdirectory(actuator_test)
 add_subdirectory(autopilot_server)
 add_subdirectory(battery)
 add_subdirectory(calibrate)

@@ -44,9 +44,15 @@ protected:
 #endif
     }
 
-    virtual void SetUp() override { StartSitl(determineModel()); }
+    virtual void SetUp() override
+    {
+        StartSitl(determineModel());
+    }
 
-    virtual void TearDown() override { StopSitl(); }
+    virtual void TearDown() override
+    {
+        StopSitl();
+    }
 
 private:
     static std::string determineModel()
