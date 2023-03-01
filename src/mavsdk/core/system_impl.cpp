@@ -910,11 +910,12 @@ ardupilot::RoverMode SystemImpl::flight_mode_to_ardupilot_rover_mode(FlightMode 
             return ardupilot::RoverMode::Manual;
         case FlightMode::FollowMe:
             return ardupilot::RoverMode::Follow;
+        case FlightMode::Offboard:
+            return ardupilot::RoverMode::Guided;
         case FlightMode::Unknown:
         case FlightMode::Ready:
         case FlightMode::Takeoff:
         case FlightMode::Land:
-        case FlightMode::Offboard:
         case FlightMode::Altctl:
         case FlightMode::Posctl:
         case FlightMode::Rattitude:
