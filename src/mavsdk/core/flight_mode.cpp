@@ -40,6 +40,8 @@ FlightMode to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode)
             return FlightMode::Manual;
         case ardupilot::RoverMode::Follow:
             return FlightMode::FollowMe;
+        case ardupilot::RoverMode::Guided:
+            return FlightMode::Offboard;
         default:
             return FlightMode::Unknown;
     }
