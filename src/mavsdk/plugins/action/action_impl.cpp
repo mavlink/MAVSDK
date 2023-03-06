@@ -410,6 +410,8 @@ void ActionImpl::takeoff_async_apm(const Action::ResultCallback& callback) const
                 }
                 send_takeoff_command();
             });
+    } else {
+        send_takeoff_command();
     }
 }
 
