@@ -355,7 +355,7 @@ Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_BATTERY_STATUS, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
@@ -581,7 +581,7 @@ void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCal
 void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _parent->set_msg_rate_async(
-        MAVLINK_MSG_ID_SYS_STATUS,
+        MAVLINK_MSG_ID_BATTERY_STATUS,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
