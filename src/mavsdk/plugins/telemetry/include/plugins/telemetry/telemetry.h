@@ -2367,8 +2367,20 @@ public:
      */
     std::pair<Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin() const;
 
+    /**
+     * @brief Set rate to 'SYS_STATUS' updates.
+     * SYS_STATUS message allows to recieve vehicle HEALTH information.
+     * This function is non-blocking. See 'set_rate_sys_status' for the blocking counterpart.
+     */
     void set_rate_sys_status_async(double rate_hz, const ResultCallback callback);
 
+    /**
+     * @brief Set rate to 'SYS_STATUS' updates.
+     * SYS_STATUS message allows to recieve vehicle HEALTH information.
+     * This function is non-blocking. See 'set_rate_sys_status_async' for the non-blocking counterpart.
+     * 
+     * @return Result of request.
+     */
     Result set_rate_sys_status(double rate_hz) const;
 
     /**
