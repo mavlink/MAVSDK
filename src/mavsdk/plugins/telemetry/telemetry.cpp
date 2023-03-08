@@ -823,6 +823,16 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> Telemetry::get_gps_glob
     return _impl->get_gps_global_origin();
 }
 
+Telemetry::Result Telemetry::set_rate_sys_status(double rate_hz) const
+{
+    return _impl->set_rate_sys_status(rate_hz);
+}
+
+void Telemetry::set_rate_sys_status_async(double rate_hz, const ResultCallback callback)
+{
+   _impl->set_rate_sys_status_async(rate_hz, callback);
+}
+
 bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||

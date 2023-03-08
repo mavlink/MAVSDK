@@ -2367,6 +2367,10 @@ public:
      */
     std::pair<Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin() const;
 
+    void set_rate_sys_status_async(double rate_hz, const ResultCallback callback);
+
+    Result set_rate_sys_status(double rate_hz) const;
+
     /**
      * @brief Copy constructor.
      */
