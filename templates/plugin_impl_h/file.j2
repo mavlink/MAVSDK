@@ -23,6 +23,12 @@ public:
 
     void init() override;
     void deinit() override;
+    
+    
+{% if not is_server %}
+    void enable() override;
+    void disable() override;
+{% endif %}
 
 {% for method in methods %}
 {{ indent(method, 1) }}
