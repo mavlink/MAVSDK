@@ -46,4 +46,8 @@ if (BUILD_STATIC_MAVSDK_SERVER)
     set_target_properties(unit_tests_mavsdk_server PROPERTIES LINK_SEARCH_END_STATIC ON)
 endif()
 
+if(NOT BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+    target_link_libraries(unit_tests_mavsdk_server PRIVATE dl)
+endif()
+
 add_test(unit_tests unit_tests_mavsdk_server)
