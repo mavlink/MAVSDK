@@ -218,6 +218,8 @@ std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_l
 
 std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() const
 {
+    wait_for_information();
+
     std::lock_guard<std::mutex> lock(_mutex);
     return std::make_pair<>(
         (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
@@ -226,7 +228,10 @@ std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() con
 
 std::pair<Info::Result, Info::Version> InfoImpl::get_version() const
 {
+    wait_for_information();
+
     std::lock_guard<std::mutex> lock(_mutex);
+
     return std::make_pair<>(
         (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
         _version);
@@ -234,7 +239,9 @@ std::pair<Info::Result, Info::Version> InfoImpl::get_version() const
 
 std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
 {
+    wait_for_information();
     std::lock_guard<std::mutex> lock(_mutex);
+
     return std::make_pair<>(
         (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
         _product);
@@ -242,7 +249,9 @@ std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
 
 std::pair<Info::Result, Info::FlightInfo> InfoImpl::get_flight_information() const
 {
+    wait_for_information();
     std::lock_guard<std::mutex> lock(_mutex);
+
     return std::make_pair<>(
         (_flight_information_received ? Info::Result::Success :
                                         Info::Result::InformationNotReceivedYet),
@@ -306,6 +315,17 @@ std::pair<Info::Result, double> InfoImpl::get_speed_factor() const
     const double speed_factor = sum.simulated_duration_s / sum.real_time_s;
 
     return std::make_pair<>(Info::Result::Success, speed_factor);
+}
+
+void InfoImpl::wait_for_information() const
+{
+    // Wait 1.5 seconds max
+    for (unsigned i = 0; i < 150; ++i) {
+        if (_information_received) {
+            break;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
 }
 
 } // namespace mavsdk
