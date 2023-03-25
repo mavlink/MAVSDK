@@ -38,13 +38,15 @@ private:
     void process_flight_information(const mavlink_message_t& message);
     void process_attitude(const mavlink_message_t& message);
 
+    void wait_for_information() const;
+
     mutable std::mutex _mutex{};
 
     Info::Version _version{};
     Info::Product _product{};
     Info::Identification _identification{};
     Info::FlightInfo _flight_info{};
-    bool _information_received{false};
+    std::atomic<bool> _information_received{false};
     bool _flight_information_received{false};
     bool _was_armed{false};
 
