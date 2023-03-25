@@ -106,7 +106,7 @@ if(NOT IOS AND NOT ANDROID)
         mavsdk_server_bin.cpp
     )
 
-    target_link_libraries(mavsdk_server_bin
+    target_link_libraries(mavsdk_server_bin PRIVATE
         mavsdk_server
         mavsdk
     )
@@ -116,6 +116,10 @@ if(NOT IOS AND NOT ANDROID)
         set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
         set_target_properties(mavsdk_server_bin PROPERTIES LINK_SEARCH_START_STATIC ON)
         set_target_properties(mavsdk_server_bin PROPERTIES LINK_SEARCH_END_STATIC ON)
+    endif()
+
+    if(NOT BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
+        target_link_libraries(mavsdk_server_bin PRIVATE dl)
     endif()
 
     # MSVC fails to generate the `mavsdk_server` binary while having
