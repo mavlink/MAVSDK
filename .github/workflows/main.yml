@@ -18,10 +18,10 @@ jobs:
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/third_party/install
@@ -54,7 +54,7 @@ jobs:
     name: ubuntu-20.04 (non-mavsdk_server, non-superbuild)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: install
@@ -75,10 +75,10 @@ jobs:
       matrix:
         ubuntu_image: [ubuntu-20.04, ubuntu-22.04]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -116,10 +116,10 @@ jobs:
     name: ubuntu-20.04 (mavsdk, hunter)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ~/.hunter
@@ -139,12 +139,12 @@ jobs:
     name: ubuntu-22.04 (proto check)
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: install clang-format
         run: sudo apt-get update && sudo apt-get install -y clang-format-12
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/default/third_party/install
@@ -165,7 +165,7 @@ jobs:
     name: ubuntu-22.04 (check style and docs)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: install dependencies
@@ -183,7 +183,7 @@ jobs:
       matrix:
         container_name: [ubuntu-18.04, ubuntu-20.04]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: git permission workaround
@@ -219,7 +219,7 @@ jobs:
     name: Ubuntu/Debian packaging (Ubuntu 20.04)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
@@ -240,7 +240,7 @@ jobs:
       matrix:
         container_name: [fedora-34, fedora-35, fedora-36]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: git permission workaround
@@ -273,14 +273,14 @@ jobs:
       matrix:
         arch_name: [armv6, armv7, arm64]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: prepare mavlink headers
         run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/linux-${{ matrix.arch_name }}/third_party/install
@@ -311,14 +311,14 @@ jobs:
     steps:
       - name: install tools
         run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /github/workspace
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -337,7 +337,7 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload as artefact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: mavsdk_server_musl_x86_64
           path: ./install/bin/mavsdk_server
@@ -359,7 +359,7 @@ jobs:
       matrix:
         arch_name: [linux-armv6-musl, linux-armv7l-musl, linux-arm64-musl]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: install pymavlink dependencies
@@ -368,7 +368,7 @@ jobs:
         run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/${{ matrix.arch_name }}/third_party/install
@@ -405,7 +405,7 @@ jobs:
           - name: android-x86_64
             arch: x86_64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: install pymavlink dependencies
@@ -414,7 +414,7 @@ jobs:
         run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }} > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -449,10 +449,10 @@ jobs:
           - name: macOS-framework
             build-framework: ON
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/macos/third_party/install
@@ -476,7 +476,7 @@ jobs:
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload framework as artefact
         if: ${{ matrix.build-framework == 'ON' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: mavsdk_server_macos.framework
           path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
@@ -504,10 +504,10 @@ jobs:
             platform: SIMULATOR64
             sdk: iphonesimulator
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -529,7 +529,7 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=13.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/${{ matrix.name }} -H.
       - name: build
         run: cmake --build build/${{ matrix.name }} -j2
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: mavsdk_server_${{ matrix.name }}.framework
           path: ./build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework
@@ -540,24 +540,24 @@ jobs:
     needs: [macOS, iOS]
     runs-on: macos-12
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: mavsdk_server_ios.framework
           path: ./build/ios/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: mavsdk_server_ios_simulator.framework
           path: ./build/ios_simulator/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: mavsdk_server_macos.framework
           path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
       - name: Package
         run: bash ./src/mavsdk_server/tools/package_mavsdk_server_framework.bash
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: mavsdk_server.xcframework
           path: ./build/mavsdk_server.xcframework
@@ -585,10 +585,10 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -641,7 +641,7 @@ jobs:
         px4_version: [v1.11, v1.12, v1.13]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: git permission workaround
@@ -673,7 +673,7 @@ jobs:
         apm_version: [copter-4.1.2]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: git permission workaround
