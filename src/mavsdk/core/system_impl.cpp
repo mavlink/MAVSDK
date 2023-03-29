@@ -724,14 +724,16 @@ void SystemImpl::set_param_int_async(
     _params.set_param_int_async(name, value, callback, cookie, maybe_component_id, extended);
 }
 
-std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const std::string& name)
+std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(
+    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    return _params.get_param_float(name, {}, false);
+    return _params.get_param_float(name, maybe_component_id, extended);
 }
 
-std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(const std::string& name)
+std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(
+    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    return _params.get_param_int(name, {}, false);
+    return _params.get_param_int(name, maybe_component_id, extended);
 }
 
 std::pair<MAVLinkParameters::Result, std::string>

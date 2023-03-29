@@ -29,6 +29,10 @@ public:
         const uint8_t target_compid,
         const uint16_t command,
         MAV_RESULT result);
+    std::pair<MavlinkPassthrough::Result, int32_t> get_param_int(
+        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
+    std::pair<MavlinkPassthrough::Result, float> get_param_float(
+        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
 
     MavlinkPassthrough::MessageHandle
     subscribe_message(uint16_t message_id, const MavlinkPassthrough::MessageCallback& callback);
@@ -45,6 +49,9 @@ private:
 
     static MavlinkPassthrough::Result
     to_mavlink_passthrough_result_from_mavlink_commands_result(MavlinkCommandSender::Result result);
+
+    static MavlinkPassthrough::Result
+    to_mavlink_passthrough_result_from_mavlink_params_result(MAVLinkParameters::Result result);
 
     std::unordered_map<uint16_t, CallbackList<const mavlink_message_t&>> _message_subscriptions{};
 };

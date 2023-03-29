@@ -189,8 +189,14 @@ public:
     using GetParamCustomCallback =
         std::function<void(MAVLinkParameters::Result result, const std::string& value)>;
 
-    std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string& name);
-    std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string& name);
+    std::pair<MAVLinkParameters::Result, float> get_param_float(
+        const std::string& name,
+        std::optional<uint8_t> maybe_component_id = {},
+        bool extended = false);
+    std::pair<MAVLinkParameters::Result, int> get_param_int(
+        const std::string& name,
+        std::optional<uint8_t> maybe_component_id = {},
+        bool extended = false);
     std::pair<MAVLinkParameters::Result, std::string> get_param_custom(const std::string& name);
 
     // These methods can be used to cache a parameter when a system connects. For that
