@@ -106,6 +106,24 @@ mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
     return msg;
 }
 
+std::pair<MavlinkPassthrough::Result, int32_t> MavlinkPassthroughImpl::get_param_int(
+    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
+{
+    auto result = _parent->get_param_int(name, maybe_component_id, extended);
+    auto translated_result = to_mavlink_passthrough_result_from_mavlink_params_result(result.first);
+
+    return std::make_pair(translated_result, result.second);
+}
+
+std::pair<MavlinkPassthrough::Result, float> MavlinkPassthroughImpl::get_param_float(
+    const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
+{
+    auto result = _parent->get_param_float(name, maybe_component_id, extended);
+    auto translated_result = to_mavlink_passthrough_result_from_mavlink_params_result(result.first);
+
+    return std::make_pair(translated_result, result.second);
+}
+
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_result(
     MavlinkCommandSender::Result result)
@@ -134,6 +152,36 @@ MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_commands_resu
         case MavlinkCommandSender::Result::InProgress: // FIXME: currently not expected
                                                        // FALLTHROUGH
         case MavlinkCommandSender::Result::UnknownError:
+            return MavlinkPassthrough::Result::Unknown;
+    }
+}
+
+MavlinkPassthrough::Result
+MavlinkPassthroughImpl::to_mavlink_passthrough_result_from_mavlink_params_result(
+    MAVLinkParameters::Result result)
+{
+    switch (result) {
+        case MAVLinkParameters::Result::Success:
+            return MavlinkPassthrough::Result::Success;
+        case MAVLinkParameters::Result::Timeout:
+            return MavlinkPassthrough::Result::CommandTimeout;
+        case MAVLinkParameters::Result::ConnectionError:
+            return MavlinkPassthrough::Result::ConnectionError;
+        case MAVLinkParameters::Result::WrongType:
+            return MavlinkPassthrough::Result::ParamWrongType;
+        case MAVLinkParameters::Result::ParamNameTooLong:
+            return MavlinkPassthrough::Result::ParamNameTooLong;
+        case MAVLinkParameters::Result::ParamValueTooLong:
+            return MavlinkPassthrough::Result::ParamValueTooLong;
+        case MAVLinkParameters::Result::NotFound:
+            return MavlinkPassthrough::Result::ParamNotFound;
+        case MAVLinkParameters::Result::ValueUnsupported:
+            return MavlinkPassthrough::Result::ParamValueUnsupported;
+        case MAVLinkParameters::Result::Failed:
+            return MavlinkPassthrough::Result::CommandFailed;
+        default:
+            // FALLTHROUGH
+        case MAVLinkParameters::Result::UnknownError:
             return MavlinkPassthrough::Result::Unknown;
     }
 }

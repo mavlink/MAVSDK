@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <functional>
+#include <optional>
 
 // This plugin provides/includes the mavlink 2.0 header files.
 #include "mavlink_include.h"
@@ -68,6 +69,11 @@ public:
         CommandTimeout, /**< @brief A timeout happened. */
         CommandTemporarilyRejected, /**< @brief Command has been rejected for now. */
         CommandFailed, /**< @brief Command has failed. */
+        ParamWrongType, /**< @brief Wrong type for requested param. */
+        ParamNameTooLong, /**< @brief Param name too long. */
+        ParamValueTooLong, /**< @brief Param value too long. */
+        ParamNotFound, /**< @brief Param not found. */
+        ParamValueUnsupported, /**< @brief Param value unsupported. */
     };
 
     /**
@@ -150,6 +156,18 @@ public:
         const uint8_t target_compid,
         const uint16_t command,
         MAV_RESULT result);
+
+    /**
+     * @brief Request param (int).
+     */
+    std::pair<Result, int32_t> get_param_int(
+        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
+
+    /**
+     * @brief Request param (float).
+     */
+    std::pair<Result, float> get_param_float(
+        const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
 
     /**
      * @brief Callback type for message subscriptions.
