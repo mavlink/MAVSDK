@@ -121,7 +121,7 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
         pitch_only_axis,
         roll_only_axis);
     return _system_impl->send_message(message) ? ManualControl::Result::Success :
-                                            ManualControl::Result::ConnectionError;
+                                                 ManualControl::Result::ConnectionError;
 }
 
 ManualControl::Result

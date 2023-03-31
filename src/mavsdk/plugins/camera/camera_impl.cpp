@@ -160,7 +160,8 @@ void CameraImpl::prepare_async(const Camera::ResultCallback& callback)
     std::lock_guard<std::mutex> lock(_information.mutex);
 
     if (_camera_definition) {
-        _system_impl->call_user_callback([temp_callback]() { temp_callback(Camera::Result::Success); });
+        _system_impl->call_user_callback(
+            [temp_callback]() { temp_callback(Camera::Result::Success); });
     } else {
         _camera_definition_callback = [this, temp_callback](bool has_succeeded) {
             if (has_succeeded) {
@@ -245,19 +246,22 @@ void CameraImpl::update_component()
     _system_impl->update_componentid_messages_handler(
         MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS, cmp_id, this);
 
-    _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_STORAGE_INFORMATION, cmp_id, this);
+    _system_impl->update_componentid_messages_handler(
+        MAVLINK_MSG_ID_STORAGE_INFORMATION, cmp_id, this);
 
     _system_impl->update_componentid_messages_handler(
         MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED, cmp_id, this);
 
     _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_SETTINGS, cmp_id, this);
 
-    _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_INFORMATION, cmp_id, this);
+    _system_impl->update_componentid_messages_handler(
+        MAVLINK_MSG_ID_CAMERA_INFORMATION, cmp_id, this);
 
     _system_impl->update_componentid_messages_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION, cmp_id, this);
 
-    _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_VIDEO_STREAM_STATUS, cmp_id, this);
+    _system_impl->update_componentid_messages_handler(
+        MAVLINK_MSG_ID_VIDEO_STREAM_STATUS, cmp_id, this);
 }
 
 Camera::Result CameraImpl::select_camera(const size_t id)
@@ -1160,7 +1164,8 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
                 LogDebug() << "Successfully loaded camera definition";
 
                 if (_camera_definition_callback) {
-                    _system_impl->call_user_callback([this]() { _camera_definition_callback(true); });
+                    _system_impl->call_user_callback(
+                        [this]() { _camera_definition_callback(true); });
                 }
 
                 _camera_definition.reset(new CameraDefinition());
@@ -1355,7 +1360,8 @@ void CameraImpl::notify_video_stream_info()
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
     _video_stream_info.subscription_callbacks.queue(
-        _video_stream_info.data, [this](const auto& func) { _system_impl->call_user_callback(func); });
+        _video_stream_info.data,
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void CameraImpl::check_status()

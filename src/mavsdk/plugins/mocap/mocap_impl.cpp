@@ -105,7 +105,8 @@ Mocap::Result MocapImpl::send_vision_position_estimate(
         covariance.data(),
         0); // FIXME: reset_counter not set
 
-    return _system_impl->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
+    return _system_impl->send_message(message) ? Mocap::Result::Success :
+                                                 Mocap::Result::ConnectionError;
 }
 
 Mocap::Result
@@ -159,7 +160,8 @@ MocapImpl::send_attitude_position_mocap(const Mocap::AttitudePositionMocap& atti
         attitude_position_mocap.position_body.z_m,
         covariance.data());
 
-    return _system_impl->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
+    return _system_impl->send_message(message) ? Mocap::Result::Success :
+                                                 Mocap::Result::ConnectionError;
 }
 
 Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
@@ -237,7 +239,8 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
         MAV_ESTIMATOR_TYPE_MOCAP,
         0);
 
-    return _system_impl->send_message(message) ? Mocap::Result::Success : Mocap::Result::ConnectionError;
+    return _system_impl->send_message(message) ? Mocap::Result::Success :
+                                                 Mocap::Result::ConnectionError;
 }
 
 } // namespace mavsdk

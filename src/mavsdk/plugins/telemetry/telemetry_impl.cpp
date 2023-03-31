@@ -231,7 +231,8 @@ void TelemetryImpl::enable()
     _system_impl->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
 
     // We're going to retry until we have the Home Position.
-    _system_impl->add_call_every([this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
+    _system_impl->add_call_every(
+        [this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
 }
 
 void TelemetryImpl::disable()
@@ -709,9 +710,9 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t& messa
     set_position_velocity_ned(position_velocity);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _position_velocity_ned_subscriptions.queue(
-        position_velocity_ned(), [this](const auto& func) {
-        _system_impl->call_user_callback(func); });
+    _position_velocity_ned_subscriptions.queue(position_velocity_ned(), [this](const auto& func) {
+        _system_impl->call_user_callback(func);
+    });
 
     set_health_local_position(true);
 }
@@ -824,9 +825,9 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     set_attitude_angular_velocity_body(angular_velocity_body);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _attitude_quaternion_angle_subscriptions.queue(
-        attitude_quaternion(), [this](const auto& func) {
-        _system_impl->call_user_callback(func); });
+    _attitude_quaternion_angle_subscriptions.queue(attitude_quaternion(), [this](const auto& func) {
+        _system_impl->call_user_callback(func);
+    });
 
     _attitude_angular_velocity_body_subscriptions.queue(
         attitude_angular_velocity_body(),
@@ -872,7 +873,8 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
         [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _camera_attitude_euler_angle_subscriptions.queue(
-        camera_attitude_euler(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        camera_attitude_euler(),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_t& message)
@@ -899,7 +901,8 @@ void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_
         [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _camera_attitude_euler_angle_subscriptions.queue(
-        camera_attitude_euler(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        camera_attitude_euler(),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
@@ -1358,7 +1361,8 @@ void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& mes
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_control_target_subscriptions.queue(
-        actuator_control_target(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        actuator_control_target(),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& message)
@@ -1378,9 +1382,9 @@ void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& mess
     set_actuator_output_status(active, actuators);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _actuator_output_status_subscriptions.queue(
-        actuator_output_status(), [this](const auto& func) {
-        _system_impl->call_user_callback(func); });
+    _actuator_output_status_subscriptions.queue(actuator_output_status(), [this](const auto& func) {
+        _system_impl->call_user_callback(func);
+    });
 }
 
 void TelemetryImpl::process_odometry(const mavlink_message_t& message)

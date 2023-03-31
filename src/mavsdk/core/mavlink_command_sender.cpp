@@ -130,7 +130,8 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
 
-    if ((command_ack.target_system && command_ack.target_system != _system_impl.get_own_system_id()) ||
+    if ((command_ack.target_system &&
+         command_ack.target_system != _system_impl.get_own_system_id()) ||
         (command_ack.target_component &&
          command_ack.target_component != _system_impl.get_own_component_id())) {
         if (_command_debugging) {
@@ -165,8 +166,8 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                            << " does not match command " << work->identification.command
                            << " (to: " << std::to_string(work->identification.target_system_id)
                            << "/" << std::to_string(work->identification.target_component_id) << ")"
-                           << " after " << _system_impl.get_time().elapsed_since_s(work->time_started)
-                           << " s";
+                           << " after "
+                           << _system_impl.get_time().elapsed_since_s(work->time_started) << " s";
             }
             continue;
         }

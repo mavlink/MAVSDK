@@ -115,7 +115,8 @@ void OffboardImpl::receive_command_result(
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {
-        _system_impl->call_user_callback([callback, offboard_result]() { callback(offboard_result); });
+        _system_impl->call_user_callback(
+            [callback, offboard_result]() { callback(offboard_result); });
     }
 }
 
@@ -410,7 +411,7 @@ Offboard::Result OffboardImpl::send_position_ned()
         to_rad_from_deg(position_ned_yaw.yaw_deg), // yaw
         0.0f); // yaw_rate
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_position_global()
@@ -466,7 +467,7 @@ Offboard::Result OffboardImpl::send_position_global()
         to_rad_from_deg(position_global_yaw.yaw_deg), // yaw
         0.0f); // yaw_rate
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_velocity_ned()
@@ -506,7 +507,7 @@ Offboard::Result OffboardImpl::send_velocity_ned()
         to_rad_from_deg(velocity_ned_yaw.yaw_deg), // yaw
         0.0f); // yaw_rate
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_position_velocity_ned()
@@ -543,7 +544,7 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
         to_rad_from_deg(position_and_velocity.first.yaw_deg), // yaw
         0.0f); // yaw_rate
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_acceleration_ned()
@@ -585,7 +586,7 @@ Offboard::Result OffboardImpl::send_acceleration_ned()
         0.0f, // yaw
         0.0f); // yaw_rate
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_velocity_body()
@@ -625,7 +626,7 @@ Offboard::Result OffboardImpl::send_velocity_body()
         0.0f, // yaw
         to_rad_from_deg(velocity_body_yawspeed.yawspeed_deg_s));
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_attitude()
@@ -676,7 +677,7 @@ Offboard::Result OffboardImpl::send_attitude()
         thrust,
         thrust_body);
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_attitude_rate()
@@ -706,7 +707,7 @@ Offboard::Result OffboardImpl::send_attitude_rate()
         _attitude_rate.thrust_value,
         thrust_body);
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result
@@ -723,7 +724,7 @@ OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group
         _system_impl->get_autopilot_id(),
         controls);
     return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                            Offboard::Result::ConnectionError;
+                                                 Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_actuator_control()

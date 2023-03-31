@@ -122,7 +122,8 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
     // Send configuration to Vehicle
     if (_config.follow_height_m != height) {
-        if (_system_impl->set_param_float("FLW_TGT_HT", height) == MAVLinkParameters::Result::Success) {
+        if (_system_impl->set_param_float("FLW_TGT_HT", height) ==
+            MAVLinkParameters::Result::Success) {
             _config.follow_height_m = height;
         } else {
             success = false;
@@ -223,7 +224,8 @@ bool FollowMeImpl::is_active() const
 
 FollowMe::Result FollowMeImpl::start()
 {
-    FollowMe::Result result = to_follow_me_result(_system_impl->set_flight_mode(FlightMode::FollowMe));
+    FollowMe::Result result =
+        to_follow_me_result(_system_impl->set_flight_mode(FlightMode::FollowMe));
 
     if (result == FollowMe::Result::Success) {
         // If location was set before, lets send it to vehicle

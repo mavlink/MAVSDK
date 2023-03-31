@@ -175,7 +175,8 @@ void SystemImpl::unsubscribe_is_connected(System::IsConnectedHandle handle)
 
 void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
 {
-    _mavsdk_impl.call_every_handler.add(std::move(callback), static_cast<double>(interval_s), cookie);
+    _mavsdk_impl.call_every_handler.add(
+        std::move(callback), static_cast<double>(interval_s), cookie);
 }
 
 void SystemImpl::change_call_every(float interval_s, const void* cookie)
