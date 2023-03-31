@@ -16,32 +16,32 @@ constexpr MissionRaw::MissionItem empty_item{0, 3, 16, 1};
 
 MissionRawImpl::MissionRawImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 MissionRawImpl::MissionRawImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 MissionRawImpl::~MissionRawImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void MissionRawImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ACK,
         [this](const mavlink_message_t& message) { process_mission_ack(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CURRENT,
         [this](const mavlink_message_t& message) { process_mission_current(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
         [this](const mavlink_message_t& message) { process_mission_item_reached(message); },
         this);
@@ -56,7 +56,7 @@ void MissionRawImpl::disable()
 
 void MissionRawImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void MissionRawImpl::reset_mission_progress()
@@ -83,7 +83,7 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
     // a new mission. In that case we need to notify our user.
     std::lock_guard<std::mutex> lock(_mission_changed.mutex);
     _mission_changed.callbacks.queue(
-        true, [this](const auto& func) { _parent->call_user_callback(func); });
+        true, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
@@ -135,7 +135,7 @@ void MissionRawImpl::upload_mission_items_async(
     const MissionRaw::ResultCallback& callback)
 {
     if (_last_upload.lock()) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 callback(MissionRaw::Result::Busy);
             }
@@ -147,11 +147,11 @@ void MissionRawImpl::upload_mission_items_async(
 
     const auto int_items = convert_to_int_items(mission_raw);
 
-    _last_upload = _parent->mission_transfer().upload_items_async(
+    _last_upload = _system_impl->mission_transfer().upload_items_async(
         type, int_items, [this, callback, int_items](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(int_items);
-            _parent->call_user_callback([callback, converted_result, converted_items]() {
+            _system_impl->call_user_callback([callback, converted_result, converted_items]() {
                 if (callback) {
                     callback(converted_result);
                 }
@@ -225,7 +225,7 @@ MissionRawImpl::download_mission()
 void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCallback& callback)
 {
     if (_last_download.lock()) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 std::vector<MissionRaw::MissionItem> empty_items;
                 callback(MissionRaw::Result::Busy, empty_items);
@@ -234,14 +234,14 @@ void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCal
         return;
     }
 
-    _last_download = _parent->mission_transfer().download_items_async(
+    _last_download = _system_impl->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         [this, callback](
             MavlinkMissionTransfer::Result result,
             std::vector<MavlinkMissionTransfer::ItemInt> items) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(items);
-            _parent->call_user_callback([callback, converted_result, converted_items]() {
+            _system_impl->call_user_callback([callback, converted_result, converted_items]() {
                 callback(converted_result, converted_items);
             });
         });
@@ -344,7 +344,7 @@ MissionRaw::Result MissionRawImpl::start_mission()
 
 void MissionRawImpl::start_mission_async(const MissionRaw::ResultCallback& callback)
 {
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::Mission, [this, callback](MavlinkCommandSender::Result result, float) {
             report_flight_mode_change(callback, result);
         });
@@ -361,7 +361,7 @@ MissionRaw::Result MissionRawImpl::pause_mission()
 
 void MissionRawImpl::pause_mission_async(const MissionRaw::ResultCallback& callback)
 {
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::Hold, [this, callback](MavlinkCommandSender::Result result, float) {
             report_flight_mode_change(callback, result);
         });
@@ -374,7 +374,7 @@ void MissionRawImpl::report_flight_mode_change(
         return;
     }
 
-    _parent->call_user_callback(
+    _system_impl->call_user_callback(
         [callback, result]() { callback(command_result_to_mission_result(result)); });
 }
 
@@ -419,14 +419,14 @@ void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callb
     reset_mission_progress();
 
     // For ArduPilot to clear a mission we need to upload an empty mission.
-    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
         std::vector<MissionRaw::MissionItem> mission_items{empty_item};
         upload_mission_async(mission_items, callback);
     } else {
-        _parent->mission_transfer().clear_items_async(
+        _system_impl->mission_transfer().clear_items_async(
             MAV_MISSION_TYPE_MISSION, [this, callback](MavlinkMissionTransfer::Result result) {
                 auto converted_result = convert_result(result);
-                _parent->call_user_callback([callback, converted_result]() {
+                _system_impl->call_user_callback([callback, converted_result]() {
                     if (callback) {
                         callback(converted_result);
                     }
@@ -449,7 +449,7 @@ void MissionRawImpl::set_current_mission_item_async(
     int index, const MissionRaw::ResultCallback& callback)
 {
     if (index < 0 || index >= _mission_progress.last.total) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 callback(MissionRaw::Result::InvalidArgument);
                 return;
@@ -457,10 +457,10 @@ void MissionRawImpl::set_current_mission_item_async(
         });
     }
 
-    _parent->mission_transfer().set_current_item_async(
+    _system_impl->mission_transfer().set_current_item_async(
         index, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
-            _parent->call_user_callback([callback, converted_result]() {
+            _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {
                     callback(converted_result);
                 }
@@ -490,7 +490,7 @@ void MissionRawImpl::report_progress_current()
 
     if (should_report) {
         _mission_progress.callbacks.queue(_mission_progress.last, [this](const auto& func) {
-            _parent->call_user_callback(func);
+            _system_impl->call_user_callback(func);
         });
     }
 }
@@ -540,13 +540,13 @@ MissionRawImpl::import_qgroundcontrol_mission(std::string qgc_plan_path)
     buf << file.rdbuf();
     file.close();
 
-    return MissionImport::parse_json(buf.str(), _parent->autopilot());
+    return MissionImport::parse_json(buf.str(), _system_impl->autopilot());
 }
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
 MissionRawImpl::import_qgroundcontrol_mission_from_string(const std::string& qgc_plan)
 {
-    return MissionImport::parse_json(qgc_plan, _parent->autopilot());
+    return MissionImport::parse_json(qgc_plan, _system_impl->autopilot());
 }
 
 MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransfer::Result result)

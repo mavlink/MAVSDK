@@ -8,22 +8,22 @@ template class CallbackList<Winch::Status>;
 
 WinchImpl::WinchImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 WinchImpl::WinchImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 WinchImpl::~WinchImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void WinchImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_WINCH_STATUS,
         [this](const mavlink_message_t& message) { process_status(message); },
         this);
@@ -103,7 +103,7 @@ void WinchImpl::process_status(const mavlink_message_t& message)
     {
         std::lock_guard<std::mutex> lock(_subscription_mutex);
         _status_subscriptions.queue(
-            status(), [this](const auto& func) { _parent->call_user_callback(func); });
+            status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
     }
 }
 
@@ -123,7 +123,7 @@ void WinchImpl::relax_async(uint32_t instance, const Winch::ResultCallback callb
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -152,7 +152,7 @@ void WinchImpl::relative_length_control_async(
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -181,7 +181,7 @@ void WinchImpl::rate_control_async(
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -207,7 +207,7 @@ void WinchImpl::lock_async(uint32_t instance, const Winch::ResultCallback callba
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -233,7 +233,7 @@ void WinchImpl::deliver_async(uint32_t instance, const Winch::ResultCallback cal
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -259,7 +259,7 @@ void WinchImpl::hold_async(uint32_t instance, const Winch::ResultCallback callba
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -285,7 +285,7 @@ void WinchImpl::retract_async(uint32_t instance, const Winch::ResultCallback cal
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -311,7 +311,7 @@ void WinchImpl::load_line_async(uint32_t instance, const Winch::ResultCallback c
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -337,7 +337,7 @@ void WinchImpl::abandon_line_async(uint32_t instance, const Winch::ResultCallbac
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -363,7 +363,7 @@ void WinchImpl::load_payload_async(uint32_t instance, const Winch::ResultCallbac
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -412,7 +412,7 @@ void WinchImpl::command_result_callback(
 
     if (callback) {
         auto temp_callback = callback;
-        _parent->call_user_callback(
+        _system_impl->call_user_callback(
             [temp_callback, action_result]() { temp_callback(action_result); });
     }
 }

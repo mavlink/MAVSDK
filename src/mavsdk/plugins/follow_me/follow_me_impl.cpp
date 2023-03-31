@@ -9,27 +9,27 @@ FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
     _last_location = _target_location = FollowMe::TargetLocation{};
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 FollowMeImpl::FollowMeImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
     _last_location = _target_location = FollowMe::TargetLocation{};
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 FollowMeImpl::~FollowMeImpl()
 {
     if (_target_location_cookie) {
-        _parent->remove_call_every(_target_location_cookie);
+        _system_impl->remove_call_every(_target_location_cookie);
     }
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void FollowMeImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         [this](const mavlink_message_t& message) { process_heartbeat(message); },
         static_cast<void*>(this));
@@ -37,12 +37,12 @@ void FollowMeImpl::init()
 
 void FollowMeImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void FollowMeImpl::enable()
 {
-    _parent->get_param_float_async(
+    _system_impl->get_param_float_async(
         "FLW_TGT_HT",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
@@ -50,7 +50,7 @@ void FollowMeImpl::enable()
             }
         },
         this);
-    _parent->get_param_float_async(
+    _system_impl->get_param_float_async(
         "FLW_TGT_DST",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
@@ -58,7 +58,7 @@ void FollowMeImpl::enable()
             }
         },
         this);
-    _parent->get_param_float_async(
+    _system_impl->get_param_float_async(
         "FLW_TGT_FA",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
@@ -66,7 +66,7 @@ void FollowMeImpl::enable()
             }
         },
         this);
-    _parent->get_param_float_async(
+    _system_impl->get_param_float_async(
         "FLW_TGT_RS",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
@@ -74,7 +74,7 @@ void FollowMeImpl::enable()
             }
         },
         this);
-    _parent->get_param_int_async(
+    _system_impl->get_param_int_async(
         "FLW_TGT_ALT_M",
         [this](MAVLinkParameters::Result result, int value) {
             if (result == MAVLinkParameters::Result::Success) {
@@ -82,7 +82,7 @@ void FollowMeImpl::enable()
             }
         },
         this);
-    _parent->get_param_float_async(
+    _system_impl->get_param_float_async(
         "FLW_TGT_MAX_VEL",
         [this](MAVLinkParameters::Result result, float value) {
             if (result == MAVLinkParameters::Result::Success) {
@@ -122,7 +122,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
     // Send configuration to Vehicle
     if (_config.follow_height_m != height) {
-        if (_parent->set_param_float("FLW_TGT_HT", height) == MAVLinkParameters::Result::Success) {
+        if (_system_impl->set_param_float("FLW_TGT_HT", height) == MAVLinkParameters::Result::Success) {
             _config.follow_height_m = height;
         } else {
             success = false;
@@ -130,7 +130,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     }
 
     if (_config.follow_distance_m != distance) {
-        if (_parent->set_param_float("FLW_TGT_DST", distance) ==
+        if (_system_impl->set_param_float("FLW_TGT_DST", distance) ==
             MAVLinkParameters::Result::Success) {
             _config.follow_distance_m = distance;
         } else {
@@ -139,7 +139,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     }
 
     if (_config.follow_angle_deg != config.follow_angle_deg) {
-        if (_parent->set_param_float("FLW_TGT_FA", config.follow_angle_deg) ==
+        if (_system_impl->set_param_float("FLW_TGT_FA", config.follow_angle_deg) ==
             MAVLinkParameters::Result::Success) {
             _config.follow_angle_deg = config.follow_angle_deg;
         } else {
@@ -148,7 +148,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     }
 
     if (_config.responsiveness != responsiveness) {
-        if (_parent->set_param_float("FLW_TGT_RS", responsiveness) ==
+        if (_system_impl->set_param_float("FLW_TGT_RS", responsiveness) ==
             MAVLinkParameters::Result::Success) {
             _config.responsiveness = responsiveness;
         } else {
@@ -157,7 +157,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     }
 
     if (_config.altitude_mode != altitude_mode) {
-        if (_parent->set_param_int("FLW_TGT_ALT_M", static_cast<int32_t>(altitude_mode)) ==
+        if (_system_impl->set_param_int("FLW_TGT_ALT_M", static_cast<int32_t>(altitude_mode)) ==
             MAVLinkParameters::Result::Success) {
             _config.altitude_mode = altitude_mode;
         } else {
@@ -166,7 +166,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     }
 
     if (_config.max_tangential_vel_m_s != max_tangential_vel_m_s) {
-        if (_parent->set_param_float("FLW_TGT_MAX_VEL", max_tangential_vel_m_s) ==
+        if (_system_impl->set_param_float("FLW_TGT_MAX_VEL", max_tangential_vel_m_s) ==
             MAVLinkParameters::Result::Success) {
             _config.max_tangential_vel_m_s = max_tangential_vel_m_s;
         } else {
@@ -191,13 +191,13 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
         }
         // If set already, reschedule it.
         if (_target_location_cookie) {
-            _parent->reset_call_every(_target_location_cookie);
+            _system_impl->reset_call_every(_target_location_cookie);
             // We also need to send it right now.
             schedule_now = true;
 
         } else {
             // Register now for sending now and in the next cycle.
-            _parent->add_call_every(
+            _system_impl->add_call_every(
                 [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
         }
     }
@@ -223,14 +223,14 @@ bool FollowMeImpl::is_active() const
 
 FollowMe::Result FollowMeImpl::start()
 {
-    FollowMe::Result result = to_follow_me_result(_parent->set_flight_mode(FlightMode::FollowMe));
+    FollowMe::Result result = to_follow_me_result(_system_impl->set_flight_mode(FlightMode::FollowMe));
 
     if (result == FollowMe::Result::Success) {
         // If location was set before, lets send it to vehicle
         std::lock_guard<std::mutex> lock(
             _mutex); // locking is not necessary here but lets do it for integrity
         if (is_target_location_set()) {
-            _parent->add_call_every(
+            _system_impl->add_call_every(
                 [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
         }
     }
@@ -245,7 +245,7 @@ FollowMe::Result FollowMeImpl::stop()
             stop_sending_target_location();
         }
     }
-    return to_follow_me_result(_parent->set_flight_mode(FlightMode::Hold));
+    return to_follow_me_result(_system_impl->set_flight_mode(FlightMode::Hold));
 }
 
 bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
@@ -336,8 +336,8 @@ void FollowMeImpl::send_target_location()
 
     mavlink_message_t msg{};
     mavlink_msg_follow_target_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &msg,
         elapsed_msec,
         _estimation_capabilities,
@@ -351,7 +351,7 @@ void FollowMeImpl::send_target_location()
         pos_std_dev,
         custom_state);
 
-    if (!_parent->send_message(msg)) {
+    if (!_system_impl->send_message(msg)) {
         LogErr() << debug_str << "send_target_location() failed..";
     } else {
         _last_location = _target_location;
@@ -362,7 +362,7 @@ void FollowMeImpl::stop_sending_target_location()
 {
     // We assume that mutex was acquired by the caller
     if (_target_location_cookie) {
-        _parent->remove_call_every(_target_location_cookie);
+        _system_impl->remove_call_every(_target_location_cookie);
         _target_location_cookie = nullptr;
     }
     _mode = Mode::NOT_ACTIVE;

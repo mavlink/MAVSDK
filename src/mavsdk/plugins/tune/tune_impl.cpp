@@ -5,19 +5,19 @@ namespace mavsdk {
 
 TuneImpl::TuneImpl(System& system) : PluginImplBase(system), _mavlink_tune_item_messages()
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 TuneImpl::TuneImpl(std::shared_ptr<System> system) :
     PluginImplBase(std::move(system)),
     _mavlink_tune_item_messages()
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 TuneImpl::~TuneImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void TuneImpl::init() {}
@@ -136,15 +136,15 @@ void TuneImpl::play_tune_async(
 
     mavlink_message_t message;
     mavlink_msg_play_tune_v2_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &message,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id(),
+        _system_impl->get_system_id(),
+        _system_impl->get_autopilot_id(),
         TUNE_FORMAT_QBASIC1_1,
         tune_str.c_str());
 
-    if (!_parent->send_message(message)) {
+    if (!_system_impl->send_message(message)) {
         report_tune_result(callback, Tune::Result::Error);
         return;
     }
@@ -159,7 +159,7 @@ void TuneImpl::report_tune_result(const Tune::ResultCallback& callback, Tune::Re
         return;
     }
 
-    _parent->call_user_callback([callback, result]() { callback(result); });
+    _system_impl->call_user_callback([callback, result]() { callback(result); });
 }
 
 } // namespace mavsdk

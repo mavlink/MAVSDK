@@ -12,18 +12,18 @@ template class CallbackList<ComponentInformation::FloatParamUpdate>;
 
 ComponentInformationImpl::ComponentInformationImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ComponentInformationImpl::ComponentInformationImpl(std::shared_ptr<System> system) :
     PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ComponentInformationImpl::~ComponentInformationImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void ComponentInformationImpl::init() {}
@@ -34,7 +34,7 @@ void ComponentInformationImpl::enable()
 {
     // TODO: iterate through components!
 
-    _parent->request_message().request(
+    _system_impl->request_message().request(
         MAVLINK_MSG_ID_COMPONENT_INFORMATION,
         MAV_COMP_ID_PATHPLANNER,
         [this](auto&& result, auto&& message) { receive_component_information(result, message); });
@@ -78,7 +78,7 @@ void ComponentInformationImpl::download_file_async(
         const auto maybe_tmp_path = create_tmp_directory("mavsdk-component-information-tmp-files");
         const auto path_to_download = maybe_tmp_path ? maybe_tmp_path.value() : "./";
 
-        _parent->mavlink_ftp().download_async(
+        _system_impl->mavlink_ftp().download_async(
             path,
             path_to_download,
             [path_to_download, callback, path](
@@ -194,14 +194,14 @@ void ComponentInformationImpl::parse_parameter_file(const std::string& path)
 
             const auto name = param["name"].asString();
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 name,
                 [this, name](MAVLinkParameters::Result result, float value) {
                     get_float_param_result(name, result, value);
                 },
                 this);
 
-            _parent->subscribe_param_float(
+            _system_impl->subscribe_param_float(
                 name, [this, name](float value) { param_update(name, value); }, this);
 
         } else {
@@ -241,7 +241,7 @@ void ComponentInformationImpl::param_update(const std::string& name, float new_v
     const auto param_update = ComponentInformation::FloatParamUpdate{name, new_value};
 
     _float_param_update_callbacks.queue(
-        param_update, [this](const auto& func) { _parent->call_user_callback(func); });
+        param_update, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 std::pair<ComponentInformation::Result, std::vector<ComponentInformation::FloatParam>>

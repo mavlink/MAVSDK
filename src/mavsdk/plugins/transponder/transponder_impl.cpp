@@ -7,22 +7,22 @@ template class CallbackList<Transponder::AdsbVehicle>;
 
 TransponderImpl::TransponderImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 TransponderImpl::TransponderImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 TransponderImpl::~TransponderImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void TransponderImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ADSB_VEHICLE,
         [this](const mavlink_message_t& message) { process_transponder(message); },
         this);
@@ -30,7 +30,7 @@ void TransponderImpl::init()
 
 void TransponderImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void TransponderImpl::enable() {}
@@ -40,13 +40,13 @@ void TransponderImpl::disable() {}
 Transponder::Result TransponderImpl::set_rate_transponder(double rate_hz)
 {
     return transponder_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ADSB_VEHICLE, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_ADSB_VEHICLE, rate_hz));
 }
 
 void TransponderImpl::set_rate_transponder_async(
     double rate_hz, const Transponder::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ADSB_VEHICLE,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -104,7 +104,7 @@ void TransponderImpl::process_transponder(const mavlink_message_t& message)
     set_transponder(adsbVehicle);
 
     _transponder_subscriptions.queue(
-        transponder(), [this](const auto& func) { _parent->call_user_callback(func); });
+        transponder(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 Transponder::Result

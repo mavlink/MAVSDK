@@ -22,88 +22,88 @@ template class CallbackList<Camera::Status>;
 
 CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 CameraImpl::CameraImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 CameraImpl::~CameraImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void CameraImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS,
         _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_capture_status(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_STORAGE_INFORMATION,
         _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_storage_information(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED,
         _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_image_captured(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_SETTINGS,
         _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_settings(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_CAMERA_INFORMATION,
         _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_camera_information(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION,
         _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_video_information(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_STATUS,
         _camera_id + MAV_COMP_ID_CAMERA,
         [this](const mavlink_message_t& message) { process_video_stream_status(message); },
         this);
 
-    if (_parent->has_autopilot()) {
-        _parent->register_mavlink_message_handler(
+    if (_system_impl->has_autopilot()) {
+        _system_impl->register_mavlink_message_handler(
             MAVLINK_MSG_ID_FLIGHT_INFORMATION,
             [this](const mavlink_message_t& message) { process_flight_information(message); },
             this);
     }
 
-    _parent->add_call_every(
+    _system_impl->add_call_every(
         [this]() { check_connection_status(); }, 0.5, &_check_connection_status_call_every_cookie);
 
-    _parent->add_call_every(
+    _system_impl->add_call_every(
         [this]() { request_missing_capture_info(); }, 0.5, &_request_missing_capture_info_cookie);
 }
 
 void CameraImpl::deinit()
 {
-    _parent->remove_call_every(_request_missing_capture_info_cookie);
-    _parent->remove_call_every(_check_connection_status_call_every_cookie);
-    _parent->remove_call_every(_status.call_every_cookie);
-    _parent->remove_call_every(_camera_information_call_every_cookie);
-    _parent->remove_call_every(_flight_information_call_every_cookie);
-    _parent->remove_call_every(_mode.call_every_cookie);
-    _parent->remove_call_every(_video_stream_info.call_every_cookie);
-    _parent->unregister_all_mavlink_message_handlers(this);
-    _parent->cancel_all_param(this);
+    _system_impl->remove_call_every(_request_missing_capture_info_cookie);
+    _system_impl->remove_call_every(_check_connection_status_call_every_cookie);
+    _system_impl->remove_call_every(_status.call_every_cookie);
+    _system_impl->remove_call_every(_camera_information_call_every_cookie);
+    _system_impl->remove_call_every(_flight_information_call_every_cookie);
+    _system_impl->remove_call_every(_mode.call_every_cookie);
+    _system_impl->remove_call_every(_video_stream_info.call_every_cookie);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->cancel_all_param(this);
 
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
@@ -160,7 +160,7 @@ void CameraImpl::prepare_async(const Camera::ResultCallback& callback)
     std::lock_guard<std::mutex> lock(_information.mutex);
 
     if (_camera_definition) {
-        _parent->call_user_callback([temp_callback]() { temp_callback(Camera::Result::Success); });
+        _system_impl->call_user_callback([temp_callback]() { temp_callback(Camera::Result::Success); });
     } else {
         _camera_definition_callback = [this, temp_callback](bool has_succeeded) {
             if (has_succeeded) {
@@ -184,7 +184,7 @@ void CameraImpl::check_connection_status()
     // FIXME: This is a workaround because we don't want to be tied to the
     // discovery of an autopilot which triggers enable() and disable() but
     // we are interested if a camera is connected or not.
-    if (_parent->has_camera(_camera_id)) {
+    if (_system_impl->has_camera(_camera_id)) {
         if (!_camera_found) {
             _camera_found = true;
             manual_enable();
@@ -206,14 +206,14 @@ void CameraImpl::manual_enable()
     request_status();
     request_camera_information();
 
-    _parent->add_call_every(
+    _system_impl->add_call_every(
         [this]() { request_camera_information(); }, 10.0, &_camera_information_call_every_cookie);
 
     // for backwards compatibility with Yuneec drones
-    if (_parent->has_autopilot()) {
+    if (_system_impl->has_autopilot()) {
         request_flight_information();
 
-        _parent->add_call_every(
+        _system_impl->add_call_every(
             [this]() { request_flight_information(); },
             10.0,
             &_flight_information_call_every_cookie);
@@ -230,10 +230,10 @@ void CameraImpl::disable()
 void CameraImpl::manual_disable()
 {
     invalidate_params();
-    _parent->remove_call_every(_camera_information_call_every_cookie);
+    _system_impl->remove_call_every(_camera_information_call_every_cookie);
 
     if (_flight_information_call_every_cookie) {
-        _parent->remove_call_every(_flight_information_call_every_cookie);
+        _system_impl->remove_call_every(_flight_information_call_every_cookie);
     }
 
     _camera_found = false;
@@ -242,22 +242,22 @@ void CameraImpl::manual_disable()
 void CameraImpl::update_component()
 {
     uint8_t cmp_id = _camera_id + MAV_COMP_ID_CAMERA;
-    _parent->update_componentid_messages_handler(
+    _system_impl->update_componentid_messages_handler(
         MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS, cmp_id, this);
 
-    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_STORAGE_INFORMATION, cmp_id, this);
+    _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_STORAGE_INFORMATION, cmp_id, this);
 
-    _parent->update_componentid_messages_handler(
+    _system_impl->update_componentid_messages_handler(
         MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED, cmp_id, this);
 
-    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_SETTINGS, cmp_id, this);
+    _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_SETTINGS, cmp_id, this);
 
-    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_INFORMATION, cmp_id, this);
+    _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_CAMERA_INFORMATION, cmp_id, this);
 
-    _parent->update_componentid_messages_handler(
+    _system_impl->update_componentid_messages_handler(
         MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION, cmp_id, this);
 
-    _parent->update_componentid_messages_handler(MAVLINK_MSG_ID_VIDEO_STREAM_STATUS, cmp_id, this);
+    _system_impl->update_componentid_messages_handler(MAVLINK_MSG_ID_VIDEO_STREAM_STATUS, cmp_id, this);
 }
 
 Camera::Result CameraImpl::select_camera(const size_t id)
@@ -461,7 +461,7 @@ Camera::Result CameraImpl::take_photo()
     // Take 1 photo only with no interval
     auto cmd_take_photo = make_command_take_photo(0.f, 1.0f);
 
-    return camera_result_from_command_result(_parent->send_command(cmd_take_photo));
+    return camera_result_from_command_result(_system_impl->send_command(cmd_take_photo));
 }
 
 Camera::Result CameraImpl::start_photo_interval(float interval_s)
@@ -476,14 +476,14 @@ Camera::Result CameraImpl::start_photo_interval(float interval_s)
 
     auto cmd_take_photo_time_lapse = make_command_take_photo(interval_s, 0.f);
 
-    return camera_result_from_command_result(_parent->send_command(cmd_take_photo_time_lapse));
+    return camera_result_from_command_result(_system_impl->send_command(cmd_take_photo_time_lapse));
 }
 
 Camera::Result CameraImpl::stop_photo_interval()
 {
     auto cmd_stop_photo_interval = make_command_stop_photo();
 
-    return camera_result_from_command_result(_parent->send_command(cmd_stop_photo_interval));
+    return camera_result_from_command_result(_system_impl->send_command(cmd_stop_photo_interval));
 }
 
 Camera::Result CameraImpl::start_video()
@@ -494,7 +494,7 @@ Camera::Result CameraImpl::start_video()
     // Capture status rate is not set
     auto cmd_start_video = make_command_start_video(0.f);
 
-    return camera_result_from_command_result(_parent->send_command(cmd_start_video));
+    return camera_result_from_command_result(_system_impl->send_command(cmd_start_video));
 }
 
 Camera::Result CameraImpl::stop_video()
@@ -506,7 +506,7 @@ Camera::Result CameraImpl::stop_video()
         _video_stream_info.data.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
     }
 
-    return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
+    return camera_result_from_command_result(_system_impl->send_command(cmd_stop_video));
 }
 
 void CameraImpl::take_photo_async(const Camera::ResultCallback& callback)
@@ -518,7 +518,7 @@ void CameraImpl::take_photo_async(const Camera::ResultCallback& callback)
     // Take 1 photo only with no interval
     auto cmd_take_photo = make_command_take_photo(0.f, 1.0f);
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         cmd_take_photo, [this, callback](MavlinkCommandSender::Result result, float) {
             receive_command_result(result, callback);
         });
@@ -529,7 +529,7 @@ void CameraImpl::start_photo_interval_async(
 {
     if (!interval_valid(interval_s)) {
         const auto temp_callback = callback;
-        _parent->call_user_callback(
+        _system_impl->call_user_callback(
             [temp_callback]() { temp_callback(Camera::Result::WrongArgument); });
         return;
     }
@@ -540,7 +540,7 @@ void CameraImpl::start_photo_interval_async(
 
     auto cmd_take_photo_time_lapse = make_command_take_photo(interval_s, 0.f);
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         cmd_take_photo_time_lapse, [this, callback](MavlinkCommandSender::Result result, float) {
             receive_command_result(result, callback);
         });
@@ -550,7 +550,7 @@ void CameraImpl::stop_photo_interval_async(const Camera::ResultCallback& callbac
 {
     auto cmd_stop_photo_interval = make_command_stop_photo();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         cmd_stop_photo_interval, [this, callback](MavlinkCommandSender::Result result, float) {
             receive_command_result(result, callback);
         });
@@ -564,7 +564,7 @@ void CameraImpl::start_video_async(const Camera::ResultCallback& callback)
     // Capture status rate is not set
     auto cmd_start_video = make_command_start_video(0.f);
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         cmd_start_video, [this, callback](MavlinkCommandSender::Result result, float) {
             receive_command_result(result, callback);
         });
@@ -574,7 +574,7 @@ void CameraImpl::stop_video_async(const Camera::ResultCallback& callback)
 {
     auto cmd_stop_video = make_command_stop_video();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         cmd_stop_video, [this, callback](MavlinkCommandSender::Result result, float) {
             receive_command_result(result, callback);
         });
@@ -595,16 +595,16 @@ CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
 
     // If there was already a subscription, cancel the call
     if (_status.call_every_cookie) {
-        _parent->remove_call_every(_status.call_every_cookie);
+        _system_impl->remove_call_every(_status.call_every_cookie);
     }
 
     if (callback) {
         if (_status.call_every_cookie == nullptr) {
-            _parent->add_call_every(
+            _system_impl->add_call_every(
                 [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
         }
     } else {
-        _parent->remove_call_every(_status.call_every_cookie);
+        _system_impl->remove_call_every(_status.call_every_cookie);
         _status.call_every_cookie = nullptr;
     }
 
@@ -629,7 +629,7 @@ Camera::Result CameraImpl::start_video_streaming()
     // TODO Check whether we're in video mode
     auto command = make_command_start_video_streaming();
 
-    auto result = camera_result_from_command_result(_parent->send_command(command));
+    auto result = camera_result_from_command_result(_system_impl->send_command(command));
     // if (result == Camera::Result::Success) {
     // Cache video stream info; app may query immediately next.
     // TODO: check if we can/should do that.
@@ -645,7 +645,7 @@ Camera::Result CameraImpl::stop_video_streaming()
     // send stop video streaming if we've not started it!
     auto command = make_command_stop_video_streaming();
 
-    auto result = camera_result_from_command_result(_parent->send_command(command));
+    auto result = camera_result_from_command_result(_system_impl->send_command(command));
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
         // TODO: check if we can/should do that.
@@ -656,8 +656,8 @@ Camera::Result CameraImpl::stop_video_streaming()
 
 void CameraImpl::request_video_stream_info()
 {
-    _parent->send_command_async(make_command_request_video_stream_info(), nullptr);
-    _parent->send_command_async(make_command_request_video_stream_status(), nullptr);
+    _system_impl->send_command_async(make_command_request_video_stream_info(), nullptr);
+    _system_impl->send_command_async(make_command_request_video_stream_status(), nullptr);
 }
 
 Camera::VideoStreamInfo CameraImpl::video_stream_info()
@@ -675,10 +675,10 @@ CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& c
     auto handle = _video_stream_info.subscription_callbacks.subscribe(callback);
 
     if (callback) {
-        _parent->add_call_every(
+        _system_impl->add_call_every(
             [this]() { request_video_stream_info(); }, 1.0, &_video_stream_info.call_every_cookie);
     } else {
-        _parent->remove_call_every(_video_stream_info.call_every_cookie);
+        _system_impl->remove_call_every(_video_stream_info.call_every_cookie);
     }
 
     return handle;
@@ -744,7 +744,7 @@ Camera::Result CameraImpl::set_mode(const Camera::Mode mode)
 {
     const float mavlink_mode = to_mavlink_camera_mode(mode);
     auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
-    const auto command_result = _parent->send_command(cmd_set_camera_mode);
+    const auto command_result = _system_impl->send_command(cmd_set_camera_mode);
     const auto camera_result = camera_result_from_command_result(command_result);
 
     if (camera_result == Camera::Result::Success) {
@@ -827,7 +827,7 @@ void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::ResultCal
     const auto mavlink_mode = to_mavlink_camera_mode(mode);
     auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         cmd_set_camera_mode,
         [this, callback, mode](MavlinkCommandSender::Result result, float progress) {
             UNUSED(progress);
@@ -850,10 +850,10 @@ Camera::ModeHandle CameraImpl::subscribe_mode(const Camera::ModeCallback& callba
     notify_mode();
 
     if (callback) {
-        _parent->add_call_every(
+        _system_impl->add_call_every(
             [this]() { request_camera_settings(); }, 5.0, &_mode.call_every_cookie);
     } else {
-        _parent->remove_call_every(_mode.call_every_cookie);
+        _system_impl->remove_call_every(_mode.call_every_cookie);
     }
 
     return handle;
@@ -878,8 +878,8 @@ bool CameraImpl::interval_valid(float interval_s)
 
 void CameraImpl::request_status()
 {
-    _parent->send_command_async(make_command_request_camera_capture_status(), nullptr);
-    _parent->send_command_async(make_command_request_storage_info(), nullptr);
+    _system_impl->send_command_async(make_command_request_camera_capture_status(), nullptr);
+    _system_impl->send_command_async(make_command_request_storage_info(), nullptr);
 }
 
 Camera::StatusHandle CameraImpl::subscribe_status(const Camera::StatusCallback& callback)
@@ -890,11 +890,11 @@ Camera::StatusHandle CameraImpl::subscribe_status(const Camera::StatusCallback& 
 
     if (callback) {
         if (_status.call_every_cookie == nullptr) {
-            _parent->add_call_every(
+            _system_impl->add_call_every(
                 [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
         }
     } else {
-        _parent->remove_call_every(_status.call_every_cookie);
+        _system_impl->remove_call_every(_status.call_every_cookie);
         _status.call_every_cookie = nullptr;
     }
 
@@ -1036,7 +1036,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         // Notify user if a new image has been captured.
         if (_capture_info.last_advertised_image_index < capture_info.index) {
             _capture_info.callbacks.queue(
-                capture_info, [this](const auto& func) { _parent->call_user_callback(func); });
+                capture_info, [this](const auto& func) { _system_impl->call_user_callback(func); });
 
             if (_capture_info.last_advertised_image_index != -1) {
                 // Save captured indices that have been dropped to request later, however, don't
@@ -1057,7 +1057,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         else if (auto it = _capture_info.missing_image_retries.find(capture_info.index);
                  it != _capture_info.missing_image_retries.end()) {
             _capture_info.callbacks.queue(
-                capture_info, [this](const auto& func) { _parent->call_user_callback(func); });
+                capture_info, [this](const auto& func) { _system_impl->call_user_callback(func); });
             _capture_info.missing_image_retries.erase(it);
         }
     }
@@ -1080,7 +1080,7 @@ void CameraImpl::request_missing_capture_info()
     if (!_capture_info.missing_image_retries.empty()) {
         auto it_lowest_retries = std::min_element(
             _capture_info.missing_image_retries.begin(), _capture_info.missing_image_retries.end());
-        _parent->send_command_async(
+        _system_impl->send_command_async(
             CameraImpl::make_command_request_camera_image_captured(it_lowest_retries->first),
             nullptr);
         it_lowest_retries->second += 1;
@@ -1147,7 +1147,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     _information.data.vertical_resolution_px = camera_information.resolution_v;
 
     _information.subscription_callbacks.queue(
-        _information.data, [this](const auto& func) { _parent->call_user_callback(func); });
+        _information.data, [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     if (should_fetch_camera_definition(camera_information.cam_definition_uri)) {
         _is_fetching_camera_definition = true;
@@ -1160,7 +1160,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
                 LogDebug() << "Successfully loaded camera definition";
 
                 if (_camera_definition_callback) {
-                    _parent->call_user_callback([this]() { _camera_definition_callback(true); });
+                    _system_impl->call_user_callback([this]() { _camera_definition_callback(true); });
                 }
 
                 _camera_definition.reset(new CameraDefinition());
@@ -1176,7 +1176,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
                     _has_camera_definition_timed_out = true;
 
                     if (_camera_definition_callback) {
-                        _parent->call_user_callback(
+                        _system_impl->call_user_callback(
                             [this]() { _camera_definition_callback(false); });
                     }
                 }
@@ -1355,7 +1355,7 @@ void CameraImpl::notify_video_stream_info()
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
     _video_stream_info.subscription_callbacks.queue(
-        _video_stream_info.data, [this](const auto& func) { _parent->call_user_callback(func); });
+        _video_stream_info.data, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void CameraImpl::check_status()
@@ -1364,7 +1364,7 @@ void CameraImpl::check_status()
 
     if (_status.received_camera_capture_status && _status.received_storage_information) {
         _status.subscription_callbacks.queue(
-            _status.data, [this](const auto& func) { _parent->call_user_callback(func); });
+            _status.data, [this](const auto& func) { _system_impl->call_user_callback(func); });
 
         _status.received_camera_capture_status = false;
         _status.received_storage_information = false;
@@ -1377,7 +1377,7 @@ void CameraImpl::receive_command_result(
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
     if (callback) {
-        _parent->call_user_callback([callback, camera_result]() { callback(camera_result); });
+        _system_impl->call_user_callback([callback, camera_result]() { callback(camera_result); });
     }
 }
 
@@ -1390,7 +1390,7 @@ void CameraImpl::receive_set_mode_command_result(
 
     if (callback) {
         const auto temp_callback = callback;
-        _parent->call_user_callback(
+        _system_impl->call_user_callback(
             [temp_callback, camera_result]() { temp_callback(camera_result); });
     }
 
@@ -1418,7 +1418,7 @@ void CameraImpl::notify_mode()
     std::lock_guard<std::mutex> lock(_mode.mutex);
 
     _mode.subscription_callbacks.queue(
-        _mode.data, [this](const auto& func) { _parent->call_user_callback(func); });
+        _mode.data, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings)
@@ -1503,7 +1503,7 @@ void CameraImpl::set_option_async(
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
             const auto temp_callback = callback;
-            _parent->call_user_callback(
+            _system_impl->call_user_callback(
                 [temp_callback]() { temp_callback(Camera::Result::Error); });
         }
         return;
@@ -1519,7 +1519,7 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not get all options to get type for range param.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback(
+                _system_impl->call_user_callback(
                     [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
@@ -1529,7 +1529,7 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not get any options to get type for range param.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback(
+                _system_impl->call_user_callback(
                     [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
@@ -1541,7 +1541,7 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not set option value to given type.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback(
+                _system_impl->call_user_callback(
                     [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
@@ -1552,7 +1552,7 @@ void CameraImpl::set_option_async(
             if (callback) {
                 LogErr() << "Could not get option value.";
                 const auto temp_callback = callback;
-                _parent->call_user_callback(
+                _system_impl->call_user_callback(
                     [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
@@ -1570,14 +1570,14 @@ void CameraImpl::set_option_async(
             LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
             if (callback) {
                 const auto temp_callback = callback;
-                _parent->call_user_callback(
+                _system_impl->call_user_callback(
                     [temp_callback]() { temp_callback(Camera::Result::Error); });
             }
             return;
         }
     }
 
-    _parent->set_param_async(
+    _system_impl->set_param_async(
         setting_id,
         value,
         [this, callback, setting_id, value](MAVLinkParameters::Result result) {
@@ -1585,7 +1585,7 @@ void CameraImpl::set_option_async(
                 if (!this->_camera_definition) {
                     if (callback) {
                         const auto temp_callback = callback;
-                        _parent->call_user_callback(
+                        _system_impl->call_user_callback(
                             [temp_callback]() { temp_callback(Camera::Result::Error); });
                     }
                     return;
@@ -1594,7 +1594,7 @@ void CameraImpl::set_option_async(
                 if (!_camera_definition->set_setting(setting_id, value)) {
                     if (callback) {
                         const auto temp_callback = callback;
-                        _parent->call_user_callback(
+                        _system_impl->call_user_callback(
                             [temp_callback]() { temp_callback(Camera::Result::Error); });
                     }
                     return;
@@ -1602,18 +1602,18 @@ void CameraImpl::set_option_async(
 
                 if (callback) {
                     const auto temp_callback = callback;
-                    _parent->call_user_callback(
+                    _system_impl->call_user_callback(
                         [temp_callback]() { temp_callback(Camera::Result::Success); });
                 }
 
                 // FIXME: We are already holding the lock when this lambda is run and need to
                 //        schedule the refresh_params() for later.
                 //        We (ab)use the thread pool for the user callbacks for this.
-                _parent->call_user_callback([this]() { refresh_params(); });
+                _system_impl->call_user_callback([this]() { refresh_params(); });
             } else {
                 if (callback) {
                     const auto temp_callback = callback;
-                    _parent->call_user_callback([temp_callback, result]() {
+                    _system_impl->call_user_callback([temp_callback, result]() {
                         temp_callback(camera_result_from_parameter_result(result));
                     });
                 }
@@ -1634,7 +1634,7 @@ void CameraImpl::get_setting_async(
             new_setting.option = option;
             if (callback) {
                 const auto temp_callback = callback;
-                _parent->call_user_callback(
+                _system_impl->call_user_callback(
                     [temp_callback, result, new_setting]() { temp_callback(result, new_setting); });
             }
         });
@@ -1683,7 +1683,7 @@ void CameraImpl::get_option_async(
         if (callback) {
             Camera::Option empty_option{};
             const auto temp_callback = callback;
-            _parent->call_user_callback([temp_callback, empty_option]() {
+            _system_impl->call_user_callback([temp_callback, empty_option]() {
                 temp_callback(Camera::Result::Error, empty_option);
             });
         }
@@ -1700,7 +1700,7 @@ void CameraImpl::get_option_async(
                 get_option_str(setting_id, new_option.option_id, new_option.option_description);
             }
             const auto temp_callback = callback;
-            _parent->call_user_callback([temp_callback, new_option]() {
+            _system_impl->call_user_callback([temp_callback, new_option]() {
                 temp_callback(Camera::Result::Success, new_option);
             });
         }
@@ -1710,7 +1710,7 @@ void CameraImpl::get_option_async(
         if (callback) {
             Camera::Option no_option{};
             const auto temp_callback = callback;
-            _parent->call_user_callback(
+            _system_impl->call_user_callback(
                 [temp_callback, no_option]() { temp_callback(Camera::Result::Error, no_option); });
         }
     }
@@ -1790,7 +1790,7 @@ void CameraImpl::notify_current_settings()
     }
 
     _subscribe_current_settings.callbacks.queue(
-        current_settings, [this](const auto& func) { _parent->call_user_callback(func); });
+        current_settings, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void CameraImpl::notify_possible_setting_options()
@@ -1812,7 +1812,7 @@ void CameraImpl::notify_possible_setting_options()
     }
 
     _subscribe_possible_setting_options.callbacks.queue(
-        setting_options, [this](const auto& func) { _parent->call_user_callback(func); });
+        setting_options, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 std::vector<Camera::SettingOptions> CameraImpl::possible_setting_options()
@@ -1859,7 +1859,7 @@ void CameraImpl::refresh_params()
         const std::string& param_name = param.first;
         const MAVLinkParameters::ParamValue& param_value_type = param.second;
         const bool is_last = (count == params.size() - 1);
-        _parent->get_param_async(
+        _system_impl->get_param_async(
             param_name,
             param_value_type,
             [param_name, is_last, this](
@@ -1919,19 +1919,19 @@ bool CameraImpl::get_option_str(
 void CameraImpl::request_camera_settings()
 {
     auto command_camera_settings = make_command_request_camera_settings();
-    _parent->send_command_async(command_camera_settings, nullptr);
+    _system_impl->send_command_async(command_camera_settings, nullptr);
 }
 
 void CameraImpl::request_flight_information()
 {
     auto command_flight_information = make_command_request_flight_information();
-    _parent->send_command_async(command_flight_information, nullptr);
+    _system_impl->send_command_async(command_flight_information, nullptr);
 }
 
 void CameraImpl::request_camera_information()
 {
     auto command_camera_info = make_command_request_camera_info();
-    _parent->send_command_async(command_camera_info, nullptr);
+    _system_impl->send_command_async(command_camera_info, nullptr);
 }
 
 Camera::Result CameraImpl::format_storage()
@@ -1954,7 +1954,7 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
     cmd_format.params.maybe_param3 = 1.0f; // clear
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         cmd_format, [this, callback](MavlinkCommandSender::Result result, float progress) {
             UNUSED(progress);
 
@@ -2009,7 +2009,7 @@ void CameraImpl::list_photos_async(
         std::lock_guard<std::mutex> status_lock(_status.mutex);
 
         if (_status.is_fetching_photos) {
-            _parent->call_user_callback([callback]() {
+            _system_impl->call_user_callback([callback]() {
                 callback(Camera::Result::Busy, std::vector<Camera::CaptureInfo>{});
             });
             return;
@@ -2020,7 +2020,7 @@ void CameraImpl::list_photos_async(
         if (_status.image_count == -1) {
             LogErr() << "Cannot list photos: camera status has not been received yet!";
             _status.is_fetching_photos = false;
-            _parent->call_user_callback([callback]() {
+            _system_impl->call_user_callback([callback]() {
                 callback(Camera::Result::Error, std::vector<Camera::CaptureInfo>{});
             });
             return;
@@ -2061,13 +2061,13 @@ void CameraImpl::list_photos_async(
                     if (request_try_number >= request_try_limit) {
                         std::lock_guard<std::mutex> status_lock(_status.mutex);
                         _status.is_fetching_photos = false;
-                        _parent->call_user_callback([callback]() {
+                        _system_impl->call_user_callback([callback]() {
                             callback(Camera::Result::Timeout, std::vector<Camera::CaptureInfo>{});
                         });
                         return;
                     }
 
-                    _parent->send_command_async(
+                    _system_impl->send_command_async(
                         make_command_request_camera_image_captured(i), nullptr);
                     cv_status = _captured_request_cv.wait_for(
                         capture_request_lock, std::chrono::seconds(1));
@@ -2077,7 +2077,7 @@ void CameraImpl::list_photos_async(
             if (safety_count == safety_count_boundary) {
                 std::lock_guard<std::mutex> status_lock(_status.mutex);
                 _status.is_fetching_photos = false;
-                _parent->call_user_callback([callback]() {
+                _system_impl->call_user_callback([callback]() {
                     callback(Camera::Result::Error, std::vector<Camera::CaptureInfo>{});
                 });
                 return;
@@ -2097,7 +2097,7 @@ void CameraImpl::list_photos_async(
             _status.is_fetching_photos = false;
 
             const auto temp_callback = callback;
-            _parent->call_user_callback([temp_callback, photo_list]() {
+            _system_impl->call_user_callback([temp_callback, photo_list]() {
                 temp_callback(Camera::Result::Success, photo_list);
             });
         }

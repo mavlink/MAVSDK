@@ -15,32 +15,32 @@ using VehicleAction = Mission::MissionItem::VehicleAction;
 
 MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 MissionImpl::MissionImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 MissionImpl::~MissionImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void MissionImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CURRENT,
         [this](const mavlink_message_t& message) { process_mission_current(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
         [this](const mavlink_message_t& message) { process_mission_item_reached(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
         [this](const mavlink_message_t& message) { process_gimbal_manager_information(message); },
         this);
@@ -48,14 +48,14 @@ void MissionImpl::init()
 
 void MissionImpl::enable()
 {
-    _parent->register_timeout_handler(
+    _system_impl->register_timeout_handler(
         [this]() { receive_protocol_timeout(); }, 1.0, &_gimbal_protocol_cookie);
 
     MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.params.maybe_param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
     command.target_component_id = 0; // any component
-    _parent->send_command_async(command, nullptr);
+    _system_impl->send_command_async(command, nullptr);
 }
 
 void MissionImpl::disable()
@@ -66,9 +66,9 @@ void MissionImpl::disable()
 
 void MissionImpl::deinit()
 {
-    _parent->unregister_timeout_handler(_gimbal_protocol_cookie);
-    _parent->unregister_timeout_handler(_timeout_cookie);
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_timeout_handler(_gimbal_protocol_cookie);
+    _system_impl->unregister_timeout_handler(_timeout_cookie);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void MissionImpl::reset_mission_progress()
@@ -106,7 +106,7 @@ void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& me
     if (_gimbal_protocol_cookie != nullptr) {
         LogDebug() << "Using gimbal protocol v2";
         _gimbal_protocol = GimbalProtocol::V2;
-        _parent->unregister_timeout_handler(_gimbal_protocol_cookie);
+        _system_impl->unregister_timeout_handler(_gimbal_protocol_cookie);
     }
 }
 
@@ -143,7 +143,7 @@ void MissionImpl::upload_mission_async(
     const Mission::MissionPlan& mission_plan, const Mission::ResultCallback& callback)
 {
     if (_mission_data.last_upload.lock()) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 callback(Mission::Result::Busy);
             }
@@ -156,12 +156,12 @@ void MissionImpl::upload_mission_async(
     wait_for_protocol_async([callback, mission_plan, this]() {
         const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-        _mission_data.last_upload = _parent->mission_transfer().upload_items_async(
+        _mission_data.last_upload = _system_impl->mission_transfer().upload_items_async(
             MAV_MISSION_TYPE_MISSION,
             int_items,
             [this, callback](MavlinkMissionTransfer::Result result) {
                 auto converted_result = convert_result(result);
-                _parent->call_user_callback([callback, converted_result]() {
+                _system_impl->call_user_callback([callback, converted_result]() {
                     if (callback) {
                         callback(converted_result);
                     }
@@ -175,7 +175,7 @@ void MissionImpl::upload_mission_with_progress_async(
     const Mission::UploadMissionWithProgressCallback callback)
 {
     if (_mission_data.last_upload.lock()) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 callback(Mission::Result::Busy, Mission::ProgressData{});
             }
@@ -188,19 +188,19 @@ void MissionImpl::upload_mission_with_progress_async(
     wait_for_protocol_async([callback, mission_plan, this]() {
         const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-        _mission_data.last_upload = _parent->mission_transfer().upload_items_async(
+        _mission_data.last_upload = _system_impl->mission_transfer().upload_items_async(
             MAV_MISSION_TYPE_MISSION,
             int_items,
             [this, callback](MavlinkMissionTransfer::Result result) {
                 auto converted_result = convert_result(result);
-                _parent->call_user_callback([callback, converted_result]() {
+                _system_impl->call_user_callback([callback, converted_result]() {
                     if (callback) {
                         callback(converted_result, Mission::ProgressData{});
                     }
                 });
             },
             [this, callback](float progress) {
-                _parent->call_user_callback([callback, progress]() {
+                _system_impl->call_user_callback([callback, progress]() {
                     if (callback) {
                         callback(Mission::Result::Next, Mission::ProgressData{progress});
                     }
@@ -236,7 +236,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
 void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback& callback)
 {
     if (_mission_data.last_download.lock()) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 Mission::MissionPlan mission_plan{};
                 callback(Mission::Result::Busy, mission_plan);
@@ -245,13 +245,13 @@ void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback&
         return;
     }
 
-    _mission_data.last_download = _parent->mission_transfer().download_items_async(
+    _mission_data.last_download = _system_impl->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         [this, callback](
             MavlinkMissionTransfer::Result result,
             std::vector<MavlinkMissionTransfer::ItemInt> items) {
             auto result_and_items = convert_to_result_and_mission_items(result, items);
-            _parent->call_user_callback([callback, result_and_items]() {
+            _system_impl->call_user_callback([callback, result_and_items]() {
                 callback(result_and_items.first, result_and_items.second);
             });
         });
@@ -261,7 +261,7 @@ void MissionImpl::download_mission_with_progress_async(
     const Mission::DownloadMissionWithProgressCallback callback)
 {
     if (_mission_data.last_download.lock()) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 Mission::ProgressDataOrMission progress_data_or_mission{};
                 progress_data_or_mission.has_mission = false;
@@ -272,13 +272,13 @@ void MissionImpl::download_mission_with_progress_async(
         return;
     }
 
-    _mission_data.last_download = _parent->mission_transfer().download_items_async(
+    _mission_data.last_download = _system_impl->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         [this, callback](
             MavlinkMissionTransfer::Result result,
             const std::vector<MavlinkMissionTransfer::ItemInt>& items) {
             auto result_and_items = convert_to_result_and_mission_items(result, items);
-            _parent->call_user_callback([callback, result_and_items]() {
+            _system_impl->call_user_callback([callback, result_and_items]() {
                 if (result_and_items.first == Mission::Result::Success) {
                     Mission::ProgressDataOrMission progress_data_or_mission{};
                     progress_data_or_mission.has_mission = true;
@@ -290,7 +290,7 @@ void MissionImpl::download_mission_with_progress_async(
             });
         },
         [this, callback](float progress) {
-            _parent->call_user_callback([callback, progress]() {
+            _system_impl->call_user_callback([callback, progress]() {
                 Mission::ProgressDataOrMission progress_data_or_mission{};
                 progress_data_or_mission.has_progress = true;
                 progress_data_or_mission.progress = progress;
@@ -884,7 +884,7 @@ Mission::Result MissionImpl::start_mission()
 
 void MissionImpl::start_mission_async(const Mission::ResultCallback& callback)
 {
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::Mission, [this, callback](MavlinkCommandSender::Result result, float) {
             report_flight_mode_change(callback, result);
         });
@@ -901,7 +901,7 @@ Mission::Result MissionImpl::pause_mission()
 
 void MissionImpl::pause_mission_async(const Mission::ResultCallback& callback)
 {
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::Hold, [this, callback](MavlinkCommandSender::Result result, float) {
             report_flight_mode_change(callback, result);
         });
@@ -914,7 +914,7 @@ void MissionImpl::report_flight_mode_change(
         return;
     }
 
-    _parent->call_user_callback(
+    _system_impl->call_user_callback(
         [callback, result]() { callback(command_result_to_mission_result(result)); });
 }
 
@@ -957,10 +957,10 @@ void MissionImpl::clear_mission_async(const Mission::ResultCallback& callback)
 {
     reset_mission_progress();
 
-    _parent->mission_transfer().clear_items_async(
+    _system_impl->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_MISSION, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
-            _parent->call_user_callback([callback, converted_result]() {
+            _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {
                     callback(converted_result);
                 }
@@ -1000,7 +1000,7 @@ void MissionImpl::set_current_mission_item_async(
     // means to reset to the beginning.
 
     if (mavlink_index == -1 && current != 0) {
-        _parent->call_user_callback([callback]() {
+        _system_impl->call_user_callback([callback]() {
             if (callback) {
                 // FIXME: come up with better error code.
                 callback(Mission::Result::InvalidArgument);
@@ -1009,10 +1009,10 @@ void MissionImpl::set_current_mission_item_async(
         });
     }
 
-    _parent->mission_transfer().set_current_item_async(
+    _system_impl->mission_transfer().set_current_item_async(
         mavlink_index, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
-            _parent->call_user_callback([callback, converted_result]() {
+            _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {
                     callback(converted_result);
                 }
@@ -1046,7 +1046,7 @@ void MissionImpl::report_progress_locked()
 
     if (should_report) {
         _mission_data.mission_progress_callbacks.queue(
-            {current, total}, [this](const auto& func) { _parent->call_user_callback(func); });
+            {current, total}, [this](const auto& func) { _system_impl->call_user_callback(func); });
         LogDebug() << "current: " << current << ", total: " << total;
     }
 }

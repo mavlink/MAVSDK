@@ -13,22 +13,22 @@ template class CallbackList<Gimbal::ControlStatus>;
 
 GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 GimbalImpl::GimbalImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 GimbalImpl::~GimbalImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void GimbalImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
         [this](const mavlink_message_t& message) { process_gimbal_manager_information(message); },
         this);
@@ -38,14 +38,14 @@ void GimbalImpl::deinit() {}
 
 void GimbalImpl::enable()
 {
-    _parent->register_timeout_handler(
+    _system_impl->register_timeout_handler(
         [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
 
     MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_REQUEST_MESSAGE;
     command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION)};
     command.target_component_id = 0; // any component
-    _parent->send_command_async(command, nullptr);
+    _system_impl->send_command_async(command, nullptr);
 }
 
 void GimbalImpl::disable()
@@ -58,7 +58,7 @@ void GimbalImpl::receive_protocol_timeout()
     // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
     // assume Version2 is not available.
     LogDebug() << "Falling back to Gimbal Version 1";
-    _gimbal_protocol.reset(new GimbalProtocolV1(*_parent));
+    _gimbal_protocol.reset(new GimbalProtocolV1(*_system_impl));
     _protocol_cookie = nullptr;
 }
 
@@ -72,10 +72,10 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
                    << static_cast<int>(gimbal_manager_information.gimbal_device_id)
                    << " was discovered";
 
-        _parent->unregister_timeout_handler(_protocol_cookie);
+        _system_impl->unregister_timeout_handler(_protocol_cookie);
         _protocol_cookie = nullptr;
         _gimbal_protocol.reset(new GimbalProtocolV2(
-            *_parent, gimbal_manager_information, message.sysid, message.compid));
+            *_system_impl, gimbal_manager_information, message.sysid, message.compid));
     }
 }
 
@@ -177,7 +177,7 @@ Gimbal::ControlHandle GimbalImpl::subscribe_control(const Gimbal::ControlCallbac
         wait_for_protocol_async([=]() {
             _gimbal_protocol->control_async([this](Gimbal::ControlStatus status) {
                 _control_subscriptions.queue(
-                    status, [this](const auto& func) { _parent->call_user_callback(func); });
+                    status, [this](const auto& func) { _system_impl->call_user_callback(func); });
             });
         });
     }

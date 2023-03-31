@@ -5,17 +5,17 @@ namespace mavsdk {
 
 RtkImpl::RtkImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 RtkImpl::RtkImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 RtkImpl::~RtkImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void RtkImpl::init() {}
@@ -52,14 +52,14 @@ Rtk::Result RtkImpl::send_rtcm_data(Rtk::RtcmData rtcm_data)
 
         mavlink_message_t message;
         mavlink_msg_gps_rtcm_data_pack(
-            _parent->get_own_system_id(),
-            _parent->get_own_component_id(),
+            _system_impl->get_own_system_id(),
+            _system_impl->get_own_component_id(),
             &message,
             flags,
             static_cast<uint8_t>(std::min(field_len, bytes_to_send)),
             reinterpret_cast<const uint8_t*>(rtcm_data.data.c_str() + (i * field_len)));
 
-        if (!_parent->send_message(message)) {
+        if (!_system_impl->send_message(message)) {
             ++_sequence;
             return Rtk::Result::ConnectionError;
         }

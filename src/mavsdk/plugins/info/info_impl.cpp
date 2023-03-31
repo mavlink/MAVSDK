@@ -8,32 +8,32 @@ namespace mavsdk {
 
 InfoImpl::InfoImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 InfoImpl::InfoImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 InfoImpl::~InfoImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void InfoImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
         [this](const mavlink_message_t& message) { process_flight_information(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE,
         [this](const mavlink_message_t& message) { process_attitude(message); },
         this);
@@ -41,28 +41,28 @@ void InfoImpl::init()
 
 void InfoImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void InfoImpl::enable()
 {
     // We can't rely on System to request the autopilot_version,
     // so we do it here, anyway.
-    _parent->send_autopilot_version_request();
-    _parent->send_flight_information_request();
+    _system_impl->send_autopilot_version_request();
+    _system_impl->send_flight_information_request();
 
     // We're going to retry until we have the version.
-    _parent->add_call_every([this]() { request_version_again(); }, 1.0f, &_call_every_cookie);
+    _system_impl->add_call_every([this]() { request_version_again(); }, 1.0f, &_call_every_cookie);
 
     // We're going to periodically ask for the flight information
-    _parent->add_call_every(
+    _system_impl->add_call_every(
         [this]() { request_flight_information(); }, 1.0f, &_flight_info_call_every_cookie);
 }
 
 void InfoImpl::disable()
 {
-    _parent->remove_call_every(_call_every_cookie);
-    _parent->remove_call_every(_flight_info_call_every_cookie);
+    _system_impl->remove_call_every(_call_every_cookie);
+    _system_impl->remove_call_every(_flight_info_call_every_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -76,12 +76,12 @@ void InfoImpl::request_version_again()
     {
         std::lock_guard<std::mutex> lock(_mutex);
         if (_information_received) {
-            _parent->remove_call_every(_call_every_cookie);
+            _system_impl->remove_call_every(_call_every_cookie);
             return;
         }
     }
 
-    _parent->send_autopilot_version_request();
+    _system_impl->send_autopilot_version_request();
 }
 
 void InfoImpl::request_flight_information()
@@ -89,11 +89,11 @@ void InfoImpl::request_flight_information()
     // We will request new flight information from the autopilot only if
     // we go from an armed to disarmed state or if we haven't received any
     // information yet
-    if ((_was_armed && !_parent->is_armed()) || !_flight_information_received) {
-        _parent->send_flight_information_request();
+    if ((_was_armed && !_system_impl->is_armed()) || !_flight_information_received) {
+        _system_impl->send_flight_information_request();
     }
 
-    _was_armed = _parent->is_armed();
+    _was_armed = _system_impl->is_armed();
 }
 
 void InfoImpl::process_autopilot_version(const mavlink_message_t& message)

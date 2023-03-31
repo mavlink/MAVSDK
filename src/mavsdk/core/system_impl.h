@@ -354,7 +354,7 @@ private:
 
     std::atomic<Autopilot> _autopilot{Autopilot::Unknown};
 
-    MavsdkImpl& _parent;
+    MavsdkImpl& _mavsdk_impl;
 
     std::thread* _system_thread{nullptr};
     std::atomic<bool> _should_exit{false};

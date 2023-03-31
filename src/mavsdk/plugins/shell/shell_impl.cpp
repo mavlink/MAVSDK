@@ -8,7 +8,7 @@ template class CallbackList<std::string>;
 
 void ShellImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SERIAL_CONTROL,
         [this](const mavlink_message_t& message) { process_shell_message(message); },
         this);
@@ -16,7 +16,7 @@ void ShellImpl::init()
 
 void ShellImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void ShellImpl::enable() {}
@@ -25,22 +25,22 @@ void ShellImpl::disable() {}
 
 ShellImpl::ShellImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ShellImpl::ShellImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ShellImpl::~ShellImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 Shell::Result ShellImpl::send(std::string command)
 {
-    if (!_parent->is_connected()) {
+    if (!_system_impl->is_connected()) {
         return Shell::Result::NoSystem;
     }
 
@@ -74,8 +74,8 @@ bool ShellImpl::send_command_message(std::string command)
 
     while (command.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
         mavlink_msg_serial_control_pack(
-            _parent->get_own_system_id(),
-            _parent->get_own_component_id(),
+            _system_impl->get_own_system_id(),
+            _system_impl->get_own_component_id(),
             &message,
             static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
             0,
@@ -83,10 +83,10 @@ bool ShellImpl::send_command_message(std::string command)
             0,
             static_cast<uint8_t>(MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN),
             reinterpret_cast<const uint8_t*>(command.c_str()),
-            _parent->get_system_id(),
-            _parent->get_autopilot_id());
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id());
         command.erase(0, MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN);
-        if (!_parent->send_message(message)) {
+        if (!_system_impl->send_message(message)) {
             return false;
         }
     }
@@ -104,8 +104,8 @@ bool ShellImpl::send_command_message(std::string command)
     memcpy(data, command.c_str(), command.length());
 
     mavlink_msg_serial_control_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &message,
         static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
         flags,
@@ -113,10 +113,10 @@ bool ShellImpl::send_command_message(std::string command)
         0,
         static_cast<uint8_t>(command.length()),
         data,
-        _parent->get_system_id(),
-        _parent->get_autopilot_id());
+        _system_impl->get_system_id(),
+        _system_impl->get_autopilot_id());
 
-    return _parent->send_message(message);
+    return _system_impl->send_message(message);
 }
 
 void ShellImpl::process_shell_message(const mavlink_message_t& message)
@@ -143,7 +143,7 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_receive.mutex);
     _receive.callbacks.queue(
-        response, [this](const auto& func) { _parent->call_user_callback(func); });
+        response, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 } // namespace mavsdk

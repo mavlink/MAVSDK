@@ -9,25 +9,25 @@ template class CallbackList<const mavlink_message_t&>;
 
 MavlinkPassthroughImpl::MavlinkPassthroughImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 MavlinkPassthroughImpl::MavlinkPassthroughImpl(std::shared_ptr<System> system) :
     PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 MavlinkPassthroughImpl::~MavlinkPassthroughImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void MavlinkPassthroughImpl::init() {}
 
 void MavlinkPassthroughImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
     _message_subscriptions.clear();
 }
 
@@ -37,7 +37,7 @@ void MavlinkPassthroughImpl::disable() {}
 
 MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_t& message)
 {
-    if (!_parent->send_message(message)) {
+    if (!_system_impl->send_message(message)) {
         return MavlinkPassthrough::Result::ConnectionError;
     }
     return MavlinkPassthrough::Result::Success;
@@ -59,7 +59,7 @@ MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong&
     command_internal.params.maybe_param7 = command.param7;
 
     return to_mavlink_passthrough_result_from_mavlink_commands_result(
-        _parent->send_command(command_internal));
+        _system_impl->send_command(command_internal));
 }
 
 MavlinkPassthrough::Result
@@ -79,7 +79,7 @@ MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& c
     command_internal.params.maybe_z = command.z;
 
     return to_mavlink_passthrough_result_from_mavlink_commands_result(
-        _parent->send_command(command_internal));
+        _system_impl->send_command(command_internal));
 }
 
 mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
@@ -109,7 +109,7 @@ mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
 std::pair<MavlinkPassthrough::Result, int32_t> MavlinkPassthroughImpl::get_param_int(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    auto result = _parent->get_param_int(name, maybe_component_id, extended);
+    auto result = _system_impl->get_param_int(name, maybe_component_id, extended);
     auto translated_result = to_mavlink_passthrough_result_from_mavlink_params_result(result.first);
 
     return std::make_pair(translated_result, result.second);
@@ -118,7 +118,7 @@ std::pair<MavlinkPassthrough::Result, int32_t> MavlinkPassthroughImpl::get_param
 std::pair<MavlinkPassthrough::Result, float> MavlinkPassthroughImpl::get_param_float(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    auto result = _parent->get_param_float(name, maybe_component_id, extended);
+    auto result = _system_impl->get_param_float(name, maybe_component_id, extended);
     auto translated_result = to_mavlink_passthrough_result_from_mavlink_params_result(result.first);
 
     return std::make_pair(translated_result, result.second);
@@ -190,7 +190,7 @@ MavlinkPassthrough::MessageHandle MavlinkPassthroughImpl::subscribe_message(
     uint16_t message_id, const MavlinkPassthrough::MessageCallback& callback)
 {
     if (_message_subscriptions.find(message_id) == _message_subscriptions.end()) {
-        _parent->register_mavlink_message_handler(
+        _system_impl->register_mavlink_message_handler(
             message_id,
             [this](const mavlink_message_t& message) { receive_mavlink_message(message); },
             this);
@@ -211,27 +211,27 @@ void MavlinkPassthroughImpl::unsubscribe_message(MavlinkPassthrough::MessageHand
 void MavlinkPassthroughImpl::receive_mavlink_message(const mavlink_message_t& message)
 {
     _message_subscriptions[message.msgid].queue(
-        message, [this](const auto& func) { _parent->call_user_callback(func); });
+        message, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 uint8_t MavlinkPassthroughImpl::get_our_sysid() const
 {
-    return _parent->get_own_system_id();
+    return _system_impl->get_own_system_id();
 }
 
 uint8_t MavlinkPassthroughImpl::get_our_compid() const
 {
-    return _parent->get_own_component_id();
+    return _system_impl->get_own_component_id();
 }
 
 uint8_t MavlinkPassthroughImpl::get_target_sysid() const
 {
-    return _parent->get_system_id();
+    return _system_impl->get_system_id();
 }
 
 uint8_t MavlinkPassthroughImpl::get_target_compid() const
 {
-    return _parent->get_autopilot_id();
+    return _system_impl->get_autopilot_id();
 }
 
 } // namespace mavsdk
