@@ -6,17 +6,17 @@ namespace mavsdk {
 
 GeofenceImpl::GeofenceImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 GeofenceImpl::GeofenceImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 GeofenceImpl::~GeofenceImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void GeofenceImpl::init() {}
@@ -44,10 +44,10 @@ void GeofenceImpl::upload_geofence_async(
     // later in the MavlinkMissionTransfer constructor.
     const auto items = assemble_items(geofence_data);
 
-    _parent->mission_transfer().upload_items_async(
+    _system_impl->mission_transfer().upload_items_async(
         MAV_MISSION_TYPE_FENCE, items, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
-            _parent->call_user_callback(
+            _system_impl->call_user_callback(
                 [callback, converted_result]() { callback(converted_result); });
         });
 }
@@ -63,10 +63,10 @@ Geofence::Result GeofenceImpl::clear_geofence()
 
 void GeofenceImpl::clear_geofence_async(const Geofence::ResultCallback& callback)
 {
-    _parent->mission_transfer().clear_items_async(
+    _system_impl->mission_transfer().clear_items_async(
         MAV_MISSION_TYPE_FENCE, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
-            _parent->call_user_callback([callback, converted_result]() {
+            _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {
                     callback(converted_result);
                 }

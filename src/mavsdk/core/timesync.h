@@ -19,7 +19,7 @@ public:
     Timesync& operator=(const Timesync&) = delete;
 
 private:
-    SystemImpl& _parent;
+    SystemImpl& _system_impl;
 
     void process_timesync(const mavlink_message_t& message);
     void send_timesync(uint64_t tc1, uint64_t ts1);

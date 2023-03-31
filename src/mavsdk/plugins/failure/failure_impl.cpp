@@ -4,17 +4,17 @@ namespace mavsdk {
 
 FailureImpl::FailureImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 FailureImpl::FailureImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 FailureImpl::~FailureImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void FailureImpl::init() {}
@@ -25,7 +25,7 @@ void FailureImpl::enable()
 {
     constexpr auto param_name = "SYS_FAILURE_EN";
 
-    _parent->get_param_int_async(
+    _system_impl->get_param_int_async(
         param_name,
         [this](MAVLinkParameters::Result result, int32_t value) {
             if (result == MAVLinkParameters::Result::Success) {
@@ -42,7 +42,7 @@ void FailureImpl::enable()
         },
         this);
 
-    _parent->subscribe_param_int(
+    _system_impl->subscribe_param_int(
         param_name,
         [this](int value) {
             if (value == 1) {
@@ -79,9 +79,9 @@ Failure::Result FailureImpl::inject(
     command.params.maybe_param1 = failure_unit_to_mavlink_enum(failure_unit);
     command.params.maybe_param2 = failure_type_to_mavlink_enum(failure_type);
     command.params.maybe_param3 = static_cast<float>(instance);
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    return failure_result_from_command_result(_parent->send_command(command));
+    return failure_result_from_command_result(_system_impl->send_command(command));
 }
 
 float FailureImpl::failure_unit_to_mavlink_enum(const Failure::FailureUnit& failure_unit)

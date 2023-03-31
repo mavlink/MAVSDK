@@ -12,27 +12,27 @@ namespace mavsdk {
 
 LogFilesImpl::LogFilesImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 LogFilesImpl::LogFilesImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 LogFilesImpl::~LogFilesImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void LogFilesImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOG_ENTRY,
         [this](const mavlink_message_t& message) { process_log_entry(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOG_DATA,
         [this](const mavlink_message_t& message) { process_log_data(message); },
         this);
@@ -45,14 +45,14 @@ void LogFilesImpl::deinit()
 {
     {
         std::lock_guard<std::mutex> lock(_entries.mutex);
-        _parent->unregister_timeout_handler(_entries.cookie);
+        _system_impl->unregister_timeout_handler(_entries.cookie);
     }
 
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
-        _parent->unregister_timeout_handler(_data.cookie);
+        _system_impl->unregister_timeout_handler(_data.cookie);
     }
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void LogFilesImpl::enable() {}
@@ -63,12 +63,12 @@ void LogFilesImpl::request_end()
 {
     mavlink_message_t msg;
     mavlink_msg_log_request_end_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &msg,
-        _parent->get_system_id(),
+        _system_impl->get_system_id(),
         MAV_COMP_ID_AUTOPILOT1);
-    _parent->send_message(msg);
+    _system_impl->send_message(msg);
 }
 
 std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entries()
@@ -93,7 +93,7 @@ void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
         _entries.retries = 0;
     }
 
-    _parent->register_timeout_handler(
+    _system_impl->register_timeout_handler(
         [this]() { list_timeout(); }, LIST_TIMEOUT_S, &_entries.cookie);
 
     request_list_entry(-1);
@@ -112,15 +112,15 @@ void LogFilesImpl::request_list_entry(int entry_id)
 
     mavlink_message_t msg;
     mavlink_msg_log_request_list_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &msg,
-        _parent->get_system_id(),
+        _system_impl->get_system_id(),
         MAV_COMP_ID_AUTOPILOT1,
         index_min,
         index_max);
 
-    _parent->send_message(msg);
+    _system_impl->send_message(msg);
 }
 
 void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
@@ -131,11 +131,11 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
     // Catch case where there are no log files to be found.
     if (log_entry.num_logs == 0 && log_entry.id == 0) {
         std::lock_guard<std::mutex> lock(_entries.mutex);
-        _parent->unregister_timeout_handler(_entries.cookie);
+        _system_impl->unregister_timeout_handler(_entries.cookie);
         if (_entries.callback) {
             const auto tmp_callback = _entries.callback;
             std::vector<LogFiles::Entry> empty_list{};
-            _parent->call_user_callback([tmp_callback, empty_list]() {
+            _system_impl->call_user_callback([tmp_callback, empty_list]() {
                 tmp_callback(LogFiles::Result::NoLogfiles, empty_list);
             });
         }
@@ -156,7 +156,7 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
         std::lock_guard<std::mutex> lock(_entries.mutex);
         _entries.entry_map[new_entry.id] = new_entry;
         _entries.max_list_id = log_entry.num_logs;
-        _parent->refresh_timeout_handler(_entries.cookie);
+        _system_impl->refresh_timeout_handler(_entries.cookie);
     }
 }
 
@@ -174,7 +174,7 @@ void LogFilesImpl::list_timeout()
         }
         if (_entries.callback) {
             const auto tmp_callback = _entries.callback;
-            _parent->call_user_callback([tmp_callback, entry_list]() {
+            _system_impl->call_user_callback([tmp_callback, entry_list]() {
                 tmp_callback(LogFiles::Result::Success, entry_list);
             });
         }
@@ -183,7 +183,7 @@ void LogFilesImpl::list_timeout()
             LogWarn() << "Too many log entry retries, giving up.";
             if (_entries.callback) {
                 const auto tmp_callback = _entries.callback;
-                _parent->call_user_callback([tmp_callback]() {
+                _system_impl->call_user_callback([tmp_callback]() {
                     std::vector<LogFiles::Entry> empty_vector{};
                     tmp_callback(LogFiles::Result::Timeout, empty_vector);
                 });
@@ -196,7 +196,7 @@ void LogFilesImpl::list_timeout()
                     request_list_entry(int(i));
                 }
             }
-            _parent->register_timeout_handler(
+            _system_impl->register_timeout_handler(
                 [this]() { list_timeout(); }, LIST_TIMEOUT_S, &_entries.cookie);
             _entries.retries++;
         }
@@ -232,7 +232,7 @@ void LogFilesImpl::download_log_file_async(
             LogErr() << "Log entry id " << entry.id << " not found";
             if (callback) {
                 const auto tmp_callback = callback;
-                _parent->call_user_callback([tmp_callback]() {
+                _system_impl->call_user_callback([tmp_callback]() {
                     LogFiles::ProgressData progress;
                     progress.progress = 0.0f;
                     tmp_callback(LogFiles::Result::InvalidArgument, progress);
@@ -250,7 +250,7 @@ void LogFilesImpl::download_log_file_async(
         if (is_directory(file_path)) {
             if (callback) {
                 const auto tmp_callback = callback;
-                _parent->call_user_callback([tmp_callback]() {
+                _system_impl->call_user_callback([tmp_callback]() {
                     LogFiles::ProgressData progress;
                     progress.progress = NAN;
                     LogErr()
@@ -264,7 +264,7 @@ void LogFilesImpl::download_log_file_async(
         if (file_exists(file_path)) {
             if (callback) {
                 const auto tmp_callback = callback;
-                _parent->call_user_callback([tmp_callback]() {
+                _system_impl->call_user_callback([tmp_callback]() {
                     LogFiles::ProgressData progress;
                     progress.progress = NAN;
                     LogErr() << "Target log file already exists!";
@@ -277,7 +277,7 @@ void LogFilesImpl::download_log_file_async(
         if (!start_logfile(file_path)) {
             if (callback) {
                 const auto tmp_callback = callback;
-                _parent->call_user_callback([tmp_callback]() {
+                _system_impl->call_user_callback([tmp_callback]() {
                     LogFiles::ProgressData progress;
                     progress.progress = NAN;
                     tmp_callback(LogFiles::Result::FileOpenFailed, progress);
@@ -297,14 +297,14 @@ void LogFilesImpl::download_log_file_async(
             part_size / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN +
             ((part_size % MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) != 0));
 
-        _parent->register_timeout_handler(
+        _system_impl->register_timeout_handler(
             [this]() { LogFilesImpl::data_timeout(); }, DATA_TIMEOUT_S, &_data.cookie);
 
         request_log_data(_data.id, _data.part_start, _data.bytes.size());
 
         if (_data.callback) {
             const auto tmp_callback = _data.callback;
-            _parent->call_user_callback([tmp_callback]() {
+            _system_impl->call_user_callback([tmp_callback]() {
                 LogFiles::ProgressData progress;
                 progress.progress = 0.0f;
                 tmp_callback(LogFiles::Result::Next, progress);
@@ -317,12 +317,12 @@ LogFiles::Result LogFilesImpl::erase_all_log_files()
 {
     mavlink_message_t msg;
     mavlink_msg_log_erase_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &msg,
-        _parent->get_system_id(),
+        _system_impl->get_system_id(),
         MAV_COMP_ID_AUTOPILOT1);
-    _parent->send_message(msg);
+    _system_impl->send_message(msg);
 
     // TODO: find a good way to know about the success or failure of the operation
     return LogFiles::Result::Success;
@@ -353,7 +353,7 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_data.mutex);
 
-    _parent->refresh_timeout_handler(_data.cookie);
+    _system_impl->refresh_timeout_handler(_data.cookie);
 
     if (log_data.count > MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) {
         LogErr() << "Ignoring wrong count";
@@ -384,7 +384,7 @@ void LogFilesImpl::report_progress(unsigned transferred, unsigned total)
 
     if (_data.callback) {
         const auto tmp_callback = _data.callback;
-        _parent->call_user_callback([tmp_callback, progress]() {
+        _system_impl->call_user_callback([tmp_callback, progress]() {
             LogFiles::ProgressData progress_data;
             progress_data.progress = progress;
 
@@ -425,13 +425,13 @@ void LogFilesImpl::check_part()
                    << " B (" << kib_s << " kiB/s)";
 
         if (_data.part_start + _data.bytes.size() == _data.bytes_to_get) {
-            _parent->unregister_timeout_handler(_data.cookie);
+            _system_impl->unregister_timeout_handler(_data.cookie);
 
             finish_logfile();
 
             if (_data.callback) {
                 const auto tmp_callback = _data.callback;
-                _parent->call_user_callback([tmp_callback]() {
+                _system_impl->call_user_callback([tmp_callback]() {
                     LogFiles::ProgressData progress_data;
                     progress_data.progress = 1.0f;
                     tmp_callback(LogFiles::Result::Success, progress_data);
@@ -459,22 +459,22 @@ void LogFilesImpl::request_log_data(unsigned id, unsigned start, unsigned count)
     // LogDebug() << "requesting: " << start << ".." << start+count << " (" << id << ")";
     mavlink_message_t msg;
     mavlink_msg_log_request_data_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &msg,
-        _parent->get_system_id(),
+        _system_impl->get_system_id(),
         MAV_COMP_ID_AUTOPILOT1,
         id,
         start,
         count);
-    _parent->send_message(msg);
+    _system_impl->send_message(msg);
 }
 
 void LogFilesImpl::data_timeout()
 {
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
-        _parent->register_timeout_handler(
+        _system_impl->register_timeout_handler(
             [this]() { LogFilesImpl::data_timeout(); }, DATA_TIMEOUT_S, &_data.cookie);
         _data.rerequesting = true;
         check_part();

@@ -155,7 +155,7 @@ private:
 
     float maybe_reserved(const std::optional<float>& maybe_param) const;
 
-    SystemImpl& _parent;
+    SystemImpl& _system_impl;
     LockedQueue<Work> _work_queue{};
 
     bool _command_debugging{false};

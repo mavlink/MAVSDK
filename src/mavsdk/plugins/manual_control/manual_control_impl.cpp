@@ -5,18 +5,18 @@ namespace mavsdk {
 
 ManualControlImpl::ManualControlImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ManualControlImpl::ManualControlImpl(std::shared_ptr<System> system) :
     PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ManualControlImpl::~ManualControlImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void ManualControlImpl::init() {}
@@ -32,13 +32,13 @@ void ManualControlImpl::start_position_control_async(const ManualControl::Result
     if (_input == Input::NotSet) {
         if (callback) {
             auto temp_callback = callback;
-            _parent->call_user_callback(
+            _system_impl->call_user_callback(
                 [temp_callback]() { temp_callback(ManualControl::Result::InputNotSet); });
         }
         return;
     }
 
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::Posctl, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -63,12 +63,12 @@ void ManualControlImpl::start_altitude_control_async(const ManualControl::Result
     if (_input == Input::NotSet) {
         if (callback) {
             auto temp_callback = callback;
-            _parent->call_user_callback(
+            _system_impl->call_user_callback(
                 [temp_callback]() { temp_callback(ManualControl::Result::InputNotSet); });
         }
         return;
     }
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::Altctl, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -107,10 +107,10 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
 
     mavlink_message_t message;
     mavlink_msg_manual_control_pack(
-        _parent->get_own_system_id(),
-        _parent->get_own_component_id(),
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
         &message,
-        _parent->get_system_id(),
+        _system_impl->get_system_id(),
         static_cast<int16_t>(x * 1000),
         static_cast<int16_t>(y * 1000),
         static_cast<int16_t>(z * 1000),
@@ -120,8 +120,8 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
         enabled_extensions,
         pitch_only_axis,
         roll_only_axis);
-    return _parent->send_message(message) ? ManualControl::Result::Success :
-                                            ManualControl::Result::ConnectionError;
+    return _system_impl->send_message(message) ? ManualControl::Result::Success :
+                                                 ManualControl::Result::ConnectionError;
 }
 
 ManualControl::Result
@@ -154,7 +154,7 @@ void ManualControlImpl::command_result_callback(
 
     if (callback) {
         auto temp_callback = callback;
-        _parent->call_user_callback(
+        _system_impl->call_user_callback(
             [temp_callback, action_result]() { temp_callback(action_result); });
     }
 }

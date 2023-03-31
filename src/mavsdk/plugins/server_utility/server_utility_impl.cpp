@@ -5,18 +5,18 @@ namespace mavsdk {
 
 ServerUtilityImpl::ServerUtilityImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ServerUtilityImpl::ServerUtilityImpl(std::shared_ptr<System> system) :
     PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ServerUtilityImpl::~ServerUtilityImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void ServerUtilityImpl::init() {}
@@ -87,15 +87,15 @@ ServerUtilityImpl::send_status_text(ServerUtility::StatusTextType type, std::str
 
         mavlink_message_t message;
         mavlink_msg_statustext_pack(
-            _parent->get_own_system_id(),
-            _parent->get_own_component_id(),
+            _system_impl->get_own_system_id(),
+            _system_impl->get_own_component_id(),
             &message,
             maybe_mav_severity.value(),
             tmp_buf,
             id,
             chunk_seq);
 
-        if (!_parent->send_message(message)) {
+        if (!_system_impl->send_message(message)) {
             return ServerUtility::Result::ConnectionError;
         }
     }

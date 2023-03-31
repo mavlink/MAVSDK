@@ -4,17 +4,17 @@ namespace mavsdk {
 
 GripperImpl::GripperImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 GripperImpl::GripperImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 GripperImpl::~GripperImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void GripperImpl::init() {}
@@ -35,7 +35,7 @@ void GripperImpl::grab_async(uint32_t instance, const Gripper::ResultCallback ca
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH; // TODO
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -61,7 +61,7 @@ void GripperImpl::release_async(uint32_t instance, const Gripper::ResultCallback
 
     command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH; // TODO
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -110,7 +110,7 @@ void GripperImpl::command_result_callback(
 
     if (callback) {
         auto temp_callback = callback;
-        _parent->call_user_callback(
+        _system_impl->call_user_callback(
             [temp_callback, action_result]() { temp_callback(action_result); });
     }
 }

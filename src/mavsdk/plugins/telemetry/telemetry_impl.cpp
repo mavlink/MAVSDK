@@ -43,152 +43,152 @@ template class CallbackList<Telemetry::Altitude>;
 
 TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 TelemetryImpl::TelemetryImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 TelemetryImpl::~TelemetryImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void TelemetryImpl::init()
 {
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOCAL_POSITION_NED,
         [this](const mavlink_message_t& message) { process_position_velocity_ned(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         [this](const mavlink_message_t& message) { process_global_position_int(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HOME_POSITION,
         [this](const mavlink_message_t& message) { process_home_position(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE,
         [this](const mavlink_message_t& message) { process_attitude(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
         [this](const mavlink_message_t& message) { process_attitude_quaternion(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
         [this](const mavlink_message_t& message) { process_mount_orientation(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
         [this](const mavlink_message_t& message) {
             process_gimbal_device_attitude_status(message);
         },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_RAW_INT,
         [this](const mavlink_message_t& message) { process_gps_raw_int(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         [this](const mavlink_message_t& message) { process_extended_sys_state(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SYS_STATUS,
         [this](const mavlink_message_t& message) { process_sys_status(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_BATTERY_STATUS,
         [this](const mavlink_message_t& message) { process_battery_status(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS,
         [this](const mavlink_message_t& message) { process_rc_channels(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
         [this](const mavlink_message_t& message) { process_actuator_control_target(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS,
         [this](const mavlink_message_t& message) { process_actuator_output_status(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ODOMETRY,
         [this](const mavlink_message_t& message) { process_odometry(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_DISTANCE_SENSOR,
         [this](const mavlink_message_t& message) { process_distance_sensor(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SCALED_PRESSURE,
         [this](const mavlink_message_t& message) { process_scaled_pressure(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
         [this](const mavlink_message_t& message) { process_unix_epoch_time(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HIGHRES_IMU,
         [this](const mavlink_message_t& message) { process_imu_reading_ned(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SCALED_IMU,
         [this](const mavlink_message_t& message) { process_scaled_imu(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RAW_IMU,
         [this](const mavlink_message_t& message) { process_raw_imu(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_VFR_HUD,
         [this](const mavlink_message_t& message) { process_fixedwing_metrics(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
         [this](const mavlink_message_t& message) { process_ground_truth(message); },
         this);
 
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ALTITUDE,
         [this](const mavlink_message_t& message) { process_altitude(message); },
         this);
 
-    _parent->register_param_changed_handler(
+    _system_impl->register_param_changed_handler(
         [this](const std::string& name) { process_parameter_update(name); }, this);
 
-    _parent->register_statustext_handler(
+    _system_impl->register_statustext_handler(
         [this](const MavlinkStatustextHandler::Statustext& statustext) {
             receive_statustext(statustext);
         },
@@ -197,13 +197,13 @@ void TelemetryImpl::init()
 
 void TelemetryImpl::deinit()
 {
-    _parent->cancel_all_param(this);
-    _parent->remove_call_every(_calibration_cookie);
-    _parent->unregister_statustext_handler(this);
-    _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
-    _parent->unregister_timeout_handler(_unix_epoch_timeout_cookie);
-    _parent->unregister_param_changed_handler(this);
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->cancel_all_param(this);
+    _system_impl->remove_call_every(_calibration_cookie);
+    _system_impl->unregister_statustext_handler(this);
+    _system_impl->unregister_timeout_handler(_gps_raw_timeout_cookie);
+    _system_impl->unregister_timeout_handler(_unix_epoch_timeout_cookie);
+    _system_impl->unregister_param_changed_handler(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 
     _has_received_gyro_calibration = false;
     _has_received_accel_calibration = false;
@@ -219,25 +219,26 @@ void TelemetryImpl::deinit()
 
 void TelemetryImpl::enable()
 {
-    _parent->register_timeout_handler(
+    _system_impl->register_timeout_handler(
         [this]() { receive_gps_raw_timeout(); }, 2.0, &_gps_raw_timeout_cookie);
 
-    _parent->register_timeout_handler(
+    _system_impl->register_timeout_handler(
         [this]() { receive_unix_epoch_timeout(); }, 2.0, &_unix_epoch_timeout_cookie);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
 
-    _parent->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
+    _system_impl->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
 
     // We're going to retry until we have the Home Position.
-    _parent->add_call_every([this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
+    _system_impl->add_call_every(
+        [this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
 }
 
 void TelemetryImpl::disable()
 {
-    _parent->remove_call_every(_calibration_cookie);
-    _parent->remove_call_every(_homepos_cookie);
+    _system_impl->remove_call_every(_calibration_cookie);
+    _system_impl->remove_call_every(_homepos_cookie);
 }
 
 void TelemetryImpl::request_home_position_again()
@@ -245,7 +246,7 @@ void TelemetryImpl::request_home_position_again()
     {
         std::lock_guard<std::mutex> lock(_request_home_position_mutex);
         if (_health.is_home_position_ok) {
-            _parent->remove_call_every(_homepos_cookie);
+            _system_impl->remove_call_every(_homepos_cookie);
             return;
         }
     }
@@ -255,7 +256,7 @@ void TelemetryImpl::request_home_position_again()
 Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_LOCAL_POSITION_NED, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_LOCAL_POSITION_NED, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
@@ -264,13 +265,13 @@ Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_home(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_HOME_POSITION, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_HOME_POSITION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
@@ -286,25 +287,25 @@ Telemetry::Result TelemetryImpl::set_rate_vtol_state(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_landed_state(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_attitude_quaternion(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_attitude_euler(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_camera_attitude(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_ORIENTATION, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_MOUNT_ORIENTATION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_velocity_ned(double rate_hz)
@@ -313,49 +314,49 @@ Telemetry::Result TelemetryImpl::set_rate_velocity_ned(double rate_hz)
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_imu(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_HIGHRES_IMU, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_HIGHRES_IMU, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_scaled_imu(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_SCALED_IMU, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SCALED_IMU, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_raw_imu(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_RAW_IMU, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_RAW_IMU, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_fixedwing_metrics(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_VFR_HUD, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_VFR_HUD, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_ground_truth(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_HIL_STATE_QUATERNION, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_HIL_STATE_QUATERNION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
@@ -368,49 +369,49 @@ Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_actuator_control_target(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_actuator_output_status(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_odometry(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ODOMETRY, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_ODOMETRY, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_distance_sensor(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_DISTANCE_SENSOR, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_DISTANCE_SENSOR, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_scaled_pressure(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_SCALED_PRESSURE, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SCALED_PRESSURE, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_unix_epoch_time(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_UTM_GLOBAL_POSITION, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_UTM_GLOBAL_POSITION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_altitude(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ALTITUDE, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_ALTITUDE, rate_hz));
 }
 
 void TelemetryImpl::set_rate_position_velocity_ned_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_LOCAL_POSITION_NED,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -423,7 +424,7 @@ void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::ResultCal
     _position_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         max_rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -433,7 +434,7 @@ void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::ResultCal
 
 void TelemetryImpl::set_rate_home_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_HOME_POSITION,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -453,7 +454,7 @@ void TelemetryImpl::set_rate_vtol_state_async(double rate_hz, Telemetry::ResultC
 
 void TelemetryImpl::set_rate_landed_state_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -463,7 +464,7 @@ void TelemetryImpl::set_rate_landed_state_async(double rate_hz, Telemetry::Resul
 
 void TelemetryImpl::set_rate_altitude_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ALTITUDE,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -474,7 +475,7 @@ void TelemetryImpl::set_rate_altitude_async(double rate_hz, Telemetry::ResultCal
 void TelemetryImpl::set_rate_attitude_quaternion_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -485,7 +486,7 @@ void TelemetryImpl::set_rate_attitude_quaternion_async(
 void TelemetryImpl::set_rate_attitude_euler_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ATTITUDE,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -496,7 +497,7 @@ void TelemetryImpl::set_rate_attitude_euler_async(
 void TelemetryImpl::set_rate_camera_attitude_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -509,7 +510,7 @@ void TelemetryImpl::set_rate_velocity_ned_async(double rate_hz, Telemetry::Resul
     _velocity_ned_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         max_rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -519,7 +520,7 @@ void TelemetryImpl::set_rate_velocity_ned_async(double rate_hz, Telemetry::Resul
 
 void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_HIGHRES_IMU,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -529,7 +530,7 @@ void TelemetryImpl::set_rate_imu_async(double rate_hz, Telemetry::ResultCallback
 
 void TelemetryImpl::set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_SCALED_IMU,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -539,7 +540,7 @@ void TelemetryImpl::set_rate_scaled_imu_async(double rate_hz, Telemetry::ResultC
 
 void TelemetryImpl::set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_RAW_IMU,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -550,7 +551,7 @@ void TelemetryImpl::set_rate_raw_imu_async(double rate_hz, Telemetry::ResultCall
 void TelemetryImpl::set_rate_fixedwing_metrics_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_VFR_HUD,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -560,7 +561,7 @@ void TelemetryImpl::set_rate_fixedwing_metrics_async(
 
 void TelemetryImpl::set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_HIL_STATE_QUATERNION,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -570,7 +571,7 @@ void TelemetryImpl::set_rate_ground_truth_async(double rate_hz, Telemetry::Resul
 
 void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_GPS_RAW_INT,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -580,7 +581,7 @@ void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCal
 
 void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_SYS_STATUS,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -592,13 +593,13 @@ void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCa
 {
     UNUSED(rate_hz);
     LogWarn() << "System status is usually fixed at 1 Hz";
-    _parent->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
+    _system_impl->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
 }
 
 void TelemetryImpl::set_rate_unix_epoch_time_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -609,7 +610,7 @@ void TelemetryImpl::set_rate_unix_epoch_time_async(
 void TelemetryImpl::set_rate_actuator_control_target_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -620,7 +621,7 @@ void TelemetryImpl::set_rate_actuator_control_target_async(
 void TelemetryImpl::set_rate_actuator_output_status_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -630,7 +631,7 @@ void TelemetryImpl::set_rate_actuator_output_status_async(
 
 void TelemetryImpl::set_rate_odometry_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ODOMETRY,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -641,7 +642,7 @@ void TelemetryImpl::set_rate_odometry_async(double rate_hz, Telemetry::ResultCal
 void TelemetryImpl::set_rate_distance_sensor_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_DISTANCE_SENSOR,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -652,7 +653,7 @@ void TelemetryImpl::set_rate_distance_sensor_async(
 void TelemetryImpl::set_rate_scaled_pressure_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_SCALED_PRESSURE,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
@@ -709,8 +710,9 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t& messa
     set_position_velocity_ned(position_velocity);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _position_velocity_ned_subscriptions.queue(
-        position_velocity_ned(), [this](const auto& func) { _parent->call_user_callback(func); });
+    _position_velocity_ned_subscriptions.queue(position_velocity_ned(), [this](const auto& func) {
+        _system_impl->call_user_callback(func);
+    });
 
     set_health_local_position(true);
 }
@@ -747,13 +749,13 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _position_subscriptions.queue(
-        position(), [this](const auto& func) { _parent->call_user_callback(func); });
+        position(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _velocity_ned_subscriptions.queue(
-        velocity_ned(), [this](const auto& func) { _parent->call_user_callback(func); });
+        velocity_ned(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _heading_subscriptions.queue(
-        heading(), [this](const auto& func) { _parent->call_user_callback(func); });
+        heading(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_home_position(const mavlink_message_t& message)
@@ -772,7 +774,7 @@ void TelemetryImpl::process_home_position(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _home_position_subscriptions.queue(
-        home(), [this](const auto& func) { _parent->call_user_callback(func); });
+        home(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_attitude(const mavlink_message_t& message)
@@ -793,11 +795,11 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     set_attitude_angular_velocity_body(angular_velocity_body);
 
     _attitude_euler_angle_subscriptions.queue(
-        attitude_euler(), [this](const auto& func) { _parent->call_user_callback(func); });
+        attitude_euler(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _attitude_angular_velocity_body_subscriptions.queue(
         attitude_angular_velocity_body(),
-        [this](const auto& func) { _parent->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message)
@@ -823,12 +825,13 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     set_attitude_angular_velocity_body(angular_velocity_body);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _attitude_quaternion_angle_subscriptions.queue(
-        attitude_quaternion(), [this](const auto& func) { _parent->call_user_callback(func); });
+    _attitude_quaternion_angle_subscriptions.queue(attitude_quaternion(), [this](const auto& func) {
+        _system_impl->call_user_callback(func);
+    });
 
     _attitude_angular_velocity_body_subscriptions.queue(
         attitude_angular_velocity_body(),
-        [this](const auto& func) { _parent->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_altitude(const mavlink_message_t& message)
@@ -848,7 +851,7 @@ void TelemetryImpl::process_altitude(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _altitude_subscriptions.queue(
-        altitude(), [this](const auto& func) { _parent->call_user_callback(func); });
+        altitude(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
@@ -867,10 +870,11 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _camera_attitude_quaternion_subscriptions.queue(
         camera_attitude_quaternion(),
-        [this](const auto& func) { _parent->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _camera_attitude_euler_angle_subscriptions.queue(
-        camera_attitude_euler(), [this](const auto& func) { _parent->call_user_callback(func); });
+        camera_attitude_euler(),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_t& message)
@@ -894,10 +898,11 @@ void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _camera_attitude_quaternion_subscriptions.queue(
         camera_attitude_quaternion(),
-        [this](const auto& func) { _parent->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _camera_attitude_euler_angle_subscriptions.queue(
-        camera_attitude_euler(), [this](const auto& func) { _parent->call_user_callback(func); });
+        camera_attitude_euler(),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
@@ -921,7 +926,7 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _imu_reading_ned_subscriptions.queue(
-        imu(), [this](const auto& func) { _parent->call_user_callback(func); });
+        imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
@@ -945,7 +950,7 @@ void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _scaled_imu_subscriptions.queue(
-        scaled_imu(), [this](const auto& func) { _parent->call_user_callback(func); });
+        scaled_imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
@@ -969,7 +974,7 @@ void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _raw_imu_subscriptions.queue(
-        raw_imu(), [this](const auto& func) { _parent->call_user_callback(func); });
+        raw_imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
@@ -1039,12 +1044,12 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     {
         std::lock_guard<std::mutex> lock(_subscription_mutex);
         _gps_info_subscriptions.queue(
-            gps_info(), [this](const auto& func) { _parent->call_user_callback(func); });
+            gps_info(), [this](const auto& func) { _system_impl->call_user_callback(func); });
         _raw_gps_subscriptions.queue(
-            raw_gps(), [this](const auto& func) { _parent->call_user_callback(func); });
+            raw_gps(), [this](const auto& func) { _system_impl->call_user_callback(func); });
     }
 
-    _parent->refresh_timeout_handler(_gps_raw_timeout_cookie);
+    _system_impl->refresh_timeout_handler(_gps_raw_timeout_cookie);
 }
 
 void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
@@ -1061,7 +1066,7 @@ void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _ground_truth_subscriptions.queue(
-        ground_truth(), [this](const auto& func) { _parent->call_user_callback(func); });
+        ground_truth(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
@@ -1079,10 +1084,10 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _landed_state_subscriptions.queue(
-        landed_state(), [this](const auto& func) { _parent->call_user_callback(func); });
+        landed_state(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _vtol_state_subscriptions.queue(
-        vtol_state(), [this](const auto& func) { _parent->call_user_callback(func); });
+        vtol_state(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR ||
         extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF ||
@@ -1094,7 +1099,7 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
     // If landed_state is undefined, we use what we have received last.
 
     _in_air_subscriptions.queue(
-        in_air(), [this](const auto& func) { _parent->call_user_callback(func); });
+        in_air(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
 {
@@ -1110,7 +1115,7 @@ void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _fixedwing_metrics_subscriptions.queue(
-        fixedwing_metrics(), [this](const auto& func) { _parent->call_user_callback(func); });
+        fixedwing_metrics(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
@@ -1128,7 +1133,7 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
         {
             std::lock_guard<std::mutex> lock(_subscription_mutex);
             _battery_subscriptions.queue(
-                battery(), [this](const auto& func) { _parent->call_user_callback(func); });
+                battery(), [this](const auto& func) { _system_impl->call_user_callback(func); });
         }
     }
 
@@ -1186,12 +1191,12 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _rc_status_subscriptions.queue(
-        rc_status(), [this](const auto& func) { _parent->call_user_callback(func); });
+        rc_status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
     set_health_armable(armable);
     _health_all_ok_subscriptions.queue(
-        health_all_ok(), [this](const auto& func) { _parent->call_user_callback(func); });
+        health_all_ok(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 bool TelemetryImpl::sys_status_present_enabled_health(
@@ -1234,7 +1239,7 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     {
         std::lock_guard<std::mutex> lock(_subscription_mutex);
         _battery_subscriptions.queue(
-            battery(), [this](const auto& func) { _parent->call_user_callback(func); });
+            battery(), [this](const auto& func) { _system_impl->call_user_callback(func); });
     }
 }
 
@@ -1251,17 +1256,17 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _armed_subscriptions.queue(
-        armed(), [this](const auto& func) { _parent->call_user_callback(func); });
+        armed(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _flight_mode_subscriptions.queue(
-        telemetry_flight_mode_from_flight_mode(_parent->get_flight_mode()),
-        [this](const auto& func) { _parent->call_user_callback(func); });
+        telemetry_flight_mode_from_flight_mode(_system_impl->get_flight_mode()),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _health_subscriptions.queue(
-        health(), [this](const auto& func) { _parent->call_user_callback(func); });
+        health(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     _health_all_ok_subscriptions.queue(
-        health_all_ok(), [this](const auto& func) { _parent->call_user_callback(func); });
+        health_all_ok(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustext& statustext)
@@ -1305,7 +1310,7 @@ void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustex
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _status_text_subscriptions.queue(
-        status_text(), [this](const auto& func) { _parent->call_user_callback(func); });
+        status_text(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
@@ -1319,9 +1324,9 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _rc_status_subscriptions.queue(
-        rc_status(), [this](const auto& func) { _parent->call_user_callback(func); });
+        rc_status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
-    _parent->refresh_timeout_handler(_rc_channels_timeout_cookie);
+    _system_impl->refresh_timeout_handler(_rc_channels_timeout_cookie);
 }
 
 void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
@@ -1333,9 +1338,9 @@ void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _unix_epoch_time_subscriptions.queue(
-        unix_epoch_time(), [this](const auto& func) { _parent->call_user_callback(func); });
+        unix_epoch_time(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
-    _parent->refresh_timeout_handler(_unix_epoch_timeout_cookie);
+    _system_impl->refresh_timeout_handler(_unix_epoch_timeout_cookie);
 }
 
 void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& message)
@@ -1356,7 +1361,8 @@ void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& mes
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_control_target_subscriptions.queue(
-        actuator_control_target(), [this](const auto& func) { _parent->call_user_callback(func); });
+        actuator_control_target(),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& message)
@@ -1376,8 +1382,9 @@ void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& mess
     set_actuator_output_status(active, actuators);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _actuator_output_status_subscriptions.queue(
-        actuator_output_status(), [this](const auto& func) { _parent->call_user_callback(func); });
+    _actuator_output_status_subscriptions.queue(actuator_output_status(), [this](const auto& func) {
+        _system_impl->call_user_callback(func);
+    });
 }
 
 void TelemetryImpl::process_odometry(const mavlink_message_t& message)
@@ -1427,7 +1434,7 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _odometry_subscriptions.queue(
-        odometry(), [this](const auto& func) { _parent->call_user_callback(func); });
+        odometry(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
@@ -1448,7 +1455,7 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscriptions.queue(
-        distance_sensor(), [this](const auto& func) { _parent->call_user_callback(func); });
+        distance_sensor(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
@@ -1471,7 +1478,7 @@ void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _scaled_pressure_subscriptions.queue(
-        scaled_pressure(), [this](const auto& func) { _parent->call_user_callback(func); });
+        scaled_pressure(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 Telemetry::LandedState
@@ -1991,7 +1998,7 @@ void TelemetryImpl::set_battery(Telemetry::Battery battery)
 
 Telemetry::FlightMode TelemetryImpl::flight_mode() const
 {
-    return telemetry_flight_mode_from_flight_mode(_parent->get_flight_mode());
+    return telemetry_flight_mode_from_flight_mode(_system_impl->get_flight_mode());
 }
 
 Telemetry::Health TelemetryImpl::health() const
@@ -2626,13 +2633,13 @@ void TelemetryImpl::request_home_position_async()
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
     command_request_message.params.maybe_param1 = static_cast<float>(MAVLINK_MSG_ID_HOME_POSITION);
-    _parent->send_command_async(command_request_message, nullptr);
+    _system_impl->send_command_async(command_request_message, nullptr);
 }
 
 void TelemetryImpl::get_gps_global_origin_async(
     const Telemetry::GetGpsGlobalOriginCallback callback)
 {
-    _parent->request_message().request(
+    _system_impl->request_message().request(
         MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
         MAV_COMP_ID_AUTOPILOT1,
         [this, callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
@@ -2644,12 +2651,12 @@ void TelemetryImpl::get_gps_global_origin_async(
                 gps_global_origin.latitude_deg = mavlink_gps_global_origin.latitude * 1e-7;
                 gps_global_origin.longitude_deg = mavlink_gps_global_origin.longitude * 1e-7;
                 gps_global_origin.altitude_m = mavlink_gps_global_origin.altitude * 1e-3f;
-                _parent->call_user_callback([callback, gps_global_origin]() {
+                _system_impl->call_user_callback([callback, gps_global_origin]() {
                     callback(Telemetry::Result::Success, gps_global_origin);
                 });
 
             } else {
-                _parent->call_user_callback([callback, result]() {
+                _system_impl->call_user_callback([callback, result]() {
                     callback(telemetry_result_from_command_result(result), {});
                 });
             }
@@ -2675,74 +2682,74 @@ void TelemetryImpl::check_calibration()
         if ((_has_received_gyro_calibration && _has_received_accel_calibration &&
              _has_received_mag_calibration) ||
             _has_received_hitl_param) {
-            _parent->remove_call_every(_calibration_cookie);
+            _system_impl->remove_call_every(_calibration_cookie);
             return;
         }
     }
-    if (_parent->has_autopilot()) {
-        if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_system_impl->has_autopilot()) {
+        if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
             // We need to ask for the home position from ArduPilot
             request_home_position_async();
 
             // ArduPilot calibration sets the offsets,
             // if any offset is 0 the calibration is not complete/unhealthy.
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_GYROFFS_X"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_gyro_offset_x(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_GYROFFS_Y"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_gyro_offset_y(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_GYROFFS_Z"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_gyro_offset_z(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_ACCOFFS_X"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_accel_offset_x(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_ACCOFFS_Y"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_accel_offset_y(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_ACCOFFS_Z"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_accel_offset_z(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("COMPASS_OFS_X"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_mag_offset_x(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("COMPASS_OFS_Y"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_mag_offset_y(result, value);
                 },
                 this);
 
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("COMPASS_OFS_Z"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_mag_offset_z(result, value);
@@ -2750,28 +2757,28 @@ void TelemetryImpl::check_calibration()
                 this);
 
         } else {
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("CAL_GYRO0_ID"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_cal_gyro(result, value);
                 },
                 this);
 
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("CAL_ACC0_ID"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_cal_accel(result, value);
                 },
                 this);
 
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("CAL_MAG0_ID"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_cal_mag(result, value);
                 },
                 this);
 
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("SYS_HITL"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_hitl(result, value);
@@ -2783,65 +2790,65 @@ void TelemetryImpl::check_calibration()
 
 void TelemetryImpl::process_parameter_update(const std::string& name)
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
         if (name.compare("INS_GYROFFS_X") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_GYROFFS_X"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_gyro_offset_x(result, value);
                 },
                 this);
         } else if (name.compare("INS_GYROFFS_Y") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_GYROFFS_Y"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_gyro_offset_y(result, value);
                 },
                 this);
         } else if (name.compare("INS_GYROFFS_Z") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_GYROFFS_Z"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_gyro_offset_z(result, value);
                 },
                 this);
         } else if (name.compare("INS_ACCOFFS_X") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_ACCOFFS_X"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_accel_offset_x(result, value);
                 },
                 this);
         } else if (name.compare("INS_ACCOFFS_Y") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_ACCOFFS_Y"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_accel_offset_y(result, value);
                 },
                 this);
         } else if (name.compare("INS_ACCOFFS_Z") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("INS_ACCOFFS_Z"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_accel_offset_z(result, value);
                 },
                 this);
         } else if (name.compare("COMPASS_OFS_X") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("COMPASS_OFS_X"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_mag_offset_x(result, value);
                 },
                 this);
         } else if (name.compare("COMPASS_OFS_Y") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("COMPASS_OFS_Y"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_mag_offset_y(result, value);
                 },
                 this);
         } else if (name.compare("COMPASS_OFS_Z") == 0) {
-            _parent->get_param_float_async(
+            _system_impl->get_param_float_async(
                 std::string("COMPASS_OFS_Z"),
                 [this](MAVLinkParameters::Result result, float value) {
                     receive_param_cal_mag_offset_z(result, value);
@@ -2850,7 +2857,7 @@ void TelemetryImpl::process_parameter_update(const std::string& name)
         }
     } else {
         if (name.compare("CAL_GYRO0_ID") == 0) {
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("CAL_GYRO0_ID"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_cal_gyro(result, value);
@@ -2858,14 +2865,14 @@ void TelemetryImpl::process_parameter_update(const std::string& name)
                 this);
 
         } else if (name.compare("CAL_ACC0_ID") == 0) {
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("CAL_ACC0_ID"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_cal_accel(result, value);
                 },
                 this);
         } else if (name.compare("CAL_MAG0_ID") == 0) {
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("CAL_MAG0_ID"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_cal_mag(result, value);
@@ -2873,7 +2880,7 @@ void TelemetryImpl::process_parameter_update(const std::string& name)
                 this);
 
         } else if (name.compare("SYS_HITL") == 0) {
-            _parent->get_param_int_async(
+            _system_impl->get_param_int_async(
                 std::string("SYS_HITL"),
                 [this](MAVLinkParameters::Result result, int32_t value) {
                     receive_param_hitl(result, value);

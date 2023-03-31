@@ -6,17 +6,17 @@
 
 namespace mavsdk {
 
-Timesync::Timesync(SystemImpl& parent) : _parent(parent) {}
+Timesync::Timesync(SystemImpl& parent) : _system_impl(parent) {}
 
 Timesync::~Timesync()
 {
-    _parent.unregister_all_mavlink_message_handlers(this);
+    _system_impl.unregister_all_mavlink_message_handlers(this);
 }
 
 void Timesync::enable()
 {
     _is_enabled = true;
-    _parent.register_mavlink_message_handler(
+    _system_impl.register_mavlink_message_handler(
         MAVLINK_MSG_ID_TIMESYNC,
         [this](const mavlink_message_t& message) { process_timesync(message); },
         this);
@@ -28,16 +28,16 @@ void Timesync::do_work()
         return;
     }
 
-    if (_parent.get_time().elapsed_since_s(_last_time) >= TIMESYNC_SEND_INTERVAL_S) {
-        if (_parent.is_connected()) {
+    if (_system_impl.get_time().elapsed_since_s(_last_time) >= TIMESYNC_SEND_INTERVAL_S) {
+        if (_system_impl.is_connected()) {
             uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                                  _parent.get_autopilot_time().now().time_since_epoch())
+                                  _system_impl.get_autopilot_time().now().time_since_epoch())
                                   .count();
             send_timesync(0, now_ns);
         } else {
             _autopilot_timesync_acquired = false;
         }
-        _last_time = _parent.get_time().steady_time();
+        _last_time = _system_impl.get_time().steady_time();
     }
 }
 
@@ -48,7 +48,7 @@ void Timesync::process_timesync(const mavlink_message_t& message)
     mavlink_msg_timesync_decode(&message, &timesync);
 
     int64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                         _parent.get_autopilot_time().now().time_since_epoch())
+                         _system_impl.get_autopilot_time().now().time_since_epoch())
                          .count();
 
     if (timesync.tc1 == 0 && _autopilot_timesync_acquired) {
@@ -66,20 +66,20 @@ void Timesync::send_timesync(uint64_t tc1, uint64_t ts1)
     mavlink_message_t message;
 
     mavlink_msg_timesync_pack(
-        _parent.get_own_system_id(),
-        _parent.get_own_component_id(),
+        _system_impl.get_own_system_id(),
+        _system_impl.get_own_component_id(),
         &message,
         static_cast<int64_t>(tc1),
         static_cast<int64_t>(ts1),
         0,
         0);
-    _parent.send_message(message);
+    _system_impl.send_message(message);
 }
 
 void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_local_time_ns)
 {
     uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                          _parent.get_autopilot_time().now().time_since_epoch())
+                          _system_impl.get_autopilot_time().now().time_since_epoch())
                           .count();
 
     // Calculate the round trip time (RTT) it took the timesync packet to bounce back to us from
@@ -89,7 +89,7 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_lo
     if (rtt_ns < MAX_RTT_SAMPLE_MS * 1000000ULL) { // Only use samples with low RTT
 
         // Save time offset for other components to use
-        _parent.get_autopilot_time().shift_time_by(std::chrono::nanoseconds(offset_ns));
+        _system_impl.get_autopilot_time().shift_time_by(std::chrono::nanoseconds(offset_ns));
         _autopilot_timesync_acquired = true;
 
         // Reset high RTT count after filter update

@@ -10,23 +10,23 @@ namespace mavsdk {
 
 ActionImpl::ActionImpl(System& system) : PluginImplBase(system)
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ActionImpl::ActionImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
 {
-    _parent->register_plugin(this);
+    _system_impl->register_plugin(this);
 }
 
 ActionImpl::~ActionImpl()
 {
-    _parent->unregister_plugin(this);
+    _system_impl->unregister_plugin(this);
 }
 
 void ActionImpl::init()
 {
     // We need the system state.
-    _parent->register_mavlink_message_handler(
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         [this](const mavlink_message_t& message) { process_extended_sys_state(message); },
         this);
@@ -34,7 +34,7 @@ void ActionImpl::init()
 
 void ActionImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
 void ActionImpl::enable()
@@ -43,7 +43,7 @@ void ActionImpl::enable()
     // We use the async call here because we should not block in the init call because
     // we won't receive an answer anyway in init because the receive loop is not
     // called while we are being created here.
-    _parent->set_msg_rate_async(
+    _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         1.0,
         nullptr,
@@ -229,16 +229,16 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
 
         command.command = MAV_CMD_COMPONENT_ARM_DISARM;
         command.params.maybe_param1 = 1.0f; // arm
-        command.target_component_id = _parent->get_autopilot_id();
+        command.target_component_id = _system_impl->get_autopilot_id();
 
-        _parent->send_command_async(
+        _system_impl->send_command_async(
             command, [this, callback](MavlinkCommandSender::Result result, float) {
                 command_result_callback(result, callback);
             });
     };
 
     if (need_hold_before_arm()) {
-        _parent->set_flight_mode_async(
+        _system_impl->set_flight_mode_async(
             FlightMode::Hold,
             [callback, send_arm_command](MavlinkCommandSender::Result result, float) {
                 Action::Result action_result = action_result_from_command_result(result);
@@ -257,7 +257,7 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
 
 bool ActionImpl::need_hold_before_arm() const
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::Px4) {
         return need_hold_before_arm_px4();
     } else {
         return need_hold_before_arm_apm();
@@ -266,8 +266,8 @@ bool ActionImpl::need_hold_before_arm() const
 
 bool ActionImpl::need_hold_before_arm_px4() const
 {
-    if (_parent->get_flight_mode() == FlightMode::Mission ||
-        _parent->get_flight_mode() == FlightMode::ReturnToLaunch) {
+    if (_system_impl->get_flight_mode() == FlightMode::Mission ||
+        _system_impl->get_flight_mode() == FlightMode::ReturnToLaunch) {
         return true;
     } else {
         return false;
@@ -276,9 +276,9 @@ bool ActionImpl::need_hold_before_arm_px4() const
 
 bool ActionImpl::need_hold_before_arm_apm() const
 {
-    if (_parent->get_flight_mode() == FlightMode::Mission ||
-        _parent->get_flight_mode() == FlightMode::ReturnToLaunch ||
-        _parent->get_flight_mode() == FlightMode::Land) {
+    if (_system_impl->get_flight_mode() == FlightMode::Mission ||
+        _system_impl->get_flight_mode() == FlightMode::ReturnToLaunch ||
+        _system_impl->get_flight_mode() == FlightMode::Land) {
         return true;
     } else {
         return false;
@@ -291,9 +291,9 @@ void ActionImpl::disarm_async(const Action::ResultCallback& callback) const
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.maybe_param1 = 0.0f; // disarm
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -305,9 +305,9 @@ void ActionImpl::terminate_async(const Action::ResultCallback& callback) const
 
     command.command = MAV_CMD_DO_FLIGHTTERMINATION;
     command.params.maybe_param1 = 1.0f;
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -320,9 +320,9 @@ void ActionImpl::kill_async(const Action::ResultCallback& callback) const
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.maybe_param1 = 0.0f; // kill
     command.params.maybe_param2 = 21196.f; // magic number to enforce in-air
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -337,9 +337,9 @@ void ActionImpl::reboot_async(const Action::ResultCallback& callback) const
     command.params.maybe_param2 = 1.0f; // reboot onboard computer
     command.params.maybe_param3 = 1.0f; // reboot camera
     command.params.maybe_param4 = 1.0f; // reboot gimbal
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -354,9 +354,9 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
     command.params.maybe_param2 = 2.0f; // shutdown onboard computer
     command.params.maybe_param3 = 2.0f; // shutdown camera
     command.params.maybe_param4 = 2.0f; // shutdown gimbal
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -364,7 +364,7 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::Px4) {
         takeoff_async_px4(callback);
     } else {
         takeoff_async_apm(callback);
@@ -376,9 +376,9 @@ void ActionImpl::takeoff_async_px4(const Action::ResultCallback& callback) const
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -390,16 +390,16 @@ void ActionImpl::takeoff_async_apm(const Action::ResultCallback& callback) const
         MavlinkCommandSender::CommandLong command{};
 
         command.command = MAV_CMD_NAV_TAKEOFF;
-        command.target_component_id = _parent->get_autopilot_id();
+        command.target_component_id = _system_impl->get_autopilot_id();
         command.params.maybe_param7 = get_takeoff_altitude().second;
 
-        _parent->send_command_async(
+        _system_impl->send_command_async(
             command, [this, callback](MavlinkCommandSender::Result result, float) {
                 command_result_callback(result, callback);
             });
     };
-    if (_parent->get_flight_mode() != FlightMode::Offboard) {
-        _parent->set_flight_mode_async(
+    if (_system_impl->get_flight_mode() != FlightMode::Offboard) {
+        _system_impl->set_flight_mode_async(
             FlightMode::Offboard,
             [callback, send_takeoff_command](MavlinkCommandSender::Result result, float) {
                 Action::Result action_result = action_result_from_command_result(result);
@@ -421,9 +421,9 @@ void ActionImpl::land_async(const Action::ResultCallback& callback) const
 
     command.command = MAV_CMD_NAV_LAND;
     command.params.maybe_param4 = NAN; // Don't change yaw.
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -431,7 +431,7 @@ void ActionImpl::land_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::return_to_launch_async(const Action::ResultCallback& callback) const
 {
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::ReturnToLaunch, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -449,21 +449,21 @@ void ActionImpl::goto_location_async(
             MavlinkCommandSender::CommandInt command{};
 
             command.command = MAV_CMD_DO_REPOSITION;
-            command.target_component_id = _parent->get_autopilot_id();
+            command.target_component_id = _system_impl->get_autopilot_id();
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
             command.params.maybe_z = altitude_amsl_m;
 
-            _parent->send_command_async(
+            _system_impl->send_command_async(
                 command, [this, callback](MavlinkCommandSender::Result result, float) {
                     command_result_callback(result, callback);
                 });
         };
 
     // Change to Hold mode first
-    if (_parent->get_flight_mode() != FlightMode::Hold) {
-        _parent->set_flight_mode_async(
+    if (_system_impl->get_flight_mode() != FlightMode::Hold) {
+        _system_impl->set_flight_mode_async(
             FlightMode::Hold,
             [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
                 Action::Result action_result = action_result_from_command_result(result);
@@ -491,7 +491,7 @@ void ActionImpl::do_orbit_async(
     MavlinkCommandSender::CommandInt command{};
 
     command.command = MAV_CMD_DO_ORBIT;
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
     command.params.maybe_param1 = radius_m;
     command.params.maybe_param2 = velocity_ms;
     command.params.maybe_param3 = static_cast<float>(yaw_behavior);
@@ -499,7 +499,7 @@ void ActionImpl::do_orbit_async(
     command.params.y = int32_t(std::round(longitude_deg * 1e7));
     command.params.maybe_z = static_cast<float>(absolute_altitude_m);
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -507,7 +507,7 @@ void ActionImpl::do_orbit_async(
 
 void ActionImpl::hold_async(const Action::ResultCallback& callback) const
 {
-    _parent->set_flight_mode_async(
+    _system_impl->set_flight_mode_async(
         FlightMode::Hold, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -519,7 +519,7 @@ void ActionImpl::set_actuator_async(
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_SET_ACTUATOR;
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
     switch (index % 6) {
         case 1:
@@ -543,7 +543,7 @@ void ActionImpl::set_actuator_async(
     }
     command.params.maybe_param7 = static_cast<float>(index) / 6.0f;
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -569,9 +569,9 @@ void ActionImpl::transition_to_fixedwing_async(const Action::ResultCallback& cal
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.maybe_param1 = static_cast<float>(MAV_VTOL_STATE_FW);
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -596,9 +596,9 @@ void ActionImpl::transition_to_multicopter_async(const Action::ResultCallback& c
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.maybe_param1 = static_cast<float>(MAV_VTOL_STATE_MC);
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -625,7 +625,7 @@ void ActionImpl::set_takeoff_altitude_async(
 
 Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::Px4) {
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::Px4) {
         return set_takeoff_altitude_px4(relative_altitude_m);
     } else {
         return set_takeoff_altitude_apm(relative_altitude_m);
@@ -637,7 +637,7 @@ Action::Result ActionImpl::set_takeoff_altitude_px4(float relative_altitude_m)
     _takeoff_altitude = relative_altitude_m;
 
     const MAVLinkParameters::Result result =
-        _parent->set_param_float(TAKEOFF_ALT_PARAM, relative_altitude_m);
+        _system_impl->set_param_float(TAKEOFF_ALT_PARAM, relative_altitude_m);
     return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                             Action::Result::ParameterError;
 }
@@ -657,10 +657,10 @@ void ActionImpl::get_takeoff_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
-    if (_parent->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
         return std::make_pair<>(Action::Result::Success, _takeoff_altitude);
     } else {
-        auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
+        auto result = _system_impl->get_param_float(TAKEOFF_ALT_PARAM);
         return std::make_pair<>(
             (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                                    Action::Result::ParameterError,
@@ -676,7 +676,8 @@ void ActionImpl::set_maximum_speed_async(
 
 Action::Result ActionImpl::set_maximum_speed(float speed_m_s) const
 {
-    const MAVLinkParameters::Result result = _parent->set_param_float(MAX_SPEED_PARAM, speed_m_s);
+    const MAVLinkParameters::Result result =
+        _system_impl->set_param_float(MAX_SPEED_PARAM, speed_m_s);
     return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                             Action::Result::ParameterError;
 }
@@ -689,7 +690,7 @@ void ActionImpl::get_maximum_speed_async(const Action::GetMaximumSpeedCallback& 
 
 std::pair<Action::Result, float> ActionImpl::get_maximum_speed() const
 {
-    auto result = _parent->get_param_float(MAX_SPEED_PARAM);
+    auto result = _system_impl->get_param_float(MAX_SPEED_PARAM);
     return std::make_pair<>(
         (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                                Action::Result::ParameterError,
@@ -705,7 +706,7 @@ void ActionImpl::set_return_to_launch_altitude_async(
 Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_altitude_m) const
 {
     const MAVLinkParameters::Result result =
-        _parent->set_param_float(RTL_RETURN_ALTITUDE_PARAM, relative_altitude_m);
+        _system_impl->set_param_float(RTL_RETURN_ALTITUDE_PARAM, relative_altitude_m);
     return (result == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                             Action::Result::ParameterError;
 }
@@ -719,7 +720,7 @@ void ActionImpl::get_return_to_launch_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() const
 {
-    auto result = _parent->get_param_float(RTL_RETURN_ALTITUDE_PARAM);
+    auto result = _system_impl->get_param_float(RTL_RETURN_ALTITUDE_PARAM);
     return std::make_pair<>(
         (result.first == MAVLinkParameters::Result::Success) ? Action::Result::Success :
                                                                Action::Result::ParameterError,
@@ -735,9 +736,9 @@ void ActionImpl::set_current_speed_async(float speed_m_s, const Action::ResultCa
     command.params.maybe_param2 = speed_m_s;
     command.params.maybe_param3 = -1.0f; // no throttle set
     command.params.maybe_param4 = 0.0f; // reserved
-    command.target_component_id = _parent->get_autopilot_id();
+    command.target_component_id = _system_impl->get_autopilot_id();
 
-    _parent->send_command_async(
+    _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
             command_result_callback(result, callback);
         });
@@ -786,7 +787,7 @@ void ActionImpl::command_result_callback(
 
     if (callback) {
         auto temp_callback = callback;
-        _parent->call_user_callback(
+        _system_impl->call_user_callback(
             [temp_callback, action_result]() { temp_callback(action_result); });
     }
 }

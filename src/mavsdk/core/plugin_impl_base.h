@@ -19,7 +19,7 @@ public:
      * exists and is connected, it might just be an empty dummy system.
      *
      * Plugins should do initialization steps with other parts of MAVSDK
-     * at this state, e.g. set up callbacks with _parent (System).
+     * at this state, e.g. set up callbacks with _system_impl (System).
      */
     virtual void init() = 0;
 
@@ -59,7 +59,7 @@ public:
     const PluginImplBase& operator=(const PluginImplBase&) = delete;
 
 protected:
-    std::shared_ptr<SystemImpl> _parent;
+    std::shared_ptr<SystemImpl> _system_impl;
 };
 
 } // namespace mavsdk
