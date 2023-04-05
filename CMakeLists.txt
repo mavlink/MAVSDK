@@ -44,10 +44,6 @@ HunterGate(
 
 project(mavsdk_superbuild)
 
-if (BUILD_BACKEND)
-    message(FATAL_ERROR "The argument BUILD_BACKEND has been replaced by BUILD_MAVSDK_SERVER. To build mavsdk_server, use -DBUILD_MAVSDK_SERVER=ON.")
-endif()
-
 set(DEPS_BUILD_PATH "${PROJECT_BINARY_DIR}/third_party" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
 set(DEPS_INSTALL_PATH "${DEPS_BUILD_PATH}/install" CACHE PATH "Install path for the dependencies. Ignored if SUPERBUILD=OFF.")
 
@@ -63,6 +59,25 @@ if (MAVLINK_HEADERS)
     message(STATUS "MAVLink headers for dialect ${MAVLINK_DIALECT} manually provided in ${MAVLINK_HEADERS}")
 endif()
 
+# Build the dependencies (if the superbuild is enabled)
 add_subdirectory(third_party)
 
-add_subdirectory(src)
+# Build the main MAVSDK project
+list(APPEND CMAKE_ARGS
+    "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
+    "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
+    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
+    "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+    "-DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}"
+    "-DHUNTER_ENABLED=${HUNTER_ENABLED}"
+    "-DBUILD_MAVSDK_SERVER=${BUILD_MAVSDK_SERVER}"
+    "-DBUILD_WITH_PROTO_REFLECTION=${BUILD_WITH_PROTO_REFLECTION}"
+    )
+
+ExternalProject_Add(
+    mavsdk
+    URL "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    PREFIX mavsdk
+    CMAKE_ARGS "${CMAKE_ARGS}"
+)
+

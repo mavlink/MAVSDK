@@ -55,4 +55,5 @@ ExternalProject_add(
     URL https://github.com/grpc/grpc/archive/v1.46.2.tar.gz
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
+    DEPENDS absl cares openssl re2 zlib protobuf
     )

@@ -40,4 +40,5 @@ ExternalProject_add(
     PREFIX protobuf
     CMAKE_ARGS "${CMAKE_ARGS}"
     SOURCE_SUBDIR cmake
+    DEPENDS zlib
     )
