@@ -181,7 +181,7 @@ jobs:
     container: mavsdk/mavsdk-${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [ubuntu-18.04, ubuntu-20.04]
+        container_name: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v3
         with:
