@@ -73,6 +73,30 @@ std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& re
             return str << "Success";
         case MavlinkPassthrough::Result::ConnectionError:
             return str << "Connection Error";
+        case MavlinkPassthrough::Result::CommandNoSystem:
+            return str << "CommandNoSystem";
+        case MavlinkPassthrough::Result::CommandBusy:
+            return str << "CommandBusy";
+        case MavlinkPassthrough::Result::CommandDenied:
+            return str << "CommandDenied";
+        case MavlinkPassthrough::Result::CommandUnsupported:
+            return str << "CommandUnsupported";
+        case MavlinkPassthrough::Result::CommandTimeout:
+            return str << "CommandTimeout";
+        case MavlinkPassthrough::Result::CommandTemporarilyRejected:
+            return str << "CommandTemporarilyRejected";
+        case MavlinkPassthrough::Result::CommandFailed:
+            return str << "CommandFailed";
+        case MavlinkPassthrough::Result::ParamWrongType:
+            return str << "ParamWrongType";
+        case MavlinkPassthrough::Result::ParamNameTooLong:
+            return str << "ParamNameTooLong";
+        case MavlinkPassthrough::Result::ParamValueTooLong:
+            return str << "ParamValueTooLong";
+        case MavlinkPassthrough::Result::ParamNotFound:
+            return str << "ParamNotFound";
+        case MavlinkPassthrough::Result::ParamValueUnsupported:
+            return str << "ParamValueUnsupported";
     }
 }
 
