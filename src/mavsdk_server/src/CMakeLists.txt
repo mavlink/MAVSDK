@@ -106,7 +106,7 @@ if(NOT IOS AND NOT ANDROID)
     endif()
 
     if(NOT BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
-        target_link_libraries(mavsdk_server_bin PRIVATE dl)
+        target_link_libraries(mavsdk_server_bin PRIVATE ${CMAKE_DL_LIBS})
     endif()
 
     # MSVC fails to generate the `mavsdk_server` binary while having

@@ -48,7 +48,7 @@ if (BUILD_STATIC_MAVSDK_SERVER)
 endif()
 
 if(NOT BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
-    target_link_libraries(unit_tests_mavsdk_server PRIVATE dl)
+    target_link_libraries(unit_tests_mavsdk_server PRIVATE ${CMAKE_DL_LIBS})
 endif()
 
 add_test(unit_tests unit_tests_mavsdk_server)
