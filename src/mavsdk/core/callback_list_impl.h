@@ -36,6 +36,12 @@ public:
 
     void unsubscribe(Handle<Args...> handle)
     {
+        // Ignore null handle.
+        if (handle._id == 0) {
+            LogErr() << "Invalid null handle";
+            return;
+        }
+
         // We want to allow unsubscribing while in a callback. This would
         // normally lead to a deadlock. Therefore, we just try to grab the
         // lock here, and if it's already taken, we schedule the removal
@@ -127,7 +133,7 @@ private:
     }
 
     mutable std::mutex _mutex{};
-    uint64_t _last_id{0};
+    uint64_t _last_id{1}; // Start at 1 because 0 is the "null handle"
     std::vector<std::pair<Handle<Args...>, std::function<void(Args...)>>> _list{};
 
     mutable std::mutex _remove_later_mutex{};
