@@ -202,7 +202,8 @@ private:
             0, // estimated delay
             0.0f, // feed forward angular velocity z
             estimator_status,
-            MAV_LANDED_STATE_IN_AIR);
+            MAV_LANDED_STATE_IN_AIR,
+            NAN); // angular velocity z
         _mavlink_passthrough.send_message(message);
     }
 
