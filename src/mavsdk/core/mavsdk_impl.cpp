@@ -119,7 +119,7 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
     return systems_result;
 }
 
-std::optional<std::shared_ptr<System>> MavsdkImpl::first_system(double timeout_s)
+std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeout_s)
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -138,7 +138,7 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_system(double timeout_s
     std::once_flag flag;
     auto handle = subscribe_on_new_system([this, &prom, &flag]() {
         const auto system = systems().at(0);
-        if (system->is_connected()) {
+        if (system->is_connected() && system->has_autopilot()) {
             std::call_once(flag, [&prom, &system]() { prom.set_value(system); });
         }
     });

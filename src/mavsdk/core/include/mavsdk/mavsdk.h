@@ -174,7 +174,10 @@ public:
     std::vector<std::shared_ptr<System>> systems() const;
 
     /**
-     * @brief Get the first system that has been discovered.
+     * @brief Get the first autopilot that has been discovered.
+     *
+     * @note This requires a MAVLink component with component ID 1 sending
+     *       heartbeats.
      *
      * @param timeout_s A timeout in seconds.
      *                  A timeout of 0 will not wait and return immediately.
@@ -182,7 +185,7 @@ public:
      *
      * @return A system or nothing if nothing was discovered within the timeout.
      */
-    std::optional<std::shared_ptr<System>> first_system(double timeout_s) const;
+    std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s) const;
 
     /**
      * @brief Possible configurations.
