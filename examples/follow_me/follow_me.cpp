@@ -30,37 +30,6 @@ void usage(const std::string& bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540\n";
 }
 
-std::shared_ptr<System> get_system(Mavsdk& mavsdk)
-{
-    std::cout << "Waiting to discover system...\n";
-    auto prom = std::promise<std::shared_ptr<System>>{};
-    auto fut = prom.get_future();
-
-    // We wait for new systems to be discovered, once we find one that has an
-    // autopilot, we decide to use it.
-    Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, &prom, &handle]() {
-        auto system = mavsdk.systems().back();
-
-        if (system->has_autopilot()) {
-            std::cout << "Discovered autopilot\n";
-
-            // Unsubscribe again as we only want to find one system.
-            mavsdk.unsubscribe_on_new_system(handle);
-            prom.set_value(system);
-        }
-    });
-
-    // We usually receive heartbeats at 1Hz, therefore we should find a
-    // system after around 3 seconds max, surely.
-    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
-        std::cerr << "No autopilot found.\n";
-        return {};
-    }
-
-    // Get discovered system now.
-    return fut.get();
-}
-
 int main(int argc, char** argv)
 {
     if (argc != 2) {
@@ -76,15 +45,16 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto system = get_system(mavsdk);
+    auto system = mavsdk.first_autopilot(3.0);
     if (!system) {
+        std::cerr << "Timed out waiting for system\n";
         return 1;
     }
 
     // Instantiate plugins.
-    auto action = Action{system};
-    auto follow_me = FollowMe{system};
-    auto telemetry = Telemetry{system};
+    auto action = Action{system.value()};
+    auto follow_me = FollowMe{system.value()};
+    auto telemetry = Telemetry{system.value()};
 
     while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready\n";

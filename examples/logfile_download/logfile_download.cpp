@@ -31,33 +31,6 @@ void usage(const std::string& bin_name)
               << "please add the --rm argument" << std::endl;
 }
 
-std::shared_ptr<System> get_system(Mavsdk& mavsdk)
-{
-    std::cerr << "Waiting to discover system...\n";
-    auto prom = std::promise<std::shared_ptr<System>>{};
-    auto fut = prom.get_future();
-
-    // We wait for new systems to be discovered, once we find one that has an
-    // autopilot, we decide to use it.
-    Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, &prom, &handle]() {
-        auto system = mavsdk.systems().back();
-
-        // Unsubscribe again as we only want to find one system.
-        mavsdk.unsubscribe_on_new_system(handle);
-        prom.set_value(system);
-    });
-
-    // We usually receive heartbeats at 1Hz, therefore we should find a
-    // system after around 3 seconds max, surely.
-    if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
-        std::cerr << "No autopilot found.\n";
-        return {};
-    }
-
-    // Get discovered system now.
-    return fut.get();
-}
-
 int main(int argc, char** argv)
 {
     if (argc > 3) {
@@ -82,14 +55,15 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto system = get_system(mavsdk);
+    auto system = mavsdk.first_autopilot(3.0);
     if (!system) {
+        std::cerr << "Timed out waiting for system\n";
         return 1;
     }
 
     // Instantiate plugins.
 
-    auto log_files = LogFiles{system};
+    auto log_files = LogFiles{system.value()};
 
     auto get_entries_result = log_files.get_entries();
     if (get_entries_result.first == LogFiles::Result::Success) {

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <optional>
 #include <vector>
 #include <functional>
 
@@ -173,6 +174,20 @@ public:
     std::vector<std::shared_ptr<System>> systems() const;
 
     /**
+     * @brief Get the first autopilot that has been discovered.
+     *
+     * @note This requires a MAVLink component with component ID 1 sending
+     *       heartbeats.
+     *
+     * @param timeout_s A timeout in seconds.
+     *                  A timeout of 0 will not wait and return immediately.
+     *                  A negative timeout will wait forever.
+     *
+     * @return A system or nothing if nothing was discovered within the timeout.
+     */
+    std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s) const;
+
+    /**
      * @brief Possible configurations.
      */
     class Configuration {
@@ -303,15 +318,16 @@ public:
      *
      * This gets called whenever a system is added.
      *
-     * @note Only one subscriber is possible at any time. On a second
-     * subscription, the previous one is overwritten. To unsubscribe, pass nullptr;
-     *
      * @param callback Callback to subscribe.
+     *
+     * @return A handle to unsubscribe again.
      */
     NewSystemHandle subscribe_on_new_system(const NewSystemCallback& callback);
 
     /**
      * @brief unsubscribe from subscribe_on_new_system.
+     *
+     * @param handle Handle received on subscription.
      */
     void unsubscribe_on_new_system(NewSystemHandle handle);
 

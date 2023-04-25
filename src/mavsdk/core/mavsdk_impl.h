@@ -67,6 +67,8 @@ public:
 
     std::vector<std::shared_ptr<System>> systems() const;
 
+    std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s);
+
     void set_configuration(Mavsdk::Configuration new_configuration);
     Mavsdk::Configuration get_configuration() const;
 

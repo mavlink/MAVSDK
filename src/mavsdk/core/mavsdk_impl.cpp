@@ -119,6 +119,51 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
     return systems_result;
 }
 
+std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeout_s)
+{
+    {
+        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+        for (auto system : _systems) {
+            if (system.second->is_connected() && system.second->has_autopilot()) {
+                return system.second;
+            }
+        }
+    }
+
+    if (timeout_s == 0.0) {
+        // Don't wait at all.
+        return {};
+    }
+
+    auto prom = std::promise<std::shared_ptr<System>>();
+
+    std::once_flag flag;
+    auto handle = subscribe_on_new_system([this, &prom, &flag]() {
+        const auto system = systems().at(0);
+        if (system->is_connected() && system->has_autopilot()) {
+            std::call_once(flag, [&prom, &system]() { prom.set_value(system); });
+        }
+    });
+
+    auto fut = prom.get_future();
+
+    if (timeout_s > 0.0) {
+        if (fut.wait_for(std::chrono::milliseconds(int64_t(timeout_s * 1e3))) ==
+            std::future_status::ready) {
+            unsubscribe_on_new_system(handle);
+            return fut.get();
+
+        } else {
+            unsubscribe_on_new_system(handle);
+            return std::nullopt;
+        }
+    } else {
+        fut.wait();
+        unsubscribe_on_new_system(handle);
+        return std::optional(fut.get());
+    }
+}
+
 std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_type(
     Mavsdk::ServerComponentType server_component_type, unsigned instance)
 {
