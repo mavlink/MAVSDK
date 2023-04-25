@@ -123,8 +123,10 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        if (!_systems.empty()) {
-            return {_systems[0].second};
+        for (auto system : _systems) {
+            if (system.second->is_connected() && system.second->has_autopilot()) {
+                return system.second;
+            }
         }
     }
 
