@@ -1,9 +1,9 @@
 #include "log.h"
 #include "mavsdk.h"
-#include "system_tests_helper.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/telemetry_server/telemetry_server.h"
 #include <future>
+#include <gtest/gtest.h>
 
 using namespace mavsdk;
 
@@ -24,9 +24,9 @@ TEST(SystemTest, TelemetrySubscription)
     auto telemetry_server = TelemetryServer{
         mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
 
-    auto fut = wait_for_first_system_detected(mavsdk_groundstation);
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
-    auto system = fut.get();
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
 

@@ -4,11 +4,12 @@
 #include <atomic>
 #include <future>
 
-#include "system_tests_helper.h"
 #include "mavsdk.h"
+#include "log.h"
 #include "plugins/component_information/component_information.h"
 #include "plugins/component_information_server/component_information_server.h"
 #include "plugins/param/param.h"
+#include <gtest/gtest.h>
 
 using namespace mavsdk;
 
@@ -28,9 +29,9 @@ TEST(SystemTest, DISABLED_ComponentInformationConnect)
     ASSERT_EQ(
         mavsdk_companion.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto fut = wait_for_first_system_detected(mavsdk_groundstation);
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
-    auto system = fut.get();
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
 
     auto server = ComponentInformationServer{
         mavsdk_companion.server_component_by_type(Mavsdk::ServerComponentType::CompanionComputer)};

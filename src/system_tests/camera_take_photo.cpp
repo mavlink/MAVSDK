@@ -1,7 +1,10 @@
 #include "mavsdk.h"
-#include "system_tests_helper.h"
 #include "plugins/camera/camera.h"
 #include "plugins/camera_server/camera_server.h"
+#include "log.h"
+#include <future>
+#include <mutex>
+#include <gtest/gtest.h>
 
 using namespace mavsdk;
 
@@ -30,12 +33,21 @@ TEST(SystemTest, CameraTakePhoto)
         camera_server.respond_take_photo(CameraServer::TakePhotoFeedback::Ok, info);
     });
 
-    // Wait for systems to connect via heartbeat.
-    auto fut = wait_for_first_system_detected(mavsdk_groundstation);
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
-    auto system = fut.get();
+    auto prom = std::promise<std::shared_ptr<System>>();
+    auto fut = prom.get_future();
+    std::once_flag flag;
 
-    ASSERT_TRUE(system->has_camera());
+    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
+        const auto system = mavsdk_groundstation.systems().back();
+        if (system->is_connected() && system->has_camera()) {
+            std::call_once(flag, [&]() { prom.set_value(system); });
+        }
+    });
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
+    mavsdk_groundstation.unsubscribe_on_new_system(handle);
+    auto system = fut.get();
+    LogInfo() << "Carry on";
 
     auto camera = Camera{system};
     return;
@@ -46,11 +58,11 @@ TEST(SystemTest, CameraTakePhoto)
     auto received_captured_info_prom = std::promise<void>{};
     auto received_captured_info_fut = received_captured_info_prom.get_future();
 
-    Camera::CaptureInfoHandle handle = camera.subscribe_capture_info(
-        [&camera, &received_captured_info_prom, &handle](Camera::CaptureInfo capture_info) {
+    Camera::CaptureInfoHandle capture_handle = camera.subscribe_capture_info(
+        [&camera, &received_captured_info_prom, &capture_handle](Camera::CaptureInfo capture_info) {
             LogInfo() << "Received captured info for image: " << capture_info.index;
             // Unsubscribe again to prevent double setting promise.
-            camera.unsubscribe_capture_info(handle);
+            camera.unsubscribe_capture_info(capture_handle);
             received_captured_info_prom.set_value();
         });
 

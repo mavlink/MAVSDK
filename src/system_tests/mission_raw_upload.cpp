@@ -1,11 +1,11 @@
 #include "log.h"
 #include "mavsdk.h"
 #include "example_plan.h"
-#include "system_tests_helper.h"
 #include "plugins/mission_raw/mission_raw.h"
 #include "plugins/mission_raw_server/mission_raw_server.h"
 #include <string>
 #include <fstream>
+#include <gtest/gtest.h>
 
 using namespace mavsdk;
 TEST(SystemTest, MissionRawUpload)
@@ -25,10 +25,9 @@ TEST(SystemTest, MissionRawUpload)
     auto mission_raw_server = MissionRawServer{
         mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
 
-    auto fut = wait_for_first_system_detected(mavsdk_groundstation);
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
-    auto system = fut.get();
-
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
     // We take an example mission plan, write it to a temp file and then import it.
