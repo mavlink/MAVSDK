@@ -201,24 +201,26 @@ void MissionRawServerImpl::init()
             mavlink_msg_mission_set_current_decode(&message, &set_current);
 
             if (_current_mission.size() == 0) {
+                const char text[50] = "No Mission Loaded";
                 mavlink_message_t status_message;
                 mavlink_msg_statustext_pack(
                     _server_component_impl->get_own_system_id(),
                     _server_component_impl->get_own_component_id(),
                     &status_message,
                     MAV_SEVERITY_ERROR,
-                    "No Mission Loaded",
+                    text,
                     0,
                     0);
                 _server_component_impl->send_message(status_message);
             } else if (_current_mission.size() <= set_current.seq) {
+                const char text[50] = "Unknown Mission seq id";
                 mavlink_message_t status_message;
                 mavlink_msg_statustext_pack(
                     _server_component_impl->get_own_system_id(),
                     _server_component_impl->get_own_component_id(),
                     &status_message,
                     MAV_SEVERITY_ERROR,
-                    "Unknown Mission seq id",
+                    text,
                     0,
                     0);
                 _server_component_impl->send_message(status_message);

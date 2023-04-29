@@ -47,7 +47,6 @@ TEST(SystemTest, CameraTakePhoto)
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);
     auto system = fut.get();
-    LogInfo() << "Carry on";
 
     auto camera = Camera{system};
     return;

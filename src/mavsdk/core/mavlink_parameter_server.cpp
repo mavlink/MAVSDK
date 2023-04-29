@@ -106,6 +106,8 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
             LogErr() << "Unknown update_existing_param result";
             assert(false);
     }
+
+    return Result::Unknown;
 }
 
 MavlinkParameterServer::Result
