@@ -12,5 +12,4 @@ override_dh_auto_configure:
 		-DBUILD_SHARED_LIBS=ON \
 		-DBUILD_TESTS=OFF \
 		-DSUPERBUILD=OFF \
-		-DMAVLINK_HEADERS="mavlink-headers/include" \
 		-DCMAKE_INSTALL_PREFIX=/usr
