@@ -3,34 +3,16 @@ cmake_minimum_required(VERSION 3.13)
 project(external-mavlink)
 include(ExternalProject)
 
-# Without this GitHub actions picks the wrong python3 executable.
-set(Python3_FIND_REGISTRY "NEVER")
-set(Python3_FIND_FRAMEWORK "NEVER")
-find_package(Python3 COMPONENTS Interpreter REQUIRED)
-
-if (NOT MAVLINK_DIALECT)
-    set(MAVLINK_DIALECT common)
-endif()
-
-
-if(NOT CMAKE_CROSSCOMPILING)
-set(CONFIGURE_COMMAND
-    Python3::Interpreter -m pip install -r pymavlink/requirements.txt)
-endif()
+list(APPEND CMAKE_ARGS
+    "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
+    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
+    "-DMAVLINK_DIALECT=${MAVLINK_DIALECT}"
+    )
 
 ExternalProject_add(
     mavlink
     GIT_REPOSITORY https://github.com/mavlink/mavlink
-    GIT_TAG 3ee5382d0c96134b0e1c250d8c2d54bfed0166fa
+    GIT_TAG ce00667f1e1eb3e683697e817464f7d8309e3f72
     PREFIX mavlink
-    CONFIGURE_COMMAND ${CONFIGURE_COMMAND}
-    COMMAND Python3::Interpreter
-        -m pymavlink.tools.mavgen
-        --lang=C
-        --wire-protocol=2.0
-        --output=${CMAKE_INSTALL_PREFIX}/include/mavlink/v2.0/
-        message_definitions/v1.0/${MAVLINK_DIALECT}.xml
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-    BUILD_IN_SOURCE TRUE
+    CMAKE_ARGS "${CMAKE_ARGS}"
 )
