@@ -58,7 +58,7 @@ jobs:
         with:
           submodules: recursive
       - name: install
-        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev python3-future
+        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -90,8 +90,6 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
-      - name: install dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3-future
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/release -H.
       - name: build
@@ -130,8 +128,6 @@ jobs:
         with:
           path: ~/.hunter
           key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}
-      - name: install dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3-future
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -153,7 +149,7 @@ jobs:
         with:
           submodules: recursive
       - name: install dependencies
-        run: sudo apt-get update && sudo apt-get install -y clang-format-12 python3-future
+        run: sudo apt-get update && sudo apt-get install -y clang-format-12
       - uses: actions/cache@v3
         id: cache
         with:
@@ -179,7 +175,7 @@ jobs:
         with:
           submodules: recursive
       - name: install dependencies
-        run: sudo apt-get update && sudo apt-get install -y doxygen clang-format-12 python3-future
+        run: sudo apt-get update && sudo apt-get install -y doxygen clang-format-12
       - name: check style
         run: ./tools/fix_style.sh .
       - name: check docs
@@ -226,7 +222,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0
       - name: install packages
-        run: sudo apt-get update && sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a python3-future
+        run: sudo apt-get update && sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -252,7 +248,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /github/workspace
       - name: install dependencies
-        run: yum -y install perl-IPC-Cmd perl-Pod-Html python3-future
+        run: yum -y install perl-IPC-Cmd perl-Pod-Html
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -Bbuild/release -H.
       - name: build
@@ -312,7 +308,7 @@ jobs:
     container: alpine:3.16.0
     steps:
       - name: install tools
-        run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip py3-future
+        run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -364,8 +360,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: install pymavlink dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-future
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - uses: actions/cache@v3
@@ -377,7 +371,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "sudo apt-get update && sudo apt-get install -y python3 python3-future && cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/${{ matrix.arch_name }} -H."
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/${{ matrix.arch_name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j2 --target install
       - name: Publish artefacts
@@ -408,8 +402,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: install pymavlink dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-future
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }} > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
       - uses: actions/cache@v3
@@ -421,7 +413,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.name }} /bin/bash -c "sudo apt update && sudo apt-get install -y python3 python3-future && cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/${{ matrix.name }} -H."
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/${{ matrix.name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j2 --target install
       - name: create tar with header and library
@@ -462,8 +454,6 @@ jobs:
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
       - name: set SDKROOT value
         run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
-      - name: install pymavlink dependencies
-        run: pip3 install future
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=OFF -Bbuild/macos -H.
       - name: build
@@ -602,8 +592,6 @@ jobs:
         run: |
             choco install nasm
             echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: install pymavlink dependencies
-        run: pip install future
       - name: configure
         run: cmake -G "Visual Studio 17 2022" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/release -S.
       - name: build

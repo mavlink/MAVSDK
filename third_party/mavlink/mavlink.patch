@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 92ed5676..bb05beda 100644
+index 8aadc9af..0bb61919 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -2,6 +2,20 @@ cmake_minimum_required(VERSION 3.13)
@@ -22,4 +22,4 @@ index 92ed5676..bb05beda 100644
 +
  find_package(Python COMPONENTS Interpreter REQUIRED)
  
- if (NOT MAVLINK_DIALECT)
+ # We automatically install the pip dependencies locally below.

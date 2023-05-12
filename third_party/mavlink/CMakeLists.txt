@@ -12,7 +12,7 @@ list(APPEND CMAKE_ARGS
 ExternalProject_add(
     mavlink
     GIT_REPOSITORY https://github.com/mavlink/mavlink
-    GIT_TAG ce00667f1e1eb3e683697e817464f7d8309e3f72
+    GIT_TAG 18955a04c7c7467e00ea42b704addb4a9c12b53a
     PREFIX mavlink
     PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/mavlink.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
