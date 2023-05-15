@@ -9,11 +9,24 @@ list(APPEND CMAKE_ARGS
     "-DMAVLINK_DIALECT=${MAVLINK_DIALECT}"
     )
 
-ExternalProject_add(
-    mavlink
-    GIT_REPOSITORY https://github.com/mavlink/mavlink
-    GIT_TAG 18955a04c7c7467e00ea42b704addb4a9c12b53a
-    PREFIX mavlink
-    PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/mavlink.patch
-    CMAKE_ARGS "${CMAKE_ARGS}"
-)
+if(IOS)
+    ExternalProject_add(
+        mavlink
+        GIT_REPOSITORY https://github.com/mavlink/mavlink
+        GIT_TAG 18955a04c7c7467e00ea42b704addb4a9c12b53a
+        PREFIX mavlink
+        PATCH_COMMAND git checkout .
+        COMMAND git apply ${PROJECT_SOURCE_DIR}/mavlink.patch
+        COMMAND git apply ${PROJECT_SOURCE_DIR}/mavlink_ios.patch
+        CMAKE_ARGS "${CMAKE_ARGS}"
+    )
+else()
+    ExternalProject_add(
+        mavlink
+        GIT_REPOSITORY https://github.com/mavlink/mavlink
+        GIT_TAG 18955a04c7c7467e00ea42b704addb4a9c12b53a
+        PREFIX mavlink
+        PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/mavlink.patch
+        CMAKE_ARGS "${CMAKE_ARGS}"
+    )
+endif()
