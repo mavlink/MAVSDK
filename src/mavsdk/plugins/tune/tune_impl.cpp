@@ -49,6 +49,11 @@ void TuneImpl::play_tune_async(
     }
 
     std::string tune_str("MFT" + std::to_string(tempo) + "O2");
+
+    // We need to reserve enough because inside the mavlink pack
+    // function it does a memcpy of the full length.
+    tune_str.reserve(MAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_LEN);
+
     int last_duration = 1;
 
     for (auto song_elem : song_elements) {
@@ -126,8 +131,6 @@ void TuneImpl::play_tune_async(
                 break;
         }
     }
-
-    LogDebug() << "About to send tune: " << tune_str;
 
     if (tune_str.size() > MAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_LEN - 1) {
         report_tune_result(callback, Tune::Result::TuneTooLong);
