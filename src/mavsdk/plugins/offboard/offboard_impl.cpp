@@ -233,6 +233,39 @@ Offboard::Result OffboardImpl::set_position_velocity_ned(
     return send_position_velocity_ned();
 }
 
+
+Offboard::Result OffboardImpl::set_position_velocity_acceleration_ned(
+    Offboard::PositionNedYaw position_ned_yaw, Offboard::VelocityNedYaw velocity_ned_yaw, Offboard::AccelerationNed acceleration_ned)
+{
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _position_ned_yaw = position_ned_yaw;
+        _velocity_ned_yaw = velocity_ned_yaw;
+        _acceleration_ned = acceleration_ned;
+
+        if (_mode != Mode::PositionVelocityAccelerationNed) {
+            if (_call_every_cookie) {
+                // If we're already sending other setpoints, stop that now.
+                _system_impl->remove_call_every(_call_every_cookie);
+                _call_every_cookie = nullptr;
+            }
+            // We automatically send Ned setpoints from now on.
+            _system_impl->add_call_every(
+                [this]() { send_position_velocity_acceleration_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+            _mode = Mode::PositionVelocityAccelerationNed;
+        } else {
+            // We're already sending these kind of setpoints. Since the setpoint change, let's
+            // reschedule the next call, so we don't send setpoints too often.
+            _system_impl->reset_call_every(_call_every_cookie);
+        }
+    }
+
+    // also send it right now to reduce latency
+    return send_position_velocity_acceleration_ned();
+}
+
+
 Offboard::Result OffboardImpl::set_acceleration_ned(Offboard::AccelerationNed acceleration_ned)
 {
     {
@@ -546,6 +579,39 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
     return _system_impl->send_message(message) ? Offboard::Result::Success :
                                                  Offboard::Result::ConnectionError;
 }
+
+
+Offboard::Result OffboardImpl::send_position_velocity_acceleration_ned()
+{
+    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_local_ned_pack(
+        _system_impl->get_own_system_id(),
+        _system_impl->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+        _system_impl->get_system_id(),
+        _system_impl->get_autopilot_id(),
+        MAV_FRAME_LOCAL_NED,
+        IGNORE_YAW_RATE,
+        _position_ned_yaw.north_m,
+        _position_ned_yaw.east_m,
+        _position_ned_yaw.down_m,
+        _velocity_ned_yaw.north_m_s,
+        _velocity_ned_yaw.east_m_s,
+        _velocity_ned_yaw.down_m_s,
+        _acceleration_ned.north_m_s2,
+        _acceleration_ned.east_m_s2,
+        _acceleration_ned.down_m_s2,
+        to_rad_from_deg(_position_ned_yaw.yaw_deg), // yaw
+        0.0f); // yaw_rate
+    return _system_impl->send_message(message) ? Offboard::Result::Success :
+                                                 Offboard::Result::ConnectionError;
+}
+
 
 Offboard::Result OffboardImpl::send_acceleration_ned()
 {

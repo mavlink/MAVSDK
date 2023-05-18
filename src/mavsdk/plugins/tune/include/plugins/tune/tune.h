@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class TuneImpl;
+
+class System;class TuneImpl;
 
 /**
  * @brief Enable creating and sending a tune to be played on the system.
  */
 class Tune : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,10 +55,12 @@ public:
      */
     explicit Tune(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~Tune() override;
+
 
     /**
      * @brief An element of the tune
@@ -92,12 +96,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_element);
 
+
+
+
     /**
      * @brief Tune description, containing song elements and tempo.
      */
     struct TuneDescription {
-        std::vector<SongElement> song_elements{}; /**< @brief The list of song elements (notes,
-                                                     pauses, ...) to be played */
+        
+        std::vector<SongElement> song_elements{}; /**< @brief The list of song elements (notes, pauses, ...) to be played */
         int32_t tempo{}; /**< @brief The tempo of the song (range: 32 - 255) */
     };
 
@@ -113,8 +120,11 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Tune::TuneDescription const& tune_description);
+    friend std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_description);
+
+
+
+
 
     /**
      * @brief Possible results returned for tune requests.
@@ -135,10 +145,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Tune::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Tune calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
 
     /**
      * @brief Send a tune to be played by the system.
@@ -146,6 +161,8 @@ public:
      * This function is non-blocking. See 'play_tune' for the blocking counterpart.
      */
     void play_tune_async(TuneDescription tune_description, const ResultCallback callback);
+
+
 
     /**
      * @brief Send a tune to be played by the system.
@@ -155,6 +172,9 @@ public:
      * @return Result of request.
      */
     Result play_tune(TuneDescription tune_description) const;
+
+
+
 
     /**
      * @brief Copy constructor.

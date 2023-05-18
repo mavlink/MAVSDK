@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class GeofenceImpl;
+
+class System;class GeofenceImpl;
 
 /**
  * @brief Enable setting a geofence.
  */
 class Geofence : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,10 +55,12 @@ public:
      */
     explicit Geofence(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~Geofence() override;
+
 
     /**
      * @brief Geofence types.
@@ -73,10 +77,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::FenceType const& fence_type);
 
+
+
+
     /**
      * @brief Point type.
      */
     struct Point {
+        
         double latitude_deg{}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{}; /**< @brief Longitude in degrees (range: -180 to +180) */
     };
@@ -95,10 +103,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::Point const& point);
 
+
+
+
     /**
      * @brief Polygon type.
      */
     struct Polygon {
+        
         std::vector<Point> points{}; /**< @brief Points defining the polygon */
         FenceType fence_type{}; /**< @brief Fence type */
     };
@@ -117,10 +129,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon);
 
+
+
+
     /**
      * @brief Circular type.
      */
     struct Circle {
+        
         Point point{}; /**< @brief Point defining the center */
         float radius{float(NAN)}; /**< @brief Radius of the circular fence */
         FenceType fence_type{}; /**< @brief Fence type */
@@ -140,10 +156,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::Circle const& circle);
 
+
+
+
     /**
      * @brief Geofence data type.
      */
     struct GeofenceData {
+        
         std::vector<Polygon> polygons{}; /**< @brief Polygon(s) representing the geofence(s) */
         std::vector<Circle> circles{}; /**< @brief Circle(s) representing the geofence(s) */
     };
@@ -161,6 +181,10 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data);
+
+
+
+
 
     /**
      * @brief Possible results returned for geofence requests.
@@ -183,26 +207,33 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Geofence::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Geofence calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
+
+
+
     /**
      * @brief Upload geofences.
      *
-     * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will
-     * remain on the drone even if a connection is lost.
+     * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
+     * on the drone even if a connection is lost.
      *
      * This function is non-blocking. See 'upload_geofence' for the blocking counterpart.
      */
     void upload_geofence_async(GeofenceData geofence_data, const ResultCallback callback);
 
+
+
     /**
      * @brief Upload geofences.
      *
-     * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will
-     * remain on the drone even if a connection is lost.
+     * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
+     * on the drone even if a connection is lost.
      *
      * This function is blocking. See 'upload_geofence_async' for the non-blocking counterpart.
      *
@@ -210,12 +241,17 @@ public:
      */
     Result upload_geofence(GeofenceData geofence_data) const;
 
+
+
+
     /**
      * @brief Clear all geofences saved on the vehicle.
      *
      * This function is non-blocking. See 'clear_geofence' for the blocking counterpart.
      */
     void clear_geofence_async(const ResultCallback callback);
+
+
 
     /**
      * @brief Clear all geofences saved on the vehicle.
@@ -225,6 +261,9 @@ public:
      * @return Result of request.
      */
     Result clear_geofence() const;
+
+
+
 
     /**
      * @brief Copy constructor.
