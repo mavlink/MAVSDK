@@ -9,9 +9,17 @@ add_executable(camera_server
     camera_server.cpp
 )
 
+add_executable(camera_client
+    camera_client.cpp
+)
+
 find_package(MAVSDK REQUIRED)
 
 target_link_libraries(camera_server
+    MAVSDK::mavsdk
+)
+
+target_link_libraries(camera_client
     MAVSDK::mavsdk
 )
 
