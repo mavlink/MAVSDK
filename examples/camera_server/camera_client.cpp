@@ -49,12 +49,8 @@ int main(int argc, const char* argv[])
         std::cout << info << std::endl;
     });
 
-    camera.take_photo_async([](mavsdk::Camera::Result result) {
-        std::cout << "take photo return : " << result << std::endl;
-    });
+    auto take_photo_result = camera.take_photo();
+    std::cout << "Take phto return : " << take_photo_result << std::endl;
 
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
     return 0;
 }
