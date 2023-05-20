@@ -29,8 +29,8 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" >> $GITHUB_ENV
-      - name: Install lcov
-        run: sudo apt-get update && sudo apt-get install -y lcov
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y lcov python3-future
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=OFF -Bbuild -H.
       - name: build
@@ -59,6 +59,10 @@ jobs:
           submodules: recursive
       - name: install
         run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
+      - name: install mavlink on the system
+        run: |
+            cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
+            sudo cmake --build third_party/mavlink/build
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=Release -DSUPERBUILD=OFF -DWERROR=OFF -Bbuild/release -H.
       - name: build
@@ -100,9 +104,9 @@ jobs:
       - name: install examples dependencies
         run: sudo apt-get install libsdl2-dev
       - name: configure examples
-        run: (cd examples && cmake -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -Bbuild -H.)
+        run: cmake -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=Release -DWERROR=OFF -Bexamples/build -Hexamples
       - name: build examples
-        run: (cd examples && cmake --build build -j2)
+        run: cmake --build examples/build -j2
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
@@ -124,10 +128,12 @@ jobs:
         with:
           path: ~/.hunter
           key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}
-      - name: prepare mavlink headers because this is without superbuild
-        run: tools/generate_mavlink_headers.sh
+      - name: install mavlink on the system
+        run: |
+            cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
+            sudo cmake --build third_party/mavlink/build
       - name: configure
-        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DMAVLINK_HEADERS=mavlink-headers/include -Bbuild -H.
+        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -Bbuild -H.
       - name: build
         run: cmake --build build -j2
       - name: unit tests
@@ -142,7 +148,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: install clang-format
+      - name: install dependencies
         run: sudo apt-get update && sudo apt-get install -y clang-format-12
       - uses: actions/cache@v3
         id: cache
@@ -217,8 +223,10 @@ jobs:
           fetch-depth: 0
       - name: install packages
         run: sudo apt-get update && sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
-      - name: prepare mavlink headers because this is without superbuild
-        run: tools/generate_mavlink_headers.sh
+      - name: install mavlink on the system
+        run: |
+            cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
+            sudo cmake --build third_party/mavlink/build
       - name: generate changelog
         run: ./tools/generate_debian_changelog.sh > debian/changelog
       - name: Build package
@@ -268,8 +276,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: prepare mavlink headers
-        run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
       - uses: actions/cache@v3
@@ -281,7 +287,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-linux-${{ matrix.arch_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=OFF -DMAVLINK_HEADERS=mavlink-headers/include -Bbuild/linux-${{ matrix.arch_name }} -H."
+        run: ./dockcross-linux-${{ matrix.arch_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=OFF -Bbuild/linux-${{ matrix.arch_name }} -H."
       - name: build
         run: ./dockcross-linux-${{ matrix.arch_name }}-custom cmake --build build/linux-${{ matrix.arch_name }} -j2 --target install
       - name: create deb packages
@@ -354,10 +360,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: install pymavlink dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3 python3-pip
-      - name: prepare mavlink headers
-        run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - uses: actions/cache@v3
@@ -369,7 +371,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -DMAVLINK_HEADERS=mavlink-headers/include -Bbuild/${{ matrix.arch_name }} -H."
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=OFF -Bbuild/${{ matrix.arch_name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j2 --target install
       - name: Publish artefacts
@@ -400,10 +402,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: install pymavlink dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3 python3-pip
-      - name: prepare mavlink headers
-        run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }} > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
       - uses: actions/cache@v3
@@ -415,7 +413,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -DMAVLINK_HEADERS=mavlink-headers/include -Bbuild/${{ matrix.name }} -H."
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/${{ matrix.name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j2 --target install
       - name: create tar with header and library
@@ -594,10 +592,6 @@ jobs:
         run: |
             choco install nasm
             echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: install pymavlink dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install wheel
       - name: configure
         run: cmake -G "Visual Studio 17 2022" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/release -S.
       - name: build

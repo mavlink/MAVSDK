@@ -5,9 +5,14 @@ option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
+option(MAVLINK_DIALECT "MAVLink dialect. Default: common" "common")
 
-if(SUPERBUILD AND HUNTER_ENABLED)
+if (SUPERBUILD AND HUNTER_ENABLED)
     message(FATAL_ERROR "Cannot SUPERBUILD while HUNTER_ENABLED. Set -DSUPERBUILD=OFF when using Hunter")
+endif()
+
+if (NOT MAVLINK_DIALECT)
+    set(MAVLINK_DIALECT "common")
 endif()
 
 execute_process(
@@ -41,7 +46,6 @@ HunterGate(
     SHA1 "ea5d72afc0df67f2126e7fd069f20c5f723709e1"
 )
 
-
 project(mavsdk_superbuild)
 
 if (BUILD_BACKEND)
@@ -53,16 +57,5 @@ set(DEPS_INSTALL_PATH "${DEPS_BUILD_PATH}/install" CACHE PATH "Install path for 
 
 include(GNUInstallDirs)
 
-if (NOT MAVLINK_DIALECT)
-    set(MAVLINK_DIALECT common)
-endif()
-
-if (MAVLINK_HEADERS)
-    get_filename_component(MAVLINK_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${MAVLINK_HEADERS} REALPATH)
-    set(MAVLINK_HEADERS ${MAVLINK_HEADERS})
-    message(STATUS "MAVLink headers for dialect ${MAVLINK_DIALECT} manually provided in ${MAVLINK_HEADERS}")
-endif()
-
 add_subdirectory(third_party)
-
 add_subdirectory(src)

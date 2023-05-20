@@ -1,0 +1,25 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8aadc9af..0bb61919 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -2,6 +2,20 @@ cmake_minimum_required(VERSION 3.13)
+ 
+ project(mavlink)
+ 
++if (POLICY CMP0094)
++    cmake_policy(SET CMP0094 NEW)  # FindPython should return the first matching Python
++endif ()
++
++# Needed to find the right Python on macOS
++if (NOT DEFINED Python_FIND_FRAMEWORK)
++    set(Python_FIND_FRAMEWORK "LAST")
++endif()
++
++# Needed to find the right Python on Windows
++if (NOT DEFINED Python_FIND_REGISTRY)
++    set(Python_FIND_REGISTRY "LAST")
++endif()
++
+ find_package(Python COMPONENTS Interpreter REQUIRED)
+ 
+ # We automatically install the pip dependencies locally below.
