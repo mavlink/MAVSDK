@@ -583,9 +583,42 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
 
 Offboard::Result OffboardImpl::send_position_velocity_acceleration_ned()
 {
+    // const static uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    // std::lock_guard<std::mutex> lock(_mutex);
+
+    // mavlink_message_t message;
+    // mavlink_msg_set_position_target_local_ned_pack(
+    //     _system_impl->get_own_system_id(),
+    //     _system_impl->get_own_component_id(),
+    //     &message,
+    //     static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+    //     _system_impl->get_system_id(),
+    //     _system_impl->get_autopilot_id(),
+    //     MAV_FRAME_LOCAL_NED,
+    //     IGNORE_YAW_RATE,
+    //     _position_ned_yaw.north_m,
+    //     _position_ned_yaw.east_m,
+    //     _position_ned_yaw.down_m,
+    //     _velocity_ned_yaw.north_m_s,
+    //     _velocity_ned_yaw.east_m_s,
+    //     _velocity_ned_yaw.down_m_s,
+    //     _acceleration_ned.north_m_s2,
+    //     _acceleration_ned.east_m_s2,
+    //     _acceleration_ned.down_m_s2,
+    //     to_rad_from_deg(_position_ned_yaw.yaw_deg), // yaw
+    //     0.0f); // yaw_rate
+    // return _system_impl->send_message(message) ? Offboard::Result::Success :
+    //                                              Offboard::Result::ConnectionError;
+    const static uint16_t IGNORE_AX = (1 << 6);
+    const static uint16_t IGNORE_AY = (1 << 7);
+    const static uint16_t IGNORE_AZ = (1 << 8);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
-    std::lock_guard<std::mutex> lock(_mutex);
+    const auto position_and_velocity = [this]() {
+        std::lock_guard<std::mutex> lock(_mutex);
+        return std::make_pair<>(_position_ned_yaw, _velocity_ned_yaw);
+    }();
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
@@ -596,17 +629,17 @@ Offboard::Result OffboardImpl::send_position_velocity_acceleration_ned()
         _system_impl->get_system_id(),
         _system_impl->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
-        IGNORE_YAW_RATE,
-        _position_ned_yaw.north_m,
-        _position_ned_yaw.east_m,
-        _position_ned_yaw.down_m,
-        _velocity_ned_yaw.north_m_s,
-        _velocity_ned_yaw.east_m_s,
-        _velocity_ned_yaw.down_m_s,
-        _acceleration_ned.north_m_s2,
-        _acceleration_ned.east_m_s2,
-        _acceleration_ned.down_m_s2,
-        to_rad_from_deg(_position_ned_yaw.yaw_deg), // yaw
+        IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        position_and_velocity.first.north_m,
+        position_and_velocity.first.east_m,
+        position_and_velocity.first.down_m,
+        position_and_velocity.second.north_m_s,
+        position_and_velocity.second.east_m_s,
+        position_and_velocity.second.down_m_s,
+        0.0f, // afx
+        0.0f, // afy
+        0.0f, // afzc
+        to_rad_from_deg(position_and_velocity.first.yaw_deg), // yaw
         0.0f); // yaw_rate
     return _system_impl->send_message(message) ? Offboard::Result::Success :
                                                  Offboard::Result::ConnectionError;
