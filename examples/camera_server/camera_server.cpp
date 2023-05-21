@@ -1,19 +1,7 @@
-#include <future>
-
 #include <iostream>
-#include <map>
 #include <thread>
 #include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/camera/camera.h>
 #include <mavsdk/plugins/camera_server/camera_server.h>
-
-using namespace mavsdk;
-
-using std::chrono::duration_cast;
-using std::chrono::seconds;
-using std::chrono::milliseconds;
-using std::chrono::system_clock;
-using std::this_thread::sleep_for;
 
 int main(int argc, char** argv)
 {
@@ -22,8 +10,7 @@ int main(int argc, char** argv)
     mavsdk.set_configuration(configuration);
 
     // 14030 is the default camera port for PX4 SITL
-    // FIXME: the camera should probably initiate the connection and not just listen
-    auto result = mavsdk.add_any_connection("udp://:14030");
+    auto result = mavsdk.add_any_connection("udp://127.0.0.1:14030");
     if (result != mavsdk::ConnectionResult::Success) {
         std::cerr << "Could not establish connection: " << result << std::endl;
         return 1;
@@ -42,14 +29,15 @@ int main(int argc, char** argv)
 
         // TODO : actually capture image here
         // simulating with delay
-        sleep_for(milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
         // TODO: populate with telemetry data
-        auto position = CameraServer::Position{};
-        auto attitude = CameraServer::Quaternion{};
+        auto position = mavsdk::CameraServer::Position{};
+        auto attitude = mavsdk::CameraServer::Quaternion{};
 
-        auto timestamp =
-            duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                             std::chrono::system_clock::now().time_since_epoch())
+                             .count();
         auto success = true;
 
         camera_server.set_in_progress(false);
@@ -88,14 +76,14 @@ int main(int argc, char** argv)
         .definition_file_uri = "", // TODO: implement this using MAVLink FTP
     });
 
-    if (ret != CameraServer::Result::Success) {
+    if (ret != mavsdk::CameraServer::Result::Success) {
         std::cerr << "Failed to set camera info, exiting" << std::endl;
         return 2;
     }
 
+    // works as a server and never quit
     while (true) {
-        // Wait forever?
-        sleep_for(seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     return 0;
