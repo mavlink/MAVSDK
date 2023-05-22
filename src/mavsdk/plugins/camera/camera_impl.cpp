@@ -1140,6 +1140,11 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     mavlink_camera_information_t camera_information;
     mavlink_msg_camera_information_decode(&message, &camera_information);
 
+    // Make sure all strings are zero terminated, so we don't overrun anywhere.
+    camera_information.vendor_name[sizeof(camera_information.vendor_name) - 1] = '\0';
+    camera_information.model_name[sizeof(camera_information.model_name) - 1] = '\0';
+    camera_information.cam_definition_uri[sizeof(camera_information.cam_definition_uri) - 1] = '\0';
+
     std::lock_guard<std::mutex> lock(_information.mutex);
 
     _information.data.vendor_name = (char*)(camera_information.vendor_name);
