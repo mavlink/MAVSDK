@@ -116,12 +116,12 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        if (strcmp(type_str, "string") == 0) {
+        if (std::string(type_str) == "string") {
             LogDebug() << "Ignoring string params: " << param_name;
             continue;
         }
 
-        if (strcmp(type_str, "custom") == 0) {
+        if (std::string(type_str) == "custom") {
             LogDebug() << "Ignoring custom params: " << param_name;
             continue;
         }
@@ -135,7 +135,7 @@ bool CameraDefinition::parse_xml()
         new_parameter->is_control = true;
         const char* control_str = e_parameter->Attribute("control");
         if (control_str) {
-            if (strcmp(control_str, "0") == 0) {
+            if (std::string(control_str) == "0") {
                 new_parameter->is_control = false;
             }
         }
@@ -143,7 +143,7 @@ bool CameraDefinition::parse_xml()
         new_parameter->is_readonly = false;
         const char* readonly_str = e_parameter->Attribute("readonly");
         if (readonly_str) {
-            if (strcmp(readonly_str, "1") == 0) {
+            if (std::string(readonly_str) == "1") {
                 new_parameter->is_readonly = true;
             }
         }
@@ -151,7 +151,7 @@ bool CameraDefinition::parse_xml()
         new_parameter->is_writeonly = false;
         const char* writeonly_str = e_parameter->Attribute("writeonly");
         if (writeonly_str) {
-            if (strcmp(writeonly_str, "1") == 0) {
+            if (std::string(writeonly_str) == "1") {
                 new_parameter->is_writeonly = true;
             }
         }
@@ -162,7 +162,7 @@ bool CameraDefinition::parse_xml()
         }
 
         // Be definition custom types do not have control.
-        if (strcmp(type_map[param_name].c_str(), "custom") == 0) {
+        if (std::string(type_map[param_name]) == "custom") {
             new_parameter->is_control = false;
         }
 

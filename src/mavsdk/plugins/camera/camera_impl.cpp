@@ -1229,30 +1229,39 @@ bool CameraImpl::load_stored_definition(
     const mavlink_camera_information_t& camera_information, std::string& camera_definition_out)
 {
     // TODO: we might also try to support the correct version of the xml files.
-    if (strcmp((const char*)(camera_information.vendor_name), "Yuneec") == 0) {
-        if (strcmp((const char*)(camera_information.model_name), "E90") == 0) {
+
+    const auto vendor_name = std::string(
+        reinterpret_cast<const char*>(std::begin(camera_information.vendor_name)),
+        reinterpret_cast<const char*>(std::end(camera_information.vendor_name)));
+
+    const auto model_name = std::string(
+        reinterpret_cast<const char*>(std::begin(camera_information.model_name)),
+        reinterpret_cast<const char*>(std::end(camera_information.model_name)));
+
+    if (vendor_name == "Yuneec") {
+        if (model_name == "E90") {
             LogInfo() << "Using cached file for Yuneec E90.";
             camera_definition_out = e90xml;
             return true;
-        } else if (strcmp((const char*)(camera_information.model_name), "E50") == 0) {
+        } else if (model_name == "E50") {
             LogInfo() << "Using cached file for Yuneec E50.";
             camera_definition_out = e50xml;
             return true;
-        } else if (strcmp((const char*)(camera_information.model_name), "CGOET") == 0) {
+        } else if (model_name == "CGOET") {
             LogInfo() << "Using cached file for Yuneec ET.";
             camera_definition_out = cgoetxml;
             return true;
-        } else if (strcmp((const char*)(camera_information.model_name), "E10T") == 0) {
+        } else if (model_name == "E10T") {
             LogInfo() << "Using cached file for Yuneec E10T.";
             camera_definition_out = e10txml;
             return true;
-        } else if (strcmp((const char*)(camera_information.model_name), "E30Z") == 0) {
+        } else if (model_name == "E30Z") {
             LogInfo() << "Using cached file for Yuneec E30Z.";
             camera_definition_out = e30zxml;
             return true;
         }
-    } else if (strcmp((const char*)(camera_information.vendor_name), "Sony") == 0) {
-        if (strcmp((const char*)(camera_information.model_name), "ILCE-7RM4") == 0) {
+    } else if (vendor_name == "Sony") {
+        if (model_name == "ILCE-7RM4") {
             LogInfo() << "Using cached file for Sony ILCE-7RM4.";
             camera_definition_out = ILCE7RM4xml;
             return true;

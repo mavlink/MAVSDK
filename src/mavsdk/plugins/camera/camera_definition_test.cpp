@@ -346,20 +346,20 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         bool found_photoratio = false;
 
         for (const auto& param : params) {
-            if (strcmp("CAM_SHUTTERSPD", param.first.c_str()) == 0) {
+            if (param.first == "CAM_SHUTTERSPD") {
                 found_shutterspd = true;
             }
-            if (strcmp("CAM_ISO", param.first.c_str()) == 0) {
+            if (param.first == "CAM_ISO") {
                 found_iso = true;
             }
-            if (strcmp("CAM_VIDRES", param.first.c_str()) == 0) {
+            if (param.first == "CAM_VIDRES") {
                 found_vidres = true;
             }
             // We don't yet handle ASPECTRATIO
-            // if (strcmp("CAM_ASPECTRATIO", param.first.c_str()) == 0) {
+            // if (param.first == "CAM_ASPECTRATIO") {
             //    found_aspectratio = true;
             //}
-            if (strcmp("CAM_PHOTORATIO", param.first.c_str()) == 0) {
+            if (param.first == "CAM_PHOTORATIO") {
                 found_photoratio = true;
             }
         }
