@@ -44,48 +44,48 @@ void FollowMeImpl::enable()
 {
     _system_impl->get_param_float_async(
         "FLW_TGT_HT",
-        [this](MAVLinkParameters::Result result, float value) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this](MavlinkParameterClient::Result result, float value) {
+            if (result == MavlinkParameterClient::Result::Success) {
                 _config.follow_height_m = value;
             }
         },
         this);
     _system_impl->get_param_float_async(
         "FLW_TGT_DST",
-        [this](MAVLinkParameters::Result result, float value) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this](MavlinkParameterClient::Result result, float value) {
+            if (result == MavlinkParameterClient::Result::Success) {
                 _config.follow_distance_m = value;
             }
         },
         this);
     _system_impl->get_param_float_async(
         "FLW_TGT_FA",
-        [this](MAVLinkParameters::Result result, float value) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this](MavlinkParameterClient::Result result, float value) {
+            if (result == MavlinkParameterClient::Result::Success) {
                 _config.follow_angle_deg = value;
             }
         },
         this);
     _system_impl->get_param_float_async(
         "FLW_TGT_RS",
-        [this](MAVLinkParameters::Result result, float value) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this](MavlinkParameterClient::Result result, float value) {
+            if (result == MavlinkParameterClient::Result::Success) {
                 _config.responsiveness = value;
             }
         },
         this);
     _system_impl->get_param_int_async(
         "FLW_TGT_ALT_M",
-        [this](MAVLinkParameters::Result result, int value) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this](MavlinkParameterClient::Result result, int value) {
+            if (result == MavlinkParameterClient::Result::Success) {
                 _config.altitude_mode = static_cast<FollowMe::Config::FollowAltitudeMode>(value);
             }
         },
         this);
     _system_impl->get_param_float_async(
         "FLW_TGT_MAX_VEL",
-        [this](MAVLinkParameters::Result result, float value) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this](MavlinkParameterClient::Result result, float value) {
+            if (result == MavlinkParameterClient::Result::Success) {
                 _config.max_tangential_vel_m_s = value;
             }
         },
@@ -123,7 +123,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     // Send configuration to Vehicle
     if (_config.follow_height_m != height) {
         if (_system_impl->set_param_float("FLW_TGT_HT", height) ==
-            MAVLinkParameters::Result::Success) {
+            MavlinkParameterClient::Result::Success) {
             _config.follow_height_m = height;
         } else {
             success = false;
@@ -132,7 +132,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
     if (_config.follow_distance_m != distance) {
         if (_system_impl->set_param_float("FLW_TGT_DST", distance) ==
-            MAVLinkParameters::Result::Success) {
+            MavlinkParameterClient::Result::Success) {
             _config.follow_distance_m = distance;
         } else {
             success = false;
@@ -141,7 +141,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
     if (_config.follow_angle_deg != config.follow_angle_deg) {
         if (_system_impl->set_param_float("FLW_TGT_FA", config.follow_angle_deg) ==
-            MAVLinkParameters::Result::Success) {
+            MavlinkParameterClient::Result::Success) {
             _config.follow_angle_deg = config.follow_angle_deg;
         } else {
             success = false;
@@ -150,7 +150,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
     if (_config.responsiveness != responsiveness) {
         if (_system_impl->set_param_float("FLW_TGT_RS", responsiveness) ==
-            MAVLinkParameters::Result::Success) {
+            MavlinkParameterClient::Result::Success) {
             _config.responsiveness = responsiveness;
         } else {
             success = false;
@@ -159,7 +159,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
     if (_config.altitude_mode != altitude_mode) {
         if (_system_impl->set_param_int("FLW_TGT_ALT_M", static_cast<int32_t>(altitude_mode)) ==
-            MAVLinkParameters::Result::Success) {
+            MavlinkParameterClient::Result::Success) {
             _config.altitude_mode = altitude_mode;
         } else {
             success = false;
@@ -168,7 +168,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 
     if (_config.max_tangential_vel_m_s != max_tangential_vel_m_s) {
         if (_system_impl->set_param_float("FLW_TGT_MAX_VEL", max_tangential_vel_m_s) ==
-            MAVLinkParameters::Result::Success) {
+            MavlinkParameterClient::Result::Success) {
             _config.max_tangential_vel_m_s = max_tangential_vel_m_s;
         } else {
             success = false;

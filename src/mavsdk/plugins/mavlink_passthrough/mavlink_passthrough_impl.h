@@ -51,7 +51,7 @@ private:
     to_mavlink_passthrough_result_from_mavlink_commands_result(MavlinkCommandSender::Result result);
 
     static MavlinkPassthrough::Result
-    to_mavlink_passthrough_result_from_mavlink_params_result(MAVLinkParameters::Result result);
+    to_mavlink_passthrough_result_from_mavlink_params_result(MavlinkParameterClient::Result result);
 
     std::unordered_map<uint16_t, CallbackList<const mavlink_message_t&>> _message_subscriptions{};
 };

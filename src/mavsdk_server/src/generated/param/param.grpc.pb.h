@@ -113,6 +113,17 @@ class ParamService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::GetAllParamsResponse>> PrepareAsyncGetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::GetAllParamsResponse>>(PrepareAsyncGetAllParamsRaw(context, request, cq));
     }
+    //
+    // Select component ID of parameter component to talk to and param protocol version.
+    //
+    // Default is the autopilot component (1), and Version (0).
+    virtual ::grpc::Status SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::mavsdk::rpc::param::SelectComponentResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SelectComponentResponse>> AsyncSelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SelectComponentResponse>>(AsyncSelectComponentRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SelectComponentResponse>> PrepareAsyncSelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SelectComponentResponse>>(PrepareAsyncSelectComponentRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -156,6 +167,12 @@ class ParamService final {
       // Get all parameters.
       virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Select component ID of parameter component to talk to and param protocol version.
+      //
+      // Default is the autopilot component (1), and Version (0).
+      virtual void SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -175,6 +192,8 @@ class ParamService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SetParamCustomResponse>* PrepareAsyncSetParamCustomRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::GetAllParamsResponse>* AsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::GetAllParamsResponse>* PrepareAsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SelectComponentResponse>* AsyncSelectComponentRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param::SelectComponentResponse>* PrepareAsyncSelectComponentRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -228,6 +247,13 @@ class ParamService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::GetAllParamsResponse>> PrepareAsyncGetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::GetAllParamsResponse>>(PrepareAsyncGetAllParamsRaw(context, request, cq));
     }
+    ::grpc::Status SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::mavsdk::rpc::param::SelectComponentResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>> AsyncSelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>>(AsyncSelectComponentRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>> PrepareAsyncSelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>>(PrepareAsyncSelectComponentRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -245,6 +271,8 @@ class ParamService final {
       void SetParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest* request, ::mavsdk::rpc::param::SetParamCustomResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, std::function<void(::grpc::Status)>) override;
       void GetAllParams(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response, std::function<void(::grpc::Status)>) override;
+      void SelectComponent(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -270,6 +298,8 @@ class ParamService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SetParamCustomResponse>* PrepareAsyncSetParamCustomRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SetParamCustomRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::GetAllParamsResponse>* AsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::GetAllParamsResponse>* PrepareAsyncGetAllParamsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>* AsyncSelectComponentRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::param::SelectComponentResponse>* PrepareAsyncSelectComponentRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::param::SelectComponentRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetParamInt_;
     const ::grpc::internal::RpcMethod rpcmethod_SetParamInt_;
     const ::grpc::internal::RpcMethod rpcmethod_GetParamFloat_;
@@ -277,6 +307,7 @@ class ParamService final {
     const ::grpc::internal::RpcMethod rpcmethod_GetParamCustom_;
     const ::grpc::internal::RpcMethod rpcmethod_SetParamCustom_;
     const ::grpc::internal::RpcMethod rpcmethod_GetAllParams_;
+    const ::grpc::internal::RpcMethod rpcmethod_SelectComponent_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -317,6 +348,11 @@ class ParamService final {
     //
     // Get all parameters.
     virtual ::grpc::Status GetAllParams(::grpc::ServerContext* context, const ::mavsdk::rpc::param::GetAllParamsRequest* request, ::mavsdk::rpc::param::GetAllParamsResponse* response);
+    //
+    // Select component ID of parameter component to talk to and param protocol version.
+    //
+    // Default is the autopilot component (1), and Version (0).
+    virtual ::grpc::Status SelectComponent(::grpc::ServerContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetParamInt : public BaseClass {
@@ -458,7 +494,27 @@ class ParamService final {
       ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetParamInt<WithAsyncMethod_SetParamInt<WithAsyncMethod_GetParamFloat<WithAsyncMethod_SetParamFloat<WithAsyncMethod_GetParamCustom<WithAsyncMethod_SetParamCustom<WithAsyncMethod_GetAllParams<Service > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SelectComponent : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SelectComponent() {
+      ::grpc::Service::MarkMethodAsync(7);
+    }
+    ~WithAsyncMethod_SelectComponent() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SelectComponent(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SelectComponentRequest* /*request*/, ::mavsdk::rpc::param::SelectComponentResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSelectComponent(::grpc::ServerContext* context, ::mavsdk::rpc::param::SelectComponentRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::param::SelectComponentResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetParamInt<WithAsyncMethod_SetParamInt<WithAsyncMethod_GetParamFloat<WithAsyncMethod_SetParamFloat<WithAsyncMethod_GetParamCustom<WithAsyncMethod_SetParamCustom<WithAsyncMethod_GetAllParams<WithAsyncMethod_SelectComponent<Service > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_GetParamInt : public BaseClass {
    private:
@@ -648,7 +704,34 @@ class ParamService final {
     virtual ::grpc::ServerUnaryReactor* GetAllParams(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param::GetAllParamsResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetParamInt<WithCallbackMethod_SetParamInt<WithCallbackMethod_GetParamFloat<WithCallbackMethod_SetParamFloat<WithCallbackMethod_GetParamCustom<WithCallbackMethod_SetParamCustom<WithCallbackMethod_GetAllParams<Service > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SelectComponent : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SelectComponent() {
+      ::grpc::Service::MarkMethodCallback(7,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::param::SelectComponentRequest* request, ::mavsdk::rpc::param::SelectComponentResponse* response) { return this->SelectComponent(context, request, response); }));}
+    void SetMessageAllocatorFor_SelectComponent(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SelectComponent() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SelectComponent(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SelectComponentRequest* /*request*/, ::mavsdk::rpc::param::SelectComponentResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SelectComponent(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::param::SelectComponentRequest* /*request*/, ::mavsdk::rpc::param::SelectComponentResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_GetParamInt<WithCallbackMethod_SetParamInt<WithCallbackMethod_GetParamFloat<WithCallbackMethod_SetParamFloat<WithCallbackMethod_GetParamCustom<WithCallbackMethod_SetParamCustom<WithCallbackMethod_GetAllParams<WithCallbackMethod_SelectComponent<Service > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetParamInt : public BaseClass {
@@ -765,6 +848,23 @@ class ParamService final {
     }
     // disable synchronous version of this method
     ::grpc::Status GetAllParams(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::GetAllParamsRequest* /*request*/, ::mavsdk::rpc::param::GetAllParamsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SelectComponent : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SelectComponent() {
+      ::grpc::Service::MarkMethodGeneric(7);
+    }
+    ~WithGenericMethod_SelectComponent() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SelectComponent(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SelectComponentRequest* /*request*/, ::mavsdk::rpc::param::SelectComponentResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -907,6 +1007,26 @@ class ParamService final {
     }
     void RequestGetAllParams(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SelectComponent : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SelectComponent() {
+      ::grpc::Service::MarkMethodRaw(7);
+    }
+    ~WithRawMethod_SelectComponent() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SelectComponent(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SelectComponentRequest* /*request*/, ::mavsdk::rpc::param::SelectComponentResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSelectComponent(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1061,6 +1181,28 @@ class ParamService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* GetAllParams(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SelectComponent : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SelectComponent() {
+      ::grpc::Service::MarkMethodRawCallback(7,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SelectComponent(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SelectComponent() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SelectComponent(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SelectComponentRequest* /*request*/, ::mavsdk::rpc::param::SelectComponentResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SelectComponent(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -1252,9 +1394,36 @@ class ParamService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetAllParams(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param::GetAllParamsRequest,::mavsdk::rpc::param::GetAllParamsResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetParamInt<WithStreamedUnaryMethod_SetParamInt<WithStreamedUnaryMethod_GetParamFloat<WithStreamedUnaryMethod_SetParamFloat<WithStreamedUnaryMethod_GetParamCustom<WithStreamedUnaryMethod_SetParamCustom<WithStreamedUnaryMethod_GetAllParams<Service > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SelectComponent : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SelectComponent() {
+      ::grpc::Service::MarkMethodStreamed(7,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::param::SelectComponentRequest, ::mavsdk::rpc::param::SelectComponentResponse>* streamer) {
+                       return this->StreamedSelectComponent(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SelectComponent() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SelectComponent(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::param::SelectComponentRequest* /*request*/, ::mavsdk::rpc::param::SelectComponentResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSelectComponent(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::param::SelectComponentRequest,::mavsdk::rpc::param::SelectComponentResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetParamInt<WithStreamedUnaryMethod_SetParamInt<WithStreamedUnaryMethod_GetParamFloat<WithStreamedUnaryMethod_SetParamFloat<WithStreamedUnaryMethod_GetParamCustom<WithStreamedUnaryMethod_SetParamCustom<WithStreamedUnaryMethod_GetAllParams<WithStreamedUnaryMethod_SelectComponent<Service > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetParamInt<WithStreamedUnaryMethod_SetParamInt<WithStreamedUnaryMethod_GetParamFloat<WithStreamedUnaryMethod_SetParamFloat<WithStreamedUnaryMethod_GetParamCustom<WithStreamedUnaryMethod_SetParamCustom<WithStreamedUnaryMethod_GetAllParams<Service > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetParamInt<WithStreamedUnaryMethod_SetParamInt<WithStreamedUnaryMethod_GetParamFloat<WithStreamedUnaryMethod_SetParamFloat<WithStreamedUnaryMethod_GetParamCustom<WithStreamedUnaryMethod_SetParamCustom<WithStreamedUnaryMethod_GetAllParams<WithStreamedUnaryMethod_SelectComponent<Service > > > > > > > > StreamedService;
 };
 
 }  // namespace param

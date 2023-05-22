@@ -4,7 +4,7 @@
 #include "flight_mode.h"
 #include "mavlink_address.h"
 #include "mavlink_include.h"
-#include "mavlink_parameters.h"
+#include "mavlink_parameter_client.h"
 #include "mavlink_command_sender.h"
 #include "mavlink_ftp.h"
 #include "mavlink_message_handler.h"
@@ -131,29 +131,33 @@ public:
 
     bool is_armed() const { return _armed; }
 
-    MAVLinkParameters::Result set_param(
+    MavlinkParameterClient::Result set_param(
         const std::string& name,
-        MAVLinkParameters::ParamValue value,
+        ParamValue value,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
-    MAVLinkParameters::Result set_param_float(
+    MavlinkParameterClient::Result set_param_float(
         const std::string& name,
         float value,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
-    MAVLinkParameters::Result set_param_int(
+    MavlinkParameterClient::Result set_param_int(
         const std::string& name,
         int32_t value,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
 
-    std::map<std::string, MAVLinkParameters::ParamValue> get_all_params();
+    std::pair<MavlinkParameterClient::Result, std::map<std::string, ParamValue>>
+    get_all_params(std::optional<uint8_t> maybe_component_id = {}, bool extended = false);
 
-    MAVLinkParameters::Result set_param_custom(const std::string& name, const std::string& value);
+    MavlinkParameterClient::Result set_param_custom(
+        const std::string& name,
+        const std::string& value,
+        std::optional<uint8_t> maybe_component_id = {});
 
-    using SetParamCallback = std::function<void(MAVLinkParameters::Result result)>;
+    using SetParamCallback = std::function<void(MavlinkParameterClient::Result result)>;
 
     void set_param_float_async(
         const std::string& name,
@@ -181,29 +185,30 @@ public:
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     using GetParamAnyCallback =
-        std::function<void(MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value)>;
+        std::function<void(MavlinkParameterClient::Result result, ParamValue value)>;
     using GetParamFloatCallback =
-        std::function<void(MAVLinkParameters::Result result, float value)>;
+        std::function<void(MavlinkParameterClient::Result result, float value)>;
     using GetParamIntCallback =
-        std::function<void(MAVLinkParameters::Result result, int32_t value)>;
+        std::function<void(MavlinkParameterClient::Result result, int32_t value)>;
     using GetParamCustomCallback =
-        std::function<void(MAVLinkParameters::Result result, const std::string& value)>;
+        std::function<void(MavlinkParameterClient::Result result, const std::string& value)>;
 
-    std::pair<MAVLinkParameters::Result, float> get_param_float(
+    std::pair<MavlinkParameterClient::Result, float> get_param_float(
         const std::string& name,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
-    std::pair<MAVLinkParameters::Result, int> get_param_int(
+    std::pair<MavlinkParameterClient::Result, int> get_param_int(
         const std::string& name,
         std::optional<uint8_t> maybe_component_id = {},
         bool extended = false);
-    std::pair<MAVLinkParameters::Result, std::string> get_param_custom(const std::string& name);
+    std::pair<MavlinkParameterClient::Result, std::string>
+    get_param_custom(const std::string& name, std::optional<uint8_t> maybe_component_id = {});
 
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.
     void get_param_async(
         const std::string& name,
-        MAVLinkParameters::ParamValue value,
+        ParamValue value,
         const GetParamAnyCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id = {},
@@ -227,7 +232,7 @@ public:
 
     void set_param_async(
         const std::string& name,
-        MAVLinkParameters::ParamValue value,
+        ParamValue value,
         const SetParamCallback& callback,
         const void* cookie,
         std::optional<uint8_t> maybe_component_id = {},
@@ -235,17 +240,17 @@ public:
 
     void subscribe_param_float(
         const std::string& name,
-        const MAVLinkParameters::ParamFloatChangedCallback& callback,
+        const MavlinkParameterClient::ParamFloatChangedCallback& callback,
         const void* cookie);
 
     void subscribe_param_int(
         const std::string& name,
-        const MAVLinkParameters::ParamIntChangedCallback& callback,
+        const MavlinkParameterClient::ParamIntChangedCallback& callback,
         const void* cookie);
 
     void subscribe_param_custom(
         const std::string& name,
-        const MAVLinkParameters::ParamCustomChangedCallback& callback,
+        const MavlinkParameterClient::ParamCustomChangedCallback& callback,
         const void* cookie);
 
     void cancel_all_param(const void* cookie);
@@ -323,12 +328,12 @@ private:
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
     static void receive_float_param(
-        MAVLinkParameters::Result result,
-        MAVLinkParameters::ParamValue value,
+        MavlinkParameterClient::Result result,
+        ParamValue value,
         const GetParamFloatCallback& callback);
     static void receive_int_param(
-        MAVLinkParameters::Result result,
-        MAVLinkParameters::ParamValue value,
+        MavlinkParameterClient::Result result,
+        ParamValue value,
         const GetParamIntCallback& callback);
 
     std::mutex _component_discovered_callback_mutex{};
@@ -340,6 +345,8 @@ private:
     AutopilotTime _autopilot_time{};
 
     MavlinkStatustextHandler _statustext_handler{};
+
+    MavlinkParameterClient* param_sender(uint8_t component_id, bool extended);
 
     struct StatustextCallback {
         std::function<void(const MavlinkStatustextHandler::Statustext&)> callback;
@@ -370,7 +377,13 @@ private:
 
     static constexpr double _ping_interval_s = 5.0;
 
-    MAVLinkParameters _params;
+    struct ParamSenderEntry {
+        std::unique_ptr<MavlinkParameterClient> parameter_client;
+        uint8_t component_id;
+        bool extended;
+    };
+    std::mutex _mavlink_parameter_clients_mutex{};
+    std::vector<ParamSenderEntry> _mavlink_parameter_clients;
     MavlinkCommandSender _command_sender;
 
     Timesync _timesync;

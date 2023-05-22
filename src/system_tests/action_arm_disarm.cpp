@@ -1,8 +1,8 @@
 #include "log.h"
 #include "mavsdk.h"
-#include "system_tests_helper.h"
 #include "plugins/action/action.h"
 #include "plugins/action_server/action_server.h"
+#include <gtest/gtest.h>
 
 using namespace mavsdk;
 
@@ -23,9 +23,9 @@ TEST(SystemTest, ActionArmDisarm)
     auto action_server = ActionServer{
         mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
 
-    auto fut = wait_for_first_system_detected(mavsdk_groundstation);
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
-    auto system = fut.get();
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
 

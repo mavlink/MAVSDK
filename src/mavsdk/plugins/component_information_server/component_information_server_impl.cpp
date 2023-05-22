@@ -68,9 +68,9 @@ ComponentInformationServerImpl::provide_float_param(ComponentInformationServer::
 
     update_json_files_with_lock();
 
-    _server_component_impl->mavlink_parameters().provide_server_param_float(
+    _server_component_impl->mavlink_parameter_server().provide_server_param_float(
         param.name, param.start_value);
-    _server_component_impl->mavlink_parameters().subscribe_param_float_changed(
+    _server_component_impl->mavlink_parameter_server().subscribe_param_float_changed(
         param.name,
         [this, name = param.name](float new_value) { param_update(name, new_value); },
         this);
@@ -103,6 +103,9 @@ void ComponentInformationServerImpl::param_update(const std::string& name, float
 
 std::optional<MAV_RESULT> ComponentInformationServerImpl::process_component_information_requested()
 {
+    const char general_metadata_uri[100] = "mftp://general.json";
+    const char peripherals_metadata_uri[100] = "";
+
     mavlink_message_t message;
     mavlink_msg_component_information_pack(
         _server_component_impl->get_own_system_id(),
@@ -110,9 +113,9 @@ std::optional<MAV_RESULT> ComponentInformationServerImpl::process_component_info
         &message,
         _server_component_impl->get_time().elapsed_ms(),
         0,
-        "mftp://general.json",
+        general_metadata_uri,
         0,
-        "");
+        peripherals_metadata_uri);
     _server_component_impl->send_message(message);
 
     // FIXME: REMOVE again

@@ -11,7 +11,6 @@
 #include "serial_connection.h"
 #include "cli_arg.h"
 #include "version.h"
-#include "unused.h"
 #include "server_component_impl.h"
 #include "callback_list.tpp"
 
@@ -293,11 +292,14 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
     // This is a low level interface where incoming messages can be tampered
     // with or even dropped.
-    if (_intercept_incoming_messages_callback != nullptr) {
-        bool keep = _intercept_incoming_messages_callback(message);
-        if (!keep) {
-            LogDebug() << "Dropped incoming message: " << int(message.msgid);
-            return;
+    {
+        std::lock_guard<std::mutex> lock(_intercept_callback_mutex);
+        if (_intercept_incoming_messages_callback != nullptr) {
+            bool keep = _intercept_incoming_messages_callback(message);
+            if (!keep) {
+                LogDebug() << "Dropped incoming message: " << int(message.msgid);
+                return;
+            }
         }
     }
 
@@ -827,11 +829,13 @@ void MavsdkImpl::send_heartbeat()
 
 void MavsdkImpl::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
+    std::lock_guard<std::mutex> lock(_intercept_callback_mutex);
     _intercept_incoming_messages_callback = callback;
 }
 
 void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
+    std::lock_guard<std::mutex> lock(_intercept_callback_mutex);
     _intercept_outgoing_messages_callback = callback;
 }
 

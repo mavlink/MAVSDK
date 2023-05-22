@@ -7,6 +7,8 @@
 #include "ardupilot_custom_mode.h"
 #include "request_message.h"
 #include "callback_list.tpp"
+#include "unused.h"
+#include <cassert>
 #include <cstdlib>
 #include <functional>
 #include <future>
@@ -21,12 +23,6 @@ template class CallbackList<System::ComponentType, uint8_t>;
 SystemImpl::SystemImpl(MavsdkImpl& parent) :
     Sender(),
     _mavsdk_impl(parent),
-    _params(
-        *this,
-        _mavsdk_impl.mavlink_message_handler,
-        _mavsdk_impl.timeout_handler,
-        [this]() { return timeout_s(); },
-        false),
     _command_sender(*this),
     _timesync(*this),
     _ping(*this),
@@ -61,7 +57,7 @@ SystemImpl::~SystemImpl()
 void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
 {
     _target_address.system_id = system_id;
-    // FIXME: for now use this as a default.
+    // We use this as a default.
     _target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
 
     if (connected) {
@@ -287,7 +283,12 @@ void SystemImpl::system_thread()
     SteadyTimePoint last_ping_time{};
 
     while (!_should_exit) {
-        _params.do_work();
+        {
+            std::lock_guard<std::mutex> lock(_mavlink_parameter_clients_mutex);
+            for (auto& entry : _mavlink_parameter_clients) {
+                entry.parameter_client->do_work();
+            }
+        }
         _command_sender.do_work();
         _timesync.do_work();
         _mission_transfer.do_work();
@@ -657,50 +658,57 @@ uint8_t SystemImpl::get_own_mav_type() const
     return _mavsdk_impl.get_mav_type();
 }
 
-MAVLinkParameters::Result SystemImpl::set_param(
+MavlinkParameterClient::Result SystemImpl::set_param(
     const std::string& name,
-    MAVLinkParameters::ParamValue value,
+    ParamValue value,
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    return _params.set_param(name, value, maybe_component_id, extended);
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->set_param(name, value);
 }
 
-MAVLinkParameters::Result SystemImpl::set_param_float(
+MavlinkParameterClient::Result SystemImpl::set_param_float(
     const std::string& name, float value, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    return _params.set_param_float(name, value, maybe_component_id, extended);
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->set_param_float(name, value);
 }
 
-MAVLinkParameters::Result SystemImpl::set_param_int(
+MavlinkParameterClient::Result SystemImpl::set_param_int(
     const std::string& name,
     int32_t value,
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    return _params.set_param_int(name, value, maybe_component_id, extended);
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->set_param_int(name, value);
 }
 
-MAVLinkParameters::Result
-SystemImpl::set_param_custom(const std::string& name, const std::string& value)
+MavlinkParameterClient::Result SystemImpl::set_param_custom(
+    const std::string& name, const std::string& value, std::optional<uint8_t> maybe_component_id)
 {
-    return _params.set_param_custom(name, value);
+    return param_sender(maybe_component_id.has_value() ? maybe_component_id.value() : 1, true)
+        ->set_param_custom(name, value);
 }
 
-std::map<std::string, MAVLinkParameters::ParamValue> SystemImpl::get_all_params()
+std::pair<MavlinkParameterClient::Result, std::map<std::string, ParamValue>>
+SystemImpl::get_all_params(std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    return _params.get_all_params();
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->get_all_params();
 }
 
 void SystemImpl::set_param_async(
     const std::string& name,
-    MAVLinkParameters::ParamValue value,
+    ParamValue value,
     const SetParamCallback& callback,
     const void* cookie,
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    _params.set_param_async(name, value, callback, cookie, maybe_component_id, extended);
+    param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->set_param_async(name, value, callback, cookie);
 }
 
 void SystemImpl::set_param_float_async(
@@ -711,7 +719,8 @@ void SystemImpl::set_param_float_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    _params.set_param_float_async(name, value, callback, cookie, maybe_component_id, extended);
+    param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->set_param_float_async(name, value, callback, cookie);
 }
 
 void SystemImpl::set_param_int_async(
@@ -722,36 +731,41 @@ void SystemImpl::set_param_int_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    _params.set_param_int_async(name, value, callback, cookie, maybe_component_id, extended);
+    param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->set_param_int_async(name, value, callback, cookie);
 }
 
-std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(
+std::pair<MavlinkParameterClient::Result, float> SystemImpl::get_param_float(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    return _params.get_param_float(name, maybe_component_id, extended);
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->get_param_float(name);
 }
 
-std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(
+std::pair<MavlinkParameterClient::Result, int> SystemImpl::get_param_int(
     const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended)
 {
-    return _params.get_param_int(name, maybe_component_id, extended);
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->get_param_int(name);
 }
 
-std::pair<MAVLinkParameters::Result, std::string>
-SystemImpl::get_param_custom(const std::string& name)
+std::pair<MavlinkParameterClient::Result, std::string>
+SystemImpl::get_param_custom(const std::string& name, std::optional<uint8_t> maybe_component_id)
 {
-    return _params.get_param_custom(name);
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, true)
+        ->get_param_custom(name);
 }
 
 void SystemImpl::get_param_async(
     const std::string& name,
-    MAVLinkParameters::ParamValue value,
+    ParamValue value,
     const GetParamAnyCallback& callback,
     const void* cookie,
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    _params.get_param_async(name, value, callback, cookie, maybe_component_id, extended);
+    param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->get_param_async(name, value, callback, cookie);
 }
 
 void SystemImpl::get_param_float_async(
@@ -761,7 +775,8 @@ void SystemImpl::get_param_float_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    _params.get_param_float_async(name, callback, cookie, maybe_component_id, extended);
+    param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->get_param_float_async(name, callback, cookie);
 }
 
 void SystemImpl::get_param_int_async(
@@ -771,18 +786,21 @@ void SystemImpl::get_param_int_async(
     std::optional<uint8_t> maybe_component_id,
     bool extended)
 {
-    _params.get_param_int_async(name, callback, cookie, maybe_component_id, extended);
+    param_sender(maybe_component_id ? maybe_component_id.value() : 1, extended)
+        ->get_param_int_async(name, callback, cookie);
 }
 
 void SystemImpl::get_param_custom_async(
     const std::string& name, const GetParamCustomCallback& callback, const void* cookie)
 {
-    _params.get_param_custom_async(name, callback, cookie);
+    param_sender(1, false)->get_param_custom_async(name, callback, cookie);
 }
 
 void SystemImpl::cancel_all_param(const void* cookie)
 {
-    _params.cancel_all_param(cookie);
+    UNUSED(cookie);
+    // FIXME: this currently crashes on destruction
+    // param_sender(1, false)->cancel_all_param(cookie);
 }
 
 MavlinkCommandSender::Result
@@ -1059,12 +1077,10 @@ FlightMode SystemImpl::get_flight_mode() const
 }
 
 void SystemImpl::receive_float_param(
-    MAVLinkParameters::Result result,
-    MAVLinkParameters::ParamValue value,
-    const GetParamFloatCallback& callback)
+    MavlinkParameterClient::Result result, ParamValue value, const GetParamFloatCallback& callback)
 {
     if (callback) {
-        if (result == MAVLinkParameters::Result::Success) {
+        if (result == MavlinkParameterClient::Result::Success) {
             callback(result, value.get<float>());
         } else {
             callback(result, NAN);
@@ -1073,12 +1089,10 @@ void SystemImpl::receive_float_param(
 }
 
 void SystemImpl::receive_int_param(
-    MAVLinkParameters::Result result,
-    MAVLinkParameters::ParamValue value,
-    const GetParamIntCallback& callback)
+    MavlinkParameterClient::Result result, ParamValue value, const GetParamIntCallback& callback)
 {
     if (callback) {
-        if (result == MAVLinkParameters::Result::Success) {
+        if (result == MavlinkParameterClient::Result::Success) {
             callback(result, value.get<int32_t>());
         } else {
             callback(result, 0);
@@ -1290,25 +1304,49 @@ Time& SystemImpl::get_time()
 
 void SystemImpl::subscribe_param_float(
     const std::string& name,
-    const MAVLinkParameters::ParamFloatChangedCallback& callback,
+    const MavlinkParameterClient::ParamFloatChangedCallback& callback,
     const void* cookie)
 {
-    _params.subscribe_param_float_changed(name, callback, cookie);
+    param_sender(1, false)->subscribe_param_float_changed(name, callback, cookie);
 }
 
 void SystemImpl::subscribe_param_int(
     const std::string& name,
-    const MAVLinkParameters::ParamIntChangedCallback& callback,
+    const MavlinkParameterClient::ParamIntChangedCallback& callback,
     const void* cookie)
 {
-    _params.subscribe_param_int_changed(name, callback, cookie);
+    param_sender(1, false)->subscribe_param_int_changed(name, callback, cookie);
 }
 void SystemImpl::subscribe_param_custom(
     const std::string& name,
-    const MAVLinkParameters::ParamCustomChangedCallback& callback,
+    const MavlinkParameterClient::ParamCustomChangedCallback& callback,
     const void* cookie)
 {
-    _params.subscribe_param_custom_changed(name, callback, cookie);
+    param_sender(1, false)->subscribe_param_custom_changed(name, callback, cookie);
+}
+
+MavlinkParameterClient* SystemImpl::param_sender(uint8_t component_id, bool extended)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_parameter_clients_mutex);
+
+    for (auto& entry : _mavlink_parameter_clients) {
+        if (entry.component_id == component_id && entry.extended == extended) {
+            return entry.parameter_client.get();
+        }
+    }
+
+    _mavlink_parameter_clients.push_back(
+        {std::make_unique<MavlinkParameterClient>(
+             *this,
+             _mavsdk_impl.mavlink_message_handler,
+             _mavsdk_impl.timeout_handler,
+             [this]() { return timeout_s(); },
+             component_id,
+             extended),
+         component_id,
+         extended});
+
+    return _mavlink_parameter_clients.back().parameter_client.get();
 }
 
 } // namespace mavsdk

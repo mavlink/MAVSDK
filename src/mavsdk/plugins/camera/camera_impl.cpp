@@ -717,27 +717,27 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
     }
 }
 
-Camera::Result
-CameraImpl::camera_result_from_parameter_result(const MAVLinkParameters::Result parameter_result)
+Camera::Result CameraImpl::camera_result_from_parameter_result(
+    const MavlinkParameterClient::Result parameter_result)
 {
     switch (parameter_result) {
-        case MAVLinkParameters::Result::Success:
+        case MavlinkParameterClient::Result::Success:
             return Camera::Result::Success;
-        case MAVLinkParameters::Result::Timeout:
+        case MavlinkParameterClient::Result::Timeout:
             return Camera::Result::Timeout;
-        case MAVLinkParameters::Result::ConnectionError:
+        case MavlinkParameterClient::Result::ConnectionError:
             return Camera::Result::Error;
-        case MAVLinkParameters::Result::WrongType:
+        case MavlinkParameterClient::Result::WrongType:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::ParamNameTooLong:
+        case MavlinkParameterClient::Result::ParamNameTooLong:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::NotFound:
+        case MavlinkParameterClient::Result::NotFound:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::ValueUnsupported:
+        case MavlinkParameterClient::Result::ValueUnsupported:
             return Camera::Result::WrongArgument;
-        case MAVLinkParameters::Result::Failed:
+        case MavlinkParameterClient::Result::Failed:
             return Camera::Result::Error;
-        case MAVLinkParameters::Result::UnknownError:
+        case MavlinkParameterClient::Result::UnknownError:
             return Camera::Result::Error;
         default:
             return Camera::Result::Unknown;
@@ -782,7 +782,7 @@ void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
     // maintain (what if the MAVLink CAMERA_MODE enum evolves?), so
     // I am assuming here that in such a case, CAMERA_SETTINGS is
     // never sent by the camera.
-    MAVLinkParameters::ParamValue value;
+    ParamValue value;
     if (_camera_definition->get_setting("CAM_MODE", value)) {
         if (value.is<uint8_t>()) {
             value.set<uint8_t>(static_cast<uint8_t>(mavlink_camera_mode));
@@ -1436,7 +1436,7 @@ bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings
         return false;
     }
 
-    std::unordered_map<std::string, MAVLinkParameters::ParamValue> cd_settings{};
+    std::unordered_map<std::string, ParamValue> cd_settings{};
     _camera_definition->get_possible_settings(cd_settings);
 
     for (const auto& cd_setting : cd_settings) {
@@ -1461,7 +1461,7 @@ bool CameraImpl::get_possible_options(
         return false;
     }
 
-    std::vector<MAVLinkParameters::ParamValue> values;
+    std::vector<ParamValue> values;
     if (!_camera_definition->get_possible_options(setting_id, values)) {
         return false;
     }
@@ -1516,11 +1516,11 @@ void CameraImpl::set_option_async(
     }
 
     // We get it first so that we have the type of the param value.
-    MAVLinkParameters::ParamValue value;
+    ParamValue value;
 
     if (_camera_definition->is_setting_range(setting_id)) {
         // TODO: Get type from minimum.
-        std::vector<MAVLinkParameters::ParamValue> all_values;
+        std::vector<ParamValue> all_values;
         if (!_camera_definition->get_all_options(setting_id, all_values)) {
             if (callback) {
                 LogErr() << "Could not get all options to get type for range param.";
@@ -1564,7 +1564,7 @@ void CameraImpl::set_option_async(
             return;
         }
 
-        std::vector<MAVLinkParameters::ParamValue> possible_values;
+        std::vector<ParamValue> possible_values;
         _camera_definition->get_possible_options(setting_id, possible_values);
         bool allowed = false;
         for (const auto& possible_value : possible_values) {
@@ -1586,8 +1586,8 @@ void CameraImpl::set_option_async(
     _system_impl->set_param_async(
         setting_id,
         value,
-        [this, callback, setting_id, value](MAVLinkParameters::Result result) {
-            if (result == MAVLinkParameters::Result::Success) {
+        [this, callback, setting_id, value](MavlinkParameterClient::Result result) {
+            if (result == MavlinkParameterClient::Result::Success) {
                 if (!this->_camera_definition) {
                     if (callback) {
                         const auto temp_callback = callback;
@@ -1696,7 +1696,7 @@ void CameraImpl::get_option_async(
         return;
     }
 
-    MAVLinkParameters::ParamValue value;
+    ParamValue value;
     // We should have this cached and don't need to get the param.
     if (_camera_definition->get_setting(setting_id, value)) {
         if (callback) {
@@ -1778,7 +1778,7 @@ void CameraImpl::notify_current_settings()
 
     for (auto& possible_setting : possible_setting_options) {
         // use the cache for this, presumably we updated it right before.
-        MAVLinkParameters::ParamValue value;
+        ParamValue value;
         if (_camera_definition->get_setting(possible_setting, value)) {
             Camera::Setting setting{};
             setting.setting_id = possible_setting;
@@ -1849,7 +1849,7 @@ void CameraImpl::refresh_params()
         return;
     }
 
-    std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
+    std::vector<std::pair<std::string, ParamValue>> params;
     _camera_definition->get_unknown_params(params);
     if (params.size() == 0) {
         // We're assuming that we changed one option and this did not cause
@@ -1863,14 +1863,13 @@ void CameraImpl::refresh_params()
     unsigned count = 0;
     for (const auto& param : params) {
         const std::string& param_name = param.first;
-        const MAVLinkParameters::ParamValue& param_value_type = param.second;
+        const ParamValue& param_value_type = param.second;
         const bool is_last = (count == params.size() - 1);
         _system_impl->get_param_async(
             param_name,
             param_value_type,
-            [param_name, is_last, this](
-                MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value) {
-                if (result != MAVLinkParameters::Result::Success) {
+            [param_name, is_last, this](MavlinkParameterClient::Result result, ParamValue value) {
+                if (result != MavlinkParameterClient::Result::Success) {
                     return;
                 }
                 // We need to check again by the time this callback runs

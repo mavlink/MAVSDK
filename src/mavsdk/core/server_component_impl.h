@@ -3,7 +3,7 @@
 #include "mavlink_include.h"
 #include "mavlink_command_receiver.h"
 #include "mavlink_mission_transfer.h"
-#include "mavlink_parameters.h"
+#include "mavlink_parameter_server.h"
 #include "mavlink_request_message_handler.h"
 #include "mavsdk_time.h"
 #include "flight_mode.h"
@@ -134,7 +134,7 @@ public:
     void send_autopilot_version();
 
     MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; }
-    MAVLinkParameters& mavlink_parameters() { return _mavlink_parameters; }
+    MavlinkParameterServer& mavlink_parameter_server() { return _mavlink_parameter_server; }
     MavlinkRequestMessageHandler& mavlink_request_message_handler()
     {
         return _mavlink_request_message_handler;
@@ -156,7 +156,7 @@ private:
     OurSender _our_sender;
     MavlinkCommandReceiver _mavlink_command_receiver;
     MavlinkMissionTransfer _mission_transfer;
-    MAVLinkParameters _mavlink_parameters;
+    MavlinkParameterServer _mavlink_parameter_server;
     MavlinkRequestMessageHandler _mavlink_request_message_handler;
 };
 

@@ -59,6 +59,22 @@ public:
     ~Param() override;
 
     /**
+     * @brief Parameter version
+     */
+    enum class ProtocolVersion {
+        V1, /**< @brief Original v1 version. */
+        Ext, /**< @brief Extended param version. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Param::ProtocolVersion`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Param::ProtocolVersion const& protocol_version);
+
+    /**
      * @brief Type for integer parameters.
      */
     struct IntParam {
@@ -162,6 +178,7 @@ public:
         ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
         NoSystem, /**< @brief No system connected. */
         ParamValueTooLong, /**< @brief Param value too long (> 128). */
+        Failed, /**< @brief Operation failed.. */
     };
 
     /**
@@ -250,6 +267,17 @@ public:
      * @return Result of request.
      */
     Param::AllParams get_all_params() const;
+
+    /**
+     * @brief Select component ID of parameter component to talk to and param protocol version.
+     *
+     * Default is the autopilot component (1), and Version (0).
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result select_component(int32_t component_id, ProtocolVersion protocol_version) const;
 
     /**
      * @brief Copy constructor.
