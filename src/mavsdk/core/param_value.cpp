@@ -264,7 +264,10 @@ bool ParamValue::set_from_mavlink_param_ext_value(
 
 bool ParamValue::set_from_xml(const std::string& type_str, const std::string& value_str)
 {
-    if (type_str == "uint8") {
+    if (type_str == "bool") {
+        // bool is internally handled as uint8_t
+        _value = static_cast<uint8_t>(std::stoi(value_str));
+    } else if (type_str == "uint8") {
         _value = static_cast<uint8_t>(std::stoi(value_str));
     } else if (type_str == "int8") {
         _value = static_cast<int8_t>(std::stoi(value_str));
@@ -293,7 +296,9 @@ bool ParamValue::set_from_xml(const std::string& type_str, const std::string& va
 
 bool ParamValue::set_empty_type_from_xml(const std::string& type_str)
 {
-    if (type_str == "uint8") {
+    if (type_str == "bool") {
+        _value = uint8_t(0);
+    } else if (type_str == "uint8") {
         _value = uint8_t(0);
     } else if (type_str == "int8") {
         _value = int8_t(0);
