@@ -135,34 +135,6 @@ public:
         }
     }
 
-    grpc::Status Reset(
-        grpc::ServerContext* /* context */,
-        const rpc::ftp::ResetRequest* /* request */,
-        rpc::ftp::ResetResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::Ftp::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        std::promise<mavsdk::Ftp::Result> prom;
-        std::future<mavsdk::Ftp::Result> fut = prom.get_future();
-
-        _lazy_plugin.maybe_plugin()->reset_async(
-            [&prom](const mavsdk::Ftp::Result result) { prom.set_value(result); });
-        auto result = fut.get();
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
     grpc::Status SubscribeDownload(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::ftp::SubscribeDownloadRequest* request,
@@ -187,6 +159,7 @@ public:
         _lazy_plugin.maybe_plugin()->download_async(
             request->remote_file_path(),
             request->local_dir(),
+            request->use_burst(),
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
                 mavsdk::Ftp::Result result, const mavsdk::Ftp::ProgressData download) {
                 rpc::ftp::DownloadResponse rpc_response;
@@ -447,34 +420,6 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetRootDirectory(
-        grpc::ServerContext* /* context */,
-        const rpc::ftp::SetRootDirectoryRequest* request,
-        rpc::ftp::SetRootDirectoryResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::Ftp::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "SetRootDirectory sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->set_root_directory(request->root_dir());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
     grpc::Status SetTargetCompid(
         grpc::ServerContext* /* context */,
         const rpc::ftp::SetTargetCompidRequest* request,
@@ -498,24 +443,6 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status GetOurCompid(
-        grpc::ServerContext* /* context */,
-        const rpc::ftp::GetOurCompidRequest* /* request */,
-        rpc::ftp::GetOurCompidResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->get_our_compid();
-
-        if (response != nullptr) {
-            response->set_compid(result);
         }
 
         return grpc::Status::OK;

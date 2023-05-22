@@ -8,6 +8,7 @@ component_information_server
 failure
 follow_me
 ftp
+ftp_server
 geofence
 gimbal
 gripper

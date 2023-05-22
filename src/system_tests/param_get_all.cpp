@@ -134,7 +134,7 @@ TEST(SystemTest, ParamGetAllLossy)
     auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 5; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
+    mavsdk_groundstation.intercept_outgoing_messages_async(drop_some);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
@@ -186,5 +186,5 @@ TEST(SystemTest, ParamGetAllLossy)
     // Before going out of scope, we need to make sure to no longer access the
     // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
 }

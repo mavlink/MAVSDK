@@ -112,13 +112,6 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
-     * @brief Resets FTP server in case there are stale open sessions.
-     *
-     * This function is non-blocking.
-     */
-    void reset_async(const ResultCallback callback);
-
-    /**
      * @brief Callback type for download_async.
      */
     using DownloadCallback = std::function<void(Result, ProgressData)>;
@@ -127,7 +120,10 @@ public:
      * @brief Downloads a file to local directory.
      */
     void download_async(
-        std::string remote_file_path, std::string local_dir, const DownloadCallback& callback);
+        std::string remote_file_path,
+        std::string local_dir,
+        bool use_burst,
+        const DownloadCallback& callback);
 
     /**
      * @brief Callback type for upload_async.
@@ -252,15 +248,6 @@ public:
     are_files_identical(std::string local_file_path, std::string remote_file_path) const;
 
     /**
-     * @brief Set root directory for MAVLink FTP server.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Result set_root_directory(std::string root_dir) const;
-
-    /**
      * @brief Set target component ID. By default it is the autopilot.
      *
      * This function is blocking.
@@ -268,15 +255,6 @@ public:
      * @return Result of request.
      */
     Result set_target_compid(uint32_t compid) const;
-
-    /**
-     * @brief Get our own component ID.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    uint32_t get_our_compid() const;
 
     /**
      * @brief Copy constructor.
