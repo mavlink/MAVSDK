@@ -857,16 +857,17 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
 
     switch (_vehicle_type) {
         case MAV_TYPE::MAV_TYPE_SURFACE_BOAT:
-        case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
-            if (flight_mode_to_ardupilot_rover_mode(flight_mode) == ardupilot::RoverMode::Unknown) {
+        case MAV_TYPE::MAV_TYPE_GROUND_ROVER: {
+            const auto new_mode = flight_mode_to_ardupilot_rover_mode(flight_mode);
+            if (new_mode == ardupilot::RoverMode::Unknown) {
                 LogErr() << "Cannot translate flight mode to ArduPilot Rover mode.";
                 MavlinkCommandSender::CommandLong empty_command{};
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
-                command.params.maybe_param2 =
-                    static_cast<float>(flight_mode_to_ardupilot_rover_mode(flight_mode));
+                command.params.maybe_param2 = static_cast<float>(new_mode);
             }
             break;
+        }
         case MAV_TYPE::MAV_TYPE_FIXED_WING:
         case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER_DUOROTOR:
         case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER_QUADROTOR:
@@ -899,8 +900,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
                 MavlinkCommandSender::CommandLong empty_command{};
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
-                command.params.maybe_param2 =
-                    static_cast<float>(flight_mode_to_ardupilot_copter_mode(flight_mode));
+                command.params.maybe_param2 = static_cast<float>(new_mode);
             }
             break;
         }
