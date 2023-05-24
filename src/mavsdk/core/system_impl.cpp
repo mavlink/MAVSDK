@@ -865,7 +865,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
                 command.params.maybe_param2 =
-                    static_cast<float>(flight_mode_to_ardupilot_rover_mode(new_mode));
+                    static_cast<float>(new_mode);
             }
             break;
         case MAV_TYPE::MAV_TYPE_FIXED_WING:
@@ -901,7 +901,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
                 command.params.maybe_param2 =
-                    static_cast<float>(flight_mode_to_ardupilot_copter_mode(new_mode));
+                    static_cast<float>(new_mode);
             }
             break;
         }
