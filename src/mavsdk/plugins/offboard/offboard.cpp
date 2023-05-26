@@ -94,6 +94,15 @@ Offboard::Result Offboard::set_position_velocity_ned(
     return _impl->set_position_velocity_ned(position_ned_yaw, velocity_ned_yaw);
 }
 
+Offboard::Result Offboard::set_position_velocity_acceleration_ned(
+    PositionNedYaw position_ned_yaw,
+    VelocityNedYaw velocity_ned_yaw,
+    AccelerationNed acceleration_ned) const
+{
+    return _impl->set_position_velocity_acceleration_ned(
+        position_ned_yaw, velocity_ned_yaw, acceleration_ned);
+}
+
 Offboard::Result Offboard::set_acceleration_ned(AccelerationNed acceleration_ned) const
 {
     return _impl->set_acceleration_ned(acceleration_ned);

@@ -700,6 +700,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetPositionVelocityAccelerationNed(
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetPositionVelocityAccelerationNedRequest* request,
+        rpc::offboard::SetPositionVelocityAccelerationNedResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Offboard::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetPositionVelocityAccelerationNed sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_position_velocity_acceleration_ned(
+            translateFromRpcPositionNedYaw(request->position_ned_yaw()),
+            translateFromRpcVelocityNedYaw(request->velocity_ned_yaw()),
+            translateFromRpcAccelerationNed(request->acceleration_ned()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetAccelerationNed(
         grpc::ServerContext* /* context */,
         const rpc::offboard::SetAccelerationNedRequest* request,
