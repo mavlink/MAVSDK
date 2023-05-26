@@ -116,7 +116,7 @@ bool CameraDefinition::parse_xml()
             LogErr() << "type attribute missing for " << param_name;
             return false;
         }
-        
+
         // Convert to std::string only once.
         auto type_str = std::string(type_str_res);
         if (type_str == "string") {
@@ -199,7 +199,7 @@ bool CameraDefinition::parse_xml()
             continue;
         }
 
-        auto get_default_opt = [&](){
+        auto get_default_opt = [&]() {
             auto maybe_default = find_default(new_parameter->options, default_str);
 
             if (!maybe_default.first) {
@@ -217,7 +217,7 @@ bool CameraDefinition::parse_xml()
                 continue;
             }
             new_parameter->options = maybe_options.second;
-            
+
             if (auto default_option = get_default_opt()) {
                 new_parameter->default_option = *default_option;
             } else {
@@ -231,11 +231,10 @@ bool CameraDefinition::parse_xml()
             Option false_option;
             true_option.name = "off";
             false_option.value.set<uint8_t>(false);
-            
+
             new_parameter->options = {
                 std::make_shared<Option>(std::move(true_option)),
-                std::make_shared<Option>(std::move(false_option))
-            };
+                std::make_shared<Option>(std::move(false_option))};
 
             if (auto default_option = get_default_opt()) {
                 new_parameter->default_option = *default_option;
