@@ -110,18 +110,21 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        const char* type_str = e_parameter->Attribute("type");
-        if (!type_str) {
+        const char* type_str_res = e_parameter->Attribute("type");
+        // The check for null pointer is required before the creation of std::string.
+        if (!type_str_res) {
             LogErr() << "type attribute missing for " << param_name;
             return false;
         }
-
-        if (std::string(type_str) == "string") {
+        
+        // Convert to std::string only once.
+        auto type_str = std::string(type_str_res);
+        if (type_str == "string") {
             LogDebug() << "Ignoring string params: " << param_name;
             continue;
         }
 
-        if (std::string(type_str) == "custom") {
+        if (type_str == "custom") {
             LogDebug() << "Ignoring custom params: " << param_name;
             continue;
         }
@@ -203,6 +206,28 @@ bool CameraDefinition::parse_xml()
                 continue;
             }
             new_parameter->options = maybe_options.second;
+            
+            auto maybe_default = find_default(new_parameter->options, default_str);
+            
+            if (!maybe_default.first) {
+                LogWarn() << "Default not found for " << param_name;
+                return false;
+            }
+            
+            new_parameter->default_option = maybe_default.second;
+        } else if (type_str == "bool") {
+            // Automaticaly create bool options if the parameter type is bool as per documentation.
+            Option true_option;
+            true_option.name = "on";
+            true_option.value.set<uint8_t>(true);
+            Option false_option;
+            true_option.name = "off";
+            false_option.value.set<uint8_t>(false);
+            
+            new_parameter->options = {
+                std::make_shared<Option>(std::move(true_option)),
+                std::make_shared<Option>(std::move(false_option))
+            };
 
             auto maybe_default = find_default(new_parameter->options, default_str);
 
@@ -212,7 +237,6 @@ bool CameraDefinition::parse_xml()
             }
 
             new_parameter->default_option = maybe_default.second;
-
         } else {
             auto maybe_range_options = parse_range_options(e_parameter, param_name, type_map);
             if (!std::get<0>(maybe_range_options)) {
