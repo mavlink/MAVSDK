@@ -484,6 +484,19 @@ public:
         PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const;
 
     /**
+     * @brief Set the position, velocity and acceleration in NED coordinates, with velocity and
+     * acceleration used as feed-forward.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_position_velocity_acceleration_ned(
+        PositionNedYaw position_ned_yaw,
+        VelocityNedYaw velocity_ned_yaw,
+        AccelerationNed acceleration_ned) const;
+
+    /**
      * @brief Set the acceleration in NED coordinates.
      *
      * This function is blocking.

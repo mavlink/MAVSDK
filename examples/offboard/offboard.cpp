@@ -277,7 +277,6 @@ bool offb_ctrl_attitude(mavsdk::Offboard& offboard)
     roll.roll_deg = -30.0f;
     offboard.set_attitude(roll);
     sleep_for(seconds(2));
-
     std::cout << "Stay horizontal\n";
     roll.roll_deg = 0.0f;
     offboard.set_attitude(roll);

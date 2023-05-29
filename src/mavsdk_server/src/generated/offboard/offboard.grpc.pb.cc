@@ -35,6 +35,7 @@ static const char* OffboardService_method_names[] = {
   "/mavsdk.rpc.offboard.OffboardService/SetVelocityBody",
   "/mavsdk.rpc.offboard.OffboardService/SetVelocityNed",
   "/mavsdk.rpc.offboard.OffboardService/SetPositionVelocityNed",
+  "/mavsdk.rpc.offboard.OffboardService/SetPositionVelocityAccelerationNed",
   "/mavsdk.rpc.offboard.OffboardService/SetAccelerationNed",
 };
 
@@ -56,7 +57,8 @@ OffboardService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
   , rpcmethod_SetVelocityBody_(OffboardService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetVelocityNed_(OffboardService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetPositionVelocityNed_(OffboardService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetAccelerationNed_(OffboardService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetPositionVelocityAccelerationNed_(OffboardService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetAccelerationNed_(OffboardService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status OffboardService::Stub::Start(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StartRequest& request, ::mavsdk::rpc::offboard::StartResponse* response) {
@@ -312,6 +314,29 @@ void OffboardService::Stub::async::SetPositionVelocityNed(::grpc::ClientContext*
   return result;
 }
 
+::grpc::Status OffboardService::Stub::SetPositionVelocityAccelerationNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest& request, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetPositionVelocityAccelerationNed_, context, request, response);
+}
+
+void OffboardService::Stub::async::SetPositionVelocityAccelerationNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest* request, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPositionVelocityAccelerationNed_, context, request, response, std::move(f));
+}
+
+void OffboardService::Stub::async::SetPositionVelocityAccelerationNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest* request, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPositionVelocityAccelerationNed_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse>* OffboardService::Stub::PrepareAsyncSetPositionVelocityAccelerationNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetPositionVelocityAccelerationNed_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse>* OffboardService::Stub::AsyncSetPositionVelocityAccelerationNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetPositionVelocityAccelerationNedRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ::grpc::Status OffboardService::Stub::SetAccelerationNed(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::SetAccelerationNedRequest& request, ::mavsdk::rpc::offboard::SetAccelerationNedResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::offboard::SetAccelerationNedRequest, ::mavsdk::rpc::offboard::SetAccelerationNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAccelerationNed_, context, request, response);
 }
@@ -449,6 +474,16 @@ OffboardService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       OffboardService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](OffboardService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest* req,
+             ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse* resp) {
+               return service->SetPositionVelocityAccelerationNed(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      OffboardService_method_names[12],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< OffboardService::Service, ::mavsdk::rpc::offboard::SetAccelerationNedRequest, ::mavsdk::rpc::offboard::SetAccelerationNedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](OffboardService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -532,6 +567,13 @@ OffboardService::Service::~Service() {
 }
 
 ::grpc::Status OffboardService::Service::SetPositionVelocityNed(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityNedRequest* request, ::mavsdk::rpc::offboard::SetPositionVelocityNedResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status OffboardService::Service::SetPositionVelocityAccelerationNed(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedRequest* request, ::mavsdk::rpc::offboard::SetPositionVelocityAccelerationNedResponse* response) {
   (void) context;
   (void) request;
   (void) response;
