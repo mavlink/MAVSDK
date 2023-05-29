@@ -486,16 +486,15 @@ jobs:
           - name: macOS-framework
             build-framework: ON
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
+          fetch-depth: 0
       - uses: actions/cache@v2
         id: cache
         with:
           path: ./build/macos/third_party/install
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
-      - name: fetch git tags for version
-        run: git fetch --tags
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
@@ -541,16 +540,15 @@ jobs:
             platform: SIMULATOR64
             sdk: iphonesimulator
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
+          fetch-depth: 0
       - uses: actions/cache@v2
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
-      - name: fetch git tags for version
-        run: git fetch --tags
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
