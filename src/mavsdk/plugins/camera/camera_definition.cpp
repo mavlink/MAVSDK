@@ -111,13 +111,11 @@ bool CameraDefinition::parse_xml()
         }
 
         const char* type_str_res = e_parameter->Attribute("type");
-        // The check for null pointer is required before the creation of std::string.
         if (!type_str_res) {
             LogErr() << "type attribute missing for " << param_name;
             return false;
         }
 
-        // Convert to std::string only once.
         auto type_str = std::string(type_str_res);
         if (type_str == "string") {
             LogDebug() << "Ignoring string params: " << param_name;
