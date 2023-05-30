@@ -264,25 +264,28 @@ bool ParamValue::set_from_mavlink_param_ext_value(
 
 bool ParamValue::set_from_xml(const std::string& type_str, const std::string& value_str)
 {
-    if (strcmp(type_str.c_str(), "uint8") == 0) {
+    if (type_str == "bool") {
+        // bool is internally handled as uint8_t
         _value = static_cast<uint8_t>(std::stoi(value_str));
-    } else if (strcmp(type_str.c_str(), "int8") == 0) {
+    } else if (type_str == "uint8") {
+        _value = static_cast<uint8_t>(std::stoi(value_str));
+    } else if (type_str == "int8") {
         _value = static_cast<int8_t>(std::stoi(value_str));
-    } else if (strcmp(type_str.c_str(), "uint16") == 0) {
+    } else if (type_str == "uint16") {
         _value = static_cast<uint16_t>(std::stoi(value_str));
-    } else if (strcmp(type_str.c_str(), "int16") == 0) {
+    } else if (type_str == "int16") {
         _value = static_cast<int16_t>(std::stoi(value_str));
-    } else if (strcmp(type_str.c_str(), "uint32") == 0) {
+    } else if (type_str == "uint32") {
         _value = static_cast<uint32_t>(std::stoi(value_str));
-    } else if (strcmp(type_str.c_str(), "int32") == 0) {
+    } else if (type_str == "int32") {
         _value = static_cast<int32_t>(std::stoi(value_str));
-    } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+    } else if (type_str == "uint64") {
         _value = static_cast<uint64_t>(std::stoll(value_str));
-    } else if (strcmp(type_str.c_str(), "int64") == 0) {
+    } else if (type_str == "int64") {
         _value = static_cast<int64_t>(std::stoll(value_str));
-    } else if (strcmp(type_str.c_str(), "float") == 0) {
+    } else if (type_str == "float") {
         _value = static_cast<float>(std::stof(value_str));
-    } else if (strcmp(type_str.c_str(), "double") == 0) {
+    } else if (type_str == "double") {
         _value = static_cast<double>(std::stod(value_str));
     } else {
         LogErr() << "Unknown type: " << type_str;
@@ -293,25 +296,27 @@ bool ParamValue::set_from_xml(const std::string& type_str, const std::string& va
 
 bool ParamValue::set_empty_type_from_xml(const std::string& type_str)
 {
-    if (strcmp(type_str.c_str(), "uint8") == 0) {
+    if (type_str == "bool") {
         _value = uint8_t(0);
-    } else if (strcmp(type_str.c_str(), "int8") == 0) {
+    } else if (type_str == "uint8") {
+        _value = uint8_t(0);
+    } else if (type_str == "int8") {
         _value = int8_t(0);
-    } else if (strcmp(type_str.c_str(), "uint16") == 0) {
+    } else if (type_str == "uint16") {
         _value = uint16_t(0);
-    } else if (strcmp(type_str.c_str(), "int16") == 0) {
+    } else if (type_str == "int16") {
         _value = int16_t(0);
-    } else if (strcmp(type_str.c_str(), "uint32") == 0) {
+    } else if (type_str == "uint32") {
         _value = uint32_t(0);
-    } else if (strcmp(type_str.c_str(), "int32") == 0) {
+    } else if (type_str == "int32") {
         _value = int32_t(0);
-    } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+    } else if (type_str == "uint64") {
         _value = uint64_t(0);
-    } else if (strcmp(type_str.c_str(), "int64") == 0) {
+    } else if (type_str == "int64") {
         _value = int64_t(0);
-    } else if (strcmp(type_str.c_str(), "float") == 0) {
+    } else if (type_str == "float") {
         _value = 0.0f;
-    } else if (strcmp(type_str.c_str(), "double") == 0) {
+    } else if (type_str == "double") {
         _value = 0.0;
     } else {
         LogErr() << "Unknown type: " << type_str;
