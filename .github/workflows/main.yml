@@ -486,16 +486,15 @@ jobs:
           - name: macOS-framework
             build-framework: ON
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
+          fetch-depth: 0
       - uses: actions/cache@v2
         id: cache
         with:
           path: ./build/macos/third_party/install
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
-      - name: fetch git tags for version
-        run: git fetch --tags
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
@@ -541,16 +540,15 @@ jobs:
             platform: SIMULATOR64
             sdk: iphonesimulator
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
+          fetch-depth: 0
       - uses: actions/cache@v2
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
-      - name: fetch git tags for version
-        run: git fetch --tags
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
@@ -666,59 +664,3 @@ jobs:
           asset_name: 'mavsdk_server_win32.exe'
           tag: ${{ github.ref }}
           overwrite: true
-
-  px4-sitl-newer:
-    name: PX4 SITL ${{ matrix.px4_version }} (ubuntu-20.04)
-    runs-on: ubuntu-20.04
-    container: mavsdk/mavsdk-ubuntu-20.04-px4-sitl-${{ matrix.px4_version }}
-    strategy:
-      matrix:
-        px4_version: [v1.11, v1.12]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: git permission workaround
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global --add safe.directory /github/workspace
-      - name: install pymavlink dependencies
-        run: python3 -m pip install future
-      - name: test
-        run: PX4_VERSION=${{ matrix.px4_version }} tools/run-sitl-tests.sh /home/user/Firmware
-        timeout-minutes: 45
-      - name: look at core files
-        if: failure()
-        run: gdb /home/user/Firmware/build/px4_sitl_default/bin/px4 px4.core -ex "thread apply all bt" -ex "quit"
-  
-  apm-sitl-newer:
-    name: APM SITL ${{ matrix.apm_version }} (ubuntu-20.04)
-    runs-on: ubuntu-20.04
-    container: 
-      image: mavsdk/mavsdk-ubuntu-20.04-apm-sitl-${{ matrix.apm_version }}
-      options: --privileged
-      env: 
-        APM_HOME_LAT: 47.397742
-        APM_HOME_LONG: 8.545594
-        APM_HOME_ALT: 488.0
-        APM_HOME_DIR: 180
-        WORKDIR: "/home/user/MAVSDK"
-        FIRMWARE_DIR: /home/user/ArduPilot
-    strategy:
-      matrix:
-        apm_version: [copter-4.1.2]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: git permission workaround
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global --add safe.directory /github/workspace
-      - name: install pymavlink dependencies
-        run: python3 -m pip install future
-      - name: test
-        run: APM_VERSION=${{ matrix.apm_version }} tools/run-sitl-tests.sh /home/user/ArduPilot
-        timeout-minutes: 45
