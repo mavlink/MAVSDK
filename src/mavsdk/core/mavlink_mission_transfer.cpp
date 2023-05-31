@@ -237,27 +237,11 @@ void MavlinkMissionTransfer::UploadWorkItem::start()
         return;
     }
 
-    // Mission items for ArduPilot are off by one because the home position is
-    // item 0, and the sequence starts counting at 0 from 1.
-    // This is only for missions, rally points, and geofence items are normal.
-    const bool is_ardupilot_mission =
-        _sender.autopilot() == Sender::Autopilot::ArduPilot && _type == MAV_MISSION_TYPE_MISSION;
-
-    if (is_ardupilot_mission) {
-        for (unsigned i = 1; i < _items.size(); ++i) {
-            if (_items[i].seq != i - 1) {
-                LogWarn() << "Invalid sequence for ArduPilot items";
-                callback_and_reset(Result::InvalidSequence);
-                return;
-            }
-        }
-    } else {
-        for (unsigned i = 0; i < _items.size(); ++i) {
-            if (_items[i].seq != i - 0) {
-                LogWarn() << "Invalid sequence";
-                callback_and_reset(Result::InvalidSequence);
-                return;
-            }
+    for (unsigned i = 0; i < _items.size(); ++i) {
+        if (_items[i].seq != i) {
+            LogWarn() << "Invalid sequence";
+            callback_and_reset(Result::InvalidSequence);
+            return;
         }
     }
 
