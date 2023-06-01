@@ -110,18 +110,19 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        const char* type_str = e_parameter->Attribute("type");
-        if (!type_str) {
+        const char* type_str_res = e_parameter->Attribute("type");
+        if (!type_str_res) {
             LogErr() << "type attribute missing for " << param_name;
             return false;
         }
 
-        if (std::string(type_str) == "string") {
+        auto type_str = std::string(type_str_res);
+        if (type_str == "string") {
             LogDebug() << "Ignoring string params: " << param_name;
             continue;
         }
 
-        if (std::string(type_str) == "custom") {
+        if (type_str == "custom") {
             LogDebug() << "Ignoring custom params: " << param_name;
             continue;
         }
@@ -196,6 +197,17 @@ bool CameraDefinition::parse_xml()
             continue;
         }
 
+        auto get_default_opt = [&]() {
+            auto maybe_default = find_default(new_parameter->options, default_str);
+
+            if (!maybe_default.first) {
+                LogWarn() << "Default not found for " << param_name;
+                return std::optional<Option>{};
+            }
+
+            return std::optional{maybe_default.second};
+        };
+
         auto e_options = e_parameter->FirstChildElement("options");
         if (e_options) {
             auto maybe_options = parse_options(e_options, param_name, type_map);
@@ -204,15 +216,29 @@ bool CameraDefinition::parse_xml()
             }
             new_parameter->options = maybe_options.second;
 
-            auto maybe_default = find_default(new_parameter->options, default_str);
-
-            if (!maybe_default.first) {
-                LogWarn() << "Default not found for " << param_name;
+            if (auto default_option = get_default_opt()) {
+                new_parameter->default_option = *default_option;
+            } else {
                 return false;
             }
+        } else if (type_str == "bool") {
+            // Automaticaly create bool options if the parameter type is bool as per documentation.
+            Option true_option;
+            true_option.name = "on";
+            true_option.value.set<uint8_t>(true);
+            Option false_option;
+            true_option.name = "off";
+            false_option.value.set<uint8_t>(false);
 
-            new_parameter->default_option = maybe_default.second;
+            new_parameter->options = {
+                std::make_shared<Option>(std::move(true_option)),
+                std::make_shared<Option>(std::move(false_option))};
 
+            if (auto default_option = get_default_opt()) {
+                new_parameter->default_option = *default_option;
+            } else {
+                return false;
+            }
         } else {
             auto maybe_range_options = parse_range_options(e_parameter, param_name, type_map);
             if (!std::get<0>(maybe_range_options)) {
