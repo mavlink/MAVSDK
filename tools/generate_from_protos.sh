@@ -91,7 +91,7 @@ command -v ${protoc_binary} > /dev/null && command -v ${protoc_grpc_binary} > /d
 }
 
 echo "Installing protoc-gen-mavsdk locally into build folder"
-python -m pip install --upgrade --target=${build_dir}/pb_plugins  ${script_dir}/../proto/pb_plugins
+python3 -m pip install --upgrade --target=${build_dir}/pb_plugins ${script_dir}/../proto/pb_plugins
 
 protoc_gen_mavsdk="${build_dir}/pb_plugins/bin/protoc-gen-mavsdk"
 export PYTHONPATH="${build_dir}/pb_plugins:${PYTHONPATH}"
@@ -177,4 +177,4 @@ for plugin in ${plugin_list_and_core}; do
 done
 
 # Generate grpc_server.h and grpc_server.cpp files according to plugin list
-python3 tools/grpc_server_jinja.py $plugin_list
+python3 ${script_dir}/grpc_server_jinja.py $plugin_list
