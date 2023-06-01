@@ -1,34 +1,22 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-set(COMPONENTS_LIST ${ENABLED_PLUGINS})
-list(APPEND COMPONENTS_LIST core)
-
-foreach(COMPONENT_NAME ${COMPONENTS_LIST})
-    add_library(${COMPONENT_NAME}_proto_gens STATIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.grpc.pb.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.pb.cc
-        )
-
-    target_link_libraries(${COMPONENT_NAME}_proto_gens
-        gRPC::grpc++
-    )
-
-    target_include_directories(${COMPONENT_NAME}_proto_gens
-        PRIVATE
-        ${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated
-    )
-
-    list(APPEND COMPONENTS_PROTOGENS ${COMPONENT_NAME}_proto_gens)
-endforeach()
-
-set(MAVSDK_SERVER_SOURCES
+list(APPEND MAVSDK_SERVER_SOURCES
     mavsdk_server_api.h
     mavsdk_server_api.cpp
     mavsdk_server.cpp
     grpc_server.cpp
 )
+
+set(COMPONENTS_LIST ${ENABLED_PLUGINS})
+list(APPEND COMPONENTS_LIST core)
+foreach(COMPONENT_NAME ${COMPONENTS_LIST})
+    list(APPEND MAVSDK_SERVER_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.grpc.pb.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/mavsdk_options.pb.cc
+        )
+endforeach()
 
 if(IOS OR (APPLE AND MACOS_FRAMEWORK))
     set_property(SOURCE module.modulemap
@@ -47,7 +35,6 @@ target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk
     gRPC::grpc++
-    ${COMPONENTS_PROTOGENS}
 )
 
 if(BUILD_WITH_PROTO_REFLECTION)
