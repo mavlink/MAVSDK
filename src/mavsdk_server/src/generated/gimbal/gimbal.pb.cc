@@ -4,472 +4,599 @@
 #include "gimbal/gimbal.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
+template <typename>
 PROTOBUF_CONSTEXPR SetPitchAndYawRequest::SetPitchAndYawRequest(
-    ::_pbi::ConstantInitialized)
-  : pitch_deg_(0)
-  , yaw_deg_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.pitch_deg_)*/ 0
+
+  , /*decltype(_impl_.yaw_deg_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SetPitchAndYawRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetPitchAndYawRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetPitchAndYawRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetPitchAndYawRequestDefaultTypeInternal() {}
   union {
     SetPitchAndYawRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchAndYawRequestDefaultTypeInternal _SetPitchAndYawRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchAndYawRequestDefaultTypeInternal _SetPitchAndYawRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetPitchAndYawResponse::SetPitchAndYawResponse(
-    ::_pbi::ConstantInitialized)
-  : gimbal_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.gimbal_result_)*/nullptr} {}
 struct SetPitchAndYawResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetPitchAndYawResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetPitchAndYawResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetPitchAndYawResponseDefaultTypeInternal() {}
   union {
     SetPitchAndYawResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchAndYawResponseDefaultTypeInternal _SetPitchAndYawResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchAndYawResponseDefaultTypeInternal _SetPitchAndYawResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(
-    ::_pbi::ConstantInitialized)
-  : pitch_rate_deg_s_(0)
-  , yaw_rate_deg_s_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.pitch_rate_deg_s_)*/ 0
+
+  , /*decltype(_impl_.yaw_rate_deg_s_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SetPitchRateAndYawRateRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetPitchRateAndYawRateRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetPitchRateAndYawRateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetPitchRateAndYawRateRequestDefaultTypeInternal() {}
   union {
     SetPitchRateAndYawRateRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchRateAndYawRateRequestDefaultTypeInternal _SetPitchRateAndYawRateRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchRateAndYawRateRequestDefaultTypeInternal _SetPitchRateAndYawRateRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(
-    ::_pbi::ConstantInitialized)
-  : gimbal_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.gimbal_result_)*/nullptr} {}
 struct SetPitchRateAndYawRateResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetPitchRateAndYawRateResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetPitchRateAndYawRateResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetPitchRateAndYawRateResponseDefaultTypeInternal() {}
   union {
     SetPitchRateAndYawRateResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchRateAndYawRateResponseDefaultTypeInternal _SetPitchRateAndYawRateResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchRateAndYawRateResponseDefaultTypeInternal _SetPitchRateAndYawRateResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetModeRequest::SetModeRequest(
-    ::_pbi::ConstantInitialized)
-  : gimbal_mode_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.gimbal_mode_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SetModeRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetModeRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetModeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetModeRequestDefaultTypeInternal() {}
   union {
     SetModeRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetModeResponse::SetModeResponse(
-    ::_pbi::ConstantInitialized)
-  : gimbal_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.gimbal_result_)*/nullptr} {}
 struct SetModeResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetModeResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetModeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetModeResponseDefaultTypeInternal() {}
   union {
     SetModeResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetModeResponseDefaultTypeInternal _SetModeResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetModeResponseDefaultTypeInternal _SetModeResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetRoiLocationRequest::SetRoiLocationRequest(
-    ::_pbi::ConstantInitialized)
-  : latitude_deg_(0)
-  , longitude_deg_(0)
-  , altitude_m_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.latitude_deg_)*/ 0
+
+  , /*decltype(_impl_.longitude_deg_)*/ 0
+
+  , /*decltype(_impl_.altitude_m_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SetRoiLocationRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetRoiLocationRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetRoiLocationRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetRoiLocationRequestDefaultTypeInternal() {}
   union {
     SetRoiLocationRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetRoiLocationResponse::SetRoiLocationResponse(
-    ::_pbi::ConstantInitialized)
-  : gimbal_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.gimbal_result_)*/nullptr} {}
 struct SetRoiLocationResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetRoiLocationResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetRoiLocationResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetRoiLocationResponseDefaultTypeInternal() {}
   union {
     SetRoiLocationResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR TakeControlRequest::TakeControlRequest(
-    ::_pbi::ConstantInitialized)
-  : control_mode_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.control_mode_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct TakeControlRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR TakeControlRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR TakeControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~TakeControlRequestDefaultTypeInternal() {}
   union {
     TakeControlRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TakeControlRequestDefaultTypeInternal _TakeControlRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TakeControlRequestDefaultTypeInternal _TakeControlRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR TakeControlResponse::TakeControlResponse(
-    ::_pbi::ConstantInitialized)
-  : gimbal_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.gimbal_result_)*/nullptr} {}
 struct TakeControlResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR TakeControlResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR TakeControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~TakeControlResponseDefaultTypeInternal() {}
   union {
     TakeControlResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TakeControlResponseDefaultTypeInternal _TakeControlResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TakeControlResponseDefaultTypeInternal _TakeControlResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ReleaseControlRequest::ReleaseControlRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct ReleaseControlRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ReleaseControlRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ReleaseControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ReleaseControlRequestDefaultTypeInternal() {}
   union {
     ReleaseControlRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ReleaseControlResponse::ReleaseControlResponse(
-    ::_pbi::ConstantInitialized)
-  : gimbal_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.gimbal_result_)*/nullptr} {}
 struct ReleaseControlResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ReleaseControlResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ReleaseControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ReleaseControlResponseDefaultTypeInternal() {}
   union {
     ReleaseControlResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseControlResponseDefaultTypeInternal _ReleaseControlResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseControlResponseDefaultTypeInternal _ReleaseControlResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SubscribeControlRequest::SubscribeControlRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct SubscribeControlRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SubscribeControlRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SubscribeControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SubscribeControlRequestDefaultTypeInternal() {}
   union {
     SubscribeControlRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ControlResponse::ControlResponse(
-    ::_pbi::ConstantInitialized)
-  : control_status_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.control_status_)*/nullptr} {}
 struct ControlResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ControlResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ControlResponseDefaultTypeInternal() {}
   union {
     ControlResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
-PROTOBUF_CONSTEXPR ControlStatus::ControlStatus(
-    ::_pbi::ConstantInitialized)
-  : control_mode_(0)
 
-  , sysid_primary_control_(0)
-  , compid_primary_control_(0)
-  , sysid_secondary_control_(0)
-  , compid_secondary_control_(0){}
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR ControlStatus::ControlStatus(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.control_mode_)*/ 0
+
+  , /*decltype(_impl_.sysid_primary_control_)*/ 0
+
+  , /*decltype(_impl_.compid_primary_control_)*/ 0
+
+  , /*decltype(_impl_.sysid_secondary_control_)*/ 0
+
+  , /*decltype(_impl_.compid_secondary_control_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ControlStatusDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ControlStatusDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ControlStatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ControlStatusDefaultTypeInternal() {}
   union {
     ControlStatus _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR GimbalResult::GimbalResult(
-    ::_pbi::ConstantInitialized)
-  : result_str_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , result_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.result_str_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.result_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct GimbalResultDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GimbalResultDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR GimbalResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~GimbalResultDefaultTypeInternal() {}
   union {
     GimbalResult _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
 }  // namespace gimbal
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_gimbal_2fgimbal_2eproto[16];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_gimbal_2fgimbal_2eproto[3];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_gimbal_2fgimbal_2eproto = nullptr;
-
-const uint32_t TableStruct_gimbal_2fgimbal_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, pitch_deg_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, yaw_deg_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, gimbal_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, pitch_rate_deg_s_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, yaw_rate_deg_s_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, gimbal_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, gimbal_mode_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, gimbal_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, latitude_deg_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, longitude_deg_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, altitude_m_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, gimbal_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, control_mode_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, gimbal_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, gimbal_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeControlRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, control_status_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, control_mode_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, sysid_primary_control_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, compid_primary_control_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, sysid_secondary_control_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, compid_secondary_control_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, result_str_),
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_gimbal_2fgimbal_2eproto = nullptr;
+const ::uint32_t TableStruct_gimbal_2fgimbal_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _impl_.pitch_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _impl_.yaw_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _impl_.gimbal_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _impl_.gimbal_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, _impl_.gimbal_mode_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _impl_.gimbal_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.latitude_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.longitude_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.altitude_m_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _impl_.gimbal_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _impl_.control_mode_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _impl_.gimbal_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _impl_.gimbal_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeControlRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _impl_.control_status_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.control_mode_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.sysid_primary_control_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.compid_primary_control_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.sysid_secondary_control_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.compid_secondary_control_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _impl_.result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _impl_.result_str_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawRequest)},
-  { 8, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawResponse)},
-  { 15, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest)},
-  { 23, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse)},
-  { 30, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetModeRequest)},
-  { 37, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetModeResponse)},
-  { 44, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationRequest)},
-  { 53, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationResponse)},
-  { 60, -1, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlRequest)},
-  { 67, -1, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlResponse)},
-  { 74, -1, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlRequest)},
-  { 80, -1, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlResponse)},
-  { 87, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeControlRequest)},
-  { 93, -1, -1, sizeof(::mavsdk::rpc::gimbal::ControlResponse)},
-  { 100, -1, -1, sizeof(::mavsdk::rpc::gimbal::ControlStatus)},
-  { 111, -1, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawRequest)},
+        { 10, 19, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawResponse)},
+        { 20, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest)},
+        { 30, 39, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse)},
+        { 40, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetModeRequest)},
+        { 49, 58, -1, sizeof(::mavsdk::rpc::gimbal::SetModeResponse)},
+        { 59, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationRequest)},
+        { 70, 79, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationResponse)},
+        { 80, -1, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlRequest)},
+        { 89, 98, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlResponse)},
+        { 99, -1, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlRequest)},
+        { 107, 116, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlResponse)},
+        { 117, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeControlRequest)},
+        { 125, 134, -1, sizeof(::mavsdk::rpc::gimbal::ControlResponse)},
+        { 135, -1, -1, sizeof(::mavsdk::rpc::gimbal::ControlStatus)},
+        { 148, -1, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::mavsdk::rpc::gimbal::_SetPitchAndYawRequest_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SetPitchAndYawResponse_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SetPitchRateAndYawRateRequest_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SetPitchRateAndYawRateResponse_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SetModeRequest_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SetModeResponse_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SetRoiLocationRequest_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SetRoiLocationResponse_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_TakeControlRequest_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_TakeControlResponse_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_ReleaseControlRequest_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_SubscribeControlRequest_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_ControlResponse_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_ControlStatus_default_instance_._instance,
-  &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetPitchAndYawRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetPitchAndYawResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetPitchRateAndYawRateRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetPitchRateAndYawRateResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetModeRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetModeResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetRoiLocationRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SetRoiLocationResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_TakeControlRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_TakeControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_ReleaseControlRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SubscribeControlRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_ControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_ControlStatus_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\023gimbal/gimbal.proto\022\021mavsdk.rpc.gimbal"
-  "\";\n\025SetPitchAndYawRequest\022\021\n\tpitch_deg\030\001"
-  " \001(\002\022\017\n\007yaw_deg\030\002 \001(\002\"P\n\026SetPitchAndYawR"
-  "esponse\0226\n\rgimbal_result\030\001 \001(\0132\037.mavsdk."
-  "rpc.gimbal.GimbalResult\"Q\n\035SetPitchRateA"
-  "ndYawRateRequest\022\030\n\020pitch_rate_deg_s\030\001 \001"
-  "(\002\022\026\n\016yaw_rate_deg_s\030\002 \001(\002\"X\n\036SetPitchRa"
-  "teAndYawRateResponse\0226\n\rgimbal_result\030\001 "
-  "\001(\0132\037.mavsdk.rpc.gimbal.GimbalResult\"D\n\016"
-  "SetModeRequest\0222\n\013gimbal_mode\030\001 \001(\0162\035.ma"
-  "vsdk.rpc.gimbal.GimbalMode\"I\n\017SetModeRes"
-  "ponse\0226\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rp"
-  "c.gimbal.GimbalResult\"X\n\025SetRoiLocationR"
-  "equest\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitud"
-  "e_deg\030\002 \001(\001\022\022\n\naltitude_m\030\003 \001(\002\"P\n\026SetRo"
-  "iLocationResponse\0226\n\rgimbal_result\030\001 \001(\013"
-  "2\037.mavsdk.rpc.gimbal.GimbalResult\"J\n\022Tak"
-  "eControlRequest\0224\n\014control_mode\030\001 \001(\0162\036."
-  "mavsdk.rpc.gimbal.ControlMode\"M\n\023TakeCon"
-  "trolResponse\0226\n\rgimbal_result\030\001 \001(\0132\037.ma"
-  "vsdk.rpc.gimbal.GimbalResult\"\027\n\025ReleaseC"
-  "ontrolRequest\"P\n\026ReleaseControlResponse\022"
-  "6\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rpc.gimb"
-  "al.GimbalResult\"\031\n\027SubscribeControlReque"
-  "st\"K\n\017ControlResponse\0228\n\016control_status\030"
-  "\001 \001(\0132 .mavsdk.rpc.gimbal.ControlStatus\""
-  "\307\001\n\rControlStatus\0224\n\014control_mode\030\001 \001(\0162"
-  "\036.mavsdk.rpc.gimbal.ControlMode\022\035\n\025sysid"
-  "_primary_control\030\002 \001(\005\022\036\n\026compid_primary"
-  "_control\030\003 \001(\005\022\037\n\027sysid_secondary_contro"
-  "l\030\004 \001(\005\022 \n\030compid_secondary_control\030\005 \001("
-  "\005\"\341\001\n\014GimbalResult\0226\n\006result\030\001 \001(\0162&.mav"
-  "sdk.rpc.gimbal.GimbalResult.Result\022\022\n\nre"
-  "sult_str\030\002 \001(\t\"\204\001\n\006Result\022\022\n\016RESULT_UNKN"
-  "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERRO"
-  "R\020\002\022\022\n\016RESULT_TIMEOUT\020\003\022\026\n\022RESULT_UNSUPP"
-  "ORTED\020\004\022\024\n\020RESULT_NO_SYSTEM\020\005*B\n\nGimbalM"
-  "ode\022\032\n\026GIMBAL_MODE_YAW_FOLLOW\020\000\022\030\n\024GIMBA"
-  "L_MODE_YAW_LOCK\020\001*Z\n\013ControlMode\022\025\n\021CONT"
-  "ROL_MODE_NONE\020\000\022\030\n\024CONTROL_MODE_PRIMARY\020"
-  "\001\022\032\n\026CONTROL_MODE_SECONDARY\020\0022\347\005\n\rGimbal"
-  "Service\022g\n\016SetPitchAndYaw\022(.mavsdk.rpc.g"
-  "imbal.SetPitchAndYawRequest\032).mavsdk.rpc"
-  ".gimbal.SetPitchAndYawResponse\"\000\022\177\n\026SetP"
-  "itchRateAndYawRate\0220.mavsdk.rpc.gimbal.S"
-  "etPitchRateAndYawRateRequest\0321.mavsdk.rp"
-  "c.gimbal.SetPitchRateAndYawRateResponse\""
-  "\000\022R\n\007SetMode\022!.mavsdk.rpc.gimbal.SetMode"
-  "Request\032\".mavsdk.rpc.gimbal.SetModeRespo"
-  "nse\"\000\022g\n\016SetRoiLocation\022(.mavsdk.rpc.gim"
-  "bal.SetRoiLocationRequest\032).mavsdk.rpc.g"
-  "imbal.SetRoiLocationResponse\"\000\022^\n\013TakeCo"
-  "ntrol\022%.mavsdk.rpc.gimbal.TakeControlReq"
-  "uest\032&.mavsdk.rpc.gimbal.TakeControlResp"
-  "onse\"\000\022g\n\016ReleaseControl\022(.mavsdk.rpc.gi"
-  "mbal.ReleaseControlRequest\032).mavsdk.rpc."
-  "gimbal.ReleaseControlResponse\"\000\022f\n\020Subsc"
-  "ribeControl\022*.mavsdk.rpc.gimbal.Subscrib"
-  "eControlRequest\032\".mavsdk.rpc.gimbal.Cont"
-  "rolResponse\"\0000\001B\037\n\020io.mavsdk.gimbalB\013Gim"
-  "balProtob\006proto3"
-  ;
-static ::_pbi::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
+const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\023gimbal/gimbal.proto\022\021mavsdk.rpc.gimbal"
+    "\";\n\025SetPitchAndYawRequest\022\021\n\tpitch_deg\030\001"
+    " \001(\002\022\017\n\007yaw_deg\030\002 \001(\002\"P\n\026SetPitchAndYawR"
+    "esponse\0226\n\rgimbal_result\030\001 \001(\0132\037.mavsdk."
+    "rpc.gimbal.GimbalResult\"Q\n\035SetPitchRateA"
+    "ndYawRateRequest\022\030\n\020pitch_rate_deg_s\030\001 \001"
+    "(\002\022\026\n\016yaw_rate_deg_s\030\002 \001(\002\"X\n\036SetPitchRa"
+    "teAndYawRateResponse\0226\n\rgimbal_result\030\001 "
+    "\001(\0132\037.mavsdk.rpc.gimbal.GimbalResult\"D\n\016"
+    "SetModeRequest\0222\n\013gimbal_mode\030\001 \001(\0162\035.ma"
+    "vsdk.rpc.gimbal.GimbalMode\"I\n\017SetModeRes"
+    "ponse\0226\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rp"
+    "c.gimbal.GimbalResult\"X\n\025SetRoiLocationR"
+    "equest\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitud"
+    "e_deg\030\002 \001(\001\022\022\n\naltitude_m\030\003 \001(\002\"P\n\026SetRo"
+    "iLocationResponse\0226\n\rgimbal_result\030\001 \001(\013"
+    "2\037.mavsdk.rpc.gimbal.GimbalResult\"J\n\022Tak"
+    "eControlRequest\0224\n\014control_mode\030\001 \001(\0162\036."
+    "mavsdk.rpc.gimbal.ControlMode\"M\n\023TakeCon"
+    "trolResponse\0226\n\rgimbal_result\030\001 \001(\0132\037.ma"
+    "vsdk.rpc.gimbal.GimbalResult\"\027\n\025ReleaseC"
+    "ontrolRequest\"P\n\026ReleaseControlResponse\022"
+    "6\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rpc.gimb"
+    "al.GimbalResult\"\031\n\027SubscribeControlReque"
+    "st\"K\n\017ControlResponse\0228\n\016control_status\030"
+    "\001 \001(\0132 .mavsdk.rpc.gimbal.ControlStatus\""
+    "\307\001\n\rControlStatus\0224\n\014control_mode\030\001 \001(\0162"
+    "\036.mavsdk.rpc.gimbal.ControlMode\022\035\n\025sysid"
+    "_primary_control\030\002 \001(\005\022\036\n\026compid_primary"
+    "_control\030\003 \001(\005\022\037\n\027sysid_secondary_contro"
+    "l\030\004 \001(\005\022 \n\030compid_secondary_control\030\005 \001("
+    "\005\"\341\001\n\014GimbalResult\0226\n\006result\030\001 \001(\0162&.mav"
+    "sdk.rpc.gimbal.GimbalResult.Result\022\022\n\nre"
+    "sult_str\030\002 \001(\t\"\204\001\n\006Result\022\022\n\016RESULT_UNKN"
+    "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERRO"
+    "R\020\002\022\022\n\016RESULT_TIMEOUT\020\003\022\026\n\022RESULT_UNSUPP"
+    "ORTED\020\004\022\024\n\020RESULT_NO_SYSTEM\020\005*B\n\nGimbalM"
+    "ode\022\032\n\026GIMBAL_MODE_YAW_FOLLOW\020\000\022\030\n\024GIMBA"
+    "L_MODE_YAW_LOCK\020\001*Z\n\013ControlMode\022\025\n\021CONT"
+    "ROL_MODE_NONE\020\000\022\030\n\024CONTROL_MODE_PRIMARY\020"
+    "\001\022\032\n\026CONTROL_MODE_SECONDARY\020\0022\347\005\n\rGimbal"
+    "Service\022g\n\016SetPitchAndYaw\022(.mavsdk.rpc.g"
+    "imbal.SetPitchAndYawRequest\032).mavsdk.rpc"
+    ".gimbal.SetPitchAndYawResponse\"\000\022\177\n\026SetP"
+    "itchRateAndYawRate\0220.mavsdk.rpc.gimbal.S"
+    "etPitchRateAndYawRateRequest\0321.mavsdk.rp"
+    "c.gimbal.SetPitchRateAndYawRateResponse\""
+    "\000\022R\n\007SetMode\022!.mavsdk.rpc.gimbal.SetMode"
+    "Request\032\".mavsdk.rpc.gimbal.SetModeRespo"
+    "nse\"\000\022g\n\016SetRoiLocation\022(.mavsdk.rpc.gim"
+    "bal.SetRoiLocationRequest\032).mavsdk.rpc.g"
+    "imbal.SetRoiLocationResponse\"\000\022^\n\013TakeCo"
+    "ntrol\022%.mavsdk.rpc.gimbal.TakeControlReq"
+    "uest\032&.mavsdk.rpc.gimbal.TakeControlResp"
+    "onse\"\000\022g\n\016ReleaseControl\022(.mavsdk.rpc.gi"
+    "mbal.ReleaseControlRequest\032).mavsdk.rpc."
+    "gimbal.ReleaseControlResponse\"\000\022f\n\020Subsc"
+    "ribeControl\022*.mavsdk.rpc.gimbal.Subscrib"
+    "eControlRequest\032\".mavsdk.rpc.gimbal.Cont"
+    "rolResponse\"\0000\001B\037\n\020io.mavsdk.gimbalB\013Gim"
+    "balProtob\006proto3"
+};
+static ::absl::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_gimbal_2fgimbal_2eproto = {
-    false, false, 2416, descriptor_table_protodef_gimbal_2fgimbal_2eproto,
+    false,
+    false,
+    2416,
+    descriptor_table_protodef_gimbal_2fgimbal_2eproto,
     "gimbal/gimbal.proto",
-    &descriptor_table_gimbal_2fgimbal_2eproto_once, nullptr, 0, 16,
-    schemas, file_default_instances, TableStruct_gimbal_2fgimbal_2eproto::offsets,
-    file_level_metadata_gimbal_2fgimbal_2eproto, file_level_enum_descriptors_gimbal_2fgimbal_2eproto,
+    &descriptor_table_gimbal_2fgimbal_2eproto_once,
+    nullptr,
+    0,
+    16,
+    schemas,
+    file_default_instances,
+    TableStruct_gimbal_2fgimbal_2eproto::offsets,
+    file_level_metadata_gimbal_2fgimbal_2eproto,
+    file_level_enum_descriptors_gimbal_2fgimbal_2eproto,
     file_level_service_descriptors_gimbal_2fgimbal_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_gimbal_2fgimbal_2eproto_getter() {
   return &descriptor_table_gimbal_2fgimbal_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_gimbal_2fgimbal_2eproto(&descriptor_table_gimbal_2fgimbal_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_gimbal_2fgimbal_2eproto(&descriptor_table_gimbal_2fgimbal_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
@@ -490,8 +617,9 @@ bool GimbalResult_Result_IsValid(int value) {
       return false;
   }
 }
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr GimbalResult_Result GimbalResult::RESULT_UNKNOWN;
 constexpr GimbalResult_Result GimbalResult::RESULT_SUCCESS;
 constexpr GimbalResult_Result GimbalResult::RESULT_ERROR;
@@ -501,7 +629,9 @@ constexpr GimbalResult_Result GimbalResult::RESULT_NO_SYSTEM;
 constexpr GimbalResult_Result GimbalResult::Result_MIN;
 constexpr GimbalResult_Result GimbalResult::Result_MAX;
 constexpr int GimbalResult::Result_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GimbalMode_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
   return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[1];
@@ -515,7 +645,6 @@ bool GimbalMode_IsValid(int value) {
       return false;
   }
 }
-
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ControlMode_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
   return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[2];
@@ -530,34 +659,33 @@ bool ControlMode_IsValid(int value) {
       return false;
   }
 }
-
-
 // ===================================================================
 
 class SetPitchAndYawRequest::_Internal {
  public:
 };
 
-SetPitchAndYawRequest::SetPitchAndYawRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetPitchAndYawRequest::SetPitchAndYawRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
 }
 SetPitchAndYawRequest::SetPitchAndYawRequest(const SetPitchAndYawRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&pitch_deg_, &from.pitch_deg_,
-    static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
-    reinterpret_cast<char*>(&pitch_deg_)) + sizeof(yaw_deg_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
 }
 
-inline void SetPitchAndYawRequest::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&pitch_deg_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_deg_) -
-    reinterpret_cast<char*>(&pitch_deg_)) + sizeof(yaw_deg_));
+inline void SetPitchAndYawRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.pitch_deg_) { 0 }
+
+    , decltype(_impl_.yaw_deg_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 SetPitchAndYawRequest::~SetPitchAndYawRequest() {
@@ -570,46 +698,48 @@ SetPitchAndYawRequest::~SetPitchAndYawRequest() {
 }
 
 inline void SetPitchAndYawRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SetPitchAndYawRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetPitchAndYawRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&pitch_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_deg_) -
-      reinterpret_cast<char*>(&pitch_deg_)) + sizeof(yaw_deg_));
+  ::memset(&_impl_.pitch_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_deg_) -
+      reinterpret_cast<char*>(&_impl_.pitch_deg_)) + sizeof(_impl_.yaw_deg_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetPitchAndYawRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // float pitch_deg = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
-          pitch_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
+          _impl_.pitch_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float yaw_deg = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -634,30 +764,32 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetPitchAndYawRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetPitchAndYawRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float pitch_deg = 1;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = this->_internal_pitch_deg();
-  uint32_t raw_pitch_deg;
+  ::uint32_t raw_pitch_deg;
   memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
   if (raw_pitch_deg != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this->_internal_pitch_deg(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_pitch_deg(), target);
   }
 
   // float yaw_deg = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = this->_internal_yaw_deg();
-  uint32_t raw_yaw_deg;
+  ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
   if (raw_yaw_deg != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_yaw_deg(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_yaw_deg(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -668,69 +800,65 @@ uint8_t* SetPitchAndYawRequest::_InternalSerialize(
   return target;
 }
 
-size_t SetPitchAndYawRequest::ByteSizeLong() const {
+::size_t SetPitchAndYawRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float pitch_deg = 1;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = this->_internal_pitch_deg();
-  uint32_t raw_pitch_deg;
+  ::uint32_t raw_pitch_deg;
   memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
   if (raw_pitch_deg != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float yaw_deg = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = this->_internal_yaw_deg();
-  uint32_t raw_yaw_deg;
+  ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
   if (raw_yaw_deg != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetPitchAndYawRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetPitchAndYawRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetPitchAndYawRequest::GetClassData() const { return &_class_data_; }
 
-void SetPitchAndYawRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetPitchAndYawRequest *>(to)->MergeFrom(
-      static_cast<const SetPitchAndYawRequest &>(from));
-}
 
-
-void SetPitchAndYawRequest::MergeFrom(const SetPitchAndYawRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetPitchAndYawRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetPitchAndYawRequest*>(&to_msg);
+  auto& from = static_cast<const SetPitchAndYawRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = from._internal_pitch_deg();
-  uint32_t raw_pitch_deg;
+  ::uint32_t raw_pitch_deg;
   memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
   if (raw_pitch_deg != 0) {
-    _internal_set_pitch_deg(from._internal_pitch_deg());
+    _this->_internal_set_pitch_deg(from._internal_pitch_deg());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = from._internal_yaw_deg();
-  uint32_t raw_yaw_deg;
+  ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
   if (raw_yaw_deg != 0) {
-    _internal_set_yaw_deg(from._internal_yaw_deg());
+    _this->_internal_set_yaw_deg(from._internal_yaw_deg());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetPitchAndYawRequest::CopyFrom(const SetPitchAndYawRequest& from) {
@@ -748,11 +876,11 @@ void SetPitchAndYawRequest::InternalSwap(SetPitchAndYawRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, yaw_deg_)
-      + sizeof(SetPitchAndYawRequest::yaw_deg_)
-      - PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, pitch_deg_)>(
-          reinterpret_cast<char*>(&pitch_deg_),
-          reinterpret_cast<char*>(&other->pitch_deg_));
+      PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.yaw_deg_)
+      + sizeof(SetPitchAndYawRequest::_impl_.yaw_deg_)
+      - PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.pitch_deg_)>(
+          reinterpret_cast<char*>(&_impl_.pitch_deg_),
+          reinterpret_cast<char*>(&other->_impl_.pitch_deg_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetPitchAndYawRequest::GetMetadata() const {
@@ -760,37 +888,50 @@ void SetPitchAndYawRequest::InternalSwap(SetPitchAndYawRequest* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[0]);
 }
-
 // ===================================================================
 
 class SetPitchAndYawResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<SetPitchAndYawResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetPitchAndYawResponse* msg);
+  static void set_has_gimbal_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::gimbal::GimbalResult&
 SetPitchAndYawResponse::_Internal::gimbal_result(const SetPitchAndYawResponse* msg) {
-  return *msg->gimbal_result_;
+  return *msg->_impl_.gimbal_result_;
 }
-SetPitchAndYawResponse::SetPitchAndYawResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetPitchAndYawResponse::SetPitchAndYawResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
 }
 SetPitchAndYawResponse::SetPitchAndYawResponse(const SetPitchAndYawResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SetPitchAndYawResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_gimbal_result()) {
-    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
-  } else {
-    gimbal_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from._impl_.gimbal_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
 }
 
-inline void SetPitchAndYawResponse::SharedCtor() {
-gimbal_result_ = nullptr;
+inline void SetPitchAndYawResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}
+  };
 }
 
 SetPitchAndYawResponse::~SetPitchAndYawResponse() {
@@ -803,40 +944,44 @@ SetPitchAndYawResponse::~SetPitchAndYawResponse() {
 }
 
 inline void SetPitchAndYawResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete gimbal_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.gimbal_result_;
 }
 
 void SetPitchAndYawResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetPitchAndYawResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && gimbal_result_ != nullptr) {
-    delete gimbal_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
   }
-  gimbal_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetPitchAndYawResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -854,6 +999,7 @@ const char* SetPitchAndYawResponse::_InternalParse(const char* ptr, ::_pbi::Pars
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -861,14 +1007,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetPitchAndYawResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetPitchAndYawResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::gimbal_result(this),
         _Internal::gimbal_result(this).GetCachedSize(), target, stream);
@@ -882,47 +1029,45 @@ uint8_t* SetPitchAndYawResponse::_InternalSerialize(
   return target;
 }
 
-size_t SetPitchAndYawResponse::ByteSizeLong() const {
+::size_t SetPitchAndYawResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *gimbal_result_);
+        *_impl_.gimbal_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetPitchAndYawResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetPitchAndYawResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetPitchAndYawResponse::GetClassData() const { return &_class_data_; }
 
-void SetPitchAndYawResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetPitchAndYawResponse *>(to)->MergeFrom(
-      static_cast<const SetPitchAndYawResponse &>(from));
-}
 
-
-void SetPitchAndYawResponse::MergeFrom(const SetPitchAndYawResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetPitchAndYawResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetPitchAndYawResponse*>(&to_msg);
+  auto& from = static_cast<const SetPitchAndYawResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_gimbal_result()) {
-    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(
+        from._internal_gimbal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetPitchAndYawResponse::CopyFrom(const SetPitchAndYawResponse& from) {
@@ -939,7 +1084,8 @@ bool SetPitchAndYawResponse::IsInitialized() const {
 void SetPitchAndYawResponse::InternalSwap(SetPitchAndYawResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(gimbal_result_, other->gimbal_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetPitchAndYawResponse::GetMetadata() const {
@@ -947,33 +1093,33 @@ void SetPitchAndYawResponse::InternalSwap(SetPitchAndYawResponse* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[1]);
 }
-
 // ===================================================================
 
 class SetPitchRateAndYawRateRequest::_Internal {
  public:
 };
 
-SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
 }
 SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(const SetPitchRateAndYawRateRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&pitch_rate_deg_s_, &from.pitch_rate_deg_s_,
-    static_cast<size_t>(reinterpret_cast<char*>(&yaw_rate_deg_s_) -
-    reinterpret_cast<char*>(&pitch_rate_deg_s_)) + sizeof(yaw_rate_deg_s_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
 }
 
-inline void SetPitchRateAndYawRateRequest::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&pitch_rate_deg_s_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&yaw_rate_deg_s_) -
-    reinterpret_cast<char*>(&pitch_rate_deg_s_)) + sizeof(yaw_rate_deg_s_));
+inline void SetPitchRateAndYawRateRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.pitch_rate_deg_s_) { 0 }
+
+    , decltype(_impl_.yaw_rate_deg_s_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 SetPitchRateAndYawRateRequest::~SetPitchRateAndYawRateRequest() {
@@ -986,46 +1132,48 @@ SetPitchRateAndYawRateRequest::~SetPitchRateAndYawRateRequest() {
 }
 
 inline void SetPitchRateAndYawRateRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SetPitchRateAndYawRateRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetPitchRateAndYawRateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&pitch_rate_deg_s_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&yaw_rate_deg_s_) -
-      reinterpret_cast<char*>(&pitch_rate_deg_s_)) + sizeof(yaw_rate_deg_s_));
+  ::memset(&_impl_.pitch_rate_deg_s_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_rate_deg_s_) -
+      reinterpret_cast<char*>(&_impl_.pitch_rate_deg_s_)) + sizeof(_impl_.yaw_rate_deg_s_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetPitchRateAndYawRateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // float pitch_rate_deg_s = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
-          pitch_rate_deg_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
+          _impl_.pitch_rate_deg_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float yaw_rate_deg_s = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          yaw_rate_deg_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.yaw_rate_deg_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1050,30 +1198,32 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetPitchRateAndYawRateRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetPitchRateAndYawRateRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float pitch_rate_deg_s = 1;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_rate_deg_s = this->_internal_pitch_rate_deg_s();
-  uint32_t raw_pitch_rate_deg_s;
+  ::uint32_t raw_pitch_rate_deg_s;
   memcpy(&raw_pitch_rate_deg_s, &tmp_pitch_rate_deg_s, sizeof(tmp_pitch_rate_deg_s));
   if (raw_pitch_rate_deg_s != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this->_internal_pitch_rate_deg_s(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_pitch_rate_deg_s(), target);
   }
 
   // float yaw_rate_deg_s = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_rate_deg_s = this->_internal_yaw_rate_deg_s();
-  uint32_t raw_yaw_rate_deg_s;
+  ::uint32_t raw_yaw_rate_deg_s;
   memcpy(&raw_yaw_rate_deg_s, &tmp_yaw_rate_deg_s, sizeof(tmp_yaw_rate_deg_s));
   if (raw_yaw_rate_deg_s != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_yaw_rate_deg_s(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_yaw_rate_deg_s(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1084,69 +1234,65 @@ uint8_t* SetPitchRateAndYawRateRequest::_InternalSerialize(
   return target;
 }
 
-size_t SetPitchRateAndYawRateRequest::ByteSizeLong() const {
+::size_t SetPitchRateAndYawRateRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float pitch_rate_deg_s = 1;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_rate_deg_s = this->_internal_pitch_rate_deg_s();
-  uint32_t raw_pitch_rate_deg_s;
+  ::uint32_t raw_pitch_rate_deg_s;
   memcpy(&raw_pitch_rate_deg_s, &tmp_pitch_rate_deg_s, sizeof(tmp_pitch_rate_deg_s));
   if (raw_pitch_rate_deg_s != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float yaw_rate_deg_s = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_rate_deg_s = this->_internal_yaw_rate_deg_s();
-  uint32_t raw_yaw_rate_deg_s;
+  ::uint32_t raw_yaw_rate_deg_s;
   memcpy(&raw_yaw_rate_deg_s, &tmp_yaw_rate_deg_s, sizeof(tmp_yaw_rate_deg_s));
   if (raw_yaw_rate_deg_s != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetPitchRateAndYawRateRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetPitchRateAndYawRateRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetPitchRateAndYawRateRequest::GetClassData() const { return &_class_data_; }
 
-void SetPitchRateAndYawRateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetPitchRateAndYawRateRequest *>(to)->MergeFrom(
-      static_cast<const SetPitchRateAndYawRateRequest &>(from));
-}
 
-
-void SetPitchRateAndYawRateRequest::MergeFrom(const SetPitchRateAndYawRateRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetPitchRateAndYawRateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetPitchRateAndYawRateRequest*>(&to_msg);
+  auto& from = static_cast<const SetPitchRateAndYawRateRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_rate_deg_s = from._internal_pitch_rate_deg_s();
-  uint32_t raw_pitch_rate_deg_s;
+  ::uint32_t raw_pitch_rate_deg_s;
   memcpy(&raw_pitch_rate_deg_s, &tmp_pitch_rate_deg_s, sizeof(tmp_pitch_rate_deg_s));
   if (raw_pitch_rate_deg_s != 0) {
-    _internal_set_pitch_rate_deg_s(from._internal_pitch_rate_deg_s());
+    _this->_internal_set_pitch_rate_deg_s(from._internal_pitch_rate_deg_s());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_rate_deg_s = from._internal_yaw_rate_deg_s();
-  uint32_t raw_yaw_rate_deg_s;
+  ::uint32_t raw_yaw_rate_deg_s;
   memcpy(&raw_yaw_rate_deg_s, &tmp_yaw_rate_deg_s, sizeof(tmp_yaw_rate_deg_s));
   if (raw_yaw_rate_deg_s != 0) {
-    _internal_set_yaw_rate_deg_s(from._internal_yaw_rate_deg_s());
+    _this->_internal_set_yaw_rate_deg_s(from._internal_yaw_rate_deg_s());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetPitchRateAndYawRateRequest::CopyFrom(const SetPitchRateAndYawRateRequest& from) {
@@ -1164,11 +1310,11 @@ void SetPitchRateAndYawRateRequest::InternalSwap(SetPitchRateAndYawRateRequest* 
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, yaw_rate_deg_s_)
-      + sizeof(SetPitchRateAndYawRateRequest::yaw_rate_deg_s_)
-      - PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, pitch_rate_deg_s_)>(
-          reinterpret_cast<char*>(&pitch_rate_deg_s_),
-          reinterpret_cast<char*>(&other->pitch_rate_deg_s_));
+      PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_)
+      + sizeof(SetPitchRateAndYawRateRequest::_impl_.yaw_rate_deg_s_)
+      - PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_)>(
+          reinterpret_cast<char*>(&_impl_.pitch_rate_deg_s_),
+          reinterpret_cast<char*>(&other->_impl_.pitch_rate_deg_s_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetPitchRateAndYawRateRequest::GetMetadata() const {
@@ -1176,37 +1322,50 @@ void SetPitchRateAndYawRateRequest::InternalSwap(SetPitchRateAndYawRateRequest* 
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[2]);
 }
-
 // ===================================================================
 
 class SetPitchRateAndYawRateResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<SetPitchRateAndYawRateResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetPitchRateAndYawRateResponse* msg);
+  static void set_has_gimbal_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::gimbal::GimbalResult&
 SetPitchRateAndYawRateResponse::_Internal::gimbal_result(const SetPitchRateAndYawRateResponse* msg) {
-  return *msg->gimbal_result_;
+  return *msg->_impl_.gimbal_result_;
 }
-SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
 }
 SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(const SetPitchRateAndYawRateResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SetPitchRateAndYawRateResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_gimbal_result()) {
-    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
-  } else {
-    gimbal_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from._impl_.gimbal_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
 }
 
-inline void SetPitchRateAndYawRateResponse::SharedCtor() {
-gimbal_result_ = nullptr;
+inline void SetPitchRateAndYawRateResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}
+  };
 }
 
 SetPitchRateAndYawRateResponse::~SetPitchRateAndYawRateResponse() {
@@ -1219,40 +1378,44 @@ SetPitchRateAndYawRateResponse::~SetPitchRateAndYawRateResponse() {
 }
 
 inline void SetPitchRateAndYawRateResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete gimbal_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.gimbal_result_;
 }
 
 void SetPitchRateAndYawRateResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetPitchRateAndYawRateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && gimbal_result_ != nullptr) {
-    delete gimbal_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
   }
-  gimbal_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetPitchRateAndYawRateResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1270,6 +1433,7 @@ const char* SetPitchRateAndYawRateResponse::_InternalParse(const char* ptr, ::_p
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1277,14 +1441,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetPitchRateAndYawRateResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetPitchRateAndYawRateResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::gimbal_result(this),
         _Internal::gimbal_result(this).GetCachedSize(), target, stream);
@@ -1298,47 +1463,45 @@ uint8_t* SetPitchRateAndYawRateResponse::_InternalSerialize(
   return target;
 }
 
-size_t SetPitchRateAndYawRateResponse::ByteSizeLong() const {
+::size_t SetPitchRateAndYawRateResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *gimbal_result_);
+        *_impl_.gimbal_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetPitchRateAndYawRateResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetPitchRateAndYawRateResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetPitchRateAndYawRateResponse::GetClassData() const { return &_class_data_; }
 
-void SetPitchRateAndYawRateResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetPitchRateAndYawRateResponse *>(to)->MergeFrom(
-      static_cast<const SetPitchRateAndYawRateResponse &>(from));
-}
 
-
-void SetPitchRateAndYawRateResponse::MergeFrom(const SetPitchRateAndYawRateResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetPitchRateAndYawRateResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetPitchRateAndYawRateResponse*>(&to_msg);
+  auto& from = static_cast<const SetPitchRateAndYawRateResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_gimbal_result()) {
-    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(
+        from._internal_gimbal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetPitchRateAndYawRateResponse::CopyFrom(const SetPitchRateAndYawRateResponse& from) {
@@ -1355,7 +1518,8 @@ bool SetPitchRateAndYawRateResponse::IsInitialized() const {
 void SetPitchRateAndYawRateResponse::InternalSwap(SetPitchRateAndYawRateResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(gimbal_result_, other->gimbal_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetPitchRateAndYawRateResponse::GetMetadata() const {
@@ -1363,28 +1527,31 @@ void SetPitchRateAndYawRateResponse::InternalSwap(SetPitchRateAndYawRateResponse
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[3]);
 }
-
 // ===================================================================
 
 class SetModeRequest::_Internal {
  public:
 };
 
-SetModeRequest::SetModeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetModeRequest::SetModeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetModeRequest)
 }
 SetModeRequest::SetModeRequest(const SetModeRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  gimbal_mode_ = from.gimbal_mode_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetModeRequest)
 }
 
-inline void SetModeRequest::SharedCtor() {
-gimbal_mode_ = 0;
+inline void SetModeRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.gimbal_mode_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 SetModeRequest::~SetModeRequest() {
@@ -1397,37 +1564,38 @@ SetModeRequest::~SetModeRequest() {
 }
 
 inline void SetModeRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SetModeRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetModeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  gimbal_mode_ = 0;
+  _impl_.gimbal_mode_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetModeRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_gimbal_mode(static_cast<::mavsdk::rpc::gimbal::GimbalMode>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1452,17 +1620,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetModeRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetModeRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetModeRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
   if (this->_internal_gimbal_mode() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_gimbal_mode(), target);
+        1, this->_internal_gimbal_mode(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1473,46 +1641,42 @@ uint8_t* SetModeRequest::_InternalSerialize(
   return target;
 }
 
-size_t SetModeRequest::ByteSizeLong() const {
+::size_t SetModeRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetModeRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
   if (this->_internal_gimbal_mode() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_gimbal_mode());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_gimbal_mode());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetModeRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetModeRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetModeRequest::GetClassData() const { return &_class_data_; }
 
-void SetModeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetModeRequest *>(to)->MergeFrom(
-      static_cast<const SetModeRequest &>(from));
-}
 
-
-void SetModeRequest::MergeFrom(const SetModeRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetModeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetModeRequest*>(&to_msg);
+  auto& from = static_cast<const SetModeRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_gimbal_mode() != 0) {
-    _internal_set_gimbal_mode(from._internal_gimbal_mode());
+    _this->_internal_set_gimbal_mode(from._internal_gimbal_mode());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetModeRequest::CopyFrom(const SetModeRequest& from) {
@@ -1529,7 +1693,7 @@ bool SetModeRequest::IsInitialized() const {
 void SetModeRequest::InternalSwap(SetModeRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(gimbal_mode_, other->gimbal_mode_);
+  swap(_impl_.gimbal_mode_, other->_impl_.gimbal_mode_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetModeRequest::GetMetadata() const {
@@ -1537,37 +1701,50 @@ void SetModeRequest::InternalSwap(SetModeRequest* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[4]);
 }
-
 // ===================================================================
 
 class SetModeResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<SetModeResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetModeResponse* msg);
+  static void set_has_gimbal_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::gimbal::GimbalResult&
 SetModeResponse::_Internal::gimbal_result(const SetModeResponse* msg) {
-  return *msg->gimbal_result_;
+  return *msg->_impl_.gimbal_result_;
 }
-SetModeResponse::SetModeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetModeResponse::SetModeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetModeResponse)
 }
 SetModeResponse::SetModeResponse(const SetModeResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SetModeResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_gimbal_result()) {
-    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
-  } else {
-    gimbal_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from._impl_.gimbal_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetModeResponse)
 }
 
-inline void SetModeResponse::SharedCtor() {
-gimbal_result_ = nullptr;
+inline void SetModeResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}
+  };
 }
 
 SetModeResponse::~SetModeResponse() {
@@ -1580,40 +1757,44 @@ SetModeResponse::~SetModeResponse() {
 }
 
 inline void SetModeResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete gimbal_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.gimbal_result_;
 }
 
 void SetModeResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetModeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && gimbal_result_ != nullptr) {
-    delete gimbal_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
   }
-  gimbal_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetModeResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1631,6 +1812,7 @@ const char* SetModeResponse::_InternalParse(const char* ptr, ::_pbi::ParseContex
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1638,14 +1820,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetModeResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetModeResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetModeResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::gimbal_result(this),
         _Internal::gimbal_result(this).GetCachedSize(), target, stream);
@@ -1659,47 +1842,45 @@ uint8_t* SetModeResponse::_InternalSerialize(
   return target;
 }
 
-size_t SetModeResponse::ByteSizeLong() const {
+::size_t SetModeResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetModeResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *gimbal_result_);
+        *_impl_.gimbal_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetModeResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetModeResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetModeResponse::GetClassData() const { return &_class_data_; }
 
-void SetModeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetModeResponse *>(to)->MergeFrom(
-      static_cast<const SetModeResponse &>(from));
-}
 
-
-void SetModeResponse::MergeFrom(const SetModeResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetModeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetModeResponse*>(&to_msg);
+  auto& from = static_cast<const SetModeResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_gimbal_result()) {
-    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(
+        from._internal_gimbal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetModeResponse::CopyFrom(const SetModeResponse& from) {
@@ -1716,7 +1897,8 @@ bool SetModeResponse::IsInitialized() const {
 void SetModeResponse::InternalSwap(SetModeResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(gimbal_result_, other->gimbal_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetModeResponse::GetMetadata() const {
@@ -1724,33 +1906,35 @@ void SetModeResponse::InternalSwap(SetModeResponse* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[5]);
 }
-
 // ===================================================================
 
 class SetRoiLocationRequest::_Internal {
  public:
 };
 
-SetRoiLocationRequest::SetRoiLocationRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetRoiLocationRequest::SetRoiLocationRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetRoiLocationRequest)
 }
 SetRoiLocationRequest::SetRoiLocationRequest(const SetRoiLocationRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&latitude_deg_, &from.latitude_deg_,
-    static_cast<size_t>(reinterpret_cast<char*>(&altitude_m_) -
-    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(altitude_m_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetRoiLocationRequest)
 }
 
-inline void SetRoiLocationRequest::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&latitude_deg_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&altitude_m_) -
-    reinterpret_cast<char*>(&latitude_deg_)) + sizeof(altitude_m_));
+inline void SetRoiLocationRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.latitude_deg_) { 0 }
+
+    , decltype(_impl_.longitude_deg_) { 0 }
+
+    , decltype(_impl_.altitude_m_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 SetRoiLocationRequest::~SetRoiLocationRequest() {
@@ -1763,54 +1947,57 @@ SetRoiLocationRequest::~SetRoiLocationRequest() {
 }
 
 inline void SetRoiLocationRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SetRoiLocationRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetRoiLocationRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&latitude_deg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&altitude_m_) -
-      reinterpret_cast<char*>(&latitude_deg_)) + sizeof(altitude_m_));
+  ::memset(&_impl_.latitude_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.altitude_m_) -
+      reinterpret_cast<char*>(&_impl_.latitude_deg_)) + sizeof(_impl_.altitude_m_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetRoiLocationRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // double latitude_deg = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 9)) {
-          latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 9)) {
+          _impl_.latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // double longitude_deg = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 17)) {
-          longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 17)) {
+          _impl_.longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float altitude_m = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
-          altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
+          _impl_.altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1835,40 +2022,43 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetRoiLocationRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetRoiLocationRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // double latitude_deg = 1;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
-  uint64_t raw_latitude_deg;
+  ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
   if (raw_latitude_deg != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(1, this->_internal_latitude_deg(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+        1, this->_internal_latitude_deg(), target);
   }
 
   // double longitude_deg = 2;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
-  uint64_t raw_longitude_deg;
+  ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(2, this->_internal_longitude_deg(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+        2, this->_internal_longitude_deg(), target);
   }
 
   // float altitude_m = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_altitude_m = this->_internal_altitude_m();
-  uint32_t raw_altitude_m;
+  ::uint32_t raw_altitude_m;
   memcpy(&raw_altitude_m, &tmp_altitude_m, sizeof(tmp_altitude_m));
   if (raw_altitude_m != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_altitude_m(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_altitude_m(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1879,85 +2069,81 @@ uint8_t* SetRoiLocationRequest::_InternalSerialize(
   return target;
 }
 
-size_t SetRoiLocationRequest::ByteSizeLong() const {
+::size_t SetRoiLocationRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // double latitude_deg = 1;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
-  uint64_t raw_latitude_deg;
+  ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
   if (raw_latitude_deg != 0) {
-    total_size += 1 + 8;
+    total_size += 9;
   }
 
   // double longitude_deg = 2;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
-  uint64_t raw_longitude_deg;
+  ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
-    total_size += 1 + 8;
+    total_size += 9;
   }
 
   // float altitude_m = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_altitude_m = this->_internal_altitude_m();
-  uint32_t raw_altitude_m;
+  ::uint32_t raw_altitude_m;
   memcpy(&raw_altitude_m, &tmp_altitude_m, sizeof(tmp_altitude_m));
   if (raw_altitude_m != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRoiLocationRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetRoiLocationRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRoiLocationRequest::GetClassData() const { return &_class_data_; }
 
-void SetRoiLocationRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetRoiLocationRequest *>(to)->MergeFrom(
-      static_cast<const SetRoiLocationRequest &>(from));
-}
 
-
-void SetRoiLocationRequest::MergeFrom(const SetRoiLocationRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetRoiLocationRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetRoiLocationRequest*>(&to_msg);
+  auto& from = static_cast<const SetRoiLocationRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = from._internal_latitude_deg();
-  uint64_t raw_latitude_deg;
+  ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
   if (raw_latitude_deg != 0) {
-    _internal_set_latitude_deg(from._internal_latitude_deg());
+    _this->_internal_set_latitude_deg(from._internal_latitude_deg());
   }
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = from._internal_longitude_deg();
-  uint64_t raw_longitude_deg;
+  ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
-    _internal_set_longitude_deg(from._internal_longitude_deg());
+    _this->_internal_set_longitude_deg(from._internal_longitude_deg());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_altitude_m = from._internal_altitude_m();
-  uint32_t raw_altitude_m;
+  ::uint32_t raw_altitude_m;
   memcpy(&raw_altitude_m, &tmp_altitude_m, sizeof(tmp_altitude_m));
   if (raw_altitude_m != 0) {
-    _internal_set_altitude_m(from._internal_altitude_m());
+    _this->_internal_set_altitude_m(from._internal_altitude_m());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetRoiLocationRequest::CopyFrom(const SetRoiLocationRequest& from) {
@@ -1975,11 +2161,11 @@ void SetRoiLocationRequest::InternalSwap(SetRoiLocationRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, altitude_m_)
-      + sizeof(SetRoiLocationRequest::altitude_m_)
-      - PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, latitude_deg_)>(
-          reinterpret_cast<char*>(&latitude_deg_),
-          reinterpret_cast<char*>(&other->latitude_deg_));
+      PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.altitude_m_)
+      + sizeof(SetRoiLocationRequest::_impl_.altitude_m_)
+      - PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.latitude_deg_)>(
+          reinterpret_cast<char*>(&_impl_.latitude_deg_),
+          reinterpret_cast<char*>(&other->_impl_.latitude_deg_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRoiLocationRequest::GetMetadata() const {
@@ -1987,37 +2173,50 @@ void SetRoiLocationRequest::InternalSwap(SetRoiLocationRequest* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[6]);
 }
-
 // ===================================================================
 
 class SetRoiLocationResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<SetRoiLocationResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const SetRoiLocationResponse* msg);
+  static void set_has_gimbal_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::gimbal::GimbalResult&
 SetRoiLocationResponse::_Internal::gimbal_result(const SetRoiLocationResponse* msg) {
-  return *msg->gimbal_result_;
+  return *msg->_impl_.gimbal_result_;
 }
-SetRoiLocationResponse::SetRoiLocationResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetRoiLocationResponse::SetRoiLocationResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
 }
 SetRoiLocationResponse::SetRoiLocationResponse(const SetRoiLocationResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SetRoiLocationResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_gimbal_result()) {
-    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
-  } else {
-    gimbal_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from._impl_.gimbal_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
 }
 
-inline void SetRoiLocationResponse::SharedCtor() {
-gimbal_result_ = nullptr;
+inline void SetRoiLocationResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}
+  };
 }
 
 SetRoiLocationResponse::~SetRoiLocationResponse() {
@@ -2030,40 +2229,44 @@ SetRoiLocationResponse::~SetRoiLocationResponse() {
 }
 
 inline void SetRoiLocationResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete gimbal_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.gimbal_result_;
 }
 
 void SetRoiLocationResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetRoiLocationResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && gimbal_result_ != nullptr) {
-    delete gimbal_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
   }
-  gimbal_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetRoiLocationResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2081,6 +2284,7 @@ const char* SetRoiLocationResponse::_InternalParse(const char* ptr, ::_pbi::Pars
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2088,14 +2292,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetRoiLocationResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetRoiLocationResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::gimbal_result(this),
         _Internal::gimbal_result(this).GetCachedSize(), target, stream);
@@ -2109,47 +2314,45 @@ uint8_t* SetRoiLocationResponse::_InternalSerialize(
   return target;
 }
 
-size_t SetRoiLocationResponse::ByteSizeLong() const {
+::size_t SetRoiLocationResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *gimbal_result_);
+        *_impl_.gimbal_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetRoiLocationResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetRoiLocationResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetRoiLocationResponse::GetClassData() const { return &_class_data_; }
 
-void SetRoiLocationResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetRoiLocationResponse *>(to)->MergeFrom(
-      static_cast<const SetRoiLocationResponse &>(from));
-}
 
-
-void SetRoiLocationResponse::MergeFrom(const SetRoiLocationResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetRoiLocationResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetRoiLocationResponse*>(&to_msg);
+  auto& from = static_cast<const SetRoiLocationResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_gimbal_result()) {
-    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(
+        from._internal_gimbal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetRoiLocationResponse::CopyFrom(const SetRoiLocationResponse& from) {
@@ -2166,7 +2369,8 @@ bool SetRoiLocationResponse::IsInitialized() const {
 void SetRoiLocationResponse::InternalSwap(SetRoiLocationResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(gimbal_result_, other->gimbal_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetRoiLocationResponse::GetMetadata() const {
@@ -2174,28 +2378,31 @@ void SetRoiLocationResponse::InternalSwap(SetRoiLocationResponse* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[7]);
 }
-
 // ===================================================================
 
 class TakeControlRequest::_Internal {
  public:
 };
 
-TakeControlRequest::TakeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+TakeControlRequest::TakeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlRequest)
 }
 TakeControlRequest::TakeControlRequest(const TakeControlRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  control_mode_ = from.control_mode_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.TakeControlRequest)
 }
 
-inline void TakeControlRequest::SharedCtor() {
-control_mode_ = 0;
+inline void TakeControlRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.control_mode_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 TakeControlRequest::~TakeControlRequest() {
@@ -2208,37 +2415,38 @@ TakeControlRequest::~TakeControlRequest() {
 }
 
 inline void TakeControlRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void TakeControlRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void TakeControlRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  control_mode_ = 0;
+  _impl_.control_mode_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* TakeControlRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_control_mode(static_cast<::mavsdk::rpc::gimbal::ControlMode>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2263,17 +2471,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* TakeControlRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* TakeControlRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
   if (this->_internal_control_mode() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_control_mode(), target);
+        1, this->_internal_control_mode(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2284,46 +2492,42 @@ uint8_t* TakeControlRequest::_InternalSerialize(
   return target;
 }
 
-size_t TakeControlRequest::ByteSizeLong() const {
+::size_t TakeControlRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
   if (this->_internal_control_mode() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_control_mode());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_control_mode());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TakeControlRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     TakeControlRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TakeControlRequest::GetClassData() const { return &_class_data_; }
 
-void TakeControlRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<TakeControlRequest *>(to)->MergeFrom(
-      static_cast<const TakeControlRequest &>(from));
-}
 
-
-void TakeControlRequest::MergeFrom(const TakeControlRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void TakeControlRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<TakeControlRequest*>(&to_msg);
+  auto& from = static_cast<const TakeControlRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_control_mode() != 0) {
-    _internal_set_control_mode(from._internal_control_mode());
+    _this->_internal_set_control_mode(from._internal_control_mode());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TakeControlRequest::CopyFrom(const TakeControlRequest& from) {
@@ -2340,7 +2544,7 @@ bool TakeControlRequest::IsInitialized() const {
 void TakeControlRequest::InternalSwap(TakeControlRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(control_mode_, other->control_mode_);
+  swap(_impl_.control_mode_, other->_impl_.control_mode_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TakeControlRequest::GetMetadata() const {
@@ -2348,37 +2552,50 @@ void TakeControlRequest::InternalSwap(TakeControlRequest* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[8]);
 }
-
 // ===================================================================
 
 class TakeControlResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<TakeControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const TakeControlResponse* msg);
+  static void set_has_gimbal_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::gimbal::GimbalResult&
 TakeControlResponse::_Internal::gimbal_result(const TakeControlResponse* msg) {
-  return *msg->gimbal_result_;
+  return *msg->_impl_.gimbal_result_;
 }
-TakeControlResponse::TakeControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+TakeControlResponse::TakeControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
 }
 TakeControlResponse::TakeControlResponse(const TakeControlResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  TakeControlResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_gimbal_result()) {
-    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
-  } else {
-    gimbal_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from._impl_.gimbal_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
 }
 
-inline void TakeControlResponse::SharedCtor() {
-gimbal_result_ = nullptr;
+inline void TakeControlResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}
+  };
 }
 
 TakeControlResponse::~TakeControlResponse() {
@@ -2391,40 +2608,44 @@ TakeControlResponse::~TakeControlResponse() {
 }
 
 inline void TakeControlResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete gimbal_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.gimbal_result_;
 }
 
 void TakeControlResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void TakeControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && gimbal_result_ != nullptr) {
-    delete gimbal_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
   }
-  gimbal_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* TakeControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2442,6 +2663,7 @@ const char* TakeControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseCo
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2449,14 +2671,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* TakeControlResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* TakeControlResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::gimbal_result(this),
         _Internal::gimbal_result(this).GetCachedSize(), target, stream);
@@ -2470,47 +2693,45 @@ uint8_t* TakeControlResponse::_InternalSerialize(
   return target;
 }
 
-size_t TakeControlResponse::ByteSizeLong() const {
+::size_t TakeControlResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *gimbal_result_);
+        *_impl_.gimbal_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TakeControlResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     TakeControlResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TakeControlResponse::GetClassData() const { return &_class_data_; }
 
-void TakeControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<TakeControlResponse *>(to)->MergeFrom(
-      static_cast<const TakeControlResponse &>(from));
-}
 
-
-void TakeControlResponse::MergeFrom(const TakeControlResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void TakeControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<TakeControlResponse*>(&to_msg);
+  auto& from = static_cast<const TakeControlResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_gimbal_result()) {
-    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(
+        from._internal_gimbal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TakeControlResponse::CopyFrom(const TakeControlResponse& from) {
@@ -2527,7 +2748,8 @@ bool TakeControlResponse::IsInitialized() const {
 void TakeControlResponse::InternalSwap(TakeControlResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(gimbal_result_, other->gimbal_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TakeControlResponse::GetMetadata() const {
@@ -2535,20 +2757,19 @@ void TakeControlResponse::InternalSwap(TakeControlResponse* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[9]);
 }
-
 // ===================================================================
 
 class ReleaseControlRequest::_Internal {
  public:
 };
 
-ReleaseControlRequest::ReleaseControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+ReleaseControlRequest::ReleaseControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
 }
 ReleaseControlRequest::ReleaseControlRequest(const ReleaseControlRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  ReleaseControlRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
 }
@@ -2574,37 +2795,50 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ReleaseControlRequest::GetClas
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[10]);
 }
-
 // ===================================================================
 
 class ReleaseControlResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<ReleaseControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::gimbal::GimbalResult& gimbal_result(const ReleaseControlResponse* msg);
+  static void set_has_gimbal_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::gimbal::GimbalResult&
 ReleaseControlResponse::_Internal::gimbal_result(const ReleaseControlResponse* msg) {
-  return *msg->gimbal_result_;
+  return *msg->_impl_.gimbal_result_;
 }
-ReleaseControlResponse::ReleaseControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ReleaseControlResponse::ReleaseControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
 }
 ReleaseControlResponse::ReleaseControlResponse(const ReleaseControlResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ReleaseControlResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_gimbal_result()) {
-    gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from.gimbal_result_);
-  } else {
-    gimbal_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.gimbal_result_ = new ::mavsdk::rpc::gimbal::GimbalResult(*from._impl_.gimbal_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
 }
 
-inline void ReleaseControlResponse::SharedCtor() {
-gimbal_result_ = nullptr;
+inline void ReleaseControlResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.gimbal_result_){nullptr}
+  };
 }
 
 ReleaseControlResponse::~ReleaseControlResponse() {
@@ -2617,40 +2851,44 @@ ReleaseControlResponse::~ReleaseControlResponse() {
 }
 
 inline void ReleaseControlResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete gimbal_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.gimbal_result_;
 }
 
 void ReleaseControlResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ReleaseControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && gimbal_result_ != nullptr) {
-    delete gimbal_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
   }
-  gimbal_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ReleaseControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_gimbal_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2668,6 +2906,7 @@ const char* ReleaseControlResponse::_InternalParse(const char* ptr, ::_pbi::Pars
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2675,14 +2914,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ReleaseControlResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ReleaseControlResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::gimbal_result(this),
         _Internal::gimbal_result(this).GetCachedSize(), target, stream);
@@ -2696,47 +2936,45 @@ uint8_t* ReleaseControlResponse::_InternalSerialize(
   return target;
 }
 
-size_t ReleaseControlResponse::ByteSizeLong() const {
+::size_t ReleaseControlResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-  if (this->_internal_has_gimbal_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *gimbal_result_);
+        *_impl_.gimbal_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ReleaseControlResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ReleaseControlResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ReleaseControlResponse::GetClassData() const { return &_class_data_; }
 
-void ReleaseControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ReleaseControlResponse *>(to)->MergeFrom(
-      static_cast<const ReleaseControlResponse &>(from));
-}
 
-
-void ReleaseControlResponse::MergeFrom(const ReleaseControlResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ReleaseControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ReleaseControlResponse*>(&to_msg);
+  auto& from = static_cast<const ReleaseControlResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_gimbal_result()) {
-    _internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(from._internal_gimbal_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_gimbal_result()->::mavsdk::rpc::gimbal::GimbalResult::MergeFrom(
+        from._internal_gimbal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ReleaseControlResponse::CopyFrom(const ReleaseControlResponse& from) {
@@ -2753,7 +2991,8 @@ bool ReleaseControlResponse::IsInitialized() const {
 void ReleaseControlResponse::InternalSwap(ReleaseControlResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(gimbal_result_, other->gimbal_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ReleaseControlResponse::GetMetadata() const {
@@ -2761,20 +3000,19 @@ void ReleaseControlResponse::InternalSwap(ReleaseControlResponse* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[11]);
 }
-
 // ===================================================================
 
 class SubscribeControlRequest::_Internal {
  public:
 };
 
-SubscribeControlRequest::SubscribeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+SubscribeControlRequest::SubscribeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
 }
 SubscribeControlRequest::SubscribeControlRequest(const SubscribeControlRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  SubscribeControlRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
 }
@@ -2800,37 +3038,50 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeControlRequest::GetCl
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[12]);
 }
-
 // ===================================================================
 
 class ControlResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<ControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::gimbal::ControlStatus& control_status(const ControlResponse* msg);
+  static void set_has_control_status(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::gimbal::ControlStatus&
 ControlResponse::_Internal::control_status(const ControlResponse* msg) {
-  return *msg->control_status_;
+  return *msg->_impl_.control_status_;
 }
-ControlResponse::ControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ControlResponse::ControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlResponse)
 }
 ControlResponse::ControlResponse(const ControlResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ControlResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.control_status_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_control_status()) {
-    control_status_ = new ::mavsdk::rpc::gimbal::ControlStatus(*from.control_status_);
-  } else {
-    control_status_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.control_status_ = new ::mavsdk::rpc::gimbal::ControlStatus(*from._impl_.control_status_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ControlResponse)
 }
 
-inline void ControlResponse::SharedCtor() {
-control_status_ = nullptr;
+inline void ControlResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.control_status_){nullptr}
+  };
 }
 
 ControlResponse::~ControlResponse() {
@@ -2843,40 +3094,44 @@ ControlResponse::~ControlResponse() {
 }
 
 inline void ControlResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete control_status_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.control_status_;
 }
 
 void ControlResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && control_status_ != nullptr) {
-    delete control_status_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.control_status_ != nullptr);
+    _impl_.control_status_->Clear();
   }
-  control_status_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_control_status(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2894,6 +3149,7 @@ const char* ControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContex
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2901,14 +3157,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ControlResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ControlResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
-  if (this->_internal_has_control_status()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::control_status(this),
         _Internal::control_status(this).GetCachedSize(), target, stream);
@@ -2922,47 +3179,45 @@ uint8_t* ControlResponse::_InternalSerialize(
   return target;
 }
 
-size_t ControlResponse::ByteSizeLong() const {
+::size_t ControlResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
-  if (this->_internal_has_control_status()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *control_status_);
+        *_impl_.control_status_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ControlResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ControlResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ControlResponse::GetClassData() const { return &_class_data_; }
 
-void ControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ControlResponse *>(to)->MergeFrom(
-      static_cast<const ControlResponse &>(from));
-}
 
-
-void ControlResponse::MergeFrom(const ControlResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ControlResponse*>(&to_msg);
+  auto& from = static_cast<const ControlResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_control_status()) {
-    _internal_mutable_control_status()->::mavsdk::rpc::gimbal::ControlStatus::MergeFrom(from._internal_control_status());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_control_status()->::mavsdk::rpc::gimbal::ControlStatus::MergeFrom(
+        from._internal_control_status());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ControlResponse::CopyFrom(const ControlResponse& from) {
@@ -2979,7 +3234,8 @@ bool ControlResponse::IsInitialized() const {
 void ControlResponse::InternalSwap(ControlResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(control_status_, other->control_status_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.control_status_, other->_impl_.control_status_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ControlResponse::GetMetadata() const {
@@ -2987,33 +3243,39 @@ void ControlResponse::InternalSwap(ControlResponse* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[13]);
 }
-
 // ===================================================================
 
 class ControlStatus::_Internal {
  public:
 };
 
-ControlStatus::ControlStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ControlStatus::ControlStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlStatus)
 }
 ControlStatus::ControlStatus(const ControlStatus& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&control_mode_, &from.control_mode_,
-    static_cast<size_t>(reinterpret_cast<char*>(&compid_secondary_control_) -
-    reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ControlStatus)
 }
 
-inline void ControlStatus::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&control_mode_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&compid_secondary_control_) -
-    reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
+inline void ControlStatus::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.control_mode_) { 0 }
+
+    , decltype(_impl_.sysid_primary_control_) { 0 }
+
+    , decltype(_impl_.compid_primary_control_) { 0 }
+
+    , decltype(_impl_.sysid_secondary_control_) { 0 }
+
+    , decltype(_impl_.compid_secondary_control_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 ControlStatus::~ControlStatus() {
@@ -3026,71 +3288,76 @@ ControlStatus::~ControlStatus() {
 }
 
 inline void ControlStatus::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void ControlStatus::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ControlStatus::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlStatus)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&control_mode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&compid_secondary_control_) -
-      reinterpret_cast<char*>(&control_mode_)) + sizeof(compid_secondary_control_));
+  ::memset(&_impl_.control_mode_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.compid_secondary_control_) -
+      reinterpret_cast<char*>(&_impl_.control_mode_)) + sizeof(_impl_.compid_secondary_control_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ControlStatus::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_control_mode(static_cast<::mavsdk::rpc::gimbal::ControlMode>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 sysid_primary_control = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          sysid_primary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.sysid_primary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 compid_primary_control = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          compid_primary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
+          _impl_.compid_primary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 sysid_secondary_control = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          sysid_secondary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
+          _impl_.sysid_secondary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 compid_secondary_control = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          compid_secondary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 40)) {
+          _impl_.compid_secondary_control_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3115,41 +3382,45 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ControlStatus::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ControlStatus::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlStatus)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
   if (this->_internal_control_mode() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_control_mode(), target);
+        1, this->_internal_control_mode(), target);
   }
 
   // int32 sysid_primary_control = 2;
   if (this->_internal_sysid_primary_control() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_sysid_primary_control(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        2, this->_internal_sysid_primary_control(), target);
   }
 
   // int32 compid_primary_control = 3;
   if (this->_internal_compid_primary_control() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_compid_primary_control(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        3, this->_internal_compid_primary_control(), target);
   }
 
   // int32 sysid_secondary_control = 4;
   if (this->_internal_sysid_secondary_control() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_sysid_secondary_control(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        4, this->_internal_sysid_secondary_control(), target);
   }
 
   // int32 compid_secondary_control = 5;
   if (this->_internal_compid_secondary_control() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(5, this->_internal_compid_secondary_control(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        5, this->_internal_compid_secondary_control(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3160,78 +3431,78 @@ uint8_t* ControlStatus::_InternalSerialize(
   return target;
 }
 
-size_t ControlStatus::ByteSizeLong() const {
+::size_t ControlStatus::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlStatus)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
   if (this->_internal_control_mode() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_control_mode());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_control_mode());
   }
 
   // int32 sysid_primary_control = 2;
   if (this->_internal_sysid_primary_control() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_sysid_primary_control());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_sysid_primary_control());
   }
 
   // int32 compid_primary_control = 3;
   if (this->_internal_compid_primary_control() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_compid_primary_control());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_compid_primary_control());
   }
 
   // int32 sysid_secondary_control = 4;
   if (this->_internal_sysid_secondary_control() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_sysid_secondary_control());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_sysid_secondary_control());
   }
 
   // int32 compid_secondary_control = 5;
   if (this->_internal_compid_secondary_control() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_compid_secondary_control());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_compid_secondary_control());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ControlStatus::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ControlStatus::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ControlStatus::GetClassData() const { return &_class_data_; }
 
-void ControlStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ControlStatus *>(to)->MergeFrom(
-      static_cast<const ControlStatus &>(from));
-}
 
-
-void ControlStatus::MergeFrom(const ControlStatus& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlStatus)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ControlStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ControlStatus*>(&to_msg);
+  auto& from = static_cast<const ControlStatus&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlStatus)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_control_mode() != 0) {
-    _internal_set_control_mode(from._internal_control_mode());
+    _this->_internal_set_control_mode(from._internal_control_mode());
   }
   if (from._internal_sysid_primary_control() != 0) {
-    _internal_set_sysid_primary_control(from._internal_sysid_primary_control());
+    _this->_internal_set_sysid_primary_control(from._internal_sysid_primary_control());
   }
   if (from._internal_compid_primary_control() != 0) {
-    _internal_set_compid_primary_control(from._internal_compid_primary_control());
+    _this->_internal_set_compid_primary_control(from._internal_compid_primary_control());
   }
   if (from._internal_sysid_secondary_control() != 0) {
-    _internal_set_sysid_secondary_control(from._internal_sysid_secondary_control());
+    _this->_internal_set_sysid_secondary_control(from._internal_sysid_secondary_control());
   }
   if (from._internal_compid_secondary_control() != 0) {
-    _internal_set_compid_secondary_control(from._internal_compid_secondary_control());
+    _this->_internal_set_compid_secondary_control(from._internal_compid_secondary_control());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ControlStatus::CopyFrom(const ControlStatus& from) {
@@ -3249,11 +3520,11 @@ void ControlStatus::InternalSwap(ControlStatus* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ControlStatus, compid_secondary_control_)
-      + sizeof(ControlStatus::compid_secondary_control_)
-      - PROTOBUF_FIELD_OFFSET(ControlStatus, control_mode_)>(
-          reinterpret_cast<char*>(&control_mode_),
-          reinterpret_cast<char*>(&other->control_mode_));
+      PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_secondary_control_)
+      + sizeof(ControlStatus::_impl_.compid_secondary_control_)
+      - PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.control_mode_)>(
+          reinterpret_cast<char*>(&_impl_.control_mode_),
+          reinterpret_cast<char*>(&other->_impl_.control_mode_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ControlStatus::GetMetadata() const {
@@ -3261,40 +3532,52 @@ void ControlStatus::InternalSwap(ControlStatus* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[14]);
 }
-
 // ===================================================================
 
 class GimbalResult::_Internal {
  public:
 };
 
-GimbalResult::GimbalResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+GimbalResult::GimbalResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.GimbalResult)
 }
 GimbalResult::GimbalResult(const GimbalResult& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  GimbalResult* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  result_str_.InitDefault();
+  _impl_.result_str_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    result_str_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(from._internal_result_str(), 
-      GetArenaForAllocation());
+    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
   }
-  result_ = from.result_;
+  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.GimbalResult)
 }
 
-inline void GimbalResult::SharedCtor() {
-result_str_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  result_str_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-result_ = 0;
+inline void GimbalResult::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.result_str_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 GimbalResult::~GimbalResult() {
@@ -3307,49 +3590,51 @@ GimbalResult::~GimbalResult() {
 }
 
 inline void GimbalResult::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  result_str_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.result_str_.Destroy();
 }
 
 void GimbalResult::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void GimbalResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.GimbalResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty();
-  result_ = 0;
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* GimbalResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::gimbal::GimbalResult_Result>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string result_str = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_result_str();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.gimbal.GimbalResult.result_str"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3374,27 +3659,25 @@ failure:
 #undef CHK_
 }
 
-uint8_t* GimbalResult::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* GimbalResult::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.GimbalResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
   if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_result(), target);
+        1, this->_internal_result(), target);
   }
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
+    const std::string& _s = this->_internal_result_str();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.gimbal.GimbalResult.result_str");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_result_str(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.gimbal.GimbalResult.result_str");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3405,56 +3688,51 @@ uint8_t* GimbalResult::_InternalSerialize(
   return target;
 }
 
-size_t GimbalResult::ByteSizeLong() const {
+::size_t GimbalResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.GimbalResult)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_result_str());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_result_str());
   }
 
   // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
   if (this->_internal_result() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GimbalResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     GimbalResult::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GimbalResult::GetClassData() const { return &_class_data_; }
 
-void GimbalResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<GimbalResult *>(to)->MergeFrom(
-      static_cast<const GimbalResult &>(from));
-}
 
-
-void GimbalResult::MergeFrom(const GimbalResult& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.GimbalResult)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void GimbalResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<GimbalResult*>(&to_msg);
+  auto& from = static_cast<const GimbalResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.GimbalResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_result_str().empty()) {
-    _internal_set_result_str(from._internal_result_str());
+    _this->_internal_set_result_str(from._internal_result_str());
   }
   if (from._internal_result() != 0) {
-    _internal_set_result(from._internal_result());
+    _this->_internal_set_result(from._internal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GimbalResult::CopyFrom(const GimbalResult& from) {
@@ -3473,11 +3751,9 @@ void GimbalResult::InternalSwap(GimbalResult* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &result_str_, lhs_arena,
-      &other->result_str_, rhs_arena
-  );
-  swap(result_, other->result_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
+                                       &other->_impl_.result_str_, rhs_arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata GimbalResult::GetMetadata() const {
@@ -3485,7 +3761,6 @@ void GimbalResult::InternalSwap(GimbalResult* other) {
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
       file_level_metadata_gimbal_2fgimbal_2eproto[15]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace gimbal
 }  // namespace rpc
@@ -3556,6 +3831,5 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::gimbal::GimbalResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::gimbal::GimbalResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
-
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"

@@ -4,248 +4,316 @@
 #include "manual_control/manual_control.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
 namespace mavsdk {
 namespace rpc {
 namespace manual_control {
+template <typename>
 PROTOBUF_CONSTEXPR StartPositionControlRequest::StartPositionControlRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct StartPositionControlRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StartPositionControlRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR StartPositionControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~StartPositionControlRequestDefaultTypeInternal() {}
   union {
     StartPositionControlRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartPositionControlRequestDefaultTypeInternal _StartPositionControlRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartPositionControlRequestDefaultTypeInternal _StartPositionControlRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR StartPositionControlResponse::StartPositionControlResponse(
-    ::_pbi::ConstantInitialized)
-  : manual_control_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.manual_control_result_)*/nullptr} {}
 struct StartPositionControlResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StartPositionControlResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR StartPositionControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~StartPositionControlResponseDefaultTypeInternal() {}
   union {
     StartPositionControlResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartPositionControlResponseDefaultTypeInternal _StartPositionControlResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartPositionControlResponseDefaultTypeInternal _StartPositionControlResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR StartAltitudeControlRequest::StartAltitudeControlRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct StartAltitudeControlRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StartAltitudeControlRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR StartAltitudeControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~StartAltitudeControlRequestDefaultTypeInternal() {}
   union {
     StartAltitudeControlRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartAltitudeControlRequestDefaultTypeInternal _StartAltitudeControlRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartAltitudeControlRequestDefaultTypeInternal _StartAltitudeControlRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR StartAltitudeControlResponse::StartAltitudeControlResponse(
-    ::_pbi::ConstantInitialized)
-  : manual_control_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.manual_control_result_)*/nullptr} {}
 struct StartAltitudeControlResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StartAltitudeControlResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR StartAltitudeControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~StartAltitudeControlResponseDefaultTypeInternal() {}
   union {
     StartAltitudeControlResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartAltitudeControlResponseDefaultTypeInternal _StartAltitudeControlResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartAltitudeControlResponseDefaultTypeInternal _StartAltitudeControlResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetManualControlInputRequest::SetManualControlInputRequest(
-    ::_pbi::ConstantInitialized)
-  : x_(0)
-  , y_(0)
-  , z_(0)
-  , r_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.x_)*/ 0
+
+  , /*decltype(_impl_.y_)*/ 0
+
+  , /*decltype(_impl_.z_)*/ 0
+
+  , /*decltype(_impl_.r_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SetManualControlInputRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetManualControlInputRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetManualControlInputRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetManualControlInputRequestDefaultTypeInternal() {}
   union {
     SetManualControlInputRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetManualControlInputRequestDefaultTypeInternal _SetManualControlInputRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetManualControlInputRequestDefaultTypeInternal _SetManualControlInputRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetManualControlInputResponse::SetManualControlInputResponse(
-    ::_pbi::ConstantInitialized)
-  : manual_control_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.manual_control_result_)*/nullptr} {}
 struct SetManualControlInputResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetManualControlInputResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetManualControlInputResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetManualControlInputResponseDefaultTypeInternal() {}
   union {
     SetManualControlInputResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetManualControlInputResponseDefaultTypeInternal _SetManualControlInputResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetManualControlInputResponseDefaultTypeInternal _SetManualControlInputResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ManualControlResult::ManualControlResult(
-    ::_pbi::ConstantInitialized)
-  : result_str_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , result_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.result_str_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.result_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ManualControlResultDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ManualControlResultDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ManualControlResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ManualControlResultDefaultTypeInternal() {}
   union {
     ManualControlResult _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ManualControlResultDefaultTypeInternal _ManualControlResult_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ManualControlResultDefaultTypeInternal _ManualControlResult_default_instance_;
 }  // namespace manual_control
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[7];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto[1];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto = nullptr;
-
-const uint32_t TableStruct_manual_5fcontrol_2fmanual_5fcontrol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartPositionControlRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartPositionControlResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartPositionControlResponse, manual_control_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartAltitudeControlRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartAltitudeControlResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartAltitudeControlResponse, manual_control_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, x_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, y_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, z_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, r_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputResponse, manual_control_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::ManualControlResult, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::ManualControlResult, result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::ManualControlResult, result_str_),
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto = nullptr;
+const ::uint32_t TableStruct_manual_5fcontrol_2fmanual_5fcontrol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartPositionControlRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartPositionControlResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartPositionControlResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartPositionControlResponse, _impl_.manual_control_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartAltitudeControlRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartAltitudeControlResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartAltitudeControlResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::StartAltitudeControlResponse, _impl_.manual_control_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, _impl_.x_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, _impl_.y_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, _impl_.z_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputRequest, _impl_.r_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::SetManualControlInputResponse, _impl_.manual_control_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::ManualControlResult, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::ManualControlResult, _impl_.result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::manual_control::ManualControlResult, _impl_.result_str_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::mavsdk::rpc::manual_control::StartPositionControlRequest)},
-  { 6, -1, -1, sizeof(::mavsdk::rpc::manual_control::StartPositionControlResponse)},
-  { 13, -1, -1, sizeof(::mavsdk::rpc::manual_control::StartAltitudeControlRequest)},
-  { 19, -1, -1, sizeof(::mavsdk::rpc::manual_control::StartAltitudeControlResponse)},
-  { 26, -1, -1, sizeof(::mavsdk::rpc::manual_control::SetManualControlInputRequest)},
-  { 36, -1, -1, sizeof(::mavsdk::rpc::manual_control::SetManualControlInputResponse)},
-  { 43, -1, -1, sizeof(::mavsdk::rpc::manual_control::ManualControlResult)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::mavsdk::rpc::manual_control::StartPositionControlRequest)},
+        { 8, 17, -1, sizeof(::mavsdk::rpc::manual_control::StartPositionControlResponse)},
+        { 18, -1, -1, sizeof(::mavsdk::rpc::manual_control::StartAltitudeControlRequest)},
+        { 26, 35, -1, sizeof(::mavsdk::rpc::manual_control::StartAltitudeControlResponse)},
+        { 36, -1, -1, sizeof(::mavsdk::rpc::manual_control::SetManualControlInputRequest)},
+        { 48, 57, -1, sizeof(::mavsdk::rpc::manual_control::SetManualControlInputResponse)},
+        { 58, -1, -1, sizeof(::mavsdk::rpc::manual_control::ManualControlResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::mavsdk::rpc::manual_control::_StartPositionControlRequest_default_instance_._instance,
-  &::mavsdk::rpc::manual_control::_StartPositionControlResponse_default_instance_._instance,
-  &::mavsdk::rpc::manual_control::_StartAltitudeControlRequest_default_instance_._instance,
-  &::mavsdk::rpc::manual_control::_StartAltitudeControlResponse_default_instance_._instance,
-  &::mavsdk::rpc::manual_control::_SetManualControlInputRequest_default_instance_._instance,
-  &::mavsdk::rpc::manual_control::_SetManualControlInputResponse_default_instance_._instance,
-  &::mavsdk::rpc::manual_control::_ManualControlResult_default_instance_._instance,
+    &::mavsdk::rpc::manual_control::_StartPositionControlRequest_default_instance_._instance,
+    &::mavsdk::rpc::manual_control::_StartPositionControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::manual_control::_StartAltitudeControlRequest_default_instance_._instance,
+    &::mavsdk::rpc::manual_control::_StartAltitudeControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::manual_control::_SetManualControlInputRequest_default_instance_._instance,
+    &::mavsdk::rpc::manual_control::_SetManualControlInputResponse_default_instance_._instance,
+    &::mavsdk::rpc::manual_control::_ManualControlResult_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n#manual_control/manual_control.proto\022\031m"
-  "avsdk.rpc.manual_control\032\024mavsdk_options"
-  ".proto\"\035\n\033StartPositionControlRequest\"m\n"
-  "\034StartPositionControlResponse\022M\n\025manual_"
-  "control_result\030\001 \001(\0132..mavsdk.rpc.manual"
-  "_control.ManualControlResult\"\035\n\033StartAlt"
-  "itudeControlRequest\"m\n\034StartAltitudeCont"
-  "rolResponse\022M\n\025manual_control_result\030\001 \001"
-  "(\0132..mavsdk.rpc.manual_control.ManualCon"
-  "trolResult\"J\n\034SetManualControlInputReque"
-  "st\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\t\n\001r"
-  "\030\004 \001(\002\"n\n\035SetManualControlInputResponse\022"
-  "M\n\025manual_control_result\030\001 \001(\0132..mavsdk."
-  "rpc.manual_control.ManualControlResult\"\317"
-  "\002\n\023ManualControlResult\022E\n\006result\030\001 \001(\01625"
-  ".mavsdk.rpc.manual_control.ManualControl"
-  "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"\334\001\n\006Re"
-  "sult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCE"
-  "SS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CON"
-  "NECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESU"
-  "LT_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022"
-  "\035\n\031RESULT_INPUT_OUT_OF_RANGE\020\007\022\030\n\024RESULT"
-  "_INPUT_NOT_SET\020\0102\301\003\n\024ManualControlServic"
-  "e\022\211\001\n\024StartPositionControl\0226.mavsdk.rpc."
-  "manual_control.StartPositionControlReque"
-  "st\0327.mavsdk.rpc.manual_control.StartPosi"
-  "tionControlResponse\"\000\022\211\001\n\024StartAltitudeC"
-  "ontrol\0226.mavsdk.rpc.manual_control.Start"
-  "AltitudeControlRequest\0327.mavsdk.rpc.manu"
-  "al_control.StartAltitudeControlResponse\""
-  "\000\022\220\001\n\025SetManualControlInput\0227.mavsdk.rpc"
-  ".manual_control.SetManualControlInputReq"
-  "uest\0328.mavsdk.rpc.manual_control.SetManu"
-  "alControlInputResponse\"\004\200\265\030\001B.\n\030io.mavsd"
-  "k.manual_controlB\022ManualControlProtob\006pr"
-  "oto3"
-  ;
-static const ::_pbi::DescriptorTable* const descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_deps[1] = {
-  &::descriptor_table_mavsdk_5foptions_2eproto,
+const char descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n#manual_control/manual_control.proto\022\031m"
+    "avsdk.rpc.manual_control\032\024mavsdk_options"
+    ".proto\"\035\n\033StartPositionControlRequest\"m\n"
+    "\034StartPositionControlResponse\022M\n\025manual_"
+    "control_result\030\001 \001(\0132..mavsdk.rpc.manual"
+    "_control.ManualControlResult\"\035\n\033StartAlt"
+    "itudeControlRequest\"m\n\034StartAltitudeCont"
+    "rolResponse\022M\n\025manual_control_result\030\001 \001"
+    "(\0132..mavsdk.rpc.manual_control.ManualCon"
+    "trolResult\"J\n\034SetManualControlInputReque"
+    "st\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\t\n\001r"
+    "\030\004 \001(\002\"n\n\035SetManualControlInputResponse\022"
+    "M\n\025manual_control_result\030\001 \001(\0132..mavsdk."
+    "rpc.manual_control.ManualControlResult\"\317"
+    "\002\n\023ManualControlResult\022E\n\006result\030\001 \001(\01625"
+    ".mavsdk.rpc.manual_control.ManualControl"
+    "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"\334\001\n\006Re"
+    "sult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCE"
+    "SS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CON"
+    "NECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESU"
+    "LT_COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022"
+    "\035\n\031RESULT_INPUT_OUT_OF_RANGE\020\007\022\030\n\024RESULT"
+    "_INPUT_NOT_SET\020\0102\301\003\n\024ManualControlServic"
+    "e\022\211\001\n\024StartPositionControl\0226.mavsdk.rpc."
+    "manual_control.StartPositionControlReque"
+    "st\0327.mavsdk.rpc.manual_control.StartPosi"
+    "tionControlResponse\"\000\022\211\001\n\024StartAltitudeC"
+    "ontrol\0226.mavsdk.rpc.manual_control.Start"
+    "AltitudeControlRequest\0327.mavsdk.rpc.manu"
+    "al_control.StartAltitudeControlResponse\""
+    "\000\022\220\001\n\025SetManualControlInput\0227.mavsdk.rpc"
+    ".manual_control.SetManualControlInputReq"
+    "uest\0328.mavsdk.rpc.manual_control.SetManu"
+    "alControlInputResponse\"\004\200\265\030\001B.\n\030io.mavsd"
+    "k.manual_controlB\022ManualControlProtob\006pr"
+    "oto3"
 };
-static ::_pbi::once_flag descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once;
+static const ::_pbi::DescriptorTable* const descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_deps[1] =
+    {
+        &::descriptor_table_mavsdk_5foptions_2eproto,
+};
+static ::absl::once_flag descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto = {
-    false, false, 1404, descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
+    false,
+    false,
+    1404,
+    descriptor_table_protodef_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
     "manual_control/manual_control.proto",
-    &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once, descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_deps, 1, 7,
-    schemas, file_default_instances, TableStruct_manual_5fcontrol_2fmanual_5fcontrol_2eproto::offsets,
-    file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto, file_level_enum_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
+    &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
+    descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_deps,
+    1,
+    7,
+    schemas,
+    file_default_instances,
+    TableStruct_manual_5fcontrol_2fmanual_5fcontrol_2eproto::offsets,
+    file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
+    file_level_enum_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
     file_level_service_descriptors_manual_5fcontrol_2fmanual_5fcontrol_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter() {
   return &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_manual_5fcontrol_2fmanual_5fcontrol_2eproto(&descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_manual_5fcontrol_2fmanual_5fcontrol_2eproto(&descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace manual_control {
@@ -269,8 +337,9 @@ bool ManualControlResult_Result_IsValid(int value) {
       return false;
   }
 }
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr ManualControlResult_Result ManualControlResult::RESULT_UNKNOWN;
 constexpr ManualControlResult_Result ManualControlResult::RESULT_SUCCESS;
 constexpr ManualControlResult_Result ManualControlResult::RESULT_NO_SYSTEM;
@@ -283,21 +352,22 @@ constexpr ManualControlResult_Result ManualControlResult::RESULT_INPUT_NOT_SET;
 constexpr ManualControlResult_Result ManualControlResult::Result_MIN;
 constexpr ManualControlResult_Result ManualControlResult::Result_MAX;
 constexpr int ManualControlResult::Result_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 // ===================================================================
 
 class StartPositionControlRequest::_Internal {
  public:
 };
 
-StartPositionControlRequest::StartPositionControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+StartPositionControlRequest::StartPositionControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartPositionControlRequest)
 }
 StartPositionControlRequest::StartPositionControlRequest(const StartPositionControlRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  StartPositionControlRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.StartPositionControlRequest)
 }
@@ -323,37 +393,50 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StartPositionControlRequest::G
       &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter, &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
       file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[0]);
 }
-
 // ===================================================================
 
 class StartPositionControlResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<StartPositionControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(StartPositionControlResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::manual_control::ManualControlResult& manual_control_result(const StartPositionControlResponse* msg);
+  static void set_has_manual_control_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::manual_control::ManualControlResult&
 StartPositionControlResponse::_Internal::manual_control_result(const StartPositionControlResponse* msg) {
-  return *msg->manual_control_result_;
+  return *msg->_impl_.manual_control_result_;
 }
-StartPositionControlResponse::StartPositionControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+StartPositionControlResponse::StartPositionControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartPositionControlResponse)
 }
 StartPositionControlResponse::StartPositionControlResponse(const StartPositionControlResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  StartPositionControlResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.manual_control_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_manual_control_result()) {
-    manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from.manual_control_result_);
-  } else {
-    manual_control_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from._impl_.manual_control_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.StartPositionControlResponse)
 }
 
-inline void StartPositionControlResponse::SharedCtor() {
-manual_control_result_ = nullptr;
+inline void StartPositionControlResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.manual_control_result_){nullptr}
+  };
 }
 
 StartPositionControlResponse::~StartPositionControlResponse() {
@@ -366,40 +449,44 @@ StartPositionControlResponse::~StartPositionControlResponse() {
 }
 
 inline void StartPositionControlResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete manual_control_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.manual_control_result_;
 }
 
 void StartPositionControlResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void StartPositionControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.manual_control.StartPositionControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && manual_control_result_ != nullptr) {
-    delete manual_control_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.manual_control_result_ != nullptr);
+    _impl_.manual_control_result_->Clear();
   }
-  manual_control_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StartPositionControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_manual_control_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -417,6 +504,7 @@ const char* StartPositionControlResponse::_InternalParse(const char* ptr, ::_pbi
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -424,14 +512,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* StartPositionControlResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* StartPositionControlResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.manual_control.StartPositionControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
-  if (this->_internal_has_manual_control_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::manual_control_result(this),
         _Internal::manual_control_result(this).GetCachedSize(), target, stream);
@@ -445,47 +534,45 @@ uint8_t* StartPositionControlResponse::_InternalSerialize(
   return target;
 }
 
-size_t StartPositionControlResponse::ByteSizeLong() const {
+::size_t StartPositionControlResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.manual_control.StartPositionControlResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
-  if (this->_internal_has_manual_control_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *manual_control_result_);
+        *_impl_.manual_control_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData StartPositionControlResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     StartPositionControlResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StartPositionControlResponse::GetClassData() const { return &_class_data_; }
 
-void StartPositionControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<StartPositionControlResponse *>(to)->MergeFrom(
-      static_cast<const StartPositionControlResponse &>(from));
-}
 
-
-void StartPositionControlResponse::MergeFrom(const StartPositionControlResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartPositionControlResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void StartPositionControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<StartPositionControlResponse*>(&to_msg);
+  auto& from = static_cast<const StartPositionControlResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartPositionControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_manual_control_result()) {
-    _internal_mutable_manual_control_result()->::mavsdk::rpc::manual_control::ManualControlResult::MergeFrom(from._internal_manual_control_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_manual_control_result()->::mavsdk::rpc::manual_control::ManualControlResult::MergeFrom(
+        from._internal_manual_control_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void StartPositionControlResponse::CopyFrom(const StartPositionControlResponse& from) {
@@ -502,7 +589,8 @@ bool StartPositionControlResponse::IsInitialized() const {
 void StartPositionControlResponse::InternalSwap(StartPositionControlResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(manual_control_result_, other->manual_control_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.manual_control_result_, other->_impl_.manual_control_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StartPositionControlResponse::GetMetadata() const {
@@ -510,20 +598,19 @@ void StartPositionControlResponse::InternalSwap(StartPositionControlResponse* ot
       &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter, &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
       file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[1]);
 }
-
 // ===================================================================
 
 class StartAltitudeControlRequest::_Internal {
  public:
 };
 
-StartAltitudeControlRequest::StartAltitudeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+StartAltitudeControlRequest::StartAltitudeControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
 }
 StartAltitudeControlRequest::StartAltitudeControlRequest(const StartAltitudeControlRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  StartAltitudeControlRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.StartAltitudeControlRequest)
 }
@@ -549,37 +636,50 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StartAltitudeControlRequest::G
       &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter, &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
       file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[2]);
 }
-
 // ===================================================================
 
 class StartAltitudeControlResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<StartAltitudeControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(StartAltitudeControlResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::manual_control::ManualControlResult& manual_control_result(const StartAltitudeControlResponse* msg);
+  static void set_has_manual_control_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::manual_control::ManualControlResult&
 StartAltitudeControlResponse::_Internal::manual_control_result(const StartAltitudeControlResponse* msg) {
-  return *msg->manual_control_result_;
+  return *msg->_impl_.manual_control_result_;
 }
-StartAltitudeControlResponse::StartAltitudeControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+StartAltitudeControlResponse::StartAltitudeControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
 }
 StartAltitudeControlResponse::StartAltitudeControlResponse(const StartAltitudeControlResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  StartAltitudeControlResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.manual_control_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_manual_control_result()) {
-    manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from.manual_control_result_);
-  } else {
-    manual_control_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from._impl_.manual_control_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
 }
 
-inline void StartAltitudeControlResponse::SharedCtor() {
-manual_control_result_ = nullptr;
+inline void StartAltitudeControlResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.manual_control_result_){nullptr}
+  };
 }
 
 StartAltitudeControlResponse::~StartAltitudeControlResponse() {
@@ -592,40 +692,44 @@ StartAltitudeControlResponse::~StartAltitudeControlResponse() {
 }
 
 inline void StartAltitudeControlResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete manual_control_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.manual_control_result_;
 }
 
 void StartAltitudeControlResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void StartAltitudeControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && manual_control_result_ != nullptr) {
-    delete manual_control_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.manual_control_result_ != nullptr);
+    _impl_.manual_control_result_->Clear();
   }
-  manual_control_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StartAltitudeControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_manual_control_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -643,6 +747,7 @@ const char* StartAltitudeControlResponse::_InternalParse(const char* ptr, ::_pbi
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -650,14 +755,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* StartAltitudeControlResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* StartAltitudeControlResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
-  if (this->_internal_has_manual_control_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::manual_control_result(this),
         _Internal::manual_control_result(this).GetCachedSize(), target, stream);
@@ -671,47 +777,45 @@ uint8_t* StartAltitudeControlResponse::_InternalSerialize(
   return target;
 }
 
-size_t StartAltitudeControlResponse::ByteSizeLong() const {
+::size_t StartAltitudeControlResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
-  if (this->_internal_has_manual_control_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *manual_control_result_);
+        *_impl_.manual_control_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData StartAltitudeControlResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     StartAltitudeControlResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StartAltitudeControlResponse::GetClassData() const { return &_class_data_; }
 
-void StartAltitudeControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<StartAltitudeControlResponse *>(to)->MergeFrom(
-      static_cast<const StartAltitudeControlResponse &>(from));
-}
 
-
-void StartAltitudeControlResponse::MergeFrom(const StartAltitudeControlResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void StartAltitudeControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<StartAltitudeControlResponse*>(&to_msg);
+  auto& from = static_cast<const StartAltitudeControlResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.StartAltitudeControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_manual_control_result()) {
-    _internal_mutable_manual_control_result()->::mavsdk::rpc::manual_control::ManualControlResult::MergeFrom(from._internal_manual_control_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_manual_control_result()->::mavsdk::rpc::manual_control::ManualControlResult::MergeFrom(
+        from._internal_manual_control_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void StartAltitudeControlResponse::CopyFrom(const StartAltitudeControlResponse& from) {
@@ -728,7 +832,8 @@ bool StartAltitudeControlResponse::IsInitialized() const {
 void StartAltitudeControlResponse::InternalSwap(StartAltitudeControlResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(manual_control_result_, other->manual_control_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.manual_control_result_, other->_impl_.manual_control_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StartAltitudeControlResponse::GetMetadata() const {
@@ -736,33 +841,37 @@ void StartAltitudeControlResponse::InternalSwap(StartAltitudeControlResponse* ot
       &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter, &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
       file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[3]);
 }
-
 // ===================================================================
 
 class SetManualControlInputRequest::_Internal {
  public:
 };
 
-SetManualControlInputRequest::SetManualControlInputRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetManualControlInputRequest::SetManualControlInputRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.SetManualControlInputRequest)
 }
 SetManualControlInputRequest::SetManualControlInputRequest(const SetManualControlInputRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&x_, &from.x_,
-    static_cast<size_t>(reinterpret_cast<char*>(&r_) -
-    reinterpret_cast<char*>(&x_)) + sizeof(r_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.SetManualControlInputRequest)
 }
 
-inline void SetManualControlInputRequest::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&x_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&r_) -
-    reinterpret_cast<char*>(&x_)) + sizeof(r_));
+inline void SetManualControlInputRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.x_) { 0 }
+
+    , decltype(_impl_.y_) { 0 }
+
+    , decltype(_impl_.z_) { 0 }
+
+    , decltype(_impl_.r_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 SetManualControlInputRequest::~SetManualControlInputRequest() {
@@ -775,62 +884,66 @@ SetManualControlInputRequest::~SetManualControlInputRequest() {
 }
 
 inline void SetManualControlInputRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SetManualControlInputRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetManualControlInputRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.manual_control.SetManualControlInputRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&x_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&r_) -
-      reinterpret_cast<char*>(&x_)) + sizeof(r_));
+  ::memset(&_impl_.x_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.r_) -
+      reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.r_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetManualControlInputRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // float x = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
-          x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
+          _impl_.x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float y = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float z = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
-          z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
+          _impl_.z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float r = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
-          r_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
+          _impl_.r_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -855,50 +968,54 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetManualControlInputRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetManualControlInputRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.manual_control.SetManualControlInputRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float x = 1;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_x = this->_internal_x();
-  uint32_t raw_x;
+  ::uint32_t raw_x;
   memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
   if (raw_x != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this->_internal_x(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_x(), target);
   }
 
   // float y = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_y = this->_internal_y();
-  uint32_t raw_y;
+  ::uint32_t raw_y;
   memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
   if (raw_y != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_y(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_y(), target);
   }
 
   // float z = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_z = this->_internal_z();
-  uint32_t raw_z;
+  ::uint32_t raw_z;
   memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
   if (raw_z != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_z(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_z(), target);
   }
 
   // float r = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_r = this->_internal_r();
-  uint32_t raw_r;
+  ::uint32_t raw_r;
   memcpy(&raw_r, &tmp_r, sizeof(tmp_r));
   if (raw_r != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(4, this->_internal_r(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        4, this->_internal_r(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -909,101 +1026,97 @@ uint8_t* SetManualControlInputRequest::_InternalSerialize(
   return target;
 }
 
-size_t SetManualControlInputRequest::ByteSizeLong() const {
+::size_t SetManualControlInputRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.manual_control.SetManualControlInputRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float x = 1;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_x = this->_internal_x();
-  uint32_t raw_x;
+  ::uint32_t raw_x;
   memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
   if (raw_x != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float y = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_y = this->_internal_y();
-  uint32_t raw_y;
+  ::uint32_t raw_y;
   memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
   if (raw_y != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float z = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_z = this->_internal_z();
-  uint32_t raw_z;
+  ::uint32_t raw_z;
   memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
   if (raw_z != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float r = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_r = this->_internal_r();
-  uint32_t raw_r;
+  ::uint32_t raw_r;
   memcpy(&raw_r, &tmp_r, sizeof(tmp_r));
   if (raw_r != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetManualControlInputRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetManualControlInputRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetManualControlInputRequest::GetClassData() const { return &_class_data_; }
 
-void SetManualControlInputRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetManualControlInputRequest *>(to)->MergeFrom(
-      static_cast<const SetManualControlInputRequest &>(from));
-}
 
-
-void SetManualControlInputRequest::MergeFrom(const SetManualControlInputRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.SetManualControlInputRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetManualControlInputRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetManualControlInputRequest*>(&to_msg);
+  auto& from = static_cast<const SetManualControlInputRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.SetManualControlInputRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_x = from._internal_x();
-  uint32_t raw_x;
+  ::uint32_t raw_x;
   memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
   if (raw_x != 0) {
-    _internal_set_x(from._internal_x());
+    _this->_internal_set_x(from._internal_x());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_y = from._internal_y();
-  uint32_t raw_y;
+  ::uint32_t raw_y;
   memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
   if (raw_y != 0) {
-    _internal_set_y(from._internal_y());
+    _this->_internal_set_y(from._internal_y());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_z = from._internal_z();
-  uint32_t raw_z;
+  ::uint32_t raw_z;
   memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
   if (raw_z != 0) {
-    _internal_set_z(from._internal_z());
+    _this->_internal_set_z(from._internal_z());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_r = from._internal_r();
-  uint32_t raw_r;
+  ::uint32_t raw_r;
   memcpy(&raw_r, &tmp_r, sizeof(tmp_r));
   if (raw_r != 0) {
-    _internal_set_r(from._internal_r());
+    _this->_internal_set_r(from._internal_r());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetManualControlInputRequest::CopyFrom(const SetManualControlInputRequest& from) {
@@ -1021,11 +1134,11 @@ void SetManualControlInputRequest::InternalSwap(SetManualControlInputRequest* ot
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SetManualControlInputRequest, r_)
-      + sizeof(SetManualControlInputRequest::r_)
-      - PROTOBUF_FIELD_OFFSET(SetManualControlInputRequest, x_)>(
-          reinterpret_cast<char*>(&x_),
-          reinterpret_cast<char*>(&other->x_));
+      PROTOBUF_FIELD_OFFSET(SetManualControlInputRequest, _impl_.r_)
+      + sizeof(SetManualControlInputRequest::_impl_.r_)
+      - PROTOBUF_FIELD_OFFSET(SetManualControlInputRequest, _impl_.x_)>(
+          reinterpret_cast<char*>(&_impl_.x_),
+          reinterpret_cast<char*>(&other->_impl_.x_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetManualControlInputRequest::GetMetadata() const {
@@ -1033,37 +1146,50 @@ void SetManualControlInputRequest::InternalSwap(SetManualControlInputRequest* ot
       &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter, &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
       file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[4]);
 }
-
 // ===================================================================
 
 class SetManualControlInputResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<SetManualControlInputResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(SetManualControlInputResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::manual_control::ManualControlResult& manual_control_result(const SetManualControlInputResponse* msg);
+  static void set_has_manual_control_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::manual_control::ManualControlResult&
 SetManualControlInputResponse::_Internal::manual_control_result(const SetManualControlInputResponse* msg) {
-  return *msg->manual_control_result_;
+  return *msg->_impl_.manual_control_result_;
 }
-SetManualControlInputResponse::SetManualControlInputResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetManualControlInputResponse::SetManualControlInputResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.SetManualControlInputResponse)
 }
 SetManualControlInputResponse::SetManualControlInputResponse(const SetManualControlInputResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SetManualControlInputResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.manual_control_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_manual_control_result()) {
-    manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from.manual_control_result_);
-  } else {
-    manual_control_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.manual_control_result_ = new ::mavsdk::rpc::manual_control::ManualControlResult(*from._impl_.manual_control_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.SetManualControlInputResponse)
 }
 
-inline void SetManualControlInputResponse::SharedCtor() {
-manual_control_result_ = nullptr;
+inline void SetManualControlInputResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.manual_control_result_){nullptr}
+  };
 }
 
 SetManualControlInputResponse::~SetManualControlInputResponse() {
@@ -1076,40 +1202,44 @@ SetManualControlInputResponse::~SetManualControlInputResponse() {
 }
 
 inline void SetManualControlInputResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete manual_control_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.manual_control_result_;
 }
 
 void SetManualControlInputResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetManualControlInputResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.manual_control.SetManualControlInputResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && manual_control_result_ != nullptr) {
-    delete manual_control_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.manual_control_result_ != nullptr);
+    _impl_.manual_control_result_->Clear();
   }
-  manual_control_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetManualControlInputResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_manual_control_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1127,6 +1257,7 @@ const char* SetManualControlInputResponse::_InternalParse(const char* ptr, ::_pb
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1134,14 +1265,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetManualControlInputResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetManualControlInputResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.manual_control.SetManualControlInputResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
-  if (this->_internal_has_manual_control_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::manual_control_result(this),
         _Internal::manual_control_result(this).GetCachedSize(), target, stream);
@@ -1155,47 +1287,45 @@ uint8_t* SetManualControlInputResponse::_InternalSerialize(
   return target;
 }
 
-size_t SetManualControlInputResponse::ByteSizeLong() const {
+::size_t SetManualControlInputResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.manual_control.SetManualControlInputResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.manual_control.ManualControlResult manual_control_result = 1;
-  if (this->_internal_has_manual_control_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *manual_control_result_);
+        *_impl_.manual_control_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetManualControlInputResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetManualControlInputResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetManualControlInputResponse::GetClassData() const { return &_class_data_; }
 
-void SetManualControlInputResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetManualControlInputResponse *>(to)->MergeFrom(
-      static_cast<const SetManualControlInputResponse &>(from));
-}
 
-
-void SetManualControlInputResponse::MergeFrom(const SetManualControlInputResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.SetManualControlInputResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetManualControlInputResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetManualControlInputResponse*>(&to_msg);
+  auto& from = static_cast<const SetManualControlInputResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.SetManualControlInputResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_manual_control_result()) {
-    _internal_mutable_manual_control_result()->::mavsdk::rpc::manual_control::ManualControlResult::MergeFrom(from._internal_manual_control_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_manual_control_result()->::mavsdk::rpc::manual_control::ManualControlResult::MergeFrom(
+        from._internal_manual_control_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetManualControlInputResponse::CopyFrom(const SetManualControlInputResponse& from) {
@@ -1212,7 +1342,8 @@ bool SetManualControlInputResponse::IsInitialized() const {
 void SetManualControlInputResponse::InternalSwap(SetManualControlInputResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(manual_control_result_, other->manual_control_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.manual_control_result_, other->_impl_.manual_control_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetManualControlInputResponse::GetMetadata() const {
@@ -1220,40 +1351,52 @@ void SetManualControlInputResponse::InternalSwap(SetManualControlInputResponse* 
       &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter, &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
       file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[5]);
 }
-
 // ===================================================================
 
 class ManualControlResult::_Internal {
  public:
 };
 
-ManualControlResult::ManualControlResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ManualControlResult::ManualControlResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.manual_control.ManualControlResult)
 }
 ManualControlResult::ManualControlResult(const ManualControlResult& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ManualControlResult* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  result_str_.InitDefault();
+  _impl_.result_str_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    result_str_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(from._internal_result_str(), 
-      GetArenaForAllocation());
+    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
   }
-  result_ = from.result_;
+  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.manual_control.ManualControlResult)
 }
 
-inline void ManualControlResult::SharedCtor() {
-result_str_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  result_str_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-result_ = 0;
+inline void ManualControlResult::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.result_str_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ManualControlResult::~ManualControlResult() {
@@ -1266,49 +1409,51 @@ ManualControlResult::~ManualControlResult() {
 }
 
 inline void ManualControlResult::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  result_str_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.result_str_.Destroy();
 }
 
 void ManualControlResult::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ManualControlResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.manual_control.ManualControlResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty();
-  result_ = 0;
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ManualControlResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.manual_control.ManualControlResult.Result result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::manual_control::ManualControlResult_Result>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string result_str = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_result_str();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.manual_control.ManualControlResult.result_str"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1333,27 +1478,25 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ManualControlResult::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ManualControlResult::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.manual_control.ManualControlResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.manual_control.ManualControlResult.Result result = 1;
   if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_result(), target);
+        1, this->_internal_result(), target);
   }
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
+    const std::string& _s = this->_internal_result_str();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.manual_control.ManualControlResult.result_str");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_result_str(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.manual_control.ManualControlResult.result_str");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1364,56 +1507,51 @@ uint8_t* ManualControlResult::_InternalSerialize(
   return target;
 }
 
-size_t ManualControlResult::ByteSizeLong() const {
+::size_t ManualControlResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.manual_control.ManualControlResult)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_result_str());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_result_str());
   }
 
   // .mavsdk.rpc.manual_control.ManualControlResult.Result result = 1;
   if (this->_internal_result() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ManualControlResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ManualControlResult::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ManualControlResult::GetClassData() const { return &_class_data_; }
 
-void ManualControlResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ManualControlResult *>(to)->MergeFrom(
-      static_cast<const ManualControlResult &>(from));
-}
 
-
-void ManualControlResult::MergeFrom(const ManualControlResult& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.ManualControlResult)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ManualControlResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ManualControlResult*>(&to_msg);
+  auto& from = static_cast<const ManualControlResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.manual_control.ManualControlResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_result_str().empty()) {
-    _internal_set_result_str(from._internal_result_str());
+    _this->_internal_set_result_str(from._internal_result_str());
   }
   if (from._internal_result() != 0) {
-    _internal_set_result(from._internal_result());
+    _this->_internal_set_result(from._internal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ManualControlResult::CopyFrom(const ManualControlResult& from) {
@@ -1432,11 +1570,9 @@ void ManualControlResult::InternalSwap(ManualControlResult* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &result_str_, lhs_arena,
-      &other->result_str_, rhs_arena
-  );
-  swap(result_, other->result_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
+                                       &other->_impl_.result_str_, rhs_arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ManualControlResult::GetMetadata() const {
@@ -1444,7 +1580,6 @@ void ManualControlResult::InternalSwap(ManualControlResult* other) {
       &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_getter, &descriptor_table_manual_5fcontrol_2fmanual_5fcontrol_2eproto_once,
       file_level_metadata_manual_5fcontrol_2fmanual_5fcontrol_2eproto[6]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace manual_control
 }  // namespace rpc
@@ -1479,6 +1614,5 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::manual_control::ManualControlResult >(
   return Arena::CreateMessageInternal< ::mavsdk::rpc::manual_control::ManualControlResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
-
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"

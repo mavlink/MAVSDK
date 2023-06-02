@@ -13,6 +13,8 @@ list(APPEND CMAKE_ARGS
     "-Dprotobuf_MODULE_COMPATIBLE=ON"
     "-Dprotobuf_MSVC_STATIC_RUNTIME=OFF"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+    "-Dprotobuf_ABSL_PROVIDER=package"
+    "-DCMAKE_CXX_STANDARD=17"
     )
 
 if(CMAKE_CROSSCOMPILING)
@@ -36,8 +38,7 @@ endforeach()
 
 ExternalProject_add(
     protobuf
-    URL https://github.com/protocolbuffers/protobuf/releases/download/v3.20.1/protobuf-cpp-3.20.1.tar.gz
+    URL https://github.com/protocolbuffers/protobuf/releases/download/v23.2/protobuf-23.2.tar.gz
     PREFIX protobuf
     CMAKE_ARGS "${CMAKE_ARGS}"
-    SOURCE_SUBDIR cmake
     )

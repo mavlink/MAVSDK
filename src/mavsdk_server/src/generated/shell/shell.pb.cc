@@ -4,184 +4,241 @@
 #include "shell/shell.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
 namespace mavsdk {
 namespace rpc {
 namespace shell {
+template <typename>
 PROTOBUF_CONSTEXPR SendRequest::SendRequest(
-    ::_pbi::ConstantInitialized)
-  : command_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.command_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SendRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SendRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SendRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SendRequestDefaultTypeInternal() {}
   union {
     SendRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendRequestDefaultTypeInternal _SendRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendRequestDefaultTypeInternal _SendRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SendResponse::SendResponse(
-    ::_pbi::ConstantInitialized)
-  : shell_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.shell_result_)*/nullptr} {}
 struct SendResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SendResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SendResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SendResponseDefaultTypeInternal() {}
   union {
     SendResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendResponseDefaultTypeInternal _SendResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendResponseDefaultTypeInternal _SendResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SubscribeReceiveRequest::SubscribeReceiveRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct SubscribeReceiveRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SubscribeReceiveRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SubscribeReceiveRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SubscribeReceiveRequestDefaultTypeInternal() {}
   union {
     SubscribeReceiveRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeReceiveRequestDefaultTypeInternal _SubscribeReceiveRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeReceiveRequestDefaultTypeInternal _SubscribeReceiveRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ReceiveResponse::ReceiveResponse(
-    ::_pbi::ConstantInitialized)
-  : data_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.data_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ReceiveResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ReceiveResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ReceiveResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ReceiveResponseDefaultTypeInternal() {}
   union {
     ReceiveResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReceiveResponseDefaultTypeInternal _ReceiveResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReceiveResponseDefaultTypeInternal _ReceiveResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ShellResult::ShellResult(
-    ::_pbi::ConstantInitialized)
-  : result_str_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , result_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.result_str_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.result_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ShellResultDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ShellResultDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ShellResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ShellResultDefaultTypeInternal() {}
   union {
     ShellResult _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ShellResultDefaultTypeInternal _ShellResult_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ShellResultDefaultTypeInternal _ShellResult_default_instance_;
 }  // namespace shell
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_shell_2fshell_2eproto[5];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_shell_2fshell_2eproto[1];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_shell_2fshell_2eproto = nullptr;
-
-const uint32_t TableStruct_shell_2fshell_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendRequest, command_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendResponse, shell_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SubscribeReceiveRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, data_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ShellResult, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ShellResult, result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ShellResult, result_str_),
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_shell_2fshell_2eproto = nullptr;
+const ::uint32_t TableStruct_shell_2fshell_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendRequest, _impl_.command_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendResponse, _impl_.shell_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SubscribeReceiveRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, _impl_.data_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ShellResult, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ShellResult, _impl_.result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ShellResult, _impl_.result_str_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::mavsdk::rpc::shell::SendRequest)},
-  { 7, -1, -1, sizeof(::mavsdk::rpc::shell::SendResponse)},
-  { 14, -1, -1, sizeof(::mavsdk::rpc::shell::SubscribeReceiveRequest)},
-  { 20, -1, -1, sizeof(::mavsdk::rpc::shell::ReceiveResponse)},
-  { 27, -1, -1, sizeof(::mavsdk::rpc::shell::ShellResult)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::mavsdk::rpc::shell::SendRequest)},
+        { 9, 18, -1, sizeof(::mavsdk::rpc::shell::SendResponse)},
+        { 19, -1, -1, sizeof(::mavsdk::rpc::shell::SubscribeReceiveRequest)},
+        { 27, -1, -1, sizeof(::mavsdk::rpc::shell::ReceiveResponse)},
+        { 36, -1, -1, sizeof(::mavsdk::rpc::shell::ShellResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::mavsdk::rpc::shell::_SendRequest_default_instance_._instance,
-  &::mavsdk::rpc::shell::_SendResponse_default_instance_._instance,
-  &::mavsdk::rpc::shell::_SubscribeReceiveRequest_default_instance_._instance,
-  &::mavsdk::rpc::shell::_ReceiveResponse_default_instance_._instance,
-  &::mavsdk::rpc::shell::_ShellResult_default_instance_._instance,
+    &::mavsdk::rpc::shell::_SendRequest_default_instance_._instance,
+    &::mavsdk::rpc::shell::_SendResponse_default_instance_._instance,
+    &::mavsdk::rpc::shell::_SubscribeReceiveRequest_default_instance_._instance,
+    &::mavsdk::rpc::shell::_ReceiveResponse_default_instance_._instance,
+    &::mavsdk::rpc::shell::_ShellResult_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_shell_2fshell_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\021shell/shell.proto\022\020mavsdk.rpc.shell\032\024m"
-  "avsdk_options.proto\"\036\n\013SendRequest\022\017\n\007co"
-  "mmand\030\001 \001(\t\"C\n\014SendResponse\0223\n\014shell_res"
-  "ult\030\001 \001(\0132\035.mavsdk.rpc.shell.ShellResult"
-  "\"\031\n\027SubscribeReceiveRequest\"\037\n\017ReceiveRe"
-  "sponse\022\014\n\004data\030\001 \001(\t\"\346\001\n\013ShellResult\0224\n\006"
-  "result\030\001 \001(\0162$.mavsdk.rpc.shell.ShellRes"
-  "ult.Result\022\022\n\nresult_str\030\002 \001(\t\"\214\001\n\006Resul"
-  "t\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020"
-  "\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNEC"
-  "TION_ERROR\020\003\022\026\n\022RESULT_NO_RESPONSE\020\004\022\017\n\013"
-  "RESULT_BUSY\020\0052\305\001\n\014ShellService\022K\n\004Send\022\035"
-  ".mavsdk.rpc.shell.SendRequest\032\036.mavsdk.r"
-  "pc.shell.SendResponse\"\004\200\265\030\001\022h\n\020Subscribe"
-  "Receive\022).mavsdk.rpc.shell.SubscribeRece"
-  "iveRequest\032!.mavsdk.rpc.shell.ReceiveRes"
-  "ponse\"\004\200\265\030\0000\001B\035\n\017io.mavsdk.shellB\nShellP"
-  "rotob\006proto3"
-  ;
-static const ::_pbi::DescriptorTable* const descriptor_table_shell_2fshell_2eproto_deps[1] = {
-  &::descriptor_table_mavsdk_5foptions_2eproto,
+const char descriptor_table_protodef_shell_2fshell_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\021shell/shell.proto\022\020mavsdk.rpc.shell\032\024m"
+    "avsdk_options.proto\"\036\n\013SendRequest\022\017\n\007co"
+    "mmand\030\001 \001(\t\"C\n\014SendResponse\0223\n\014shell_res"
+    "ult\030\001 \001(\0132\035.mavsdk.rpc.shell.ShellResult"
+    "\"\031\n\027SubscribeReceiveRequest\"\037\n\017ReceiveRe"
+    "sponse\022\014\n\004data\030\001 \001(\t\"\346\001\n\013ShellResult\0224\n\006"
+    "result\030\001 \001(\0162$.mavsdk.rpc.shell.ShellRes"
+    "ult.Result\022\022\n\nresult_str\030\002 \001(\t\"\214\001\n\006Resul"
+    "t\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020"
+    "\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNEC"
+    "TION_ERROR\020\003\022\026\n\022RESULT_NO_RESPONSE\020\004\022\017\n\013"
+    "RESULT_BUSY\020\0052\305\001\n\014ShellService\022K\n\004Send\022\035"
+    ".mavsdk.rpc.shell.SendRequest\032\036.mavsdk.r"
+    "pc.shell.SendResponse\"\004\200\265\030\001\022h\n\020Subscribe"
+    "Receive\022).mavsdk.rpc.shell.SubscribeRece"
+    "iveRequest\032!.mavsdk.rpc.shell.ReceiveRes"
+    "ponse\"\004\200\265\030\0000\001B\035\n\017io.mavsdk.shellB\nShellP"
+    "rotob\006proto3"
 };
-static ::_pbi::once_flag descriptor_table_shell_2fshell_2eproto_once;
+static const ::_pbi::DescriptorTable* const descriptor_table_shell_2fshell_2eproto_deps[1] =
+    {
+        &::descriptor_table_mavsdk_5foptions_2eproto,
+};
+static ::absl::once_flag descriptor_table_shell_2fshell_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_shell_2fshell_2eproto = {
-    false, false, 692, descriptor_table_protodef_shell_2fshell_2eproto,
+    false,
+    false,
+    692,
+    descriptor_table_protodef_shell_2fshell_2eproto,
     "shell/shell.proto",
-    &descriptor_table_shell_2fshell_2eproto_once, descriptor_table_shell_2fshell_2eproto_deps, 1, 5,
-    schemas, file_default_instances, TableStruct_shell_2fshell_2eproto::offsets,
-    file_level_metadata_shell_2fshell_2eproto, file_level_enum_descriptors_shell_2fshell_2eproto,
+    &descriptor_table_shell_2fshell_2eproto_once,
+    descriptor_table_shell_2fshell_2eproto_deps,
+    1,
+    5,
+    schemas,
+    file_default_instances,
+    TableStruct_shell_2fshell_2eproto::offsets,
+    file_level_metadata_shell_2fshell_2eproto,
+    file_level_enum_descriptors_shell_2fshell_2eproto,
     file_level_service_descriptors_shell_2fshell_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_shell_2fshell_2eproto_getter() {
   return &descriptor_table_shell_2fshell_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_shell_2fshell_2eproto(&descriptor_table_shell_2fshell_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_shell_2fshell_2eproto(&descriptor_table_shell_2fshell_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace shell {
@@ -202,8 +259,9 @@ bool ShellResult_Result_IsValid(int value) {
       return false;
   }
 }
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr ShellResult_Result ShellResult::RESULT_UNKNOWN;
 constexpr ShellResult_Result ShellResult::RESULT_SUCCESS;
 constexpr ShellResult_Result ShellResult::RESULT_NO_SYSTEM;
@@ -213,39 +271,50 @@ constexpr ShellResult_Result ShellResult::RESULT_BUSY;
 constexpr ShellResult_Result ShellResult::Result_MIN;
 constexpr ShellResult_Result ShellResult::Result_MAX;
 constexpr int ShellResult::Result_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 // ===================================================================
 
 class SendRequest::_Internal {
  public:
 };
 
-SendRequest::SendRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SendRequest::SendRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.shell.SendRequest)
 }
 SendRequest::SendRequest(const SendRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SendRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.command_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  command_.InitDefault();
+  _impl_.command_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    command_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.command_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_command().empty()) {
-    command_.Set(from._internal_command(), 
-      GetArenaForAllocation());
+    _this->_impl_.command_.Set(from._internal_command(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.SendRequest)
 }
 
-inline void SendRequest::SharedCtor() {
-command_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  command_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void SendRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.command_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.command_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.command_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 SendRequest::~SendRequest() {
@@ -258,39 +327,40 @@ SendRequest::~SendRequest() {
 }
 
 inline void SendRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  command_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.command_.Destroy();
 }
 
 void SendRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SendRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.SendRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  command_.ClearToEmpty();
+  _impl_.command_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SendRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string command = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_command();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.shell.SendRequest.command"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -315,20 +385,18 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SendRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SendRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.shell.SendRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string command = 1;
   if (!this->_internal_command().empty()) {
+    const std::string& _s = this->_internal_command();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_command().data(), static_cast<int>(this->_internal_command().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.shell.SendRequest.command");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_command(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.shell.SendRequest.command");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -339,47 +407,42 @@ uint8_t* SendRequest::_InternalSerialize(
   return target;
 }
 
-size_t SendRequest::ByteSizeLong() const {
+::size_t SendRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.shell.SendRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string command = 1;
   if (!this->_internal_command().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_command());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_command());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SendRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SendRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SendRequest::GetClassData() const { return &_class_data_; }
 
-void SendRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SendRequest *>(to)->MergeFrom(
-      static_cast<const SendRequest &>(from));
-}
 
-
-void SendRequest::MergeFrom(const SendRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.SendRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SendRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SendRequest*>(&to_msg);
+  auto& from = static_cast<const SendRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.SendRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_command().empty()) {
-    _internal_set_command(from._internal_command());
+    _this->_internal_set_command(from._internal_command());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SendRequest::CopyFrom(const SendRequest& from) {
@@ -398,10 +461,8 @@ void SendRequest::InternalSwap(SendRequest* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &command_, lhs_arena,
-      &other->command_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.command_, lhs_arena,
+                                       &other->_impl_.command_, rhs_arena);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SendRequest::GetMetadata() const {
@@ -409,37 +470,50 @@ void SendRequest::InternalSwap(SendRequest* other) {
       &descriptor_table_shell_2fshell_2eproto_getter, &descriptor_table_shell_2fshell_2eproto_once,
       file_level_metadata_shell_2fshell_2eproto[0]);
 }
-
 // ===================================================================
 
 class SendResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<SendResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(SendResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::shell::ShellResult& shell_result(const SendResponse* msg);
+  static void set_has_shell_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::shell::ShellResult&
 SendResponse::_Internal::shell_result(const SendResponse* msg) {
-  return *msg->shell_result_;
+  return *msg->_impl_.shell_result_;
 }
-SendResponse::SendResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SendResponse::SendResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.shell.SendResponse)
 }
 SendResponse::SendResponse(const SendResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SendResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.shell_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_shell_result()) {
-    shell_result_ = new ::mavsdk::rpc::shell::ShellResult(*from.shell_result_);
-  } else {
-    shell_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.shell_result_ = new ::mavsdk::rpc::shell::ShellResult(*from._impl_.shell_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.SendResponse)
 }
 
-inline void SendResponse::SharedCtor() {
-shell_result_ = nullptr;
+inline void SendResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.shell_result_){nullptr}
+  };
 }
 
 SendResponse::~SendResponse() {
@@ -452,40 +526,44 @@ SendResponse::~SendResponse() {
 }
 
 inline void SendResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete shell_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.shell_result_;
 }
 
 void SendResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SendResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.SendResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && shell_result_ != nullptr) {
-    delete shell_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.shell_result_ != nullptr);
+    _impl_.shell_result_->Clear();
   }
-  shell_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SendResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.shell.ShellResult shell_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_shell_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -503,6 +581,7 @@ const char* SendResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -510,14 +589,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SendResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SendResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.shell.SendResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.shell.ShellResult shell_result = 1;
-  if (this->_internal_has_shell_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::shell_result(this),
         _Internal::shell_result(this).GetCachedSize(), target, stream);
@@ -531,47 +611,45 @@ uint8_t* SendResponse::_InternalSerialize(
   return target;
 }
 
-size_t SendResponse::ByteSizeLong() const {
+::size_t SendResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.shell.SendResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.shell.ShellResult shell_result = 1;
-  if (this->_internal_has_shell_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *shell_result_);
+        *_impl_.shell_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SendResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SendResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SendResponse::GetClassData() const { return &_class_data_; }
 
-void SendResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SendResponse *>(to)->MergeFrom(
-      static_cast<const SendResponse &>(from));
-}
 
-
-void SendResponse::MergeFrom(const SendResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.SendResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SendResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SendResponse*>(&to_msg);
+  auto& from = static_cast<const SendResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.SendResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_shell_result()) {
-    _internal_mutable_shell_result()->::mavsdk::rpc::shell::ShellResult::MergeFrom(from._internal_shell_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_shell_result()->::mavsdk::rpc::shell::ShellResult::MergeFrom(
+        from._internal_shell_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SendResponse::CopyFrom(const SendResponse& from) {
@@ -588,7 +666,8 @@ bool SendResponse::IsInitialized() const {
 void SendResponse::InternalSwap(SendResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(shell_result_, other->shell_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.shell_result_, other->_impl_.shell_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SendResponse::GetMetadata() const {
@@ -596,20 +675,19 @@ void SendResponse::InternalSwap(SendResponse* other) {
       &descriptor_table_shell_2fshell_2eproto_getter, &descriptor_table_shell_2fshell_2eproto_once,
       file_level_metadata_shell_2fshell_2eproto[1]);
 }
-
 // ===================================================================
 
 class SubscribeReceiveRequest::_Internal {
  public:
 };
 
-SubscribeReceiveRequest::SubscribeReceiveRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+SubscribeReceiveRequest::SubscribeReceiveRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.shell.SubscribeReceiveRequest)
 }
 SubscribeReceiveRequest::SubscribeReceiveRequest(const SubscribeReceiveRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  SubscribeReceiveRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.SubscribeReceiveRequest)
 }
@@ -635,38 +713,47 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeReceiveRequest::GetCl
       &descriptor_table_shell_2fshell_2eproto_getter, &descriptor_table_shell_2fshell_2eproto_once,
       file_level_metadata_shell_2fshell_2eproto[2]);
 }
-
 // ===================================================================
 
 class ReceiveResponse::_Internal {
  public:
 };
 
-ReceiveResponse::ReceiveResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ReceiveResponse::ReceiveResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.shell.ReceiveResponse)
 }
 ReceiveResponse::ReceiveResponse(const ReceiveResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ReceiveResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.data_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  data_.InitDefault();
+  _impl_.data_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    data_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.data_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_data().empty()) {
-    data_.Set(from._internal_data(), 
-      GetArenaForAllocation());
+    _this->_impl_.data_.Set(from._internal_data(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.ReceiveResponse)
 }
 
-inline void ReceiveResponse::SharedCtor() {
-data_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  data_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void ReceiveResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.data_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.data_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.data_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ReceiveResponse::~ReceiveResponse() {
@@ -679,39 +766,40 @@ ReceiveResponse::~ReceiveResponse() {
 }
 
 inline void ReceiveResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  data_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.data_.Destroy();
 }
 
 void ReceiveResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ReceiveResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.ReceiveResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty();
+  _impl_.data_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ReceiveResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string data = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_data();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.shell.ReceiveResponse.data"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -736,20 +824,18 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ReceiveResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ReceiveResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.shell.ReceiveResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string data = 1;
   if (!this->_internal_data().empty()) {
+    const std::string& _s = this->_internal_data();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.shell.ReceiveResponse.data");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_data(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.shell.ReceiveResponse.data");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -760,47 +846,42 @@ uint8_t* ReceiveResponse::_InternalSerialize(
   return target;
 }
 
-size_t ReceiveResponse::ByteSizeLong() const {
+::size_t ReceiveResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.shell.ReceiveResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string data = 1;
   if (!this->_internal_data().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_data());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ReceiveResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ReceiveResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ReceiveResponse::GetClassData() const { return &_class_data_; }
 
-void ReceiveResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ReceiveResponse *>(to)->MergeFrom(
-      static_cast<const ReceiveResponse &>(from));
-}
 
-
-void ReceiveResponse::MergeFrom(const ReceiveResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.ReceiveResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ReceiveResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ReceiveResponse*>(&to_msg);
+  auto& from = static_cast<const ReceiveResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.ReceiveResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
+    _this->_internal_set_data(from._internal_data());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ReceiveResponse::CopyFrom(const ReceiveResponse& from) {
@@ -819,10 +900,8 @@ void ReceiveResponse::InternalSwap(ReceiveResponse* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_, lhs_arena,
+                                       &other->_impl_.data_, rhs_arena);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ReceiveResponse::GetMetadata() const {
@@ -830,40 +909,52 @@ void ReceiveResponse::InternalSwap(ReceiveResponse* other) {
       &descriptor_table_shell_2fshell_2eproto_getter, &descriptor_table_shell_2fshell_2eproto_once,
       file_level_metadata_shell_2fshell_2eproto[3]);
 }
-
 // ===================================================================
 
 class ShellResult::_Internal {
  public:
 };
 
-ShellResult::ShellResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ShellResult::ShellResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.shell.ShellResult)
 }
 ShellResult::ShellResult(const ShellResult& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ShellResult* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  result_str_.InitDefault();
+  _impl_.result_str_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    result_str_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(from._internal_result_str(), 
-      GetArenaForAllocation());
+    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
   }
-  result_ = from.result_;
+  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.ShellResult)
 }
 
-inline void ShellResult::SharedCtor() {
-result_str_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  result_str_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-result_ = 0;
+inline void ShellResult::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.result_str_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ShellResult::~ShellResult() {
@@ -876,49 +967,51 @@ ShellResult::~ShellResult() {
 }
 
 inline void ShellResult::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  result_str_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.result_str_.Destroy();
 }
 
 void ShellResult::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ShellResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.ShellResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty();
-  result_ = 0;
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ShellResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.shell.ShellResult.Result result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::shell::ShellResult_Result>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string result_str = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_result_str();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.shell.ShellResult.result_str"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -943,27 +1036,25 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ShellResult::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ShellResult::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.shell.ShellResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.shell.ShellResult.Result result = 1;
   if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_result(), target);
+        1, this->_internal_result(), target);
   }
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
+    const std::string& _s = this->_internal_result_str();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.shell.ShellResult.result_str");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_result_str(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.shell.ShellResult.result_str");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -974,56 +1065,51 @@ uint8_t* ShellResult::_InternalSerialize(
   return target;
 }
 
-size_t ShellResult::ByteSizeLong() const {
+::size_t ShellResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.shell.ShellResult)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_result_str());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_result_str());
   }
 
   // .mavsdk.rpc.shell.ShellResult.Result result = 1;
   if (this->_internal_result() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ShellResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ShellResult::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ShellResult::GetClassData() const { return &_class_data_; }
 
-void ShellResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ShellResult *>(to)->MergeFrom(
-      static_cast<const ShellResult &>(from));
-}
 
-
-void ShellResult::MergeFrom(const ShellResult& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.ShellResult)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ShellResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ShellResult*>(&to_msg);
+  auto& from = static_cast<const ShellResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.ShellResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_result_str().empty()) {
-    _internal_set_result_str(from._internal_result_str());
+    _this->_internal_set_result_str(from._internal_result_str());
   }
   if (from._internal_result() != 0) {
-    _internal_set_result(from._internal_result());
+    _this->_internal_set_result(from._internal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ShellResult::CopyFrom(const ShellResult& from) {
@@ -1042,11 +1128,9 @@ void ShellResult::InternalSwap(ShellResult* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &result_str_, lhs_arena,
-      &other->result_str_, rhs_arena
-  );
-  swap(result_, other->result_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
+                                       &other->_impl_.result_str_, rhs_arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ShellResult::GetMetadata() const {
@@ -1054,7 +1138,6 @@ void ShellResult::InternalSwap(ShellResult* other) {
       &descriptor_table_shell_2fshell_2eproto_getter, &descriptor_table_shell_2fshell_2eproto_once,
       file_level_metadata_shell_2fshell_2eproto[4]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace shell
 }  // namespace rpc
@@ -1081,6 +1164,5 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::shell::ShellResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::shell::ShellResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
-
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"

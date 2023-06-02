@@ -4,551 +4,729 @@
 #include "param_server/param_server.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
 namespace mavsdk {
 namespace rpc {
 namespace param_server {
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveParamIntRequest::RetrieveParamIntRequest(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RetrieveParamIntRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveParamIntRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveParamIntRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveParamIntRequestDefaultTypeInternal() {}
   union {
     RetrieveParamIntRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamIntRequestDefaultTypeInternal _RetrieveParamIntRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamIntRequestDefaultTypeInternal _RetrieveParamIntRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveParamIntResponse::RetrieveParamIntResponse(
-    ::_pbi::ConstantInitialized)
-  : param_server_result_(nullptr)
-  , value_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.param_server_result_)*/nullptr
+  , /*decltype(_impl_.value_)*/ 0
+} {}
 struct RetrieveParamIntResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveParamIntResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveParamIntResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveParamIntResponseDefaultTypeInternal() {}
   union {
     RetrieveParamIntResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamIntResponseDefaultTypeInternal _RetrieveParamIntResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamIntResponseDefaultTypeInternal _RetrieveParamIntResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ProvideParamIntRequest::ProvideParamIntRequest(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , value_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.value_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ProvideParamIntRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ProvideParamIntRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ProvideParamIntRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ProvideParamIntRequestDefaultTypeInternal() {}
   union {
     ProvideParamIntRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamIntRequestDefaultTypeInternal _ProvideParamIntRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamIntRequestDefaultTypeInternal _ProvideParamIntRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ProvideParamIntResponse::ProvideParamIntResponse(
-    ::_pbi::ConstantInitialized)
-  : param_server_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.param_server_result_)*/nullptr} {}
 struct ProvideParamIntResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ProvideParamIntResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ProvideParamIntResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ProvideParamIntResponseDefaultTypeInternal() {}
   union {
     ProvideParamIntResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamIntResponseDefaultTypeInternal _ProvideParamIntResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamIntResponseDefaultTypeInternal _ProvideParamIntResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveParamFloatRequest::RetrieveParamFloatRequest(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RetrieveParamFloatRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveParamFloatRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveParamFloatRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveParamFloatRequestDefaultTypeInternal() {}
   union {
     RetrieveParamFloatRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamFloatRequestDefaultTypeInternal _RetrieveParamFloatRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamFloatRequestDefaultTypeInternal _RetrieveParamFloatRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveParamFloatResponse::RetrieveParamFloatResponse(
-    ::_pbi::ConstantInitialized)
-  : param_server_result_(nullptr)
-  , value_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.param_server_result_)*/nullptr
+  , /*decltype(_impl_.value_)*/ 0
+} {}
 struct RetrieveParamFloatResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveParamFloatResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveParamFloatResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveParamFloatResponseDefaultTypeInternal() {}
   union {
     RetrieveParamFloatResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamFloatResponseDefaultTypeInternal _RetrieveParamFloatResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamFloatResponseDefaultTypeInternal _RetrieveParamFloatResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ProvideParamFloatRequest::ProvideParamFloatRequest(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , value_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.value_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ProvideParamFloatRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ProvideParamFloatRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ProvideParamFloatRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ProvideParamFloatRequestDefaultTypeInternal() {}
   union {
     ProvideParamFloatRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamFloatRequestDefaultTypeInternal _ProvideParamFloatRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamFloatRequestDefaultTypeInternal _ProvideParamFloatRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ProvideParamFloatResponse::ProvideParamFloatResponse(
-    ::_pbi::ConstantInitialized)
-  : param_server_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.param_server_result_)*/nullptr} {}
 struct ProvideParamFloatResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ProvideParamFloatResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ProvideParamFloatResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ProvideParamFloatResponseDefaultTypeInternal() {}
   union {
     ProvideParamFloatResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamFloatResponseDefaultTypeInternal _ProvideParamFloatResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamFloatResponseDefaultTypeInternal _ProvideParamFloatResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveParamCustomRequest::RetrieveParamCustomRequest(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RetrieveParamCustomRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveParamCustomRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveParamCustomRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveParamCustomRequestDefaultTypeInternal() {}
   union {
     RetrieveParamCustomRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamCustomRequestDefaultTypeInternal _RetrieveParamCustomRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamCustomRequestDefaultTypeInternal _RetrieveParamCustomRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveParamCustomResponse::RetrieveParamCustomResponse(
-    ::_pbi::ConstantInitialized)
-  : value_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , param_server_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.value_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.param_server_result_)*/nullptr} {}
 struct RetrieveParamCustomResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveParamCustomResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveParamCustomResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveParamCustomResponseDefaultTypeInternal() {}
   union {
     RetrieveParamCustomResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamCustomResponseDefaultTypeInternal _RetrieveParamCustomResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveParamCustomResponseDefaultTypeInternal _RetrieveParamCustomResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ProvideParamCustomRequest::ProvideParamCustomRequest(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , value_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.value_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ProvideParamCustomRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ProvideParamCustomRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ProvideParamCustomRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ProvideParamCustomRequestDefaultTypeInternal() {}
   union {
     ProvideParamCustomRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamCustomRequestDefaultTypeInternal _ProvideParamCustomRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamCustomRequestDefaultTypeInternal _ProvideParamCustomRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ProvideParamCustomResponse::ProvideParamCustomResponse(
-    ::_pbi::ConstantInitialized)
-  : param_server_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.param_server_result_)*/nullptr} {}
 struct ProvideParamCustomResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ProvideParamCustomResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ProvideParamCustomResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ProvideParamCustomResponseDefaultTypeInternal() {}
   union {
     ProvideParamCustomResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamCustomResponseDefaultTypeInternal _ProvideParamCustomResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProvideParamCustomResponseDefaultTypeInternal _ProvideParamCustomResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveAllParamsRequest::RetrieveAllParamsRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct RetrieveAllParamsRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveAllParamsRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveAllParamsRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveAllParamsRequestDefaultTypeInternal() {}
   union {
     RetrieveAllParamsRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveAllParamsRequestDefaultTypeInternal _RetrieveAllParamsRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveAllParamsRequestDefaultTypeInternal _RetrieveAllParamsRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetrieveAllParamsResponse::RetrieveAllParamsResponse(
-    ::_pbi::ConstantInitialized)
-  : params_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.params_)*/nullptr} {}
 struct RetrieveAllParamsResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetrieveAllParamsResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetrieveAllParamsResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetrieveAllParamsResponseDefaultTypeInternal() {}
   union {
     RetrieveAllParamsResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveAllParamsResponseDefaultTypeInternal _RetrieveAllParamsResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetrieveAllParamsResponseDefaultTypeInternal _RetrieveAllParamsResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR IntParam::IntParam(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , value_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.value_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct IntParamDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR IntParamDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR IntParamDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~IntParamDefaultTypeInternal() {}
   union {
     IntParam _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 IntParamDefaultTypeInternal _IntParam_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 IntParamDefaultTypeInternal _IntParam_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR FloatParam::FloatParam(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , value_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.value_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct FloatParamDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR FloatParamDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR FloatParamDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~FloatParamDefaultTypeInternal() {}
   union {
     FloatParam _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FloatParamDefaultTypeInternal _FloatParam_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FloatParamDefaultTypeInternal _FloatParam_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR CustomParam::CustomParam(
-    ::_pbi::ConstantInitialized)
-  : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , value_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.value_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct CustomParamDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CustomParamDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR CustomParamDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~CustomParamDefaultTypeInternal() {}
   union {
     CustomParam _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CustomParamDefaultTypeInternal _CustomParam_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CustomParamDefaultTypeInternal _CustomParam_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR AllParams::AllParams(
-    ::_pbi::ConstantInitialized)
-  : int_params_()
-  , float_params_()
-  , custom_params_(){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.int_params_)*/{}
+  , /*decltype(_impl_.float_params_)*/{}
+  , /*decltype(_impl_.custom_params_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct AllParamsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AllParamsDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR AllParamsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~AllParamsDefaultTypeInternal() {}
   union {
     AllParams _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AllParamsDefaultTypeInternal _AllParams_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AllParamsDefaultTypeInternal _AllParams_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ParamServerResult::ParamServerResult(
-    ::_pbi::ConstantInitialized)
-  : result_str_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , result_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.result_str_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.result_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ParamServerResultDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ParamServerResultDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ParamServerResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ParamServerResultDefaultTypeInternal() {}
   union {
     ParamServerResult _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ParamServerResultDefaultTypeInternal _ParamServerResult_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ParamServerResultDefaultTypeInternal _ParamServerResult_default_instance_;
 }  // namespace param_server
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[19];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_param_5fserver_2fparam_5fserver_2eproto[1];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_param_5fserver_2fparam_5fserver_2eproto = nullptr;
-
-const uint32_t TableStruct_param_5fserver_2fparam_5fserver_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntRequest, name_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntResponse, param_server_result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntResponse, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntRequest, name_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntRequest, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntResponse, param_server_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatRequest, name_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatResponse, param_server_result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatResponse, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatRequest, name_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatRequest, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatResponse, param_server_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomRequest, name_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomResponse, param_server_result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomResponse, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomRequest, name_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomRequest, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomResponse, param_server_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveAllParamsRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveAllParamsResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveAllParamsResponse, params_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::IntParam, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::IntParam, name_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::IntParam, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::FloatParam, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::FloatParam, name_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::FloatParam, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::CustomParam, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::CustomParam, name_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::CustomParam, value_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, int_params_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, float_params_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, custom_params_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ParamServerResult, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ParamServerResult, result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ParamServerResult, result_str_),
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_param_5fserver_2fparam_5fserver_2eproto = nullptr;
+const ::uint32_t TableStruct_param_5fserver_2fparam_5fserver_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntRequest, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntResponse, _impl_.param_server_result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamIntResponse, _impl_.value_),
+    0,
+    ~0u,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntRequest, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntRequest, _impl_.value_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamIntResponse, _impl_.param_server_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatRequest, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatResponse, _impl_.param_server_result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamFloatResponse, _impl_.value_),
+    0,
+    ~0u,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatRequest, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatRequest, _impl_.value_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamFloatResponse, _impl_.param_server_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomRequest, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomResponse, _impl_.param_server_result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveParamCustomResponse, _impl_.value_),
+    0,
+    ~0u,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomRequest, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomRequest, _impl_.value_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ProvideParamCustomResponse, _impl_.param_server_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveAllParamsRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveAllParamsResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveAllParamsResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::RetrieveAllParamsResponse, _impl_.params_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::IntParam, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::IntParam, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::IntParam, _impl_.value_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::FloatParam, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::FloatParam, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::FloatParam, _impl_.value_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::CustomParam, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::CustomParam, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::CustomParam, _impl_.value_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, _impl_.int_params_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, _impl_.float_params_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::AllParams, _impl_.custom_params_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ParamServerResult, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ParamServerResult, _impl_.result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::param_server::ParamServerResult, _impl_.result_str_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamIntRequest)},
-  { 7, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamIntResponse)},
-  { 15, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamIntRequest)},
-  { 23, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamIntResponse)},
-  { 30, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamFloatRequest)},
-  { 37, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamFloatResponse)},
-  { 45, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamFloatRequest)},
-  { 53, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamFloatResponse)},
-  { 60, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamCustomRequest)},
-  { 67, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamCustomResponse)},
-  { 75, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamCustomRequest)},
-  { 83, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamCustomResponse)},
-  { 90, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveAllParamsRequest)},
-  { 96, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveAllParamsResponse)},
-  { 103, -1, -1, sizeof(::mavsdk::rpc::param_server::IntParam)},
-  { 111, -1, -1, sizeof(::mavsdk::rpc::param_server::FloatParam)},
-  { 119, -1, -1, sizeof(::mavsdk::rpc::param_server::CustomParam)},
-  { 127, -1, -1, sizeof(::mavsdk::rpc::param_server::AllParams)},
-  { 136, -1, -1, sizeof(::mavsdk::rpc::param_server::ParamServerResult)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamIntRequest)},
+        { 9, 19, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamIntResponse)},
+        { 21, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamIntRequest)},
+        { 31, 40, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamIntResponse)},
+        { 41, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamFloatRequest)},
+        { 50, 60, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamFloatResponse)},
+        { 62, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamFloatRequest)},
+        { 72, 81, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamFloatResponse)},
+        { 82, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamCustomRequest)},
+        { 91, 101, -1, sizeof(::mavsdk::rpc::param_server::RetrieveParamCustomResponse)},
+        { 103, -1, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamCustomRequest)},
+        { 113, 122, -1, sizeof(::mavsdk::rpc::param_server::ProvideParamCustomResponse)},
+        { 123, -1, -1, sizeof(::mavsdk::rpc::param_server::RetrieveAllParamsRequest)},
+        { 131, 140, -1, sizeof(::mavsdk::rpc::param_server::RetrieveAllParamsResponse)},
+        { 141, -1, -1, sizeof(::mavsdk::rpc::param_server::IntParam)},
+        { 151, -1, -1, sizeof(::mavsdk::rpc::param_server::FloatParam)},
+        { 161, -1, -1, sizeof(::mavsdk::rpc::param_server::CustomParam)},
+        { 171, -1, -1, sizeof(::mavsdk::rpc::param_server::AllParams)},
+        { 182, -1, -1, sizeof(::mavsdk::rpc::param_server::ParamServerResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::mavsdk::rpc::param_server::_RetrieveParamIntRequest_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_RetrieveParamIntResponse_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_ProvideParamIntRequest_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_ProvideParamIntResponse_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_RetrieveParamFloatRequest_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_RetrieveParamFloatResponse_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_ProvideParamFloatRequest_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_ProvideParamFloatResponse_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_RetrieveParamCustomRequest_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_RetrieveParamCustomResponse_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_ProvideParamCustomRequest_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_ProvideParamCustomResponse_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_RetrieveAllParamsRequest_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_RetrieveAllParamsResponse_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_IntParam_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_FloatParam_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_CustomParam_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_AllParams_default_instance_._instance,
-  &::mavsdk::rpc::param_server::_ParamServerResult_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveParamIntRequest_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveParamIntResponse_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_ProvideParamIntRequest_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_ProvideParamIntResponse_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveParamFloatRequest_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveParamFloatResponse_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_ProvideParamFloatRequest_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_ProvideParamFloatResponse_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveParamCustomRequest_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveParamCustomResponse_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_ProvideParamCustomRequest_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_ProvideParamCustomResponse_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveAllParamsRequest_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_RetrieveAllParamsResponse_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_IntParam_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_FloatParam_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_CustomParam_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_AllParams_default_instance_._instance,
+    &::mavsdk::rpc::param_server::_ParamServerResult_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_param_5fserver_2fparam_5fserver_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\037param_server/param_server.proto\022\027mavsd"
-  "k.rpc.param_server\032\024mavsdk_options.proto"
-  "\"\'\n\027RetrieveParamIntRequest\022\014\n\004name\030\001 \001("
-  "\t\"r\n\030RetrieveParamIntResponse\022G\n\023param_s"
-  "erver_result\030\001 \001(\0132*.mavsdk.rpc.param_se"
-  "rver.ParamServerResult\022\r\n\005value\030\002 \001(\005\"5\n"
-  "\026ProvideParamIntRequest\022\014\n\004name\030\001 \001(\t\022\r\n"
-  "\005value\030\002 \001(\005\"b\n\027ProvideParamIntResponse\022"
-  "G\n\023param_server_result\030\001 \001(\0132*.mavsdk.rp"
-  "c.param_server.ParamServerResult\")\n\031Retr"
-  "ieveParamFloatRequest\022\014\n\004name\030\001 \001(\t\"t\n\032R"
-  "etrieveParamFloatResponse\022G\n\023param_serve"
-  "r_result\030\001 \001(\0132*.mavsdk.rpc.param_server"
-  ".ParamServerResult\022\r\n\005value\030\002 \001(\002\"7\n\030Pro"
-  "videParamFloatRequest\022\014\n\004name\030\001 \001(\t\022\r\n\005v"
-  "alue\030\002 \001(\002\"d\n\031ProvideParamFloatResponse\022"
-  "G\n\023param_server_result\030\001 \001(\0132*.mavsdk.rp"
-  "c.param_server.ParamServerResult\"*\n\032Retr"
-  "ieveParamCustomRequest\022\014\n\004name\030\001 \001(\t\"u\n\033"
-  "RetrieveParamCustomResponse\022G\n\023param_ser"
-  "ver_result\030\001 \001(\0132*.mavsdk.rpc.param_serv"
-  "er.ParamServerResult\022\r\n\005value\030\002 \001(\t\"8\n\031P"
-  "rovideParamCustomRequest\022\014\n\004name\030\001 \001(\t\022\r"
-  "\n\005value\030\002 \001(\t\"e\n\032ProvideParamCustomRespo"
-  "nse\022G\n\023param_server_result\030\001 \001(\0132*.mavsd"
-  "k.rpc.param_server.ParamServerResult\"\032\n\030"
-  "RetrieveAllParamsRequest\"O\n\031RetrieveAllP"
-  "aramsResponse\0222\n\006params\030\001 \001(\0132\".mavsdk.r"
-  "pc.param_server.AllParams\"\'\n\010IntParam\022\014\n"
-  "\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\005\")\n\nFloatParam"
-  "\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\002\"*\n\013CustomP"
-  "aram\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\272\001\n\tAl"
-  "lParams\0225\n\nint_params\030\001 \003(\0132!.mavsdk.rpc"
-  ".param_server.IntParam\0229\n\014float_params\030\002"
-  " \003(\0132#.mavsdk.rpc.param_server.FloatPara"
-  "m\022;\n\rcustom_params\030\003 \003(\0132$.mavsdk.rpc.pa"
-  "ram_server.CustomParam\"\241\002\n\021ParamServerRe"
-  "sult\022A\n\006result\030\001 \001(\01621.mavsdk.rpc.param_"
-  "server.ParamServerResult.Result\022\022\n\nresul"
-  "t_str\030\002 \001(\t\"\264\001\n\006Result\022\022\n\016RESULT_UNKNOWN"
-  "\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NOT_FOU"
-  "ND\020\002\022\025\n\021RESULT_WRONG_TYPE\020\003\022\036\n\032RESULT_PA"
-  "RAM_NAME_TOO_LONG\020\004\022\024\n\020RESULT_NO_SYSTEM\020"
-  "\005\022\037\n\033RESULT_PARAM_VALUE_TOO_LONG\020\0062\252\007\n\022P"
-  "aramServerService\022}\n\020RetrieveParamInt\0220."
-  "mavsdk.rpc.param_server.RetrieveParamInt"
-  "Request\0321.mavsdk.rpc.param_server.Retrie"
-  "veParamIntResponse\"\004\200\265\030\001\022z\n\017ProvideParam"
-  "Int\022/.mavsdk.rpc.param_server.ProvidePar"
-  "amIntRequest\0320.mavsdk.rpc.param_server.P"
-  "rovideParamIntResponse\"\004\200\265\030\001\022\203\001\n\022Retriev"
-  "eParamFloat\0222.mavsdk.rpc.param_server.Re"
-  "trieveParamFloatRequest\0323.mavsdk.rpc.par"
-  "am_server.RetrieveParamFloatResponse\"\004\200\265"
-  "\030\001\022\200\001\n\021ProvideParamFloat\0221.mavsdk.rpc.pa"
-  "ram_server.ProvideParamFloatRequest\0322.ma"
-  "vsdk.rpc.param_server.ProvideParamFloatR"
-  "esponse\"\004\200\265\030\001\022\206\001\n\023RetrieveParamCustom\0223."
-  "mavsdk.rpc.param_server.RetrieveParamCus"
-  "tomRequest\0324.mavsdk.rpc.param_server.Ret"
-  "rieveParamCustomResponse\"\004\200\265\030\001\022\203\001\n\022Provi"
-  "deParamCustom\0222.mavsdk.rpc.param_server."
-  "ProvideParamCustomRequest\0323.mavsdk.rpc.p"
-  "aram_server.ProvideParamCustomResponse\"\004"
-  "\200\265\030\001\022\200\001\n\021RetrieveAllParams\0221.mavsdk.rpc."
-  "param_server.RetrieveAllParamsRequest\0322."
-  "mavsdk.rpc.param_server.RetrieveAllParam"
-  "sResponse\"\004\200\265\030\001B*\n\026io.mavsdk.param_serve"
-  "rB\020ParamServerProtob\006proto3"
-  ;
-static const ::_pbi::DescriptorTable* const descriptor_table_param_5fserver_2fparam_5fserver_2eproto_deps[1] = {
-  &::descriptor_table_mavsdk_5foptions_2eproto,
+const char descriptor_table_protodef_param_5fserver_2fparam_5fserver_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\037param_server/param_server.proto\022\027mavsd"
+    "k.rpc.param_server\032\024mavsdk_options.proto"
+    "\"\'\n\027RetrieveParamIntRequest\022\014\n\004name\030\001 \001("
+    "\t\"r\n\030RetrieveParamIntResponse\022G\n\023param_s"
+    "erver_result\030\001 \001(\0132*.mavsdk.rpc.param_se"
+    "rver.ParamServerResult\022\r\n\005value\030\002 \001(\005\"5\n"
+    "\026ProvideParamIntRequest\022\014\n\004name\030\001 \001(\t\022\r\n"
+    "\005value\030\002 \001(\005\"b\n\027ProvideParamIntResponse\022"
+    "G\n\023param_server_result\030\001 \001(\0132*.mavsdk.rp"
+    "c.param_server.ParamServerResult\")\n\031Retr"
+    "ieveParamFloatRequest\022\014\n\004name\030\001 \001(\t\"t\n\032R"
+    "etrieveParamFloatResponse\022G\n\023param_serve"
+    "r_result\030\001 \001(\0132*.mavsdk.rpc.param_server"
+    ".ParamServerResult\022\r\n\005value\030\002 \001(\002\"7\n\030Pro"
+    "videParamFloatRequest\022\014\n\004name\030\001 \001(\t\022\r\n\005v"
+    "alue\030\002 \001(\002\"d\n\031ProvideParamFloatResponse\022"
+    "G\n\023param_server_result\030\001 \001(\0132*.mavsdk.rp"
+    "c.param_server.ParamServerResult\"*\n\032Retr"
+    "ieveParamCustomRequest\022\014\n\004name\030\001 \001(\t\"u\n\033"
+    "RetrieveParamCustomResponse\022G\n\023param_ser"
+    "ver_result\030\001 \001(\0132*.mavsdk.rpc.param_serv"
+    "er.ParamServerResult\022\r\n\005value\030\002 \001(\t\"8\n\031P"
+    "rovideParamCustomRequest\022\014\n\004name\030\001 \001(\t\022\r"
+    "\n\005value\030\002 \001(\t\"e\n\032ProvideParamCustomRespo"
+    "nse\022G\n\023param_server_result\030\001 \001(\0132*.mavsd"
+    "k.rpc.param_server.ParamServerResult\"\032\n\030"
+    "RetrieveAllParamsRequest\"O\n\031RetrieveAllP"
+    "aramsResponse\0222\n\006params\030\001 \001(\0132\".mavsdk.r"
+    "pc.param_server.AllParams\"\'\n\010IntParam\022\014\n"
+    "\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\005\")\n\nFloatParam"
+    "\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\002\"*\n\013CustomP"
+    "aram\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\272\001\n\tAl"
+    "lParams\0225\n\nint_params\030\001 \003(\0132!.mavsdk.rpc"
+    ".param_server.IntParam\0229\n\014float_params\030\002"
+    " \003(\0132#.mavsdk.rpc.param_server.FloatPara"
+    "m\022;\n\rcustom_params\030\003 \003(\0132$.mavsdk.rpc.pa"
+    "ram_server.CustomParam\"\241\002\n\021ParamServerRe"
+    "sult\022A\n\006result\030\001 \001(\01621.mavsdk.rpc.param_"
+    "server.ParamServerResult.Result\022\022\n\nresul"
+    "t_str\030\002 \001(\t\"\264\001\n\006Result\022\022\n\016RESULT_UNKNOWN"
+    "\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NOT_FOU"
+    "ND\020\002\022\025\n\021RESULT_WRONG_TYPE\020\003\022\036\n\032RESULT_PA"
+    "RAM_NAME_TOO_LONG\020\004\022\024\n\020RESULT_NO_SYSTEM\020"
+    "\005\022\037\n\033RESULT_PARAM_VALUE_TOO_LONG\020\0062\252\007\n\022P"
+    "aramServerService\022}\n\020RetrieveParamInt\0220."
+    "mavsdk.rpc.param_server.RetrieveParamInt"
+    "Request\0321.mavsdk.rpc.param_server.Retrie"
+    "veParamIntResponse\"\004\200\265\030\001\022z\n\017ProvideParam"
+    "Int\022/.mavsdk.rpc.param_server.ProvidePar"
+    "amIntRequest\0320.mavsdk.rpc.param_server.P"
+    "rovideParamIntResponse\"\004\200\265\030\001\022\203\001\n\022Retriev"
+    "eParamFloat\0222.mavsdk.rpc.param_server.Re"
+    "trieveParamFloatRequest\0323.mavsdk.rpc.par"
+    "am_server.RetrieveParamFloatResponse\"\004\200\265"
+    "\030\001\022\200\001\n\021ProvideParamFloat\0221.mavsdk.rpc.pa"
+    "ram_server.ProvideParamFloatRequest\0322.ma"
+    "vsdk.rpc.param_server.ProvideParamFloatR"
+    "esponse\"\004\200\265\030\001\022\206\001\n\023RetrieveParamCustom\0223."
+    "mavsdk.rpc.param_server.RetrieveParamCus"
+    "tomRequest\0324.mavsdk.rpc.param_server.Ret"
+    "rieveParamCustomResponse\"\004\200\265\030\001\022\203\001\n\022Provi"
+    "deParamCustom\0222.mavsdk.rpc.param_server."
+    "ProvideParamCustomRequest\0323.mavsdk.rpc.p"
+    "aram_server.ProvideParamCustomResponse\"\004"
+    "\200\265\030\001\022\200\001\n\021RetrieveAllParams\0221.mavsdk.rpc."
+    "param_server.RetrieveAllParamsRequest\0322."
+    "mavsdk.rpc.param_server.RetrieveAllParam"
+    "sResponse\"\004\200\265\030\001B*\n\026io.mavsdk.param_serve"
+    "rB\020ParamServerProtob\006proto3"
 };
-static ::_pbi::once_flag descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once;
+static const ::_pbi::DescriptorTable* const descriptor_table_param_5fserver_2fparam_5fserver_2eproto_deps[1] =
+    {
+        &::descriptor_table_mavsdk_5foptions_2eproto,
+};
+static ::absl::once_flag descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_param_5fserver_2fparam_5fserver_2eproto = {
-    false, false, 2747, descriptor_table_protodef_param_5fserver_2fparam_5fserver_2eproto,
+    false,
+    false,
+    2747,
+    descriptor_table_protodef_param_5fserver_2fparam_5fserver_2eproto,
     "param_server/param_server.proto",
-    &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once, descriptor_table_param_5fserver_2fparam_5fserver_2eproto_deps, 1, 19,
-    schemas, file_default_instances, TableStruct_param_5fserver_2fparam_5fserver_2eproto::offsets,
-    file_level_metadata_param_5fserver_2fparam_5fserver_2eproto, file_level_enum_descriptors_param_5fserver_2fparam_5fserver_2eproto,
+    &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
+    descriptor_table_param_5fserver_2fparam_5fserver_2eproto_deps,
+    1,
+    19,
+    schemas,
+    file_default_instances,
+    TableStruct_param_5fserver_2fparam_5fserver_2eproto::offsets,
+    file_level_metadata_param_5fserver_2fparam_5fserver_2eproto,
+    file_level_enum_descriptors_param_5fserver_2fparam_5fserver_2eproto,
     file_level_service_descriptors_param_5fserver_2fparam_5fserver_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter() {
   return &descriptor_table_param_5fserver_2fparam_5fserver_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_param_5fserver_2fparam_5fserver_2eproto(&descriptor_table_param_5fserver_2fparam_5fserver_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_param_5fserver_2fparam_5fserver_2eproto(&descriptor_table_param_5fserver_2fparam_5fserver_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace param_server {
@@ -570,8 +748,9 @@ bool ParamServerResult_Result_IsValid(int value) {
       return false;
   }
 }
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr ParamServerResult_Result ParamServerResult::RESULT_UNKNOWN;
 constexpr ParamServerResult_Result ParamServerResult::RESULT_SUCCESS;
 constexpr ParamServerResult_Result ParamServerResult::RESULT_NOT_FOUND;
@@ -582,39 +761,50 @@ constexpr ParamServerResult_Result ParamServerResult::RESULT_PARAM_VALUE_TOO_LON
 constexpr ParamServerResult_Result ParamServerResult::Result_MIN;
 constexpr ParamServerResult_Result ParamServerResult::Result_MAX;
 constexpr int ParamServerResult::Result_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 // ===================================================================
 
 class RetrieveParamIntRequest::_Internal {
  public:
 };
 
-RetrieveParamIntRequest::RetrieveParamIntRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetrieveParamIntRequest::RetrieveParamIntRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveParamIntRequest)
 }
 RetrieveParamIntRequest::RetrieveParamIntRequest(const RetrieveParamIntRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetrieveParamIntRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveParamIntRequest)
 }
 
-inline void RetrieveParamIntRequest::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void RetrieveParamIntRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RetrieveParamIntRequest::~RetrieveParamIntRequest() {
@@ -627,39 +817,40 @@ RetrieveParamIntRequest::~RetrieveParamIntRequest() {
 }
 
 inline void RetrieveParamIntRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
 }
 
 void RetrieveParamIntRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetrieveParamIntRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.RetrieveParamIntRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
+  _impl_.name_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetrieveParamIntRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.RetrieveParamIntRequest.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -684,20 +875,18 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetrieveParamIntRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetrieveParamIntRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.RetrieveParamIntRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.RetrieveParamIntRequest.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.RetrieveParamIntRequest.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -708,47 +897,42 @@ uint8_t* RetrieveParamIntRequest::_InternalSerialize(
   return target;
 }
 
-size_t RetrieveParamIntRequest::ByteSizeLong() const {
+::size_t RetrieveParamIntRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.RetrieveParamIntRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetrieveParamIntRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetrieveParamIntRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveParamIntRequest::GetClassData() const { return &_class_data_; }
 
-void RetrieveParamIntRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetrieveParamIntRequest *>(to)->MergeFrom(
-      static_cast<const RetrieveParamIntRequest &>(from));
-}
 
-
-void RetrieveParamIntRequest::MergeFrom(const RetrieveParamIntRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamIntRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetrieveParamIntRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetrieveParamIntRequest*>(&to_msg);
+  auto& from = static_cast<const RetrieveParamIntRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamIntRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetrieveParamIntRequest::CopyFrom(const RetrieveParamIntRequest& from) {
@@ -767,10 +951,8 @@ void RetrieveParamIntRequest::InternalSwap(RetrieveParamIntRequest* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetrieveParamIntRequest::GetMetadata() const {
@@ -778,41 +960,55 @@ void RetrieveParamIntRequest::InternalSwap(RetrieveParamIntRequest* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[0]);
 }
-
 // ===================================================================
 
 class RetrieveParamIntResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RetrieveParamIntResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RetrieveParamIntResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result(const RetrieveParamIntResponse* msg);
+  static void set_has_param_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::param_server::ParamServerResult&
 RetrieveParamIntResponse::_Internal::param_server_result(const RetrieveParamIntResponse* msg) {
-  return *msg->param_server_result_;
+  return *msg->_impl_.param_server_result_;
 }
-RetrieveParamIntResponse::RetrieveParamIntResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetrieveParamIntResponse::RetrieveParamIntResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveParamIntResponse)
 }
 RetrieveParamIntResponse::RetrieveParamIntResponse(const RetrieveParamIntResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetrieveParamIntResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}
+    , decltype(_impl_.value_) {}
+  };
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_param_server_result()) {
-    param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from.param_server_result_);
-  } else {
-    param_server_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from._impl_.param_server_result_);
   }
-  value_ = from.value_;
+  _this->_impl_.value_ = from._impl_.value_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveParamIntResponse)
 }
 
-inline void RetrieveParamIntResponse::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&param_server_result_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&value_) -
-    reinterpret_cast<char*>(&param_server_result_)) + sizeof(value_));
+inline void RetrieveParamIntResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}
+    , decltype(_impl_.value_) { 0 }
+
+  };
 }
 
 RetrieveParamIntResponse::~RetrieveParamIntResponse() {
@@ -825,49 +1021,54 @@ RetrieveParamIntResponse::~RetrieveParamIntResponse() {
 }
 
 inline void RetrieveParamIntResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete param_server_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.param_server_result_;
 }
 
 void RetrieveParamIntResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetrieveParamIntResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.RetrieveParamIntResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
-    delete param_server_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.param_server_result_ != nullptr);
+    _impl_.param_server_result_->Clear();
   }
-  param_server_result_ = nullptr;
-  value_ = 0;
+  _impl_.value_ = 0;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetrieveParamIntResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_param_server_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -885,6 +1086,7 @@ const char* RetrieveParamIntResponse::_InternalParse(const char* ptr, ::_pbi::Pa
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -892,14 +1094,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetrieveParamIntResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetrieveParamIntResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.RetrieveParamIntResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::param_server_result(this),
         _Internal::param_server_result(this).GetCachedSize(), target, stream);
@@ -908,7 +1111,8 @@ uint8_t* RetrieveParamIntResponse::_InternalSerialize(
   // int32 value = 2;
   if (this->_internal_value() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_value(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        2, this->_internal_value(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -919,55 +1123,54 @@ uint8_t* RetrieveParamIntResponse::_InternalSerialize(
   return target;
 }
 
-size_t RetrieveParamIntResponse::ByteSizeLong() const {
+::size_t RetrieveParamIntResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.RetrieveParamIntResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *param_server_result_);
+        *_impl_.param_server_result_);
   }
 
   // int32 value = 2;
   if (this->_internal_value() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_value());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_value());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetrieveParamIntResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetrieveParamIntResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveParamIntResponse::GetClassData() const { return &_class_data_; }
 
-void RetrieveParamIntResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetrieveParamIntResponse *>(to)->MergeFrom(
-      static_cast<const RetrieveParamIntResponse &>(from));
-}
 
-
-void RetrieveParamIntResponse::MergeFrom(const RetrieveParamIntResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamIntResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetrieveParamIntResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetrieveParamIntResponse*>(&to_msg);
+  auto& from = static_cast<const RetrieveParamIntResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamIntResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_param_server_result()) {
-    _internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(from._internal_param_server_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(
+        from._internal_param_server_result());
   }
   if (from._internal_value() != 0) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetrieveParamIntResponse::CopyFrom(const RetrieveParamIntResponse& from) {
@@ -984,12 +1187,13 @@ bool RetrieveParamIntResponse::IsInitialized() const {
 void RetrieveParamIntResponse::InternalSwap(RetrieveParamIntResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RetrieveParamIntResponse, value_)
-      + sizeof(RetrieveParamIntResponse::value_)
-      - PROTOBUF_FIELD_OFFSET(RetrieveParamIntResponse, param_server_result_)>(
-          reinterpret_cast<char*>(&param_server_result_),
-          reinterpret_cast<char*>(&other->param_server_result_));
+      PROTOBUF_FIELD_OFFSET(RetrieveParamIntResponse, _impl_.value_)
+      + sizeof(RetrieveParamIntResponse::_impl_.value_)
+      - PROTOBUF_FIELD_OFFSET(RetrieveParamIntResponse, _impl_.param_server_result_)>(
+          reinterpret_cast<char*>(&_impl_.param_server_result_),
+          reinterpret_cast<char*>(&other->_impl_.param_server_result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetrieveParamIntResponse::GetMetadata() const {
@@ -997,40 +1201,52 @@ void RetrieveParamIntResponse::InternalSwap(RetrieveParamIntResponse* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[1]);
 }
-
 // ===================================================================
 
 class ProvideParamIntRequest::_Internal {
  public:
 };
 
-ProvideParamIntRequest::ProvideParamIntRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ProvideParamIntRequest::ProvideParamIntRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.ProvideParamIntRequest)
 }
 ProvideParamIntRequest::ProvideParamIntRequest(const ProvideParamIntRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ProvideParamIntRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
-  value_ = from.value_;
+  _this->_impl_.value_ = from._impl_.value_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.ProvideParamIntRequest)
 }
 
-inline void ProvideParamIntRequest::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-value_ = 0;
+inline void ProvideParamIntRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ProvideParamIntRequest::~ProvideParamIntRequest() {
@@ -1043,48 +1259,50 @@ ProvideParamIntRequest::~ProvideParamIntRequest() {
 }
 
 inline void ProvideParamIntRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
 }
 
 void ProvideParamIntRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ProvideParamIntRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.ProvideParamIntRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
-  value_ = 0;
+  _impl_.name_.ClearToEmpty();
+  _impl_.value_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ProvideParamIntRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.ProvideParamIntRequest.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1109,26 +1327,25 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ProvideParamIntRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ProvideParamIntRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.ProvideParamIntRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.ProvideParamIntRequest.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.ProvideParamIntRequest.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // int32 value = 2;
   if (this->_internal_value() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_value(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        2, this->_internal_value(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1139,55 +1356,51 @@ uint8_t* ProvideParamIntRequest::_InternalSerialize(
   return target;
 }
 
-size_t ProvideParamIntRequest::ByteSizeLong() const {
+::size_t ProvideParamIntRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.ProvideParamIntRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // int32 value = 2;
   if (this->_internal_value() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_value());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_value());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProvideParamIntRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ProvideParamIntRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProvideParamIntRequest::GetClassData() const { return &_class_data_; }
 
-void ProvideParamIntRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ProvideParamIntRequest *>(to)->MergeFrom(
-      static_cast<const ProvideParamIntRequest &>(from));
-}
 
-
-void ProvideParamIntRequest::MergeFrom(const ProvideParamIntRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamIntRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ProvideParamIntRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ProvideParamIntRequest*>(&to_msg);
+  auto& from = static_cast<const ProvideParamIntRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamIntRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
   if (from._internal_value() != 0) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ProvideParamIntRequest::CopyFrom(const ProvideParamIntRequest& from) {
@@ -1206,11 +1419,10 @@ void ProvideParamIntRequest::InternalSwap(ProvideParamIntRequest* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
-  swap(value_, other->value_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
+
+  swap(_impl_.value_, other->_impl_.value_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProvideParamIntRequest::GetMetadata() const {
@@ -1218,37 +1430,50 @@ void ProvideParamIntRequest::InternalSwap(ProvideParamIntRequest* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[2]);
 }
-
 // ===================================================================
 
 class ProvideParamIntResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<ProvideParamIntResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(ProvideParamIntResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result(const ProvideParamIntResponse* msg);
+  static void set_has_param_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::param_server::ParamServerResult&
 ProvideParamIntResponse::_Internal::param_server_result(const ProvideParamIntResponse* msg) {
-  return *msg->param_server_result_;
+  return *msg->_impl_.param_server_result_;
 }
-ProvideParamIntResponse::ProvideParamIntResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ProvideParamIntResponse::ProvideParamIntResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.ProvideParamIntResponse)
 }
 ProvideParamIntResponse::ProvideParamIntResponse(const ProvideParamIntResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ProvideParamIntResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_param_server_result()) {
-    param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from.param_server_result_);
-  } else {
-    param_server_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from._impl_.param_server_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.ProvideParamIntResponse)
 }
 
-inline void ProvideParamIntResponse::SharedCtor() {
-param_server_result_ = nullptr;
+inline void ProvideParamIntResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}
+  };
 }
 
 ProvideParamIntResponse::~ProvideParamIntResponse() {
@@ -1261,40 +1486,44 @@ ProvideParamIntResponse::~ProvideParamIntResponse() {
 }
 
 inline void ProvideParamIntResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete param_server_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.param_server_result_;
 }
 
 void ProvideParamIntResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ProvideParamIntResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.ProvideParamIntResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
-    delete param_server_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.param_server_result_ != nullptr);
+    _impl_.param_server_result_->Clear();
   }
-  param_server_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ProvideParamIntResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_param_server_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1312,6 +1541,7 @@ const char* ProvideParamIntResponse::_InternalParse(const char* ptr, ::_pbi::Par
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1319,14 +1549,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ProvideParamIntResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ProvideParamIntResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.ProvideParamIntResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::param_server_result(this),
         _Internal::param_server_result(this).GetCachedSize(), target, stream);
@@ -1340,47 +1571,45 @@ uint8_t* ProvideParamIntResponse::_InternalSerialize(
   return target;
 }
 
-size_t ProvideParamIntResponse::ByteSizeLong() const {
+::size_t ProvideParamIntResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.ProvideParamIntResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *param_server_result_);
+        *_impl_.param_server_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProvideParamIntResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ProvideParamIntResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProvideParamIntResponse::GetClassData() const { return &_class_data_; }
 
-void ProvideParamIntResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ProvideParamIntResponse *>(to)->MergeFrom(
-      static_cast<const ProvideParamIntResponse &>(from));
-}
 
-
-void ProvideParamIntResponse::MergeFrom(const ProvideParamIntResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamIntResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ProvideParamIntResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ProvideParamIntResponse*>(&to_msg);
+  auto& from = static_cast<const ProvideParamIntResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamIntResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_param_server_result()) {
-    _internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(from._internal_param_server_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(
+        from._internal_param_server_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ProvideParamIntResponse::CopyFrom(const ProvideParamIntResponse& from) {
@@ -1397,7 +1626,8 @@ bool ProvideParamIntResponse::IsInitialized() const {
 void ProvideParamIntResponse::InternalSwap(ProvideParamIntResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(param_server_result_, other->param_server_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.param_server_result_, other->_impl_.param_server_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProvideParamIntResponse::GetMetadata() const {
@@ -1405,38 +1635,47 @@ void ProvideParamIntResponse::InternalSwap(ProvideParamIntResponse* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[3]);
 }
-
 // ===================================================================
 
 class RetrieveParamFloatRequest::_Internal {
  public:
 };
 
-RetrieveParamFloatRequest::RetrieveParamFloatRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetrieveParamFloatRequest::RetrieveParamFloatRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveParamFloatRequest)
 }
 RetrieveParamFloatRequest::RetrieveParamFloatRequest(const RetrieveParamFloatRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetrieveParamFloatRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveParamFloatRequest)
 }
 
-inline void RetrieveParamFloatRequest::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void RetrieveParamFloatRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RetrieveParamFloatRequest::~RetrieveParamFloatRequest() {
@@ -1449,39 +1688,40 @@ RetrieveParamFloatRequest::~RetrieveParamFloatRequest() {
 }
 
 inline void RetrieveParamFloatRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
 }
 
 void RetrieveParamFloatRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetrieveParamFloatRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.RetrieveParamFloatRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
+  _impl_.name_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetrieveParamFloatRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.RetrieveParamFloatRequest.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1506,20 +1746,18 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetrieveParamFloatRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetrieveParamFloatRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.RetrieveParamFloatRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.RetrieveParamFloatRequest.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.RetrieveParamFloatRequest.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1530,47 +1768,42 @@ uint8_t* RetrieveParamFloatRequest::_InternalSerialize(
   return target;
 }
 
-size_t RetrieveParamFloatRequest::ByteSizeLong() const {
+::size_t RetrieveParamFloatRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.RetrieveParamFloatRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetrieveParamFloatRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetrieveParamFloatRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveParamFloatRequest::GetClassData() const { return &_class_data_; }
 
-void RetrieveParamFloatRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetrieveParamFloatRequest *>(to)->MergeFrom(
-      static_cast<const RetrieveParamFloatRequest &>(from));
-}
 
-
-void RetrieveParamFloatRequest::MergeFrom(const RetrieveParamFloatRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamFloatRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetrieveParamFloatRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetrieveParamFloatRequest*>(&to_msg);
+  auto& from = static_cast<const RetrieveParamFloatRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamFloatRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetrieveParamFloatRequest::CopyFrom(const RetrieveParamFloatRequest& from) {
@@ -1589,10 +1822,8 @@ void RetrieveParamFloatRequest::InternalSwap(RetrieveParamFloatRequest* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetrieveParamFloatRequest::GetMetadata() const {
@@ -1600,41 +1831,55 @@ void RetrieveParamFloatRequest::InternalSwap(RetrieveParamFloatRequest* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[4]);
 }
-
 // ===================================================================
 
 class RetrieveParamFloatResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RetrieveParamFloatResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RetrieveParamFloatResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result(const RetrieveParamFloatResponse* msg);
+  static void set_has_param_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::param_server::ParamServerResult&
 RetrieveParamFloatResponse::_Internal::param_server_result(const RetrieveParamFloatResponse* msg) {
-  return *msg->param_server_result_;
+  return *msg->_impl_.param_server_result_;
 }
-RetrieveParamFloatResponse::RetrieveParamFloatResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetrieveParamFloatResponse::RetrieveParamFloatResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveParamFloatResponse)
 }
 RetrieveParamFloatResponse::RetrieveParamFloatResponse(const RetrieveParamFloatResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetrieveParamFloatResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}
+    , decltype(_impl_.value_) {}
+  };
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_param_server_result()) {
-    param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from.param_server_result_);
-  } else {
-    param_server_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from._impl_.param_server_result_);
   }
-  value_ = from.value_;
+  _this->_impl_.value_ = from._impl_.value_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveParamFloatResponse)
 }
 
-inline void RetrieveParamFloatResponse::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&param_server_result_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&value_) -
-    reinterpret_cast<char*>(&param_server_result_)) + sizeof(value_));
+inline void RetrieveParamFloatResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}
+    , decltype(_impl_.value_) { 0 }
+
+  };
 }
 
 RetrieveParamFloatResponse::~RetrieveParamFloatResponse() {
@@ -1647,49 +1892,54 @@ RetrieveParamFloatResponse::~RetrieveParamFloatResponse() {
 }
 
 inline void RetrieveParamFloatResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete param_server_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.param_server_result_;
 }
 
 void RetrieveParamFloatResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetrieveParamFloatResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.RetrieveParamFloatResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
-    delete param_server_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.param_server_result_ != nullptr);
+    _impl_.param_server_result_->Clear();
   }
-  param_server_result_ = nullptr;
-  value_ = 0;
+  _impl_.value_ = 0;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetrieveParamFloatResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_param_server_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          value_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.value_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1707,6 +1957,7 @@ const char* RetrieveParamFloatResponse::_InternalParse(const char* ptr, ::_pbi::
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1714,27 +1965,29 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetrieveParamFloatResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetrieveParamFloatResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.RetrieveParamFloatResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::param_server_result(this),
         _Internal::param_server_result(this).GetCachedSize(), target, stream);
   }
 
   // float value = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = this->_internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_value(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_value(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1745,63 +1998,61 @@ uint8_t* RetrieveParamFloatResponse::_InternalSerialize(
   return target;
 }
 
-size_t RetrieveParamFloatResponse::ByteSizeLong() const {
+::size_t RetrieveParamFloatResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.RetrieveParamFloatResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *param_server_result_);
+        *_impl_.param_server_result_);
   }
 
   // float value = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = this->_internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetrieveParamFloatResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetrieveParamFloatResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveParamFloatResponse::GetClassData() const { return &_class_data_; }
 
-void RetrieveParamFloatResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetrieveParamFloatResponse *>(to)->MergeFrom(
-      static_cast<const RetrieveParamFloatResponse &>(from));
-}
 
-
-void RetrieveParamFloatResponse::MergeFrom(const RetrieveParamFloatResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamFloatResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetrieveParamFloatResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetrieveParamFloatResponse*>(&to_msg);
+  auto& from = static_cast<const RetrieveParamFloatResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamFloatResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_param_server_result()) {
-    _internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(from._internal_param_server_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(
+        from._internal_param_server_result());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = from._internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetrieveParamFloatResponse::CopyFrom(const RetrieveParamFloatResponse& from) {
@@ -1818,12 +2069,13 @@ bool RetrieveParamFloatResponse::IsInitialized() const {
 void RetrieveParamFloatResponse::InternalSwap(RetrieveParamFloatResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RetrieveParamFloatResponse, value_)
-      + sizeof(RetrieveParamFloatResponse::value_)
-      - PROTOBUF_FIELD_OFFSET(RetrieveParamFloatResponse, param_server_result_)>(
-          reinterpret_cast<char*>(&param_server_result_),
-          reinterpret_cast<char*>(&other->param_server_result_));
+      PROTOBUF_FIELD_OFFSET(RetrieveParamFloatResponse, _impl_.value_)
+      + sizeof(RetrieveParamFloatResponse::_impl_.value_)
+      - PROTOBUF_FIELD_OFFSET(RetrieveParamFloatResponse, _impl_.param_server_result_)>(
+          reinterpret_cast<char*>(&_impl_.param_server_result_),
+          reinterpret_cast<char*>(&other->_impl_.param_server_result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetrieveParamFloatResponse::GetMetadata() const {
@@ -1831,40 +2083,52 @@ void RetrieveParamFloatResponse::InternalSwap(RetrieveParamFloatResponse* other)
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[5]);
 }
-
 // ===================================================================
 
 class ProvideParamFloatRequest::_Internal {
  public:
 };
 
-ProvideParamFloatRequest::ProvideParamFloatRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ProvideParamFloatRequest::ProvideParamFloatRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.ProvideParamFloatRequest)
 }
 ProvideParamFloatRequest::ProvideParamFloatRequest(const ProvideParamFloatRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ProvideParamFloatRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
-  value_ = from.value_;
+  _this->_impl_.value_ = from._impl_.value_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.ProvideParamFloatRequest)
 }
 
-inline void ProvideParamFloatRequest::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-value_ = 0;
+inline void ProvideParamFloatRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ProvideParamFloatRequest::~ProvideParamFloatRequest() {
@@ -1877,48 +2141,50 @@ ProvideParamFloatRequest::~ProvideParamFloatRequest() {
 }
 
 inline void ProvideParamFloatRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
 }
 
 void ProvideParamFloatRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ProvideParamFloatRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.ProvideParamFloatRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
-  value_ = 0;
+  _impl_.name_.ClearToEmpty();
+  _impl_.value_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ProvideParamFloatRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.ProvideParamFloatRequest.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          value_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.value_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1943,30 +2209,29 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ProvideParamFloatRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ProvideParamFloatRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.ProvideParamFloatRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.ProvideParamFloatRequest.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.ProvideParamFloatRequest.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // float value = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = this->_internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_value(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_value(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1977,63 +2242,58 @@ uint8_t* ProvideParamFloatRequest::_InternalSerialize(
   return target;
 }
 
-size_t ProvideParamFloatRequest::ByteSizeLong() const {
+::size_t ProvideParamFloatRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.ProvideParamFloatRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // float value = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = this->_internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProvideParamFloatRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ProvideParamFloatRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProvideParamFloatRequest::GetClassData() const { return &_class_data_; }
 
-void ProvideParamFloatRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ProvideParamFloatRequest *>(to)->MergeFrom(
-      static_cast<const ProvideParamFloatRequest &>(from));
-}
 
-
-void ProvideParamFloatRequest::MergeFrom(const ProvideParamFloatRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamFloatRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ProvideParamFloatRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ProvideParamFloatRequest*>(&to_msg);
+  auto& from = static_cast<const ProvideParamFloatRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamFloatRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = from._internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ProvideParamFloatRequest::CopyFrom(const ProvideParamFloatRequest& from) {
@@ -2052,11 +2312,10 @@ void ProvideParamFloatRequest::InternalSwap(ProvideParamFloatRequest* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
-  swap(value_, other->value_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
+
+  swap(_impl_.value_, other->_impl_.value_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProvideParamFloatRequest::GetMetadata() const {
@@ -2064,37 +2323,50 @@ void ProvideParamFloatRequest::InternalSwap(ProvideParamFloatRequest* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[6]);
 }
-
 // ===================================================================
 
 class ProvideParamFloatResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<ProvideParamFloatResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(ProvideParamFloatResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result(const ProvideParamFloatResponse* msg);
+  static void set_has_param_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::param_server::ParamServerResult&
 ProvideParamFloatResponse::_Internal::param_server_result(const ProvideParamFloatResponse* msg) {
-  return *msg->param_server_result_;
+  return *msg->_impl_.param_server_result_;
 }
-ProvideParamFloatResponse::ProvideParamFloatResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ProvideParamFloatResponse::ProvideParamFloatResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.ProvideParamFloatResponse)
 }
 ProvideParamFloatResponse::ProvideParamFloatResponse(const ProvideParamFloatResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ProvideParamFloatResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_param_server_result()) {
-    param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from.param_server_result_);
-  } else {
-    param_server_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from._impl_.param_server_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.ProvideParamFloatResponse)
 }
 
-inline void ProvideParamFloatResponse::SharedCtor() {
-param_server_result_ = nullptr;
+inline void ProvideParamFloatResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}
+  };
 }
 
 ProvideParamFloatResponse::~ProvideParamFloatResponse() {
@@ -2107,40 +2379,44 @@ ProvideParamFloatResponse::~ProvideParamFloatResponse() {
 }
 
 inline void ProvideParamFloatResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete param_server_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.param_server_result_;
 }
 
 void ProvideParamFloatResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ProvideParamFloatResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.ProvideParamFloatResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
-    delete param_server_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.param_server_result_ != nullptr);
+    _impl_.param_server_result_->Clear();
   }
-  param_server_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ProvideParamFloatResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_param_server_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2158,6 +2434,7 @@ const char* ProvideParamFloatResponse::_InternalParse(const char* ptr, ::_pbi::P
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2165,14 +2442,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ProvideParamFloatResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ProvideParamFloatResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.ProvideParamFloatResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::param_server_result(this),
         _Internal::param_server_result(this).GetCachedSize(), target, stream);
@@ -2186,47 +2464,45 @@ uint8_t* ProvideParamFloatResponse::_InternalSerialize(
   return target;
 }
 
-size_t ProvideParamFloatResponse::ByteSizeLong() const {
+::size_t ProvideParamFloatResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.ProvideParamFloatResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *param_server_result_);
+        *_impl_.param_server_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProvideParamFloatResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ProvideParamFloatResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProvideParamFloatResponse::GetClassData() const { return &_class_data_; }
 
-void ProvideParamFloatResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ProvideParamFloatResponse *>(to)->MergeFrom(
-      static_cast<const ProvideParamFloatResponse &>(from));
-}
 
-
-void ProvideParamFloatResponse::MergeFrom(const ProvideParamFloatResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamFloatResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ProvideParamFloatResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ProvideParamFloatResponse*>(&to_msg);
+  auto& from = static_cast<const ProvideParamFloatResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamFloatResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_param_server_result()) {
-    _internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(from._internal_param_server_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(
+        from._internal_param_server_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ProvideParamFloatResponse::CopyFrom(const ProvideParamFloatResponse& from) {
@@ -2243,7 +2519,8 @@ bool ProvideParamFloatResponse::IsInitialized() const {
 void ProvideParamFloatResponse::InternalSwap(ProvideParamFloatResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(param_server_result_, other->param_server_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.param_server_result_, other->_impl_.param_server_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProvideParamFloatResponse::GetMetadata() const {
@@ -2251,38 +2528,47 @@ void ProvideParamFloatResponse::InternalSwap(ProvideParamFloatResponse* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[7]);
 }
-
 // ===================================================================
 
 class RetrieveParamCustomRequest::_Internal {
  public:
 };
 
-RetrieveParamCustomRequest::RetrieveParamCustomRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetrieveParamCustomRequest::RetrieveParamCustomRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveParamCustomRequest)
 }
 RetrieveParamCustomRequest::RetrieveParamCustomRequest(const RetrieveParamCustomRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetrieveParamCustomRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveParamCustomRequest)
 }
 
-inline void RetrieveParamCustomRequest::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void RetrieveParamCustomRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RetrieveParamCustomRequest::~RetrieveParamCustomRequest() {
@@ -2295,39 +2581,40 @@ RetrieveParamCustomRequest::~RetrieveParamCustomRequest() {
 }
 
 inline void RetrieveParamCustomRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
 }
 
 void RetrieveParamCustomRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetrieveParamCustomRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.RetrieveParamCustomRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
+  _impl_.name_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetrieveParamCustomRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.RetrieveParamCustomRequest.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2352,20 +2639,18 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetrieveParamCustomRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetrieveParamCustomRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.RetrieveParamCustomRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.RetrieveParamCustomRequest.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.RetrieveParamCustomRequest.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2376,47 +2661,42 @@ uint8_t* RetrieveParamCustomRequest::_InternalSerialize(
   return target;
 }
 
-size_t RetrieveParamCustomRequest::ByteSizeLong() const {
+::size_t RetrieveParamCustomRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.RetrieveParamCustomRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetrieveParamCustomRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetrieveParamCustomRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveParamCustomRequest::GetClassData() const { return &_class_data_; }
 
-void RetrieveParamCustomRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetrieveParamCustomRequest *>(to)->MergeFrom(
-      static_cast<const RetrieveParamCustomRequest &>(from));
-}
 
-
-void RetrieveParamCustomRequest::MergeFrom(const RetrieveParamCustomRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamCustomRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetrieveParamCustomRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetrieveParamCustomRequest*>(&to_msg);
+  auto& from = static_cast<const RetrieveParamCustomRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamCustomRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetrieveParamCustomRequest::CopyFrom(const RetrieveParamCustomRequest& from) {
@@ -2435,10 +2715,8 @@ void RetrieveParamCustomRequest::InternalSwap(RetrieveParamCustomRequest* other)
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetrieveParamCustomRequest::GetMetadata() const {
@@ -2446,49 +2724,65 @@ void RetrieveParamCustomRequest::InternalSwap(RetrieveParamCustomRequest* other)
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[8]);
 }
-
 // ===================================================================
 
 class RetrieveParamCustomResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RetrieveParamCustomResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RetrieveParamCustomResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result(const RetrieveParamCustomResponse* msg);
+  static void set_has_param_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::param_server::ParamServerResult&
 RetrieveParamCustomResponse::_Internal::param_server_result(const RetrieveParamCustomResponse* msg) {
-  return *msg->param_server_result_;
+  return *msg->_impl_.param_server_result_;
 }
-RetrieveParamCustomResponse::RetrieveParamCustomResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetrieveParamCustomResponse::RetrieveParamCustomResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveParamCustomResponse)
 }
 RetrieveParamCustomResponse::RetrieveParamCustomResponse(const RetrieveParamCustomResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetrieveParamCustomResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.value_) {}
+
+    , decltype(_impl_.param_server_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  value_.InitDefault();
+  _impl_.value_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    value_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.value_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_value().empty()) {
-    value_.Set(from._internal_value(), 
-      GetArenaForAllocation());
+    _this->_impl_.value_.Set(from._internal_value(), _this->GetArenaForAllocation());
   }
-  if (from._internal_has_param_server_result()) {
-    param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from.param_server_result_);
-  } else {
-    param_server_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from._impl_.param_server_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveParamCustomResponse)
 }
 
-inline void RetrieveParamCustomResponse::SharedCtor() {
-value_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  value_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-param_server_result_ = nullptr;
+inline void RetrieveParamCustomResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.value_) {}
+
+    , decltype(_impl_.param_server_result_){nullptr}
+  };
+  _impl_.value_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.value_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RetrieveParamCustomResponse::~RetrieveParamCustomResponse() {
@@ -2501,52 +2795,57 @@ RetrieveParamCustomResponse::~RetrieveParamCustomResponse() {
 }
 
 inline void RetrieveParamCustomResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  value_.Destroy();
-  if (this != internal_default_instance()) delete param_server_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.value_.Destroy();
+  if (this != internal_default_instance()) delete _impl_.param_server_result_;
 }
 
 void RetrieveParamCustomResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetrieveParamCustomResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.RetrieveParamCustomResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  value_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
-    delete param_server_result_;
+  _impl_.value_.ClearToEmpty();
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.param_server_result_ != nullptr);
+    _impl_.param_server_result_->Clear();
   }
-  param_server_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetrieveParamCustomResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_param_server_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_value();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.RetrieveParamCustomResponse.value"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2564,6 +2863,7 @@ const char* RetrieveParamCustomResponse::_InternalParse(const char* ptr, ::_pbi:
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2571,14 +2871,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetrieveParamCustomResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetrieveParamCustomResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.RetrieveParamCustomResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::param_server_result(this),
         _Internal::param_server_result(this).GetCachedSize(), target, stream);
@@ -2586,12 +2887,10 @@ uint8_t* RetrieveParamCustomResponse::_InternalSerialize(
 
   // string value = 2;
   if (!this->_internal_value().empty()) {
+    const std::string& _s = this->_internal_value();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_value().data(), static_cast<int>(this->_internal_value().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.RetrieveParamCustomResponse.value");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_value(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.RetrieveParamCustomResponse.value");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2602,57 +2901,54 @@ uint8_t* RetrieveParamCustomResponse::_InternalSerialize(
   return target;
 }
 
-size_t RetrieveParamCustomResponse::ByteSizeLong() const {
+::size_t RetrieveParamCustomResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.RetrieveParamCustomResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string value = 2;
   if (!this->_internal_value().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_value());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_value());
   }
 
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *param_server_result_);
+        *_impl_.param_server_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetrieveParamCustomResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetrieveParamCustomResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveParamCustomResponse::GetClassData() const { return &_class_data_; }
 
-void RetrieveParamCustomResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetrieveParamCustomResponse *>(to)->MergeFrom(
-      static_cast<const RetrieveParamCustomResponse &>(from));
-}
 
-
-void RetrieveParamCustomResponse::MergeFrom(const RetrieveParamCustomResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamCustomResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetrieveParamCustomResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetrieveParamCustomResponse*>(&to_msg);
+  auto& from = static_cast<const RetrieveParamCustomResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveParamCustomResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_value().empty()) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  if (from._internal_has_param_server_result()) {
-    _internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(from._internal_param_server_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(
+        from._internal_param_server_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetrieveParamCustomResponse::CopyFrom(const RetrieveParamCustomResponse& from) {
@@ -2671,11 +2967,10 @@ void RetrieveParamCustomResponse::InternalSwap(RetrieveParamCustomResponse* othe
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &value_, lhs_arena,
-      &other->value_, rhs_arena
-  );
-  swap(param_server_result_, other->param_server_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.value_, lhs_arena,
+                                       &other->_impl_.value_, rhs_arena);
+  swap(_impl_.param_server_result_, other->_impl_.param_server_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetrieveParamCustomResponse::GetMetadata() const {
@@ -2683,50 +2978,62 @@ void RetrieveParamCustomResponse::InternalSwap(RetrieveParamCustomResponse* othe
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[9]);
 }
-
 // ===================================================================
 
 class ProvideParamCustomRequest::_Internal {
  public:
 };
 
-ProvideParamCustomRequest::ProvideParamCustomRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ProvideParamCustomRequest::ProvideParamCustomRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.ProvideParamCustomRequest)
 }
 ProvideParamCustomRequest::ProvideParamCustomRequest(const ProvideParamCustomRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ProvideParamCustomRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
-  value_.InitDefault();
+  _impl_.value_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    value_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.value_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_value().empty()) {
-    value_.Set(from._internal_value(), 
-      GetArenaForAllocation());
+    _this->_impl_.value_.Set(from._internal_value(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.ProvideParamCustomRequest)
 }
 
-inline void ProvideParamCustomRequest::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-value_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  value_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void ProvideParamCustomRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.value_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.value_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ProvideParamCustomRequest::~ProvideParamCustomRequest() {
@@ -2739,51 +3046,53 @@ ProvideParamCustomRequest::~ProvideParamCustomRequest() {
 }
 
 inline void ProvideParamCustomRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
-  value_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
+  _impl_.value_.Destroy();
 }
 
 void ProvideParamCustomRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ProvideParamCustomRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.ProvideParamCustomRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
-  value_.ClearToEmpty();
+  _impl_.name_.ClearToEmpty();
+  _impl_.value_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ProvideParamCustomRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.ProvideParamCustomRequest.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_value();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.ProvideParamCustomRequest.value"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2808,30 +3117,26 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ProvideParamCustomRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ProvideParamCustomRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.ProvideParamCustomRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.ProvideParamCustomRequest.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.ProvideParamCustomRequest.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string value = 2;
   if (!this->_internal_value().empty()) {
+    const std::string& _s = this->_internal_value();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_value().data(), static_cast<int>(this->_internal_value().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.ProvideParamCustomRequest.value");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_value(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.ProvideParamCustomRequest.value");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2842,57 +3147,51 @@ uint8_t* ProvideParamCustomRequest::_InternalSerialize(
   return target;
 }
 
-size_t ProvideParamCustomRequest::ByteSizeLong() const {
+::size_t ProvideParamCustomRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.ProvideParamCustomRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // string value = 2;
   if (!this->_internal_value().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_value());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_value());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProvideParamCustomRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ProvideParamCustomRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProvideParamCustomRequest::GetClassData() const { return &_class_data_; }
 
-void ProvideParamCustomRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ProvideParamCustomRequest *>(to)->MergeFrom(
-      static_cast<const ProvideParamCustomRequest &>(from));
-}
 
-
-void ProvideParamCustomRequest::MergeFrom(const ProvideParamCustomRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamCustomRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ProvideParamCustomRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ProvideParamCustomRequest*>(&to_msg);
+  auto& from = static_cast<const ProvideParamCustomRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamCustomRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
   if (!from._internal_value().empty()) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ProvideParamCustomRequest::CopyFrom(const ProvideParamCustomRequest& from) {
@@ -2911,14 +3210,10 @@ void ProvideParamCustomRequest::InternalSwap(ProvideParamCustomRequest* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &value_, lhs_arena,
-      &other->value_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.value_, lhs_arena,
+                                       &other->_impl_.value_, rhs_arena);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProvideParamCustomRequest::GetMetadata() const {
@@ -2926,37 +3221,50 @@ void ProvideParamCustomRequest::InternalSwap(ProvideParamCustomRequest* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[10]);
 }
-
 // ===================================================================
 
 class ProvideParamCustomResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<ProvideParamCustomResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(ProvideParamCustomResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result(const ProvideParamCustomResponse* msg);
+  static void set_has_param_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::param_server::ParamServerResult&
 ProvideParamCustomResponse::_Internal::param_server_result(const ProvideParamCustomResponse* msg) {
-  return *msg->param_server_result_;
+  return *msg->_impl_.param_server_result_;
 }
-ProvideParamCustomResponse::ProvideParamCustomResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ProvideParamCustomResponse::ProvideParamCustomResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.ProvideParamCustomResponse)
 }
 ProvideParamCustomResponse::ProvideParamCustomResponse(const ProvideParamCustomResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ProvideParamCustomResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_param_server_result()) {
-    param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from.param_server_result_);
-  } else {
-    param_server_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.param_server_result_ = new ::mavsdk::rpc::param_server::ParamServerResult(*from._impl_.param_server_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.ProvideParamCustomResponse)
 }
 
-inline void ProvideParamCustomResponse::SharedCtor() {
-param_server_result_ = nullptr;
+inline void ProvideParamCustomResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.param_server_result_){nullptr}
+  };
 }
 
 ProvideParamCustomResponse::~ProvideParamCustomResponse() {
@@ -2969,40 +3277,44 @@ ProvideParamCustomResponse::~ProvideParamCustomResponse() {
 }
 
 inline void ProvideParamCustomResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete param_server_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.param_server_result_;
 }
 
 void ProvideParamCustomResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ProvideParamCustomResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.ProvideParamCustomResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && param_server_result_ != nullptr) {
-    delete param_server_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.param_server_result_ != nullptr);
+    _impl_.param_server_result_->Clear();
   }
-  param_server_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ProvideParamCustomResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_param_server_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3020,6 +3332,7 @@ const char* ProvideParamCustomResponse::_InternalParse(const char* ptr, ::_pbi::
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -3027,14 +3340,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ProvideParamCustomResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ProvideParamCustomResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.ProvideParamCustomResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::param_server_result(this),
         _Internal::param_server_result(this).GetCachedSize(), target, stream);
@@ -3048,47 +3362,45 @@ uint8_t* ProvideParamCustomResponse::_InternalSerialize(
   return target;
 }
 
-size_t ProvideParamCustomResponse::ByteSizeLong() const {
+::size_t ProvideParamCustomResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.ProvideParamCustomResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
-  if (this->_internal_has_param_server_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *param_server_result_);
+        *_impl_.param_server_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProvideParamCustomResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ProvideParamCustomResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProvideParamCustomResponse::GetClassData() const { return &_class_data_; }
 
-void ProvideParamCustomResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ProvideParamCustomResponse *>(to)->MergeFrom(
-      static_cast<const ProvideParamCustomResponse &>(from));
-}
 
-
-void ProvideParamCustomResponse::MergeFrom(const ProvideParamCustomResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamCustomResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ProvideParamCustomResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ProvideParamCustomResponse*>(&to_msg);
+  auto& from = static_cast<const ProvideParamCustomResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ProvideParamCustomResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_param_server_result()) {
-    _internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(from._internal_param_server_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_param_server_result()->::mavsdk::rpc::param_server::ParamServerResult::MergeFrom(
+        from._internal_param_server_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ProvideParamCustomResponse::CopyFrom(const ProvideParamCustomResponse& from) {
@@ -3105,7 +3417,8 @@ bool ProvideParamCustomResponse::IsInitialized() const {
 void ProvideParamCustomResponse::InternalSwap(ProvideParamCustomResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(param_server_result_, other->param_server_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.param_server_result_, other->_impl_.param_server_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ProvideParamCustomResponse::GetMetadata() const {
@@ -3113,20 +3426,19 @@ void ProvideParamCustomResponse::InternalSwap(ProvideParamCustomResponse* other)
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[11]);
 }
-
 // ===================================================================
 
 class RetrieveAllParamsRequest::_Internal {
  public:
 };
 
-RetrieveAllParamsRequest::RetrieveAllParamsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+RetrieveAllParamsRequest::RetrieveAllParamsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveAllParamsRequest)
 }
 RetrieveAllParamsRequest::RetrieveAllParamsRequest(const RetrieveAllParamsRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  RetrieveAllParamsRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveAllParamsRequest)
 }
@@ -3152,37 +3464,50 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveAllParamsRequest::GetC
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[12]);
 }
-
 // ===================================================================
 
 class RetrieveAllParamsResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RetrieveAllParamsResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RetrieveAllParamsResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::param_server::AllParams& params(const RetrieveAllParamsResponse* msg);
+  static void set_has_params(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::param_server::AllParams&
 RetrieveAllParamsResponse::_Internal::params(const RetrieveAllParamsResponse* msg) {
-  return *msg->params_;
+  return *msg->_impl_.params_;
 }
-RetrieveAllParamsResponse::RetrieveAllParamsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetrieveAllParamsResponse::RetrieveAllParamsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.RetrieveAllParamsResponse)
 }
 RetrieveAllParamsResponse::RetrieveAllParamsResponse(const RetrieveAllParamsResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetrieveAllParamsResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.params_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_params()) {
-    params_ = new ::mavsdk::rpc::param_server::AllParams(*from.params_);
-  } else {
-    params_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.params_ = new ::mavsdk::rpc::param_server::AllParams(*from._impl_.params_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.RetrieveAllParamsResponse)
 }
 
-inline void RetrieveAllParamsResponse::SharedCtor() {
-params_ = nullptr;
+inline void RetrieveAllParamsResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.params_){nullptr}
+  };
 }
 
 RetrieveAllParamsResponse::~RetrieveAllParamsResponse() {
@@ -3195,40 +3520,44 @@ RetrieveAllParamsResponse::~RetrieveAllParamsResponse() {
 }
 
 inline void RetrieveAllParamsResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete params_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.params_;
 }
 
 void RetrieveAllParamsResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetrieveAllParamsResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.RetrieveAllParamsResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && params_ != nullptr) {
-    delete params_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.params_ != nullptr);
+    _impl_.params_->Clear();
   }
-  params_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetrieveAllParamsResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.AllParams params = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_params(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3246,6 +3575,7 @@ const char* RetrieveAllParamsResponse::_InternalParse(const char* ptr, ::_pbi::P
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -3253,14 +3583,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetrieveAllParamsResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetrieveAllParamsResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.RetrieveAllParamsResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.param_server.AllParams params = 1;
-  if (this->_internal_has_params()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::params(this),
         _Internal::params(this).GetCachedSize(), target, stream);
@@ -3274,47 +3605,45 @@ uint8_t* RetrieveAllParamsResponse::_InternalSerialize(
   return target;
 }
 
-size_t RetrieveAllParamsResponse::ByteSizeLong() const {
+::size_t RetrieveAllParamsResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.RetrieveAllParamsResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.param_server.AllParams params = 1;
-  if (this->_internal_has_params()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *params_);
+        *_impl_.params_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetrieveAllParamsResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetrieveAllParamsResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetrieveAllParamsResponse::GetClassData() const { return &_class_data_; }
 
-void RetrieveAllParamsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetrieveAllParamsResponse *>(to)->MergeFrom(
-      static_cast<const RetrieveAllParamsResponse &>(from));
-}
 
-
-void RetrieveAllParamsResponse::MergeFrom(const RetrieveAllParamsResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveAllParamsResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetrieveAllParamsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetrieveAllParamsResponse*>(&to_msg);
+  auto& from = static_cast<const RetrieveAllParamsResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.RetrieveAllParamsResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_params()) {
-    _internal_mutable_params()->::mavsdk::rpc::param_server::AllParams::MergeFrom(from._internal_params());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_params()->::mavsdk::rpc::param_server::AllParams::MergeFrom(
+        from._internal_params());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetrieveAllParamsResponse::CopyFrom(const RetrieveAllParamsResponse& from) {
@@ -3331,7 +3660,8 @@ bool RetrieveAllParamsResponse::IsInitialized() const {
 void RetrieveAllParamsResponse::InternalSwap(RetrieveAllParamsResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(params_, other->params_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.params_, other->_impl_.params_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetrieveAllParamsResponse::GetMetadata() const {
@@ -3339,40 +3669,52 @@ void RetrieveAllParamsResponse::InternalSwap(RetrieveAllParamsResponse* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[13]);
 }
-
 // ===================================================================
 
 class IntParam::_Internal {
  public:
 };
 
-IntParam::IntParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+IntParam::IntParam(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.IntParam)
 }
 IntParam::IntParam(const IntParam& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  IntParam* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
-  value_ = from.value_;
+  _this->_impl_.value_ = from._impl_.value_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.IntParam)
 }
 
-inline void IntParam::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-value_ = 0;
+inline void IntParam::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 IntParam::~IntParam() {
@@ -3385,48 +3727,50 @@ IntParam::~IntParam() {
 }
 
 inline void IntParam::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
 }
 
 void IntParam::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void IntParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.IntParam)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
-  value_ = 0;
+  _impl_.name_.ClearToEmpty();
+  _impl_.value_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* IntParam::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.IntParam.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3451,26 +3795,25 @@ failure:
 #undef CHK_
 }
 
-uint8_t* IntParam::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* IntParam::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.IntParam)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.IntParam.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.IntParam.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // int32 value = 2;
   if (this->_internal_value() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_value(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        2, this->_internal_value(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3481,55 +3824,51 @@ uint8_t* IntParam::_InternalSerialize(
   return target;
 }
 
-size_t IntParam::ByteSizeLong() const {
+::size_t IntParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.IntParam)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // int32 value = 2;
   if (this->_internal_value() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_value());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_value());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData IntParam::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     IntParam::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*IntParam::GetClassData() const { return &_class_data_; }
 
-void IntParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<IntParam *>(to)->MergeFrom(
-      static_cast<const IntParam &>(from));
-}
 
-
-void IntParam::MergeFrom(const IntParam& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.IntParam)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void IntParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<IntParam*>(&to_msg);
+  auto& from = static_cast<const IntParam&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.IntParam)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
   if (from._internal_value() != 0) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void IntParam::CopyFrom(const IntParam& from) {
@@ -3548,11 +3887,10 @@ void IntParam::InternalSwap(IntParam* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
-  swap(value_, other->value_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
+
+  swap(_impl_.value_, other->_impl_.value_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata IntParam::GetMetadata() const {
@@ -3560,40 +3898,52 @@ void IntParam::InternalSwap(IntParam* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[14]);
 }
-
 // ===================================================================
 
 class FloatParam::_Internal {
  public:
 };
 
-FloatParam::FloatParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+FloatParam::FloatParam(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.FloatParam)
 }
 FloatParam::FloatParam(const FloatParam& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  FloatParam* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
-  value_ = from.value_;
+  _this->_impl_.value_ = from._impl_.value_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.FloatParam)
 }
 
-inline void FloatParam::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-value_ = 0;
+inline void FloatParam::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 FloatParam::~FloatParam() {
@@ -3606,48 +3956,50 @@ FloatParam::~FloatParam() {
 }
 
 inline void FloatParam::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
 }
 
 void FloatParam::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void FloatParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.FloatParam)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
-  value_ = 0;
+  _impl_.name_.ClearToEmpty();
+  _impl_.value_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* FloatParam::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.FloatParam.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          value_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.value_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3672,30 +4024,29 @@ failure:
 #undef CHK_
 }
 
-uint8_t* FloatParam::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* FloatParam::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.FloatParam)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.FloatParam.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.FloatParam.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // float value = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = this->_internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_value(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_value(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3706,63 +4057,58 @@ uint8_t* FloatParam::_InternalSerialize(
   return target;
 }
 
-size_t FloatParam::ByteSizeLong() const {
+::size_t FloatParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.FloatParam)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // float value = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = this->_internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FloatParam::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     FloatParam::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FloatParam::GetClassData() const { return &_class_data_; }
 
-void FloatParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<FloatParam *>(to)->MergeFrom(
-      static_cast<const FloatParam &>(from));
-}
 
-
-void FloatParam::MergeFrom(const FloatParam& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.FloatParam)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void FloatParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<FloatParam*>(&to_msg);
+  auto& from = static_cast<const FloatParam&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.FloatParam)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_value = from._internal_value();
-  uint32_t raw_value;
+  ::uint32_t raw_value;
   memcpy(&raw_value, &tmp_value, sizeof(tmp_value));
   if (raw_value != 0) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void FloatParam::CopyFrom(const FloatParam& from) {
@@ -3781,11 +4127,10 @@ void FloatParam::InternalSwap(FloatParam* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
-  swap(value_, other->value_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
+
+  swap(_impl_.value_, other->_impl_.value_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata FloatParam::GetMetadata() const {
@@ -3793,50 +4138,62 @@ void FloatParam::InternalSwap(FloatParam* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[15]);
 }
-
 // ===================================================================
 
 class CustomParam::_Internal {
  public:
 };
 
-CustomParam::CustomParam(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+CustomParam::CustomParam(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.CustomParam)
 }
 CustomParam::CustomParam(const CustomParam& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CustomParam* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.InitDefault();
+  _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    name_.Set(from._internal_name(), 
-      GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
-  value_.InitDefault();
+  _impl_.value_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    value_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.value_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_value().empty()) {
-    value_.Set(from._internal_value(), 
-      GetArenaForAllocation());
+    _this->_impl_.value_.Set(from._internal_value(), _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.CustomParam)
 }
 
-inline void CustomParam::SharedCtor() {
-name_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  name_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-value_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  value_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void CustomParam::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.value_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.value_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.value_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 CustomParam::~CustomParam() {
@@ -3849,51 +4206,53 @@ CustomParam::~CustomParam() {
 }
 
 inline void CustomParam::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.Destroy();
-  value_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.name_.Destroy();
+  _impl_.value_.Destroy();
 }
 
 void CustomParam::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void CustomParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.CustomParam)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
-  value_.ClearToEmpty();
+  _impl_.name_.ClearToEmpty();
+  _impl_.value_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* CustomParam::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.CustomParam.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_value();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.CustomParam.value"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3918,30 +4277,26 @@ failure:
 #undef CHK_
 }
 
-uint8_t* CustomParam::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* CustomParam::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.CustomParam)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.CustomParam.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.CustomParam.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string value = 2;
   if (!this->_internal_value().empty()) {
+    const std::string& _s = this->_internal_value();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_value().data(), static_cast<int>(this->_internal_value().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.CustomParam.value");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_value(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.CustomParam.value");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3952,57 +4307,51 @@ uint8_t* CustomParam::_InternalSerialize(
   return target;
 }
 
-size_t CustomParam::ByteSizeLong() const {
+::size_t CustomParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.CustomParam)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // string value = 2;
   if (!this->_internal_value().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_value());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_value());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CustomParam::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     CustomParam::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CustomParam::GetClassData() const { return &_class_data_; }
 
-void CustomParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<CustomParam *>(to)->MergeFrom(
-      static_cast<const CustomParam &>(from));
-}
 
-
-void CustomParam::MergeFrom(const CustomParam& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.CustomParam)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void CustomParam::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CustomParam*>(&to_msg);
+  auto& from = static_cast<const CustomParam&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.CustomParam)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
-    _internal_set_name(from._internal_name());
+    _this->_internal_set_name(from._internal_name());
   }
   if (!from._internal_value().empty()) {
-    _internal_set_value(from._internal_value());
+    _this->_internal_set_value(from._internal_value());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void CustomParam::CopyFrom(const CustomParam& from) {
@@ -4021,14 +4370,10 @@ void CustomParam::InternalSwap(CustomParam* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &name_, lhs_arena,
-      &other->name_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &value_, lhs_arena,
-      &other->value_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.value_, lhs_arena,
+                                       &other->_impl_.value_, rhs_arena);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CustomParam::GetMetadata() const {
@@ -4036,32 +4381,38 @@ void CustomParam::InternalSwap(CustomParam* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[16]);
 }
-
 // ===================================================================
 
 class AllParams::_Internal {
  public:
 };
 
-AllParams::AllParams(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  int_params_(arena),
-  float_params_(arena),
-  custom_params_(arena) {
-  SharedCtor();
+AllParams::AllParams(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.AllParams)
 }
 AllParams::AllParams(const AllParams& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      int_params_(from.int_params_),
-      float_params_(from.float_params_),
-      custom_params_(from.custom_params_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  AllParams* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.int_params_){from._impl_.int_params_}
+    , decltype(_impl_.float_params_){from._impl_.float_params_}
+    , decltype(_impl_.custom_params_){from._impl_.custom_params_}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.AllParams)
 }
 
-inline void AllParams::SharedCtor() {
+inline void AllParams::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.int_params_){arena}
+    , decltype(_impl_.float_params_){arena}
+    , decltype(_impl_.custom_params_){arena}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 AllParams::~AllParams() {
@@ -4074,34 +4425,37 @@ AllParams::~AllParams() {
 }
 
 inline void AllParams::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _internal_mutable_int_params()->~RepeatedPtrField();
+  _internal_mutable_float_params()->~RepeatedPtrField();
+  _internal_mutable_custom_params()->~RepeatedPtrField();
 }
 
 void AllParams::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void AllParams::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.AllParams)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int_params_.Clear();
-  float_params_.Clear();
-  custom_params_.Clear();
+  _internal_mutable_int_params()->Clear();
+  _internal_mutable_float_params()->Clear();
+  _internal_mutable_custom_params()->Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* AllParams::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .mavsdk.rpc.param_server.IntParam int_params = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -4109,12 +4463,13 @@ const char* AllParams::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // repeated .mavsdk.rpc.param_server.FloatParam float_params = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -4122,12 +4477,13 @@ const char* AllParams::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // repeated .mavsdk.rpc.param_server.CustomParam custom_params = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -4135,8 +4491,9 @@ const char* AllParams::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4161,10 +4518,10 @@ failure:
 #undef CHK_
 }
 
-uint8_t* AllParams::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* AllParams::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.AllParams)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.param_server.IntParam int_params = 1;
@@ -4199,61 +4556,57 @@ uint8_t* AllParams::_InternalSerialize(
   return target;
 }
 
-size_t AllParams::ByteSizeLong() const {
+::size_t AllParams::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.AllParams)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.param_server.IntParam int_params = 1;
   total_size += 1UL * this->_internal_int_params_size();
-  for (const auto& msg : this->int_params_) {
+  for (const auto& msg : this->_internal_int_params()) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // repeated .mavsdk.rpc.param_server.FloatParam float_params = 2;
   total_size += 1UL * this->_internal_float_params_size();
-  for (const auto& msg : this->float_params_) {
+  for (const auto& msg : this->_internal_float_params()) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // repeated .mavsdk.rpc.param_server.CustomParam custom_params = 3;
   total_size += 1UL * this->_internal_custom_params_size();
-  for (const auto& msg : this->custom_params_) {
+  for (const auto& msg : this->_internal_custom_params()) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AllParams::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     AllParams::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AllParams::GetClassData() const { return &_class_data_; }
 
-void AllParams::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<AllParams *>(to)->MergeFrom(
-      static_cast<const AllParams &>(from));
-}
 
-
-void AllParams::MergeFrom(const AllParams& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.AllParams)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void AllParams::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<AllParams*>(&to_msg);
+  auto& from = static_cast<const AllParams&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.AllParams)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  int_params_.MergeFrom(from.int_params_);
-  float_params_.MergeFrom(from.float_params_);
-  custom_params_.MergeFrom(from.custom_params_);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_mutable_int_params()->MergeFrom(from._internal_int_params());
+  _this->_internal_mutable_float_params()->MergeFrom(from._internal_float_params());
+  _this->_internal_mutable_custom_params()->MergeFrom(from._internal_custom_params());
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void AllParams::CopyFrom(const AllParams& from) {
@@ -4270,9 +4623,9 @@ bool AllParams::IsInitialized() const {
 void AllParams::InternalSwap(AllParams* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  int_params_.InternalSwap(&other->int_params_);
-  float_params_.InternalSwap(&other->float_params_);
-  custom_params_.InternalSwap(&other->custom_params_);
+  _internal_mutable_int_params()->InternalSwap(other->_internal_mutable_int_params());
+  _internal_mutable_float_params()->InternalSwap(other->_internal_mutable_float_params());
+  _internal_mutable_custom_params()->InternalSwap(other->_internal_mutable_custom_params());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AllParams::GetMetadata() const {
@@ -4280,40 +4633,52 @@ void AllParams::InternalSwap(AllParams* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[17]);
 }
-
 // ===================================================================
 
 class ParamServerResult::_Internal {
  public:
 };
 
-ParamServerResult::ParamServerResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ParamServerResult::ParamServerResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.param_server.ParamServerResult)
 }
 ParamServerResult::ParamServerResult(const ParamServerResult& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ParamServerResult* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  result_str_.InitDefault();
+  _impl_.result_str_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    result_str_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(from._internal_result_str(), 
-      GetArenaForAllocation());
+    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
   }
-  result_ = from.result_;
+  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.param_server.ParamServerResult)
 }
 
-inline void ParamServerResult::SharedCtor() {
-result_str_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  result_str_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-result_ = 0;
+inline void ParamServerResult::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.result_str_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 ParamServerResult::~ParamServerResult() {
@@ -4326,49 +4691,51 @@ ParamServerResult::~ParamServerResult() {
 }
 
 inline void ParamServerResult::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  result_str_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.result_str_.Destroy();
 }
 
 void ParamServerResult::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ParamServerResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.param_server.ParamServerResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty();
-  result_ = 0;
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ParamServerResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.param_server.ParamServerResult.Result result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::param_server::ParamServerResult_Result>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string result_str = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_result_str();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.param_server.ParamServerResult.result_str"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4393,27 +4760,25 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ParamServerResult::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ParamServerResult::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.param_server.ParamServerResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.param_server.ParamServerResult.Result result = 1;
   if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_result(), target);
+        1, this->_internal_result(), target);
   }
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
+    const std::string& _s = this->_internal_result_str();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.param_server.ParamServerResult.result_str");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_result_str(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.param_server.ParamServerResult.result_str");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4424,56 +4789,51 @@ uint8_t* ParamServerResult::_InternalSerialize(
   return target;
 }
 
-size_t ParamServerResult::ByteSizeLong() const {
+::size_t ParamServerResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.param_server.ParamServerResult)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_result_str());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_result_str());
   }
 
   // .mavsdk.rpc.param_server.ParamServerResult.Result result = 1;
   if (this->_internal_result() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ParamServerResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ParamServerResult::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ParamServerResult::GetClassData() const { return &_class_data_; }
 
-void ParamServerResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ParamServerResult *>(to)->MergeFrom(
-      static_cast<const ParamServerResult &>(from));
-}
 
-
-void ParamServerResult::MergeFrom(const ParamServerResult& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ParamServerResult)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ParamServerResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ParamServerResult*>(&to_msg);
+  auto& from = static_cast<const ParamServerResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.param_server.ParamServerResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_result_str().empty()) {
-    _internal_set_result_str(from._internal_result_str());
+    _this->_internal_set_result_str(from._internal_result_str());
   }
   if (from._internal_result() != 0) {
-    _internal_set_result(from._internal_result());
+    _this->_internal_set_result(from._internal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ParamServerResult::CopyFrom(const ParamServerResult& from) {
@@ -4492,11 +4852,9 @@ void ParamServerResult::InternalSwap(ParamServerResult* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &result_str_, lhs_arena,
-      &other->result_str_, rhs_arena
-  );
-  swap(result_, other->result_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
+                                       &other->_impl_.result_str_, rhs_arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ParamServerResult::GetMetadata() const {
@@ -4504,7 +4862,6 @@ void ParamServerResult::InternalSwap(ParamServerResult* other) {
       &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_getter, &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
       file_level_metadata_param_5fserver_2fparam_5fserver_2eproto[18]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace param_server
 }  // namespace rpc
@@ -4587,6 +4944,5 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::param_server::ParamServerResult >(Aren
   return Arena::CreateMessageInternal< ::mavsdk::rpc::param_server::ParamServerResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
-
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"
