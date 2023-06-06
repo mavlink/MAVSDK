@@ -13,3 +13,8 @@ install(FILES
     include/plugins/rtk/rtk.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/rtk
 )
+
+list(APPEND UNIT_TEST_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/rtk_parse_test.cpp
+)
+set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
