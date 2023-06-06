@@ -19,6 +19,8 @@ public:
 
     Rtk::Result send_rtcm_data(Rtk::RtcmData rtcm_data);
 
+    static std::string convert_from_python_string(const std::string& python_string);
+
 private:
     unsigned _sequence{0};
 };
