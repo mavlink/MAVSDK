@@ -15,9 +15,9 @@ System::System(MavsdkImpl& parent) : _system_impl(std::make_shared<SystemImpl>(p
 
 System::~System() = default;
 
-void System::init(uint8_t system_id, uint8_t component_id, bool connected) const
+void System::init(uint8_t system_id, uint8_t component_id) const
 {
-    return _system_impl->init(system_id, component_id, connected);
+    return _system_impl->init(system_id, component_id);
 }
 
 bool System::is_standalone() const

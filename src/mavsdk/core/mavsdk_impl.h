@@ -107,8 +107,7 @@ public:
 
 private:
     void add_connection(const std::shared_ptr<Connection>&);
-    void make_system_with_component(
-        uint8_t system_id, uint8_t component_id, bool always_connected = false);
+    void make_system_with_component(uint8_t system_id, uint8_t component_id);
 
     void work_thread();
     void process_user_callbacks_thread();

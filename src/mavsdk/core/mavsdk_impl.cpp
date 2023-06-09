@@ -533,7 +533,7 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        make_system_with_component(0, 0, true);
+        make_system_with_component(0, 0);
     }
     return ret;
 }
@@ -656,8 +656,7 @@ uint8_t MavsdkImpl::get_mav_type() const
     }
 }
 
-void MavsdkImpl::make_system_with_component(
-    uint8_t system_id, uint8_t comp_id, bool always_connected)
+void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 {
     // Needs _systems_lock
 
@@ -675,7 +674,7 @@ void MavsdkImpl::make_system_with_component(
 
     // Make a system with its first component
     auto new_system = std::make_shared<System>(*this);
-    new_system->init(system_id, comp_id, always_connected);
+    new_system->init(system_id, comp_id);
 
     _systems.emplace_back(system_id, new_system);
 }

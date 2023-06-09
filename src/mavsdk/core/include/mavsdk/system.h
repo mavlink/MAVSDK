@@ -43,10 +43,8 @@ public:
      *
      * @param system_id System id.
      * @param component_id Component id.
-     * @param connected If true then the system doesn't wait for heartbeat to go into connected
-     * state
      */
-    void init(uint8_t system_id, uint8_t component_id, bool connected) const;
+    void init(uint8_t system_id, uint8_t component_id) const;
 
     /**
      * @brief Checks whether the system has an autopilot.

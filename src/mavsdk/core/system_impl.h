@@ -40,7 +40,7 @@ public:
     explicit SystemImpl(MavsdkImpl& parent);
     ~SystemImpl() override;
 
-    void init(uint8_t system_id, uint8_t comp_id, bool connected);
+    void init(uint8_t system_id, uint8_t comp_id);
 
     void enable_timesync();
 
@@ -357,7 +357,6 @@ private:
 
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
-    bool _always_connected{false};
 
     std::atomic<Autopilot> _autopilot{Autopilot::Unknown};
 
