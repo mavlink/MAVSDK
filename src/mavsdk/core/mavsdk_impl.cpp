@@ -533,7 +533,7 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
         new_conn->add_remote(remote_ip, remote_port);
         add_connection(new_conn);
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        make_system_with_component(0, 0, true);
+        make_system_with_component(0, 0, !_configuration.get_always_send_heartbeats());
     }
     return ret;
 }
