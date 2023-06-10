@@ -43,9 +43,7 @@ SystemImpl::~SystemImpl()
     _should_exit = true;
     _mavsdk_impl.mavlink_message_handler.unregister_all(this);
 
-    if (!_always_connected) {
-        unregister_timeout_handler(_heartbeat_timeout_cookie);
-    }
+    unregister_timeout_handler(_heartbeat_timeout_cookie);
 
     if (_system_thread != nullptr) {
         _system_thread->join();
@@ -54,16 +52,11 @@ SystemImpl::~SystemImpl()
     }
 }
 
-void SystemImpl::init(uint8_t system_id, uint8_t comp_id, bool connected)
+void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
 {
     _target_address.system_id = system_id;
     // We use this as a default.
     _target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
-
-    if (connected) {
-        _always_connected = true;
-        set_connected();
-    }
 
     _mavsdk_impl.mavlink_message_handler.register_one(
         MAVLINK_MSG_ID_HEARTBEAT,
@@ -569,18 +562,17 @@ void SystemImpl::set_connected()
                 _mavsdk_impl.start_sending_heartbeats();
             });
 
-            if (!_always_connected) {
-                register_timeout_handler(
-                    [this] { heartbeats_timed_out(); },
-                    HEARTBEAT_TIMEOUT_S,
-                    &_heartbeat_timeout_cookie);
-            }
+            register_timeout_handler(
+                [this] { heartbeats_timed_out(); },
+                HEARTBEAT_TIMEOUT_S,
+                &_heartbeat_timeout_cookie);
+
             enable_needed = true;
 
             _is_connected_callbacks.queue(
                 true, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
 
-        } else if (_connected && !_always_connected) {
+        } else if (_connected) {
             refresh_timeout_handler(_heartbeat_timeout_cookie);
         }
         // If not yet connected there is nothing to do/
