@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <mutex>
 #include <utility>
 #include <vector>
@@ -8,6 +9,7 @@
 
 #include "call_every_handler.h"
 #include "connection.h"
+#include "handle.h"
 #include "mavsdk.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
@@ -51,19 +53,21 @@ public:
     void receive_message(mavlink_message_t& message, Connection* connection);
     bool send_message(mavlink_message_t& message);
 
-    ConnectionResult
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
-    ConnectionResult add_udp_connection(
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_udp_connection(
         const std::string& local_ip, int local_port_number, ForwardingOption forwarding_option);
-    ConnectionResult add_tcp_connection(
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_tcp_connection(
         const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
-    ConnectionResult add_serial_connection(
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_serial_connection(
         const std::string& dev_path,
         int baudrate,
         bool flow_control,
         ForwardingOption forwarding_option);
-    ConnectionResult setup_udp_remote(
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> setup_udp_remote(
         const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
+
+    void remove_connection(Mavsdk::ConnectionHandle handle);
 
     std::vector<std::shared_ptr<System>> systems() const;
 
@@ -106,7 +110,7 @@ public:
     Time time{};
 
 private:
-    void add_connection(const std::shared_ptr<Connection>&);
+    Mavsdk::ConnectionHandle add_connection(const std::shared_ptr<Connection>&);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
 
     void work_thread();
@@ -119,7 +123,12 @@ private:
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
     std::mutex _connections_mutex{};
-    std::vector<std::shared_ptr<Connection>> _connections{};
+    uint64_t _connections_handle_id{1};
+    struct ConnectionEntry {
+        std::shared_ptr<Connection> connection;
+        Handle<> handle;
+    };
+    std::vector<ConnectionEntry> _connections{};
 
     mutable std::recursive_mutex _systems_mutex{};
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};

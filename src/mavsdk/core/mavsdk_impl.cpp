@@ -267,13 +267,14 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
         std::lock_guard<std::mutex> lock(_connections_mutex);
 
         unsigned successful_emissions = 0;
-        for (auto& _connection : _connections) {
+        for (auto& entry : _connections) {
             // Check whether the connection is not the one from which we received the message.
             // And also check if the connection was set to forward messages.
-            if (_connection.get() == connection || !(*_connection).should_forward_messages()) {
+            if (entry.connection.get() == connection ||
+                !entry.connection->should_forward_messages()) {
                 continue;
             }
-            if ((*_connection).send_message(message)) {
+            if ((*entry.connection).send_message(message)) {
                 successful_emissions++;
             }
         }
@@ -430,11 +431,11 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     for (auto& _connection : _connections) {
         const uint8_t target_system_id = get_target_system_id(message);
 
-        if (target_system_id != 0 && !(*_connection).has_system_id(target_system_id)) {
+        if (target_system_id != 0 && !(*_connection.connection).has_system_id(target_system_id)) {
             continue;
         }
 
-        if ((*_connection).send_message(message)) {
+        if ((*_connection.connection).send_message(message)) {
             successful_emissions++;
         }
     }
@@ -447,12 +448,12 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
     return true;
 }
 
-ConnectionResult MavsdkImpl::add_any_connection(
+std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connection(
     const std::string& connection_url, ForwardingOption forwarding_option)
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
-        return ConnectionResult::ConnectionUrlInvalid;
+        return {ConnectionResult::ConnectionUrlInvalid, Mavsdk::ConnectionHandle{}};
     }
 
     switch (cli_arg.get_protocol()) {
@@ -491,11 +492,11 @@ ConnectionResult MavsdkImpl::add_any_connection(
         }
 
         default:
-            return ConnectionResult::ConnectionError;
+            return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
     }
 }
 
-ConnectionResult MavsdkImpl::add_udp_connection(
+std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_udp_connection(
     const std::string& local_ip, const int local_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<UdpConnection>(
@@ -506,16 +507,17 @@ ConnectionResult MavsdkImpl::add_udp_connection(
         local_port,
         forwarding_option);
     if (!new_conn) {
-        return ConnectionResult::ConnectionError;
+        return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
     }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::Success) {
-        add_connection(new_conn);
+        return {ret, add_connection(new_conn)};
+    } else {
+        return {ret, Mavsdk::ConnectionHandle{}};
     }
-    return ret;
 }
 
-ConnectionResult MavsdkImpl::setup_udp_remote(
+std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::setup_udp_remote(
     const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<UdpConnection>(
@@ -526,19 +528,21 @@ ConnectionResult MavsdkImpl::setup_udp_remote(
         0,
         forwarding_option);
     if (!new_conn) {
-        return ConnectionResult::ConnectionError;
+        return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
     }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::Success) {
         new_conn->add_remote(remote_ip, remote_port);
-        add_connection(new_conn);
+        auto handle = add_connection(new_conn);
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         make_system_with_component(0, 0);
+        return {ret, handle};
+    } else {
+        return {ret, Mavsdk::ConnectionHandle{}};
     }
-    return ret;
 }
 
-ConnectionResult MavsdkImpl::add_tcp_connection(
+std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_tcp_connection(
     const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_shared<TcpConnection>(
@@ -549,16 +553,17 @@ ConnectionResult MavsdkImpl::add_tcp_connection(
         remote_port,
         forwarding_option);
     if (!new_conn) {
-        return ConnectionResult::ConnectionError;
+        return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
     }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::Success) {
-        add_connection(new_conn);
+        return {ret, add_connection(new_conn)};
+    } else {
+        return {ret, Mavsdk::ConnectionHandle{}};
     }
-    return ret;
 }
 
-ConnectionResult MavsdkImpl::add_serial_connection(
+std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_connection(
     const std::string& dev_path,
     int baudrate,
     bool flow_control,
@@ -573,28 +578,44 @@ ConnectionResult MavsdkImpl::add_serial_connection(
         flow_control,
         forwarding_option);
     if (!new_conn) {
-        return ConnectionResult::ConnectionError;
+        return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
     }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::Success) {
-        add_connection(new_conn);
+        auto handle = add_connection(new_conn);
+
+        auto new_configuration = get_configuration();
+
+        // PX4 starting with v1.13 does not send heartbeats by default, so we need
+        // to initiate the MAVLink connection by sending heartbeats.
+        // Therefore, we override the default here and enable sending heartbeats.
+        new_configuration.set_always_send_heartbeats(true);
+        set_configuration(new_configuration);
+
+        return {ret, handle};
+
+    } else {
+        return {ret, Mavsdk::ConnectionHandle{}};
     }
-
-    auto new_configuration = get_configuration();
-
-    // PX4 starting with v1.13 does not send heartbeats by default, so we need
-    // to initiate the MAVLink connection by sending heartbeats.
-    // Therefore, we override the default here and enable sending heartbeats.
-    new_configuration.set_always_send_heartbeats(true);
-    set_configuration(new_configuration);
-
-    return ret;
 }
 
-void MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connection)
+Mavsdk::ConnectionHandle
+MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
-    _connections.push_back(new_connection);
+    auto handle = Mavsdk::ConnectionHandle{_connections_handle_id++};
+    _connections.emplace_back(ConnectionEntry{new_connection, handle});
+
+    return handle;
+}
+
+void MavsdkImpl::remove_connection(Mavsdk::ConnectionHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_connections_mutex);
+
+    _connections.erase(std::remove_if(_connections.begin(), _connections.end(), [&](auto&& entry) {
+        return (entry.handle == handle);
+    }));
 }
 
 Mavsdk::Configuration MavsdkImpl::get_configuration() const
