@@ -95,6 +95,35 @@ public:
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
 
     /**
+     * @brief Handle type to remove a connection.
+     */
+    using ConnectionHandle = Handle<>;
+
+    /**
+     * @brief Adds Connection via URL Additionally returns a handle to remove
+     *        the connection later.
+     *
+     * Supports connection: Serial, TCP or UDP.
+     * Connection URL format should be:
+     * - UDP:    udp://[host][:bind_port]
+     * - TCP:    tcp://[host][:remote_port]
+     * - Serial: serial://dev_node[:baudrate]
+     *
+     * For UDP, the host can be set to either:
+     *   - zero IP: 0.0.0.0 -> behave like a server and listen for heartbeats.
+     *   - some IP: 192.168.1.12 -> behave like a client, initiate connection
+     *     and start sending heartbeats.
+     *
+     * @param connection_url connection URL string.
+     * @param forwarding_option message forwarding option (when multiple interfaces are used).
+     * @return A pair containing the result of adding the connection as well
+     *         as a handle to remove it later.
+     */
+    std::pair<ConnectionResult, ConnectionHandle> add_any_connection_with_handle(
+        const std::string& connection_url,
+        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
+
+    /**
      * @brief Adds a UDP connection to the specified port number.
      *
      * Any incoming connections are accepted (0.0.0.0).
@@ -165,6 +194,13 @@ public:
         int baudrate = DEFAULT_SERIAL_BAUDRATE,
         bool flow_control = false,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
+
+    /**
+     * Remove connection again.
+     *
+     * @param handle Handle returned when connection was added.
+     */
+    void remove_connection(ConnectionHandle handle);
 
     /**
      * @brief Get a vector of systems which have been discovered or set-up.
