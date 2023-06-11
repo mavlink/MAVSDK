@@ -5,7 +5,7 @@ include(ExternalProject)
 
 message(STATUS "Preparing external project \"openssl\"")
 
-set(OPENSSL_VERSION 3.0.5)
+set(OPENSSL_VERSION 3.0.9)
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(OPENSSL_BUILD_TYPE "--debug")
@@ -40,7 +40,7 @@ if(ANDROID)
         )
 elseif(IOS)
     # OpenSSL 3 has issues with bitcode. Let's stay with OpenSSL 1 until we can drop bitcode (with Xcode 14).
-    set(OPENSSL_VERSION 1.1.1o)
+    set(OPENSSL_VERSION 1.1.1u)
 
     if(${PLATFORM} STREQUAL "OS64")
         set(OPENSSL_PLATFORM "ios64-xcrun")
