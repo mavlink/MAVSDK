@@ -535,7 +535,9 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::setup_udp_remo
         new_conn->add_remote(remote_ip, remote_port);
         auto handle = add_connection(new_conn);
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        make_system_with_component(0, 0);
+        if (_systems.empty()) {
+            make_system_with_component(0, 0);
+        }
         return {ret, handle};
     } else {
         return {ret, Mavsdk::ConnectionHandle{}};
