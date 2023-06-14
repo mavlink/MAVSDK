@@ -9,6 +9,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+    "-DCMAKE_CXX_STANDARD=17"
     "-DRUN_HAVE_STD_REGEX=0"
     "-DRUN_HAVE_POSIX_REGEX=0"
     "-DRUN_HAVE_STEADY_CLOCK=0"
@@ -50,9 +51,16 @@ foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
+if(CMAKE_CROSSCOMPILING)
+    set(PATCH_CMD patch -p 1 < ${PROJECT_SOURCE_DIR}/cmake_install_fix.patch)
+else()
+    set(PATCH_CMD "")
+endif()
+
 ExternalProject_add(
     grpc
-    URL https://github.com/grpc/grpc/archive/v1.46.2.tar.gz
+    URL https://github.com/grpc/grpc/archive/v1.55.1.tar.gz
     PREFIX grpc
+    PATCH_COMMAND "${PATCH_CMD}"
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

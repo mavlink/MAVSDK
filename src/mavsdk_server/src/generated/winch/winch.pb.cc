@@ -4,718 +4,932 @@
 #include "winch/winch.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
 namespace mavsdk {
 namespace rpc {
 namespace winch {
+template <typename>
 PROTOBUF_CONSTEXPR SubscribeStatusRequest::SubscribeStatusRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct SubscribeStatusRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SubscribeStatusRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SubscribeStatusRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SubscribeStatusRequestDefaultTypeInternal() {}
   union {
     SubscribeStatusRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeStatusRequestDefaultTypeInternal _SubscribeStatusRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeStatusRequestDefaultTypeInternal _SubscribeStatusRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR StatusResponse::StatusResponse(
-    ::_pbi::ConstantInitialized)
-  : status_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.status_)*/nullptr} {}
 struct StatusResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StatusResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR StatusResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~StatusResponseDefaultTypeInternal() {}
   union {
     StatusResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusResponseDefaultTypeInternal _StatusResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusResponseDefaultTypeInternal _StatusResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR StatusFlags::StatusFlags(
-    ::_pbi::ConstantInitialized)
-  : healthy_(false)
-  , fully_retracted_(false)
-  , moving_(false)
-  , clutch_engaged_(false)
-  , locked_(false)
-  , dropping_(false)
-  , arresting_(false)
-  , ground_sense_(false)
-  , retracting_(false)
-  , redeliver_(false)
-  , abandon_line_(false)
-  , locking_(false)
-  , load_line_(false)
-  , load_payload_(false){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.healthy_)*/ false
+
+  , /*decltype(_impl_.fully_retracted_)*/ false
+
+  , /*decltype(_impl_.moving_)*/ false
+
+  , /*decltype(_impl_.clutch_engaged_)*/ false
+
+  , /*decltype(_impl_.locked_)*/ false
+
+  , /*decltype(_impl_.dropping_)*/ false
+
+  , /*decltype(_impl_.arresting_)*/ false
+
+  , /*decltype(_impl_.ground_sense_)*/ false
+
+  , /*decltype(_impl_.retracting_)*/ false
+
+  , /*decltype(_impl_.redeliver_)*/ false
+
+  , /*decltype(_impl_.abandon_line_)*/ false
+
+  , /*decltype(_impl_.locking_)*/ false
+
+  , /*decltype(_impl_.load_line_)*/ false
+
+  , /*decltype(_impl_.load_payload_)*/ false
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct StatusFlagsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StatusFlagsDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR StatusFlagsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~StatusFlagsDefaultTypeInternal() {}
   union {
     StatusFlags _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusFlagsDefaultTypeInternal _StatusFlags_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusFlagsDefaultTypeInternal _StatusFlags_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR Status::Status(
-    ::_pbi::ConstantInitialized)
-  : status_flags_(nullptr)
-  , time_usec_(uint64_t{0u})
-  , line_length_m_(0)
-  , speed_m_s_(0)
-  , tension_kg_(0)
-  , voltage_v_(0)
-  , current_a_(0)
-  , temperature_c_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.status_flags_)*/nullptr
+  , /*decltype(_impl_.time_usec_)*/ ::uint64_t{0u}
+
+  , /*decltype(_impl_.line_length_m_)*/ 0
+
+  , /*decltype(_impl_.speed_m_s_)*/ 0
+
+  , /*decltype(_impl_.tension_kg_)*/ 0
+
+  , /*decltype(_impl_.voltage_v_)*/ 0
+
+  , /*decltype(_impl_.current_a_)*/ 0
+
+  , /*decltype(_impl_.temperature_c_)*/ 0
+} {}
 struct StatusDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StatusDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR StatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~StatusDefaultTypeInternal() {}
   union {
     Status _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusDefaultTypeInternal _Status_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusDefaultTypeInternal _Status_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RelaxRequest::RelaxRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RelaxRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RelaxRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RelaxRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RelaxRequestDefaultTypeInternal() {}
   union {
     RelaxRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelaxRequestDefaultTypeInternal _RelaxRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelaxRequestDefaultTypeInternal _RelaxRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RelaxResponse::RelaxResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct RelaxResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RelaxResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RelaxResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RelaxResponseDefaultTypeInternal() {}
   union {
     RelaxResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelaxResponseDefaultTypeInternal _RelaxResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelaxResponseDefaultTypeInternal _RelaxResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RelativeLengthControlRequest::RelativeLengthControlRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u)
-  , length_m_(0)
-  , rate_m_s_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_.length_m_)*/ 0
+
+  , /*decltype(_impl_.rate_m_s_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RelativeLengthControlRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RelativeLengthControlRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RelativeLengthControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RelativeLengthControlRequestDefaultTypeInternal() {}
   union {
     RelativeLengthControlRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelativeLengthControlRequestDefaultTypeInternal _RelativeLengthControlRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelativeLengthControlRequestDefaultTypeInternal _RelativeLengthControlRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RelativeLengthControlResponse::RelativeLengthControlResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct RelativeLengthControlResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RelativeLengthControlResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RelativeLengthControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RelativeLengthControlResponseDefaultTypeInternal() {}
   union {
     RelativeLengthControlResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelativeLengthControlResponseDefaultTypeInternal _RelativeLengthControlResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RelativeLengthControlResponseDefaultTypeInternal _RelativeLengthControlResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RateControlRequest::RateControlRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u)
-  , rate_m_s_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_.rate_m_s_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RateControlRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RateControlRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RateControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RateControlRequestDefaultTypeInternal() {}
   union {
     RateControlRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RateControlRequestDefaultTypeInternal _RateControlRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RateControlRequestDefaultTypeInternal _RateControlRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RateControlResponse::RateControlResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct RateControlResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RateControlResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RateControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RateControlResponseDefaultTypeInternal() {}
   union {
     RateControlResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RateControlResponseDefaultTypeInternal _RateControlResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RateControlResponseDefaultTypeInternal _RateControlResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR LockRequest::LockRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct LockRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LockRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR LockRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~LockRequestDefaultTypeInternal() {}
   union {
     LockRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LockRequestDefaultTypeInternal _LockRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LockRequestDefaultTypeInternal _LockRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR LockResponse::LockResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct LockResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LockResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR LockResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~LockResponseDefaultTypeInternal() {}
   union {
     LockResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LockResponseDefaultTypeInternal _LockResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LockResponseDefaultTypeInternal _LockResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR DeliverRequest::DeliverRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct DeliverRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR DeliverRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR DeliverRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~DeliverRequestDefaultTypeInternal() {}
   union {
     DeliverRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeliverRequestDefaultTypeInternal _DeliverRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeliverRequestDefaultTypeInternal _DeliverRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR DeliverResponse::DeliverResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct DeliverResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR DeliverResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR DeliverResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~DeliverResponseDefaultTypeInternal() {}
   union {
     DeliverResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeliverResponseDefaultTypeInternal _DeliverResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeliverResponseDefaultTypeInternal _DeliverResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR HoldRequest::HoldRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct HoldRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR HoldRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR HoldRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~HoldRequestDefaultTypeInternal() {}
   union {
     HoldRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HoldRequestDefaultTypeInternal _HoldRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HoldRequestDefaultTypeInternal _HoldRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR HoldResponse::HoldResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct HoldResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR HoldResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR HoldResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~HoldResponseDefaultTypeInternal() {}
   union {
     HoldResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HoldResponseDefaultTypeInternal _HoldResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HoldResponseDefaultTypeInternal _HoldResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetractRequest::RetractRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RetractRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetractRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetractRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetractRequestDefaultTypeInternal() {}
   union {
     RetractRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetractRequestDefaultTypeInternal _RetractRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetractRequestDefaultTypeInternal _RetractRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR RetractResponse::RetractResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct RetractResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RetractResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR RetractResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~RetractResponseDefaultTypeInternal() {}
   union {
     RetractResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetractResponseDefaultTypeInternal _RetractResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RetractResponseDefaultTypeInternal _RetractResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR LoadLineRequest::LoadLineRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct LoadLineRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LoadLineRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR LoadLineRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~LoadLineRequestDefaultTypeInternal() {}
   union {
     LoadLineRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadLineRequestDefaultTypeInternal _LoadLineRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadLineRequestDefaultTypeInternal _LoadLineRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR LoadLineResponse::LoadLineResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct LoadLineResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LoadLineResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR LoadLineResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~LoadLineResponseDefaultTypeInternal() {}
   union {
     LoadLineResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadLineResponseDefaultTypeInternal _LoadLineResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadLineResponseDefaultTypeInternal _LoadLineResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR AbandonLineRequest::AbandonLineRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct AbandonLineRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AbandonLineRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR AbandonLineRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~AbandonLineRequestDefaultTypeInternal() {}
   union {
     AbandonLineRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AbandonLineRequestDefaultTypeInternal _AbandonLineRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AbandonLineRequestDefaultTypeInternal _AbandonLineRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR AbandonLineResponse::AbandonLineResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct AbandonLineResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AbandonLineResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR AbandonLineResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~AbandonLineResponseDefaultTypeInternal() {}
   union {
     AbandonLineResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AbandonLineResponseDefaultTypeInternal _AbandonLineResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AbandonLineResponseDefaultTypeInternal _AbandonLineResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR LoadPayloadRequest::LoadPayloadRequest(
-    ::_pbi::ConstantInitialized)
-  : instance_(0u){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.instance_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct LoadPayloadRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LoadPayloadRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR LoadPayloadRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~LoadPayloadRequestDefaultTypeInternal() {}
   union {
     LoadPayloadRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadPayloadRequestDefaultTypeInternal _LoadPayloadRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadPayloadRequestDefaultTypeInternal _LoadPayloadRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR LoadPayloadResponse::LoadPayloadResponse(
-    ::_pbi::ConstantInitialized)
-  : winch_result_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.winch_result_)*/nullptr} {}
 struct LoadPayloadResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LoadPayloadResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR LoadPayloadResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~LoadPayloadResponseDefaultTypeInternal() {}
   union {
     LoadPayloadResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadPayloadResponseDefaultTypeInternal _LoadPayloadResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadPayloadResponseDefaultTypeInternal _LoadPayloadResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR WinchResult::WinchResult(
-    ::_pbi::ConstantInitialized)
-  : result_str_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , result_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.result_str_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.result_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct WinchResultDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR WinchResultDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR WinchResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~WinchResultDefaultTypeInternal() {}
   union {
     WinchResult _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WinchResultDefaultTypeInternal _WinchResult_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WinchResultDefaultTypeInternal _WinchResult_default_instance_;
 }  // namespace winch
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_winch_2fwinch_2eproto[25];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_winch_2fwinch_2eproto[2];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_winch_2fwinch_2eproto = nullptr;
-
-const uint32_t TableStruct_winch_2fwinch_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::SubscribeStatusRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusResponse, status_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, healthy_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, fully_retracted_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, moving_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, clutch_engaged_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, locked_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, dropping_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, arresting_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, ground_sense_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, retracting_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, redeliver_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, abandon_line_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, locking_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, load_line_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, load_payload_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, time_usec_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, line_length_m_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, speed_m_s_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, tension_kg_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, voltage_v_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, current_a_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, temperature_c_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, status_flags_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, instance_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, length_m_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, rate_m_s_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlRequest, instance_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlRequest, rate_m_s_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadRequest, instance_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadResponse, winch_result_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::WinchResult, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::WinchResult, result_),
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::WinchResult, result_str_),
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_winch_2fwinch_2eproto = nullptr;
+const ::uint32_t TableStruct_winch_2fwinch_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::SubscribeStatusRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusResponse, _impl_.status_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.healthy_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.fully_retracted_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.moving_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.clutch_engaged_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.locked_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.dropping_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.arresting_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.ground_sense_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.retracting_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.redeliver_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.abandon_line_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.locking_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.load_line_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::StatusFlags, _impl_.load_payload_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.time_usec_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.line_length_m_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.speed_m_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.tension_kg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.voltage_v_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.current_a_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.temperature_c_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::Status, _impl_.status_flags_),
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelaxResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, _impl_.length_m_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlRequest, _impl_.rate_m_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RelativeLengthControlResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlRequest, _impl_.rate_m_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RateControlResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LockResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::DeliverResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::HoldResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::RetractResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadLineResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::AbandonLineResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadRequest, _impl_.instance_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::LoadPayloadResponse, _impl_.winch_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::WinchResult, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::WinchResult, _impl_.result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::winch::WinchResult, _impl_.result_str_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::mavsdk::rpc::winch::SubscribeStatusRequest)},
-  { 6, -1, -1, sizeof(::mavsdk::rpc::winch::StatusResponse)},
-  { 13, -1, -1, sizeof(::mavsdk::rpc::winch::StatusFlags)},
-  { 33, -1, -1, sizeof(::mavsdk::rpc::winch::Status)},
-  { 47, -1, -1, sizeof(::mavsdk::rpc::winch::RelaxRequest)},
-  { 54, -1, -1, sizeof(::mavsdk::rpc::winch::RelaxResponse)},
-  { 61, -1, -1, sizeof(::mavsdk::rpc::winch::RelativeLengthControlRequest)},
-  { 70, -1, -1, sizeof(::mavsdk::rpc::winch::RelativeLengthControlResponse)},
-  { 77, -1, -1, sizeof(::mavsdk::rpc::winch::RateControlRequest)},
-  { 85, -1, -1, sizeof(::mavsdk::rpc::winch::RateControlResponse)},
-  { 92, -1, -1, sizeof(::mavsdk::rpc::winch::LockRequest)},
-  { 99, -1, -1, sizeof(::mavsdk::rpc::winch::LockResponse)},
-  { 106, -1, -1, sizeof(::mavsdk::rpc::winch::DeliverRequest)},
-  { 113, -1, -1, sizeof(::mavsdk::rpc::winch::DeliverResponse)},
-  { 120, -1, -1, sizeof(::mavsdk::rpc::winch::HoldRequest)},
-  { 127, -1, -1, sizeof(::mavsdk::rpc::winch::HoldResponse)},
-  { 134, -1, -1, sizeof(::mavsdk::rpc::winch::RetractRequest)},
-  { 141, -1, -1, sizeof(::mavsdk::rpc::winch::RetractResponse)},
-  { 148, -1, -1, sizeof(::mavsdk::rpc::winch::LoadLineRequest)},
-  { 155, -1, -1, sizeof(::mavsdk::rpc::winch::LoadLineResponse)},
-  { 162, -1, -1, sizeof(::mavsdk::rpc::winch::AbandonLineRequest)},
-  { 169, -1, -1, sizeof(::mavsdk::rpc::winch::AbandonLineResponse)},
-  { 176, -1, -1, sizeof(::mavsdk::rpc::winch::LoadPayloadRequest)},
-  { 183, -1, -1, sizeof(::mavsdk::rpc::winch::LoadPayloadResponse)},
-  { 190, -1, -1, sizeof(::mavsdk::rpc::winch::WinchResult)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::mavsdk::rpc::winch::SubscribeStatusRequest)},
+        { 8, 17, -1, sizeof(::mavsdk::rpc::winch::StatusResponse)},
+        { 18, -1, -1, sizeof(::mavsdk::rpc::winch::StatusFlags)},
+        { 40, 56, -1, sizeof(::mavsdk::rpc::winch::Status)},
+        { 64, -1, -1, sizeof(::mavsdk::rpc::winch::RelaxRequest)},
+        { 73, 82, -1, sizeof(::mavsdk::rpc::winch::RelaxResponse)},
+        { 83, -1, -1, sizeof(::mavsdk::rpc::winch::RelativeLengthControlRequest)},
+        { 94, 103, -1, sizeof(::mavsdk::rpc::winch::RelativeLengthControlResponse)},
+        { 104, -1, -1, sizeof(::mavsdk::rpc::winch::RateControlRequest)},
+        { 114, 123, -1, sizeof(::mavsdk::rpc::winch::RateControlResponse)},
+        { 124, -1, -1, sizeof(::mavsdk::rpc::winch::LockRequest)},
+        { 133, 142, -1, sizeof(::mavsdk::rpc::winch::LockResponse)},
+        { 143, -1, -1, sizeof(::mavsdk::rpc::winch::DeliverRequest)},
+        { 152, 161, -1, sizeof(::mavsdk::rpc::winch::DeliverResponse)},
+        { 162, -1, -1, sizeof(::mavsdk::rpc::winch::HoldRequest)},
+        { 171, 180, -1, sizeof(::mavsdk::rpc::winch::HoldResponse)},
+        { 181, -1, -1, sizeof(::mavsdk::rpc::winch::RetractRequest)},
+        { 190, 199, -1, sizeof(::mavsdk::rpc::winch::RetractResponse)},
+        { 200, -1, -1, sizeof(::mavsdk::rpc::winch::LoadLineRequest)},
+        { 209, 218, -1, sizeof(::mavsdk::rpc::winch::LoadLineResponse)},
+        { 219, -1, -1, sizeof(::mavsdk::rpc::winch::AbandonLineRequest)},
+        { 228, 237, -1, sizeof(::mavsdk::rpc::winch::AbandonLineResponse)},
+        { 238, -1, -1, sizeof(::mavsdk::rpc::winch::LoadPayloadRequest)},
+        { 247, 256, -1, sizeof(::mavsdk::rpc::winch::LoadPayloadResponse)},
+        { 257, -1, -1, sizeof(::mavsdk::rpc::winch::WinchResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::mavsdk::rpc::winch::_SubscribeStatusRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_StatusResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_StatusFlags_default_instance_._instance,
-  &::mavsdk::rpc::winch::_Status_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RelaxRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RelaxResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RelativeLengthControlRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RelativeLengthControlResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RateControlRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RateControlResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_LockRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_LockResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_DeliverRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_DeliverResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_HoldRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_HoldResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RetractRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_RetractResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_LoadLineRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_LoadLineResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_AbandonLineRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_AbandonLineResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_LoadPayloadRequest_default_instance_._instance,
-  &::mavsdk::rpc::winch::_LoadPayloadResponse_default_instance_._instance,
-  &::mavsdk::rpc::winch::_WinchResult_default_instance_._instance,
+    &::mavsdk::rpc::winch::_SubscribeStatusRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_StatusResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_StatusFlags_default_instance_._instance,
+    &::mavsdk::rpc::winch::_Status_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RelaxRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RelaxResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RelativeLengthControlRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RelativeLengthControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RateControlRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RateControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_LockRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_LockResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_DeliverRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_DeliverResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_HoldRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_HoldResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RetractRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_RetractResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_LoadLineRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_LoadLineResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_AbandonLineRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_AbandonLineResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_LoadPayloadRequest_default_instance_._instance,
+    &::mavsdk::rpc::winch::_LoadPayloadResponse_default_instance_._instance,
+    &::mavsdk::rpc::winch::_WinchResult_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_winch_2fwinch_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\021winch/winch.proto\022\020mavsdk.rpc.winch\032\024m"
-  "avsdk_options.proto\"\030\n\026SubscribeStatusRe"
-  "quest\":\n\016StatusResponse\022(\n\006status\030\001 \001(\0132"
-  "\030.mavsdk.rpc.winch.Status\"\241\002\n\013StatusFlag"
-  "s\022\017\n\007healthy\030\001 \001(\010\022\027\n\017fully_retracted\030\002 "
-  "\001(\010\022\016\n\006moving\030\003 \001(\010\022\026\n\016clutch_engaged\030\004 "
-  "\001(\010\022\016\n\006locked\030\005 \001(\010\022\020\n\010dropping\030\006 \001(\010\022\021\n"
-  "\tarresting\030\007 \001(\010\022\024\n\014ground_sense\030\010 \001(\010\022\022"
-  "\n\nretracting\030\t \001(\010\022\021\n\tredeliver\030\n \001(\010\022\024\n"
-  "\014abandon_line\030\013 \001(\010\022\017\n\007locking\030\014 \001(\010\022\021\n\t"
-  "load_line\030\r \001(\010\022\024\n\014load_payload\030\016 \001(\010\"\313\001"
-  "\n\006Status\022\021\n\ttime_usec\030\001 \001(\004\022\025\n\rline_leng"
-  "th_m\030\002 \001(\002\022\021\n\tspeed_m_s\030\003 \001(\002\022\022\n\ntension"
-  "_kg\030\004 \001(\002\022\021\n\tvoltage_v\030\005 \001(\002\022\021\n\tcurrent_"
-  "a\030\006 \001(\002\022\025\n\rtemperature_c\030\007 \001(\005\0223\n\014status"
-  "_flags\030\010 \001(\0132\035.mavsdk.rpc.winch.StatusFl"
-  "ags\" \n\014RelaxRequest\022\020\n\010instance\030\001 \001(\r\"D\n"
-  "\rRelaxResponse\0223\n\014winch_result\030\001 \001(\0132\035.m"
-  "avsdk.rpc.winch.WinchResult\"]\n\034RelativeL"
-  "engthControlRequest\022\020\n\010instance\030\001 \001(\r\022\020\n"
-  "\010length_m\030\002 \001(\002\022\031\n\010rate_m_s\030\003 \001(\002B\007\202\265\030\003N"
-  "aN\"T\n\035RelativeLengthControlResponse\0223\n\014w"
-  "inch_result\030\001 \001(\0132\035.mavsdk.rpc.winch.Win"
-  "chResult\"8\n\022RateControlRequest\022\020\n\010instan"
-  "ce\030\001 \001(\r\022\020\n\010rate_m_s\030\002 \001(\002\"J\n\023RateContro"
-  "lResponse\0223\n\014winch_result\030\001 \001(\0132\035.mavsdk"
-  ".rpc.winch.WinchResult\"\037\n\013LockRequest\022\020\n"
-  "\010instance\030\001 \001(\r\"C\n\014LockResponse\0223\n\014winch"
-  "_result\030\001 \001(\0132\035.mavsdk.rpc.winch.WinchRe"
-  "sult\"\"\n\016DeliverRequest\022\020\n\010instance\030\001 \001(\r"
-  "\"F\n\017DeliverResponse\0223\n\014winch_result\030\001 \001("
-  "\0132\035.mavsdk.rpc.winch.WinchResult\"\037\n\013Hold"
-  "Request\022\020\n\010instance\030\001 \001(\r\"C\n\014HoldRespons"
-  "e\0223\n\014winch_result\030\001 \001(\0132\035.mavsdk.rpc.win"
-  "ch.WinchResult\"\"\n\016RetractRequest\022\020\n\010inst"
-  "ance\030\001 \001(\r\"F\n\017RetractResponse\0223\n\014winch_r"
-  "esult\030\001 \001(\0132\035.mavsdk.rpc.winch.WinchResu"
-  "lt\"#\n\017LoadLineRequest\022\020\n\010instance\030\001 \001(\r\""
-  "G\n\020LoadLineResponse\0223\n\014winch_result\030\001 \001("
-  "\0132\035.mavsdk.rpc.winch.WinchResult\"&\n\022Aban"
-  "donLineRequest\022\020\n\010instance\030\001 \001(\r\"J\n\023Aban"
-  "donLineResponse\0223\n\014winch_result\030\001 \001(\0132\035."
-  "mavsdk.rpc.winch.WinchResult\"&\n\022LoadPayl"
-  "oadRequest\022\020\n\010instance\030\001 \001(\r\"J\n\023LoadPayl"
-  "oadResponse\0223\n\014winch_result\030\001 \001(\0132\035.mavs"
-  "dk.rpc.winch.WinchResult\"\360\001\n\013WinchResult"
-  "\0224\n\006result\030\001 \001(\0162$.mavsdk.rpc.winch.Winc"
-  "hResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\226\001\n\006R"
-  "esult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCC"
-  "ESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\017\n\013RESULT_BU"
-  "SY\020\003\022\022\n\016RESULT_TIMEOUT\020\004\022\026\n\022RESULT_UNSUP"
-  "PORTED\020\005\022\021\n\rRESULT_FAILED\020\006*\254\002\n\013WinchAct"
-  "ion\022\030\n\024WINCH_ACTION_RELAXED\020\000\022(\n$WINCH_A"
-  "CTION_RELATIVE_LENGTH_CONTROL\020\001\022\035\n\031WINCH"
-  "_ACTION_RATE_CONTROL\020\002\022\025\n\021WINCH_ACTION_L"
-  "OCK\020\003\022\030\n\024WINCH_ACTION_DELIVER\020\004\022\025\n\021WINCH"
-  "_ACTION_HOLD\020\005\022\030\n\024WINCH_ACTION_RETRACT\020\006"
-  "\022\032\n\026WINCH_ACTION_LOAD_LINE\020\007\022\035\n\031WINCH_AC"
-  "TION_ABANDON_LINE\020\010\022\035\n\031WINCH_ACTION_LOAD"
-  "_PAYLOAD\020\t2\336\007\n\014WinchService\022a\n\017Subscribe"
-  "Status\022(.mavsdk.rpc.winch.SubscribeStatu"
-  "sRequest\032 .mavsdk.rpc.winch.StatusRespon"
-  "se\"\0000\001\022J\n\005Relax\022\036.mavsdk.rpc.winch.Relax"
-  "Request\032\037.mavsdk.rpc.winch.RelaxResponse"
-  "\"\000\022z\n\025RelativeLengthControl\022..mavsdk.rpc"
-  ".winch.RelativeLengthControlRequest\032/.ma"
-  "vsdk.rpc.winch.RelativeLengthControlResp"
-  "onse\"\000\022\\\n\013RateControl\022$.mavsdk.rpc.winch"
-  ".RateControlRequest\032%.mavsdk.rpc.winch.R"
-  "ateControlResponse\"\000\022G\n\004Lock\022\035.mavsdk.rp"
-  "c.winch.LockRequest\032\036.mavsdk.rpc.winch.L"
-  "ockResponse\"\000\022P\n\007Deliver\022 .mavsdk.rpc.wi"
-  "nch.DeliverRequest\032!.mavsdk.rpc.winch.De"
-  "liverResponse\"\000\022G\n\004Hold\022\035.mavsdk.rpc.win"
-  "ch.HoldRequest\032\036.mavsdk.rpc.winch.HoldRe"
-  "sponse\"\000\022P\n\007Retract\022 .mavsdk.rpc.winch.R"
-  "etractRequest\032!.mavsdk.rpc.winch.Retract"
-  "Response\"\000\022S\n\010LoadLine\022!.mavsdk.rpc.winc"
-  "h.LoadLineRequest\032\".mavsdk.rpc.winch.Loa"
-  "dLineResponse\"\000\022\\\n\013AbandonLine\022$.mavsdk."
-  "rpc.winch.AbandonLineRequest\032%.mavsdk.rp"
-  "c.winch.AbandonLineResponse\"\000\022\\\n\013LoadPay"
-  "load\022$.mavsdk.rpc.winch.LoadPayloadReque"
-  "st\032%.mavsdk.rpc.winch.LoadPayloadRespons"
-  "e\"\000B\035\n\017io.mavsdk.winchB\nWinchProtob\006prot"
-  "o3"
-  ;
-static const ::_pbi::DescriptorTable* const descriptor_table_winch_2fwinch_2eproto_deps[1] = {
-  &::descriptor_table_mavsdk_5foptions_2eproto,
+const char descriptor_table_protodef_winch_2fwinch_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\021winch/winch.proto\022\020mavsdk.rpc.winch\032\024m"
+    "avsdk_options.proto\"\030\n\026SubscribeStatusRe"
+    "quest\":\n\016StatusResponse\022(\n\006status\030\001 \001(\0132"
+    "\030.mavsdk.rpc.winch.Status\"\241\002\n\013StatusFlag"
+    "s\022\017\n\007healthy\030\001 \001(\010\022\027\n\017fully_retracted\030\002 "
+    "\001(\010\022\016\n\006moving\030\003 \001(\010\022\026\n\016clutch_engaged\030\004 "
+    "\001(\010\022\016\n\006locked\030\005 \001(\010\022\020\n\010dropping\030\006 \001(\010\022\021\n"
+    "\tarresting\030\007 \001(\010\022\024\n\014ground_sense\030\010 \001(\010\022\022"
+    "\n\nretracting\030\t \001(\010\022\021\n\tredeliver\030\n \001(\010\022\024\n"
+    "\014abandon_line\030\013 \001(\010\022\017\n\007locking\030\014 \001(\010\022\021\n\t"
+    "load_line\030\r \001(\010\022\024\n\014load_payload\030\016 \001(\010\"\313\001"
+    "\n\006Status\022\021\n\ttime_usec\030\001 \001(\004\022\025\n\rline_leng"
+    "th_m\030\002 \001(\002\022\021\n\tspeed_m_s\030\003 \001(\002\022\022\n\ntension"
+    "_kg\030\004 \001(\002\022\021\n\tvoltage_v\030\005 \001(\002\022\021\n\tcurrent_"
+    "a\030\006 \001(\002\022\025\n\rtemperature_c\030\007 \001(\005\0223\n\014status"
+    "_flags\030\010 \001(\0132\035.mavsdk.rpc.winch.StatusFl"
+    "ags\" \n\014RelaxRequest\022\020\n\010instance\030\001 \001(\r\"D\n"
+    "\rRelaxResponse\0223\n\014winch_result\030\001 \001(\0132\035.m"
+    "avsdk.rpc.winch.WinchResult\"]\n\034RelativeL"
+    "engthControlRequest\022\020\n\010instance\030\001 \001(\r\022\020\n"
+    "\010length_m\030\002 \001(\002\022\031\n\010rate_m_s\030\003 \001(\002B\007\202\265\030\003N"
+    "aN\"T\n\035RelativeLengthControlResponse\0223\n\014w"
+    "inch_result\030\001 \001(\0132\035.mavsdk.rpc.winch.Win"
+    "chResult\"8\n\022RateControlRequest\022\020\n\010instan"
+    "ce\030\001 \001(\r\022\020\n\010rate_m_s\030\002 \001(\002\"J\n\023RateContro"
+    "lResponse\0223\n\014winch_result\030\001 \001(\0132\035.mavsdk"
+    ".rpc.winch.WinchResult\"\037\n\013LockRequest\022\020\n"
+    "\010instance\030\001 \001(\r\"C\n\014LockResponse\0223\n\014winch"
+    "_result\030\001 \001(\0132\035.mavsdk.rpc.winch.WinchRe"
+    "sult\"\"\n\016DeliverRequest\022\020\n\010instance\030\001 \001(\r"
+    "\"F\n\017DeliverResponse\0223\n\014winch_result\030\001 \001("
+    "\0132\035.mavsdk.rpc.winch.WinchResult\"\037\n\013Hold"
+    "Request\022\020\n\010instance\030\001 \001(\r\"C\n\014HoldRespons"
+    "e\0223\n\014winch_result\030\001 \001(\0132\035.mavsdk.rpc.win"
+    "ch.WinchResult\"\"\n\016RetractRequest\022\020\n\010inst"
+    "ance\030\001 \001(\r\"F\n\017RetractResponse\0223\n\014winch_r"
+    "esult\030\001 \001(\0132\035.mavsdk.rpc.winch.WinchResu"
+    "lt\"#\n\017LoadLineRequest\022\020\n\010instance\030\001 \001(\r\""
+    "G\n\020LoadLineResponse\0223\n\014winch_result\030\001 \001("
+    "\0132\035.mavsdk.rpc.winch.WinchResult\"&\n\022Aban"
+    "donLineRequest\022\020\n\010instance\030\001 \001(\r\"J\n\023Aban"
+    "donLineResponse\0223\n\014winch_result\030\001 \001(\0132\035."
+    "mavsdk.rpc.winch.WinchResult\"&\n\022LoadPayl"
+    "oadRequest\022\020\n\010instance\030\001 \001(\r\"J\n\023LoadPayl"
+    "oadResponse\0223\n\014winch_result\030\001 \001(\0132\035.mavs"
+    "dk.rpc.winch.WinchResult\"\360\001\n\013WinchResult"
+    "\0224\n\006result\030\001 \001(\0162$.mavsdk.rpc.winch.Winc"
+    "hResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\226\001\n\006R"
+    "esult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCC"
+    "ESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\017\n\013RESULT_BU"
+    "SY\020\003\022\022\n\016RESULT_TIMEOUT\020\004\022\026\n\022RESULT_UNSUP"
+    "PORTED\020\005\022\021\n\rRESULT_FAILED\020\006*\254\002\n\013WinchAct"
+    "ion\022\030\n\024WINCH_ACTION_RELAXED\020\000\022(\n$WINCH_A"
+    "CTION_RELATIVE_LENGTH_CONTROL\020\001\022\035\n\031WINCH"
+    "_ACTION_RATE_CONTROL\020\002\022\025\n\021WINCH_ACTION_L"
+    "OCK\020\003\022\030\n\024WINCH_ACTION_DELIVER\020\004\022\025\n\021WINCH"
+    "_ACTION_HOLD\020\005\022\030\n\024WINCH_ACTION_RETRACT\020\006"
+    "\022\032\n\026WINCH_ACTION_LOAD_LINE\020\007\022\035\n\031WINCH_AC"
+    "TION_ABANDON_LINE\020\010\022\035\n\031WINCH_ACTION_LOAD"
+    "_PAYLOAD\020\t2\336\007\n\014WinchService\022a\n\017Subscribe"
+    "Status\022(.mavsdk.rpc.winch.SubscribeStatu"
+    "sRequest\032 .mavsdk.rpc.winch.StatusRespon"
+    "se\"\0000\001\022J\n\005Relax\022\036.mavsdk.rpc.winch.Relax"
+    "Request\032\037.mavsdk.rpc.winch.RelaxResponse"
+    "\"\000\022z\n\025RelativeLengthControl\022..mavsdk.rpc"
+    ".winch.RelativeLengthControlRequest\032/.ma"
+    "vsdk.rpc.winch.RelativeLengthControlResp"
+    "onse\"\000\022\\\n\013RateControl\022$.mavsdk.rpc.winch"
+    ".RateControlRequest\032%.mavsdk.rpc.winch.R"
+    "ateControlResponse\"\000\022G\n\004Lock\022\035.mavsdk.rp"
+    "c.winch.LockRequest\032\036.mavsdk.rpc.winch.L"
+    "ockResponse\"\000\022P\n\007Deliver\022 .mavsdk.rpc.wi"
+    "nch.DeliverRequest\032!.mavsdk.rpc.winch.De"
+    "liverResponse\"\000\022G\n\004Hold\022\035.mavsdk.rpc.win"
+    "ch.HoldRequest\032\036.mavsdk.rpc.winch.HoldRe"
+    "sponse\"\000\022P\n\007Retract\022 .mavsdk.rpc.winch.R"
+    "etractRequest\032!.mavsdk.rpc.winch.Retract"
+    "Response\"\000\022S\n\010LoadLine\022!.mavsdk.rpc.winc"
+    "h.LoadLineRequest\032\".mavsdk.rpc.winch.Loa"
+    "dLineResponse\"\000\022\\\n\013AbandonLine\022$.mavsdk."
+    "rpc.winch.AbandonLineRequest\032%.mavsdk.rp"
+    "c.winch.AbandonLineResponse\"\000\022\\\n\013LoadPay"
+    "load\022$.mavsdk.rpc.winch.LoadPayloadReque"
+    "st\032%.mavsdk.rpc.winch.LoadPayloadRespons"
+    "e\"\000B\035\n\017io.mavsdk.winchB\nWinchProtob\006prot"
+    "o3"
 };
-static ::_pbi::once_flag descriptor_table_winch_2fwinch_2eproto_once;
+static const ::_pbi::DescriptorTable* const descriptor_table_winch_2fwinch_2eproto_deps[1] =
+    {
+        &::descriptor_table_mavsdk_5foptions_2eproto,
+};
+static ::absl::once_flag descriptor_table_winch_2fwinch_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_winch_2fwinch_2eproto = {
-    false, false, 3402, descriptor_table_protodef_winch_2fwinch_2eproto,
+    false,
+    false,
+    3402,
+    descriptor_table_protodef_winch_2fwinch_2eproto,
     "winch/winch.proto",
-    &descriptor_table_winch_2fwinch_2eproto_once, descriptor_table_winch_2fwinch_2eproto_deps, 1, 25,
-    schemas, file_default_instances, TableStruct_winch_2fwinch_2eproto::offsets,
-    file_level_metadata_winch_2fwinch_2eproto, file_level_enum_descriptors_winch_2fwinch_2eproto,
+    &descriptor_table_winch_2fwinch_2eproto_once,
+    descriptor_table_winch_2fwinch_2eproto_deps,
+    1,
+    25,
+    schemas,
+    file_default_instances,
+    TableStruct_winch_2fwinch_2eproto::offsets,
+    file_level_metadata_winch_2fwinch_2eproto,
+    file_level_enum_descriptors_winch_2fwinch_2eproto,
     file_level_service_descriptors_winch_2fwinch_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_winch_2fwinch_2eproto_getter() {
   return &descriptor_table_winch_2fwinch_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_winch_2fwinch_2eproto(&descriptor_table_winch_2fwinch_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_winch_2fwinch_2eproto(&descriptor_table_winch_2fwinch_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace winch {
@@ -737,8 +951,9 @@ bool WinchResult_Result_IsValid(int value) {
       return false;
   }
 }
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr WinchResult_Result WinchResult::RESULT_UNKNOWN;
 constexpr WinchResult_Result WinchResult::RESULT_SUCCESS;
 constexpr WinchResult_Result WinchResult::RESULT_NO_SYSTEM;
@@ -749,7 +964,9 @@ constexpr WinchResult_Result WinchResult::RESULT_FAILED;
 constexpr WinchResult_Result WinchResult::Result_MIN;
 constexpr WinchResult_Result WinchResult::Result_MAX;
 constexpr int WinchResult::Result_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* WinchAction_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_winch_2fwinch_2eproto);
   return file_level_enum_descriptors_winch_2fwinch_2eproto[1];
@@ -771,21 +988,19 @@ bool WinchAction_IsValid(int value) {
       return false;
   }
 }
-
-
 // ===================================================================
 
 class SubscribeStatusRequest::_Internal {
  public:
 };
 
-SubscribeStatusRequest::SubscribeStatusRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+SubscribeStatusRequest::SubscribeStatusRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.SubscribeStatusRequest)
 }
 SubscribeStatusRequest::SubscribeStatusRequest(const SubscribeStatusRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  SubscribeStatusRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.SubscribeStatusRequest)
 }
@@ -811,37 +1026,50 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeStatusRequest::GetCla
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[0]);
 }
-
 // ===================================================================
 
 class StatusResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<StatusResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(StatusResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::Status& status(const StatusResponse* msg);
+  static void set_has_status(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::Status&
 StatusResponse::_Internal::status(const StatusResponse* msg) {
-  return *msg->status_;
+  return *msg->_impl_.status_;
 }
-StatusResponse::StatusResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+StatusResponse::StatusResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.StatusResponse)
 }
 StatusResponse::StatusResponse(const StatusResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  StatusResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.status_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_status()) {
-    status_ = new ::mavsdk::rpc::winch::Status(*from.status_);
-  } else {
-    status_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.status_ = new ::mavsdk::rpc::winch::Status(*from._impl_.status_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.StatusResponse)
 }
 
-inline void StatusResponse::SharedCtor() {
-status_ = nullptr;
+inline void StatusResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.status_){nullptr}
+  };
 }
 
 StatusResponse::~StatusResponse() {
@@ -854,40 +1082,44 @@ StatusResponse::~StatusResponse() {
 }
 
 inline void StatusResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete status_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.status_;
 }
 
 void StatusResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void StatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.StatusResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && status_ != nullptr) {
-    delete status_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.status_ != nullptr);
+    _impl_.status_->Clear();
   }
-  status_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StatusResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.Status status = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_status(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -905,6 +1137,7 @@ const char* StatusResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -912,14 +1145,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* StatusResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* StatusResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.StatusResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.Status status = 1;
-  if (this->_internal_has_status()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::status(this),
         _Internal::status(this).GetCachedSize(), target, stream);
@@ -933,47 +1167,45 @@ uint8_t* StatusResponse::_InternalSerialize(
   return target;
 }
 
-size_t StatusResponse::ByteSizeLong() const {
+::size_t StatusResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.StatusResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.Status status = 1;
-  if (this->_internal_has_status()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *status_);
+        *_impl_.status_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData StatusResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     StatusResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StatusResponse::GetClassData() const { return &_class_data_; }
 
-void StatusResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<StatusResponse *>(to)->MergeFrom(
-      static_cast<const StatusResponse &>(from));
-}
 
-
-void StatusResponse::MergeFrom(const StatusResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.StatusResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void StatusResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<StatusResponse*>(&to_msg);
+  auto& from = static_cast<const StatusResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.StatusResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_status()) {
-    _internal_mutable_status()->::mavsdk::rpc::winch::Status::MergeFrom(from._internal_status());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_status()->::mavsdk::rpc::winch::Status::MergeFrom(
+        from._internal_status());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void StatusResponse::CopyFrom(const StatusResponse& from) {
@@ -990,7 +1222,8 @@ bool StatusResponse::IsInitialized() const {
 void StatusResponse::InternalSwap(StatusResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(status_, other->status_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.status_, other->_impl_.status_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StatusResponse::GetMetadata() const {
@@ -998,33 +1231,57 @@ void StatusResponse::InternalSwap(StatusResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[1]);
 }
-
 // ===================================================================
 
 class StatusFlags::_Internal {
  public:
 };
 
-StatusFlags::StatusFlags(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+StatusFlags::StatusFlags(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.StatusFlags)
 }
 StatusFlags::StatusFlags(const StatusFlags& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&healthy_, &from.healthy_,
-    static_cast<size_t>(reinterpret_cast<char*>(&load_payload_) -
-    reinterpret_cast<char*>(&healthy_)) + sizeof(load_payload_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.StatusFlags)
 }
 
-inline void StatusFlags::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&healthy_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&load_payload_) -
-    reinterpret_cast<char*>(&healthy_)) + sizeof(load_payload_));
+inline void StatusFlags::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.healthy_) { false }
+
+    , decltype(_impl_.fully_retracted_) { false }
+
+    , decltype(_impl_.moving_) { false }
+
+    , decltype(_impl_.clutch_engaged_) { false }
+
+    , decltype(_impl_.locked_) { false }
+
+    , decltype(_impl_.dropping_) { false }
+
+    , decltype(_impl_.arresting_) { false }
+
+    , decltype(_impl_.ground_sense_) { false }
+
+    , decltype(_impl_.retracting_) { false }
+
+    , decltype(_impl_.redeliver_) { false }
+
+    , decltype(_impl_.abandon_line_) { false }
+
+    , decltype(_impl_.locking_) { false }
+
+    , decltype(_impl_.load_line_) { false }
+
+    , decltype(_impl_.load_payload_) { false }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 StatusFlags::~StatusFlags() {
@@ -1037,142 +1294,156 @@ StatusFlags::~StatusFlags() {
 }
 
 inline void StatusFlags::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void StatusFlags::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void StatusFlags::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.StatusFlags)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&healthy_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&load_payload_) -
-      reinterpret_cast<char*>(&healthy_)) + sizeof(load_payload_));
+  ::memset(&_impl_.healthy_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.load_payload_) -
+      reinterpret_cast<char*>(&_impl_.healthy_)) + sizeof(_impl_.load_payload_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* StatusFlags::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // bool healthy = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          healthy_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.healthy_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool fully_retracted = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          fully_retracted_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.fully_retracted_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool moving = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          moving_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
+          _impl_.moving_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool clutch_engaged = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          clutch_engaged_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
+          _impl_.clutch_engaged_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool locked = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          locked_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 40)) {
+          _impl_.locked_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool dropping = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
-          dropping_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 48)) {
+          _impl_.dropping_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool arresting = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
-          arresting_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 56)) {
+          _impl_.arresting_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool ground_sense = 8;
       case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
-          ground_sense_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 64)) {
+          _impl_.ground_sense_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool retracting = 9;
       case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
-          retracting_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 72)) {
+          _impl_.retracting_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool redeliver = 10;
       case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
-          redeliver_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 80)) {
+          _impl_.redeliver_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool abandon_line = 11;
       case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
-          abandon_line_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 88)) {
+          _impl_.abandon_line_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool locking = 12;
       case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 96)) {
-          locking_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 96)) {
+          _impl_.locking_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool load_line = 13;
       case 13:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 104)) {
-          load_line_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 104)) {
+          _impl_.load_line_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bool load_payload = 14;
       case 14:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 112)) {
-          load_payload_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 112)) {
+          _impl_.load_payload_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1197,94 +1468,108 @@ failure:
 #undef CHK_
 }
 
-uint8_t* StatusFlags::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* StatusFlags::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.StatusFlags)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bool healthy = 1;
   if (this->_internal_healthy() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_healthy(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        1, this->_internal_healthy(), target);
   }
 
   // bool fully_retracted = 2;
   if (this->_internal_fully_retracted() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(2, this->_internal_fully_retracted(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        2, this->_internal_fully_retracted(), target);
   }
 
   // bool moving = 3;
   if (this->_internal_moving() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(3, this->_internal_moving(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        3, this->_internal_moving(), target);
   }
 
   // bool clutch_engaged = 4;
   if (this->_internal_clutch_engaged() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(4, this->_internal_clutch_engaged(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        4, this->_internal_clutch_engaged(), target);
   }
 
   // bool locked = 5;
   if (this->_internal_locked() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_locked(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        5, this->_internal_locked(), target);
   }
 
   // bool dropping = 6;
   if (this->_internal_dropping() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(6, this->_internal_dropping(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        6, this->_internal_dropping(), target);
   }
 
   // bool arresting = 7;
   if (this->_internal_arresting() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(7, this->_internal_arresting(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        7, this->_internal_arresting(), target);
   }
 
   // bool ground_sense = 8;
   if (this->_internal_ground_sense() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(8, this->_internal_ground_sense(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        8, this->_internal_ground_sense(), target);
   }
 
   // bool retracting = 9;
   if (this->_internal_retracting() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(9, this->_internal_retracting(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        9, this->_internal_retracting(), target);
   }
 
   // bool redeliver = 10;
   if (this->_internal_redeliver() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(10, this->_internal_redeliver(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        10, this->_internal_redeliver(), target);
   }
 
   // bool abandon_line = 11;
   if (this->_internal_abandon_line() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(11, this->_internal_abandon_line(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        11, this->_internal_abandon_line(), target);
   }
 
   // bool locking = 12;
   if (this->_internal_locking() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(12, this->_internal_locking(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        12, this->_internal_locking(), target);
   }
 
   // bool load_line = 13;
   if (this->_internal_load_line() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(13, this->_internal_load_line(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        13, this->_internal_load_line(), target);
   }
 
   // bool load_payload = 14;
   if (this->_internal_load_payload() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(14, this->_internal_load_payload(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        14, this->_internal_load_payload(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1295,149 +1580,145 @@ uint8_t* StatusFlags::_InternalSerialize(
   return target;
 }
 
-size_t StatusFlags::ByteSizeLong() const {
+::size_t StatusFlags::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.StatusFlags)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // bool healthy = 1;
   if (this->_internal_healthy() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool fully_retracted = 2;
   if (this->_internal_fully_retracted() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool moving = 3;
   if (this->_internal_moving() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool clutch_engaged = 4;
   if (this->_internal_clutch_engaged() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool locked = 5;
   if (this->_internal_locked() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool dropping = 6;
   if (this->_internal_dropping() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool arresting = 7;
   if (this->_internal_arresting() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool ground_sense = 8;
   if (this->_internal_ground_sense() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool retracting = 9;
   if (this->_internal_retracting() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool redeliver = 10;
   if (this->_internal_redeliver() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool abandon_line = 11;
   if (this->_internal_abandon_line() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool locking = 12;
   if (this->_internal_locking() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool load_line = 13;
   if (this->_internal_load_line() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // bool load_payload = 14;
   if (this->_internal_load_payload() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData StatusFlags::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     StatusFlags::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StatusFlags::GetClassData() const { return &_class_data_; }
 
-void StatusFlags::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<StatusFlags *>(to)->MergeFrom(
-      static_cast<const StatusFlags &>(from));
-}
 
-
-void StatusFlags::MergeFrom(const StatusFlags& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.StatusFlags)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void StatusFlags::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<StatusFlags*>(&to_msg);
+  auto& from = static_cast<const StatusFlags&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.StatusFlags)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_healthy() != 0) {
-    _internal_set_healthy(from._internal_healthy());
+    _this->_internal_set_healthy(from._internal_healthy());
   }
   if (from._internal_fully_retracted() != 0) {
-    _internal_set_fully_retracted(from._internal_fully_retracted());
+    _this->_internal_set_fully_retracted(from._internal_fully_retracted());
   }
   if (from._internal_moving() != 0) {
-    _internal_set_moving(from._internal_moving());
+    _this->_internal_set_moving(from._internal_moving());
   }
   if (from._internal_clutch_engaged() != 0) {
-    _internal_set_clutch_engaged(from._internal_clutch_engaged());
+    _this->_internal_set_clutch_engaged(from._internal_clutch_engaged());
   }
   if (from._internal_locked() != 0) {
-    _internal_set_locked(from._internal_locked());
+    _this->_internal_set_locked(from._internal_locked());
   }
   if (from._internal_dropping() != 0) {
-    _internal_set_dropping(from._internal_dropping());
+    _this->_internal_set_dropping(from._internal_dropping());
   }
   if (from._internal_arresting() != 0) {
-    _internal_set_arresting(from._internal_arresting());
+    _this->_internal_set_arresting(from._internal_arresting());
   }
   if (from._internal_ground_sense() != 0) {
-    _internal_set_ground_sense(from._internal_ground_sense());
+    _this->_internal_set_ground_sense(from._internal_ground_sense());
   }
   if (from._internal_retracting() != 0) {
-    _internal_set_retracting(from._internal_retracting());
+    _this->_internal_set_retracting(from._internal_retracting());
   }
   if (from._internal_redeliver() != 0) {
-    _internal_set_redeliver(from._internal_redeliver());
+    _this->_internal_set_redeliver(from._internal_redeliver());
   }
   if (from._internal_abandon_line() != 0) {
-    _internal_set_abandon_line(from._internal_abandon_line());
+    _this->_internal_set_abandon_line(from._internal_abandon_line());
   }
   if (from._internal_locking() != 0) {
-    _internal_set_locking(from._internal_locking());
+    _this->_internal_set_locking(from._internal_locking());
   }
   if (from._internal_load_line() != 0) {
-    _internal_set_load_line(from._internal_load_line());
+    _this->_internal_set_load_line(from._internal_load_line());
   }
   if (from._internal_load_payload() != 0) {
-    _internal_set_load_payload(from._internal_load_payload());
+    _this->_internal_set_load_payload(from._internal_load_payload());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void StatusFlags::CopyFrom(const StatusFlags& from) {
@@ -1455,11 +1736,11 @@ void StatusFlags::InternalSwap(StatusFlags* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(StatusFlags, load_payload_)
-      + sizeof(StatusFlags::load_payload_)
-      - PROTOBUF_FIELD_OFFSET(StatusFlags, healthy_)>(
-          reinterpret_cast<char*>(&healthy_),
-          reinterpret_cast<char*>(&other->healthy_));
+      PROTOBUF_FIELD_OFFSET(StatusFlags, _impl_.load_payload_)
+      + sizeof(StatusFlags::_impl_.load_payload_)
+      - PROTOBUF_FIELD_OFFSET(StatusFlags, _impl_.healthy_)>(
+          reinterpret_cast<char*>(&_impl_.healthy_),
+          reinterpret_cast<char*>(&other->_impl_.healthy_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StatusFlags::GetMetadata() const {
@@ -1467,43 +1748,81 @@ void StatusFlags::InternalSwap(StatusFlags* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[2]);
 }
-
 // ===================================================================
 
 class Status::_Internal {
  public:
+  using HasBits = decltype(std::declval<Status>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(Status, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::StatusFlags& status_flags(const Status* msg);
+  static void set_has_status_flags(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::StatusFlags&
 Status::_Internal::status_flags(const Status* msg) {
-  return *msg->status_flags_;
+  return *msg->_impl_.status_flags_;
 }
-Status::Status(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+Status::Status(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.Status)
 }
 Status::Status(const Status& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Status* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.status_flags_){nullptr}
+    , decltype(_impl_.time_usec_) {}
+
+    , decltype(_impl_.line_length_m_) {}
+
+    , decltype(_impl_.speed_m_s_) {}
+
+    , decltype(_impl_.tension_kg_) {}
+
+    , decltype(_impl_.voltage_v_) {}
+
+    , decltype(_impl_.current_a_) {}
+
+    , decltype(_impl_.temperature_c_) {}
+  };
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_status_flags()) {
-    status_flags_ = new ::mavsdk::rpc::winch::StatusFlags(*from.status_flags_);
-  } else {
-    status_flags_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.status_flags_ = new ::mavsdk::rpc::winch::StatusFlags(*from._impl_.status_flags_);
   }
-  ::memcpy(&time_usec_, &from.time_usec_,
-    static_cast<size_t>(reinterpret_cast<char*>(&temperature_c_) -
-    reinterpret_cast<char*>(&time_usec_)) + sizeof(temperature_c_));
+  ::memcpy(&_impl_.time_usec_, &from._impl_.time_usec_,
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.temperature_c_) -
+    reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.temperature_c_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.Status)
 }
 
-inline void Status::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&status_flags_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&temperature_c_) -
-    reinterpret_cast<char*>(&status_flags_)) + sizeof(temperature_c_));
+inline void Status::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.status_flags_){nullptr}
+    , decltype(_impl_.time_usec_) { ::uint64_t{0u} }
+
+    , decltype(_impl_.line_length_m_) { 0 }
+
+    , decltype(_impl_.speed_m_s_) { 0 }
+
+    , decltype(_impl_.tension_kg_) { 0 }
+
+    , decltype(_impl_.voltage_v_) { 0 }
+
+    , decltype(_impl_.current_a_) { 0 }
+
+    , decltype(_impl_.temperature_c_) { 0 }
+
+  };
 }
 
 Status::~Status() {
@@ -1516,99 +1835,110 @@ Status::~Status() {
 }
 
 inline void Status::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete status_flags_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.status_flags_;
 }
 
 void Status::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Status::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.Status)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && status_flags_ != nullptr) {
-    delete status_flags_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.status_flags_ != nullptr);
+    _impl_.status_flags_->Clear();
   }
-  status_flags_ = nullptr;
-  ::memset(&time_usec_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&temperature_c_) -
-      reinterpret_cast<char*>(&time_usec_)) + sizeof(temperature_c_));
+  ::memset(&_impl_.time_usec_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.temperature_c_) -
+      reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.temperature_c_));
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Status::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint64 time_usec = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float line_length_m = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          line_length_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.line_length_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float speed_m_s = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
-          speed_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
+          _impl_.speed_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float tension_kg = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
-          tension_kg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
+          _impl_.tension_kg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float voltage_v = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 45)) {
-          voltage_v_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 45)) {
+          _impl_.voltage_v_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float current_a = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 53)) {
-          current_a_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 53)) {
+          _impl_.current_a_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // int32 temperature_c = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
-          temperature_c_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 56)) {
+          _impl_.temperature_c_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // .mavsdk.rpc.winch.StatusFlags status_flags = 8;
       case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 66)) {
           ptr = ctx->ParseMessage(_internal_mutable_status_flags(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1626,6 +1956,7 @@ const char* Status::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1633,76 +1964,84 @@ failure:
 #undef CHK_
 }
 
-uint8_t* Status::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* Status::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.Status)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint64 time_usec = 1;
   if (this->_internal_time_usec() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time_usec(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+        1, this->_internal_time_usec(), target);
   }
 
   // float line_length_m = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_line_length_m = this->_internal_line_length_m();
-  uint32_t raw_line_length_m;
+  ::uint32_t raw_line_length_m;
   memcpy(&raw_line_length_m, &tmp_line_length_m, sizeof(tmp_line_length_m));
   if (raw_line_length_m != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_line_length_m(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_line_length_m(), target);
   }
 
   // float speed_m_s = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_speed_m_s = this->_internal_speed_m_s();
-  uint32_t raw_speed_m_s;
+  ::uint32_t raw_speed_m_s;
   memcpy(&raw_speed_m_s, &tmp_speed_m_s, sizeof(tmp_speed_m_s));
   if (raw_speed_m_s != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_speed_m_s(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_speed_m_s(), target);
   }
 
   // float tension_kg = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_tension_kg = this->_internal_tension_kg();
-  uint32_t raw_tension_kg;
+  ::uint32_t raw_tension_kg;
   memcpy(&raw_tension_kg, &tmp_tension_kg, sizeof(tmp_tension_kg));
   if (raw_tension_kg != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(4, this->_internal_tension_kg(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        4, this->_internal_tension_kg(), target);
   }
 
   // float voltage_v = 5;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_voltage_v = this->_internal_voltage_v();
-  uint32_t raw_voltage_v;
+  ::uint32_t raw_voltage_v;
   memcpy(&raw_voltage_v, &tmp_voltage_v, sizeof(tmp_voltage_v));
   if (raw_voltage_v != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(5, this->_internal_voltage_v(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        5, this->_internal_voltage_v(), target);
   }
 
   // float current_a = 6;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_current_a = this->_internal_current_a();
-  uint32_t raw_current_a;
+  ::uint32_t raw_current_a;
   memcpy(&raw_current_a, &tmp_current_a, sizeof(tmp_current_a));
   if (raw_current_a != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(6, this->_internal_current_a(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        6, this->_internal_current_a(), target);
   }
 
   // int32 temperature_c = 7;
   if (this->_internal_temperature_c() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(7, this->_internal_temperature_c(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        7, this->_internal_temperature_c(), target);
   }
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.StatusFlags status_flags = 8;
-  if (this->_internal_has_status_flags()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(8, _Internal::status_flags(this),
         _Internal::status_flags(this).GetCachedSize(), target, stream);
@@ -1716,143 +2055,143 @@ uint8_t* Status::_InternalSerialize(
   return target;
 }
 
-size_t Status::ByteSizeLong() const {
+::size_t Status::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.Status)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.StatusFlags status_flags = 8;
-  if (this->_internal_has_status_flags()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *status_flags_);
+        *_impl_.status_flags_);
   }
 
   // uint64 time_usec = 1;
   if (this->_internal_time_usec() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_time_usec());
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+        this->_internal_time_usec());
   }
 
   // float line_length_m = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_line_length_m = this->_internal_line_length_m();
-  uint32_t raw_line_length_m;
+  ::uint32_t raw_line_length_m;
   memcpy(&raw_line_length_m, &tmp_line_length_m, sizeof(tmp_line_length_m));
   if (raw_line_length_m != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float speed_m_s = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_speed_m_s = this->_internal_speed_m_s();
-  uint32_t raw_speed_m_s;
+  ::uint32_t raw_speed_m_s;
   memcpy(&raw_speed_m_s, &tmp_speed_m_s, sizeof(tmp_speed_m_s));
   if (raw_speed_m_s != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float tension_kg = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_tension_kg = this->_internal_tension_kg();
-  uint32_t raw_tension_kg;
+  ::uint32_t raw_tension_kg;
   memcpy(&raw_tension_kg, &tmp_tension_kg, sizeof(tmp_tension_kg));
   if (raw_tension_kg != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float voltage_v = 5;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_voltage_v = this->_internal_voltage_v();
-  uint32_t raw_voltage_v;
+  ::uint32_t raw_voltage_v;
   memcpy(&raw_voltage_v, &tmp_voltage_v, sizeof(tmp_voltage_v));
   if (raw_voltage_v != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float current_a = 6;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_current_a = this->_internal_current_a();
-  uint32_t raw_current_a;
+  ::uint32_t raw_current_a;
   memcpy(&raw_current_a, &tmp_current_a, sizeof(tmp_current_a));
   if (raw_current_a != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // int32 temperature_c = 7;
   if (this->_internal_temperature_c() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_temperature_c());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_temperature_c());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Status::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Status::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Status::GetClassData() const { return &_class_data_; }
 
-void Status::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Status *>(to)->MergeFrom(
-      static_cast<const Status &>(from));
-}
 
-
-void Status::MergeFrom(const Status& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.Status)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void Status::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Status*>(&to_msg);
+  auto& from = static_cast<const Status&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.Status)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_status_flags()) {
-    _internal_mutable_status_flags()->::mavsdk::rpc::winch::StatusFlags::MergeFrom(from._internal_status_flags());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_status_flags()->::mavsdk::rpc::winch::StatusFlags::MergeFrom(
+        from._internal_status_flags());
   }
   if (from._internal_time_usec() != 0) {
-    _internal_set_time_usec(from._internal_time_usec());
+    _this->_internal_set_time_usec(from._internal_time_usec());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_line_length_m = from._internal_line_length_m();
-  uint32_t raw_line_length_m;
+  ::uint32_t raw_line_length_m;
   memcpy(&raw_line_length_m, &tmp_line_length_m, sizeof(tmp_line_length_m));
   if (raw_line_length_m != 0) {
-    _internal_set_line_length_m(from._internal_line_length_m());
+    _this->_internal_set_line_length_m(from._internal_line_length_m());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_speed_m_s = from._internal_speed_m_s();
-  uint32_t raw_speed_m_s;
+  ::uint32_t raw_speed_m_s;
   memcpy(&raw_speed_m_s, &tmp_speed_m_s, sizeof(tmp_speed_m_s));
   if (raw_speed_m_s != 0) {
-    _internal_set_speed_m_s(from._internal_speed_m_s());
+    _this->_internal_set_speed_m_s(from._internal_speed_m_s());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_tension_kg = from._internal_tension_kg();
-  uint32_t raw_tension_kg;
+  ::uint32_t raw_tension_kg;
   memcpy(&raw_tension_kg, &tmp_tension_kg, sizeof(tmp_tension_kg));
   if (raw_tension_kg != 0) {
-    _internal_set_tension_kg(from._internal_tension_kg());
+    _this->_internal_set_tension_kg(from._internal_tension_kg());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_voltage_v = from._internal_voltage_v();
-  uint32_t raw_voltage_v;
+  ::uint32_t raw_voltage_v;
   memcpy(&raw_voltage_v, &tmp_voltage_v, sizeof(tmp_voltage_v));
   if (raw_voltage_v != 0) {
-    _internal_set_voltage_v(from._internal_voltage_v());
+    _this->_internal_set_voltage_v(from._internal_voltage_v());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_current_a = from._internal_current_a();
-  uint32_t raw_current_a;
+  ::uint32_t raw_current_a;
   memcpy(&raw_current_a, &tmp_current_a, sizeof(tmp_current_a));
   if (raw_current_a != 0) {
-    _internal_set_current_a(from._internal_current_a());
+    _this->_internal_set_current_a(from._internal_current_a());
   }
   if (from._internal_temperature_c() != 0) {
-    _internal_set_temperature_c(from._internal_temperature_c());
+    _this->_internal_set_temperature_c(from._internal_temperature_c());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Status::CopyFrom(const Status& from) {
@@ -1869,12 +2208,13 @@ bool Status::IsInitialized() const {
 void Status::InternalSwap(Status* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Status, temperature_c_)
-      + sizeof(Status::temperature_c_)
-      - PROTOBUF_FIELD_OFFSET(Status, status_flags_)>(
-          reinterpret_cast<char*>(&status_flags_),
-          reinterpret_cast<char*>(&other->status_flags_));
+      PROTOBUF_FIELD_OFFSET(Status, _impl_.temperature_c_)
+      + sizeof(Status::_impl_.temperature_c_)
+      - PROTOBUF_FIELD_OFFSET(Status, _impl_.status_flags_)>(
+          reinterpret_cast<char*>(&_impl_.status_flags_),
+          reinterpret_cast<char*>(&other->_impl_.status_flags_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Status::GetMetadata() const {
@@ -1882,28 +2222,31 @@ void Status::InternalSwap(Status* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[3]);
 }
-
 // ===================================================================
 
 class RelaxRequest::_Internal {
  public:
 };
 
-RelaxRequest::RelaxRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RelaxRequest::RelaxRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RelaxRequest)
 }
 RelaxRequest::RelaxRequest(const RelaxRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RelaxRequest)
 }
 
-inline void RelaxRequest::SharedCtor() {
-instance_ = 0u;
+inline void RelaxRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 RelaxRequest::~RelaxRequest() {
@@ -1916,36 +2259,37 @@ RelaxRequest::~RelaxRequest() {
 }
 
 inline void RelaxRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void RelaxRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RelaxRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RelaxRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RelaxRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1970,16 +2314,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RelaxRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RelaxRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RelaxRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1990,45 +2335,42 @@ uint8_t* RelaxRequest::_InternalSerialize(
   return target;
 }
 
-size_t RelaxRequest::ByteSizeLong() const {
+::size_t RelaxRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RelaxRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RelaxRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RelaxRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RelaxRequest::GetClassData() const { return &_class_data_; }
 
-void RelaxRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RelaxRequest *>(to)->MergeFrom(
-      static_cast<const RelaxRequest &>(from));
-}
 
-
-void RelaxRequest::MergeFrom(const RelaxRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelaxRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RelaxRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RelaxRequest*>(&to_msg);
+  auto& from = static_cast<const RelaxRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelaxRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RelaxRequest::CopyFrom(const RelaxRequest& from) {
@@ -2045,7 +2387,8 @@ bool RelaxRequest::IsInitialized() const {
 void RelaxRequest::InternalSwap(RelaxRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RelaxRequest::GetMetadata() const {
@@ -2053,37 +2396,50 @@ void RelaxRequest::InternalSwap(RelaxRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[4]);
 }
-
 // ===================================================================
 
 class RelaxResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RelaxResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RelaxResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const RelaxResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 RelaxResponse::_Internal::winch_result(const RelaxResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-RelaxResponse::RelaxResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RelaxResponse::RelaxResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RelaxResponse)
 }
 RelaxResponse::RelaxResponse(const RelaxResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RelaxResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RelaxResponse)
 }
 
-inline void RelaxResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void RelaxResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 RelaxResponse::~RelaxResponse() {
@@ -2096,40 +2452,44 @@ RelaxResponse::~RelaxResponse() {
 }
 
 inline void RelaxResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void RelaxResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RelaxResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RelaxResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RelaxResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2147,6 +2507,7 @@ const char* RelaxResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext*
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2154,14 +2515,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RelaxResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RelaxResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RelaxResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -2175,47 +2537,45 @@ uint8_t* RelaxResponse::_InternalSerialize(
   return target;
 }
 
-size_t RelaxResponse::ByteSizeLong() const {
+::size_t RelaxResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RelaxResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RelaxResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RelaxResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RelaxResponse::GetClassData() const { return &_class_data_; }
 
-void RelaxResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RelaxResponse *>(to)->MergeFrom(
-      static_cast<const RelaxResponse &>(from));
-}
 
-
-void RelaxResponse::MergeFrom(const RelaxResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelaxResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RelaxResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RelaxResponse*>(&to_msg);
+  auto& from = static_cast<const RelaxResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelaxResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RelaxResponse::CopyFrom(const RelaxResponse& from) {
@@ -2232,7 +2592,8 @@ bool RelaxResponse::IsInitialized() const {
 void RelaxResponse::InternalSwap(RelaxResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RelaxResponse::GetMetadata() const {
@@ -2240,33 +2601,35 @@ void RelaxResponse::InternalSwap(RelaxResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[5]);
 }
-
 // ===================================================================
 
 class RelativeLengthControlRequest::_Internal {
  public:
 };
 
-RelativeLengthControlRequest::RelativeLengthControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RelativeLengthControlRequest::RelativeLengthControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RelativeLengthControlRequest)
 }
 RelativeLengthControlRequest::RelativeLengthControlRequest(const RelativeLengthControlRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&instance_, &from.instance_,
-    static_cast<size_t>(reinterpret_cast<char*>(&rate_m_s_) -
-    reinterpret_cast<char*>(&instance_)) + sizeof(rate_m_s_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RelativeLengthControlRequest)
 }
 
-inline void RelativeLengthControlRequest::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&instance_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&rate_m_s_) -
-    reinterpret_cast<char*>(&instance_)) + sizeof(rate_m_s_));
+inline void RelativeLengthControlRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , decltype(_impl_.length_m_) { 0 }
+
+    , decltype(_impl_.rate_m_s_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 RelativeLengthControlRequest::~RelativeLengthControlRequest() {
@@ -2279,54 +2642,57 @@ RelativeLengthControlRequest::~RelativeLengthControlRequest() {
 }
 
 inline void RelativeLengthControlRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void RelativeLengthControlRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RelativeLengthControlRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RelativeLengthControlRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&instance_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&rate_m_s_) -
-      reinterpret_cast<char*>(&instance_)) + sizeof(rate_m_s_));
+  ::memset(&_impl_.instance_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.rate_m_s_) -
+      reinterpret_cast<char*>(&_impl_.instance_)) + sizeof(_impl_.rate_m_s_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RelativeLengthControlRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float length_m = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          length_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.length_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
-          rate_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
+          _impl_.rate_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2351,36 +2717,39 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RelativeLengthControlRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RelativeLengthControlRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RelativeLengthControlRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   // float length_m = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_length_m = this->_internal_length_m();
-  uint32_t raw_length_m;
+  ::uint32_t raw_length_m;
   memcpy(&raw_length_m, &tmp_length_m, sizeof(tmp_length_m));
   if (raw_length_m != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_length_m(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_length_m(), target);
   }
 
   // float rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_rate_m_s = this->_internal_rate_m_s();
-  uint32_t raw_rate_m_s;
+  ::uint32_t raw_rate_m_s;
   memcpy(&raw_rate_m_s, &tmp_rate_m_s, sizeof(tmp_rate_m_s));
   if (raw_rate_m_s != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_rate_m_s(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_rate_m_s(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2391,77 +2760,74 @@ uint8_t* RelativeLengthControlRequest::_InternalSerialize(
   return target;
 }
 
-size_t RelativeLengthControlRequest::ByteSizeLong() const {
+::size_t RelativeLengthControlRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RelativeLengthControlRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
   // float length_m = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_length_m = this->_internal_length_m();
-  uint32_t raw_length_m;
+  ::uint32_t raw_length_m;
   memcpy(&raw_length_m, &tmp_length_m, sizeof(tmp_length_m));
   if (raw_length_m != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
   // float rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_rate_m_s = this->_internal_rate_m_s();
-  uint32_t raw_rate_m_s;
+  ::uint32_t raw_rate_m_s;
   memcpy(&raw_rate_m_s, &tmp_rate_m_s, sizeof(tmp_rate_m_s));
   if (raw_rate_m_s != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RelativeLengthControlRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RelativeLengthControlRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RelativeLengthControlRequest::GetClassData() const { return &_class_data_; }
 
-void RelativeLengthControlRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RelativeLengthControlRequest *>(to)->MergeFrom(
-      static_cast<const RelativeLengthControlRequest &>(from));
-}
 
-
-void RelativeLengthControlRequest::MergeFrom(const RelativeLengthControlRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelativeLengthControlRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RelativeLengthControlRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RelativeLengthControlRequest*>(&to_msg);
+  auto& from = static_cast<const RelativeLengthControlRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelativeLengthControlRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_length_m = from._internal_length_m();
-  uint32_t raw_length_m;
+  ::uint32_t raw_length_m;
   memcpy(&raw_length_m, &tmp_length_m, sizeof(tmp_length_m));
   if (raw_length_m != 0) {
-    _internal_set_length_m(from._internal_length_m());
+    _this->_internal_set_length_m(from._internal_length_m());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_rate_m_s = from._internal_rate_m_s();
-  uint32_t raw_rate_m_s;
+  ::uint32_t raw_rate_m_s;
   memcpy(&raw_rate_m_s, &tmp_rate_m_s, sizeof(tmp_rate_m_s));
   if (raw_rate_m_s != 0) {
-    _internal_set_rate_m_s(from._internal_rate_m_s());
+    _this->_internal_set_rate_m_s(from._internal_rate_m_s());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RelativeLengthControlRequest::CopyFrom(const RelativeLengthControlRequest& from) {
@@ -2479,11 +2845,11 @@ void RelativeLengthControlRequest::InternalSwap(RelativeLengthControlRequest* ot
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RelativeLengthControlRequest, rate_m_s_)
-      + sizeof(RelativeLengthControlRequest::rate_m_s_)
-      - PROTOBUF_FIELD_OFFSET(RelativeLengthControlRequest, instance_)>(
-          reinterpret_cast<char*>(&instance_),
-          reinterpret_cast<char*>(&other->instance_));
+      PROTOBUF_FIELD_OFFSET(RelativeLengthControlRequest, _impl_.rate_m_s_)
+      + sizeof(RelativeLengthControlRequest::_impl_.rate_m_s_)
+      - PROTOBUF_FIELD_OFFSET(RelativeLengthControlRequest, _impl_.instance_)>(
+          reinterpret_cast<char*>(&_impl_.instance_),
+          reinterpret_cast<char*>(&other->_impl_.instance_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RelativeLengthControlRequest::GetMetadata() const {
@@ -2491,37 +2857,50 @@ void RelativeLengthControlRequest::InternalSwap(RelativeLengthControlRequest* ot
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[6]);
 }
-
 // ===================================================================
 
 class RelativeLengthControlResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RelativeLengthControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RelativeLengthControlResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const RelativeLengthControlResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 RelativeLengthControlResponse::_Internal::winch_result(const RelativeLengthControlResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-RelativeLengthControlResponse::RelativeLengthControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RelativeLengthControlResponse::RelativeLengthControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RelativeLengthControlResponse)
 }
 RelativeLengthControlResponse::RelativeLengthControlResponse(const RelativeLengthControlResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RelativeLengthControlResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RelativeLengthControlResponse)
 }
 
-inline void RelativeLengthControlResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void RelativeLengthControlResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 RelativeLengthControlResponse::~RelativeLengthControlResponse() {
@@ -2534,40 +2913,44 @@ RelativeLengthControlResponse::~RelativeLengthControlResponse() {
 }
 
 inline void RelativeLengthControlResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void RelativeLengthControlResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RelativeLengthControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RelativeLengthControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RelativeLengthControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2585,6 +2968,7 @@ const char* RelativeLengthControlResponse::_InternalParse(const char* ptr, ::_pb
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2592,14 +2976,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RelativeLengthControlResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RelativeLengthControlResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RelativeLengthControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -2613,47 +2998,45 @@ uint8_t* RelativeLengthControlResponse::_InternalSerialize(
   return target;
 }
 
-size_t RelativeLengthControlResponse::ByteSizeLong() const {
+::size_t RelativeLengthControlResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RelativeLengthControlResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RelativeLengthControlResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RelativeLengthControlResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RelativeLengthControlResponse::GetClassData() const { return &_class_data_; }
 
-void RelativeLengthControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RelativeLengthControlResponse *>(to)->MergeFrom(
-      static_cast<const RelativeLengthControlResponse &>(from));
-}
 
-
-void RelativeLengthControlResponse::MergeFrom(const RelativeLengthControlResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelativeLengthControlResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RelativeLengthControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RelativeLengthControlResponse*>(&to_msg);
+  auto& from = static_cast<const RelativeLengthControlResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RelativeLengthControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RelativeLengthControlResponse::CopyFrom(const RelativeLengthControlResponse& from) {
@@ -2670,7 +3053,8 @@ bool RelativeLengthControlResponse::IsInitialized() const {
 void RelativeLengthControlResponse::InternalSwap(RelativeLengthControlResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RelativeLengthControlResponse::GetMetadata() const {
@@ -2678,33 +3062,33 @@ void RelativeLengthControlResponse::InternalSwap(RelativeLengthControlResponse* 
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[7]);
 }
-
 // ===================================================================
 
 class RateControlRequest::_Internal {
  public:
 };
 
-RateControlRequest::RateControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RateControlRequest::RateControlRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RateControlRequest)
 }
 RateControlRequest::RateControlRequest(const RateControlRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&instance_, &from.instance_,
-    static_cast<size_t>(reinterpret_cast<char*>(&rate_m_s_) -
-    reinterpret_cast<char*>(&instance_)) + sizeof(rate_m_s_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RateControlRequest)
 }
 
-inline void RateControlRequest::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&instance_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&rate_m_s_) -
-    reinterpret_cast<char*>(&instance_)) + sizeof(rate_m_s_));
+inline void RateControlRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , decltype(_impl_.rate_m_s_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 RateControlRequest::~RateControlRequest() {
@@ -2717,46 +3101,48 @@ RateControlRequest::~RateControlRequest() {
 }
 
 inline void RateControlRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void RateControlRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RateControlRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RateControlRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&instance_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&rate_m_s_) -
-      reinterpret_cast<char*>(&instance_)) + sizeof(rate_m_s_));
+  ::memset(&_impl_.instance_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.rate_m_s_) -
+      reinterpret_cast<char*>(&_impl_.instance_)) + sizeof(_impl_.rate_m_s_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RateControlRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // float rate_m_s = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          rate_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
+          _impl_.rate_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2781,26 +3167,28 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RateControlRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RateControlRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RateControlRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   // float rate_m_s = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_rate_m_s = this->_internal_rate_m_s();
-  uint32_t raw_rate_m_s;
+  ::uint32_t raw_rate_m_s;
   memcpy(&raw_rate_m_s, &tmp_rate_m_s, sizeof(tmp_rate_m_s));
   if (raw_rate_m_s != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_rate_m_s(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_rate_m_s(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2811,61 +3199,58 @@ uint8_t* RateControlRequest::_InternalSerialize(
   return target;
 }
 
-size_t RateControlRequest::ByteSizeLong() const {
+::size_t RateControlRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RateControlRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
   // float rate_m_s = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_rate_m_s = this->_internal_rate_m_s();
-  uint32_t raw_rate_m_s;
+  ::uint32_t raw_rate_m_s;
   memcpy(&raw_rate_m_s, &tmp_rate_m_s, sizeof(tmp_rate_m_s));
   if (raw_rate_m_s != 0) {
-    total_size += 1 + 4;
+    total_size += 5;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RateControlRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RateControlRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RateControlRequest::GetClassData() const { return &_class_data_; }
 
-void RateControlRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RateControlRequest *>(to)->MergeFrom(
-      static_cast<const RateControlRequest &>(from));
-}
 
-
-void RateControlRequest::MergeFrom(const RateControlRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RateControlRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RateControlRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RateControlRequest*>(&to_msg);
+  auto& from = static_cast<const RateControlRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RateControlRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_rate_m_s = from._internal_rate_m_s();
-  uint32_t raw_rate_m_s;
+  ::uint32_t raw_rate_m_s;
   memcpy(&raw_rate_m_s, &tmp_rate_m_s, sizeof(tmp_rate_m_s));
   if (raw_rate_m_s != 0) {
-    _internal_set_rate_m_s(from._internal_rate_m_s());
+    _this->_internal_set_rate_m_s(from._internal_rate_m_s());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RateControlRequest::CopyFrom(const RateControlRequest& from) {
@@ -2883,11 +3268,11 @@ void RateControlRequest::InternalSwap(RateControlRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RateControlRequest, rate_m_s_)
-      + sizeof(RateControlRequest::rate_m_s_)
-      - PROTOBUF_FIELD_OFFSET(RateControlRequest, instance_)>(
-          reinterpret_cast<char*>(&instance_),
-          reinterpret_cast<char*>(&other->instance_));
+      PROTOBUF_FIELD_OFFSET(RateControlRequest, _impl_.rate_m_s_)
+      + sizeof(RateControlRequest::_impl_.rate_m_s_)
+      - PROTOBUF_FIELD_OFFSET(RateControlRequest, _impl_.instance_)>(
+          reinterpret_cast<char*>(&_impl_.instance_),
+          reinterpret_cast<char*>(&other->_impl_.instance_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RateControlRequest::GetMetadata() const {
@@ -2895,37 +3280,50 @@ void RateControlRequest::InternalSwap(RateControlRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[8]);
 }
-
 // ===================================================================
 
 class RateControlResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RateControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RateControlResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const RateControlResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 RateControlResponse::_Internal::winch_result(const RateControlResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-RateControlResponse::RateControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RateControlResponse::RateControlResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RateControlResponse)
 }
 RateControlResponse::RateControlResponse(const RateControlResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RateControlResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RateControlResponse)
 }
 
-inline void RateControlResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void RateControlResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 RateControlResponse::~RateControlResponse() {
@@ -2938,40 +3336,44 @@ RateControlResponse::~RateControlResponse() {
 }
 
 inline void RateControlResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void RateControlResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RateControlResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RateControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RateControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -2989,6 +3391,7 @@ const char* RateControlResponse::_InternalParse(const char* ptr, ::_pbi::ParseCo
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2996,14 +3399,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RateControlResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RateControlResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RateControlResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -3017,47 +3421,45 @@ uint8_t* RateControlResponse::_InternalSerialize(
   return target;
 }
 
-size_t RateControlResponse::ByteSizeLong() const {
+::size_t RateControlResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RateControlResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RateControlResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RateControlResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RateControlResponse::GetClassData() const { return &_class_data_; }
 
-void RateControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RateControlResponse *>(to)->MergeFrom(
-      static_cast<const RateControlResponse &>(from));
-}
 
-
-void RateControlResponse::MergeFrom(const RateControlResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RateControlResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RateControlResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RateControlResponse*>(&to_msg);
+  auto& from = static_cast<const RateControlResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RateControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RateControlResponse::CopyFrom(const RateControlResponse& from) {
@@ -3074,7 +3476,8 @@ bool RateControlResponse::IsInitialized() const {
 void RateControlResponse::InternalSwap(RateControlResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RateControlResponse::GetMetadata() const {
@@ -3082,28 +3485,31 @@ void RateControlResponse::InternalSwap(RateControlResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[9]);
 }
-
 // ===================================================================
 
 class LockRequest::_Internal {
  public:
 };
 
-LockRequest::LockRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+LockRequest::LockRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.LockRequest)
 }
 LockRequest::LockRequest(const LockRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.LockRequest)
 }
 
-inline void LockRequest::SharedCtor() {
-instance_ = 0u;
+inline void LockRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 LockRequest::~LockRequest() {
@@ -3116,36 +3522,37 @@ LockRequest::~LockRequest() {
 }
 
 inline void LockRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void LockRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void LockRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.LockRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* LockRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3170,16 +3577,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LockRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* LockRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.LockRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3190,45 +3598,42 @@ uint8_t* LockRequest::_InternalSerialize(
   return target;
 }
 
-size_t LockRequest::ByteSizeLong() const {
+::size_t LockRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.LockRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LockRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     LockRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LockRequest::GetClassData() const { return &_class_data_; }
 
-void LockRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<LockRequest *>(to)->MergeFrom(
-      static_cast<const LockRequest &>(from));
-}
 
-
-void LockRequest::MergeFrom(const LockRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LockRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void LockRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LockRequest*>(&to_msg);
+  auto& from = static_cast<const LockRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LockRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void LockRequest::CopyFrom(const LockRequest& from) {
@@ -3245,7 +3650,8 @@ bool LockRequest::IsInitialized() const {
 void LockRequest::InternalSwap(LockRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata LockRequest::GetMetadata() const {
@@ -3253,37 +3659,50 @@ void LockRequest::InternalSwap(LockRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[10]);
 }
-
 // ===================================================================
 
 class LockResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<LockResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(LockResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const LockResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 LockResponse::_Internal::winch_result(const LockResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-LockResponse::LockResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+LockResponse::LockResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.LockResponse)
 }
 LockResponse::LockResponse(const LockResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  LockResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.LockResponse)
 }
 
-inline void LockResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void LockResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 LockResponse::~LockResponse() {
@@ -3296,40 +3715,44 @@ LockResponse::~LockResponse() {
 }
 
 inline void LockResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void LockResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void LockResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.LockResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* LockResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3347,6 +3770,7 @@ const char* LockResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -3354,14 +3778,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LockResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* LockResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.LockResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -3375,47 +3800,45 @@ uint8_t* LockResponse::_InternalSerialize(
   return target;
 }
 
-size_t LockResponse::ByteSizeLong() const {
+::size_t LockResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.LockResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LockResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     LockResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LockResponse::GetClassData() const { return &_class_data_; }
 
-void LockResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<LockResponse *>(to)->MergeFrom(
-      static_cast<const LockResponse &>(from));
-}
 
-
-void LockResponse::MergeFrom(const LockResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LockResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void LockResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LockResponse*>(&to_msg);
+  auto& from = static_cast<const LockResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LockResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void LockResponse::CopyFrom(const LockResponse& from) {
@@ -3432,7 +3855,8 @@ bool LockResponse::IsInitialized() const {
 void LockResponse::InternalSwap(LockResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata LockResponse::GetMetadata() const {
@@ -3440,28 +3864,31 @@ void LockResponse::InternalSwap(LockResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[11]);
 }
-
 // ===================================================================
 
 class DeliverRequest::_Internal {
  public:
 };
 
-DeliverRequest::DeliverRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+DeliverRequest::DeliverRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.DeliverRequest)
 }
 DeliverRequest::DeliverRequest(const DeliverRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.DeliverRequest)
 }
 
-inline void DeliverRequest::SharedCtor() {
-instance_ = 0u;
+inline void DeliverRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 DeliverRequest::~DeliverRequest() {
@@ -3474,36 +3901,37 @@ DeliverRequest::~DeliverRequest() {
 }
 
 inline void DeliverRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void DeliverRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void DeliverRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.DeliverRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* DeliverRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3528,16 +3956,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* DeliverRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* DeliverRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.DeliverRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3548,45 +3977,42 @@ uint8_t* DeliverRequest::_InternalSerialize(
   return target;
 }
 
-size_t DeliverRequest::ByteSizeLong() const {
+::size_t DeliverRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.DeliverRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DeliverRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     DeliverRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DeliverRequest::GetClassData() const { return &_class_data_; }
 
-void DeliverRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<DeliverRequest *>(to)->MergeFrom(
-      static_cast<const DeliverRequest &>(from));
-}
 
-
-void DeliverRequest::MergeFrom(const DeliverRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.DeliverRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void DeliverRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<DeliverRequest*>(&to_msg);
+  auto& from = static_cast<const DeliverRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.DeliverRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void DeliverRequest::CopyFrom(const DeliverRequest& from) {
@@ -3603,7 +4029,8 @@ bool DeliverRequest::IsInitialized() const {
 void DeliverRequest::InternalSwap(DeliverRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata DeliverRequest::GetMetadata() const {
@@ -3611,37 +4038,50 @@ void DeliverRequest::InternalSwap(DeliverRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[12]);
 }
-
 // ===================================================================
 
 class DeliverResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<DeliverResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(DeliverResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const DeliverResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 DeliverResponse::_Internal::winch_result(const DeliverResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-DeliverResponse::DeliverResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+DeliverResponse::DeliverResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.DeliverResponse)
 }
 DeliverResponse::DeliverResponse(const DeliverResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  DeliverResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.DeliverResponse)
 }
 
-inline void DeliverResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void DeliverResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 DeliverResponse::~DeliverResponse() {
@@ -3654,40 +4094,44 @@ DeliverResponse::~DeliverResponse() {
 }
 
 inline void DeliverResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void DeliverResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void DeliverResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.DeliverResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* DeliverResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3705,6 +4149,7 @@ const char* DeliverResponse::_InternalParse(const char* ptr, ::_pbi::ParseContex
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -3712,14 +4157,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* DeliverResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* DeliverResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.DeliverResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -3733,47 +4179,45 @@ uint8_t* DeliverResponse::_InternalSerialize(
   return target;
 }
 
-size_t DeliverResponse::ByteSizeLong() const {
+::size_t DeliverResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.DeliverResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DeliverResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     DeliverResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DeliverResponse::GetClassData() const { return &_class_data_; }
 
-void DeliverResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<DeliverResponse *>(to)->MergeFrom(
-      static_cast<const DeliverResponse &>(from));
-}
 
-
-void DeliverResponse::MergeFrom(const DeliverResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.DeliverResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void DeliverResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<DeliverResponse*>(&to_msg);
+  auto& from = static_cast<const DeliverResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.DeliverResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void DeliverResponse::CopyFrom(const DeliverResponse& from) {
@@ -3790,7 +4234,8 @@ bool DeliverResponse::IsInitialized() const {
 void DeliverResponse::InternalSwap(DeliverResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata DeliverResponse::GetMetadata() const {
@@ -3798,28 +4243,31 @@ void DeliverResponse::InternalSwap(DeliverResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[13]);
 }
-
 // ===================================================================
 
 class HoldRequest::_Internal {
  public:
 };
 
-HoldRequest::HoldRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+HoldRequest::HoldRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.HoldRequest)
 }
 HoldRequest::HoldRequest(const HoldRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.HoldRequest)
 }
 
-inline void HoldRequest::SharedCtor() {
-instance_ = 0u;
+inline void HoldRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 HoldRequest::~HoldRequest() {
@@ -3832,36 +4280,37 @@ HoldRequest::~HoldRequest() {
 }
 
 inline void HoldRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void HoldRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void HoldRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.HoldRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* HoldRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -3886,16 +4335,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* HoldRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* HoldRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.HoldRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3906,45 +4356,42 @@ uint8_t* HoldRequest::_InternalSerialize(
   return target;
 }
 
-size_t HoldRequest::ByteSizeLong() const {
+::size_t HoldRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.HoldRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData HoldRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     HoldRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*HoldRequest::GetClassData() const { return &_class_data_; }
 
-void HoldRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<HoldRequest *>(to)->MergeFrom(
-      static_cast<const HoldRequest &>(from));
-}
 
-
-void HoldRequest::MergeFrom(const HoldRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.HoldRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void HoldRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<HoldRequest*>(&to_msg);
+  auto& from = static_cast<const HoldRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.HoldRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void HoldRequest::CopyFrom(const HoldRequest& from) {
@@ -3961,7 +4408,8 @@ bool HoldRequest::IsInitialized() const {
 void HoldRequest::InternalSwap(HoldRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata HoldRequest::GetMetadata() const {
@@ -3969,37 +4417,50 @@ void HoldRequest::InternalSwap(HoldRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[14]);
 }
-
 // ===================================================================
 
 class HoldResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<HoldResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(HoldResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const HoldResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 HoldResponse::_Internal::winch_result(const HoldResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-HoldResponse::HoldResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+HoldResponse::HoldResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.HoldResponse)
 }
 HoldResponse::HoldResponse(const HoldResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  HoldResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.HoldResponse)
 }
 
-inline void HoldResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void HoldResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 HoldResponse::~HoldResponse() {
@@ -4012,40 +4473,44 @@ HoldResponse::~HoldResponse() {
 }
 
 inline void HoldResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void HoldResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void HoldResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.HoldResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* HoldResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4063,6 +4528,7 @@ const char* HoldResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -4070,14 +4536,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* HoldResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* HoldResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.HoldResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -4091,47 +4558,45 @@ uint8_t* HoldResponse::_InternalSerialize(
   return target;
 }
 
-size_t HoldResponse::ByteSizeLong() const {
+::size_t HoldResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.HoldResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData HoldResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     HoldResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*HoldResponse::GetClassData() const { return &_class_data_; }
 
-void HoldResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<HoldResponse *>(to)->MergeFrom(
-      static_cast<const HoldResponse &>(from));
-}
 
-
-void HoldResponse::MergeFrom(const HoldResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.HoldResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void HoldResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<HoldResponse*>(&to_msg);
+  auto& from = static_cast<const HoldResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.HoldResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void HoldResponse::CopyFrom(const HoldResponse& from) {
@@ -4148,7 +4613,8 @@ bool HoldResponse::IsInitialized() const {
 void HoldResponse::InternalSwap(HoldResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata HoldResponse::GetMetadata() const {
@@ -4156,28 +4622,31 @@ void HoldResponse::InternalSwap(HoldResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[15]);
 }
-
 // ===================================================================
 
 class RetractRequest::_Internal {
  public:
 };
 
-RetractRequest::RetractRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetractRequest::RetractRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RetractRequest)
 }
 RetractRequest::RetractRequest(const RetractRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RetractRequest)
 }
 
-inline void RetractRequest::SharedCtor() {
-instance_ = 0u;
+inline void RetractRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 RetractRequest::~RetractRequest() {
@@ -4190,36 +4659,37 @@ RetractRequest::~RetractRequest() {
 }
 
 inline void RetractRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void RetractRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetractRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RetractRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetractRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4244,16 +4714,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetractRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetractRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RetractRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4264,45 +4735,42 @@ uint8_t* RetractRequest::_InternalSerialize(
   return target;
 }
 
-size_t RetractRequest::ByteSizeLong() const {
+::size_t RetractRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RetractRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetractRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetractRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetractRequest::GetClassData() const { return &_class_data_; }
 
-void RetractRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetractRequest *>(to)->MergeFrom(
-      static_cast<const RetractRequest &>(from));
-}
 
-
-void RetractRequest::MergeFrom(const RetractRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RetractRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetractRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetractRequest*>(&to_msg);
+  auto& from = static_cast<const RetractRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RetractRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetractRequest::CopyFrom(const RetractRequest& from) {
@@ -4319,7 +4787,8 @@ bool RetractRequest::IsInitialized() const {
 void RetractRequest::InternalSwap(RetractRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetractRequest::GetMetadata() const {
@@ -4327,37 +4796,50 @@ void RetractRequest::InternalSwap(RetractRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[16]);
 }
-
 // ===================================================================
 
 class RetractResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<RetractResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RetractResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const RetractResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 RetractResponse::_Internal::winch_result(const RetractResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-RetractResponse::RetractResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+RetractResponse::RetractResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.RetractResponse)
 }
 RetractResponse::RetractResponse(const RetractResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RetractResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.RetractResponse)
 }
 
-inline void RetractResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void RetractResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 RetractResponse::~RetractResponse() {
@@ -4370,40 +4852,44 @@ RetractResponse::~RetractResponse() {
 }
 
 inline void RetractResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void RetractResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void RetractResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.RetractResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* RetractResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4421,6 +4907,7 @@ const char* RetractResponse::_InternalParse(const char* ptr, ::_pbi::ParseContex
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -4428,14 +4915,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* RetractResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* RetractResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.RetractResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -4449,47 +4937,45 @@ uint8_t* RetractResponse::_InternalSerialize(
   return target;
 }
 
-size_t RetractResponse::ByteSizeLong() const {
+::size_t RetractResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.RetractResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RetractResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     RetractResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RetractResponse::GetClassData() const { return &_class_data_; }
 
-void RetractResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<RetractResponse *>(to)->MergeFrom(
-      static_cast<const RetractResponse &>(from));
-}
 
-
-void RetractResponse::MergeFrom(const RetractResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RetractResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void RetractResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<RetractResponse*>(&to_msg);
+  auto& from = static_cast<const RetractResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.RetractResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RetractResponse::CopyFrom(const RetractResponse& from) {
@@ -4506,7 +4992,8 @@ bool RetractResponse::IsInitialized() const {
 void RetractResponse::InternalSwap(RetractResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RetractResponse::GetMetadata() const {
@@ -4514,28 +5001,31 @@ void RetractResponse::InternalSwap(RetractResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[17]);
 }
-
 // ===================================================================
 
 class LoadLineRequest::_Internal {
  public:
 };
 
-LoadLineRequest::LoadLineRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+LoadLineRequest::LoadLineRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.LoadLineRequest)
 }
 LoadLineRequest::LoadLineRequest(const LoadLineRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.LoadLineRequest)
 }
 
-inline void LoadLineRequest::SharedCtor() {
-instance_ = 0u;
+inline void LoadLineRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 LoadLineRequest::~LoadLineRequest() {
@@ -4548,36 +5038,37 @@ LoadLineRequest::~LoadLineRequest() {
 }
 
 inline void LoadLineRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void LoadLineRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void LoadLineRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.LoadLineRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* LoadLineRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4602,16 +5093,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LoadLineRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* LoadLineRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.LoadLineRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4622,45 +5114,42 @@ uint8_t* LoadLineRequest::_InternalSerialize(
   return target;
 }
 
-size_t LoadLineRequest::ByteSizeLong() const {
+::size_t LoadLineRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.LoadLineRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LoadLineRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     LoadLineRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LoadLineRequest::GetClassData() const { return &_class_data_; }
 
-void LoadLineRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<LoadLineRequest *>(to)->MergeFrom(
-      static_cast<const LoadLineRequest &>(from));
-}
 
-
-void LoadLineRequest::MergeFrom(const LoadLineRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadLineRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void LoadLineRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LoadLineRequest*>(&to_msg);
+  auto& from = static_cast<const LoadLineRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadLineRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void LoadLineRequest::CopyFrom(const LoadLineRequest& from) {
@@ -4677,7 +5166,8 @@ bool LoadLineRequest::IsInitialized() const {
 void LoadLineRequest::InternalSwap(LoadLineRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata LoadLineRequest::GetMetadata() const {
@@ -4685,37 +5175,50 @@ void LoadLineRequest::InternalSwap(LoadLineRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[18]);
 }
-
 // ===================================================================
 
 class LoadLineResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<LoadLineResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(LoadLineResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const LoadLineResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 LoadLineResponse::_Internal::winch_result(const LoadLineResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-LoadLineResponse::LoadLineResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+LoadLineResponse::LoadLineResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.LoadLineResponse)
 }
 LoadLineResponse::LoadLineResponse(const LoadLineResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  LoadLineResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.LoadLineResponse)
 }
 
-inline void LoadLineResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void LoadLineResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 LoadLineResponse::~LoadLineResponse() {
@@ -4728,40 +5231,44 @@ LoadLineResponse::~LoadLineResponse() {
 }
 
 inline void LoadLineResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void LoadLineResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void LoadLineResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.LoadLineResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* LoadLineResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4779,6 +5286,7 @@ const char* LoadLineResponse::_InternalParse(const char* ptr, ::_pbi::ParseConte
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -4786,14 +5294,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LoadLineResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* LoadLineResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.LoadLineResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -4807,47 +5316,45 @@ uint8_t* LoadLineResponse::_InternalSerialize(
   return target;
 }
 
-size_t LoadLineResponse::ByteSizeLong() const {
+::size_t LoadLineResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.LoadLineResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LoadLineResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     LoadLineResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LoadLineResponse::GetClassData() const { return &_class_data_; }
 
-void LoadLineResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<LoadLineResponse *>(to)->MergeFrom(
-      static_cast<const LoadLineResponse &>(from));
-}
 
-
-void LoadLineResponse::MergeFrom(const LoadLineResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadLineResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void LoadLineResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LoadLineResponse*>(&to_msg);
+  auto& from = static_cast<const LoadLineResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadLineResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void LoadLineResponse::CopyFrom(const LoadLineResponse& from) {
@@ -4864,7 +5371,8 @@ bool LoadLineResponse::IsInitialized() const {
 void LoadLineResponse::InternalSwap(LoadLineResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata LoadLineResponse::GetMetadata() const {
@@ -4872,28 +5380,31 @@ void LoadLineResponse::InternalSwap(LoadLineResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[19]);
 }
-
 // ===================================================================
 
 class AbandonLineRequest::_Internal {
  public:
 };
 
-AbandonLineRequest::AbandonLineRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+AbandonLineRequest::AbandonLineRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.AbandonLineRequest)
 }
 AbandonLineRequest::AbandonLineRequest(const AbandonLineRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.AbandonLineRequest)
 }
 
-inline void AbandonLineRequest::SharedCtor() {
-instance_ = 0u;
+inline void AbandonLineRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 AbandonLineRequest::~AbandonLineRequest() {
@@ -4906,36 +5417,37 @@ AbandonLineRequest::~AbandonLineRequest() {
 }
 
 inline void AbandonLineRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void AbandonLineRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void AbandonLineRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.AbandonLineRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* AbandonLineRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -4960,16 +5472,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* AbandonLineRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* AbandonLineRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.AbandonLineRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4980,45 +5493,42 @@ uint8_t* AbandonLineRequest::_InternalSerialize(
   return target;
 }
 
-size_t AbandonLineRequest::ByteSizeLong() const {
+::size_t AbandonLineRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.AbandonLineRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AbandonLineRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     AbandonLineRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AbandonLineRequest::GetClassData() const { return &_class_data_; }
 
-void AbandonLineRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<AbandonLineRequest *>(to)->MergeFrom(
-      static_cast<const AbandonLineRequest &>(from));
-}
 
-
-void AbandonLineRequest::MergeFrom(const AbandonLineRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.AbandonLineRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void AbandonLineRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<AbandonLineRequest*>(&to_msg);
+  auto& from = static_cast<const AbandonLineRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.AbandonLineRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void AbandonLineRequest::CopyFrom(const AbandonLineRequest& from) {
@@ -5035,7 +5545,8 @@ bool AbandonLineRequest::IsInitialized() const {
 void AbandonLineRequest::InternalSwap(AbandonLineRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AbandonLineRequest::GetMetadata() const {
@@ -5043,37 +5554,50 @@ void AbandonLineRequest::InternalSwap(AbandonLineRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[20]);
 }
-
 // ===================================================================
 
 class AbandonLineResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<AbandonLineResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(AbandonLineResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const AbandonLineResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 AbandonLineResponse::_Internal::winch_result(const AbandonLineResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-AbandonLineResponse::AbandonLineResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+AbandonLineResponse::AbandonLineResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.AbandonLineResponse)
 }
 AbandonLineResponse::AbandonLineResponse(const AbandonLineResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  AbandonLineResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.AbandonLineResponse)
 }
 
-inline void AbandonLineResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void AbandonLineResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 AbandonLineResponse::~AbandonLineResponse() {
@@ -5086,40 +5610,44 @@ AbandonLineResponse::~AbandonLineResponse() {
 }
 
 inline void AbandonLineResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void AbandonLineResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void AbandonLineResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.AbandonLineResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* AbandonLineResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -5137,6 +5665,7 @@ const char* AbandonLineResponse::_InternalParse(const char* ptr, ::_pbi::ParseCo
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -5144,14 +5673,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* AbandonLineResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* AbandonLineResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.AbandonLineResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -5165,47 +5695,45 @@ uint8_t* AbandonLineResponse::_InternalSerialize(
   return target;
 }
 
-size_t AbandonLineResponse::ByteSizeLong() const {
+::size_t AbandonLineResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.AbandonLineResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AbandonLineResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     AbandonLineResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AbandonLineResponse::GetClassData() const { return &_class_data_; }
 
-void AbandonLineResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<AbandonLineResponse *>(to)->MergeFrom(
-      static_cast<const AbandonLineResponse &>(from));
-}
 
-
-void AbandonLineResponse::MergeFrom(const AbandonLineResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.AbandonLineResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void AbandonLineResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<AbandonLineResponse*>(&to_msg);
+  auto& from = static_cast<const AbandonLineResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.AbandonLineResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void AbandonLineResponse::CopyFrom(const AbandonLineResponse& from) {
@@ -5222,7 +5750,8 @@ bool AbandonLineResponse::IsInitialized() const {
 void AbandonLineResponse::InternalSwap(AbandonLineResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AbandonLineResponse::GetMetadata() const {
@@ -5230,28 +5759,31 @@ void AbandonLineResponse::InternalSwap(AbandonLineResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[21]);
 }
-
 // ===================================================================
 
 class LoadPayloadRequest::_Internal {
  public:
 };
 
-LoadPayloadRequest::LoadPayloadRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+LoadPayloadRequest::LoadPayloadRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.LoadPayloadRequest)
 }
 LoadPayloadRequest::LoadPayloadRequest(const LoadPayloadRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  instance_ = from.instance_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.LoadPayloadRequest)
 }
 
-inline void LoadPayloadRequest::SharedCtor() {
-instance_ = 0u;
+inline void LoadPayloadRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.instance_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 LoadPayloadRequest::~LoadPayloadRequest() {
@@ -5264,36 +5796,37 @@ LoadPayloadRequest::~LoadPayloadRequest() {
 }
 
 inline void LoadPayloadRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void LoadPayloadRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void LoadPayloadRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.LoadPayloadRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  instance_ = 0u;
+  _impl_.instance_ = 0u;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* LoadPayloadRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // uint32 instance = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _impl_.instance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -5318,16 +5851,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LoadPayloadRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* LoadPayloadRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.LoadPayloadRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_instance(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_instance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5338,45 +5872,42 @@ uint8_t* LoadPayloadRequest::_InternalSerialize(
   return target;
 }
 
-size_t LoadPayloadRequest::ByteSizeLong() const {
+::size_t LoadPayloadRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.LoadPayloadRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint32 instance = 1;
   if (this->_internal_instance() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_instance());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_instance());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LoadPayloadRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     LoadPayloadRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LoadPayloadRequest::GetClassData() const { return &_class_data_; }
 
-void LoadPayloadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<LoadPayloadRequest *>(to)->MergeFrom(
-      static_cast<const LoadPayloadRequest &>(from));
-}
 
-
-void LoadPayloadRequest::MergeFrom(const LoadPayloadRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadPayloadRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void LoadPayloadRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LoadPayloadRequest*>(&to_msg);
+  auto& from = static_cast<const LoadPayloadRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadPayloadRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_instance() != 0) {
-    _internal_set_instance(from._internal_instance());
+    _this->_internal_set_instance(from._internal_instance());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void LoadPayloadRequest::CopyFrom(const LoadPayloadRequest& from) {
@@ -5393,7 +5924,8 @@ bool LoadPayloadRequest::IsInitialized() const {
 void LoadPayloadRequest::InternalSwap(LoadPayloadRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(instance_, other->instance_);
+
+  swap(_impl_.instance_, other->_impl_.instance_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata LoadPayloadRequest::GetMetadata() const {
@@ -5401,37 +5933,50 @@ void LoadPayloadRequest::InternalSwap(LoadPayloadRequest* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[22]);
 }
-
 // ===================================================================
 
 class LoadPayloadResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<LoadPayloadResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(LoadPayloadResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::winch::WinchResult& winch_result(const LoadPayloadResponse* msg);
+  static void set_has_winch_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::winch::WinchResult&
 LoadPayloadResponse::_Internal::winch_result(const LoadPayloadResponse* msg) {
-  return *msg->winch_result_;
+  return *msg->_impl_.winch_result_;
 }
-LoadPayloadResponse::LoadPayloadResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+LoadPayloadResponse::LoadPayloadResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.LoadPayloadResponse)
 }
 LoadPayloadResponse::LoadPayloadResponse(const LoadPayloadResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  LoadPayloadResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_winch_result()) {
-    winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from.winch_result_);
-  } else {
-    winch_result_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.winch_result_ = new ::mavsdk::rpc::winch::WinchResult(*from._impl_.winch_result_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.LoadPayloadResponse)
 }
 
-inline void LoadPayloadResponse::SharedCtor() {
-winch_result_ = nullptr;
+inline void LoadPayloadResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.winch_result_){nullptr}
+  };
 }
 
 LoadPayloadResponse::~LoadPayloadResponse() {
@@ -5444,40 +5989,44 @@ LoadPayloadResponse::~LoadPayloadResponse() {
 }
 
 inline void LoadPayloadResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete winch_result_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.winch_result_;
 }
 
 void LoadPayloadResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void LoadPayloadResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.LoadPayloadResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && winch_result_ != nullptr) {
-    delete winch_result_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.winch_result_ != nullptr);
+    _impl_.winch_result_->Clear();
   }
-  winch_result_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* LoadPayloadResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult winch_result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_winch_result(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -5495,6 +6044,7 @@ const char* LoadPayloadResponse::_InternalParse(const char* ptr, ::_pbi::ParseCo
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -5502,14 +6052,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LoadPayloadResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* LoadPayloadResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.LoadPayloadResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::winch_result(this),
         _Internal::winch_result(this).GetCachedSize(), target, stream);
@@ -5523,47 +6074,45 @@ uint8_t* LoadPayloadResponse::_InternalSerialize(
   return target;
 }
 
-size_t LoadPayloadResponse::ByteSizeLong() const {
+::size_t LoadPayloadResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.LoadPayloadResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult winch_result = 1;
-  if (this->_internal_has_winch_result()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *winch_result_);
+        *_impl_.winch_result_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LoadPayloadResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     LoadPayloadResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LoadPayloadResponse::GetClassData() const { return &_class_data_; }
 
-void LoadPayloadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<LoadPayloadResponse *>(to)->MergeFrom(
-      static_cast<const LoadPayloadResponse &>(from));
-}
 
-
-void LoadPayloadResponse::MergeFrom(const LoadPayloadResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadPayloadResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void LoadPayloadResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LoadPayloadResponse*>(&to_msg);
+  auto& from = static_cast<const LoadPayloadResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.LoadPayloadResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_winch_result()) {
-    _internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(from._internal_winch_result());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_winch_result()->::mavsdk::rpc::winch::WinchResult::MergeFrom(
+        from._internal_winch_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void LoadPayloadResponse::CopyFrom(const LoadPayloadResponse& from) {
@@ -5580,7 +6129,8 @@ bool LoadPayloadResponse::IsInitialized() const {
 void LoadPayloadResponse::InternalSwap(LoadPayloadResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(winch_result_, other->winch_result_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.winch_result_, other->_impl_.winch_result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata LoadPayloadResponse::GetMetadata() const {
@@ -5588,40 +6138,52 @@ void LoadPayloadResponse::InternalSwap(LoadPayloadResponse* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[23]);
 }
-
 // ===================================================================
 
 class WinchResult::_Internal {
  public:
 };
 
-WinchResult::WinchResult(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+WinchResult::WinchResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.winch.WinchResult)
 }
 WinchResult::WinchResult(const WinchResult& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  WinchResult* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) {}
+
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  result_str_.InitDefault();
+  _impl_.result_str_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    result_str_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_result_str().empty()) {
-    result_str_.Set(from._internal_result_str(), 
-      GetArenaForAllocation());
+    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
   }
-  result_ = from.result_;
+  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.winch.WinchResult)
 }
 
-inline void WinchResult::SharedCtor() {
-result_str_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  result_str_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-result_ = 0;
+inline void WinchResult::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.result_str_) {}
+
+    , decltype(_impl_.result_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.result_str_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.result_str_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 WinchResult::~WinchResult() {
@@ -5634,49 +6196,51 @@ WinchResult::~WinchResult() {
 }
 
 inline void WinchResult::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  result_str_.Destroy();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.result_str_.Destroy();
 }
 
 void WinchResult::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void WinchResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.winch.WinchResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmpty();
-  result_ = 0;
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* WinchResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.winch.WinchResult.Result result = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_result(static_cast<::mavsdk::rpc::winch::WinchResult_Result>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // string result_str = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_result_str();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.winch.WinchResult.result_str"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -5701,27 +6265,25 @@ failure:
 #undef CHK_
 }
 
-uint8_t* WinchResult::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* WinchResult::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.winch.WinchResult)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.winch.WinchResult.Result result = 1;
   if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_result(), target);
+        1, this->_internal_result(), target);
   }
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
+    const std::string& _s = this->_internal_result_str();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.winch.WinchResult.result_str");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_result_str(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.winch.WinchResult.result_str");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5732,56 +6294,51 @@ uint8_t* WinchResult::_InternalSerialize(
   return target;
 }
 
-size_t WinchResult::ByteSizeLong() const {
+::size_t WinchResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.winch.WinchResult)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_result_str());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_result_str());
   }
 
   // .mavsdk.rpc.winch.WinchResult.Result result = 1;
   if (this->_internal_result() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_result());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData WinchResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     WinchResult::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*WinchResult::GetClassData() const { return &_class_data_; }
 
-void WinchResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<WinchResult *>(to)->MergeFrom(
-      static_cast<const WinchResult &>(from));
-}
 
-
-void WinchResult::MergeFrom(const WinchResult& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.WinchResult)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void WinchResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<WinchResult*>(&to_msg);
+  auto& from = static_cast<const WinchResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.winch.WinchResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_result_str().empty()) {
-    _internal_set_result_str(from._internal_result_str());
+    _this->_internal_set_result_str(from._internal_result_str());
   }
   if (from._internal_result() != 0) {
-    _internal_set_result(from._internal_result());
+    _this->_internal_set_result(from._internal_result());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void WinchResult::CopyFrom(const WinchResult& from) {
@@ -5800,11 +6357,9 @@ void WinchResult::InternalSwap(WinchResult* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &result_str_, lhs_arena,
-      &other->result_str_, rhs_arena
-  );
-  swap(result_, other->result_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
+                                       &other->_impl_.result_str_, rhs_arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata WinchResult::GetMetadata() const {
@@ -5812,7 +6367,6 @@ void WinchResult::InternalSwap(WinchResult* other) {
       &descriptor_table_winch_2fwinch_2eproto_getter, &descriptor_table_winch_2fwinch_2eproto_once,
       file_level_metadata_winch_2fwinch_2eproto[24]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace winch
 }  // namespace rpc
@@ -5919,6 +6473,5 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::winch::WinchResult >(Arena* arena) {
   return Arena::CreateMessageInternal< ::mavsdk::rpc::winch::WinchResult >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
-
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"

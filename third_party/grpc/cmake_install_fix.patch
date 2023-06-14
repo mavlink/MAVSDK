@@ -1,0 +1,34 @@
+From 0c2090237b50d7a0198830661569d36291a90a38 Mon Sep 17 00:00:00 2001
+From: Julian Oes <julian@oes.ch>
+Date: Sun, 11 Jun 2023 15:39:41 +1200
+Subject: [PATCH] Ignore empty gRPCPluginTargets
+
+Signed-off-by: Julian Oes <julian@oes.ch>
+---
+ CMakeLists.txt | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8b289a0aab..66fcc289e0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -26091,10 +26091,12 @@ if(gRPC_INSTALL)
+     DESTINATION ${gRPC_INSTALL_CMAKEDIR}
+     NAMESPACE gRPC::
+   )
+-  install(EXPORT gRPCPluginTargets
+-    DESTINATION ${gRPC_INSTALL_CMAKEDIR}
+-    NAMESPACE gRPC::
+-  )
++  if (gRPCPluginTargets AND gRPC_BUILD_CODEGEN)
++    install(EXPORT gRPCPluginTargets
++      DESTINATION ${gRPC_INSTALL_CMAKEDIR}
++      NAMESPACE gRPC::
++    )
++  endif()
+ endif()
+ 
+ include(CMakePackageConfigHelpers)
+-- 
+2.34.1
+

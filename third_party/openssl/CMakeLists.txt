@@ -5,7 +5,7 @@ include(ExternalProject)
 
 message(STATUS "Preparing external project \"openssl\"")
 
-set(OPENSSL_VERSION 3.0.5)
+set(OPENSSL_VERSION 3.0.9)
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(OPENSSL_BUILD_TYPE "--debug")
@@ -37,11 +37,10 @@ if(ANDROID)
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         BUILD_COMMAND make
+        INSTALL_COMMAND make install_sw
         )
-elseif(IOS)
-    # OpenSSL 3 has issues with bitcode. Let's stay with OpenSSL 1 until we can drop bitcode (with Xcode 14).
-    set(OPENSSL_VERSION 1.1.1o)
 
+elseif(IOS)
     if(${PLATFORM} STREQUAL "OS64")
         set(OPENSSL_PLATFORM "ios64-xcrun")
     elseif(${PLATFORM} STREQUAL "SIMULATOR64")
@@ -52,16 +51,13 @@ elseif(IOS)
 
     message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
 
-    if(${ENABLE_BITCODE})
-        set(CFLAGS "-fembed-bitcode")
-    endif()
-
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} CFLAGS=${CFLAGS} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         )
+
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
         set(OPENSSL_PLATFORM "linux-armv4")
@@ -79,7 +75,9 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
         PREFIX openssl
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         BUILD_COMMAND make
+        INSTALL_COMMAND make install_sw
         )
+
 elseif(MSVC)
     message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
     # Only available from cmake 3.20, for now do it manually.
@@ -93,13 +91,16 @@ elseif(MSVC)
         PREFIX openssl
         CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm
         BUILD_COMMAND set MAKEFLAGS= && nmake
-        INSTALL_COMMAND set MAKEFLAGS= && nmake install
+        INSTALL_COMMAND set MAKEFLAGS= && nmake install_sw
         )
+
 else()
     ExternalProject_add(
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         CONFIGURE_COMMAND <SOURCE_DIR>/config ${OPENSSL_BUILD_TYPE} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        BUILD_COMMAND make
+        INSTALL_COMMAND make install_sw
         )
 endif()

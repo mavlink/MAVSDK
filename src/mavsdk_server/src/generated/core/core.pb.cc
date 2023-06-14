@@ -4,189 +4,237 @@
 #include "core/core.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
 namespace mavsdk {
 namespace rpc {
 namespace core {
+template <typename>
 PROTOBUF_CONSTEXPR SubscribeConnectionStateRequest::SubscribeConnectionStateRequest(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct SubscribeConnectionStateRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SubscribeConnectionStateRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SubscribeConnectionStateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SubscribeConnectionStateRequestDefaultTypeInternal() {}
   union {
     SubscribeConnectionStateRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionStateRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionStateRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ConnectionStateResponse::ConnectionStateResponse(
-    ::_pbi::ConstantInitialized)
-  : connection_state_(nullptr){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.connection_state_)*/nullptr} {}
 struct ConnectionStateResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ConnectionStateResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ConnectionStateResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ConnectionStateResponseDefaultTypeInternal() {}
   union {
     ConnectionStateResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetMavlinkTimeoutRequest::SetMavlinkTimeoutRequest(
-    ::_pbi::ConstantInitialized)
-  : timeout_s_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.timeout_s_)*/ 0
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SetMavlinkTimeoutRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetMavlinkTimeoutRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetMavlinkTimeoutRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetMavlinkTimeoutRequestDefaultTypeInternal() {}
   union {
     SetMavlinkTimeoutRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR SetMavlinkTimeoutResponse::SetMavlinkTimeoutResponse(
-    ::_pbi::ConstantInitialized){}
+    ::_pbi::ConstantInitialized) {}
 struct SetMavlinkTimeoutResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetMavlinkTimeoutResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR SetMavlinkTimeoutResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SetMavlinkTimeoutResponseDefaultTypeInternal() {}
   union {
     SetMavlinkTimeoutResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMavlinkTimeoutResponseDefaultTypeInternal _SetMavlinkTimeoutResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMavlinkTimeoutResponseDefaultTypeInternal _SetMavlinkTimeoutResponse_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR ConnectionState::ConnectionState(
-    ::_pbi::ConstantInitialized)
-  : is_connected_(false){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.is_connected_)*/ false
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ConnectionStateDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ConnectionStateDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR ConnectionStateDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ConnectionStateDefaultTypeInternal() {}
   union {
     ConnectionState _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
 }  // namespace core
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_core_2fcore_2eproto[5];
-static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_core_2fcore_2eproto = nullptr;
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_core_2fcore_2eproto = nullptr;
-
-const uint32_t TableStruct_core_2fcore_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SubscribeConnectionStateRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionStateResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionStateResponse, connection_state_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutRequest, timeout_s_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, is_connected_),
+static constexpr const ::_pb::EnumDescriptor**
+    file_level_enum_descriptors_core_2fcore_2eproto = nullptr;
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_core_2fcore_2eproto = nullptr;
+const ::uint32_t TableStruct_core_2fcore_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SubscribeConnectionStateRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionStateResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionStateResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionStateResponse, _impl_.connection_state_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutRequest, _impl_.timeout_s_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetMavlinkTimeoutResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, _impl_.is_connected_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::mavsdk::rpc::core::SubscribeConnectionStateRequest)},
-  { 6, -1, -1, sizeof(::mavsdk::rpc::core::ConnectionStateResponse)},
-  { 13, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutRequest)},
-  { 20, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutResponse)},
-  { 26, -1, -1, sizeof(::mavsdk::rpc::core::ConnectionState)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::mavsdk::rpc::core::SubscribeConnectionStateRequest)},
+        { 8, 17, -1, sizeof(::mavsdk::rpc::core::ConnectionStateResponse)},
+        { 18, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutRequest)},
+        { 27, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutResponse)},
+        { 35, -1, -1, sizeof(::mavsdk::rpc::core::ConnectionState)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_._instance,
-  &::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_._instance,
-  &::mavsdk::rpc::core::_SetMavlinkTimeoutRequest_default_instance_._instance,
-  &::mavsdk::rpc::core::_SetMavlinkTimeoutResponse_default_instance_._instance,
-  &::mavsdk::rpc::core::_ConnectionState_default_instance_._instance,
+    &::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_._instance,
+    &::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_._instance,
+    &::mavsdk::rpc::core::_SetMavlinkTimeoutRequest_default_instance_._instance,
+    &::mavsdk::rpc::core::_SetMavlinkTimeoutResponse_default_instance_._instance,
+    &::mavsdk::rpc::core::_ConnectionState_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\017core/core.proto\022\017mavsdk.rpc.core\"!\n\037Su"
-  "bscribeConnectionStateRequest\"U\n\027Connect"
-  "ionStateResponse\022:\n\020connection_state\030\001 \001"
-  "(\0132 .mavsdk.rpc.core.ConnectionState\"-\n\030"
-  "SetMavlinkTimeoutRequest\022\021\n\ttimeout_s\030\001 "
-  "\001(\001\"\033\n\031SetMavlinkTimeoutResponse\"\'\n\017Conn"
-  "ectionState\022\024\n\014is_connected\030\002 \001(\0102\367\001\n\013Co"
-  "reService\022z\n\030SubscribeConnectionState\0220."
-  "mavsdk.rpc.core.SubscribeConnectionState"
-  "Request\032(.mavsdk.rpc.core.ConnectionStat"
-  "eResponse\"\0000\001\022l\n\021SetMavlinkTimeout\022).mav"
-  "sdk.rpc.core.SetMavlinkTimeoutRequest\032*."
-  "mavsdk.rpc.core.SetMavlinkTimeoutRespons"
-  "e\"\000B\033\n\016io.mavsdk.coreB\tCoreProtob\006proto3"
-  ;
-static ::_pbi::once_flag descriptor_table_core_2fcore_2eproto_once;
+const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\017core/core.proto\022\017mavsdk.rpc.core\"!\n\037Su"
+    "bscribeConnectionStateRequest\"U\n\027Connect"
+    "ionStateResponse\022:\n\020connection_state\030\001 \001"
+    "(\0132 .mavsdk.rpc.core.ConnectionState\"-\n\030"
+    "SetMavlinkTimeoutRequest\022\021\n\ttimeout_s\030\001 "
+    "\001(\001\"\033\n\031SetMavlinkTimeoutResponse\"\'\n\017Conn"
+    "ectionState\022\024\n\014is_connected\030\002 \001(\0102\367\001\n\013Co"
+    "reService\022z\n\030SubscribeConnectionState\0220."
+    "mavsdk.rpc.core.SubscribeConnectionState"
+    "Request\032(.mavsdk.rpc.core.ConnectionStat"
+    "eResponse\"\0000\001\022l\n\021SetMavlinkTimeout\022).mav"
+    "sdk.rpc.core.SetMavlinkTimeoutRequest\032*."
+    "mavsdk.rpc.core.SetMavlinkTimeoutRespons"
+    "e\"\000B\033\n\016io.mavsdk.coreB\tCoreProtob\006proto3"
+};
+static ::absl::once_flag descriptor_table_core_2fcore_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_core_2fcore_2eproto = {
-    false, false, 560, descriptor_table_protodef_core_2fcore_2eproto,
+    false,
+    false,
+    560,
+    descriptor_table_protodef_core_2fcore_2eproto,
     "core/core.proto",
-    &descriptor_table_core_2fcore_2eproto_once, nullptr, 0, 5,
-    schemas, file_default_instances, TableStruct_core_2fcore_2eproto::offsets,
-    file_level_metadata_core_2fcore_2eproto, file_level_enum_descriptors_core_2fcore_2eproto,
+    &descriptor_table_core_2fcore_2eproto_once,
+    nullptr,
+    0,
+    5,
+    schemas,
+    file_default_instances,
+    TableStruct_core_2fcore_2eproto::offsets,
+    file_level_metadata_core_2fcore_2eproto,
+    file_level_enum_descriptors_core_2fcore_2eproto,
     file_level_service_descriptors_core_2fcore_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_core_2fcore_2eproto_getter() {
   return &descriptor_table_core_2fcore_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_core_2fcore_2eproto(&descriptor_table_core_2fcore_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_core_2fcore_2eproto(&descriptor_table_core_2fcore_2eproto);
 namespace mavsdk {
 namespace rpc {
 namespace core {
-
 // ===================================================================
 
 class SubscribeConnectionStateRequest::_Internal {
  public:
 };
 
-SubscribeConnectionStateRequest::SubscribeConnectionStateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+SubscribeConnectionStateRequest::SubscribeConnectionStateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SubscribeConnectionStateRequest)
 }
 SubscribeConnectionStateRequest::SubscribeConnectionStateRequest(const SubscribeConnectionStateRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  SubscribeConnectionStateRequest* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SubscribeConnectionStateRequest)
 }
@@ -212,37 +260,50 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubscribeConnectionStateReques
       &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
       file_level_metadata_core_2fcore_2eproto[0]);
 }
-
 // ===================================================================
 
 class ConnectionStateResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<ConnectionStateResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(ConnectionStateResponse, _impl_._has_bits_);
   static const ::mavsdk::rpc::core::ConnectionState& connection_state(const ConnectionStateResponse* msg);
+  static void set_has_connection_state(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::mavsdk::rpc::core::ConnectionState&
 ConnectionStateResponse::_Internal::connection_state(const ConnectionStateResponse* msg) {
-  return *msg->connection_state_;
+  return *msg->_impl_.connection_state_;
 }
-ConnectionStateResponse::ConnectionStateResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ConnectionStateResponse::ConnectionStateResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.ConnectionStateResponse)
 }
 ConnectionStateResponse::ConnectionStateResponse(const ConnectionStateResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ConnectionStateResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.connection_state_){nullptr}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_connection_state()) {
-    connection_state_ = new ::mavsdk::rpc::core::ConnectionState(*from.connection_state_);
-  } else {
-    connection_state_ = nullptr;
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.connection_state_ = new ::mavsdk::rpc::core::ConnectionState(*from._impl_.connection_state_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ConnectionStateResponse)
 }
 
-inline void ConnectionStateResponse::SharedCtor() {
-connection_state_ = nullptr;
+inline void ConnectionStateResponse::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.connection_state_){nullptr}
+  };
 }
 
 ConnectionStateResponse::~ConnectionStateResponse() {
@@ -255,40 +316,44 @@ ConnectionStateResponse::~ConnectionStateResponse() {
 }
 
 inline void ConnectionStateResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete connection_state_;
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.connection_state_;
 }
 
 void ConnectionStateResponse::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ConnectionStateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ConnectionStateResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && connection_state_ != nullptr) {
-    delete connection_state_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.connection_state_ != nullptr);
+    _impl_.connection_state_->Clear();
   }
-  connection_state_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ConnectionStateResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // .mavsdk.rpc.core.ConnectionState connection_state = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_connection_state(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -306,6 +371,7 @@ const char* ConnectionStateResponse::_InternalParse(const char* ptr, ::_pbi::Par
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -313,14 +379,15 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ConnectionStateResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ConnectionStateResponse::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ConnectionStateResponse)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.core.ConnectionState connection_state = 1;
-  if (this->_internal_has_connection_state()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::connection_state(this),
         _Internal::connection_state(this).GetCachedSize(), target, stream);
@@ -334,47 +401,45 @@ uint8_t* ConnectionStateResponse::_InternalSerialize(
   return target;
 }
 
-size_t ConnectionStateResponse::ByteSizeLong() const {
+::size_t ConnectionStateResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ConnectionStateResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.core.ConnectionState connection_state = 1;
-  if (this->_internal_has_connection_state()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *connection_state_);
+        *_impl_.connection_state_);
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ConnectionStateResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ConnectionStateResponse::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ConnectionStateResponse::GetClassData() const { return &_class_data_; }
 
-void ConnectionStateResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ConnectionStateResponse *>(to)->MergeFrom(
-      static_cast<const ConnectionStateResponse &>(from));
-}
 
-
-void ConnectionStateResponse::MergeFrom(const ConnectionStateResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ConnectionStateResponse)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ConnectionStateResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ConnectionStateResponse*>(&to_msg);
+  auto& from = static_cast<const ConnectionStateResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ConnectionStateResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_connection_state()) {
-    _internal_mutable_connection_state()->::mavsdk::rpc::core::ConnectionState::MergeFrom(from._internal_connection_state());
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_connection_state()->::mavsdk::rpc::core::ConnectionState::MergeFrom(
+        from._internal_connection_state());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ConnectionStateResponse::CopyFrom(const ConnectionStateResponse& from) {
@@ -391,7 +456,8 @@ bool ConnectionStateResponse::IsInitialized() const {
 void ConnectionStateResponse::InternalSwap(ConnectionStateResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(connection_state_, other->connection_state_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.connection_state_, other->_impl_.connection_state_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ConnectionStateResponse::GetMetadata() const {
@@ -399,28 +465,31 @@ void ConnectionStateResponse::InternalSwap(ConnectionStateResponse* other) {
       &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
       file_level_metadata_core_2fcore_2eproto[1]);
 }
-
 // ===================================================================
 
 class SetMavlinkTimeoutRequest::_Internal {
  public:
 };
 
-SetMavlinkTimeoutRequest::SetMavlinkTimeoutRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+SetMavlinkTimeoutRequest::SetMavlinkTimeoutRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
 }
 SetMavlinkTimeoutRequest::SetMavlinkTimeoutRequest(const SetMavlinkTimeoutRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  timeout_s_ = from.timeout_s_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
 }
 
-inline void SetMavlinkTimeoutRequest::SharedCtor() {
-timeout_s_ = 0;
+inline void SetMavlinkTimeoutRequest::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.timeout_s_) { 0 }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 SetMavlinkTimeoutRequest::~SetMavlinkTimeoutRequest() {
@@ -433,36 +502,37 @@ SetMavlinkTimeoutRequest::~SetMavlinkTimeoutRequest() {
 }
 
 inline void SetMavlinkTimeoutRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void SetMavlinkTimeoutRequest::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SetMavlinkTimeoutRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  timeout_s_ = 0;
+  _impl_.timeout_s_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SetMavlinkTimeoutRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // double timeout_s = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 9)) {
-          timeout_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 9)) {
+          _impl_.timeout_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -487,20 +557,21 @@ failure:
 #undef CHK_
 }
 
-uint8_t* SetMavlinkTimeoutRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* SetMavlinkTimeoutRequest::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // double timeout_s = 1;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_timeout_s = this->_internal_timeout_s();
-  uint64_t raw_timeout_s;
+  ::uint64_t raw_timeout_s;
   memcpy(&raw_timeout_s, &tmp_timeout_s, sizeof(tmp_timeout_s));
   if (raw_timeout_s != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(1, this->_internal_timeout_s(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+        1, this->_internal_timeout_s(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -511,53 +582,49 @@ uint8_t* SetMavlinkTimeoutRequest::_InternalSerialize(
   return target;
 }
 
-size_t SetMavlinkTimeoutRequest::ByteSizeLong() const {
+::size_t SetMavlinkTimeoutRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // double timeout_s = 1;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_timeout_s = this->_internal_timeout_s();
-  uint64_t raw_timeout_s;
+  ::uint64_t raw_timeout_s;
   memcpy(&raw_timeout_s, &tmp_timeout_s, sizeof(tmp_timeout_s));
   if (raw_timeout_s != 0) {
-    total_size += 1 + 8;
+    total_size += 9;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SetMavlinkTimeoutRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SetMavlinkTimeoutRequest::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetMavlinkTimeoutRequest::GetClassData() const { return &_class_data_; }
 
-void SetMavlinkTimeoutRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SetMavlinkTimeoutRequest *>(to)->MergeFrom(
-      static_cast<const SetMavlinkTimeoutRequest &>(from));
-}
 
-
-void SetMavlinkTimeoutRequest::MergeFrom(const SetMavlinkTimeoutRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void SetMavlinkTimeoutRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SetMavlinkTimeoutRequest*>(&to_msg);
+  auto& from = static_cast<const SetMavlinkTimeoutRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.SetMavlinkTimeoutRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_timeout_s = from._internal_timeout_s();
-  uint64_t raw_timeout_s;
+  ::uint64_t raw_timeout_s;
   memcpy(&raw_timeout_s, &tmp_timeout_s, sizeof(tmp_timeout_s));
   if (raw_timeout_s != 0) {
-    _internal_set_timeout_s(from._internal_timeout_s());
+    _this->_internal_set_timeout_s(from._internal_timeout_s());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SetMavlinkTimeoutRequest::CopyFrom(const SetMavlinkTimeoutRequest& from) {
@@ -574,7 +641,8 @@ bool SetMavlinkTimeoutRequest::IsInitialized() const {
 void SetMavlinkTimeoutRequest::InternalSwap(SetMavlinkTimeoutRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(timeout_s_, other->timeout_s_);
+
+  swap(_impl_.timeout_s_, other->_impl_.timeout_s_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetMavlinkTimeoutRequest::GetMetadata() const {
@@ -582,20 +650,19 @@ void SetMavlinkTimeoutRequest::InternalSwap(SetMavlinkTimeoutRequest* other) {
       &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
       file_level_metadata_core_2fcore_2eproto[2]);
 }
-
 // ===================================================================
 
 class SetMavlinkTimeoutResponse::_Internal {
  public:
 };
 
-SetMavlinkTimeoutResponse::SetMavlinkTimeoutResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+SetMavlinkTimeoutResponse::SetMavlinkTimeoutResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
 }
 SetMavlinkTimeoutResponse::SetMavlinkTimeoutResponse(const SetMavlinkTimeoutResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  SetMavlinkTimeoutResponse* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SetMavlinkTimeoutResponse)
 }
@@ -621,28 +688,31 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SetMavlinkTimeoutResponse::Get
       &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
       file_level_metadata_core_2fcore_2eproto[3]);
 }
-
 // ===================================================================
 
 class ConnectionState::_Internal {
  public:
 };
 
-ConnectionState::ConnectionState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+ConnectionState::ConnectionState(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.ConnectionState)
 }
 ConnectionState::ConnectionState(const ConnectionState& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  is_connected_ = from.is_connected_;
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ConnectionState)
 }
 
-inline void ConnectionState::SharedCtor() {
-is_connected_ = false;
+inline void ConnectionState::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.is_connected_) { false }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 ConnectionState::~ConnectionState() {
@@ -655,36 +725,37 @@ ConnectionState::~ConnectionState() {
 }
 
 inline void ConnectionState::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void ConnectionState::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void ConnectionState::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ConnectionState)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  is_connected_ = false;
+  _impl_.is_connected_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* ConnectionState::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // bool is_connected = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          is_connected_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.is_connected_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -709,16 +780,17 @@ failure:
 #undef CHK_
 }
 
-uint8_t* ConnectionState::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* ConnectionState::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ConnectionState)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bool is_connected = 2;
   if (this->_internal_is_connected() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(2, this->_internal_is_connected(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        2, this->_internal_is_connected(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -729,45 +801,41 @@ uint8_t* ConnectionState::_InternalSerialize(
   return target;
 }
 
-size_t ConnectionState::ByteSizeLong() const {
+::size_t ConnectionState::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ConnectionState)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // bool is_connected = 2;
   if (this->_internal_is_connected() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ConnectionState::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     ConnectionState::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ConnectionState::GetClassData() const { return &_class_data_; }
 
-void ConnectionState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<ConnectionState *>(to)->MergeFrom(
-      static_cast<const ConnectionState &>(from));
-}
 
-
-void ConnectionState::MergeFrom(const ConnectionState& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ConnectionState)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
+void ConnectionState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ConnectionState*>(&to_msg);
+  auto& from = static_cast<const ConnectionState&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ConnectionState)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_is_connected() != 0) {
-    _internal_set_is_connected(from._internal_is_connected());
+    _this->_internal_set_is_connected(from._internal_is_connected());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ConnectionState::CopyFrom(const ConnectionState& from) {
@@ -784,7 +852,8 @@ bool ConnectionState::IsInitialized() const {
 void ConnectionState::InternalSwap(ConnectionState* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(is_connected_, other->is_connected_);
+
+  swap(_impl_.is_connected_, other->_impl_.is_connected_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ConnectionState::GetMetadata() const {
@@ -792,7 +861,6 @@ void ConnectionState::InternalSwap(ConnectionState* other) {
       &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
       file_level_metadata_core_2fcore_2eproto[4]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace core
 }  // namespace rpc
@@ -819,6 +887,5 @@ Arena::CreateMaybeMessage< ::mavsdk::rpc::core::ConnectionState >(Arena* arena) 
   return Arena::CreateMessageInternal< ::mavsdk::rpc::core::ConnectionState >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
-
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"
