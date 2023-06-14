@@ -39,6 +39,22 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
     return ParamServer::Result::Success;
 }
 
+ParamServer::Result ParamServerImpl::change_param_int(std::string name, int32_t value)
+{
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+
+    const auto result =
+        _server_component_impl->mavlink_parameter_server().change_server_param_int(name, value);
+
+    if (result == MavlinkParameterServer::Result::Success) {
+        return ParamServer::Result::Success;
+    } else {
+        return ParamServer::Result::NotFound;
+    }
+}
+
 std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std::string name) const
 {
     const auto result =
@@ -58,6 +74,22 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
     }
     _server_component_impl->mavlink_parameter_server().provide_server_param_float(name, value);
     return ParamServer::Result::Success;
+}
+
+ParamServer::Result ParamServerImpl::change_param_float(std::string name, float value)
+{
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+
+    const auto result =
+        _server_component_impl->mavlink_parameter_server().change_server_param_float(name, value);
+
+    if (result == MavlinkParameterServer::Result::Success) {
+        return ParamServer::Result::Success;
+    } else {
+        return ParamServer::Result::NotFound;
+    }
 }
 
 std::pair<ParamServer::Result, std::string>
@@ -81,6 +113,22 @@ ParamServerImpl::provide_param_custom(std::string name, const std::string& value
     }
     _server_component_impl->mavlink_parameter_server().provide_server_param_custom(name, value);
     return ParamServer::Result::Success;
+}
+
+ParamServer::Result ParamServerImpl::change_param_custom(std::string name, const std::string& value)
+{
+    if (name.size() > 16) {
+        return ParamServer::Result::ParamNameTooLong;
+    }
+
+    const auto result =
+        _server_component_impl->mavlink_parameter_server().change_server_param_custom(name, value);
+
+    if (result == MavlinkParameterServer::Result::Success) {
+        return ParamServer::Result::Success;
+    } else {
+        return ParamServer::Result::NotFound;
+    }
 }
 
 ParamServer::AllParams ParamServerImpl::retrieve_all_params() const

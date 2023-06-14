@@ -179,6 +179,71 @@ MavlinkParameterServer::retrieve_server_param_int(const std::string& name)
     return retrieve_server_param<int32_t>(name);
 }
 
+MavlinkParameterServer::Result
+MavlinkParameterServer::change_server_param(const std::string& name, const ParamValue& param_value)
+{
+    if (name.size() > PARAM_ID_LEN) {
+        LogErr() << "Error: param name too long";
+        return Result::ParamNameTooLong;
+    }
+    const auto param_opt = _param_cache.param_by_id(name, true);
+    if (!param_opt.has_value()) {
+        return Result::NotFound;
+    }
+    // This parameter exists, check its type
+    const auto& param = param_opt.value();
+    if (!param.value.is_same_type(param_value)) {
+        return Result::WrongType;
+    }
+
+    if (param_value.is<std::string>()) {
+        const auto s = param_value.get<std::string>();
+        if (s.size() > sizeof(mavlink_param_ext_set_t::param_value)) {
+            LogErr() << "Error: param value too long";
+            return Result::ParamValueTooLong;
+        }
+    }
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+    // then, to not change the public api behaviour, try updating its value.
+    switch (_param_cache.update_existing_param(name, param_value)) {
+        case MavlinkParameterCache::UpdateExistingParamResult::Ok:
+            return Result::Success;
+        case MavlinkParameterCache::UpdateExistingParamResult::MissingParam:
+            return Result::ParamNotFound;
+        case MavlinkParameterCache::UpdateExistingParamResult::WrongType:
+            return Result::WrongType;
+        default:
+            LogErr() << "Unknown update_existing_param result";
+            assert(false);
+    }
+
+    return Result::Unknown;
+}
+
+MavlinkParameterServer::Result
+MavlinkParameterServer::change_server_param_float(const std::string& name, float value)
+{
+    ParamValue param_value;
+    param_value.set(value);
+    return change_server_param(name, param_value);
+}
+
+MavlinkParameterServer::Result
+MavlinkParameterServer::change_server_param_int(const std::string& name, int32_t value)
+{
+    ParamValue param_value;
+    param_value.set(value);
+    return change_server_param(name, param_value);
+}
+
+MavlinkParameterServer::Result MavlinkParameterServer::change_server_param_custom(
+    const std::string& name, const std::string& value)
+{
+    ParamValue param_value;
+    param_value.set(value);
+    return change_server_param(name, param_value);
+}
+
 void MavlinkParameterServer::process_param_set_internally(
     const std::string& param_id, const ParamValue& value_to_set, bool extended)
 {

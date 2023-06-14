@@ -272,6 +272,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status ChangeParamInt(
+        grpc::ServerContext* /* context */,
+        const rpc::param_server::ChangeParamIntRequest* request,
+        rpc::param_server::ChangeParamIntResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "ChangeParamInt sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result =
+            _lazy_plugin.maybe_plugin()->change_param_int(request->name(), request->value());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status RetrieveParamFloat(
         grpc::ServerContext* /* context */,
         const rpc::param_server::RetrieveParamFloatRequest* request,
@@ -335,6 +366,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status ChangeParamFloat(
+        grpc::ServerContext* /* context */,
+        const rpc::param_server::ChangeParamFloatRequest* request,
+        rpc::param_server::ChangeParamFloatResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "ChangeParamFloat sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result =
+            _lazy_plugin.maybe_plugin()->change_param_float(request->name(), request->value());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status RetrieveParamCustom(
         grpc::ServerContext* /* context */,
         const rpc::param_server::RetrieveParamCustomRequest* request,
@@ -390,6 +452,37 @@ public:
 
         auto result =
             _lazy_plugin.maybe_plugin()->provide_param_custom(request->name(), request->value());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ChangeParamCustom(
+        grpc::ServerContext* /* context */,
+        const rpc::param_server::ChangeParamCustomRequest* request,
+        rpc::param_server::ChangeParamCustomResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "ChangeParamCustom sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result =
+            _lazy_plugin.maybe_plugin()->change_param_custom(request->name(), request->value());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

@@ -31,6 +31,11 @@ ParamServer::Result ParamServer::provide_param_int(std::string name, int32_t val
     return _impl->provide_param_int(name, value);
 }
 
+ParamServer::Result ParamServer::change_param_int(std::string name, int32_t value) const
+{
+    return _impl->change_param_int(name, value);
+}
+
 std::pair<ParamServer::Result, float> ParamServer::retrieve_param_float(std::string name) const
 {
     return _impl->retrieve_param_float(name);
@@ -39,6 +44,11 @@ std::pair<ParamServer::Result, float> ParamServer::retrieve_param_float(std::str
 ParamServer::Result ParamServer::provide_param_float(std::string name, float value) const
 {
     return _impl->provide_param_float(name, value);
+}
+
+ParamServer::Result ParamServer::change_param_float(std::string name, float value) const
+{
+    return _impl->change_param_float(name, value);
 }
 
 std::pair<ParamServer::Result, std::string>
@@ -50,6 +60,11 @@ ParamServer::retrieve_param_custom(std::string name) const
 ParamServer::Result ParamServer::provide_param_custom(std::string name, std::string value) const
 {
     return _impl->provide_param_custom(name, value);
+}
+
+ParamServer::Result ParamServer::change_param_custom(std::string name, std::string value) const
+{
+    return _impl->change_param_custom(name, value);
 }
 
 ParamServer::AllParams ParamServer::retrieve_all_params() const

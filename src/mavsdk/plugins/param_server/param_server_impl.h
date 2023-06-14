@@ -18,13 +18,19 @@ public:
 
     ParamServer::Result provide_param_int(std::string name, int32_t value);
 
+    ParamServer::Result change_param_int(std::string name, int32_t value);
+
     std::pair<ParamServer::Result, float> retrieve_param_float(std::string name) const;
 
     ParamServer::Result provide_param_float(std::string name, float value);
 
+    ParamServer::Result change_param_float(std::string name, float value);
+
     std::pair<ParamServer::Result, std::string> retrieve_param_custom(std::string name) const;
 
     ParamServer::Result provide_param_custom(std::string name, const std::string& value);
+
+    ParamServer::Result change_param_custom(std::string name, const std::string& value);
 
     ParamServer::AllParams retrieve_all_params() const;
 

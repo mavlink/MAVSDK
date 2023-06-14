@@ -55,6 +55,11 @@ public:
     std::pair<Result, int32_t> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
+    Result change_server_param(const std::string& name, const ParamValue& param_value);
+    Result change_server_param_float(const std::string& name, float value);
+    Result change_server_param_int(const std::string& name, int32_t value);
+    Result change_server_param_custom(const std::string& name, const std::string& value);
+
     void do_work();
 
     friend std::ostream& operator<<(std::ostream&, const Result&);

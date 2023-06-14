@@ -3,7 +3,6 @@
 #include <thread>
 
 #include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/param_server/param_server.h>
@@ -83,7 +82,8 @@ int main(int argc, char** argv)
         paramServer.provide_param_int("SYS_HITL", 0);
         paramServer.provide_param_int("MIS_TAKEOFF_ALT", 0);
         // Add a custom param
-        paramServer.provide_param_int("my_param", 1);
+        paramServer.provide_param_int("MY_PARAM", 1);
+        paramServer.change_param_int("MY_PARAM", 2);
 
         // Allow the vehicle to change modes, takeoff and arm
         actionServer.set_allowable_flight_modes({true, true, true});

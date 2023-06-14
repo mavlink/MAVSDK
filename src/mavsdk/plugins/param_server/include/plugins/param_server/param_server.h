@@ -187,6 +187,17 @@ public:
     Result provide_param_int(std::string name, int32_t value) const;
 
     /**
+     * @brief Change an int parameter internally.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result change_param_int(std::string name, int32_t value) const;
+
+    /**
      * @brief Retrieve a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
@@ -209,6 +220,17 @@ public:
     Result provide_param_float(std::string name, float value) const;
 
     /**
+     * @brief Change a float parameter internally.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result change_param_float(std::string name, float value) const;
+
+    /**
      * @brief Retrieve a custom parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
@@ -229,6 +251,17 @@ public:
      * @return Result of request.
      */
     Result provide_param_custom(std::string name, std::string value) const;
+
+    /**
+     * @brief Change a custom parameter internally.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result change_param_custom(std::string name, std::string value) const;
 
     /**
      * @brief Retrieve all parameters.
