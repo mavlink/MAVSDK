@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <netdb.h>
 #include <unistd.h> // for close()
 #endif
 
@@ -80,7 +81,16 @@ ConnectionResult TcpConnection::setup_port()
     struct sockaddr_in remote_addr {};
     remote_addr.sin_family = AF_INET;
     remote_addr.sin_port = htons(_remote_port_number);
-    remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
+
+    struct hostent* hp;
+    hp = gethostbyname(_remote_ip.c_str());
+    if (hp == nullptr) {
+        LogErr() << "Could not get host by name";
+        _is_ok = false;
+        return ConnectionResult::SocketConnectionError;
+    }
+
+    memcpy(&remote_addr.sin_addr, hp->h_addr, hp->h_length);
 
     if (connect(_socket_fd, reinterpret_cast<sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
         0) {
