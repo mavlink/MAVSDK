@@ -49,6 +49,10 @@ else()
         endif()
 
         set(warnings "${warnings} -Wlogical-op")
+
+        # MAVLink warnings
+        set(warnings "${warnings} -Wno-address-of-packed-member")
+
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         set(warnings "${warnings} -Wno-missing-braces -Wno-unused-lambda-capture")
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")

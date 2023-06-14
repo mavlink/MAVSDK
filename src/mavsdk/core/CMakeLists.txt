@@ -3,6 +3,12 @@ find_package(Threads REQUIRED)
 
 find_package(MAVLink REQUIRED)
 
+get_target_property(
+    MAVLINK_INCLUDE_DIR
+    MAVLink::mavlink
+    INTERFACE_INCLUDE_DIRECTORIES
+)
+
 configure_file(version.h.in version.h)
 configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
 
@@ -54,9 +60,8 @@ target_sources(mavsdk
 
 cmake_policy(SET CMP0079 NEW)
 target_link_libraries(mavsdk
-    PUBLIC
-    MAVLink::mavlink
     PRIVATE
+    MAVLink::mavlink
     CURL::libcurl
     Threads::Threads
 )
@@ -102,6 +107,7 @@ target_include_directories(mavsdk
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/mavsdk>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk>
+    $<BUILD_INTERFACE:${MAVLINK_INCLUDE_DIR}>
     $<INSTALL_INTERFACE:include>
     PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -127,6 +133,10 @@ install(FILES
     include/mavsdk/geometry.h
     include/mavsdk/server_component.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
+)
+
+install(DIRECTORY ${MAVLINK_INCLUDE_DIR}/mavlink
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 
