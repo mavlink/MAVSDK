@@ -1,7 +1,5 @@
 include(CMakeFindDependencyMacro)
 
-find_dependency(MAVLink)
-
 if(NOT @BUILD_SHARED_LIBS@)
     if(${CMAKE_VERSION} VERSION_LESS "3.9.0")
         find_package(CURL REQUIRED CONFIG)
