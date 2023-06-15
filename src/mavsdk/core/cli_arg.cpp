@@ -3,6 +3,7 @@
 #include <cctype>
 #include <algorithm>
 #include <limits>
+#include <cstdint>
 
 namespace mavsdk {
 
