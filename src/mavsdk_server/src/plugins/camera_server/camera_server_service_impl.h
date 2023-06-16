@@ -437,6 +437,88 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeStartVideo(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStartVideoRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StartVideoResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StartVideoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_start_video(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t start_video) {
+                    rpc::camera_server::StartVideoResponse rpc_response;
+
+                    rpc_response.set_stream_id(start_video);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_start_video(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeStopVideo(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStopVideoRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StopVideoResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StopVideoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_stop_video(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t stop_video) {
+                    rpc::camera_server::StopVideoResponse rpc_response;
+
+                    rpc_response.set_stream_id(stop_video);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_stop_video(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

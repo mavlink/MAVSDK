@@ -51,6 +51,12 @@ int main(int argc, char** argv)
             });
     });
 
+    camera_server.subscribe_start_video(
+        [](int32_t stream_id) { std::cout << "Start video record" << std::endl; });
+
+    camera_server.subscribe_stop_video(
+        [](int32_t stream_id) { std::cout << "Stop video record" << std::endl; });
+
     // Then set the initial state of everything.
 
     // TODO: this state is not guaranteed, e.g. a new system appears

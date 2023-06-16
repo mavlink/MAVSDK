@@ -291,6 +291,28 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
     return CameraServer::Result::Success;
 }
 
+CameraServer::StartVideoHandle
+CameraServerImpl::subscribe_start_video(const CameraServer::StartVideoCallback& callback)
+{
+    return _start_video_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_start_video(CameraServer::StartVideoHandle handle)
+{
+    _start_video_callbacks.unsubscribe(handle);
+}
+
+CameraServer::StopVideoHandle
+CameraServerImpl::subscribe_stop_video(const CameraServer::StopVideoCallback& callback)
+{
+    return _stop_video_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_stop_video(CameraServer::StopVideoHandle handle)
+{
+    return _stop_video_callbacks.unsubscribe(handle);
+}
+
 /**
  * Starts capturing images with the given interval.
  * @param [in]  interval_s      The interval between captures in seconds.
@@ -734,13 +756,18 @@ CameraServerImpl::process_video_start_capture(const MavlinkCommandReceiver::Comm
     auto stream_id = static_cast<uint8_t>(command.params.param1);
     auto status_frequency = command.params.param2;
 
-    UNUSED(stream_id);
     UNUSED(status_frequency);
 
-    LogDebug() << "unsupported video start capture request";
+    if (_start_video_callbacks.empty()) {
+        LogDebug() << "video start capture requested with no video start capture subscriber";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
+
+    _start_video_callbacks(stream_id);
 
     return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_command_ack_t>
@@ -748,12 +775,16 @@ CameraServerImpl::process_video_stop_capture(const MavlinkCommandReceiver::Comma
 {
     auto stream_id = static_cast<uint8_t>(command.params.param1);
 
-    UNUSED(stream_id);
+    if (_stop_video_callbacks.empty()) {
+        LogDebug() << "video stop capture requested with no video stop capture subscriber";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    LogDebug() << "unsupported video stop capture request";
+    _stop_video_callbacks(stream_id);
 
     return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_command_ack_t>

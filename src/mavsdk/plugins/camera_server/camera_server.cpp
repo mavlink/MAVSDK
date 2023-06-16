@@ -48,6 +48,27 @@ CameraServer::Result CameraServer::respond_take_photo(
     return _impl->respond_take_photo(take_photo_feedback, capture_info);
 }
 
+CameraServer::StartVideoHandle
+CameraServer::subscribe_start_video(const StartVideoCallback& callback)
+{
+    return _impl->subscribe_start_video(callback);
+}
+
+void CameraServer::unsubscribe_start_video(StartVideoHandle handle)
+{
+    _impl->unsubscribe_start_video(handle);
+}
+
+CameraServer::StopVideoHandle CameraServer::subscribe_stop_video(const StopVideoCallback& callback)
+{
+    return _impl->subscribe_stop_video(callback);
+}
+
+void CameraServer::unsubscribe_stop_video(StopVideoHandle handle)
+{
+    _impl->unsubscribe_stop_video(handle);
+}
+
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&

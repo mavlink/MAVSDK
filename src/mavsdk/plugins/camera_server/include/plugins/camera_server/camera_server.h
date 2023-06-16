@@ -263,6 +263,48 @@ public:
     respond_take_photo(TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const;
 
     /**
+     * @brief Callback type for subscribe_start_video.
+     */
+    using StartVideoCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_start_video.
+     */
+    using StartVideoHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to start video requests. Each request received should response to using
+     * StartVideoResponse
+     */
+    StartVideoHandle subscribe_start_video(const StartVideoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_start_video
+     */
+    void unsubscribe_start_video(StartVideoHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_stop_video.
+     */
+    using StopVideoCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_stop_video.
+     */
+    using StopVideoHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to stop video requests. Each request received should response to using
+     * StopVideoResponse
+     */
+    StopVideoHandle subscribe_stop_video(const StopVideoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_stop_video
+     */
+    void unsubscribe_stop_video(StopVideoHandle handle);
+
+    /**
      * @brief Copy constructor.
      */
     CameraServer(const CameraServer& other);

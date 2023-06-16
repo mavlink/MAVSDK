@@ -47,8 +47,13 @@ int main(int argc, const char* argv[])
         std::cout << info << std::endl;
     });
 
-    auto take_photo_result = camera.take_photo();
-    std::cout << "Take phto return : " << take_photo_result << std::endl;
+    auto operation_result = camera.take_photo();
+    std::cout << "Take photo result : " << operation_result << std::endl;
 
+    operation_result = camera.start_video();
+    std::cout << "Start video result : " << operation_result << std::endl;
+
+    operation_result = camera.stop_video();
+    std::cout << "Stop video result : " << operation_result << std::endl;
     return 0;
 }

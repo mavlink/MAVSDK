@@ -20,10 +20,17 @@ public:
     CameraServer::TakePhotoHandle
     subscribe_take_photo(const CameraServer::TakePhotoCallback& callback);
     void unsubscribe_take_photo(CameraServer::TakePhotoHandle handle);
-
     CameraServer::Result respond_take_photo(
         CameraServer::TakePhotoFeedback take_photo_feedback,
         CameraServer::CaptureInfo capture_info);
+
+    CameraServer::StartVideoHandle
+    subscribe_start_video(const CameraServer::StartVideoCallback& callback);
+    void unsubscribe_start_video(CameraServer::StartVideoHandle handle);
+
+    CameraServer::StopVideoHandle
+    subscribe_stop_video(const CameraServer::StopVideoCallback& callback);
+    void unsubscribe_stop_video(CameraServer::StopVideoHandle handle);
 
 private:
     enum StatusFlags {
@@ -49,6 +56,8 @@ private:
     int32_t _image_capture_count{};
 
     CallbackList<int32_t> _take_photo_callbacks{};
+    CallbackList<int32_t> _start_video_callbacks{};
+    CallbackList<int32_t> _stop_video_callbacks{};
 
     MavlinkCommandReceiver::CommandLong _last_take_photo_command;
 
