@@ -49,8 +49,17 @@ int main(int argc, const char* argv[])
         std::cout << info << std::endl;
     });
 
+    camera.subscribe_status([](mavsdk::Camera::Status status) {
+        std::cout << "Camera status:" << std::endl;
+        std::cout << status << std::endl;
+    });
+
     do_camera_operation(camera);
 
+    // for test subscribe camera status, so don't end the process
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
     return 0;
 }
 

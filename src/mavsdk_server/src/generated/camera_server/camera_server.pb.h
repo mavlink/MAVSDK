@@ -62,6 +62,12 @@ extern CameraServerResultDefaultTypeInternal _CameraServerResult_default_instanc
 class CaptureInfo;
 struct CaptureInfoDefaultTypeInternal;
 extern CaptureInfoDefaultTypeInternal _CaptureInfo_default_instance_;
+class CaptureStatus;
+struct CaptureStatusDefaultTypeInternal;
+extern CaptureStatusDefaultTypeInternal _CaptureStatus_default_instance_;
+class CaptureStatusResponse;
+struct CaptureStatusResponseDefaultTypeInternal;
+extern CaptureStatusResponseDefaultTypeInternal _CaptureStatusResponse_default_instance_;
 class Information;
 struct InformationDefaultTypeInternal;
 extern InformationDefaultTypeInternal _Information_default_instance_;
@@ -71,6 +77,18 @@ extern PositionDefaultTypeInternal _Position_default_instance_;
 class Quaternion;
 struct QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
+class RespondCaptureStatusRequest;
+struct RespondCaptureStatusRequestDefaultTypeInternal;
+extern RespondCaptureStatusRequestDefaultTypeInternal _RespondCaptureStatusRequest_default_instance_;
+class RespondCaptureStatusResponse;
+struct RespondCaptureStatusResponseDefaultTypeInternal;
+extern RespondCaptureStatusResponseDefaultTypeInternal _RespondCaptureStatusResponse_default_instance_;
+class RespondStorageInformationRequest;
+struct RespondStorageInformationRequestDefaultTypeInternal;
+extern RespondStorageInformationRequestDefaultTypeInternal _RespondStorageInformationRequest_default_instance_;
+class RespondStorageInformationResponse;
+struct RespondStorageInformationResponseDefaultTypeInternal;
+extern RespondStorageInformationResponseDefaultTypeInternal _RespondStorageInformationResponse_default_instance_;
 class RespondTakePhotoRequest;
 struct RespondTakePhotoRequestDefaultTypeInternal;
 extern RespondTakePhotoRequestDefaultTypeInternal _RespondTakePhotoRequest_default_instance_;
@@ -104,6 +122,15 @@ extern StopVideoResponseDefaultTypeInternal _StopVideoResponse_default_instance_
 class StopVideoStreamingResponse;
 struct StopVideoStreamingResponseDefaultTypeInternal;
 extern StopVideoStreamingResponseDefaultTypeInternal _StopVideoStreamingResponse_default_instance_;
+class StorageInformation;
+struct StorageInformationDefaultTypeInternal;
+extern StorageInformationDefaultTypeInternal _StorageInformation_default_instance_;
+class StorageInformationResponse;
+struct StorageInformationResponseDefaultTypeInternal;
+extern StorageInformationResponseDefaultTypeInternal _StorageInformationResponse_default_instance_;
+class SubscribeCaptureStatusRequest;
+struct SubscribeCaptureStatusRequestDefaultTypeInternal;
+extern SubscribeCaptureStatusRequestDefaultTypeInternal _SubscribeCaptureStatusRequest_default_instance_;
 class SubscribeSetModeRequest;
 struct SubscribeSetModeRequestDefaultTypeInternal;
 extern SubscribeSetModeRequestDefaultTypeInternal _SubscribeSetModeRequest_default_instance_;
@@ -119,6 +146,9 @@ extern SubscribeStopVideoRequestDefaultTypeInternal _SubscribeStopVideoRequest_d
 class SubscribeStopVideoStreamingRequest;
 struct SubscribeStopVideoStreamingRequestDefaultTypeInternal;
 extern SubscribeStopVideoStreamingRequestDefaultTypeInternal _SubscribeStopVideoStreamingRequest_default_instance_;
+class SubscribeStorageInformationRequest;
+struct SubscribeStorageInformationRequestDefaultTypeInternal;
+extern SubscribeStorageInformationRequestDefaultTypeInternal _SubscribeStorageInformationRequest_default_instance_;
 class SubscribeTakePhotoRequest;
 struct SubscribeTakePhotoRequestDefaultTypeInternal;
 extern SubscribeTakePhotoRequestDefaultTypeInternal _SubscribeTakePhotoRequest_default_instance_;
@@ -134,11 +164,23 @@ template <>
 template <>
 ::mavsdk::rpc::camera_server::CaptureInfo* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::CaptureInfo>(Arena*);
 template <>
+::mavsdk::rpc::camera_server::CaptureStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::CaptureStatus>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::CaptureStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::CaptureStatusResponse>(Arena*);
+template <>
 ::mavsdk::rpc::camera_server::Information* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::Information>(Arena*);
 template <>
 ::mavsdk::rpc::camera_server::Position* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::Position>(Arena*);
 template <>
 ::mavsdk::rpc::camera_server::Quaternion* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::Quaternion>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::RespondCaptureStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::RespondCaptureStatusRequest>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::RespondCaptureStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::RespondCaptureStatusResponse>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::RespondStorageInformationRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::RespondStorageInformationRequest>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::RespondStorageInformationResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::RespondStorageInformationResponse>(Arena*);
 template <>
 ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::RespondTakePhotoRequest>(Arena*);
 template <>
@@ -162,6 +204,12 @@ template <>
 template <>
 ::mavsdk::rpc::camera_server::StopVideoStreamingResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::StopVideoStreamingResponse>(Arena*);
 template <>
+::mavsdk::rpc::camera_server::StorageInformation* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::StorageInformation>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::StorageInformationResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::StorageInformationResponse>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::SubscribeCaptureStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::SubscribeCaptureStatusRequest>(Arena*);
+template <>
 ::mavsdk::rpc::camera_server::SubscribeSetModeRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::SubscribeSetModeRequest>(Arena*);
 template <>
 ::mavsdk::rpc::camera_server::SubscribeStartVideoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::SubscribeStartVideoRequest>(Arena*);
@@ -171,6 +219,8 @@ template <>
 ::mavsdk::rpc::camera_server::SubscribeStopVideoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::SubscribeStopVideoRequest>(Arena*);
 template <>
 ::mavsdk::rpc::camera_server::SubscribeStopVideoStreamingRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::SubscribeStopVideoStreamingRequest>(Arena*);
+template <>
+::mavsdk::rpc::camera_server::SubscribeStorageInformationRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::SubscribeStorageInformationRequest>(Arena*);
 template <>
 ::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest>(Arena*);
 template <>
@@ -218,6 +268,136 @@ inline const std::string& CameraServerResult_Result_Name(CameraServerResult_Resu
 inline bool CameraServerResult_Result_Parse(absl::string_view name, CameraServerResult_Result* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CameraServerResult_Result>(
       CameraServerResult_Result_descriptor(), name, value);
+}
+enum StorageInformation_StorageStatus : int {
+  StorageInformation_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE = 0,
+  StorageInformation_StorageStatus_STORAGE_STATUS_UNFORMATTED = 1,
+  StorageInformation_StorageStatus_STORAGE_STATUS_FORMATTED = 2,
+  StorageInformation_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED = 3,
+  StorageInformation_StorageStatus_StorageInformation_StorageStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  StorageInformation_StorageStatus_StorageInformation_StorageStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool StorageInformation_StorageStatus_IsValid(int value);
+constexpr StorageInformation_StorageStatus StorageInformation_StorageStatus_StorageStatus_MIN = static_cast<StorageInformation_StorageStatus>(0);
+constexpr StorageInformation_StorageStatus StorageInformation_StorageStatus_StorageStatus_MAX = static_cast<StorageInformation_StorageStatus>(3);
+constexpr int StorageInformation_StorageStatus_StorageStatus_ARRAYSIZE = 3 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+StorageInformation_StorageStatus_descriptor();
+template <typename T>
+const std::string& StorageInformation_StorageStatus_Name(T value) {
+  static_assert(std::is_same<T, StorageInformation_StorageStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to StorageStatus_Name().");
+  return StorageInformation_StorageStatus_Name(static_cast<StorageInformation_StorageStatus>(value));
+}
+template <>
+inline const std::string& StorageInformation_StorageStatus_Name(StorageInformation_StorageStatus value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<StorageInformation_StorageStatus_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool StorageInformation_StorageStatus_Parse(absl::string_view name, StorageInformation_StorageStatus* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<StorageInformation_StorageStatus>(
+      StorageInformation_StorageStatus_descriptor(), name, value);
+}
+enum StorageInformation_StorageType : int {
+  StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN = 0,
+  StorageInformation_StorageType_STORAGE_TYPE_USB_STICK = 1,
+  StorageInformation_StorageType_STORAGE_TYPE_SD = 2,
+  StorageInformation_StorageType_STORAGE_TYPE_MICROSD = 3,
+  StorageInformation_StorageType_STORAGE_TYPE_HD = 7,
+  StorageInformation_StorageType_STORAGE_TYPE_OTHER = 254,
+  StorageInformation_StorageType_StorageInformation_StorageType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  StorageInformation_StorageType_StorageInformation_StorageType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool StorageInformation_StorageType_IsValid(int value);
+constexpr StorageInformation_StorageType StorageInformation_StorageType_StorageType_MIN = static_cast<StorageInformation_StorageType>(0);
+constexpr StorageInformation_StorageType StorageInformation_StorageType_StorageType_MAX = static_cast<StorageInformation_StorageType>(254);
+constexpr int StorageInformation_StorageType_StorageType_ARRAYSIZE = 254 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+StorageInformation_StorageType_descriptor();
+template <typename T>
+const std::string& StorageInformation_StorageType_Name(T value) {
+  static_assert(std::is_same<T, StorageInformation_StorageType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to StorageType_Name().");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(StorageInformation_StorageType_descriptor(), value);
+}
+inline bool StorageInformation_StorageType_Parse(absl::string_view name, StorageInformation_StorageType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<StorageInformation_StorageType>(
+      StorageInformation_StorageType_descriptor(), name, value);
+}
+enum CaptureStatus_ImageStatus : int {
+  CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE = 0,
+  CaptureStatus_ImageStatus_IMAGE_STATUS_CAPTURE_IN_PROGRESS = 1,
+  CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IDLE = 2,
+  CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IN_PROGRESS = 3,
+  CaptureStatus_ImageStatus_CaptureStatus_ImageStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  CaptureStatus_ImageStatus_CaptureStatus_ImageStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool CaptureStatus_ImageStatus_IsValid(int value);
+constexpr CaptureStatus_ImageStatus CaptureStatus_ImageStatus_ImageStatus_MIN = static_cast<CaptureStatus_ImageStatus>(0);
+constexpr CaptureStatus_ImageStatus CaptureStatus_ImageStatus_ImageStatus_MAX = static_cast<CaptureStatus_ImageStatus>(3);
+constexpr int CaptureStatus_ImageStatus_ImageStatus_ARRAYSIZE = 3 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+CaptureStatus_ImageStatus_descriptor();
+template <typename T>
+const std::string& CaptureStatus_ImageStatus_Name(T value) {
+  static_assert(std::is_same<T, CaptureStatus_ImageStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ImageStatus_Name().");
+  return CaptureStatus_ImageStatus_Name(static_cast<CaptureStatus_ImageStatus>(value));
+}
+template <>
+inline const std::string& CaptureStatus_ImageStatus_Name(CaptureStatus_ImageStatus value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<CaptureStatus_ImageStatus_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool CaptureStatus_ImageStatus_Parse(absl::string_view name, CaptureStatus_ImageStatus* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CaptureStatus_ImageStatus>(
+      CaptureStatus_ImageStatus_descriptor(), name, value);
+}
+enum CaptureStatus_VideoStatus : int {
+  CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE = 0,
+  CaptureStatus_VideoStatus_VIDEO_STATUS_CAPTURE_IN_PROGRESS = 1,
+  CaptureStatus_VideoStatus_CaptureStatus_VideoStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  CaptureStatus_VideoStatus_CaptureStatus_VideoStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool CaptureStatus_VideoStatus_IsValid(int value);
+constexpr CaptureStatus_VideoStatus CaptureStatus_VideoStatus_VideoStatus_MIN = static_cast<CaptureStatus_VideoStatus>(0);
+constexpr CaptureStatus_VideoStatus CaptureStatus_VideoStatus_VideoStatus_MAX = static_cast<CaptureStatus_VideoStatus>(1);
+constexpr int CaptureStatus_VideoStatus_VideoStatus_ARRAYSIZE = 1 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+CaptureStatus_VideoStatus_descriptor();
+template <typename T>
+const std::string& CaptureStatus_VideoStatus_Name(T value) {
+  static_assert(std::is_same<T, CaptureStatus_VideoStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to VideoStatus_Name().");
+  return CaptureStatus_VideoStatus_Name(static_cast<CaptureStatus_VideoStatus>(value));
+}
+template <>
+inline const std::string& CaptureStatus_VideoStatus_Name(CaptureStatus_VideoStatus value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<CaptureStatus_VideoStatus_descriptor,
+                                                 0, 1>(
+      static_cast<int>(value));
+}
+inline bool CaptureStatus_VideoStatus_Parse(absl::string_view name, CaptureStatus_VideoStatus* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CaptureStatus_VideoStatus>(
+      CaptureStatus_VideoStatus_descriptor(), name, value);
 }
 enum TakePhotoFeedback : int {
   TAKE_PHOTO_FEEDBACK_UNKNOWN = 0,
@@ -2601,6 +2781,1204 @@ class SetModeResponse final :
   friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
 };// -------------------------------------------------------------------
 
+class SubscribeStorageInformationRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeStorageInformationRequest) */ {
+ public:
+  inline SubscribeStorageInformationRequest() : SubscribeStorageInformationRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeStorageInformationRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SubscribeStorageInformationRequest(const SubscribeStorageInformationRequest& from);
+  SubscribeStorageInformationRequest(SubscribeStorageInformationRequest&& from) noexcept
+    : SubscribeStorageInformationRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeStorageInformationRequest& operator=(const SubscribeStorageInformationRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeStorageInformationRequest& operator=(SubscribeStorageInformationRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeStorageInformationRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeStorageInformationRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeStorageInformationRequest*>(
+               &_SubscribeStorageInformationRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    16;
+
+  friend void swap(SubscribeStorageInformationRequest& a, SubscribeStorageInformationRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeStorageInformationRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeStorageInformationRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeStorageInformationRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SubscribeStorageInformationRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeStorageInformationRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeStorageInformationRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.SubscribeStorageInformationRequest";
+  }
+  protected:
+  explicit SubscribeStorageInformationRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeStorageInformationRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class StorageInformationResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.StorageInformationResponse) */ {
+ public:
+  inline StorageInformationResponse() : StorageInformationResponse(nullptr) {}
+  ~StorageInformationResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR StorageInformationResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  StorageInformationResponse(const StorageInformationResponse& from);
+  StorageInformationResponse(StorageInformationResponse&& from) noexcept
+    : StorageInformationResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline StorageInformationResponse& operator=(const StorageInformationResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StorageInformationResponse& operator=(StorageInformationResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StorageInformationResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StorageInformationResponse* internal_default_instance() {
+    return reinterpret_cast<const StorageInformationResponse*>(
+               &_StorageInformationResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    17;
+
+  friend void swap(StorageInformationResponse& a, StorageInformationResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(StorageInformationResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StorageInformationResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StorageInformationResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<StorageInformationResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const StorageInformationResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const StorageInformationResponse& from) {
+    StorageInformationResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(StorageInformationResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.StorageInformationResponse";
+  }
+  protected:
+  explicit StorageInformationResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kStorageIdFieldNumber = 1,
+  };
+  // int32 storage_id = 1;
+  void clear_storage_id() ;
+  ::int32_t storage_id() const;
+  void set_storage_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_storage_id() const;
+  void _internal_set_storage_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.StorageInformationResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::int32_t storage_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class RespondStorageInformationRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondStorageInformationRequest) */ {
+ public:
+  inline RespondStorageInformationRequest() : RespondStorageInformationRequest(nullptr) {}
+  ~RespondStorageInformationRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondStorageInformationRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  RespondStorageInformationRequest(const RespondStorageInformationRequest& from);
+  RespondStorageInformationRequest(RespondStorageInformationRequest&& from) noexcept
+    : RespondStorageInformationRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline RespondStorageInformationRequest& operator=(const RespondStorageInformationRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondStorageInformationRequest& operator=(RespondStorageInformationRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondStorageInformationRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondStorageInformationRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondStorageInformationRequest*>(
+               &_RespondStorageInformationRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    18;
+
+  friend void swap(RespondStorageInformationRequest& a, RespondStorageInformationRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(RespondStorageInformationRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondStorageInformationRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondStorageInformationRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<RespondStorageInformationRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const RespondStorageInformationRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const RespondStorageInformationRequest& from) {
+    RespondStorageInformationRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RespondStorageInformationRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.RespondStorageInformationRequest";
+  }
+  protected:
+  explicit RespondStorageInformationRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kStorageInformationFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.StorageInformation storage_information = 1;
+  bool has_storage_information() const;
+  void clear_storage_information() ;
+  const ::mavsdk::rpc::camera_server::StorageInformation& storage_information() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::StorageInformation* release_storage_information();
+  ::mavsdk::rpc::camera_server::StorageInformation* mutable_storage_information();
+  void set_allocated_storage_information(::mavsdk::rpc::camera_server::StorageInformation* storage_information);
+  private:
+  const ::mavsdk::rpc::camera_server::StorageInformation& _internal_storage_information() const;
+  ::mavsdk::rpc::camera_server::StorageInformation* _internal_mutable_storage_information();
+  public:
+  void unsafe_arena_set_allocated_storage_information(
+      ::mavsdk::rpc::camera_server::StorageInformation* storage_information);
+  ::mavsdk::rpc::camera_server::StorageInformation* unsafe_arena_release_storage_information();
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondStorageInformationRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::StorageInformation* storage_information_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class RespondStorageInformationResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondStorageInformationResponse) */ {
+ public:
+  inline RespondStorageInformationResponse() : RespondStorageInformationResponse(nullptr) {}
+  ~RespondStorageInformationResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondStorageInformationResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  RespondStorageInformationResponse(const RespondStorageInformationResponse& from);
+  RespondStorageInformationResponse(RespondStorageInformationResponse&& from) noexcept
+    : RespondStorageInformationResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline RespondStorageInformationResponse& operator=(const RespondStorageInformationResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondStorageInformationResponse& operator=(RespondStorageInformationResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondStorageInformationResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondStorageInformationResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondStorageInformationResponse*>(
+               &_RespondStorageInformationResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    19;
+
+  friend void swap(RespondStorageInformationResponse& a, RespondStorageInformationResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(RespondStorageInformationResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondStorageInformationResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondStorageInformationResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<RespondStorageInformationResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const RespondStorageInformationResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const RespondStorageInformationResponse& from) {
+    RespondStorageInformationResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RespondStorageInformationResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.RespondStorageInformationResponse";
+  }
+  protected:
+  explicit RespondStorageInformationResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result);
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+  public:
+  void unsafe_arena_set_allocated_camera_server_result(
+      ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondStorageInformationResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class SubscribeCaptureStatusRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeCaptureStatusRequest) */ {
+ public:
+  inline SubscribeCaptureStatusRequest() : SubscribeCaptureStatusRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeCaptureStatusRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SubscribeCaptureStatusRequest(const SubscribeCaptureStatusRequest& from);
+  SubscribeCaptureStatusRequest(SubscribeCaptureStatusRequest&& from) noexcept
+    : SubscribeCaptureStatusRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeCaptureStatusRequest& operator=(const SubscribeCaptureStatusRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeCaptureStatusRequest& operator=(SubscribeCaptureStatusRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeCaptureStatusRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeCaptureStatusRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeCaptureStatusRequest*>(
+               &_SubscribeCaptureStatusRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    20;
+
+  friend void swap(SubscribeCaptureStatusRequest& a, SubscribeCaptureStatusRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeCaptureStatusRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeCaptureStatusRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeCaptureStatusRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SubscribeCaptureStatusRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeCaptureStatusRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeCaptureStatusRequest& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.SubscribeCaptureStatusRequest";
+  }
+  protected:
+  explicit SubscribeCaptureStatusRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeCaptureStatusRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class CaptureStatusResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.CaptureStatusResponse) */ {
+ public:
+  inline CaptureStatusResponse() : CaptureStatusResponse(nullptr) {}
+  ~CaptureStatusResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR CaptureStatusResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CaptureStatusResponse(const CaptureStatusResponse& from);
+  CaptureStatusResponse(CaptureStatusResponse&& from) noexcept
+    : CaptureStatusResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline CaptureStatusResponse& operator=(const CaptureStatusResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CaptureStatusResponse& operator=(CaptureStatusResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CaptureStatusResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CaptureStatusResponse* internal_default_instance() {
+    return reinterpret_cast<const CaptureStatusResponse*>(
+               &_CaptureStatusResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    21;
+
+  friend void swap(CaptureStatusResponse& a, CaptureStatusResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CaptureStatusResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CaptureStatusResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CaptureStatusResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CaptureStatusResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CaptureStatusResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CaptureStatusResponse& from) {
+    CaptureStatusResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CaptureStatusResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.CaptureStatusResponse";
+  }
+  protected:
+  explicit CaptureStatusResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.CaptureStatusResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::int32_t reserved_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class RespondCaptureStatusRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondCaptureStatusRequest) */ {
+ public:
+  inline RespondCaptureStatusRequest() : RespondCaptureStatusRequest(nullptr) {}
+  ~RespondCaptureStatusRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondCaptureStatusRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  RespondCaptureStatusRequest(const RespondCaptureStatusRequest& from);
+  RespondCaptureStatusRequest(RespondCaptureStatusRequest&& from) noexcept
+    : RespondCaptureStatusRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline RespondCaptureStatusRequest& operator=(const RespondCaptureStatusRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondCaptureStatusRequest& operator=(RespondCaptureStatusRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondCaptureStatusRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondCaptureStatusRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondCaptureStatusRequest*>(
+               &_RespondCaptureStatusRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    22;
+
+  friend void swap(RespondCaptureStatusRequest& a, RespondCaptureStatusRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(RespondCaptureStatusRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondCaptureStatusRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondCaptureStatusRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<RespondCaptureStatusRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const RespondCaptureStatusRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const RespondCaptureStatusRequest& from) {
+    RespondCaptureStatusRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RespondCaptureStatusRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.RespondCaptureStatusRequest";
+  }
+  protected:
+  explicit RespondCaptureStatusRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCaptureStatusFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CaptureStatus capture_status = 1;
+  bool has_capture_status() const;
+  void clear_capture_status() ;
+  const ::mavsdk::rpc::camera_server::CaptureStatus& capture_status() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CaptureStatus* release_capture_status();
+  ::mavsdk::rpc::camera_server::CaptureStatus* mutable_capture_status();
+  void set_allocated_capture_status(::mavsdk::rpc::camera_server::CaptureStatus* capture_status);
+  private:
+  const ::mavsdk::rpc::camera_server::CaptureStatus& _internal_capture_status() const;
+  ::mavsdk::rpc::camera_server::CaptureStatus* _internal_mutable_capture_status();
+  public:
+  void unsafe_arena_set_allocated_capture_status(
+      ::mavsdk::rpc::camera_server::CaptureStatus* capture_status);
+  ::mavsdk::rpc::camera_server::CaptureStatus* unsafe_arena_release_capture_status();
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondCaptureStatusRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CaptureStatus* capture_status_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class RespondCaptureStatusResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondCaptureStatusResponse) */ {
+ public:
+  inline RespondCaptureStatusResponse() : RespondCaptureStatusResponse(nullptr) {}
+  ~RespondCaptureStatusResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondCaptureStatusResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  RespondCaptureStatusResponse(const RespondCaptureStatusResponse& from);
+  RespondCaptureStatusResponse(RespondCaptureStatusResponse&& from) noexcept
+    : RespondCaptureStatusResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline RespondCaptureStatusResponse& operator=(const RespondCaptureStatusResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondCaptureStatusResponse& operator=(RespondCaptureStatusResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondCaptureStatusResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondCaptureStatusResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondCaptureStatusResponse*>(
+               &_RespondCaptureStatusResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    23;
+
+  friend void swap(RespondCaptureStatusResponse& a, RespondCaptureStatusResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(RespondCaptureStatusResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondCaptureStatusResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondCaptureStatusResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<RespondCaptureStatusResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const RespondCaptureStatusResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const RespondCaptureStatusResponse& from) {
+    RespondCaptureStatusResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RespondCaptureStatusResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.RespondCaptureStatusResponse";
+  }
+  protected:
+  explicit RespondCaptureStatusResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result);
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+  public:
+  void unsafe_arena_set_allocated_camera_server_result(
+      ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondCaptureStatusResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
 class RespondTakePhotoRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondTakePhotoRequest) */ {
  public:
@@ -2657,7 +4035,7 @@ class RespondTakePhotoRequest final :
                &_RespondTakePhotoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    24;
 
   friend void swap(RespondTakePhotoRequest& a, RespondTakePhotoRequest& b) {
     a.Swap(&b);
@@ -2829,7 +4207,7 @@ class RespondTakePhotoResponse final :
                &_RespondTakePhotoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    25;
 
   friend void swap(RespondTakePhotoResponse& a, RespondTakePhotoResponse& b) {
     a.Swap(&b);
@@ -2989,7 +4367,7 @@ class Information final :
                &_Information_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    26;
 
   friend void swap(Information& a, Information& b) {
     a.Swap(&b);
@@ -3304,7 +4682,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    27;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -3495,7 +4873,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    28;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -3686,7 +5064,7 @@ class CaptureInfo final :
                &_CaptureInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    29;
 
   friend void swap(CaptureInfo& a, CaptureInfo& b) {
     a.Swap(&b);
@@ -3920,7 +5298,7 @@ class CameraServerResult final :
                &_CameraServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    30;
 
   friend void swap(CameraServerResult& a, CameraServerResult& b) {
     a.Swap(&b);
@@ -4062,6 +5440,548 @@ class CameraServerResult final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr result_str_;
     int result_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class StorageInformation final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.StorageInformation) */ {
+ public:
+  inline StorageInformation() : StorageInformation(nullptr) {}
+  ~StorageInformation() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR StorageInformation(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  StorageInformation(const StorageInformation& from);
+  StorageInformation(StorageInformation&& from) noexcept
+    : StorageInformation() {
+    *this = ::std::move(from);
+  }
+
+  inline StorageInformation& operator=(const StorageInformation& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StorageInformation& operator=(StorageInformation&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StorageInformation& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StorageInformation* internal_default_instance() {
+    return reinterpret_cast<const StorageInformation*>(
+               &_StorageInformation_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    31;
+
+  friend void swap(StorageInformation& a, StorageInformation& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(StorageInformation* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StorageInformation* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StorageInformation* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<StorageInformation>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const StorageInformation& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const StorageInformation& from) {
+    StorageInformation::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(StorageInformation* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.StorageInformation";
+  }
+  protected:
+  explicit StorageInformation(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  using StorageStatus = StorageInformation_StorageStatus;
+  static constexpr StorageStatus STORAGE_STATUS_NOT_AVAILABLE = StorageInformation_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
+  static constexpr StorageStatus STORAGE_STATUS_UNFORMATTED = StorageInformation_StorageStatus_STORAGE_STATUS_UNFORMATTED;
+  static constexpr StorageStatus STORAGE_STATUS_FORMATTED = StorageInformation_StorageStatus_STORAGE_STATUS_FORMATTED;
+  static constexpr StorageStatus STORAGE_STATUS_NOT_SUPPORTED = StorageInformation_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
+  static inline bool StorageStatus_IsValid(int value) {
+    return StorageInformation_StorageStatus_IsValid(value);
+  }
+  static constexpr StorageStatus StorageStatus_MIN = StorageInformation_StorageStatus_StorageStatus_MIN;
+  static constexpr StorageStatus StorageStatus_MAX = StorageInformation_StorageStatus_StorageStatus_MAX;
+  static constexpr int StorageStatus_ARRAYSIZE = StorageInformation_StorageStatus_StorageStatus_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StorageStatus_descriptor() {
+    return StorageInformation_StorageStatus_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& StorageStatus_Name(T value) {
+    return StorageInformation_StorageStatus_Name(value);
+  }
+  static inline bool StorageStatus_Parse(absl::string_view name, StorageStatus* value) {
+    return StorageInformation_StorageStatus_Parse(name, value);
+  }
+
+  using StorageType = StorageInformation_StorageType;
+  static constexpr StorageType STORAGE_TYPE_UNKNOWN = StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN;
+  static constexpr StorageType STORAGE_TYPE_USB_STICK = StorageInformation_StorageType_STORAGE_TYPE_USB_STICK;
+  static constexpr StorageType STORAGE_TYPE_SD = StorageInformation_StorageType_STORAGE_TYPE_SD;
+  static constexpr StorageType STORAGE_TYPE_MICROSD = StorageInformation_StorageType_STORAGE_TYPE_MICROSD;
+  static constexpr StorageType STORAGE_TYPE_HD = StorageInformation_StorageType_STORAGE_TYPE_HD;
+  static constexpr StorageType STORAGE_TYPE_OTHER = StorageInformation_StorageType_STORAGE_TYPE_OTHER;
+  static inline bool StorageType_IsValid(int value) {
+    return StorageInformation_StorageType_IsValid(value);
+  }
+  static constexpr StorageType StorageType_MIN = StorageInformation_StorageType_StorageType_MIN;
+  static constexpr StorageType StorageType_MAX = StorageInformation_StorageType_StorageType_MAX;
+  static constexpr int StorageType_ARRAYSIZE = StorageInformation_StorageType_StorageType_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StorageType_descriptor() {
+    return StorageInformation_StorageType_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& StorageType_Name(T value) {
+    return StorageInformation_StorageType_Name(value);
+  }
+  static inline bool StorageType_Parse(absl::string_view name, StorageType* value) {
+    return StorageInformation_StorageType_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUsedStorageMibFieldNumber = 1,
+    kAvailableStorageMibFieldNumber = 2,
+    kTotalStorageMibFieldNumber = 3,
+    kStorageStatusFieldNumber = 4,
+    kStorageIdFieldNumber = 5,
+    kStorageTypeFieldNumber = 6,
+    kReadSpeedFieldNumber = 7,
+    kWriteSpeedFieldNumber = 8,
+  };
+  // float used_storage_mib = 1;
+  void clear_used_storage_mib() ;
+  float used_storage_mib() const;
+  void set_used_storage_mib(float value);
+
+  private:
+  float _internal_used_storage_mib() const;
+  void _internal_set_used_storage_mib(float value);
+
+  public:
+  // float available_storage_mib = 2;
+  void clear_available_storage_mib() ;
+  float available_storage_mib() const;
+  void set_available_storage_mib(float value);
+
+  private:
+  float _internal_available_storage_mib() const;
+  void _internal_set_available_storage_mib(float value);
+
+  public:
+  // float total_storage_mib = 3;
+  void clear_total_storage_mib() ;
+  float total_storage_mib() const;
+  void set_total_storage_mib(float value);
+
+  private:
+  float _internal_total_storage_mib() const;
+  void _internal_set_total_storage_mib(float value);
+
+  public:
+  // .mavsdk.rpc.camera_server.StorageInformation.StorageStatus storage_status = 4;
+  void clear_storage_status() ;
+  ::mavsdk::rpc::camera_server::StorageInformation_StorageStatus storage_status() const;
+  void set_storage_status(::mavsdk::rpc::camera_server::StorageInformation_StorageStatus value);
+
+  private:
+  ::mavsdk::rpc::camera_server::StorageInformation_StorageStatus _internal_storage_status() const;
+  void _internal_set_storage_status(::mavsdk::rpc::camera_server::StorageInformation_StorageStatus value);
+
+  public:
+  // uint32 storage_id = 5;
+  void clear_storage_id() ;
+  ::uint32_t storage_id() const;
+  void set_storage_id(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_storage_id() const;
+  void _internal_set_storage_id(::uint32_t value);
+
+  public:
+  // .mavsdk.rpc.camera_server.StorageInformation.StorageType storage_type = 6;
+  void clear_storage_type() ;
+  ::mavsdk::rpc::camera_server::StorageInformation_StorageType storage_type() const;
+  void set_storage_type(::mavsdk::rpc::camera_server::StorageInformation_StorageType value);
+
+  private:
+  ::mavsdk::rpc::camera_server::StorageInformation_StorageType _internal_storage_type() const;
+  void _internal_set_storage_type(::mavsdk::rpc::camera_server::StorageInformation_StorageType value);
+
+  public:
+  // float read_speed = 7;
+  void clear_read_speed() ;
+  float read_speed() const;
+  void set_read_speed(float value);
+
+  private:
+  float _internal_read_speed() const;
+  void _internal_set_read_speed(float value);
+
+  public:
+  // float write_speed = 8;
+  void clear_write_speed() ;
+  float write_speed() const;
+  void set_write_speed(float value);
+
+  private:
+  float _internal_write_speed() const;
+  void _internal_set_write_speed(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.StorageInformation)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    float used_storage_mib_;
+    float available_storage_mib_;
+    float total_storage_mib_;
+    int storage_status_;
+    ::uint32_t storage_id_;
+    int storage_type_;
+    float read_speed_;
+    float write_speed_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class CaptureStatus final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.CaptureStatus) */ {
+ public:
+  inline CaptureStatus() : CaptureStatus(nullptr) {}
+  ~CaptureStatus() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR CaptureStatus(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CaptureStatus(const CaptureStatus& from);
+  CaptureStatus(CaptureStatus&& from) noexcept
+    : CaptureStatus() {
+    *this = ::std::move(from);
+  }
+
+  inline CaptureStatus& operator=(const CaptureStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CaptureStatus& operator=(CaptureStatus&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CaptureStatus& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CaptureStatus* internal_default_instance() {
+    return reinterpret_cast<const CaptureStatus*>(
+               &_CaptureStatus_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    32;
+
+  friend void swap(CaptureStatus& a, CaptureStatus& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CaptureStatus* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CaptureStatus* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CaptureStatus* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CaptureStatus>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CaptureStatus& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CaptureStatus& from) {
+    CaptureStatus::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CaptureStatus* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.CaptureStatus";
+  }
+  protected:
+  explicit CaptureStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  using ImageStatus = CaptureStatus_ImageStatus;
+  static constexpr ImageStatus IMAGE_STATUS_IDLE = CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE;
+  static constexpr ImageStatus IMAGE_STATUS_CAPTURE_IN_PROGRESS = CaptureStatus_ImageStatus_IMAGE_STATUS_CAPTURE_IN_PROGRESS;
+  static constexpr ImageStatus IMAGE_STATUS_INTERVAL_IDLE = CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IDLE;
+  static constexpr ImageStatus IMAGE_STATUS_INTERVAL_IN_PROGRESS = CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IN_PROGRESS;
+  static inline bool ImageStatus_IsValid(int value) {
+    return CaptureStatus_ImageStatus_IsValid(value);
+  }
+  static constexpr ImageStatus ImageStatus_MIN = CaptureStatus_ImageStatus_ImageStatus_MIN;
+  static constexpr ImageStatus ImageStatus_MAX = CaptureStatus_ImageStatus_ImageStatus_MAX;
+  static constexpr int ImageStatus_ARRAYSIZE = CaptureStatus_ImageStatus_ImageStatus_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ImageStatus_descriptor() {
+    return CaptureStatus_ImageStatus_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& ImageStatus_Name(T value) {
+    return CaptureStatus_ImageStatus_Name(value);
+  }
+  static inline bool ImageStatus_Parse(absl::string_view name, ImageStatus* value) {
+    return CaptureStatus_ImageStatus_Parse(name, value);
+  }
+
+  using VideoStatus = CaptureStatus_VideoStatus;
+  static constexpr VideoStatus VIDEO_STATUS_IDLE = CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE;
+  static constexpr VideoStatus VIDEO_STATUS_CAPTURE_IN_PROGRESS = CaptureStatus_VideoStatus_VIDEO_STATUS_CAPTURE_IN_PROGRESS;
+  static inline bool VideoStatus_IsValid(int value) {
+    return CaptureStatus_VideoStatus_IsValid(value);
+  }
+  static constexpr VideoStatus VideoStatus_MIN = CaptureStatus_VideoStatus_VideoStatus_MIN;
+  static constexpr VideoStatus VideoStatus_MAX = CaptureStatus_VideoStatus_VideoStatus_MAX;
+  static constexpr int VideoStatus_ARRAYSIZE = CaptureStatus_VideoStatus_VideoStatus_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VideoStatus_descriptor() {
+    return CaptureStatus_VideoStatus_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& VideoStatus_Name(T value) {
+    return CaptureStatus_VideoStatus_Name(value);
+  }
+  static inline bool VideoStatus_Parse(absl::string_view name, VideoStatus* value) {
+    return CaptureStatus_VideoStatus_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kImageIntervalFieldNumber = 1,
+    kRecordingTimeSFieldNumber = 2,
+    kAvailableCapacityFieldNumber = 3,
+    kImageStatusFieldNumber = 4,
+    kVideoStatusFieldNumber = 5,
+    kImageCountFieldNumber = 6,
+  };
+  // float image_interval = 1;
+  void clear_image_interval() ;
+  float image_interval() const;
+  void set_image_interval(float value);
+
+  private:
+  float _internal_image_interval() const;
+  void _internal_set_image_interval(float value);
+
+  public:
+  // float recording_time_s = 2;
+  void clear_recording_time_s() ;
+  float recording_time_s() const;
+  void set_recording_time_s(float value);
+
+  private:
+  float _internal_recording_time_s() const;
+  void _internal_set_recording_time_s(float value);
+
+  public:
+  // float available_capacity = 3;
+  void clear_available_capacity() ;
+  float available_capacity() const;
+  void set_available_capacity(float value);
+
+  private:
+  float _internal_available_capacity() const;
+  void _internal_set_available_capacity(float value);
+
+  public:
+  // .mavsdk.rpc.camera_server.CaptureStatus.ImageStatus image_status = 4;
+  void clear_image_status() ;
+  ::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus image_status() const;
+  void set_image_status(::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus _internal_image_status() const;
+  void _internal_set_image_status(::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus value);
+
+  public:
+  // .mavsdk.rpc.camera_server.CaptureStatus.VideoStatus video_status = 5;
+  void clear_video_status() ;
+  ::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus video_status() const;
+  void set_video_status(::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus _internal_video_status() const;
+  void _internal_set_video_status(::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus value);
+
+  public:
+  // int32 image_count = 6;
+  void clear_image_count() ;
+  ::int32_t image_count() const;
+  void set_image_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_image_count() const;
+  void _internal_set_image_count(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.CaptureStatus)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    float image_interval_;
+    float recording_time_s_;
+    float available_capacity_;
+    int image_status_;
+    int video_status_;
+    ::int32_t image_count_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -4543,6 +6463,426 @@ inline ::mavsdk::rpc::camera_server::Mode SetModeResponse::_internal_mode() cons
 inline void SetModeResponse::_internal_set_mode(::mavsdk::rpc::camera_server::Mode value) {
   ;
   _impl_.mode_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeStorageInformationRequest
+
+// -------------------------------------------------------------------
+
+// StorageInformationResponse
+
+// int32 storage_id = 1;
+inline void StorageInformationResponse::clear_storage_id() {
+  _impl_.storage_id_ = 0;
+}
+inline ::int32_t StorageInformationResponse::storage_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformationResponse.storage_id)
+  return _internal_storage_id();
+}
+inline void StorageInformationResponse::set_storage_id(::int32_t value) {
+  _internal_set_storage_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformationResponse.storage_id)
+}
+inline ::int32_t StorageInformationResponse::_internal_storage_id() const {
+  return _impl_.storage_id_;
+}
+inline void StorageInformationResponse::_internal_set_storage_id(::int32_t value) {
+  ;
+  _impl_.storage_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondStorageInformationRequest
+
+// .mavsdk.rpc.camera_server.StorageInformation storage_information = 1;
+inline bool RespondStorageInformationRequest::has_storage_information() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.storage_information_ != nullptr);
+  return value;
+}
+inline void RespondStorageInformationRequest::clear_storage_information() {
+  if (_impl_.storage_information_ != nullptr) _impl_.storage_information_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::StorageInformation& RespondStorageInformationRequest::_internal_storage_information() const {
+  const ::mavsdk::rpc::camera_server::StorageInformation* p = _impl_.storage_information_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::StorageInformation&>(
+      ::mavsdk::rpc::camera_server::_StorageInformation_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::StorageInformation& RespondStorageInformationRequest::storage_information() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondStorageInformationRequest.storage_information)
+  return _internal_storage_information();
+}
+inline void RespondStorageInformationRequest::unsafe_arena_set_allocated_storage_information(
+    ::mavsdk::rpc::camera_server::StorageInformation* storage_information) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.storage_information_);
+  }
+  _impl_.storage_information_ = storage_information;
+  if (storage_information) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondStorageInformationRequest.storage_information)
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation* RespondStorageInformationRequest::release_storage_information() {
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::StorageInformation* temp = _impl_.storage_information_;
+  _impl_.storage_information_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation* RespondStorageInformationRequest::unsafe_arena_release_storage_information() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondStorageInformationRequest.storage_information)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::StorageInformation* temp = _impl_.storage_information_;
+  _impl_.storage_information_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation* RespondStorageInformationRequest::_internal_mutable_storage_information() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.storage_information_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera_server::StorageInformation>(GetArenaForAllocation());
+    _impl_.storage_information_ = p;
+  }
+  return _impl_.storage_information_;
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation* RespondStorageInformationRequest::mutable_storage_information() {
+  ::mavsdk::rpc::camera_server::StorageInformation* _msg = _internal_mutable_storage_information();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondStorageInformationRequest.storage_information)
+  return _msg;
+}
+inline void RespondStorageInformationRequest::set_allocated_storage_information(::mavsdk::rpc::camera_server::StorageInformation* storage_information) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.storage_information_;
+  }
+  if (storage_information) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(storage_information);
+    if (message_arena != submessage_arena) {
+      storage_information = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, storage_information, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.storage_information_ = storage_information;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondStorageInformationRequest.storage_information)
+}
+
+// -------------------------------------------------------------------
+
+// RespondStorageInformationResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondStorageInformationResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondStorageInformationResponse::clear_camera_server_result() {
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondStorageInformationResponse::_internal_camera_server_result() const {
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(
+      ::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondStorageInformationResponse::camera_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondStorageInformationResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondStorageInformationResponse::unsafe_arena_set_allocated_camera_server_result(
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = camera_server_result;
+  if (camera_server_result) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondStorageInformationResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondStorageInformationResponse::release_camera_server_result() {
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondStorageInformationResponse::unsafe_arena_release_camera_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondStorageInformationResponse.camera_server_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondStorageInformationResponse::_internal_mutable_camera_server_result() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(GetArenaForAllocation());
+    _impl_.camera_server_result_ = p;
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondStorageInformationResponse::mutable_camera_server_result() {
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondStorageInformationResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondStorageInformationResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.camera_server_result_;
+  }
+  if (camera_server_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(camera_server_result);
+    if (message_arena != submessage_arena) {
+      camera_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, camera_server_result, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.camera_server_result_ = camera_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondStorageInformationResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeCaptureStatusRequest
+
+// -------------------------------------------------------------------
+
+// CaptureStatusResponse
+
+// int32 reserved = 1;
+inline void CaptureStatusResponse::clear_reserved() {
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t CaptureStatusResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatusResponse.reserved)
+  return _internal_reserved();
+}
+inline void CaptureStatusResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatusResponse.reserved)
+}
+inline ::int32_t CaptureStatusResponse::_internal_reserved() const {
+  return _impl_.reserved_;
+}
+inline void CaptureStatusResponse::_internal_set_reserved(::int32_t value) {
+  ;
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondCaptureStatusRequest
+
+// .mavsdk.rpc.camera_server.CaptureStatus capture_status = 1;
+inline bool RespondCaptureStatusRequest::has_capture_status() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.capture_status_ != nullptr);
+  return value;
+}
+inline void RespondCaptureStatusRequest::clear_capture_status() {
+  if (_impl_.capture_status_ != nullptr) _impl_.capture_status_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CaptureStatus& RespondCaptureStatusRequest::_internal_capture_status() const {
+  const ::mavsdk::rpc::camera_server::CaptureStatus* p = _impl_.capture_status_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CaptureStatus&>(
+      ::mavsdk::rpc::camera_server::_CaptureStatus_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CaptureStatus& RespondCaptureStatusRequest::capture_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondCaptureStatusRequest.capture_status)
+  return _internal_capture_status();
+}
+inline void RespondCaptureStatusRequest::unsafe_arena_set_allocated_capture_status(
+    ::mavsdk::rpc::camera_server::CaptureStatus* capture_status) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.capture_status_);
+  }
+  _impl_.capture_status_ = capture_status;
+  if (capture_status) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondCaptureStatusRequest.capture_status)
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus* RespondCaptureStatusRequest::release_capture_status() {
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CaptureStatus* temp = _impl_.capture_status_;
+  _impl_.capture_status_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus* RespondCaptureStatusRequest::unsafe_arena_release_capture_status() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondCaptureStatusRequest.capture_status)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CaptureStatus* temp = _impl_.capture_status_;
+  _impl_.capture_status_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus* RespondCaptureStatusRequest::_internal_mutable_capture_status() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.capture_status_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera_server::CaptureStatus>(GetArenaForAllocation());
+    _impl_.capture_status_ = p;
+  }
+  return _impl_.capture_status_;
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus* RespondCaptureStatusRequest::mutable_capture_status() {
+  ::mavsdk::rpc::camera_server::CaptureStatus* _msg = _internal_mutable_capture_status();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondCaptureStatusRequest.capture_status)
+  return _msg;
+}
+inline void RespondCaptureStatusRequest::set_allocated_capture_status(::mavsdk::rpc::camera_server::CaptureStatus* capture_status) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.capture_status_;
+  }
+  if (capture_status) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(capture_status);
+    if (message_arena != submessage_arena) {
+      capture_status = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, capture_status, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.capture_status_ = capture_status;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondCaptureStatusRequest.capture_status)
+}
+
+// -------------------------------------------------------------------
+
+// RespondCaptureStatusResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondCaptureStatusResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondCaptureStatusResponse::clear_camera_server_result() {
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondCaptureStatusResponse::_internal_camera_server_result() const {
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(
+      ::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondCaptureStatusResponse::camera_server_result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondCaptureStatusResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondCaptureStatusResponse::unsafe_arena_set_allocated_camera_server_result(
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = camera_server_result;
+  if (camera_server_result) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondCaptureStatusResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondCaptureStatusResponse::release_camera_server_result() {
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondCaptureStatusResponse::unsafe_arena_release_camera_server_result() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondCaptureStatusResponse.camera_server_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondCaptureStatusResponse::_internal_mutable_camera_server_result() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(GetArenaForAllocation());
+    _impl_.camera_server_result_ = p;
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondCaptureStatusResponse::mutable_camera_server_result() {
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondCaptureStatusResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondCaptureStatusResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.camera_server_result_;
+  }
+  if (camera_server_result) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(camera_server_result);
+    if (message_arena != submessage_arena) {
+      camera_server_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, camera_server_result, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.camera_server_result_ = camera_server_result;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondCaptureStatusResponse.camera_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -5603,6 +7943,294 @@ inline void CameraServerResult::set_allocated_result_str(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.CameraServerResult.result_str)
 }
 
+// -------------------------------------------------------------------
+
+// StorageInformation
+
+// float used_storage_mib = 1;
+inline void StorageInformation::clear_used_storage_mib() {
+  _impl_.used_storage_mib_ = 0;
+}
+inline float StorageInformation::used_storage_mib() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.used_storage_mib)
+  return _internal_used_storage_mib();
+}
+inline void StorageInformation::set_used_storage_mib(float value) {
+  _internal_set_used_storage_mib(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.used_storage_mib)
+}
+inline float StorageInformation::_internal_used_storage_mib() const {
+  return _impl_.used_storage_mib_;
+}
+inline void StorageInformation::_internal_set_used_storage_mib(float value) {
+  ;
+  _impl_.used_storage_mib_ = value;
+}
+
+// float available_storage_mib = 2;
+inline void StorageInformation::clear_available_storage_mib() {
+  _impl_.available_storage_mib_ = 0;
+}
+inline float StorageInformation::available_storage_mib() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.available_storage_mib)
+  return _internal_available_storage_mib();
+}
+inline void StorageInformation::set_available_storage_mib(float value) {
+  _internal_set_available_storage_mib(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.available_storage_mib)
+}
+inline float StorageInformation::_internal_available_storage_mib() const {
+  return _impl_.available_storage_mib_;
+}
+inline void StorageInformation::_internal_set_available_storage_mib(float value) {
+  ;
+  _impl_.available_storage_mib_ = value;
+}
+
+// float total_storage_mib = 3;
+inline void StorageInformation::clear_total_storage_mib() {
+  _impl_.total_storage_mib_ = 0;
+}
+inline float StorageInformation::total_storage_mib() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.total_storage_mib)
+  return _internal_total_storage_mib();
+}
+inline void StorageInformation::set_total_storage_mib(float value) {
+  _internal_set_total_storage_mib(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.total_storage_mib)
+}
+inline float StorageInformation::_internal_total_storage_mib() const {
+  return _impl_.total_storage_mib_;
+}
+inline void StorageInformation::_internal_set_total_storage_mib(float value) {
+  ;
+  _impl_.total_storage_mib_ = value;
+}
+
+// .mavsdk.rpc.camera_server.StorageInformation.StorageStatus storage_status = 4;
+inline void StorageInformation::clear_storage_status() {
+  _impl_.storage_status_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation_StorageStatus StorageInformation::storage_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.storage_status)
+  return _internal_storage_status();
+}
+inline void StorageInformation::set_storage_status(::mavsdk::rpc::camera_server::StorageInformation_StorageStatus value) {
+   _internal_set_storage_status(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.storage_status)
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation_StorageStatus StorageInformation::_internal_storage_status() const {
+  return static_cast<::mavsdk::rpc::camera_server::StorageInformation_StorageStatus>(_impl_.storage_status_);
+}
+inline void StorageInformation::_internal_set_storage_status(::mavsdk::rpc::camera_server::StorageInformation_StorageStatus value) {
+  ;
+  _impl_.storage_status_ = value;
+}
+
+// uint32 storage_id = 5;
+inline void StorageInformation::clear_storage_id() {
+  _impl_.storage_id_ = 0u;
+}
+inline ::uint32_t StorageInformation::storage_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.storage_id)
+  return _internal_storage_id();
+}
+inline void StorageInformation::set_storage_id(::uint32_t value) {
+  _internal_set_storage_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.storage_id)
+}
+inline ::uint32_t StorageInformation::_internal_storage_id() const {
+  return _impl_.storage_id_;
+}
+inline void StorageInformation::_internal_set_storage_id(::uint32_t value) {
+  ;
+  _impl_.storage_id_ = value;
+}
+
+// .mavsdk.rpc.camera_server.StorageInformation.StorageType storage_type = 6;
+inline void StorageInformation::clear_storage_type() {
+  _impl_.storage_type_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation_StorageType StorageInformation::storage_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.storage_type)
+  return _internal_storage_type();
+}
+inline void StorageInformation::set_storage_type(::mavsdk::rpc::camera_server::StorageInformation_StorageType value) {
+   _internal_set_storage_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.storage_type)
+}
+inline ::mavsdk::rpc::camera_server::StorageInformation_StorageType StorageInformation::_internal_storage_type() const {
+  return static_cast<::mavsdk::rpc::camera_server::StorageInformation_StorageType>(_impl_.storage_type_);
+}
+inline void StorageInformation::_internal_set_storage_type(::mavsdk::rpc::camera_server::StorageInformation_StorageType value) {
+  ;
+  _impl_.storage_type_ = value;
+}
+
+// float read_speed = 7;
+inline void StorageInformation::clear_read_speed() {
+  _impl_.read_speed_ = 0;
+}
+inline float StorageInformation::read_speed() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.read_speed)
+  return _internal_read_speed();
+}
+inline void StorageInformation::set_read_speed(float value) {
+  _internal_set_read_speed(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.read_speed)
+}
+inline float StorageInformation::_internal_read_speed() const {
+  return _impl_.read_speed_;
+}
+inline void StorageInformation::_internal_set_read_speed(float value) {
+  ;
+  _impl_.read_speed_ = value;
+}
+
+// float write_speed = 8;
+inline void StorageInformation::clear_write_speed() {
+  _impl_.write_speed_ = 0;
+}
+inline float StorageInformation::write_speed() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.write_speed)
+  return _internal_write_speed();
+}
+inline void StorageInformation::set_write_speed(float value) {
+  _internal_set_write_speed(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.write_speed)
+}
+inline float StorageInformation::_internal_write_speed() const {
+  return _impl_.write_speed_;
+}
+inline void StorageInformation::_internal_set_write_speed(float value) {
+  ;
+  _impl_.write_speed_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// CaptureStatus
+
+// float image_interval = 1;
+inline void CaptureStatus::clear_image_interval() {
+  _impl_.image_interval_ = 0;
+}
+inline float CaptureStatus::image_interval() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.image_interval)
+  return _internal_image_interval();
+}
+inline void CaptureStatus::set_image_interval(float value) {
+  _internal_set_image_interval(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.image_interval)
+}
+inline float CaptureStatus::_internal_image_interval() const {
+  return _impl_.image_interval_;
+}
+inline void CaptureStatus::_internal_set_image_interval(float value) {
+  ;
+  _impl_.image_interval_ = value;
+}
+
+// float recording_time_s = 2;
+inline void CaptureStatus::clear_recording_time_s() {
+  _impl_.recording_time_s_ = 0;
+}
+inline float CaptureStatus::recording_time_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.recording_time_s)
+  return _internal_recording_time_s();
+}
+inline void CaptureStatus::set_recording_time_s(float value) {
+  _internal_set_recording_time_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.recording_time_s)
+}
+inline float CaptureStatus::_internal_recording_time_s() const {
+  return _impl_.recording_time_s_;
+}
+inline void CaptureStatus::_internal_set_recording_time_s(float value) {
+  ;
+  _impl_.recording_time_s_ = value;
+}
+
+// float available_capacity = 3;
+inline void CaptureStatus::clear_available_capacity() {
+  _impl_.available_capacity_ = 0;
+}
+inline float CaptureStatus::available_capacity() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.available_capacity)
+  return _internal_available_capacity();
+}
+inline void CaptureStatus::set_available_capacity(float value) {
+  _internal_set_available_capacity(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.available_capacity)
+}
+inline float CaptureStatus::_internal_available_capacity() const {
+  return _impl_.available_capacity_;
+}
+inline void CaptureStatus::_internal_set_available_capacity(float value) {
+  ;
+  _impl_.available_capacity_ = value;
+}
+
+// .mavsdk.rpc.camera_server.CaptureStatus.ImageStatus image_status = 4;
+inline void CaptureStatus::clear_image_status() {
+  _impl_.image_status_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus CaptureStatus::image_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.image_status)
+  return _internal_image_status();
+}
+inline void CaptureStatus::set_image_status(::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus value) {
+   _internal_set_image_status(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.image_status)
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus CaptureStatus::_internal_image_status() const {
+  return static_cast<::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus>(_impl_.image_status_);
+}
+inline void CaptureStatus::_internal_set_image_status(::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus value) {
+  ;
+  _impl_.image_status_ = value;
+}
+
+// .mavsdk.rpc.camera_server.CaptureStatus.VideoStatus video_status = 5;
+inline void CaptureStatus::clear_video_status() {
+  _impl_.video_status_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus CaptureStatus::video_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.video_status)
+  return _internal_video_status();
+}
+inline void CaptureStatus::set_video_status(::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus value) {
+   _internal_set_video_status(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.video_status)
+}
+inline ::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus CaptureStatus::_internal_video_status() const {
+  return static_cast<::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus>(_impl_.video_status_);
+}
+inline void CaptureStatus::_internal_set_video_status(::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus value) {
+  ;
+  _impl_.video_status_ = value;
+}
+
+// int32 image_count = 6;
+inline void CaptureStatus::clear_image_count() {
+  _impl_.image_count_ = 0;
+}
+inline ::int32_t CaptureStatus::image_count() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.image_count)
+  return _internal_image_count();
+}
+inline void CaptureStatus::set_image_count(::int32_t value) {
+  _internal_set_image_count(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.image_count)
+}
+inline ::int32_t CaptureStatus::_internal_image_count() const {
+  return _impl_.image_count_;
+}
+inline void CaptureStatus::_internal_set_image_count(::int32_t value) {
+  ;
+  _impl_.image_count_ = value;
+}
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif  // __GNUC__
@@ -5620,6 +8248,30 @@ struct is_proto_enum<::mavsdk::rpc::camera_server::CameraServerResult_Result> : 
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::CameraServerResult_Result>() {
   return ::mavsdk::rpc::camera_server::CameraServerResult_Result_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera_server::StorageInformation_StorageStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::StorageInformation_StorageStatus>() {
+  return ::mavsdk::rpc::camera_server::StorageInformation_StorageStatus_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera_server::StorageInformation_StorageType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::StorageInformation_StorageType>() {
+  return ::mavsdk::rpc::camera_server::StorageInformation_StorageType_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus>() {
+  return ::mavsdk::rpc::camera_server::CaptureStatus_ImageStatus_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus>() {
+  return ::mavsdk::rpc::camera_server::CaptureStatus_VideoStatus_descriptor();
 }
 template <>
 struct is_proto_enum<::mavsdk::rpc::camera_server::TakePhotoFeedback> : std::true_type {};

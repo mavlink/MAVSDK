@@ -15,6 +15,9 @@ using Position = CameraServer::Position;
 using Quaternion = CameraServer::Quaternion;
 using CaptureInfo = CameraServer::CaptureInfo;
 
+using StorageInformation = CameraServer::StorageInformation;
+using CaptureStatus = CameraServer::CaptureStatus;
+
 CameraServer::CameraServer(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginBase(),
     _impl{std::make_unique<CameraServerImpl>(server_component)}
@@ -99,6 +102,39 @@ CameraServer::SetModeHandle CameraServer::subscribe_set_mode(const SetModeCallba
 void CameraServer::unsubscribe_set_mode(SetModeHandle handle)
 {
     _impl->unsubscribe_set_mode(handle);
+}
+
+CameraServer::StorageInformationHandle
+CameraServer::subscribe_storage_information(const StorageInformationCallback& callback)
+{
+    return _impl->subscribe_storage_information(callback);
+}
+
+void CameraServer::unsubscribe_storage_information(StorageInformationHandle handle)
+{
+    _impl->unsubscribe_storage_information(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_storage_information(StorageInformation storage_information) const
+{
+    return _impl->respond_storage_information(storage_information);
+}
+
+CameraServer::CaptureStatusHandle
+CameraServer::subscribe_capture_status(const CaptureStatusCallback& callback)
+{
+    return _impl->subscribe_capture_status(callback);
+}
+
+void CameraServer::unsubscribe_capture_status(CaptureStatusHandle handle)
+{
+    _impl->unsubscribe_capture_status(handle);
+}
+
+CameraServer::Result CameraServer::respond_capture_status(CaptureStatus capture_status) const
+{
+    return _impl->respond_capture_status(capture_status);
 }
 
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
@@ -227,6 +263,132 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result)
         default:
             return str << "Unknown";
     }
+}
+
+std::ostream&
+operator<<(std::ostream& str, CameraServer::StorageInformation::StorageStatus const& storage_status)
+{
+    switch (storage_status) {
+        case CameraServer::StorageInformation::StorageStatus::NotAvailable:
+            return str << "Not Available";
+        case CameraServer::StorageInformation::StorageStatus::Unformatted:
+            return str << "Unformatted";
+        case CameraServer::StorageInformation::StorageStatus::Formatted:
+            return str << "Formatted";
+        case CameraServer::StorageInformation::StorageStatus::NotSupported:
+            return str << "Not Supported";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream&
+operator<<(std::ostream& str, CameraServer::StorageInformation::StorageType const& storage_type)
+{
+    switch (storage_type) {
+        case CameraServer::StorageInformation::StorageType::Unknown:
+            return str << "Unknown";
+        case CameraServer::StorageInformation::StorageType::UsbStick:
+            return str << "Usb Stick";
+        case CameraServer::StorageInformation::StorageType::Sd:
+            return str << "Sd";
+        case CameraServer::StorageInformation::StorageType::Microsd:
+            return str << "Microsd";
+        case CameraServer::StorageInformation::StorageType::Hd:
+            return str << "Hd";
+        case CameraServer::StorageInformation::StorageType::Other:
+            return str << "Other";
+        default:
+            return str << "Unknown";
+    }
+}
+bool operator==(
+    const CameraServer::StorageInformation& lhs, const CameraServer::StorageInformation& rhs)
+{
+    return ((std::isnan(rhs.used_storage_mib) && std::isnan(lhs.used_storage_mib)) ||
+            rhs.used_storage_mib == lhs.used_storage_mib) &&
+           ((std::isnan(rhs.available_storage_mib) && std::isnan(lhs.available_storage_mib)) ||
+            rhs.available_storage_mib == lhs.available_storage_mib) &&
+           ((std::isnan(rhs.total_storage_mib) && std::isnan(lhs.total_storage_mib)) ||
+            rhs.total_storage_mib == lhs.total_storage_mib) &&
+           (rhs.storage_status == lhs.storage_status) && (rhs.storage_id == lhs.storage_id) &&
+           (rhs.storage_type == lhs.storage_type) &&
+           ((std::isnan(rhs.read_speed) && std::isnan(lhs.read_speed)) ||
+            rhs.read_speed == lhs.read_speed) &&
+           ((std::isnan(rhs.write_speed) && std::isnan(lhs.write_speed)) ||
+            rhs.write_speed == lhs.write_speed);
+}
+
+std::ostream&
+operator<<(std::ostream& str, CameraServer::StorageInformation const& storage_information)
+{
+    str << std::setprecision(15);
+    str << "storage_information:" << '\n' << "{\n";
+    str << "    used_storage_mib: " << storage_information.used_storage_mib << '\n';
+    str << "    available_storage_mib: " << storage_information.available_storage_mib << '\n';
+    str << "    total_storage_mib: " << storage_information.total_storage_mib << '\n';
+    str << "    storage_status: " << storage_information.storage_status << '\n';
+    str << "    storage_id: " << storage_information.storage_id << '\n';
+    str << "    storage_type: " << storage_information.storage_type << '\n';
+    str << "    read_speed: " << storage_information.read_speed << '\n';
+    str << "    write_speed: " << storage_information.write_speed << '\n';
+    str << '}';
+    return str;
+}
+
+std::ostream&
+operator<<(std::ostream& str, CameraServer::CaptureStatus::ImageStatus const& image_status)
+{
+    switch (image_status) {
+        case CameraServer::CaptureStatus::ImageStatus::Idle:
+            return str << "Idle";
+        case CameraServer::CaptureStatus::ImageStatus::CaptureInProgress:
+            return str << "Capture In Progress";
+        case CameraServer::CaptureStatus::ImageStatus::IntervalIdle:
+            return str << "Interval Idle";
+        case CameraServer::CaptureStatus::ImageStatus::IntervalInProgress:
+            return str << "Interval In Progress";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream&
+operator<<(std::ostream& str, CameraServer::CaptureStatus::VideoStatus const& video_status)
+{
+    switch (video_status) {
+        case CameraServer::CaptureStatus::VideoStatus::Idle:
+            return str << "Idle";
+        case CameraServer::CaptureStatus::VideoStatus::CaptureInProgress:
+            return str << "Capture In Progress";
+        default:
+            return str << "Unknown";
+    }
+}
+bool operator==(const CameraServer::CaptureStatus& lhs, const CameraServer::CaptureStatus& rhs)
+{
+    return ((std::isnan(rhs.image_interval) && std::isnan(lhs.image_interval)) ||
+            rhs.image_interval == lhs.image_interval) &&
+           ((std::isnan(rhs.recording_time_s) && std::isnan(lhs.recording_time_s)) ||
+            rhs.recording_time_s == lhs.recording_time_s) &&
+           ((std::isnan(rhs.available_capacity) && std::isnan(lhs.available_capacity)) ||
+            rhs.available_capacity == lhs.available_capacity) &&
+           (rhs.image_status == lhs.image_status) && (rhs.video_status == lhs.video_status) &&
+           (rhs.image_count == lhs.image_count);
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::CaptureStatus const& capture_status)
+{
+    str << std::setprecision(15);
+    str << "capture_status:" << '\n' << "{\n";
+    str << "    image_interval: " << capture_status.image_interval << '\n';
+    str << "    recording_time_s: " << capture_status.recording_time_s << '\n';
+    str << "    available_capacity: " << capture_status.available_capacity << '\n';
+    str << "    image_status: " << capture_status.image_status << '\n';
+    str << "    video_status: " << capture_status.video_status << '\n';
+    str << "    image_count: " << capture_status.image_count << '\n';
+    str << '}';
+    return str;
 }
 
 std::ostream&

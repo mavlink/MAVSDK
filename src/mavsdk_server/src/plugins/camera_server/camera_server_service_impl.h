@@ -333,6 +333,248 @@ public:
         }
     }
 
+    static rpc::camera_server::StorageInformation::StorageStatus translateToRpcStorageStatus(
+        const mavsdk::CameraServer::StorageInformation::StorageStatus& storage_status)
+    {
+        switch (storage_status) {
+            default:
+                LogErr() << "Unknown storage_status enum value: "
+                         << static_cast<int>(storage_status);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::Unformatted:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_UNFORMATTED;
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::Formatted:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_FORMATTED;
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::NotSupported:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
+        }
+    }
+
+    static mavsdk::CameraServer::StorageInformation::StorageStatus translateFromRpcStorageStatus(
+        const rpc::camera_server::StorageInformation::StorageStatus storage_status)
+    {
+        switch (storage_status) {
+            default:
+                LogErr() << "Unknown storage_status enum value: "
+                         << static_cast<int>(storage_status);
+            // FALLTHROUGH
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable;
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_UNFORMATTED:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::Unformatted;
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_FORMATTED:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::Formatted;
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::NotSupported;
+        }
+    }
+
+    static rpc::camera_server::StorageInformation::StorageType translateToRpcStorageType(
+        const mavsdk::CameraServer::StorageInformation::StorageType& storage_type)
+    {
+        switch (storage_type) {
+            default:
+                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::StorageInformation::StorageType::Unknown:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN;
+            case mavsdk::CameraServer::StorageInformation::StorageType::UsbStick:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_USB_STICK;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Sd:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_SD;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Microsd:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_MICROSD;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Hd:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_HD;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Other:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_OTHER;
+        }
+    }
+
+    static mavsdk::CameraServer::StorageInformation::StorageType translateFromRpcStorageType(
+        const rpc::camera_server::StorageInformation::StorageType storage_type)
+    {
+        switch (storage_type) {
+            default:
+                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+            // FALLTHROUGH
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Unknown;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_USB_STICK:
+                return mavsdk::CameraServer::StorageInformation::StorageType::UsbStick;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_SD:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Sd;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_MICROSD:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Microsd;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_HD:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Hd;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_OTHER:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Other;
+        }
+    }
+
+    static std::unique_ptr<rpc::camera_server::StorageInformation> translateToRpcStorageInformation(
+        const mavsdk::CameraServer::StorageInformation& storage_information)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::StorageInformation>();
+
+        rpc_obj->set_used_storage_mib(storage_information.used_storage_mib);
+
+        rpc_obj->set_available_storage_mib(storage_information.available_storage_mib);
+
+        rpc_obj->set_total_storage_mib(storage_information.total_storage_mib);
+
+        rpc_obj->set_storage_status(
+            translateToRpcStorageStatus(storage_information.storage_status));
+
+        rpc_obj->set_storage_id(storage_information.storage_id);
+
+        rpc_obj->set_storage_type(translateToRpcStorageType(storage_information.storage_type));
+
+        rpc_obj->set_read_speed(storage_information.read_speed);
+
+        rpc_obj->set_write_speed(storage_information.write_speed);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::StorageInformation translateFromRpcStorageInformation(
+        const rpc::camera_server::StorageInformation& storage_information)
+    {
+        mavsdk::CameraServer::StorageInformation obj;
+
+        obj.used_storage_mib = storage_information.used_storage_mib();
+
+        obj.available_storage_mib = storage_information.available_storage_mib();
+
+        obj.total_storage_mib = storage_information.total_storage_mib();
+
+        obj.storage_status = translateFromRpcStorageStatus(storage_information.storage_status());
+
+        obj.storage_id = storage_information.storage_id();
+
+        obj.storage_type = translateFromRpcStorageType(storage_information.storage_type());
+
+        obj.read_speed = storage_information.read_speed();
+
+        obj.write_speed = storage_information.write_speed();
+
+        return obj;
+    }
+
+    static rpc::camera_server::CaptureStatus::ImageStatus
+    translateToRpcImageStatus(const mavsdk::CameraServer::CaptureStatus::ImageStatus& image_status)
+    {
+        switch (image_status) {
+            default:
+                LogErr() << "Unknown image_status enum value: " << static_cast<int>(image_status);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle:
+                return rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE;
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::CaptureInProgress:
+                return rpc::camera_server::
+                    CaptureStatus_ImageStatus_IMAGE_STATUS_CAPTURE_IN_PROGRESS;
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalIdle:
+                return rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IDLE;
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalInProgress:
+                return rpc::camera_server::
+                    CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IN_PROGRESS;
+        }
+    }
+
+    static mavsdk::CameraServer::CaptureStatus::ImageStatus
+    translateFromRpcImageStatus(const rpc::camera_server::CaptureStatus::ImageStatus image_status)
+    {
+        switch (image_status) {
+            default:
+                LogErr() << "Unknown image_status enum value: " << static_cast<int>(image_status);
+            // FALLTHROUGH
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle;
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_CAPTURE_IN_PROGRESS:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::CaptureInProgress;
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IDLE:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalIdle;
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IN_PROGRESS:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalInProgress;
+        }
+    }
+
+    static rpc::camera_server::CaptureStatus::VideoStatus
+    translateToRpcVideoStatus(const mavsdk::CameraServer::CaptureStatus::VideoStatus& video_status)
+    {
+        switch (video_status) {
+            default:
+                LogErr() << "Unknown video_status enum value: " << static_cast<int>(video_status);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle:
+                return rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE;
+            case mavsdk::CameraServer::CaptureStatus::VideoStatus::CaptureInProgress:
+                return rpc::camera_server::
+                    CaptureStatus_VideoStatus_VIDEO_STATUS_CAPTURE_IN_PROGRESS;
+        }
+    }
+
+    static mavsdk::CameraServer::CaptureStatus::VideoStatus
+    translateFromRpcVideoStatus(const rpc::camera_server::CaptureStatus::VideoStatus video_status)
+    {
+        switch (video_status) {
+            default:
+                LogErr() << "Unknown video_status enum value: " << static_cast<int>(video_status);
+            // FALLTHROUGH
+            case rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE:
+                return mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle;
+            case rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_CAPTURE_IN_PROGRESS:
+                return mavsdk::CameraServer::CaptureStatus::VideoStatus::CaptureInProgress;
+        }
+    }
+
+    static std::unique_ptr<rpc::camera_server::CaptureStatus>
+    translateToRpcCaptureStatus(const mavsdk::CameraServer::CaptureStatus& capture_status)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::CaptureStatus>();
+
+        rpc_obj->set_image_interval(capture_status.image_interval);
+
+        rpc_obj->set_recording_time_s(capture_status.recording_time_s);
+
+        rpc_obj->set_available_capacity(capture_status.available_capacity);
+
+        rpc_obj->set_image_status(translateToRpcImageStatus(capture_status.image_status));
+
+        rpc_obj->set_video_status(translateToRpcVideoStatus(capture_status.video_status));
+
+        rpc_obj->set_image_count(capture_status.image_count);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::CaptureStatus
+    translateFromRpcCaptureStatus(const rpc::camera_server::CaptureStatus& capture_status)
+    {
+        mavsdk::CameraServer::CaptureStatus obj;
+
+        obj.image_interval = capture_status.image_interval();
+
+        obj.recording_time_s = capture_status.recording_time_s();
+
+        obj.available_capacity = capture_status.available_capacity();
+
+        obj.image_status = translateFromRpcImageStatus(capture_status.image_status());
+
+        obj.video_status = translateFromRpcVideoStatus(capture_status.video_status());
+
+        obj.image_count = capture_status.image_count();
+
+        return obj;
+    }
+
     grpc::Status SetInformation(
         grpc::ServerContext* /* context */,
         const rpc::camera_server::SetInformationRequest* request,
@@ -668,6 +910,150 @@ public:
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
         *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeStorageInformation(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStorageInformationRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StorageInformationResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StorageInformationHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_storage_information(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t storage_information) {
+                    rpc::camera_server::StorageInformationResponse rpc_response;
+
+                    rpc_response.set_storage_id(storage_information);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_storage_information(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondStorageInformation(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStorageInformationRequest* request,
+        rpc::camera_server::RespondStorageInformationResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStorageInformation sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_storage_information(
+            translateFromRpcStorageInformation(request->storage_information()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeCaptureStatus(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeCaptureStatusRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::CaptureStatusResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::CaptureStatusHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_capture_status(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t capture_status) {
+                    rpc::camera_server::CaptureStatusResponse rpc_response;
+
+                    rpc_response.set_reserved(capture_status);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_capture_status(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondCaptureStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondCaptureStatusRequest* request,
+        rpc::camera_server::RespondCaptureStatusResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondCaptureStatus sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_capture_status(
+            translateFromRpcCaptureStatus(request->capture_status()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
 
         return grpc::Status::OK;
     }

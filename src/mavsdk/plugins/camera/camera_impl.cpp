@@ -598,6 +598,21 @@ CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
     std::lock_guard<std::mutex> lock(_information.mutex);
     auto handle = _information.subscription_callbacks.subscribe(callback);
 
+    // If there was already a subscription, cancel the call
+    if (_status.call_every_cookie) {
+        _system_impl->remove_call_every(_status.call_every_cookie);
+    }
+
+    if (callback) {
+        if (_status.call_every_cookie == nullptr) {
+            _system_impl->add_call_every(
+                [this]() { request_status(); }, 1.0, &_status.call_every_cookie);
+        }
+    } else {
+        _system_impl->remove_call_every(_status.call_every_cookie);
+        _status.call_every_cookie = nullptr;
+    }
+
     return handle;
 }
 

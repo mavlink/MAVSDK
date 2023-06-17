@@ -43,6 +43,17 @@ public:
     CameraServer::SetModeHandle subscribe_set_mode(const CameraServer::SetModeCallback& callback);
     void unsubscribe_set_mode(CameraServer::SetModeHandle handle);
 
+    CameraServer::StorageInformationHandle
+    subscribe_storage_information(const CameraServer::StorageInformationCallback& callback);
+    void unsubscribe_storage_information(CameraServer::StorageInformationHandle handle);
+    CameraServer::Result
+    respond_storage_information(CameraServer::StorageInformation storage_information) const;
+
+    CameraServer::CaptureStatusHandle
+    subscribe_capture_status(const CameraServer::CaptureStatusCallback& callback);
+    void unsubscribe_capture_status(CameraServer::CaptureStatusHandle handle);
+    CameraServer::Result respond_capture_status(CameraServer::CaptureStatus capture_status) const;
+
 private:
     enum StatusFlags {
         IN_PROGRESS = 1 << 0,
@@ -72,8 +83,11 @@ private:
     CallbackList<int32_t> _start_video_streaming_callbacks{};
     CallbackList<int32_t> _stop_video_streaming_callbacks{};
     CallbackList<CameraServer::Mode> _set_mode_callbacks{};
+    CallbackList<int32_t> _storage_information_callbacks{};
+    CallbackList<int32_t> _capture_status_callbacks{};
 
     MavlinkCommandReceiver::CommandLong _last_take_photo_command;
+    uint8_t _last_storage_id;
 
     bool parse_version_string(const std::string& version_str);
     bool parse_version_string(const std::string& version_str, uint32_t& version);
