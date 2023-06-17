@@ -82,6 +82,36 @@ public:
         }
     }
 
+    static rpc::camera_server::Mode translateToRpcMode(const mavsdk::CameraServer::Mode& mode)
+    {
+        switch (mode) {
+            default:
+                LogErr() << "Unknown mode enum value: " << static_cast<int>(mode);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::Mode::Unknown:
+                return rpc::camera_server::MODE_UNKNOWN;
+            case mavsdk::CameraServer::Mode::Photo:
+                return rpc::camera_server::MODE_PHOTO;
+            case mavsdk::CameraServer::Mode::Video:
+                return rpc::camera_server::MODE_VIDEO;
+        }
+    }
+
+    static mavsdk::CameraServer::Mode translateFromRpcMode(const rpc::camera_server::Mode mode)
+    {
+        switch (mode) {
+            default:
+                LogErr() << "Unknown mode enum value: " << static_cast<int>(mode);
+            // FALLTHROUGH
+            case rpc::camera_server::MODE_UNKNOWN:
+                return mavsdk::CameraServer::Mode::Unknown;
+            case rpc::camera_server::MODE_PHOTO:
+                return mavsdk::CameraServer::Mode::Photo;
+            case rpc::camera_server::MODE_VIDEO:
+                return mavsdk::CameraServer::Mode::Video;
+        }
+    }
+
     static std::unique_ptr<rpc::camera_server::Information>
     translateToRpcInformation(const mavsdk::CameraServer::Information& information)
     {
@@ -587,6 +617,47 @@ public:
                     std::unique_lock<std::mutex> lock(*subscribe_mutex);
                     if (!*is_finished && !writer->Write(rpc_response)) {
                         _lazy_plugin.maybe_plugin()->unsubscribe_stop_video_streaming(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeSetMode(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeSetModeRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::SetModeResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::SetModeHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_set_mode(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::CameraServer::Mode set_mode) {
+                    rpc::camera_server::SetModeResponse rpc_response;
+
+                    rpc_response.set_mode(translateToRpcMode(set_mode));
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_set_mode(handle);
 
                         *is_finished = true;
                         unregister_stream_stop_promise(stream_closed_promise);

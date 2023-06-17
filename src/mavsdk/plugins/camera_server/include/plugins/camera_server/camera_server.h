@@ -64,6 +64,22 @@ public:
     operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback);
 
     /**
+     * @brief Camera mode type.
+     */
+    enum class Mode {
+        Unknown, /**< @brief Unknown mode. */
+        Photo, /**< @brief Photo mode. */
+        Video, /**< @brief Video mode. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::Mode`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, CameraServer::Mode const& mode);
+
+    /**
      * @brief Type to represent a camera information.
      */
     struct Information {
@@ -347,6 +363,27 @@ public:
      * @brief Unsubscribe from subscribe_stop_video_streaming
      */
     void unsubscribe_stop_video_streaming(StopVideoStreamingHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_set_mode.
+     */
+    using SetModeCallback = std::function<void(Mode)>;
+
+    /**
+     * @brief Handle type for subscribe_set_mode.
+     */
+    using SetModeHandle = Handle<Mode>;
+
+    /**
+     * @brief Subscribe to set camera mode requests. Each request received should response to using
+     * SetCameraModeResponse
+     */
+    SetModeHandle subscribe_set_mode(const SetModeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_set_mode
+     */
+    void unsubscribe_set_mode(SetModeHandle handle);
 
     /**
      * @brief Copy constructor.

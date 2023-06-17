@@ -56,8 +56,16 @@ int main(int argc, const char* argv[])
 
 void do_camera_operation(mavsdk::Camera& camera)
 {
-    auto operation_result = camera.take_photo();
+    // switch to photo mode to take photo
+    auto operation_result = camera.set_mode(mavsdk::Camera::Mode::Photo);
+    std::cout << "Set camera to photo mode result : " << operation_result << std::endl;
+
+    operation_result = camera.take_photo();
     std::cout << "Take photo result : " << operation_result << std::endl;
+
+    // switch to video mode to recording video
+    operation_result = camera.set_mode(mavsdk::Camera::Mode::Video);
+    std::cout << "Set camera to video mode result : " << operation_result << std::endl;
 
     operation_result = camera.start_video();
     std::cout << "Start video result : " << operation_result << std::endl;

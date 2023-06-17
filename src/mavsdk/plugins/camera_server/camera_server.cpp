@@ -91,6 +91,16 @@ void CameraServer::unsubscribe_stop_video_streaming(StopVideoStreamingHandle han
     _impl->unsubscribe_stop_video_streaming(handle);
 }
 
+CameraServer::SetModeHandle CameraServer::subscribe_set_mode(const SetModeCallback& callback)
+{
+    return _impl->subscribe_set_mode(callback);
+}
+
+void CameraServer::unsubscribe_set_mode(SetModeHandle handle)
+{
+    _impl->unsubscribe_set_mode(handle);
+}
+
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&
@@ -231,6 +241,20 @@ operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_
             return str << "Busy";
         case CameraServer::TakePhotoFeedback::Failed:
             return str << "Failed";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::Mode const& mode)
+{
+    switch (mode) {
+        case CameraServer::Mode::Unknown:
+            return str << "Unknown";
+        case CameraServer::Mode::Photo:
+            return str << "Photo";
+        case CameraServer::Mode::Video:
+            return str << "Video";
         default:
             return str << "Unknown";
     }

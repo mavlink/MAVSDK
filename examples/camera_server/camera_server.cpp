@@ -100,4 +100,8 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
 
     camera_server.subscribe_stop_video_streaming(
         [](int32_t stream_id) { std::cout << "Stop video streaming " << stream_id << std::endl; });
+
+    camera_server.subscribe_set_mode([](mavsdk::CameraServer::Mode mode) {
+        std::cout << "Set camera mode " << mode << std::endl;
+    });
 }

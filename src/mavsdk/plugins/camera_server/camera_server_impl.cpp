@@ -337,6 +337,17 @@ void CameraServerImpl::unsubscribe_stop_video_streaming(
     return _stop_video_streaming_callbacks.unsubscribe(handle);
 }
 
+CameraServer::SetModeHandle
+CameraServerImpl::subscribe_set_mode(const CameraServer::SetModeCallback& callback)
+{
+    return _set_mode_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_set_mode(CameraServer::SetModeHandle handle)
+{
+    _set_mode_callbacks.unsubscribe(handle);
+}
+
 /**
  * Starts capturing images with the given interval.
  * @param [in]  interval_s      The interval between captures in seconds.
@@ -645,12 +656,28 @@ CameraServerImpl::process_set_camera_mode(const MavlinkCommandReceiver::CommandL
 {
     auto camera_mode = static_cast<CAMERA_MODE>(command.params.param2);
 
-    UNUSED(camera_mode);
+    if (_set_mode_callbacks.empty()) {
+        LogDebug() << "Set mode requested with no set mode subscriber";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    LogDebug() << "unsupported set camera mode request";
+    // convert camera mode enum type
+    CameraServer::Mode convert_camera_mode = CameraServer::Mode::Unknown;
+    if (camera_mode == CAMERA_MODE_IMAGE) {
+        convert_camera_mode = CameraServer::Mode::Photo;
+    } else if (camera_mode == CAMERA_MODE_VIDEO) {
+        convert_camera_mode = CameraServer::Mode::Video;
+    }
+
+    if (convert_camera_mode == CameraServer::Mode::Unknown) {
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_DENIED);
+    }
+    _set_mode_callbacks(convert_camera_mode);
 
     return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_command_ack_t>
