@@ -283,7 +283,7 @@ TEST_F(CameraServiceImplTest, stopVideoEvenWhenArgsAreNull)
 
 TEST_P(CameraServiceImplTest, startVideoStreamingResultIsTranslatedCorrectly)
 {
-    ON_CALL(_camera, start_video_streaming()).WillByDefault(Return(GetParam().second));
+    ON_CALL(_camera, start_video_streaming(1)).WillByDefault(Return(GetParam().second));
     mavsdk::rpc::camera::StartVideoStreamingResponse response;
 
     _camera_service.StartVideoStreaming(nullptr, nullptr, &response);
@@ -293,14 +293,14 @@ TEST_P(CameraServiceImplTest, startVideoStreamingResultIsTranslatedCorrectly)
 
 TEST_F(CameraServiceImplTest, startsVideoStreamingEvenWhenArgsAreNull)
 {
-    EXPECT_CALL(_camera, start_video_streaming()).Times(1);
+    EXPECT_CALL(_camera, start_video_streaming(1)).Times(1);
 
     _camera_service.StartVideoStreaming(nullptr, nullptr, nullptr);
 }
 
 TEST_P(CameraServiceImplTest, stopVideoStreamingResultIsTranslatedCorrectly)
 {
-    ON_CALL(_camera, stop_video_streaming()).WillByDefault(Return(GetParam().second));
+    ON_CALL(_camera, stop_video_streaming(1)).WillByDefault(Return(GetParam().second));
     mavsdk::rpc::camera::StopVideoStreamingResponse response;
 
     _camera_service.StopVideoStreaming(nullptr, nullptr, &response);
@@ -310,7 +310,7 @@ TEST_P(CameraServiceImplTest, stopVideoStreamingResultIsTranslatedCorrectly)
 
 TEST_F(CameraServiceImplTest, stopsVideoStreamingEvenWhenArgsAreNull)
 {
-    EXPECT_CALL(_camera, stop_video_streaming()).Times(1);
+    EXPECT_CALL(_camera, stop_video_streaming(1)).Times(1);
 
     _camera_service.StopVideoStreaming(nullptr, nullptr, nullptr);
 }

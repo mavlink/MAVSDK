@@ -3,6 +3,8 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/camera_server/camera_server.h>
 
+static void subscribe_camera_operation(mavsdk::CameraServer& camera_server);
+
 int main(int argc, char** argv)
 {
     mavsdk::Mavsdk mavsdk{mavsdk::Mavsdk::Configuration{mavsdk::Mavsdk::ComponentType::Camera}};
@@ -18,7 +20,43 @@ int main(int argc, char** argv)
     auto camera_server = mavsdk::CameraServer{mavsdk.server_component()};
 
     // First add all subscriptions. This defines the camera capabilities.
+    subscribe_camera_operation(camera_server);
 
+    // TODO: this state is not guaranteed, e.g. a new system appears
+    // while a capture is in progress
+    camera_server.set_in_progress(false);
+
+    // Finally call set_information() to "activate" the camera plugin.
+
+    auto ret = camera_server.set_information({
+        .vendor_name = "MAVSDK",
+        .model_name = "Example Camera Server",
+        .firmware_version = "1.0.0",
+        .focal_length_mm = 3.0,
+        .horizontal_sensor_size_mm = 3.68,
+        .vertical_sensor_size_mm = 2.76,
+        .horizontal_resolution_px = 3280,
+        .vertical_resolution_px = 2464,
+        .lens_id = 0,
+        .definition_file_version = 0, // TODO: add this
+        .definition_file_uri = "", // TODO: implement this using MAVLink FTP
+    });
+
+    if (ret != mavsdk::CameraServer::Result::Success) {
+        std::cerr << "Failed to set camera info, exiting" << std::endl;
+        return 2;
+    }
+
+    // works as a server and never quit
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    return 0;
+}
+
+static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
+{
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
         camera_server.set_in_progress(true);
 
@@ -57,37 +95,9 @@ int main(int argc, char** argv)
     camera_server.subscribe_stop_video(
         [](int32_t stream_id) { std::cout << "Stop video record" << std::endl; });
 
-    // Then set the initial state of everything.
+    camera_server.subscribe_start_video_streaming(
+        [](int32_t stream_id) { std::cout << "Start video streaming " << stream_id << std::endl; });
 
-    // TODO: this state is not guaranteed, e.g. a new system appears
-    // while a capture is in progress
-    camera_server.set_in_progress(false);
-
-    // Finally call set_information() to "activate" the camera plugin.
-
-    auto ret = camera_server.set_information({
-        .vendor_name = "MAVSDK",
-        .model_name = "Example Camera Server",
-        .firmware_version = "1.0.0",
-        .focal_length_mm = 3.0,
-        .horizontal_sensor_size_mm = 3.68,
-        .vertical_sensor_size_mm = 2.76,
-        .horizontal_resolution_px = 3280,
-        .vertical_resolution_px = 2464,
-        .lens_id = 0,
-        .definition_file_version = 0, // TODO: add this
-        .definition_file_uri = "", // TODO: implement this using MAVLink FTP
-    });
-
-    if (ret != mavsdk::CameraServer::Result::Success) {
-        std::cerr << "Failed to set camera info, exiting" << std::endl;
-        return 2;
-    }
-
-    // works as a server and never quit
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-
-    return 0;
+    camera_server.subscribe_stop_video_streaming(
+        [](int32_t stream_id) { std::cout << "Stop video streaming " << stream_id << std::endl; });
 }

@@ -32,6 +32,14 @@ public:
     subscribe_stop_video(const CameraServer::StopVideoCallback& callback);
     void unsubscribe_stop_video(CameraServer::StopVideoHandle handle);
 
+    CameraServer::StartVideoStreamingHandle
+    subscribe_start_video_streaming(const CameraServer::StartVideoStreamingCallback& callback);
+    void unsubscribe_start_video_streaming(CameraServer::StartVideoStreamingHandle handle);
+
+    CameraServer::StopVideoStreamingHandle
+    subscribe_stop_video_streaming(const CameraServer::StopVideoStreamingCallback& callback);
+    void unsubscribe_stop_video_streaming(CameraServer::StopVideoStreamingHandle handle);
+
 private:
     enum StatusFlags {
         IN_PROGRESS = 1 << 0,
@@ -58,6 +66,8 @@ private:
     CallbackList<int32_t> _take_photo_callbacks{};
     CallbackList<int32_t> _start_video_callbacks{};
     CallbackList<int32_t> _stop_video_callbacks{};
+    CallbackList<int32_t> _start_video_streaming_callbacks{};
+    CallbackList<int32_t> _stop_video_streaming_callbacks{};
 
     MavlinkCommandReceiver::CommandLong _last_take_photo_command;
 

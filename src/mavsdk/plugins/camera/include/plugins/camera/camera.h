@@ -599,7 +599,7 @@ public:
      *
      * @return Result of request.
      */
-    Result start_video_streaming() const;
+    Result start_video_streaming(int32_t stream_id) const;
 
     /**
      * @brief Stop current video streaming.
@@ -608,7 +608,7 @@ public:
      *
      * @return Result of request.
      */
-    Result stop_video_streaming() const;
+    Result stop_video_streaming(int32_t stream_id) const;
 
     /**
      * @brief Set camera mode.

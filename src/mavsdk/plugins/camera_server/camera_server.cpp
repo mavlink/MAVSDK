@@ -69,6 +69,28 @@ void CameraServer::unsubscribe_stop_video(StopVideoHandle handle)
     _impl->unsubscribe_stop_video(handle);
 }
 
+CameraServer::StartVideoStreamingHandle
+CameraServer::subscribe_start_video_streaming(const StartVideoStreamingCallback& callback)
+{
+    return _impl->subscribe_start_video_streaming(callback);
+}
+
+void CameraServer::unsubscribe_start_video_streaming(StartVideoStreamingHandle handle)
+{
+    _impl->unsubscribe_start_video_streaming(handle);
+}
+
+CameraServer::StopVideoStreamingHandle
+CameraServer::subscribe_stop_video_streaming(const StopVideoStreamingCallback& callback)
+{
+    return _impl->subscribe_stop_video_streaming(callback);
+}
+
+void CameraServer::unsubscribe_stop_video_streaming(StopVideoStreamingHandle handle)
+{
+    _impl->unsubscribe_stop_video_streaming(handle);
+}
+
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&

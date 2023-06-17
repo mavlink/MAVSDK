@@ -2311,9 +2311,10 @@ class StopVideoResponse final :
 };// -------------------------------------------------------------------
 
 class StartVideoStreamingRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StartVideoStreamingRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StartVideoStreamingRequest) */ {
  public:
   inline StartVideoStreamingRequest() : StartVideoStreamingRequest(nullptr) {}
+  ~StartVideoStreamingRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR StartVideoStreamingRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
@@ -2394,15 +2395,29 @@ class StartVideoStreamingRequest final :
   StartVideoStreamingRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<StartVideoStreamingRequest>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StartVideoStreamingRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const StartVideoStreamingRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const StartVideoStreamingRequest& from) {
+    StartVideoStreamingRequest::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StartVideoStreamingRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(StartVideoStreamingRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -2422,6 +2437,19 @@ class StartVideoStreamingRequest final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kStreamIdFieldNumber = 1,
+  };
+  // int32 stream_id = 1;
+  void clear_stream_id() ;
+  ::int32_t stream_id() const;
+  void set_stream_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_stream_id() const;
+  void _internal_set_stream_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StartVideoStreamingRequest)
  private:
   class _Internal;
@@ -2430,7 +2458,10 @@ class StartVideoStreamingRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::int32_t stream_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -2595,9 +2626,10 @@ class StartVideoStreamingResponse final :
 };// -------------------------------------------------------------------
 
 class StopVideoStreamingRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopVideoStreamingRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopVideoStreamingRequest) */ {
  public:
   inline StopVideoStreamingRequest() : StopVideoStreamingRequest(nullptr) {}
+  ~StopVideoStreamingRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR StopVideoStreamingRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
@@ -2678,15 +2710,29 @@ class StopVideoStreamingRequest final :
   StopVideoStreamingRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<StopVideoStreamingRequest>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StopVideoStreamingRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const StopVideoStreamingRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const StopVideoStreamingRequest& from) {
+    StopVideoStreamingRequest::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StopVideoStreamingRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(StopVideoStreamingRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -2706,6 +2752,19 @@ class StopVideoStreamingRequest final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kStreamIdFieldNumber = 1,
+  };
+  // int32 stream_id = 1;
+  void clear_stream_id() ;
+  ::int32_t stream_id() const;
+  void set_stream_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_stream_id() const;
+  void _internal_set_stream_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StopVideoStreamingRequest)
  private:
   class _Internal;
@@ -2714,7 +2773,10 @@ class StopVideoStreamingRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::int32_t stream_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -10052,6 +10114,26 @@ inline void StopVideoResponse::set_allocated_camera_result(::mavsdk::rpc::camera
 
 // StartVideoStreamingRequest
 
+// int32 stream_id = 1;
+inline void StartVideoStreamingRequest::clear_stream_id() {
+  _impl_.stream_id_ = 0;
+}
+inline ::int32_t StartVideoStreamingRequest::stream_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StartVideoStreamingRequest.stream_id)
+  return _internal_stream_id();
+}
+inline void StartVideoStreamingRequest::set_stream_id(::int32_t value) {
+  _internal_set_stream_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StartVideoStreamingRequest.stream_id)
+}
+inline ::int32_t StartVideoStreamingRequest::_internal_stream_id() const {
+  return _impl_.stream_id_;
+}
+inline void StartVideoStreamingRequest::_internal_set_stream_id(::int32_t value) {
+  ;
+  _impl_.stream_id_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // StartVideoStreamingResponse
@@ -10146,6 +10228,26 @@ inline void StartVideoStreamingResponse::set_allocated_camera_result(::mavsdk::r
 // -------------------------------------------------------------------
 
 // StopVideoStreamingRequest
+
+// int32 stream_id = 1;
+inline void StopVideoStreamingRequest::clear_stream_id() {
+  _impl_.stream_id_ = 0;
+}
+inline ::int32_t StopVideoStreamingRequest::stream_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StopVideoStreamingRequest.stream_id)
+  return _internal_stream_id();
+}
+inline void StopVideoStreamingRequest::set_stream_id(::int32_t value) {
+  _internal_set_stream_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StopVideoStreamingRequest.stream_id)
+}
+inline ::int32_t StopVideoStreamingRequest::_internal_stream_id() const {
+  return _impl_.stream_id_;
+}
+inline void StopVideoStreamingRequest::_internal_set_stream_id(::int32_t value) {
+  ;
+  _impl_.stream_id_ = value;
+}
 
 // -------------------------------------------------------------------
 

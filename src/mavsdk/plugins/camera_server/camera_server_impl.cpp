@@ -313,6 +313,30 @@ void CameraServerImpl::unsubscribe_stop_video(CameraServer::StopVideoHandle hand
     return _stop_video_callbacks.unsubscribe(handle);
 }
 
+CameraServer::StartVideoStreamingHandle CameraServerImpl::subscribe_start_video_streaming(
+    const CameraServer::StartVideoStreamingCallback& callback)
+{
+    return _start_video_streaming_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_start_video_streaming(
+    CameraServer::StartVideoStreamingHandle handle)
+{
+    return _start_video_streaming_callbacks.unsubscribe(handle);
+}
+
+CameraServer::StopVideoStreamingHandle CameraServerImpl::subscribe_stop_video_streaming(
+    const CameraServer::StopVideoStreamingCallback& callback)
+{
+    return _stop_video_streaming_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_stop_video_streaming(
+    CameraServer::StopVideoStreamingHandle handle)
+{
+    return _stop_video_streaming_callbacks.unsubscribe(handle);
+}
+
 /**
  * Starts capturing images with the given interval.
  * @param [in]  interval_s      The interval between captures in seconds.
@@ -792,12 +816,16 @@ CameraServerImpl::process_video_start_streaming(const MavlinkCommandReceiver::Co
 {
     auto stream_id = static_cast<uint8_t>(command.params.param1);
 
-    UNUSED(stream_id);
+    if (_start_video_streaming_callbacks.empty()) {
+        LogDebug() << "video start streaming requested with no video start streaming subscriber";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    LogDebug() << "unsupported video start streaming request";
+    _start_video_streaming_callbacks(stream_id);
 
     return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_command_ack_t>
@@ -805,12 +833,16 @@ CameraServerImpl::process_video_stop_streaming(const MavlinkCommandReceiver::Com
 {
     auto stream_id = static_cast<uint8_t>(command.params.param1);
 
-    UNUSED(stream_id);
+    if (_stop_video_streaming_callbacks.empty()) {
+        LogDebug() << "video stop streaming requested with no video stop streaming subscriber";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    LogDebug() << "unsupported video stop streaming request";
+    _stop_video_streaming_callbacks(stream_id);
 
     return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_information_request(

@@ -5,6 +5,8 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/camera/camera.h>
 
+static void do_camera_operation(mavsdk::Camera& camera);
+
 int main(int argc, const char* argv[])
 {
     // we run client plugins to act as the GCS
@@ -47,6 +49,13 @@ int main(int argc, const char* argv[])
         std::cout << info << std::endl;
     });
 
+    do_camera_operation(camera);
+
+    return 0;
+}
+
+void do_camera_operation(mavsdk::Camera& camera)
+{
     auto operation_result = camera.take_photo();
     std::cout << "Take photo result : " << operation_result << std::endl;
 
@@ -55,5 +64,11 @@ int main(int argc, const char* argv[])
 
     operation_result = camera.stop_video();
     std::cout << "Stop video result : " << operation_result << std::endl;
-    return 0;
+
+    // the camera can have multi video stream so may need the stream id
+    operation_result = camera.start_video_streaming(2);
+    std::cout << "start video streaming result : " << operation_result << std::endl;
+
+    operation_result = camera.stop_video_streaming(2);
+    std::cout << "stop video streaming result : " << operation_result << std::endl;
 }

@@ -90,14 +90,14 @@ Camera::Result Camera::stop_video() const
     return _impl->stop_video();
 }
 
-Camera::Result Camera::start_video_streaming() const
+Camera::Result Camera::start_video_streaming(int32_t stream_id) const
 {
-    return _impl->start_video_streaming();
+    return _impl->start_video_streaming(stream_id);
 }
 
-Camera::Result Camera::stop_video_streaming() const
+Camera::Result Camera::stop_video_streaming(int32_t stream_id) const
 {
-    return _impl->stop_video_streaming();
+    return _impl->stop_video_streaming(stream_id);
 }
 
 void Camera::set_mode_async(Mode mode, const ResultCallback callback)

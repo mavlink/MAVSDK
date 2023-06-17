@@ -52,8 +52,8 @@ public:
     subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback);
     void unsubscribe_video_stream_info(Camera::VideoStreamInfoHandle handle);
 
-    Camera::Result start_video_streaming();
-    Camera::Result stop_video_streaming();
+    Camera::Result start_video_streaming(int32_t stream_id);
+    Camera::Result stop_video_streaming(int32_t stream_id);
 
     Camera::Result set_mode(const Camera::Mode mode);
     void set_mode_async(const Camera::Mode mode, const Camera::ResultCallback& callback);
@@ -196,8 +196,8 @@ private:
     MavlinkCommandSender::CommandLong make_command_start_video(float capture_status_rate_hz);
     MavlinkCommandSender::CommandLong make_command_stop_video();
 
-    MavlinkCommandSender::CommandLong make_command_start_video_streaming();
-    MavlinkCommandSender::CommandLong make_command_stop_video_streaming();
+    MavlinkCommandSender::CommandLong make_command_start_video_streaming(int32_t stream_id);
+    MavlinkCommandSender::CommandLong make_command_stop_video_streaming(int32_t stream_id);
 
     MavlinkCommandSender::CommandLong make_command_request_video_stream_info();
     MavlinkCommandSender::CommandLong make_command_request_video_stream_status();

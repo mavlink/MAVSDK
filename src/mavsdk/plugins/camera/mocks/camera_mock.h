@@ -13,8 +13,8 @@ public:
     MOCK_CONST_METHOD0(stop_photo_interval, Camera::Result()){};
     MOCK_CONST_METHOD0(start_video, Camera::Result()){};
     MOCK_CONST_METHOD0(stop_video, Camera::Result()){};
-    MOCK_CONST_METHOD0(start_video_streaming, Camera::Result()){};
-    MOCK_CONST_METHOD0(stop_video_streaming, Camera::Result()){};
+    MOCK_CONST_METHOD1(start_video_streaming, Camera::Result(int32_t stream_id)){};
+    MOCK_CONST_METHOD1(stop_video_streaming, Camera::Result(int32_t strema_id)){};
     MOCK_CONST_METHOD1(set_mode, Camera::Result(Camera::Mode)){};
     MOCK_CONST_METHOD1(set_setting, Camera::Result(Camera::Setting)){};
     MOCK_CONST_METHOD1(get_setting, std::pair<Camera::Result, Camera::Setting>(Camera::Setting)){};

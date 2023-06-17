@@ -305,6 +305,50 @@ public:
     void unsubscribe_stop_video(StopVideoHandle handle);
 
     /**
+     * @brief Callback type for subscribe_start_video_streaming.
+     */
+    using StartVideoStreamingCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_start_video_streaming.
+     */
+    using StartVideoStreamingHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to start video streaming requests. Each request received should response to
+     * using StartVideoStreamingResponse
+     */
+    StartVideoStreamingHandle
+    subscribe_start_video_streaming(const StartVideoStreamingCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_start_video_streaming
+     */
+    void unsubscribe_start_video_streaming(StartVideoStreamingHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_stop_video_streaming.
+     */
+    using StopVideoStreamingCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_stop_video_streaming.
+     */
+    using StopVideoStreamingHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to stop video streaming requests. Each request received should response to
+     * using StopVideoStreamingResponse
+     */
+    StopVideoStreamingHandle
+    subscribe_stop_video_streaming(const StopVideoStreamingCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_stop_video_streaming
+     */
+    void unsubscribe_stop_video_streaming(StopVideoStreamingHandle handle);
+
+    /**
      * @brief Copy constructor.
      */
     CameraServer(const CameraServer& other);
