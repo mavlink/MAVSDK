@@ -125,13 +125,13 @@ jobs:
         id: cache
         with:
           path: ~/.hunter
-          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}
+          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}-2
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
             sudo cmake --build third_party/mavlink/build
       - name: configure
-        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -Bbuild -H.
+        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -Bbuild -H. -DENABLE_CPPTRACE=On
       - name: build
         run: cmake --build build -j2
       - name: unit tests

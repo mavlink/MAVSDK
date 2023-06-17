@@ -26,5 +26,11 @@ if (SUPERBUILD)
         build_target(re2)
         build_target(grpc)
     endif()
+
 endif()
 
+if (ENABLE_CPPTRACE)
+    list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
+    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
+    build_target(cpptrace)
+endif()
