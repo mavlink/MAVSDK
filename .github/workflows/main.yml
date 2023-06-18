@@ -139,8 +139,8 @@ jobs:
       - name: system tests
         run: ./build/src/system_tests/system_tests_runner
 
-  ubuntu20-proto-check:
-    name: ubuntu-22.04 (proto check)
+  ubuntu22-style-and-proto-check:
+    name: ubuntu-22.04 (style and proto check)
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -164,20 +164,6 @@ jobs:
         run: tools/fix_style.sh . || true
       - name: check for diff
         run: git diff --exit-code
-
-  ubuntu20-check-style:
-    name: ubuntu-22.04 (check style and docs)
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-      - name: install dependencies
-        run: sudo apt-get update && sudo apt-get install -y doxygen clang-format-12
-      - name: check style
-        run: ./tools/fix_style.sh .
-      - name: check docs
-        run: tools/generate_docs.sh
 
   deb-package:
     name: ${{ matrix.container_name }} (package, non-mavsdk_server)
