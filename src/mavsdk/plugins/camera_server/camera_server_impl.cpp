@@ -476,8 +476,10 @@ CameraServerImpl::respond_capture_status(CameraServer::CaptureStatus capture_sta
     }
     const uint32_t recording_time_ms =
         static_cast<uint32_t>(static_cast<double>(capture_status.recording_time_s) * 1e3);
-    const float available_capacity = capture_status.available_capacity;
+    const float available_capacity = capture_status.available_capacity_mib;
 
+    // FIXME for now the image catpure interval is the interval state of the camera server
+    // so the capture_status.image_interval_s is useless for now
     _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
         mavlink_msg_camera_capture_status_pack_chan(

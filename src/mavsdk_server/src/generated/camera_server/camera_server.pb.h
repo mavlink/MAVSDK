@@ -5901,21 +5901,21 @@ class CaptureStatus final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kImageIntervalFieldNumber = 1,
+    kImageIntervalSFieldNumber = 1,
     kRecordingTimeSFieldNumber = 2,
-    kAvailableCapacityFieldNumber = 3,
+    kAvailableCapacityMibFieldNumber = 3,
     kImageStatusFieldNumber = 4,
     kVideoStatusFieldNumber = 5,
     kImageCountFieldNumber = 6,
   };
-  // float image_interval = 1;
-  void clear_image_interval() ;
-  float image_interval() const;
-  void set_image_interval(float value);
+  // float image_interval_s = 1;
+  void clear_image_interval_s() ;
+  float image_interval_s() const;
+  void set_image_interval_s(float value);
 
   private:
-  float _internal_image_interval() const;
-  void _internal_set_image_interval(float value);
+  float _internal_image_interval_s() const;
+  void _internal_set_image_interval_s(float value);
 
   public:
   // float recording_time_s = 2;
@@ -5928,14 +5928,14 @@ class CaptureStatus final :
   void _internal_set_recording_time_s(float value);
 
   public:
-  // float available_capacity = 3;
-  void clear_available_capacity() ;
-  float available_capacity() const;
-  void set_available_capacity(float value);
+  // float available_capacity_mib = 3;
+  void clear_available_capacity_mib() ;
+  float available_capacity_mib() const;
+  void set_available_capacity_mib(float value);
 
   private:
-  float _internal_available_capacity() const;
-  void _internal_set_available_capacity(float value);
+  float _internal_available_capacity_mib() const;
+  void _internal_set_available_capacity_mib(float value);
 
   public:
   // .mavsdk.rpc.camera_server.CaptureStatus.ImageStatus image_status = 4;
@@ -5976,9 +5976,9 @@ class CaptureStatus final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    float image_interval_;
+    float image_interval_s_;
     float recording_time_s_;
-    float available_capacity_;
+    float available_capacity_mib_;
     int image_status_;
     int video_status_;
     ::int32_t image_count_;
@@ -8111,24 +8111,24 @@ inline void StorageInformation::_internal_set_write_speed(float value) {
 
 // CaptureStatus
 
-// float image_interval = 1;
-inline void CaptureStatus::clear_image_interval() {
-  _impl_.image_interval_ = 0;
+// float image_interval_s = 1;
+inline void CaptureStatus::clear_image_interval_s() {
+  _impl_.image_interval_s_ = 0;
 }
-inline float CaptureStatus::image_interval() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.image_interval)
-  return _internal_image_interval();
+inline float CaptureStatus::image_interval_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.image_interval_s)
+  return _internal_image_interval_s();
 }
-inline void CaptureStatus::set_image_interval(float value) {
-  _internal_set_image_interval(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.image_interval)
+inline void CaptureStatus::set_image_interval_s(float value) {
+  _internal_set_image_interval_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.image_interval_s)
 }
-inline float CaptureStatus::_internal_image_interval() const {
-  return _impl_.image_interval_;
+inline float CaptureStatus::_internal_image_interval_s() const {
+  return _impl_.image_interval_s_;
 }
-inline void CaptureStatus::_internal_set_image_interval(float value) {
+inline void CaptureStatus::_internal_set_image_interval_s(float value) {
   ;
-  _impl_.image_interval_ = value;
+  _impl_.image_interval_s_ = value;
 }
 
 // float recording_time_s = 2;
@@ -8151,24 +8151,24 @@ inline void CaptureStatus::_internal_set_recording_time_s(float value) {
   _impl_.recording_time_s_ = value;
 }
 
-// float available_capacity = 3;
-inline void CaptureStatus::clear_available_capacity() {
-  _impl_.available_capacity_ = 0;
+// float available_capacity_mib = 3;
+inline void CaptureStatus::clear_available_capacity_mib() {
+  _impl_.available_capacity_mib_ = 0;
 }
-inline float CaptureStatus::available_capacity() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.available_capacity)
-  return _internal_available_capacity();
+inline float CaptureStatus::available_capacity_mib() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.CaptureStatus.available_capacity_mib)
+  return _internal_available_capacity_mib();
 }
-inline void CaptureStatus::set_available_capacity(float value) {
-  _internal_set_available_capacity(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.available_capacity)
+inline void CaptureStatus::set_available_capacity_mib(float value) {
+  _internal_set_available_capacity_mib(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.CaptureStatus.available_capacity_mib)
 }
-inline float CaptureStatus::_internal_available_capacity() const {
-  return _impl_.available_capacity_;
+inline float CaptureStatus::_internal_available_capacity_mib() const {
+  return _impl_.available_capacity_mib_;
 }
-inline void CaptureStatus::_internal_set_available_capacity(float value) {
+inline void CaptureStatus::_internal_set_available_capacity_mib(float value) {
   ;
-  _impl_.available_capacity_ = value;
+  _impl_.available_capacity_mib_ = value;
 }
 
 // .mavsdk.rpc.camera_server.CaptureStatus.ImageStatus image_status = 4;

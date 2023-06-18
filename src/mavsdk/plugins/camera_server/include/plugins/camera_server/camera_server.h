@@ -330,9 +330,9 @@ public:
         friend std::ostream&
         operator<<(std::ostream& str, CameraServer::CaptureStatus::VideoStatus const& video_status);
 
-        float image_interval{}; /**< @brief Image capture interval (in s) */
+        float image_interval_s{}; /**< @brief Image capture interval (in s) */
         float recording_time_s{}; /**< @brief Elapsed time since recording started (in s) */
-        float available_capacity{}; /**< @brief Available storage capacity. (in MiB) */
+        float available_capacity_mib{}; /**< @brief Available storage capacity. (in MiB) */
         ImageStatus image_status{}; /**< @brief Current status of image capturing */
         VideoStatus video_status{}; /**< @brief Current status of video capturing */
         int32_t image_count{}; /**< @brief Total number of images captured ('forever', or until

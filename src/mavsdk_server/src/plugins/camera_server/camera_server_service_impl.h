@@ -540,11 +540,11 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::camera_server::CaptureStatus>();
 
-        rpc_obj->set_image_interval(capture_status.image_interval);
+        rpc_obj->set_image_interval_s(capture_status.image_interval_s);
 
         rpc_obj->set_recording_time_s(capture_status.recording_time_s);
 
-        rpc_obj->set_available_capacity(capture_status.available_capacity);
+        rpc_obj->set_available_capacity_mib(capture_status.available_capacity_mib);
 
         rpc_obj->set_image_status(translateToRpcImageStatus(capture_status.image_status));
 
@@ -560,11 +560,11 @@ public:
     {
         mavsdk::CameraServer::CaptureStatus obj;
 
-        obj.image_interval = capture_status.image_interval();
+        obj.image_interval_s = capture_status.image_interval_s();
 
         obj.recording_time_s = capture_status.recording_time_s();
 
-        obj.available_capacity = capture_status.available_capacity();
+        obj.available_capacity_mib = capture_status.available_capacity_mib();
 
         obj.image_status = translateFromRpcImageStatus(capture_status.image_status());
 

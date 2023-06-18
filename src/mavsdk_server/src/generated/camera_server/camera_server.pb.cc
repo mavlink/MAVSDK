@@ -583,11 +583,11 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 template <typename>
 PROTOBUF_CONSTEXPR CaptureStatus::CaptureStatus(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.image_interval_)*/ 0
+    /*decltype(_impl_.image_interval_s_)*/ 0
 
   , /*decltype(_impl_.recording_time_s_)*/ 0
 
-  , /*decltype(_impl_.available_capacity_)*/ 0
+  , /*decltype(_impl_.available_capacity_mib_)*/ 0
 
   , /*decltype(_impl_.image_status_)*/ 0
 
@@ -949,9 +949,9 @@ const ::uint32_t TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets[
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.image_interval_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.image_interval_s_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.recording_time_s_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.available_capacity_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.available_capacity_mib_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.image_status_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.video_status_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _impl_.image_count_),
@@ -1115,71 +1115,71 @@ const char descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto[]
     "OWN\020\000\022\032\n\026STORAGE_TYPE_USB_STICK\020\001\022\023\n\017STO"
     "RAGE_TYPE_SD\020\002\022\030\n\024STORAGE_TYPE_MICROSD\020\003"
     "\022\023\n\017STORAGE_TYPE_HD\020\007\022\027\n\022STORAGE_TYPE_OT"
-    "HER\020\376\001\"\350\003\n\rCaptureStatus\022\026\n\016image_interv"
-    "al\030\001 \001(\002\022\030\n\020recording_time_s\030\002 \001(\002\022\032\n\022av"
-    "ailable_capacity\030\003 \001(\002\022I\n\014image_status\030\004"
-    " \001(\01623.mavsdk.rpc.camera_server.CaptureS"
-    "tatus.ImageStatus\022I\n\014video_status\030\005 \001(\0162"
-    "3.mavsdk.rpc.camera_server.CaptureStatus"
-    ".VideoStatus\022\023\n\013image_count\030\006 \001(\005\"\221\001\n\013Im"
-    "ageStatus\022\025\n\021IMAGE_STATUS_IDLE\020\000\022$\n IMAG"
-    "E_STATUS_CAPTURE_IN_PROGRESS\020\001\022\036\n\032IMAGE_"
-    "STATUS_INTERVAL_IDLE\020\002\022%\n!IMAGE_STATUS_I"
-    "NTERVAL_IN_PROGRESS\020\003\"J\n\013VideoStatus\022\025\n\021"
-    "VIDEO_STATUS_IDLE\020\000\022$\n VIDEO_STATUS_CAPT"
-    "URE_IN_PROGRESS\020\001*\216\001\n\021TakePhotoFeedback\022"
-    "\037\n\033TAKE_PHOTO_FEEDBACK_UNKNOWN\020\000\022\032\n\026TAKE"
-    "_PHOTO_FEEDBACK_OK\020\001\022\034\n\030TAKE_PHOTO_FEEDB"
-    "ACK_BUSY\020\002\022\036\n\032TAKE_PHOTO_FEEDBACK_FAILED"
-    "\020\003*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMODE_PHO"
-    "TO\020\001\022\016\n\nMODE_VIDEO\020\0022\226\016\n\023CameraServerSer"
-    "vice\022y\n\016SetInformation\022/.mavsdk.rpc.came"
-    "ra_server.SetInformationRequest\0320.mavsdk"
-    ".rpc.camera_server.SetInformationRespons"
-    "e\"\004\200\265\030\001\022v\n\rSetInProgress\022..mavsdk.rpc.ca"
-    "mera_server.SetInProgressRequest\032/.mavsd"
-    "k.rpc.camera_server.SetInProgressRespons"
-    "e\"\004\200\265\030\001\022~\n\022SubscribeTakePhoto\0223.mavsdk.r"
-    "pc.camera_server.SubscribeTakePhotoReque"
-    "st\032+.mavsdk.rpc.camera_server.TakePhotoR"
-    "esponse\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhoto\0221.ma"
-    "vsdk.rpc.camera_server.RespondTakePhotoR"
-    "equest\0322.mavsdk.rpc.camera_server.Respon"
-    "dTakePhotoResponse\"\004\200\265\030\001\022\201\001\n\023SubscribeSt"
-    "artVideo\0224.mavsdk.rpc.camera_server.Subs"
-    "cribeStartVideoRequest\032,.mavsdk.rpc.came"
-    "ra_server.StartVideoResponse\"\004\200\265\030\0000\001\022~\n\022"
-    "SubscribeStopVideo\0223.mavsdk.rpc.camera_s"
-    "erver.SubscribeStopVideoRequest\032+.mavsdk"
-    ".rpc.camera_server.StopVideoResponse\"\004\200\265"
-    "\030\0000\001\022\234\001\n\034SubscribeStartVideoStreaming\022=."
-    "mavsdk.rpc.camera_server.SubscribeStartV"
-    "ideoStreamingRequest\0325.mavsdk.rpc.camera"
-    "_server.StartVideoStreamingResponse\"\004\200\265\030"
-    "\0000\001\022\231\001\n\033SubscribeStopVideoStreaming\022<.ma"
-    "vsdk.rpc.camera_server.SubscribeStopVide"
-    "oStreamingRequest\0324.mavsdk.rpc.camera_se"
-    "rver.StopVideoStreamingResponse\"\004\200\265\030\0000\001\022"
-    "x\n\020SubscribeSetMode\0221.mavsdk.rpc.camera_"
-    "server.SubscribeSetModeRequest\032).mavsdk."
-    "rpc.camera_server.SetModeResponse\"\004\200\265\030\0000"
-    "\001\022\231\001\n\033SubscribeStorageInformation\022<.mavs"
-    "dk.rpc.camera_server.SubscribeStorageInf"
-    "ormationRequest\0324.mavsdk.rpc.camera_serv"
-    "er.StorageInformationResponse\"\004\200\265\030\0000\001\022\232\001"
-    "\n\031RespondStorageInformation\022:.mavsdk.rpc"
-    ".camera_server.RespondStorageInformation"
-    "Request\032;.mavsdk.rpc.camera_server.Respo"
-    "ndStorageInformationResponse\"\004\200\265\030\001\022\212\001\n\026S"
-    "ubscribeCaptureStatus\0227.mavsdk.rpc.camer"
-    "a_server.SubscribeCaptureStatusRequest\032/"
-    ".mavsdk.rpc.camera_server.CaptureStatusR"
-    "esponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondCaptureStatus"
-    "\0225.mavsdk.rpc.camera_server.RespondCaptu"
-    "reStatusRequest\0326.mavsdk.rpc.camera_serv"
-    "er.RespondCaptureStatusResponse\"\004\200\265\030\001B,\n"
-    "\027io.mavsdk.camera_serverB\021CameraServerPr"
-    "otob\006proto3"
+    "HER\020\376\001\"\356\003\n\rCaptureStatus\022\030\n\020image_interv"
+    "al_s\030\001 \001(\002\022\030\n\020recording_time_s\030\002 \001(\002\022\036\n\026"
+    "available_capacity_mib\030\003 \001(\002\022I\n\014image_st"
+    "atus\030\004 \001(\01623.mavsdk.rpc.camera_server.Ca"
+    "ptureStatus.ImageStatus\022I\n\014video_status\030"
+    "\005 \001(\01623.mavsdk.rpc.camera_server.Capture"
+    "Status.VideoStatus\022\023\n\013image_count\030\006 \001(\005\""
+    "\221\001\n\013ImageStatus\022\025\n\021IMAGE_STATUS_IDLE\020\000\022$"
+    "\n IMAGE_STATUS_CAPTURE_IN_PROGRESS\020\001\022\036\n\032"
+    "IMAGE_STATUS_INTERVAL_IDLE\020\002\022%\n!IMAGE_ST"
+    "ATUS_INTERVAL_IN_PROGRESS\020\003\"J\n\013VideoStat"
+    "us\022\025\n\021VIDEO_STATUS_IDLE\020\000\022$\n VIDEO_STATU"
+    "S_CAPTURE_IN_PROGRESS\020\001*\216\001\n\021TakePhotoFee"
+    "dback\022\037\n\033TAKE_PHOTO_FEEDBACK_UNKNOWN\020\000\022\032"
+    "\n\026TAKE_PHOTO_FEEDBACK_OK\020\001\022\034\n\030TAKE_PHOTO"
+    "_FEEDBACK_BUSY\020\002\022\036\n\032TAKE_PHOTO_FEEDBACK_"
+    "FAILED\020\003*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMO"
+    "DE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020\0022\226\016\n\023CameraSer"
+    "verService\022y\n\016SetInformation\022/.mavsdk.rp"
+    "c.camera_server.SetInformationRequest\0320."
+    "mavsdk.rpc.camera_server.SetInformationR"
+    "esponse\"\004\200\265\030\001\022v\n\rSetInProgress\022..mavsdk."
+    "rpc.camera_server.SetInProgressRequest\032/"
+    ".mavsdk.rpc.camera_server.SetInProgressR"
+    "esponse\"\004\200\265\030\001\022~\n\022SubscribeTakePhoto\0223.ma"
+    "vsdk.rpc.camera_server.SubscribeTakePhot"
+    "oRequest\032+.mavsdk.rpc.camera_server.Take"
+    "PhotoResponse\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhot"
+    "o\0221.mavsdk.rpc.camera_server.RespondTake"
+    "PhotoRequest\0322.mavsdk.rpc.camera_server."
+    "RespondTakePhotoResponse\"\004\200\265\030\001\022\201\001\n\023Subsc"
+    "ribeStartVideo\0224.mavsdk.rpc.camera_serve"
+    "r.SubscribeStartVideoRequest\032,.mavsdk.rp"
+    "c.camera_server.StartVideoResponse\"\004\200\265\030\000"
+    "0\001\022~\n\022SubscribeStopVideo\0223.mavsdk.rpc.ca"
+    "mera_server.SubscribeStopVideoRequest\032+."
+    "mavsdk.rpc.camera_server.StopVideoRespon"
+    "se\"\004\200\265\030\0000\001\022\234\001\n\034SubscribeStartVideoStream"
+    "ing\022=.mavsdk.rpc.camera_server.Subscribe"
+    "StartVideoStreamingRequest\0325.mavsdk.rpc."
+    "camera_server.StartVideoStreamingRespons"
+    "e\"\004\200\265\030\0000\001\022\231\001\n\033SubscribeStopVideoStreamin"
+    "g\022<.mavsdk.rpc.camera_server.SubscribeSt"
+    "opVideoStreamingRequest\0324.mavsdk.rpc.cam"
+    "era_server.StopVideoStreamingResponse\"\004\200"
+    "\265\030\0000\001\022x\n\020SubscribeSetMode\0221.mavsdk.rpc.c"
+    "amera_server.SubscribeSetModeRequest\032).m"
+    "avsdk.rpc.camera_server.SetModeResponse\""
+    "\004\200\265\030\0000\001\022\231\001\n\033SubscribeStorageInformation\022"
+    "<.mavsdk.rpc.camera_server.SubscribeStor"
+    "ageInformationRequest\0324.mavsdk.rpc.camer"
+    "a_server.StorageInformationResponse\"\004\200\265\030"
+    "\0000\001\022\232\001\n\031RespondStorageInformation\022:.mavs"
+    "dk.rpc.camera_server.RespondStorageInfor"
+    "mationRequest\032;.mavsdk.rpc.camera_server"
+    ".RespondStorageInformationResponse\"\004\200\265\030\001"
+    "\022\212\001\n\026SubscribeCaptureStatus\0227.mavsdk.rpc"
+    ".camera_server.SubscribeCaptureStatusReq"
+    "uest\032/.mavsdk.rpc.camera_server.CaptureS"
+    "tatusResponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondCapture"
+    "Status\0225.mavsdk.rpc.camera_server.Respon"
+    "dCaptureStatusRequest\0326.mavsdk.rpc.camer"
+    "a_server.RespondCaptureStatusResponse\"\004\200"
+    "\265\030\001B,\n\027io.mavsdk.camera_serverB\021CameraSe"
+    "rverProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps[1] =
     {
@@ -1189,7 +1189,7 @@ static ::absl::once_flag descriptor_table_camera_5fserver_2fcamera_5fserver_2epr
 const ::_pbi::DescriptorTable descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto = {
     false,
     false,
-    5971,
+    5977,
     descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto,
     "camera_server/camera_server.proto",
     &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
@@ -7428,11 +7428,11 @@ CaptureStatus::CaptureStatus(const CaptureStatus& from)
 inline void CaptureStatus::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
-      decltype(_impl_.image_interval_) { 0 }
+      decltype(_impl_.image_interval_s_) { 0 }
 
     , decltype(_impl_.recording_time_s_) { 0 }
 
-    , decltype(_impl_.available_capacity_) { 0 }
+    , decltype(_impl_.available_capacity_mib_) { 0 }
 
     , decltype(_impl_.image_status_) { 0 }
 
@@ -7467,9 +7467,9 @@ void CaptureStatus::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.image_interval_, 0, static_cast<::size_t>(
+  ::memset(&_impl_.image_interval_s_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.image_count_) -
-      reinterpret_cast<char*>(&_impl_.image_interval_)) + sizeof(_impl_.image_count_));
+      reinterpret_cast<char*>(&_impl_.image_interval_s_)) + sizeof(_impl_.image_count_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -7479,10 +7479,10 @@ const char* CaptureStatus::_InternalParse(const char* ptr, ::_pbi::ParseContext*
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // float image_interval = 1;
+      // float image_interval_s = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.image_interval_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          _impl_.image_interval_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else {
           goto handle_unusual;
@@ -7497,10 +7497,10 @@ const char* CaptureStatus::_InternalParse(const char* ptr, ::_pbi::ParseContext*
           goto handle_unusual;
         }
         continue;
-      // float available_capacity = 3;
+      // float available_capacity_mib = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.available_capacity_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          _impl_.available_capacity_mib_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else {
           goto handle_unusual;
@@ -7564,15 +7564,15 @@ failure:
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // float image_interval = 1;
+  // float image_interval_s = 1;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_image_interval = this->_internal_image_interval();
-  ::uint32_t raw_image_interval;
-  memcpy(&raw_image_interval, &tmp_image_interval, sizeof(tmp_image_interval));
-  if (raw_image_interval != 0) {
+  float tmp_image_interval_s = this->_internal_image_interval_s();
+  ::uint32_t raw_image_interval_s;
+  memcpy(&raw_image_interval_s, &tmp_image_interval_s, sizeof(tmp_image_interval_s));
+  if (raw_image_interval_s != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        1, this->_internal_image_interval(), target);
+        1, this->_internal_image_interval_s(), target);
   }
 
   // float recording_time_s = 2;
@@ -7586,15 +7586,15 @@ failure:
         2, this->_internal_recording_time_s(), target);
   }
 
-  // float available_capacity = 3;
+  // float available_capacity_mib = 3;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_available_capacity = this->_internal_available_capacity();
-  ::uint32_t raw_available_capacity;
-  memcpy(&raw_available_capacity, &tmp_available_capacity, sizeof(tmp_available_capacity));
-  if (raw_available_capacity != 0) {
+  float tmp_available_capacity_mib = this->_internal_available_capacity_mib();
+  ::uint32_t raw_available_capacity_mib;
+  memcpy(&raw_available_capacity_mib, &tmp_available_capacity_mib, sizeof(tmp_available_capacity_mib));
+  if (raw_available_capacity_mib != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        3, this->_internal_available_capacity(), target);
+        3, this->_internal_available_capacity_mib(), target);
   }
 
   // .mavsdk.rpc.camera_server.CaptureStatus.ImageStatus image_status = 4;
@@ -7634,12 +7634,12 @@ failure:
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // float image_interval = 1;
+  // float image_interval_s = 1;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_image_interval = this->_internal_image_interval();
-  ::uint32_t raw_image_interval;
-  memcpy(&raw_image_interval, &tmp_image_interval, sizeof(tmp_image_interval));
-  if (raw_image_interval != 0) {
+  float tmp_image_interval_s = this->_internal_image_interval_s();
+  ::uint32_t raw_image_interval_s;
+  memcpy(&raw_image_interval_s, &tmp_image_interval_s, sizeof(tmp_image_interval_s));
+  if (raw_image_interval_s != 0) {
     total_size += 5;
   }
 
@@ -7652,12 +7652,12 @@ failure:
     total_size += 5;
   }
 
-  // float available_capacity = 3;
+  // float available_capacity_mib = 3;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_available_capacity = this->_internal_available_capacity();
-  ::uint32_t raw_available_capacity;
-  memcpy(&raw_available_capacity, &tmp_available_capacity, sizeof(tmp_available_capacity));
-  if (raw_available_capacity != 0) {
+  float tmp_available_capacity_mib = this->_internal_available_capacity_mib();
+  ::uint32_t raw_available_capacity_mib;
+  memcpy(&raw_available_capacity_mib, &tmp_available_capacity_mib, sizeof(tmp_available_capacity_mib));
+  if (raw_available_capacity_mib != 0) {
     total_size += 5;
   }
 
@@ -7698,11 +7698,11 @@ void CaptureStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   (void) cached_has_bits;
 
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_image_interval = from._internal_image_interval();
-  ::uint32_t raw_image_interval;
-  memcpy(&raw_image_interval, &tmp_image_interval, sizeof(tmp_image_interval));
-  if (raw_image_interval != 0) {
-    _this->_internal_set_image_interval(from._internal_image_interval());
+  float tmp_image_interval_s = from._internal_image_interval_s();
+  ::uint32_t raw_image_interval_s;
+  memcpy(&raw_image_interval_s, &tmp_image_interval_s, sizeof(tmp_image_interval_s));
+  if (raw_image_interval_s != 0) {
+    _this->_internal_set_image_interval_s(from._internal_image_interval_s());
   }
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
   float tmp_recording_time_s = from._internal_recording_time_s();
@@ -7712,11 +7712,11 @@ void CaptureStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
     _this->_internal_set_recording_time_s(from._internal_recording_time_s());
   }
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_available_capacity = from._internal_available_capacity();
-  ::uint32_t raw_available_capacity;
-  memcpy(&raw_available_capacity, &tmp_available_capacity, sizeof(tmp_available_capacity));
-  if (raw_available_capacity != 0) {
-    _this->_internal_set_available_capacity(from._internal_available_capacity());
+  float tmp_available_capacity_mib = from._internal_available_capacity_mib();
+  ::uint32_t raw_available_capacity_mib;
+  memcpy(&raw_available_capacity_mib, &tmp_available_capacity_mib, sizeof(tmp_available_capacity_mib));
+  if (raw_available_capacity_mib != 0) {
+    _this->_internal_set_available_capacity_mib(from._internal_available_capacity_mib());
   }
   if (from._internal_image_status() != 0) {
     _this->_internal_set_image_status(from._internal_image_status());
@@ -7747,9 +7747,9 @@ void CaptureStatus::InternalSwap(CaptureStatus* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(CaptureStatus, _impl_.image_count_)
       + sizeof(CaptureStatus::_impl_.image_count_)
-      - PROTOBUF_FIELD_OFFSET(CaptureStatus, _impl_.image_interval_)>(
-          reinterpret_cast<char*>(&_impl_.image_interval_),
-          reinterpret_cast<char*>(&other->_impl_.image_interval_));
+      - PROTOBUF_FIELD_OFFSET(CaptureStatus, _impl_.image_interval_s_)>(
+          reinterpret_cast<char*>(&_impl_.image_interval_s_),
+          reinterpret_cast<char*>(&other->_impl_.image_interval_s_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CaptureStatus::GetMetadata() const {

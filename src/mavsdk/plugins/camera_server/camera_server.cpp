@@ -367,12 +367,12 @@ operator<<(std::ostream& str, CameraServer::CaptureStatus::VideoStatus const& vi
 }
 bool operator==(const CameraServer::CaptureStatus& lhs, const CameraServer::CaptureStatus& rhs)
 {
-    return ((std::isnan(rhs.image_interval) && std::isnan(lhs.image_interval)) ||
-            rhs.image_interval == lhs.image_interval) &&
+    return ((std::isnan(rhs.image_interval_s) && std::isnan(lhs.image_interval_s)) ||
+            rhs.image_interval_s == lhs.image_interval_s) &&
            ((std::isnan(rhs.recording_time_s) && std::isnan(lhs.recording_time_s)) ||
             rhs.recording_time_s == lhs.recording_time_s) &&
-           ((std::isnan(rhs.available_capacity) && std::isnan(lhs.available_capacity)) ||
-            rhs.available_capacity == lhs.available_capacity) &&
+           ((std::isnan(rhs.available_capacity_mib) && std::isnan(lhs.available_capacity_mib)) ||
+            rhs.available_capacity_mib == lhs.available_capacity_mib) &&
            (rhs.image_status == lhs.image_status) && (rhs.video_status == lhs.video_status) &&
            (rhs.image_count == lhs.image_count);
 }
@@ -381,9 +381,9 @@ std::ostream& operator<<(std::ostream& str, CameraServer::CaptureStatus const& c
 {
     str << std::setprecision(15);
     str << "capture_status:" << '\n' << "{\n";
-    str << "    image_interval: " << capture_status.image_interval << '\n';
+    str << "    image_interval_s: " << capture_status.image_interval_s << '\n';
     str << "    recording_time_s: " << capture_status.recording_time_s << '\n';
-    str << "    available_capacity: " << capture_status.available_capacity << '\n';
+    str << "    available_capacity_mib: " << capture_status.available_capacity_mib << '\n';
     str << "    image_status: " << capture_status.image_status << '\n';
     str << "    video_status: " << capture_status.video_status << '\n';
     str << "    image_count: " << capture_status.image_count << '\n';
