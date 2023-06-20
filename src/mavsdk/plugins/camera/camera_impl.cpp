@@ -331,6 +331,173 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_photo()
     return cmd_stop_photo;
 }
 
+MavlinkCommandSender::CommandLong CameraImpl::make_command_zoom_wide()
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
+    cmd.params.maybe_param1 = 1;
+    cmd.params.maybe_param2 = -1;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong CameraImpl::make_command_zoom_tele()
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
+    cmd.params.maybe_param1 = 1;
+    cmd.params.maybe_param2 = 1;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong CameraImpl::make_command_zoom_stop()
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
+    cmd.params.maybe_param1 = 0;
+    cmd.params.maybe_param2 = 0;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong CameraImpl::make_command_zoom_range(float _range)
+{
+    int _safe_range;
+    if (_range < 0.0f)
+    {
+        _safe_range = 0;
+    }
+    else if (_range > 100.0f)
+    {
+        _safe_range = 100;
+    }
+    else
+    {
+        _safe_range = (int)_range;
+    }
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
+    cmd.params.maybe_param1 = 2;
+    cmd.params.maybe_param2 = (int)_safe_range;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong CameraImpl::make_command_track_point(float _pointx, float _pointy, float _radius)
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    // cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_CAMERA_TRACK_POINT;
+    cmd.params.maybe_param1 = (float)_pointx;
+    cmd.params.maybe_param2 = (float)_pointy;
+    cmd.params.maybe_param3 = (float)_radius;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong CameraImpl::make_command_track_rectangle(float _top_left_x, float _top_left_y, float _bottom_right_x, float _bottom_right_y)
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    // cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_CAMERA_TRACK_RECTANGLE;
+    cmd.params.maybe_param1 = (float)_top_left_x;
+    cmd.params.maybe_param2 = (float)_top_left_y;
+    cmd.params.maybe_param3 = (float)_bottom_right_x;
+    cmd.params.maybe_param4 = (float)_bottom_right_y;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+MavlinkCommandSender::CommandLong CameraImpl::make_command_track_stop()
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    // cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_CAMERA_STOP_TRACKING;
+    cmd.params.maybe_param1 = 0;
+    cmd.params.maybe_param2 = 0;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_up()
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    // cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = 1;
+    cmd.params.maybe_param2 = -1;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_down()
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    // cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = 1;
+    cmd.params.maybe_param2 = 1;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_stop()
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    // cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = 1;
+    cmd.params.maybe_param2 = 0;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_range(float _range)
+{
+    int _safe_range;
+    if (_range < 0.0f)
+    {
+        _safe_range = 0;
+    }
+    else if (_range > 100.0f)
+    {
+        _safe_range = 100;
+    }
+    else
+    {
+        _safe_range = (int)_range;
+    }
+    MavlinkCommandSender::CommandLong cmd{};
+    // cmd_zoom_wide.target_system_id = MAV_COMP_ID_ALL;
+    // cmd.target_system_id = MAV_COMP_ID_AUTOPILOT1;
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = 2;
+    cmd.params.maybe_param2 = (int)_safe_range;
+    cmd.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    return cmd;
+}
+
 MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video(float capture_status_rate_hz)
 {
     MavlinkCommandSender::CommandLong cmd_start_video{};
@@ -468,6 +635,127 @@ Camera::Result CameraImpl::take_photo()
     return camera_result_from_command_result(_system_impl->send_command(cmd_take_photo));
 }
 
+Camera::Result CameraImpl::camera_zoom_wide()
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_wide();
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
+Camera::Result CameraImpl::camera_zoom_tele()
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_tele();
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
+Camera::Result CameraImpl::camera_zoom_stop()
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_stop();
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
+Camera::Result CameraImpl::camera_zoom_range(float range)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_range(range);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
+Camera::Result CameraImpl::camera_track_point(float pointx, float pointy, float radius)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_track_point(pointx, pointy, radius);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+ 
+Camera::Result CameraImpl::camera_track_rectangle(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_track_rectangle(top_left_x, top_left_y, bottom_right_x, bottom_right_y);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+ 
+Camera::Result CameraImpl::camera_track_stop()
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_track_stop();
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+ 
+Camera::Result CameraImpl::camera_focus_up()
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_up();
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+ 
+Camera::Result CameraImpl::camera_focus_down()
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_down();
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+ 
+Camera::Result CameraImpl::camera_focus_stop()
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_stop();
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+ 
+Camera::Result CameraImpl::camera_focus_range(float range)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_range(range);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
 Camera::Result CameraImpl::start_photo_interval(float interval_s)
 {
     if (!interval_valid(interval_s)) {
@@ -527,6 +815,161 @@ void CameraImpl::take_photo_async(const Camera::ResultCallback& callback)
             receive_command_result(result, callback);
         });
 }
+
+void CameraImpl::camera_zoom_wide_async(const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_wide();
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
+void CameraImpl::camera_zoom_tele_async(const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_tele();
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
+void CameraImpl::camera_zoom_stop_async(const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_stop();
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
+void CameraImpl::camera_zoom_range_async(float range, const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_zoom_range(range);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+ 
+void CameraImpl::camera_track_point_async(float pointx, float pointy, float radius, const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_track_point(pointx, pointy, radius);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+ 
+void CameraImpl::camera_track_rectangle_async(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y, const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_track_rectangle(top_left_x, top_left_y, bottom_right_x, bottom_right_y);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+ 
+void CameraImpl::camera_track_stop_async(const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_track_stop();
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+ 
+void CameraImpl::camera_focus_up_async(const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_up();
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+ 
+void CameraImpl::camera_focus_down_async(const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_down();
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+ 
+void CameraImpl::camera_focus_stop_async(const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_stop();
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+ 
+void CameraImpl::camera_focus_range_async(float range, const Camera::ResultCallback& callback)
+{
+    // Create by PannapatC.
+
+    std::lock_guard<std::mutex> lock(_capture.mutex);
+
+    auto cmd = make_command_focus_range(range);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
 
 void CameraImpl::start_photo_interval_async(
     float interval_s, const Camera::ResultCallback& callback)
