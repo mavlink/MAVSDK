@@ -313,10 +313,10 @@ bool operator==(
             rhs.total_storage_mib == lhs.total_storage_mib) &&
            (rhs.storage_status == lhs.storage_status) && (rhs.storage_id == lhs.storage_id) &&
            (rhs.storage_type == lhs.storage_type) &&
-           ((std::isnan(rhs.read_speed) && std::isnan(lhs.read_speed)) ||
-            rhs.read_speed == lhs.read_speed) &&
-           ((std::isnan(rhs.write_speed) && std::isnan(lhs.write_speed)) ||
-            rhs.write_speed == lhs.write_speed);
+           ((std::isnan(rhs.read_speed_mib_s) && std::isnan(lhs.read_speed_mib_s)) ||
+            rhs.read_speed_mib_s == lhs.read_speed_mib_s) &&
+           ((std::isnan(rhs.write_speed_mib_s) && std::isnan(lhs.write_speed_mib_s)) ||
+            rhs.write_speed_mib_s == lhs.write_speed_mib_s);
 }
 
 std::ostream&
@@ -330,8 +330,8 @@ operator<<(std::ostream& str, CameraServer::StorageInformation const& storage_in
     str << "    storage_status: " << storage_information.storage_status << '\n';
     str << "    storage_id: " << storage_information.storage_id << '\n';
     str << "    storage_type: " << storage_information.storage_type << '\n';
-    str << "    read_speed: " << storage_information.read_speed << '\n';
-    str << "    write_speed: " << storage_information.write_speed << '\n';
+    str << "    read_speed_mib_s: " << storage_information.read_speed_mib_s << '\n';
+    str << "    write_speed_mib_s: " << storage_information.write_speed_mib_s << '\n';
     str << '}';
     return str;
 }

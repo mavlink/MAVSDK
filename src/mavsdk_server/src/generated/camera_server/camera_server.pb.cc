@@ -565,9 +565,9 @@ PROTOBUF_CONSTEXPR StorageInformation::StorageInformation(
 
   , /*decltype(_impl_.storage_type_)*/ 0
 
-  , /*decltype(_impl_.read_speed_)*/ 0
+  , /*decltype(_impl_.read_speed_mib_s_)*/ 0
 
-  , /*decltype(_impl_.write_speed_)*/ 0
+  , /*decltype(_impl_.write_speed_mib_s_)*/ 0
 
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct StorageInformationDefaultTypeInternal {
@@ -939,8 +939,8 @@ const ::uint32_t TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets[
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::StorageInformation, _impl_.storage_status_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::StorageInformation, _impl_.storage_id_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::StorageInformation, _impl_.storage_type_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::StorageInformation, _impl_.read_speed_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::StorageInformation, _impl_.write_speed_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::StorageInformation, _impl_.read_speed_mib_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::StorageInformation, _impl_.write_speed_mib_s_),
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::CaptureStatus, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -1099,87 +1099,87 @@ const char descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto[]
     "\022\017\n\013RESULT_BUSY\020\003\022\021\n\rRESULT_DENIED\020\004\022\020\n\014"
     "RESULT_ERROR\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\031\n\025RE"
     "SULT_WRONG_ARGUMENT\020\007\022\024\n\020RESULT_NO_SYSTE"
-    "M\020\010\"\200\005\n\022StorageInformation\022\030\n\020used_stora"
+    "M\020\010\"\214\005\n\022StorageInformation\022\030\n\020used_stora"
     "ge_mib\030\001 \001(\002\022\035\n\025available_storage_mib\030\002 "
     "\001(\002\022\031\n\021total_storage_mib\030\003 \001(\002\022R\n\016storag"
     "e_status\030\004 \001(\0162:.mavsdk.rpc.camera_serve"
     "r.StorageInformation.StorageStatus\022\022\n\nst"
     "orage_id\030\005 \001(\r\022N\n\014storage_type\030\006 \001(\01628.m"
     "avsdk.rpc.camera_server.StorageInformati"
-    "on.StorageType\022\022\n\nread_speed\030\007 \001(\002\022\023\n\013wr"
-    "ite_speed\030\010 \001(\002\"\221\001\n\rStorageStatus\022 \n\034STO"
-    "RAGE_STATUS_NOT_AVAILABLE\020\000\022\036\n\032STORAGE_S"
-    "TATUS_UNFORMATTED\020\001\022\034\n\030STORAGE_STATUS_FO"
-    "RMATTED\020\002\022 \n\034STORAGE_STATUS_NOT_SUPPORTE"
-    "D\020\003\"\240\001\n\013StorageType\022\030\n\024STORAGE_TYPE_UNKN"
-    "OWN\020\000\022\032\n\026STORAGE_TYPE_USB_STICK\020\001\022\023\n\017STO"
-    "RAGE_TYPE_SD\020\002\022\030\n\024STORAGE_TYPE_MICROSD\020\003"
-    "\022\023\n\017STORAGE_TYPE_HD\020\007\022\027\n\022STORAGE_TYPE_OT"
-    "HER\020\376\001\"\356\003\n\rCaptureStatus\022\030\n\020image_interv"
-    "al_s\030\001 \001(\002\022\030\n\020recording_time_s\030\002 \001(\002\022\036\n\026"
-    "available_capacity_mib\030\003 \001(\002\022I\n\014image_st"
-    "atus\030\004 \001(\01623.mavsdk.rpc.camera_server.Ca"
-    "ptureStatus.ImageStatus\022I\n\014video_status\030"
-    "\005 \001(\01623.mavsdk.rpc.camera_server.Capture"
-    "Status.VideoStatus\022\023\n\013image_count\030\006 \001(\005\""
-    "\221\001\n\013ImageStatus\022\025\n\021IMAGE_STATUS_IDLE\020\000\022$"
-    "\n IMAGE_STATUS_CAPTURE_IN_PROGRESS\020\001\022\036\n\032"
-    "IMAGE_STATUS_INTERVAL_IDLE\020\002\022%\n!IMAGE_ST"
-    "ATUS_INTERVAL_IN_PROGRESS\020\003\"J\n\013VideoStat"
-    "us\022\025\n\021VIDEO_STATUS_IDLE\020\000\022$\n VIDEO_STATU"
-    "S_CAPTURE_IN_PROGRESS\020\001*\216\001\n\021TakePhotoFee"
-    "dback\022\037\n\033TAKE_PHOTO_FEEDBACK_UNKNOWN\020\000\022\032"
-    "\n\026TAKE_PHOTO_FEEDBACK_OK\020\001\022\034\n\030TAKE_PHOTO"
-    "_FEEDBACK_BUSY\020\002\022\036\n\032TAKE_PHOTO_FEEDBACK_"
-    "FAILED\020\003*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMO"
-    "DE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020\0022\226\016\n\023CameraSer"
-    "verService\022y\n\016SetInformation\022/.mavsdk.rp"
-    "c.camera_server.SetInformationRequest\0320."
-    "mavsdk.rpc.camera_server.SetInformationR"
-    "esponse\"\004\200\265\030\001\022v\n\rSetInProgress\022..mavsdk."
-    "rpc.camera_server.SetInProgressRequest\032/"
-    ".mavsdk.rpc.camera_server.SetInProgressR"
-    "esponse\"\004\200\265\030\001\022~\n\022SubscribeTakePhoto\0223.ma"
-    "vsdk.rpc.camera_server.SubscribeTakePhot"
-    "oRequest\032+.mavsdk.rpc.camera_server.Take"
-    "PhotoResponse\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhot"
-    "o\0221.mavsdk.rpc.camera_server.RespondTake"
-    "PhotoRequest\0322.mavsdk.rpc.camera_server."
-    "RespondTakePhotoResponse\"\004\200\265\030\001\022\201\001\n\023Subsc"
-    "ribeStartVideo\0224.mavsdk.rpc.camera_serve"
-    "r.SubscribeStartVideoRequest\032,.mavsdk.rp"
-    "c.camera_server.StartVideoResponse\"\004\200\265\030\000"
-    "0\001\022~\n\022SubscribeStopVideo\0223.mavsdk.rpc.ca"
-    "mera_server.SubscribeStopVideoRequest\032+."
-    "mavsdk.rpc.camera_server.StopVideoRespon"
-    "se\"\004\200\265\030\0000\001\022\234\001\n\034SubscribeStartVideoStream"
-    "ing\022=.mavsdk.rpc.camera_server.Subscribe"
-    "StartVideoStreamingRequest\0325.mavsdk.rpc."
-    "camera_server.StartVideoStreamingRespons"
-    "e\"\004\200\265\030\0000\001\022\231\001\n\033SubscribeStopVideoStreamin"
-    "g\022<.mavsdk.rpc.camera_server.SubscribeSt"
-    "opVideoStreamingRequest\0324.mavsdk.rpc.cam"
-    "era_server.StopVideoStreamingResponse\"\004\200"
-    "\265\030\0000\001\022x\n\020SubscribeSetMode\0221.mavsdk.rpc.c"
-    "amera_server.SubscribeSetModeRequest\032).m"
-    "avsdk.rpc.camera_server.SetModeResponse\""
-    "\004\200\265\030\0000\001\022\231\001\n\033SubscribeStorageInformation\022"
-    "<.mavsdk.rpc.camera_server.SubscribeStor"
-    "ageInformationRequest\0324.mavsdk.rpc.camer"
-    "a_server.StorageInformationResponse\"\004\200\265\030"
-    "\0000\001\022\232\001\n\031RespondStorageInformation\022:.mavs"
-    "dk.rpc.camera_server.RespondStorageInfor"
-    "mationRequest\032;.mavsdk.rpc.camera_server"
-    ".RespondStorageInformationResponse\"\004\200\265\030\001"
-    "\022\212\001\n\026SubscribeCaptureStatus\0227.mavsdk.rpc"
-    ".camera_server.SubscribeCaptureStatusReq"
-    "uest\032/.mavsdk.rpc.camera_server.CaptureS"
-    "tatusResponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondCapture"
-    "Status\0225.mavsdk.rpc.camera_server.Respon"
-    "dCaptureStatusRequest\0326.mavsdk.rpc.camer"
-    "a_server.RespondCaptureStatusResponse\"\004\200"
-    "\265\030\001B,\n\027io.mavsdk.camera_serverB\021CameraSe"
-    "rverProtob\006proto3"
+    "on.StorageType\022\030\n\020read_speed_mib_s\030\007 \001(\002"
+    "\022\031\n\021write_speed_mib_s\030\010 \001(\002\"\221\001\n\rStorageS"
+    "tatus\022 \n\034STORAGE_STATUS_NOT_AVAILABLE\020\000\022"
+    "\036\n\032STORAGE_STATUS_UNFORMATTED\020\001\022\034\n\030STORA"
+    "GE_STATUS_FORMATTED\020\002\022 \n\034STORAGE_STATUS_"
+    "NOT_SUPPORTED\020\003\"\240\001\n\013StorageType\022\030\n\024STORA"
+    "GE_TYPE_UNKNOWN\020\000\022\032\n\026STORAGE_TYPE_USB_ST"
+    "ICK\020\001\022\023\n\017STORAGE_TYPE_SD\020\002\022\030\n\024STORAGE_TY"
+    "PE_MICROSD\020\003\022\023\n\017STORAGE_TYPE_HD\020\007\022\027\n\022STO"
+    "RAGE_TYPE_OTHER\020\376\001\"\356\003\n\rCaptureStatus\022\030\n\020"
+    "image_interval_s\030\001 \001(\002\022\030\n\020recording_time"
+    "_s\030\002 \001(\002\022\036\n\026available_capacity_mib\030\003 \001(\002"
+    "\022I\n\014image_status\030\004 \001(\01623.mavsdk.rpc.came"
+    "ra_server.CaptureStatus.ImageStatus\022I\n\014v"
+    "ideo_status\030\005 \001(\01623.mavsdk.rpc.camera_se"
+    "rver.CaptureStatus.VideoStatus\022\023\n\013image_"
+    "count\030\006 \001(\005\"\221\001\n\013ImageStatus\022\025\n\021IMAGE_STA"
+    "TUS_IDLE\020\000\022$\n IMAGE_STATUS_CAPTURE_IN_PR"
+    "OGRESS\020\001\022\036\n\032IMAGE_STATUS_INTERVAL_IDLE\020\002"
+    "\022%\n!IMAGE_STATUS_INTERVAL_IN_PROGRESS\020\003\""
+    "J\n\013VideoStatus\022\025\n\021VIDEO_STATUS_IDLE\020\000\022$\n"
+    " VIDEO_STATUS_CAPTURE_IN_PROGRESS\020\001*\216\001\n\021"
+    "TakePhotoFeedback\022\037\n\033TAKE_PHOTO_FEEDBACK"
+    "_UNKNOWN\020\000\022\032\n\026TAKE_PHOTO_FEEDBACK_OK\020\001\022\034"
+    "\n\030TAKE_PHOTO_FEEDBACK_BUSY\020\002\022\036\n\032TAKE_PHO"
+    "TO_FEEDBACK_FAILED\020\003*8\n\004Mode\022\020\n\014MODE_UNK"
+    "NOWN\020\000\022\016\n\nMODE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020\0022\226"
+    "\016\n\023CameraServerService\022y\n\016SetInformation"
+    "\022/.mavsdk.rpc.camera_server.SetInformati"
+    "onRequest\0320.mavsdk.rpc.camera_server.Set"
+    "InformationResponse\"\004\200\265\030\001\022v\n\rSetInProgre"
+    "ss\022..mavsdk.rpc.camera_server.SetInProgr"
+    "essRequest\032/.mavsdk.rpc.camera_server.Se"
+    "tInProgressResponse\"\004\200\265\030\001\022~\n\022SubscribeTa"
+    "kePhoto\0223.mavsdk.rpc.camera_server.Subsc"
+    "ribeTakePhotoRequest\032+.mavsdk.rpc.camera"
+    "_server.TakePhotoResponse\"\004\200\265\030\0000\001\022\177\n\020Res"
+    "pondTakePhoto\0221.mavsdk.rpc.camera_server"
+    ".RespondTakePhotoRequest\0322.mavsdk.rpc.ca"
+    "mera_server.RespondTakePhotoResponse\"\004\200\265"
+    "\030\001\022\201\001\n\023SubscribeStartVideo\0224.mavsdk.rpc."
+    "camera_server.SubscribeStartVideoRequest"
+    "\032,.mavsdk.rpc.camera_server.StartVideoRe"
+    "sponse\"\004\200\265\030\0000\001\022~\n\022SubscribeStopVideo\0223.m"
+    "avsdk.rpc.camera_server.SubscribeStopVid"
+    "eoRequest\032+.mavsdk.rpc.camera_server.Sto"
+    "pVideoResponse\"\004\200\265\030\0000\001\022\234\001\n\034SubscribeStar"
+    "tVideoStreaming\022=.mavsdk.rpc.camera_serv"
+    "er.SubscribeStartVideoStreamingRequest\0325"
+    ".mavsdk.rpc.camera_server.StartVideoStre"
+    "amingResponse\"\004\200\265\030\0000\001\022\231\001\n\033SubscribeStopV"
+    "ideoStreaming\022<.mavsdk.rpc.camera_server"
+    ".SubscribeStopVideoStreamingRequest\0324.ma"
+    "vsdk.rpc.camera_server.StopVideoStreamin"
+    "gResponse\"\004\200\265\030\0000\001\022x\n\020SubscribeSetMode\0221."
+    "mavsdk.rpc.camera_server.SubscribeSetMod"
+    "eRequest\032).mavsdk.rpc.camera_server.SetM"
+    "odeResponse\"\004\200\265\030\0000\001\022\231\001\n\033SubscribeStorage"
+    "Information\022<.mavsdk.rpc.camera_server.S"
+    "ubscribeStorageInformationRequest\0324.mavs"
+    "dk.rpc.camera_server.StorageInformationR"
+    "esponse\"\004\200\265\030\0000\001\022\232\001\n\031RespondStorageInform"
+    "ation\022:.mavsdk.rpc.camera_server.Respond"
+    "StorageInformationRequest\032;.mavsdk.rpc.c"
+    "amera_server.RespondStorageInformationRe"
+    "sponse\"\004\200\265\030\001\022\212\001\n\026SubscribeCaptureStatus\022"
+    "7.mavsdk.rpc.camera_server.SubscribeCapt"
+    "ureStatusRequest\032/.mavsdk.rpc.camera_ser"
+    "ver.CaptureStatusResponse\"\004\200\265\030\0000\001\022\213\001\n\024Re"
+    "spondCaptureStatus\0225.mavsdk.rpc.camera_s"
+    "erver.RespondCaptureStatusRequest\0326.mavs"
+    "dk.rpc.camera_server.RespondCaptureStatu"
+    "sResponse\"\004\200\265\030\001B,\n\027io.mavsdk.camera_serv"
+    "erB\021CameraServerProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps[1] =
     {
@@ -1189,7 +1189,7 @@ static ::absl::once_flag descriptor_table_camera_5fserver_2fcamera_5fserver_2epr
 const ::_pbi::DescriptorTable descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto = {
     false,
     false,
-    5977,
+    5989,
     descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto,
     "camera_server/camera_server.proto",
     &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
@@ -7014,9 +7014,9 @@ inline void StorageInformation::SharedCtor(::_pb::Arena* arena) {
 
     , decltype(_impl_.storage_type_) { 0 }
 
-    , decltype(_impl_.read_speed_) { 0 }
+    , decltype(_impl_.read_speed_mib_s_) { 0 }
 
-    , decltype(_impl_.write_speed_) { 0 }
+    , decltype(_impl_.write_speed_mib_s_) { 0 }
 
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -7046,8 +7046,8 @@ void StorageInformation::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.used_storage_mib_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.write_speed_) -
-      reinterpret_cast<char*>(&_impl_.used_storage_mib_)) + sizeof(_impl_.write_speed_));
+      reinterpret_cast<char*>(&_impl_.write_speed_mib_s_) -
+      reinterpret_cast<char*>(&_impl_.used_storage_mib_)) + sizeof(_impl_.write_speed_mib_s_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -7113,19 +7113,19 @@ const char* StorageInformation::_InternalParse(const char* ptr, ::_pbi::ParseCon
           goto handle_unusual;
         }
         continue;
-      // float read_speed = 7;
+      // float read_speed_mib_s = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 61)) {
-          _impl_.read_speed_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          _impl_.read_speed_mib_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else {
           goto handle_unusual;
         }
         continue;
-      // float write_speed = 8;
+      // float write_speed_mib_s = 8;
       case 8:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 69)) {
-          _impl_.write_speed_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          _impl_.write_speed_mib_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else {
           goto handle_unusual;
@@ -7214,26 +7214,26 @@ failure:
         6, this->_internal_storage_type(), target);
   }
 
-  // float read_speed = 7;
+  // float read_speed_mib_s = 7;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_read_speed = this->_internal_read_speed();
-  ::uint32_t raw_read_speed;
-  memcpy(&raw_read_speed, &tmp_read_speed, sizeof(tmp_read_speed));
-  if (raw_read_speed != 0) {
+  float tmp_read_speed_mib_s = this->_internal_read_speed_mib_s();
+  ::uint32_t raw_read_speed_mib_s;
+  memcpy(&raw_read_speed_mib_s, &tmp_read_speed_mib_s, sizeof(tmp_read_speed_mib_s));
+  if (raw_read_speed_mib_s != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        7, this->_internal_read_speed(), target);
+        7, this->_internal_read_speed_mib_s(), target);
   }
 
-  // float write_speed = 8;
+  // float write_speed_mib_s = 8;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_write_speed = this->_internal_write_speed();
-  ::uint32_t raw_write_speed;
-  memcpy(&raw_write_speed, &tmp_write_speed, sizeof(tmp_write_speed));
-  if (raw_write_speed != 0) {
+  float tmp_write_speed_mib_s = this->_internal_write_speed_mib_s();
+  ::uint32_t raw_write_speed_mib_s;
+  memcpy(&raw_write_speed_mib_s, &tmp_write_speed_mib_s, sizeof(tmp_write_speed_mib_s));
+  if (raw_write_speed_mib_s != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        8, this->_internal_write_speed(), target);
+        8, this->_internal_write_speed_mib_s(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -7297,21 +7297,21 @@ failure:
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_storage_type());
   }
 
-  // float read_speed = 7;
+  // float read_speed_mib_s = 7;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_read_speed = this->_internal_read_speed();
-  ::uint32_t raw_read_speed;
-  memcpy(&raw_read_speed, &tmp_read_speed, sizeof(tmp_read_speed));
-  if (raw_read_speed != 0) {
+  float tmp_read_speed_mib_s = this->_internal_read_speed_mib_s();
+  ::uint32_t raw_read_speed_mib_s;
+  memcpy(&raw_read_speed_mib_s, &tmp_read_speed_mib_s, sizeof(tmp_read_speed_mib_s));
+  if (raw_read_speed_mib_s != 0) {
     total_size += 5;
   }
 
-  // float write_speed = 8;
+  // float write_speed_mib_s = 8;
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_write_speed = this->_internal_write_speed();
-  ::uint32_t raw_write_speed;
-  memcpy(&raw_write_speed, &tmp_write_speed, sizeof(tmp_write_speed));
-  if (raw_write_speed != 0) {
+  float tmp_write_speed_mib_s = this->_internal_write_speed_mib_s();
+  ::uint32_t raw_write_speed_mib_s;
+  memcpy(&raw_write_speed_mib_s, &tmp_write_speed_mib_s, sizeof(tmp_write_speed_mib_s));
+  if (raw_write_speed_mib_s != 0) {
     total_size += 5;
   }
 
@@ -7364,18 +7364,18 @@ void StorageInformation::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
     _this->_internal_set_storage_type(from._internal_storage_type());
   }
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_read_speed = from._internal_read_speed();
-  ::uint32_t raw_read_speed;
-  memcpy(&raw_read_speed, &tmp_read_speed, sizeof(tmp_read_speed));
-  if (raw_read_speed != 0) {
-    _this->_internal_set_read_speed(from._internal_read_speed());
+  float tmp_read_speed_mib_s = from._internal_read_speed_mib_s();
+  ::uint32_t raw_read_speed_mib_s;
+  memcpy(&raw_read_speed_mib_s, &tmp_read_speed_mib_s, sizeof(tmp_read_speed_mib_s));
+  if (raw_read_speed_mib_s != 0) {
+    _this->_internal_set_read_speed_mib_s(from._internal_read_speed_mib_s());
   }
   static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
-  float tmp_write_speed = from._internal_write_speed();
-  ::uint32_t raw_write_speed;
-  memcpy(&raw_write_speed, &tmp_write_speed, sizeof(tmp_write_speed));
-  if (raw_write_speed != 0) {
-    _this->_internal_set_write_speed(from._internal_write_speed());
+  float tmp_write_speed_mib_s = from._internal_write_speed_mib_s();
+  ::uint32_t raw_write_speed_mib_s;
+  memcpy(&raw_write_speed_mib_s, &tmp_write_speed_mib_s, sizeof(tmp_write_speed_mib_s));
+  if (raw_write_speed_mib_s != 0) {
+    _this->_internal_set_write_speed_mib_s(from._internal_write_speed_mib_s());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -7395,8 +7395,8 @@ void StorageInformation::InternalSwap(StorageInformation* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(StorageInformation, _impl_.write_speed_)
-      + sizeof(StorageInformation::_impl_.write_speed_)
+      PROTOBUF_FIELD_OFFSET(StorageInformation, _impl_.write_speed_mib_s_)
+      + sizeof(StorageInformation::_impl_.write_speed_mib_s_)
       - PROTOBUF_FIELD_OFFSET(StorageInformation, _impl_.used_storage_mib_)>(
           reinterpret_cast<char*>(&_impl_.used_storage_mib_),
           reinterpret_cast<char*>(&other->_impl_.used_storage_mib_));

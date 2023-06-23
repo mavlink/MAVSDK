@@ -368,8 +368,8 @@ CameraServer::Result CameraServerImpl::respond_storage_information(
     const float total_capacity = storage_information.total_storage_mib;
     const float used_capacity = storage_information.used_storage_mib;
     const float available_capacity = storage_information.available_storage_mib;
-    const float read_speed = storage_information.read_speed;
-    const float write_speed = storage_information.write_speed;
+    const float read_speed = storage_information.read_speed_mib_s;
+    const float write_speed = storage_information.write_speed_mib_s;
 
     auto status = STORAGE_STATUS::STORAGE_STATUS_NOT_SUPPORTED;
     switch (storage_information.storage_status) {

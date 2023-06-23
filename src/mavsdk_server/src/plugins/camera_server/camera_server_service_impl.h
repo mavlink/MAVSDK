@@ -437,9 +437,9 @@ public:
 
         rpc_obj->set_storage_type(translateToRpcStorageType(storage_information.storage_type));
 
-        rpc_obj->set_read_speed(storage_information.read_speed);
+        rpc_obj->set_read_speed_mib_s(storage_information.read_speed_mib_s);
 
-        rpc_obj->set_write_speed(storage_information.write_speed);
+        rpc_obj->set_write_speed_mib_s(storage_information.write_speed_mib_s);
 
         return rpc_obj;
     }
@@ -461,9 +461,9 @@ public:
 
         obj.storage_type = translateFromRpcStorageType(storage_information.storage_type());
 
-        obj.read_speed = storage_information.read_speed();
+        obj.read_speed_mib_s = storage_information.read_speed_mib_s();
 
-        obj.write_speed = storage_information.write_speed();
+        obj.write_speed_mib_s = storage_information.write_speed_mib_s();
 
         return obj;
     }

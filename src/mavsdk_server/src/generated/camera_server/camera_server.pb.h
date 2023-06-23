@@ -5626,8 +5626,8 @@ class StorageInformation final :
     kStorageStatusFieldNumber = 4,
     kStorageIdFieldNumber = 5,
     kStorageTypeFieldNumber = 6,
-    kReadSpeedFieldNumber = 7,
-    kWriteSpeedFieldNumber = 8,
+    kReadSpeedMibSFieldNumber = 7,
+    kWriteSpeedMibSFieldNumber = 8,
   };
   // float used_storage_mib = 1;
   void clear_used_storage_mib() ;
@@ -5689,24 +5689,24 @@ class StorageInformation final :
   void _internal_set_storage_type(::mavsdk::rpc::camera_server::StorageInformation_StorageType value);
 
   public:
-  // float read_speed = 7;
-  void clear_read_speed() ;
-  float read_speed() const;
-  void set_read_speed(float value);
+  // float read_speed_mib_s = 7;
+  void clear_read_speed_mib_s() ;
+  float read_speed_mib_s() const;
+  void set_read_speed_mib_s(float value);
 
   private:
-  float _internal_read_speed() const;
-  void _internal_set_read_speed(float value);
+  float _internal_read_speed_mib_s() const;
+  void _internal_set_read_speed_mib_s(float value);
 
   public:
-  // float write_speed = 8;
-  void clear_write_speed() ;
-  float write_speed() const;
-  void set_write_speed(float value);
+  // float write_speed_mib_s = 8;
+  void clear_write_speed_mib_s() ;
+  float write_speed_mib_s() const;
+  void set_write_speed_mib_s(float value);
 
   private:
-  float _internal_write_speed() const;
-  void _internal_set_write_speed(float value);
+  float _internal_write_speed_mib_s() const;
+  void _internal_set_write_speed_mib_s(float value);
 
   public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.StorageInformation)
@@ -5723,8 +5723,8 @@ class StorageInformation final :
     int storage_status_;
     ::uint32_t storage_id_;
     int storage_type_;
-    float read_speed_;
-    float write_speed_;
+    float read_speed_mib_s_;
+    float write_speed_mib_s_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -8067,44 +8067,44 @@ inline void StorageInformation::_internal_set_storage_type(::mavsdk::rpc::camera
   _impl_.storage_type_ = value;
 }
 
-// float read_speed = 7;
-inline void StorageInformation::clear_read_speed() {
-  _impl_.read_speed_ = 0;
+// float read_speed_mib_s = 7;
+inline void StorageInformation::clear_read_speed_mib_s() {
+  _impl_.read_speed_mib_s_ = 0;
 }
-inline float StorageInformation::read_speed() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.read_speed)
-  return _internal_read_speed();
+inline float StorageInformation::read_speed_mib_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.read_speed_mib_s)
+  return _internal_read_speed_mib_s();
 }
-inline void StorageInformation::set_read_speed(float value) {
-  _internal_set_read_speed(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.read_speed)
+inline void StorageInformation::set_read_speed_mib_s(float value) {
+  _internal_set_read_speed_mib_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.read_speed_mib_s)
 }
-inline float StorageInformation::_internal_read_speed() const {
-  return _impl_.read_speed_;
+inline float StorageInformation::_internal_read_speed_mib_s() const {
+  return _impl_.read_speed_mib_s_;
 }
-inline void StorageInformation::_internal_set_read_speed(float value) {
+inline void StorageInformation::_internal_set_read_speed_mib_s(float value) {
   ;
-  _impl_.read_speed_ = value;
+  _impl_.read_speed_mib_s_ = value;
 }
 
-// float write_speed = 8;
-inline void StorageInformation::clear_write_speed() {
-  _impl_.write_speed_ = 0;
+// float write_speed_mib_s = 8;
+inline void StorageInformation::clear_write_speed_mib_s() {
+  _impl_.write_speed_mib_s_ = 0;
 }
-inline float StorageInformation::write_speed() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.write_speed)
-  return _internal_write_speed();
+inline float StorageInformation::write_speed_mib_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.StorageInformation.write_speed_mib_s)
+  return _internal_write_speed_mib_s();
 }
-inline void StorageInformation::set_write_speed(float value) {
-  _internal_set_write_speed(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.write_speed)
+inline void StorageInformation::set_write_speed_mib_s(float value) {
+  _internal_set_write_speed_mib_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.StorageInformation.write_speed_mib_s)
 }
-inline float StorageInformation::_internal_write_speed() const {
-  return _impl_.write_speed_;
+inline float StorageInformation::_internal_write_speed_mib_s() const {
+  return _impl_.write_speed_mib_s_;
 }
-inline void StorageInformation::_internal_set_write_speed(float value) {
+inline void StorageInformation::_internal_set_write_speed_mib_s(float value) {
   ;
-  _impl_.write_speed_ = value;
+  _impl_.write_speed_mib_s_ = value;
 }
 
 // -------------------------------------------------------------------

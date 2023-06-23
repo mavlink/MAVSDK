@@ -272,8 +272,8 @@ public:
         StorageStatus storage_status{}; /**< @brief Storage status */
         uint32_t storage_id{}; /**< @brief Storage ID starting at 1 */
         StorageType storage_type{}; /**< @brief Storage type */
-        float read_speed{}; /**< @brief Read speed [MiB/s] */
-        float write_speed{}; /**< @brief Write speed [MiB/s] */
+        float read_speed_mib_s{}; /**< @brief Read speed [MiB/s] */
+        float write_speed_mib_s{}; /**< @brief Write speed [MiB/s] */
     };
 
     /**
