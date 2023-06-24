@@ -88,7 +88,7 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         camera_server.set_in_progress(false);
 
         camera_server.respond_take_photo(
-            mavsdk::CameraServer::TakePhotoFeedback::Ok,
+            mavsdk::CameraServer::CameraFeedback::Ok,
             mavsdk::CameraServer::CaptureInfo{
                 .position = position,
                 .attitude_quaternion = attitude,
@@ -101,25 +101,32 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         is_capture_in_progress = false;
     });
 
-    camera_server.subscribe_start_video([](int32_t stream_id) {
+    camera_server.subscribe_start_video([&camera_server](int32_t stream_id) {
         std::cout << "Start video record" << std::endl;
         is_recording_video = true;
         start_video_time = std::chrono::steady_clock::now();
+        camera_server.respond_start_video(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 
-    camera_server.subscribe_stop_video([](int32_t stream_id) {
+    camera_server.subscribe_stop_video([&camera_server](int32_t stream_id) {
         std::cout << "Stop video record" << std::endl;
         is_recording_video = false;
+        camera_server.respond_stop_video(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 
-    camera_server.subscribe_start_video_streaming(
-        [](int32_t stream_id) { std::cout << "Start video streaming " << stream_id << std::endl; });
+    camera_server.subscribe_start_video_streaming([&camera_server](int32_t stream_id) {
+        std::cout << "Start video streaming " << stream_id << std::endl;
+        camera_server.respond_start_video_streaming(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
 
-    camera_server.subscribe_stop_video_streaming(
-        [](int32_t stream_id) { std::cout << "Stop video streaming " << stream_id << std::endl; });
+    camera_server.subscribe_stop_video_streaming([&camera_server](int32_t stream_id) {
+        std::cout << "Stop video streaming " << stream_id << std::endl;
+        camera_server.respond_stop_video_streaming(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
 
-    camera_server.subscribe_set_mode([](mavsdk::CameraServer::Mode mode) {
+    camera_server.subscribe_set_mode([&camera_server](mavsdk::CameraServer::Mode mode) {
         std::cout << "Set camera mode " << mode << std::endl;
+        camera_server.respond_set_mode(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 
     camera_server.subscribe_storage_information([&camera_server](int32_t storage_id) {
@@ -134,7 +141,8 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         storage_information.storage_type =
             mavsdk::CameraServer::StorageInformation::StorageType::Microsd;
 
-        camera_server.respond_storage_information(storage_information);
+        camera_server.respond_storage_information(
+            mavsdk::CameraServer::CameraFeedback::Ok, storage_information);
     });
 
     camera_server.subscribe_capture_status([&camera_server](int32_t reserved) {
@@ -154,13 +162,17 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
                 std::chrono::duration_cast<std::chrono::seconds>(current_time - start_video_time)
                     .count();
         }
-        camera_server.respond_capture_status(capture_status);
+        camera_server.respond_capture_status(
+            mavsdk::CameraServer::CameraFeedback::Ok, capture_status);
     });
 
-    camera_server.subscribe_format_storage([](int storage_id) {
+    camera_server.subscribe_format_storage([&camera_server](int storage_id) {
         std::cout << "format storage with id : " << storage_id << std::endl;
+        camera_server.respond_format_storage(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 
-    camera_server.subscribe_reset_settings(
-        [](int camera_id) { std::cout << "reset camera settings" << std::endl; });
+    camera_server.subscribe_reset_settings([&camera_server](int camera_id) {
+        std::cout << "reset camera settings" << std::endl;
+        camera_server.respond_reset_settings(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
 }

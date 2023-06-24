@@ -45,8 +45,8 @@ void CameraServer::unsubscribe_take_photo(TakePhotoHandle handle)
     _impl->unsubscribe_take_photo(handle);
 }
 
-CameraServer::Result CameraServer::respond_take_photo(
-    TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const
+CameraServer::Result
+CameraServer::respond_take_photo(CameraFeedback take_photo_feedback, CaptureInfo capture_info) const
 {
     return _impl->respond_take_photo(take_photo_feedback, capture_info);
 }
@@ -62,6 +62,11 @@ void CameraServer::unsubscribe_start_video(StartVideoHandle handle)
     _impl->unsubscribe_start_video(handle);
 }
 
+CameraServer::Result CameraServer::respond_start_video(CameraFeedback start_video_feedback) const
+{
+    return _impl->respond_start_video(start_video_feedback);
+}
+
 CameraServer::StopVideoHandle CameraServer::subscribe_stop_video(const StopVideoCallback& callback)
 {
     return _impl->subscribe_stop_video(callback);
@@ -70,6 +75,11 @@ CameraServer::StopVideoHandle CameraServer::subscribe_stop_video(const StopVideo
 void CameraServer::unsubscribe_stop_video(StopVideoHandle handle)
 {
     _impl->unsubscribe_stop_video(handle);
+}
+
+CameraServer::Result CameraServer::respond_stop_video(CameraFeedback stop_video_feedback) const
+{
+    return _impl->respond_stop_video(stop_video_feedback);
 }
 
 CameraServer::StartVideoStreamingHandle
@@ -83,6 +93,12 @@ void CameraServer::unsubscribe_start_video_streaming(StartVideoStreamingHandle h
     _impl->unsubscribe_start_video_streaming(handle);
 }
 
+CameraServer::Result
+CameraServer::respond_start_video_streaming(CameraFeedback start_video_streaming_feedback) const
+{
+    return _impl->respond_start_video_streaming(start_video_streaming_feedback);
+}
+
 CameraServer::StopVideoStreamingHandle
 CameraServer::subscribe_stop_video_streaming(const StopVideoStreamingCallback& callback)
 {
@@ -94,6 +110,12 @@ void CameraServer::unsubscribe_stop_video_streaming(StopVideoStreamingHandle han
     _impl->unsubscribe_stop_video_streaming(handle);
 }
 
+CameraServer::Result
+CameraServer::respond_stop_video_streaming(CameraFeedback stop_video_streaming_feedback) const
+{
+    return _impl->respond_stop_video_streaming(stop_video_streaming_feedback);
+}
+
 CameraServer::SetModeHandle CameraServer::subscribe_set_mode(const SetModeCallback& callback)
 {
     return _impl->subscribe_set_mode(callback);
@@ -102,6 +124,11 @@ CameraServer::SetModeHandle CameraServer::subscribe_set_mode(const SetModeCallba
 void CameraServer::unsubscribe_set_mode(SetModeHandle handle)
 {
     _impl->unsubscribe_set_mode(handle);
+}
+
+CameraServer::Result CameraServer::respond_set_mode(CameraFeedback set_mode_feedback) const
+{
+    return _impl->respond_set_mode(set_mode_feedback);
 }
 
 CameraServer::StorageInformationHandle
@@ -115,10 +142,10 @@ void CameraServer::unsubscribe_storage_information(StorageInformationHandle hand
     _impl->unsubscribe_storage_information(handle);
 }
 
-CameraServer::Result
-CameraServer::respond_storage_information(StorageInformation storage_information) const
+CameraServer::Result CameraServer::respond_storage_information(
+    CameraFeedback storage_information_feedback, StorageInformation storage_information) const
 {
-    return _impl->respond_storage_information(storage_information);
+    return _impl->respond_storage_information(storage_information_feedback, storage_information);
 }
 
 CameraServer::CaptureStatusHandle
@@ -132,9 +159,10 @@ void CameraServer::unsubscribe_capture_status(CaptureStatusHandle handle)
     _impl->unsubscribe_capture_status(handle);
 }
 
-CameraServer::Result CameraServer::respond_capture_status(CaptureStatus capture_status) const
+CameraServer::Result CameraServer::respond_capture_status(
+    CameraFeedback capture_status_feedback, CaptureStatus capture_status) const
 {
-    return _impl->respond_capture_status(capture_status);
+    return _impl->respond_capture_status(capture_status_feedback, capture_status);
 }
 
 CameraServer::FormatStorageHandle
@@ -148,6 +176,12 @@ void CameraServer::unsubscribe_format_storage(FormatStorageHandle handle)
     _impl->unsubscribe_format_storage(handle);
 }
 
+CameraServer::Result
+CameraServer::respond_format_storage(CameraFeedback format_storage_feedback) const
+{
+    return _impl->respond_format_storage(format_storage_feedback);
+}
+
 CameraServer::ResetSettingsHandle
 CameraServer::subscribe_reset_settings(const ResetSettingsCallback& callback)
 {
@@ -157,6 +191,12 @@ CameraServer::subscribe_reset_settings(const ResetSettingsCallback& callback)
 void CameraServer::unsubscribe_reset_settings(ResetSettingsHandle handle)
 {
     _impl->unsubscribe_reset_settings(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_reset_settings(CameraFeedback reset_settings_feedback) const
+{
+    return _impl->respond_reset_settings(reset_settings_feedback);
 }
 
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
@@ -413,17 +453,16 @@ std::ostream& operator<<(std::ostream& str, CameraServer::CaptureStatus const& c
     return str;
 }
 
-std::ostream&
-operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback)
+std::ostream& operator<<(std::ostream& str, CameraServer::CameraFeedback const& camera_feedback)
 {
-    switch (take_photo_feedback) {
-        case CameraServer::TakePhotoFeedback::Unknown:
+    switch (camera_feedback) {
+        case CameraServer::CameraFeedback::Unknown:
             return str << "Unknown";
-        case CameraServer::TakePhotoFeedback::Ok:
+        case CameraServer::CameraFeedback::Ok:
             return str << "Ok";
-        case CameraServer::TakePhotoFeedback::Busy:
+        case CameraServer::CameraFeedback::Busy:
             return str << "Busy";
-        case CameraServer::TakePhotoFeedback::Failed:
+        case CameraServer::CameraFeedback::Failed:
             return str << "Failed";
         default:
             return str << "Unknown";

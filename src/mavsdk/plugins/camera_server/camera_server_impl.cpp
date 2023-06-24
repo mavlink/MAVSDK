@@ -206,7 +206,7 @@ void CameraServerImpl::unsubscribe_take_photo(CameraServer::TakePhotoHandle hand
 }
 
 CameraServer::Result CameraServerImpl::respond_take_photo(
-    CameraServer::TakePhotoFeedback take_photo_feedback, CameraServer::CaptureInfo capture_info)
+    CameraServer::CameraFeedback take_photo_feedback, CameraServer::CaptureInfo capture_info)
 {
     // If capture_info.index == INT32_MIN, it means this was an interval
     // capture rather than a single image capture.
@@ -225,9 +225,9 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
     switch (take_photo_feedback) {
         default:
             // Fallthrough
-        case CameraServer::TakePhotoFeedback::Unknown:
+        case CameraServer::CameraFeedback::Unknown:
             return CameraServer::Result::Error;
-        case CameraServer::TakePhotoFeedback::Ok: {
+        case CameraServer::CameraFeedback::Ok: {
             // Check for error above
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_take_photo_command, MAV_RESULT_ACCEPTED);
@@ -235,15 +235,16 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
             // Only break and send the captured below.
             break;
         }
-        case CameraServer::TakePhotoFeedback::Busy: {
+        case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_take_photo_command, MAV_RESULT_TEMPORARILY_REJECTED);
             _server_component_impl->send_command_ack(command_ack);
             return CameraServer::Result::Success;
         }
-        case CameraServer::TakePhotoFeedback::Failed: {
+
+        case CameraServer::CameraFeedback::Failed: {
             auto command_ack = _server_component_impl->make_command_ack_message(
-                _last_take_photo_command, MAV_RESULT_TEMPORARILY_REJECTED);
+                _last_take_photo_command, MAV_RESULT_FAILED);
             _server_component_impl->send_command_ack(command_ack);
             return CameraServer::Result::Success;
         }
@@ -302,6 +303,36 @@ void CameraServerImpl::unsubscribe_start_video(CameraServer::StartVideoHandle ha
     _start_video_callbacks.unsubscribe(handle);
 }
 
+CameraServer::Result
+CameraServerImpl::respond_start_video(CameraServer::CameraFeedback start_video_feedback)
+{
+    switch (start_video_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_start_video_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_start_video_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_start_video_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
+}
+
 CameraServer::StopVideoHandle
 CameraServerImpl::subscribe_stop_video(const CameraServer::StopVideoCallback& callback)
 {
@@ -311,6 +342,36 @@ CameraServerImpl::subscribe_stop_video(const CameraServer::StopVideoCallback& ca
 void CameraServerImpl::unsubscribe_stop_video(CameraServer::StopVideoHandle handle)
 {
     return _stop_video_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_stop_video(CameraServer::CameraFeedback stop_video_feedback)
+{
+    switch (stop_video_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_stop_video_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_stop_video_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_stop_video_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
 }
 
 CameraServer::StartVideoStreamingHandle CameraServerImpl::subscribe_start_video_streaming(
@@ -325,6 +386,36 @@ void CameraServerImpl::unsubscribe_start_video_streaming(
     return _start_video_streaming_callbacks.unsubscribe(handle);
 }
 
+CameraServer::Result CameraServerImpl::respond_start_video_streaming(
+    CameraServer::CameraFeedback start_video_streaming_feedback)
+{
+    switch (start_video_streaming_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_start_video_streaming_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_start_video_streaming_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_start_video_streaming_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
+}
+
 CameraServer::StopVideoStreamingHandle CameraServerImpl::subscribe_stop_video_streaming(
     const CameraServer::StopVideoStreamingCallback& callback)
 {
@@ -337,6 +428,36 @@ void CameraServerImpl::unsubscribe_stop_video_streaming(
     return _stop_video_streaming_callbacks.unsubscribe(handle);
 }
 
+CameraServer::Result CameraServerImpl::respond_stop_video_streaming(
+    CameraServer::CameraFeedback stop_video_streaming_feedback)
+{
+    switch (stop_video_streaming_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_stop_video_streaming_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_stop_video_streaming_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_stop_video_streaming_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
+}
+
 CameraServer::SetModeHandle
 CameraServerImpl::subscribe_set_mode(const CameraServer::SetModeCallback& callback)
 {
@@ -346,6 +467,36 @@ CameraServerImpl::subscribe_set_mode(const CameraServer::SetModeCallback& callba
 void CameraServerImpl::unsubscribe_set_mode(CameraServer::SetModeHandle handle)
 {
     _set_mode_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_set_mode(CameraServer::CameraFeedback set_mode_feedback)
+{
+    switch (set_mode_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_set_mode_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_set_mode_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_set_mode_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
 }
 
 CameraServer::StorageInformationHandle CameraServerImpl::subscribe_storage_information(
@@ -361,8 +512,35 @@ void CameraServerImpl::unsubscribe_storage_information(
 }
 
 CameraServer::Result CameraServerImpl::respond_storage_information(
-    CameraServer::StorageInformation storage_information) const
+    CameraServer::CameraFeedback storage_information_feedback,
+    CameraServer::StorageInformation storage_information)
 {
+    switch (storage_information_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_storage_information_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            // break and send storage information
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_storage_information_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_storage_information_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+
     const uint8_t storage_count = 1;
 
     const float total_capacity = storage_information.total_storage_mib;
@@ -448,9 +626,36 @@ void CameraServerImpl::unsubscribe_capture_status(CameraServer::CaptureStatusHan
     _capture_status_callbacks.unsubscribe(handle);
 }
 
-CameraServer::Result
-CameraServerImpl::respond_capture_status(CameraServer::CaptureStatus capture_status) const
+CameraServer::Result CameraServerImpl::respond_capture_status(
+    CameraServer::CameraFeedback capture_status_feedback,
+    CameraServer::CaptureStatus capture_status)
 {
+    switch (capture_status_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_capture_status_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            // break and send capture status
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_capture_status_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_capture_status_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+
     uint8_t image_status{};
     if (capture_status.image_status ==
             CameraServer::CaptureStatus::ImageStatus::CaptureInProgress ||
@@ -510,6 +715,36 @@ void CameraServerImpl::unsubscribe_format_storage(CameraServer::FormatStorageHan
     _format_storage_callbacks.unsubscribe(handle);
 }
 
+CameraServer::Result
+CameraServerImpl::respond_format_storage(CameraServer::CameraFeedback format_storage_feedback)
+{
+    switch (format_storage_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_format_storage_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_format_storage_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_format_storage_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
+}
+
 CameraServer::ResetSettingsHandle
 CameraServerImpl::subscribe_reset_settings(const CameraServer::ResetSettingsCallback& callback)
 {
@@ -519,6 +754,36 @@ CameraServerImpl::subscribe_reset_settings(const CameraServer::ResetSettingsCall
 void CameraServerImpl::unsubscribe_reset_settings(CameraServer::ResetSettingsHandle handle)
 {
     _reset_settings_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_reset_settings(CameraServer::CameraFeedback reset_settings_feedback)
+{
+    switch (reset_settings_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_reset_settings_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_reset_settings_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_reset_settings_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
 }
 
 /**
@@ -702,6 +967,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_storage_informati
 
     // TODO may need support multi storage id
     _last_storage_id = storage_id;
+
+    _last_storage_information_command = command;
     _storage_information_callbacks(storage_id);
 
     // unsupported
@@ -762,10 +1029,10 @@ CameraServerImpl::process_storage_format(const MavlinkCommandReceiver::CommandLo
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
+    _last_format_storage_command = command;
     _format_storage_callbacks(storage_id);
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_status_request(
@@ -788,6 +1055,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
     auto command_ack =
         _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     _server_component_impl->send_command_ack(command_ack);
+
+    _last_capture_status_command = command;
 
     // may not need param for now ,just use zero
     _capture_status_callbacks(0);
@@ -841,10 +1110,10 @@ CameraServerImpl::process_reset_camera_settings(const MavlinkCommandReceiver::Co
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
+    _last_reset_settings_command = command;
     _reset_settings_callbacks(0);
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
@@ -870,10 +1139,11 @@ CameraServerImpl::process_set_camera_mode(const MavlinkCommandReceiver::CommandL
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_DENIED);
     }
+
+    _last_set_mode_command = command;
     _set_mode_callbacks(convert_camera_mode);
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
@@ -957,9 +1227,6 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
 
         _last_take_photo_command = command;
 
-        // FIXME: why is this needed to prevent dropping messages?
-        // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
         _take_photo_callbacks(seq_number);
 
         return std::nullopt;
@@ -1011,10 +1278,10 @@ CameraServerImpl::process_video_start_capture(const MavlinkCommandReceiver::Comm
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
+    _last_start_video_command = command;
     _start_video_callbacks(stream_id);
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
@@ -1028,10 +1295,10 @@ CameraServerImpl::process_video_stop_capture(const MavlinkCommandReceiver::Comma
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
+    _last_stop_video_command = command;
     _stop_video_callbacks(stream_id);
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
@@ -1045,10 +1312,10 @@ CameraServerImpl::process_video_start_streaming(const MavlinkCommandReceiver::Co
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
+    _last_start_video_streaming_command = command;
     _start_video_streaming_callbacks(stream_id);
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
@@ -1062,10 +1329,10 @@ CameraServerImpl::process_video_stop_streaming(const MavlinkCommandReceiver::Com
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
+    _last_stop_video_streaming_command = command;
     _stop_video_streaming_callbacks(stream_id);
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_information_request(

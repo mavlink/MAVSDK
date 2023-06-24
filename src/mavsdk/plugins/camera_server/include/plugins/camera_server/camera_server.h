@@ -46,9 +46,9 @@ public:
     ~CameraServer() override;
 
     /**
-     * @brief Possible results when taking a photo.
+     * @brief Possible feedback results for camera respond command.
      */
-    enum class TakePhotoFeedback {
+    enum class CameraFeedback {
         Unknown, /**< @brief Unknown. */
         Ok, /**< @brief Ok. */
         Busy, /**< @brief Busy. */
@@ -56,12 +56,12 @@ public:
     };
 
     /**
-     * @brief Stream operator to print information about a `CameraServer::TakePhotoFeedback`.
+     * @brief Stream operator to print information about a `CameraServer::CameraFeedback`.
      *
      * @return A reference to the stream.
      */
     friend std::ostream&
-    operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback);
+    operator<<(std::ostream& str, CameraServer::CameraFeedback const& camera_feedback);
 
     /**
      * @brief Camera mode type.
@@ -408,8 +408,7 @@ public:
      *
      * @return Result of request.
      */
-    Result
-    respond_take_photo(TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const;
+    Result respond_take_photo(CameraFeedback take_photo_feedback, CaptureInfo capture_info) const;
 
     /**
      * @brief Callback type for subscribe_start_video.
@@ -423,7 +422,7 @@ public:
 
     /**
      * @brief Subscribe to start video requests. Each request received should response to using
-     * StartVideoResponse
+     * RespondStartVideo
      */
     StartVideoHandle subscribe_start_video(const StartVideoCallback& callback);
 
@@ -431,6 +430,15 @@ public:
      * @brief Unsubscribe from subscribe_start_video
      */
     void unsubscribe_start_video(StartVideoHandle handle);
+
+    /**
+     * @brief Respond to start video request from SubscribeStartVideo.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_start_video(CameraFeedback start_video_feedback) const;
 
     /**
      * @brief Callback type for subscribe_stop_video.
@@ -444,7 +452,7 @@ public:
 
     /**
      * @brief Subscribe to stop video requests. Each request received should response to using
-     * StopVideoResponse
+     * RespondStopVideo
      */
     StopVideoHandle subscribe_stop_video(const StopVideoCallback& callback);
 
@@ -452,6 +460,15 @@ public:
      * @brief Unsubscribe from subscribe_stop_video
      */
     void unsubscribe_stop_video(StopVideoHandle handle);
+
+    /**
+     * @brief Respond to stop video request from SubscribeStopVideo.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_stop_video(CameraFeedback stop_video_feedback) const;
 
     /**
      * @brief Callback type for subscribe_start_video_streaming.
@@ -465,7 +482,7 @@ public:
 
     /**
      * @brief Subscribe to start video streaming requests. Each request received should response to
-     * using StartVideoStreamingResponse
+     * using RespondStartVideoStreaming
      */
     StartVideoStreamingHandle
     subscribe_start_video_streaming(const StartVideoStreamingCallback& callback);
@@ -474,6 +491,15 @@ public:
      * @brief Unsubscribe from subscribe_start_video_streaming
      */
     void unsubscribe_start_video_streaming(StartVideoStreamingHandle handle);
+
+    /**
+     * @brief Respond to start video streaming from SubscribeStartVideoStreaming.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_start_video_streaming(CameraFeedback start_video_streaming_feedback) const;
 
     /**
      * @brief Callback type for subscribe_stop_video_streaming.
@@ -487,7 +513,7 @@ public:
 
     /**
      * @brief Subscribe to stop video streaming requests. Each request received should response to
-     * using StopVideoStreamingResponse
+     * using RespondStopVideoStreaming
      */
     StopVideoStreamingHandle
     subscribe_stop_video_streaming(const StopVideoStreamingCallback& callback);
@@ -496,6 +522,15 @@ public:
      * @brief Unsubscribe from subscribe_stop_video_streaming
      */
     void unsubscribe_stop_video_streaming(StopVideoStreamingHandle handle);
+
+    /**
+     * @brief Respond to stop video streaming from SubscribeStopVideoStreaming.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_stop_video_streaming(CameraFeedback stop_video_streaming_feedback) const;
 
     /**
      * @brief Callback type for subscribe_set_mode.
@@ -509,7 +544,7 @@ public:
 
     /**
      * @brief Subscribe to set camera mode requests. Each request received should response to using
-     * SetCameraModeResponse
+     * RespondSetMode
      */
     SetModeHandle subscribe_set_mode(const SetModeCallback& callback);
 
@@ -517,6 +552,15 @@ public:
      * @brief Unsubscribe from subscribe_set_mode
      */
     void unsubscribe_set_mode(SetModeHandle handle);
+
+    /**
+     * @brief Respond to set camera mode from SubscribeSetMode.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_set_mode(CameraFeedback set_mode_feedback) const;
 
     /**
      * @brief Callback type for subscribe_storage_information.
@@ -530,7 +574,7 @@ public:
 
     /**
      * @brief Subscribe to camera storage information requests. Each request received should
-     * response to using StorageInformationResponse
+     * response to using RespondStorageInformation
      */
     StorageInformationHandle
     subscribe_storage_information(const StorageInformationCallback& callback);
@@ -547,7 +591,8 @@ public:
      *
      * @return Result of request.
      */
-    Result respond_storage_information(StorageInformation storage_information) const;
+    Result respond_storage_information(
+        CameraFeedback storage_information_feedback, StorageInformation storage_information) const;
 
     /**
      * @brief Callback type for subscribe_capture_status.
@@ -561,7 +606,7 @@ public:
 
     /**
      * @brief Subscribe to camera capture status requests. Each request received should response to
-     * using CaptureStatusResponse
+     * using RespondCaptureStatus
      */
     CaptureStatusHandle subscribe_capture_status(const CaptureStatusCallback& callback);
 
@@ -577,7 +622,8 @@ public:
      *
      * @return Result of request.
      */
-    Result respond_capture_status(CaptureStatus capture_status) const;
+    Result respond_capture_status(
+        CameraFeedback capture_status_feedback, CaptureStatus capture_status) const;
 
     /**
      * @brief Callback type for subscribe_format_storage.
@@ -591,7 +637,7 @@ public:
 
     /**
      * @brief Subscribe to format storage requests. Each request received should response to using
-     * FormatStorageResponse
+     * RespondFormatStorage
      */
     FormatStorageHandle subscribe_format_storage(const FormatStorageCallback& callback);
 
@@ -599,6 +645,15 @@ public:
      * @brief Unsubscribe from subscribe_format_storage
      */
     void unsubscribe_format_storage(FormatStorageHandle handle);
+
+    /**
+     * @brief Respond to format storage from SubscribeFormatStorage.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_format_storage(CameraFeedback format_storage_feedback) const;
 
     /**
      * @brief Callback type for subscribe_reset_settings.
@@ -612,7 +667,7 @@ public:
 
     /**
      * @brief Subscribe to reset settings requests. Each request received should response to using
-     * ResetSettingsResponse
+     * RespondResetSettings
      */
     ResetSettingsHandle subscribe_reset_settings(const ResetSettingsCallback& callback);
 
@@ -620,6 +675,15 @@ public:
      * @brief Unsubscribe from subscribe_reset_settings
      */
     void unsubscribe_reset_settings(ResetSettingsHandle handle);
+
+    /**
+     * @brief Respond to reset settings from SubscribeResetSettings.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_reset_settings(CameraFeedback reset_settings_feedback) const;
 
     /**
      * @brief Copy constructor.

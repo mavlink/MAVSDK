@@ -44,41 +44,41 @@ public:
         response->set_allocated_camera_server_result(rpc_camera_server_result);
     }
 
-    static rpc::camera_server::TakePhotoFeedback translateToRpcTakePhotoFeedback(
-        const mavsdk::CameraServer::TakePhotoFeedback& take_photo_feedback)
+    static rpc::camera_server::CameraFeedback
+    translateToRpcCameraFeedback(const mavsdk::CameraServer::CameraFeedback& camera_feedback)
     {
-        switch (take_photo_feedback) {
+        switch (camera_feedback) {
             default:
-                LogErr() << "Unknown take_photo_feedback enum value: "
-                         << static_cast<int>(take_photo_feedback);
+                LogErr() << "Unknown camera_feedback enum value: "
+                         << static_cast<int>(camera_feedback);
             // FALLTHROUGH
-            case mavsdk::CameraServer::TakePhotoFeedback::Unknown:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_UNKNOWN;
-            case mavsdk::CameraServer::TakePhotoFeedback::Ok:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_OK;
-            case mavsdk::CameraServer::TakePhotoFeedback::Busy:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_BUSY;
-            case mavsdk::CameraServer::TakePhotoFeedback::Failed:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_FAILED;
+            case mavsdk::CameraServer::CameraFeedback::Unknown:
+                return rpc::camera_server::CAMERA_FEEDBACK_UNKNOWN;
+            case mavsdk::CameraServer::CameraFeedback::Ok:
+                return rpc::camera_server::CAMERA_FEEDBACK_OK;
+            case mavsdk::CameraServer::CameraFeedback::Busy:
+                return rpc::camera_server::CAMERA_FEEDBACK_BUSY;
+            case mavsdk::CameraServer::CameraFeedback::Failed:
+                return rpc::camera_server::CAMERA_FEEDBACK_FAILED;
         }
     }
 
-    static mavsdk::CameraServer::TakePhotoFeedback translateFromRpcTakePhotoFeedback(
-        const rpc::camera_server::TakePhotoFeedback take_photo_feedback)
+    static mavsdk::CameraServer::CameraFeedback
+    translateFromRpcCameraFeedback(const rpc::camera_server::CameraFeedback camera_feedback)
     {
-        switch (take_photo_feedback) {
+        switch (camera_feedback) {
             default:
-                LogErr() << "Unknown take_photo_feedback enum value: "
-                         << static_cast<int>(take_photo_feedback);
+                LogErr() << "Unknown camera_feedback enum value: "
+                         << static_cast<int>(camera_feedback);
             // FALLTHROUGH
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_UNKNOWN:
-                return mavsdk::CameraServer::TakePhotoFeedback::Unknown;
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_OK:
-                return mavsdk::CameraServer::TakePhotoFeedback::Ok;
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_BUSY:
-                return mavsdk::CameraServer::TakePhotoFeedback::Busy;
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_FAILED:
-                return mavsdk::CameraServer::TakePhotoFeedback::Failed;
+            case rpc::camera_server::CAMERA_FEEDBACK_UNKNOWN:
+                return mavsdk::CameraServer::CameraFeedback::Unknown;
+            case rpc::camera_server::CAMERA_FEEDBACK_OK:
+                return mavsdk::CameraServer::CameraFeedback::Ok;
+            case rpc::camera_server::CAMERA_FEEDBACK_BUSY:
+                return mavsdk::CameraServer::CameraFeedback::Busy;
+            case rpc::camera_server::CAMERA_FEEDBACK_FAILED:
+                return mavsdk::CameraServer::CameraFeedback::Failed;
         }
     }
 
@@ -699,7 +699,7 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->respond_take_photo(
-            translateFromRpcTakePhotoFeedback(request->take_photo_feedback()),
+            translateFromRpcCameraFeedback(request->take_photo_feedback()),
             translateFromRpcCaptureInfo(request->capture_info()));
 
         if (response != nullptr) {
@@ -750,6 +750,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status RespondStartVideo(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStartVideoRequest* request,
+        rpc::camera_server::RespondStartVideoResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStartVideo sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_start_video(
+            translateFromRpcCameraFeedback(request->start_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeStopVideo(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::camera_server::SubscribeStopVideoRequest* /* request */,
@@ -787,6 +818,37 @@ public:
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
         *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondStopVideo(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStopVideoRequest* request,
+        rpc::camera_server::RespondStopVideoResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStopVideo sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_stop_video(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
 
         return grpc::Status::OK;
     }
@@ -832,6 +894,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status RespondStartVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStartVideoStreamingRequest* request,
+        rpc::camera_server::RespondStartVideoStreamingResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStartVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_start_video_streaming(
+            translateFromRpcCameraFeedback(request->start_video_streaming_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeStopVideoStreaming(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::camera_server::SubscribeStopVideoStreamingRequest* /* request */,
@@ -873,6 +966,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status RespondStopVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStopVideoStreamingRequest* request,
+        rpc::camera_server::RespondStopVideoStreamingResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStopVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_stop_video_streaming(
+            translateFromRpcCameraFeedback(request->stop_video_streaming_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeSetMode(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::camera_server::SubscribeSetModeRequest* /* request */,
@@ -910,6 +1034,37 @@ public:
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
         *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondSetMode(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondSetModeRequest* request,
+        rpc::camera_server::RespondSetModeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondSetMode sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_set_mode(
+            translateFromRpcCameraFeedback(request->set_mode_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
 
         return grpc::Status::OK;
     }
@@ -977,6 +1132,7 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->respond_storage_information(
+            translateFromRpcCameraFeedback(request->storage_information_feedback()),
             translateFromRpcStorageInformation(request->storage_information()));
 
         if (response != nullptr) {
@@ -1049,6 +1205,7 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->respond_capture_status(
+            translateFromRpcCameraFeedback(request->capture_status_feedback()),
             translateFromRpcCaptureStatus(request->capture_status()));
 
         if (response != nullptr) {
@@ -1099,6 +1256,37 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status RespondFormatStorage(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondFormatStorageRequest* request,
+        rpc::camera_server::RespondFormatStorageResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondFormatStorage sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_format_storage(
+            translateFromRpcCameraFeedback(request->format_storage_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeResetSettings(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::camera_server::SubscribeResetSettingsRequest* /* request */,
@@ -1136,6 +1324,37 @@ public:
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
         *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondResetSettings(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondResetSettingsRequest* request,
+        rpc::camera_server::RespondResetSettingsResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondResetSettings sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_reset_settings(
+            translateFromRpcCameraFeedback(request->reset_settings_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
 
         return grpc::Status::OK;
     }
