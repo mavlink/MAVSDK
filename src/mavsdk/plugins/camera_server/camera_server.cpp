@@ -137,6 +137,28 @@ CameraServer::Result CameraServer::respond_capture_status(CaptureStatus capture_
     return _impl->respond_capture_status(capture_status);
 }
 
+CameraServer::FormatStorageHandle
+CameraServer::subscribe_format_storage(const FormatStorageCallback& callback)
+{
+    return _impl->subscribe_format_storage(callback);
+}
+
+void CameraServer::unsubscribe_format_storage(FormatStorageHandle handle)
+{
+    _impl->unsubscribe_format_storage(handle);
+}
+
+CameraServer::ResetSettingsHandle
+CameraServer::subscribe_reset_settings(const ResetSettingsCallback& callback)
+{
+    return _impl->subscribe_reset_settings(callback);
+}
+
+void CameraServer::unsubscribe_reset_settings(ResetSettingsHandle handle)
+{
+    _impl->unsubscribe_reset_settings(handle);
+}
+
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&

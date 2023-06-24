@@ -1929,22 +1929,22 @@ void CameraImpl::request_camera_information()
     _system_impl->send_command_async(command_camera_info, nullptr);
 }
 
-Camera::Result CameraImpl::format_storage()
+Camera::Result CameraImpl::format_storage(int32_t storage_id)
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
 
-    format_storage_async([prom](Camera::Result result) { prom->set_value(result); });
+    format_storage_async(storage_id, [prom](Camera::Result result) { prom->set_value(result); });
 
     return ret.get();
 }
 
-void CameraImpl::format_storage_async(Camera::ResultCallback callback)
+void CameraImpl::format_storage_async(int32_t storage_id, Camera::ResultCallback callback)
 {
     MavlinkCommandSender::CommandLong cmd_format{};
 
     cmd_format.command = MAV_CMD_STORAGE_FORMAT;
-    cmd_format.params.maybe_param1 = 1.0f; // storage ID
+    cmd_format.params.maybe_param1 = storage_id; // storage ID
     cmd_format.params.maybe_param2 = 1.0f; // format
     cmd_format.params.maybe_param3 = 1.0f; // clear
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
@@ -1958,6 +1958,33 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
                     reset_following_format_storage();
                 }
 
+                callback(camera_result);
+            });
+        });
+}
+
+Camera::Result CameraImpl::reset_settings()
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    reset_settings_async([prom](Camera::Result result) { prom->set_value(result); });
+
+    return ret.get();
+}
+void CameraImpl::reset_settings_async(const Camera::ResultCallback callback)
+{
+    MavlinkCommandSender::CommandLong cmd_format{};
+
+    cmd_format.command = MAV_CMD_RESET_CAMERA_SETTINGS;
+    cmd_format.params.maybe_param1 = 1.0; // reset
+    cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    _system_impl->send_command_async(
+        cmd_format, [this, callback](MavlinkCommandSender::Result result, float progress) {
+            UNUSED(progress);
+
+            receive_command_result(result, [this, callback](Camera::Result camera_result) {
                 callback(camera_result);
             });
         });

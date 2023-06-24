@@ -580,6 +580,48 @@ public:
     Result respond_capture_status(CaptureStatus capture_status) const;
 
     /**
+     * @brief Callback type for subscribe_format_storage.
+     */
+    using FormatStorageCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_format_storage.
+     */
+    using FormatStorageHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to format storage requests. Each request received should response to using
+     * FormatStorageResponse
+     */
+    FormatStorageHandle subscribe_format_storage(const FormatStorageCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_format_storage
+     */
+    void unsubscribe_format_storage(FormatStorageHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_reset_settings.
+     */
+    using ResetSettingsCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_reset_settings.
+     */
+    using ResetSettingsHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to reset settings requests. Each request received should response to using
+     * ResetSettingsResponse
+     */
+    ResetSettingsHandle subscribe_reset_settings(const ResetSettingsCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_reset_settings
+     */
+    void unsubscribe_reset_settings(ResetSettingsHandle handle);
+
+    /**
      * @brief Copy constructor.
      */
     CameraServer(const CameraServer& other);

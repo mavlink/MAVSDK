@@ -54,6 +54,14 @@ public:
     void unsubscribe_capture_status(CameraServer::CaptureStatusHandle handle);
     CameraServer::Result respond_capture_status(CameraServer::CaptureStatus capture_status) const;
 
+    CameraServer::FormatStorageHandle
+    subscribe_format_storage(const CameraServer::FormatStorageCallback& callback);
+    void unsubscribe_format_storage(CameraServer::FormatStorageHandle handle);
+
+    CameraServer::ResetSettingsHandle
+    subscribe_reset_settings(const CameraServer::ResetSettingsCallback& callback);
+    void unsubscribe_reset_settings(CameraServer::ResetSettingsHandle handle);
+
 private:
     enum StatusFlags {
         IN_PROGRESS = 1 << 0,
@@ -85,6 +93,8 @@ private:
     CallbackList<CameraServer::Mode> _set_mode_callbacks{};
     CallbackList<int32_t> _storage_information_callbacks{};
     CallbackList<int32_t> _capture_status_callbacks{};
+    CallbackList<int32_t> _format_storage_callbacks{};
+    CallbackList<int32_t> _reset_settings_callbacks{};
 
     MavlinkCommandReceiver::CommandLong _last_take_photo_command;
     uint8_t _last_storage_id;

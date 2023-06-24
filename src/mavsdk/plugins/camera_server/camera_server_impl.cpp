@@ -500,6 +500,27 @@ CameraServerImpl::respond_capture_status(CameraServer::CaptureStatus capture_sta
     return CameraServer::Result::Success;
 }
 
+CameraServer::FormatStorageHandle
+CameraServerImpl::subscribe_format_storage(const CameraServer::FormatStorageCallback& callback)
+{
+    return _format_storage_callbacks.subscribe(callback);
+}
+void CameraServerImpl::unsubscribe_format_storage(CameraServer::FormatStorageHandle handle)
+{
+    _format_storage_callbacks.unsubscribe(handle);
+}
+
+CameraServer::ResetSettingsHandle
+CameraServerImpl::subscribe_reset_settings(const CameraServer::ResetSettingsCallback& callback)
+{
+    return _reset_settings_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_reset_settings(CameraServer::ResetSettingsHandle handle)
+{
+    _reset_settings_callbacks.unsubscribe(handle);
+}
+
 /**
  * Starts capturing images with the given interval.
  * @param [in]  interval_s      The interval between captures in seconds.
@@ -733,14 +754,18 @@ CameraServerImpl::process_storage_format(const MavlinkCommandReceiver::CommandLo
     auto format = static_cast<bool>(command.params.param2);
     auto reset_image_log = static_cast<bool>(command.params.param3);
 
-    UNUSED(storage_id);
     UNUSED(format);
     UNUSED(reset_image_log);
+    if (_format_storage_callbacks.empty()) {
+        LogDebug() << "process storage format requested with no storage format subscriber";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    LogDebug() << "unsupported storage format request";
+    _format_storage_callbacks(storage_id);
 
     return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_status_request(
@@ -810,10 +835,16 @@ CameraServerImpl::process_reset_camera_settings(const MavlinkCommandReceiver::Co
 
     UNUSED(reset);
 
-    LogDebug() << "unsupported reset camera settings request";
+    if (_reset_settings_callbacks.empty()) {
+        LogDebug() << "reset camera settings requested with no camera settings subscriber";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
+
+    _reset_settings_callbacks(0);
 
     return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 }
 
 std::optional<mavlink_command_ack_t>

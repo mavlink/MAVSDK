@@ -7,9 +7,9 @@
 
 using namespace mavsdk;
 
-TEST(CameraTest, Format)
+TEST(CameraTest, ResetSettings)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk;
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -22,5 +22,5 @@ TEST(CameraTest, Format)
 
     auto camera = std::make_shared<Camera>(system);
 
-    EXPECT_EQ(Camera::Result::Success, camera->format_storage(1));
+    EXPECT_EQ(Camera::Result::Success, camera->reset_settings());
 }

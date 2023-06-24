@@ -86,8 +86,11 @@ public:
     subscribe_possible_setting_options(const Camera::PossibleSettingOptionsCallback& callback);
     void unsubscribe_possible_setting_options(Camera::PossibleSettingOptionsHandle handle);
 
-    Camera::Result format_storage();
-    void format_storage_async(Camera::ResultCallback callback);
+    Camera::Result format_storage(int32_t storage_id);
+    void format_storage_async(int32_t storage_id, const Camera::ResultCallback callback);
+
+    Camera::Result reset_settings();
+    void reset_settings_async(const Camera::ResultCallback callback);
 
     std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
     list_photos(Camera::PhotosRange photos_range);

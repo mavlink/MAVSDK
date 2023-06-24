@@ -88,4 +88,11 @@ void do_camera_operation(mavsdk::Camera& camera)
 
     operation_result = camera.stop_video_streaming(2);
     std::cout << "stop video streaming result : " << operation_result << std::endl;
+
+    // format the storage with special storage id test
+    operation_result = camera.format_storage(11);
+    std::cout << "format storage result : " << operation_result << std::endl;
+
+    operation_result = camera.reset_settings();
+    std::cout << "Reset camera settings result : " << operation_result << std::endl;
 }

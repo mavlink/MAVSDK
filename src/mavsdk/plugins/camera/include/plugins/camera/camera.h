@@ -875,7 +875,7 @@ public:
      *
      * This function is non-blocking. See 'format_storage' for the blocking counterpart.
      */
-    void format_storage_async(const ResultCallback callback);
+    void format_storage_async(int32_t storage_id, const ResultCallback callback);
 
     /**
      * @brief Format storage (e.g. SD card) in camera.
@@ -886,7 +886,7 @@ public:
      *
      * @return Result of request.
      */
-    Result format_storage() const;
+    Result format_storage(int32_t storage_id) const;
 
     /**
      * @brief Select current camera .
@@ -898,6 +898,26 @@ public:
      * @return Result of request.
      */
     Result select_camera(int32_t camera_id) const;
+
+    /**
+     * @brief Reset all settings in camera.
+     *
+     * This will reset all camera settings to default value
+     *
+     * This function is non-blocking. See 'reset_settings' for the blocking counterpart.
+     */
+    void reset_settings_async(const ResultCallback callback);
+
+    /**
+     * @brief Reset all settings in camera.
+     *
+     * This will reset all camera settings to default value
+     *
+     * This function is blocking. See 'reset_settings_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result reset_settings() const;
 
     /**
      * @brief Copy constructor.

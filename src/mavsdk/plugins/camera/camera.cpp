@@ -239,19 +239,29 @@ std::pair<Camera::Result, Camera::Setting> Camera::get_setting(Setting setting) 
     return _impl->get_setting(setting);
 }
 
-void Camera::format_storage_async(const ResultCallback callback)
+void Camera::format_storage_async(int32_t storage_id, const ResultCallback callback)
 {
-    _impl->format_storage_async(callback);
+    _impl->format_storage_async(storage_id, callback);
 }
 
-Camera::Result Camera::format_storage() const
+Camera::Result Camera::format_storage(int32_t storage_id) const
 {
-    return _impl->format_storage();
+    return _impl->format_storage(storage_id);
 }
 
 Camera::Result Camera::select_camera(int32_t camera_id) const
 {
     return _impl->select_camera(camera_id);
+}
+
+void Camera::reset_settings_async(const ResultCallback callback)
+{
+    _impl->reset_settings_async(callback);
+}
+
+Camera::Result Camera::reset_settings() const
+{
+    return _impl->reset_settings();
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
