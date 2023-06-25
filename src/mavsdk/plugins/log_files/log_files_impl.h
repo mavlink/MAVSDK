@@ -56,9 +56,6 @@ private:
     std::size_t determine_part_end();
     void reset_data();
 
-    static constexpr double LIST_TIMEOUT_S = 0.2;
-    static constexpr double DATA_TIMEOUT_S = 0.1;
-
     Time _time{};
 
     struct {
