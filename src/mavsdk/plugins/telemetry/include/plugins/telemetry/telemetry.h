@@ -664,6 +664,7 @@ public:
             float(NAN)}; /**< @brief Maximum distance the sensor can measure, NaN if unknown. */
         float current_distance_m{
             float(NAN)}; /**< @brief Current distance reading, NaN if unknown. */
+        EulerAngle orientation{}; /**< @brief Sensor Orientation reading. */
     };
 
     /**

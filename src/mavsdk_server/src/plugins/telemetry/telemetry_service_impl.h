@@ -922,6 +922,9 @@ public:
 
         rpc_obj->set_current_distance_m(distance_sensor.current_distance_m);
 
+        rpc_obj->set_allocated_orientation(
+            translateToRpcEulerAngle(distance_sensor.orientation).release());
+
         return rpc_obj;
     }
 
@@ -935,6 +938,8 @@ public:
         obj.maximum_distance_m = distance_sensor.maximum_distance_m();
 
         obj.current_distance_m = distance_sensor.current_distance_m();
+
+        obj.orientation = translateFromRpcEulerAngle(distance_sensor.orientation());
 
         return obj;
     }

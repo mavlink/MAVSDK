@@ -1464,12 +1464,223 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
         static_cast<float>(distance_sensor_msg.max_distance) * 1e-2f; // cm to m
     distance_sensor_struct.current_distance_m =
         static_cast<float>(distance_sensor_msg.current_distance) * 1e-2f; // cm to m
+    distance_sensor_struct.orientation = extractOrientation(distance_sensor_msg);
 
     set_distance_sensor(distance_sensor_struct);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscriptions.queue(
         distance_sensor(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+}
+
+Telemetry::EulerAngle
+TelemetryImpl::extractOrientation(mavlink_distance_sensor_t distance_sensor_msg)
+{
+    MavSensorOrientation orientation =
+        static_cast<MavSensorOrientation>(distance_sensor_msg.orientation);
+
+    Telemetry::EulerAngle euler_angle;
+    euler_angle.roll_deg = 0;
+    euler_angle.pitch_deg = 0;
+    euler_angle.yaw_deg = 0;
+
+    switch (orientation) {
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_YAW_45: {
+            euler_angle.yaw_deg = 45;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_YAW_90: {
+            euler_angle.yaw_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_YAW_135: {
+            euler_angle.yaw_deg = 135;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_YAW_180: {
+            euler_angle.yaw_deg = 180;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_YAW_225: {
+            euler_angle.yaw_deg = 225;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_YAW_270: {
+            euler_angle.yaw_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_YAW_315: {
+            euler_angle.yaw_deg = 315;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180: {
+            euler_angle.roll_deg = 180;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_YAW_45: {
+            euler_angle.roll_deg = 180;
+            euler_angle.yaw_deg = 45;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_YAW_90: {
+            euler_angle.roll_deg = 180;
+            euler_angle.yaw_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_YAW_135: {
+            euler_angle.roll_deg = 180;
+            euler_angle.yaw_deg = 135;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_PITCH_180: {
+            euler_angle.pitch_deg = 180;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_YAW_225: {
+            euler_angle.roll_deg = 180;
+            euler_angle.yaw_deg = 225;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_YAW_270: {
+            euler_angle.roll_deg = 180;
+            euler_angle.yaw_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_YAW_315: {
+            euler_angle.roll_deg = 180;
+            euler_angle.yaw_deg = 315;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90: {
+            euler_angle.roll_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_YAW_45: {
+            euler_angle.roll_deg = 90;
+            euler_angle.yaw_deg = 45;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_YAW_90: {
+            euler_angle.roll_deg = 90;
+            euler_angle.yaw_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_YAW_135: {
+            euler_angle.roll_deg = 90;
+            euler_angle.yaw_deg = 135;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_270: {
+            euler_angle.roll_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_270_YAW_45: {
+            euler_angle.roll_deg = 270;
+            euler_angle.yaw_deg = 45;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_270_YAW_90: {
+            euler_angle.roll_deg = 270;
+            euler_angle.yaw_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_270_YAW_135: {
+            euler_angle.roll_deg = 270;
+            euler_angle.yaw_deg = 135;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_PITCH_90: {
+            euler_angle.pitch_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_PITCH_270: {
+            euler_angle.pitch_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_PITCH_180_YAW_90: {
+            euler_angle.pitch_deg = 180;
+            euler_angle.yaw_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_PITCH_180_YAW_270: {
+            euler_angle.pitch_deg = 180;
+            euler_angle.yaw_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_PITCH_90: {
+            euler_angle.roll_deg = 90;
+            euler_angle.pitch_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_PITCH_90: {
+            euler_angle.roll_deg = 180;
+            euler_angle.pitch_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_270_PITCH_90: {
+            euler_angle.roll_deg = 270;
+            euler_angle.pitch_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_PITCH_180: {
+            euler_angle.roll_deg = 90;
+            euler_angle.pitch_deg = 180;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_270_PITCH_180: {
+            euler_angle.roll_deg = 270;
+            euler_angle.pitch_deg = 180;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_PITCH_270: {
+            euler_angle.roll_deg = 90;
+            euler_angle.pitch_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_180_PITCH_270: {
+            euler_angle.roll_deg = 180;
+            euler_angle.pitch_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_270_PITCH_270: {
+            euler_angle.roll_deg = 270;
+            euler_angle.pitch_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_PITCH_180_YAW_90: {
+            euler_angle.roll_deg = 90;
+            euler_angle.pitch_deg = 180;
+            euler_angle.yaw_deg = 90;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_YAW_270: {
+            euler_angle.roll_deg = 90;
+            euler_angle.yaw_deg = 270;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_PITCH_68_YAW_293: {
+            euler_angle.roll_deg = 90;
+            euler_angle.pitch_deg = 68;
+            euler_angle.yaw_deg = 293;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_PITCH_315: {
+            euler_angle.pitch_deg = 315;
+            break;
+        }
+        case MavSensorOrientation::MAV_SENSOR_ROTATION_ROLL_90_PITCH_315: {
+            euler_angle.roll_deg = 90;
+            euler_angle.pitch_deg = 315;
+            break;
+        }
+        default: {
+            euler_angle.roll_deg = 0;
+            euler_angle.pitch_deg = 0;
+            euler_angle.yaw_deg = 0;
+        }
+    }
+
+    return euler_angle;
 }
 
 void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
