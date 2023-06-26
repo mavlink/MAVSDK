@@ -93,8 +93,9 @@ void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
         _entries.retries = 0;
     }
 
+    // This first step can take a moment, on PX4 with 100+ logs I see about 2-3s.
     _system_impl->register_timeout_handler(
-        [this]() { list_timeout(); }, LIST_TIMEOUT_S, &_entries.cookie);
+        [this]() { list_timeout(); }, _system_impl->timeout_s() * 10.0, &_entries.cookie);
 
     request_list_entry(-1);
 }
@@ -197,7 +198,7 @@ void LogFilesImpl::list_timeout()
                 }
             }
             _system_impl->register_timeout_handler(
-                [this]() { list_timeout(); }, LIST_TIMEOUT_S, &_entries.cookie);
+                [this]() { list_timeout(); }, _system_impl->timeout_s() * 10.0, &_entries.cookie);
             _entries.retries++;
         }
     }
@@ -298,7 +299,7 @@ void LogFilesImpl::download_log_file_async(
             ((part_size % MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) != 0));
 
         _system_impl->register_timeout_handler(
-            [this]() { LogFilesImpl::data_timeout(); }, DATA_TIMEOUT_S, &_data.cookie);
+            [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s(), &_data.cookie);
 
         request_log_data(_data.id, _data.part_start, _data.bytes.size());
 
@@ -475,7 +476,7 @@ void LogFilesImpl::data_timeout()
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
         _system_impl->register_timeout_handler(
-            [this]() { LogFilesImpl::data_timeout(); }, DATA_TIMEOUT_S, &_data.cookie);
+            [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s(), &_data.cookie);
         _data.rerequesting = true;
         check_part();
     }
