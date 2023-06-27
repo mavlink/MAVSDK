@@ -9,6 +9,7 @@
 
 namespace mavsdk {
 
+
 using Position = Camera::Position;
 using Quaternion = Camera::Quaternion;
 using EulerAngle = Camera::EulerAngle;
@@ -21,106 +22,148 @@ using Setting = Camera::Setting;
 using SettingOptions = Camera::SettingOptions;
 using Information = Camera::Information;
 
+
+
 Camera::Camera(System& system) : PluginBase(), _impl{std::make_unique<CameraImpl>(system)} {}
 
-Camera::Camera(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<CameraImpl>(system)}
-{}
+Camera::Camera(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<CameraImpl>(system)} {}
+
 
 Camera::~Camera() {}
+
+
 
 void Camera::prepare_async(const ResultCallback callback)
 {
     _impl->prepare_async(callback);
 }
 
+
+
 Camera::Result Camera::prepare() const
 {
     return _impl->prepare();
 }
+
+
 
 void Camera::take_photo_async(const ResultCallback callback)
 {
     _impl->take_photo_async(callback);
 }
 
+
+
 Camera::Result Camera::take_photo() const
 {
     return _impl->take_photo();
 }
+
+
 
 void Camera::start_photo_interval_async(float interval_s, const ResultCallback callback)
 {
     _impl->start_photo_interval_async(interval_s, callback);
 }
 
+
+
 Camera::Result Camera::start_photo_interval(float interval_s) const
 {
     return _impl->start_photo_interval(interval_s);
 }
+
+
 
 void Camera::stop_photo_interval_async(const ResultCallback callback)
 {
     _impl->stop_photo_interval_async(callback);
 }
 
+
+
 Camera::Result Camera::stop_photo_interval() const
 {
     return _impl->stop_photo_interval();
 }
+
+
 
 void Camera::start_video_async(const ResultCallback callback)
 {
     _impl->start_video_async(callback);
 }
 
+
+
 Camera::Result Camera::start_video() const
 {
     return _impl->start_video();
 }
+
+
 
 void Camera::stop_video_async(const ResultCallback callback)
 {
     _impl->stop_video_async(callback);
 }
 
+
+
 Camera::Result Camera::stop_video() const
 {
     return _impl->stop_video();
 }
+
+
+
+
 
 Camera::Result Camera::start_video_streaming() const
 {
     return _impl->start_video_streaming();
 }
 
+
+
+
+
 Camera::Result Camera::stop_video_streaming() const
 {
     return _impl->stop_video_streaming();
 }
+
+
 
 void Camera::set_mode_async(Mode mode, const ResultCallback callback)
 {
     _impl->set_mode_async(mode, callback);
 }
 
+
+
 Camera::Result Camera::set_mode(Mode mode) const
 {
     return _impl->set_mode(mode);
 }
+
+
 
 void Camera::list_photos_async(PhotosRange photos_range, const ListPhotosCallback callback)
 {
     _impl->list_photos_async(photos_range, callback);
 }
 
-std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
-Camera::list_photos(PhotosRange photos_range) const
+
+
+std::pair<Camera::Result, std::vector<Camera::CaptureInfo>> Camera::list_photos(PhotosRange photos_range) const
 {
     return _impl->list_photos(photos_range);
 }
 
+
+
+    
 Camera::ModeHandle Camera::subscribe_mode(const ModeCallback& callback)
 {
     return _impl->subscribe_mode(callback);
@@ -130,12 +173,20 @@ void Camera::unsubscribe_mode(ModeHandle handle)
 {
     _impl->unsubscribe_mode(handle);
 }
+    
 
-Camera::Mode Camera::mode() const
+
+
+
+Camera::Mode
+Camera::mode() const
 {
     return _impl->mode();
 }
 
+
+
+    
 Camera::InformationHandle Camera::subscribe_information(const InformationCallback& callback)
 {
     return _impl->subscribe_information(callback);
@@ -145,14 +196,21 @@ void Camera::unsubscribe_information(InformationHandle handle)
 {
     _impl->unsubscribe_information(handle);
 }
+    
 
-Camera::Information Camera::information() const
+
+
+
+Camera::Information
+Camera::information() const
 {
     return _impl->information();
 }
 
-Camera::VideoStreamInfoHandle
-Camera::subscribe_video_stream_info(const VideoStreamInfoCallback& callback)
+
+
+    
+Camera::VideoStreamInfoHandle Camera::subscribe_video_stream_info(const VideoStreamInfoCallback& callback)
 {
     return _impl->subscribe_video_stream_info(callback);
 }
@@ -161,12 +219,20 @@ void Camera::unsubscribe_video_stream_info(VideoStreamInfoHandle handle)
 {
     _impl->unsubscribe_video_stream_info(handle);
 }
+    
 
-Camera::VideoStreamInfo Camera::video_stream_info() const
+
+
+
+Camera::VideoStreamInfo
+Camera::video_stream_info() const
 {
     return _impl->video_stream_info();
 }
 
+
+
+    
 Camera::CaptureInfoHandle Camera::subscribe_capture_info(const CaptureInfoCallback& callback)
 {
     return _impl->subscribe_capture_info(callback);
@@ -176,7 +242,13 @@ void Camera::unsubscribe_capture_info(CaptureInfoHandle handle)
 {
     _impl->unsubscribe_capture_info(handle);
 }
+    
 
+
+
+
+
+    
 Camera::StatusHandle Camera::subscribe_status(const StatusCallback& callback)
 {
     return _impl->subscribe_status(callback);
@@ -186,14 +258,21 @@ void Camera::unsubscribe_status(StatusHandle handle)
 {
     _impl->unsubscribe_status(handle);
 }
+    
 
-Camera::Status Camera::status() const
+
+
+
+Camera::Status
+Camera::status() const
 {
     return _impl->status();
 }
 
-Camera::CurrentSettingsHandle
-Camera::subscribe_current_settings(const CurrentSettingsCallback& callback)
+
+
+    
+Camera::CurrentSettingsHandle Camera::subscribe_current_settings(const CurrentSettingsCallback& callback)
 {
     return _impl->subscribe_current_settings(callback);
 }
@@ -202,9 +281,14 @@ void Camera::unsubscribe_current_settings(CurrentSettingsHandle handle)
 {
     _impl->unsubscribe_current_settings(handle);
 }
+    
 
-Camera::PossibleSettingOptionsHandle
-Camera::subscribe_possible_setting_options(const PossibleSettingOptionsCallback& callback)
+
+
+
+
+    
+Camera::PossibleSettingOptionsHandle Camera::subscribe_possible_setting_options(const PossibleSettingOptionsCallback& callback)
 {
     return _impl->subscribe_possible_setting_options(callback);
 }
@@ -213,46 +297,224 @@ void Camera::unsubscribe_possible_setting_options(PossibleSettingOptionsHandle h
 {
     _impl->unsubscribe_possible_setting_options(handle);
 }
+    
 
-std::vector<Camera::SettingOptions> Camera::possible_setting_options() const
+
+
+
+std::vector<Camera::SettingOptions>
+Camera::possible_setting_options() const
 {
     return _impl->possible_setting_options();
 }
+
+
 
 void Camera::set_setting_async(Setting setting, const ResultCallback callback)
 {
     _impl->set_setting_async(setting, callback);
 }
 
+
+
 Camera::Result Camera::set_setting(Setting setting) const
 {
     return _impl->set_setting(setting);
 }
+
+
 
 void Camera::get_setting_async(Setting setting, const GetSettingCallback callback)
 {
     _impl->get_setting_async(setting, callback);
 }
 
+
+
 std::pair<Camera::Result, Camera::Setting> Camera::get_setting(Setting setting) const
 {
     return _impl->get_setting(setting);
 }
+
+
 
 void Camera::format_storage_async(const ResultCallback callback)
 {
     _impl->format_storage_async(callback);
 }
 
+
+
 Camera::Result Camera::format_storage() const
 {
     return _impl->format_storage();
 }
 
+
+
+
+
 Camera::Result Camera::select_camera(int32_t camera_id) const
 {
     return _impl->select_camera(camera_id);
 }
+
+
+
+void Camera::camera_zoom_wide_async(const ResultCallback callback)
+{
+    _impl->camera_zoom_wide_async(callback);
+}
+
+
+
+Camera::Result Camera::camera_zoom_wide() const
+{
+    return _impl->camera_zoom_wide();
+}
+
+
+
+void Camera::camera_zoom_tele_async(const ResultCallback callback)
+{
+    _impl->camera_zoom_tele_async(callback);
+}
+
+
+
+Camera::Result Camera::camera_zoom_tele() const
+{
+    return _impl->camera_zoom_tele();
+}
+
+
+
+void Camera::camera_zoom_stop_async(const ResultCallback callback)
+{
+    _impl->camera_zoom_stop_async(callback);
+}
+
+
+
+Camera::Result Camera::camera_zoom_stop() const
+{
+    return _impl->camera_zoom_stop();
+}
+
+
+
+void Camera::camera_zoom_range_async(float range, const ResultCallback callback)
+{
+    _impl->camera_zoom_range_async(range, callback);
+}
+
+
+
+Camera::Result Camera::camera_zoom_range(float range) const
+{
+    return _impl->camera_zoom_range(range);
+}
+
+
+
+void Camera::camera_track_point_async(float pointx, float pointy, float radius, const ResultCallback callback)
+{
+    _impl->camera_track_point_async(pointx, pointy, radius, callback);
+}
+
+
+
+Camera::Result Camera::camera_track_point(float pointx, float pointy, float radius) const
+{
+    return _impl->camera_track_point(pointx, pointy, radius);
+}
+
+
+
+void Camera::camera_track_rectangle_async(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y, const ResultCallback callback)
+{
+    _impl->camera_track_rectangle_async(top_left_x, top_left_y, bottom_right_x, bottom_right_y, callback);
+}
+
+
+
+Camera::Result Camera::camera_track_rectangle(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y) const
+{
+    return _impl->camera_track_rectangle(top_left_x, top_left_y, bottom_right_x, bottom_right_y);
+}
+
+
+
+void Camera::camera_track_stop_async(const ResultCallback callback)
+{
+    _impl->camera_track_stop_async(callback);
+}
+
+
+
+Camera::Result Camera::camera_track_stop() const
+{
+    return _impl->camera_track_stop();
+}
+
+
+
+void Camera::camera_focus_up_async(const ResultCallback callback)
+{
+    _impl->camera_focus_up_async(callback);
+}
+
+
+
+Camera::Result Camera::camera_focus_up() const
+{
+    return _impl->camera_focus_up();
+}
+
+
+
+void Camera::camera_focus_down_async(const ResultCallback callback)
+{
+    _impl->camera_focus_down_async(callback);
+}
+
+
+
+Camera::Result Camera::camera_focus_down() const
+{
+    return _impl->camera_focus_down();
+}
+
+
+
+void Camera::camera_focus_stop_async(const ResultCallback callback)
+{
+    _impl->camera_focus_stop_async(callback);
+}
+
+
+
+Camera::Result Camera::camera_focus_stop() const
+{
+    return _impl->camera_focus_stop();
+}
+
+
+
+void Camera::camera_focus_range_async(float range, const ResultCallback callback)
+{
+    _impl->camera_focus_range_async(range, callback);
+}
+
+
+
+Camera::Result Camera::camera_focus_range(float range) const
+{
+    return _impl->camera_focus_range(range);
+}
+
+
+
 
 std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
 {
@@ -282,22 +544,21 @@ std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
     }
 }
 
+
 bool operator==(const Camera::Position& lhs, const Camera::Position& rhs)
 {
-    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg) &&
-           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
-           ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
-            rhs.relative_altitude_m == lhs.relative_altitude_m);
+    return
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg) &&
+        ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) || rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+        ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) || rhs.relative_altitude_m == lhs.relative_altitude_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Position const& position)
 {
     str << std::setprecision(15);
-    str << "position:" << '\n' << "{\n";
+    str << "position:" << '\n'
+        << "{\n";
     str << "    latitude_deg: " << position.latitude_deg << '\n';
     str << "    longitude_deg: " << position.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << position.absolute_altitude_m << '\n';
@@ -306,18 +567,21 @@ std::ostream& operator<<(std::ostream& str, Camera::Position const& position)
     return str;
 }
 
+
 bool operator==(const Camera::Quaternion& lhs, const Camera::Quaternion& rhs)
 {
-    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
-           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
-           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
+    return
+        ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
+        ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
+        ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
+        ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Quaternion const& quaternion)
 {
     str << std::setprecision(15);
-    str << "quaternion:" << '\n' << "{\n";
+    str << "quaternion:" << '\n'
+        << "{\n";
     str << "    w: " << quaternion.w << '\n';
     str << "    x: " << quaternion.x << '\n';
     str << "    y: " << quaternion.y << '\n';
@@ -326,19 +590,20 @@ std::ostream& operator<<(std::ostream& str, Camera::Quaternion const& quaternion
     return str;
 }
 
+
 bool operator==(const Camera::EulerAngle& lhs, const Camera::EulerAngle& rhs)
 {
-    return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
-            rhs.roll_deg == lhs.roll_deg) &&
-           ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) ||
-            rhs.pitch_deg == lhs.pitch_deg) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+    return
+        ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) || rhs.roll_deg == lhs.roll_deg) &&
+        ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) || rhs.pitch_deg == lhs.pitch_deg) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::EulerAngle const& euler_angle)
 {
     str << std::setprecision(15);
-    str << "euler_angle:" << '\n' << "{\n";
+    str << "euler_angle:" << '\n'
+        << "{\n";
     str << "    roll_deg: " << euler_angle.roll_deg << '\n';
     str << "    pitch_deg: " << euler_angle.pitch_deg << '\n';
     str << "    yaw_deg: " << euler_angle.yaw_deg << '\n';
@@ -346,18 +611,24 @@ std::ostream& operator<<(std::ostream& str, Camera::EulerAngle const& euler_angl
     return str;
 }
 
+
 bool operator==(const Camera::CaptureInfo& lhs, const Camera::CaptureInfo& rhs)
 {
-    return (rhs.position == lhs.position) && (rhs.attitude_quaternion == lhs.attitude_quaternion) &&
-           (rhs.attitude_euler_angle == lhs.attitude_euler_angle) &&
-           (rhs.time_utc_us == lhs.time_utc_us) && (rhs.is_success == lhs.is_success) &&
-           (rhs.index == lhs.index) && (rhs.file_url == lhs.file_url);
+    return
+        (rhs.position == lhs.position) &&
+        (rhs.attitude_quaternion == lhs.attitude_quaternion) &&
+        (rhs.attitude_euler_angle == lhs.attitude_euler_angle) &&
+        (rhs.time_utc_us == lhs.time_utc_us) &&
+        (rhs.is_success == lhs.is_success) &&
+        (rhs.index == lhs.index) &&
+        (rhs.file_url == lhs.file_url);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_info)
 {
     str << std::setprecision(15);
-    str << "capture_info:" << '\n' << "{\n";
+    str << "capture_info:" << '\n'
+        << "{\n";
     str << "    position: " << capture_info.position << '\n';
     str << "    attitude_quaternion: " << capture_info.attitude_quaternion << '\n';
     str << "    attitude_euler_angle: " << capture_info.attitude_euler_angle << '\n';
@@ -369,26 +640,26 @@ std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_i
     return str;
 }
 
+
 bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs)
 {
-    return ((std::isnan(rhs.frame_rate_hz) && std::isnan(lhs.frame_rate_hz)) ||
-            rhs.frame_rate_hz == lhs.frame_rate_hz) &&
-           (rhs.horizontal_resolution_pix == lhs.horizontal_resolution_pix) &&
-           (rhs.vertical_resolution_pix == lhs.vertical_resolution_pix) &&
-           (rhs.bit_rate_b_s == lhs.bit_rate_b_s) && (rhs.rotation_deg == lhs.rotation_deg) &&
-           (rhs.uri == lhs.uri) &&
-           ((std::isnan(rhs.horizontal_fov_deg) && std::isnan(lhs.horizontal_fov_deg)) ||
-            rhs.horizontal_fov_deg == lhs.horizontal_fov_deg);
+    return
+        ((std::isnan(rhs.frame_rate_hz) && std::isnan(lhs.frame_rate_hz)) || rhs.frame_rate_hz == lhs.frame_rate_hz) &&
+        (rhs.horizontal_resolution_pix == lhs.horizontal_resolution_pix) &&
+        (rhs.vertical_resolution_pix == lhs.vertical_resolution_pix) &&
+        (rhs.bit_rate_b_s == lhs.bit_rate_b_s) &&
+        (rhs.rotation_deg == lhs.rotation_deg) &&
+        (rhs.uri == lhs.uri) &&
+        ((std::isnan(rhs.horizontal_fov_deg) && std::isnan(lhs.horizontal_fov_deg)) || rhs.horizontal_fov_deg == lhs.horizontal_fov_deg);
 }
 
-std::ostream&
-operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings)
+std::ostream& operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings)
 {
     str << std::setprecision(15);
-    str << "video_stream_settings:" << '\n' << "{\n";
+    str << "video_stream_settings:" << '\n'
+        << "{\n";
     str << "    frame_rate_hz: " << video_stream_settings.frame_rate_hz << '\n';
-    str << "    horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
-        << '\n';
+    str << "    horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix << '\n';
     str << "    vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix << '\n';
     str << "    bit_rate_b_s: " << video_stream_settings.bit_rate_b_s << '\n';
     str << "    rotation_deg: " << video_stream_settings.rotation_deg << '\n';
@@ -398,8 +669,9 @@ operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_se
     return str;
 }
 
-std::ostream&
-operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
+
+
+std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
 {
     switch (video_stream_status) {
         case Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
@@ -411,8 +683,7 @@ operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& 
     }
 }
 
-std::ostream& operator<<(
-    std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
+std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
 {
     switch (video_stream_spectrum) {
         case Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
@@ -427,20 +698,25 @@ std::ostream& operator<<(
 }
 bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
 {
-    return (rhs.settings == lhs.settings) && (rhs.status == lhs.status) &&
-           (rhs.spectrum == lhs.spectrum);
+    return
+        (rhs.settings == lhs.settings) &&
+        (rhs.status == lhs.status) &&
+        (rhs.spectrum == lhs.spectrum);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
 {
     str << std::setprecision(15);
-    str << "video_stream_info:" << '\n' << "{\n";
+    str << "video_stream_info:" << '\n'
+        << "{\n";
     str << "    settings: " << video_stream_info.settings << '\n';
     str << "    status: " << video_stream_info.status << '\n';
     str << "    spectrum: " << video_stream_info.spectrum << '\n';
     str << '}';
     return str;
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Camera::Status::StorageStatus const& storage_status)
 {
@@ -479,24 +755,24 @@ std::ostream& operator<<(std::ostream& str, Camera::Status::StorageType const& s
 }
 bool operator==(const Camera::Status& lhs, const Camera::Status& rhs)
 {
-    return (rhs.video_on == lhs.video_on) && (rhs.photo_interval_on == lhs.photo_interval_on) &&
-           ((std::isnan(rhs.used_storage_mib) && std::isnan(lhs.used_storage_mib)) ||
-            rhs.used_storage_mib == lhs.used_storage_mib) &&
-           ((std::isnan(rhs.available_storage_mib) && std::isnan(lhs.available_storage_mib)) ||
-            rhs.available_storage_mib == lhs.available_storage_mib) &&
-           ((std::isnan(rhs.total_storage_mib) && std::isnan(lhs.total_storage_mib)) ||
-            rhs.total_storage_mib == lhs.total_storage_mib) &&
-           ((std::isnan(rhs.recording_time_s) && std::isnan(lhs.recording_time_s)) ||
-            rhs.recording_time_s == lhs.recording_time_s) &&
-           (rhs.media_folder_name == lhs.media_folder_name) &&
-           (rhs.storage_status == lhs.storage_status) && (rhs.storage_id == lhs.storage_id) &&
-           (rhs.storage_type == lhs.storage_type);
+    return
+        (rhs.video_on == lhs.video_on) &&
+        (rhs.photo_interval_on == lhs.photo_interval_on) &&
+        ((std::isnan(rhs.used_storage_mib) && std::isnan(lhs.used_storage_mib)) || rhs.used_storage_mib == lhs.used_storage_mib) &&
+        ((std::isnan(rhs.available_storage_mib) && std::isnan(lhs.available_storage_mib)) || rhs.available_storage_mib == lhs.available_storage_mib) &&
+        ((std::isnan(rhs.total_storage_mib) && std::isnan(lhs.total_storage_mib)) || rhs.total_storage_mib == lhs.total_storage_mib) &&
+        ((std::isnan(rhs.recording_time_s) && std::isnan(lhs.recording_time_s)) || rhs.recording_time_s == lhs.recording_time_s) &&
+        (rhs.media_folder_name == lhs.media_folder_name) &&
+        (rhs.storage_status == lhs.storage_status) &&
+        (rhs.storage_id == lhs.storage_id) &&
+        (rhs.storage_type == lhs.storage_type);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Status const& status)
 {
     str << std::setprecision(15);
-    str << "status:" << '\n' << "{\n";
+    str << "status:" << '\n'
+        << "{\n";
     str << "    video_on: " << status.video_on << '\n';
     str << "    photo_interval_on: " << status.photo_interval_on << '\n';
     str << "    used_storage_mib: " << status.used_storage_mib << '\n';
@@ -511,32 +787,40 @@ std::ostream& operator<<(std::ostream& str, Camera::Status const& status)
     return str;
 }
 
+
 bool operator==(const Camera::Option& lhs, const Camera::Option& rhs)
 {
-    return (rhs.option_id == lhs.option_id) && (rhs.option_description == lhs.option_description);
+    return
+        (rhs.option_id == lhs.option_id) &&
+        (rhs.option_description == lhs.option_description);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Option const& option)
 {
     str << std::setprecision(15);
-    str << "option:" << '\n' << "{\n";
+    str << "option:" << '\n'
+        << "{\n";
     str << "    option_id: " << option.option_id << '\n';
     str << "    option_description: " << option.option_description << '\n';
     str << '}';
     return str;
 }
 
+
 bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs)
 {
-    return (rhs.setting_id == lhs.setting_id) &&
-           (rhs.setting_description == lhs.setting_description) && (rhs.option == lhs.option) &&
-           (rhs.is_range == lhs.is_range);
+    return
+        (rhs.setting_id == lhs.setting_id) &&
+        (rhs.setting_description == lhs.setting_description) &&
+        (rhs.option == lhs.option) &&
+        (rhs.is_range == lhs.is_range);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
 {
     str << std::setprecision(15);
-    str << "setting:" << '\n' << "{\n";
+    str << "setting:" << '\n'
+        << "{\n";
     str << "    setting_id: " << setting.setting_id << '\n';
     str << "    setting_description: " << setting.setting_description << '\n';
     str << "    option: " << setting.option << '\n';
@@ -545,17 +829,21 @@ std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
     return str;
 }
 
+
 bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs)
 {
-    return (rhs.setting_id == lhs.setting_id) &&
-           (rhs.setting_description == lhs.setting_description) && (rhs.options == lhs.options) &&
-           (rhs.is_range == lhs.is_range);
+    return
+        (rhs.setting_id == lhs.setting_id) &&
+        (rhs.setting_description == lhs.setting_description) &&
+        (rhs.options == lhs.options) &&
+        (rhs.is_range == lhs.is_range);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& setting_options)
 {
     str << std::setprecision(15);
-    str << "setting_options:" << '\n' << "{\n";
+    str << "setting_options:" << '\n'
+        << "{\n";
     str << "    setting_id: " << setting_options.setting_id << '\n';
     str << "    setting_description: " << setting_options.setting_description << '\n';
     str << "    options: [";
@@ -568,24 +856,24 @@ std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& settin
     return str;
 }
 
+
 bool operator==(const Camera::Information& lhs, const Camera::Information& rhs)
 {
-    return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&
-           ((std::isnan(rhs.focal_length_mm) && std::isnan(lhs.focal_length_mm)) ||
-            rhs.focal_length_mm == lhs.focal_length_mm) &&
-           ((std::isnan(rhs.horizontal_sensor_size_mm) &&
-             std::isnan(lhs.horizontal_sensor_size_mm)) ||
-            rhs.horizontal_sensor_size_mm == lhs.horizontal_sensor_size_mm) &&
-           ((std::isnan(rhs.vertical_sensor_size_mm) && std::isnan(lhs.vertical_sensor_size_mm)) ||
-            rhs.vertical_sensor_size_mm == lhs.vertical_sensor_size_mm) &&
-           (rhs.horizontal_resolution_px == lhs.horizontal_resolution_px) &&
-           (rhs.vertical_resolution_px == lhs.vertical_resolution_px);
+    return
+        (rhs.vendor_name == lhs.vendor_name) &&
+        (rhs.model_name == lhs.model_name) &&
+        ((std::isnan(rhs.focal_length_mm) && std::isnan(lhs.focal_length_mm)) || rhs.focal_length_mm == lhs.focal_length_mm) &&
+        ((std::isnan(rhs.horizontal_sensor_size_mm) && std::isnan(lhs.horizontal_sensor_size_mm)) || rhs.horizontal_sensor_size_mm == lhs.horizontal_sensor_size_mm) &&
+        ((std::isnan(rhs.vertical_sensor_size_mm) && std::isnan(lhs.vertical_sensor_size_mm)) || rhs.vertical_sensor_size_mm == lhs.vertical_sensor_size_mm) &&
+        (rhs.horizontal_resolution_px == lhs.horizontal_resolution_px) &&
+        (rhs.vertical_resolution_px == lhs.vertical_resolution_px);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Information const& information)
 {
     str << std::setprecision(15);
-    str << "information:" << '\n' << "{\n";
+    str << "information:" << '\n'
+        << "{\n";
     str << "    vendor_name: " << information.vendor_name << '\n';
     str << "    model_name: " << information.model_name << '\n';
     str << "    focal_length_mm: " << information.focal_length_mm << '\n';
@@ -596,6 +884,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Information const& informati
     str << '}';
     return str;
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
 {
@@ -622,5 +912,6 @@ std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_ra
             return str << "Unknown";
     }
 }
+
 
 } // namespace mavsdk

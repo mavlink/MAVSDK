@@ -30,16 +30,37 @@ public:
 
     Camera::Result start_photo_interval(float interval_s);
     Camera::Result stop_photo_interval();
-
     Camera::Result start_video();
-    Camera::Result stop_video();
-
+    Camera::Result stop_video();    
+    Camera::Result camera_zoom_wide();
+    Camera::Result camera_zoom_tele();
+    Camera::Result camera_zoom_stop();
+    Camera::Result camera_zoom_range(float range);
+    Camera::Result camera_track_point(float pointx, float pointy, float radius);
+    Camera::Result camera_track_rectangle(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y);
+    Camera::Result camera_track_stop();
+    Camera::Result camera_focus_up();
+    Camera::Result camera_focus_down();
+    Camera::Result camera_focus_stop();
+    Camera::Result camera_focus_range(float range);
+    
     void prepare_async(const Camera::ResultCallback& callback);
     void take_photo_async(const Camera::ResultCallback& callback);
     void start_photo_interval_async(float interval_s, const Camera::ResultCallback& callback);
     void stop_photo_interval_async(const Camera::ResultCallback& callback);
     void start_video_async(const Camera::ResultCallback& callback);
     void stop_video_async(const Camera::ResultCallback& callback);
+    void camera_zoom_wide_async(const Camera::ResultCallback& callback);
+    void camera_zoom_tele_async(const Camera::ResultCallback& callback);
+    void camera_zoom_stop_async(const Camera::ResultCallback& callback);
+    void camera_zoom_range_async(float range, const Camera::ResultCallback& callback);
+    void camera_track_point_async(float pointx, float pointy, float radius, const Camera::ResultCallback& callback);
+    void camera_track_rectangle_async(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y, const Camera::ResultCallback& callback);
+    void camera_track_stop_async(const Camera::ResultCallback& callback);
+    void camera_focus_up_async(const Camera::ResultCallback& callback);
+    void camera_focus_down_async(const Camera::ResultCallback& callback);
+    void camera_focus_stop_async(const Camera::ResultCallback& callback);
+    void camera_focus_range_async(float range, const Camera::ResultCallback& callback);
 
     Camera::Information information() const;
     Camera::InformationHandle subscribe_information(const Camera::InformationCallback& callback);
@@ -200,6 +221,17 @@ private:
     MavlinkCommandSender::CommandLong make_command_request_video_stream_info();
     MavlinkCommandSender::CommandLong make_command_request_video_stream_status();
 
+    MavlinkCommandSender::CommandLong make_command_zoom_wide();
+    MavlinkCommandSender::CommandLong make_command_zoom_tele();
+    MavlinkCommandSender::CommandLong make_command_zoom_stop();
+    MavlinkCommandSender::CommandLong make_command_zoom_range(float _range);
+    MavlinkCommandSender::CommandLong make_command_track_point(float _pointx, float _pointy, float _radius);
+    MavlinkCommandSender::CommandLong make_command_track_rectangle(float _top_left_x, float _top_left_y, float _bottom_right_x, float _bottom_right_y);
+    MavlinkCommandSender::CommandLong make_command_track_stop();
+    MavlinkCommandSender::CommandLong make_command_focus_up();
+    MavlinkCommandSender::CommandLong make_command_focus_down();
+    MavlinkCommandSender::CommandLong make_command_focus_stop();
+    MavlinkCommandSender::CommandLong make_command_focus_range(float _range);
     void request_missing_capture_info();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};

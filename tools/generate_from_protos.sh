@@ -115,8 +115,8 @@ plugins_file="${script_dir}/../src/plugins.txt"
 # Overwrite plugins file to be empty
 > $plugins_file
 
-for plugin in ${plugin_list_and_core}; do
-
+# for plugin in ${plugin_list_and_core}; do
+for plugin in "camera"; do
     echo "Processing ${plugin}/${plugin}.proto"
 
     mkdir -p ${mavsdk_server_generated_dir}

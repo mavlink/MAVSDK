@@ -45,6 +45,17 @@ static const char* CameraService_method_names[] = {
   "/mavsdk.rpc.camera.CameraService/GetSetting",
   "/mavsdk.rpc.camera.CameraService/FormatStorage",
   "/mavsdk.rpc.camera.CameraService/SelectCamera",
+  "/mavsdk.rpc.camera.CameraService/CameraZoomWide",
+  "/mavsdk.rpc.camera.CameraService/CameraZoomTele",
+  "/mavsdk.rpc.camera.CameraService/CameraZoomStop",
+  "/mavsdk.rpc.camera.CameraService/CameraZoomRange",
+  "/mavsdk.rpc.camera.CameraService/CameraTrackPoint",
+  "/mavsdk.rpc.camera.CameraService/CameraTrackRectangle",
+  "/mavsdk.rpc.camera.CameraService/CameraTrackStop",
+  "/mavsdk.rpc.camera.CameraService/CameraFocusUp",
+  "/mavsdk.rpc.camera.CameraService/CameraFocusDown",
+  "/mavsdk.rpc.camera.CameraService/CameraFocusStop",
+  "/mavsdk.rpc.camera.CameraService/CameraFocusRange",
 };
 
 std::unique_ptr< CameraService::Stub> CameraService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -75,6 +86,17 @@ CameraService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_GetSetting_(CameraService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_FormatStorage_(CameraService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SelectCamera_(CameraService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraZoomWide_(CameraService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraZoomTele_(CameraService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraZoomStop_(CameraService_method_names[23], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraZoomRange_(CameraService_method_names[24], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraTrackPoint_(CameraService_method_names[25], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraTrackRectangle_(CameraService_method_names[26], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraTrackStop_(CameraService_method_names[27], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraFocusUp_(CameraService_method_names[28], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraFocusDown_(CameraService_method_names[29], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraFocusStop_(CameraService_method_names[30], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CameraFocusRange_(CameraService_method_names[31], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraService::Stub::Prepare(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::PrepareRequest& request, ::mavsdk::rpc::camera::PrepareResponse* response) {
@@ -511,6 +533,259 @@ void CameraService::Stub::async::SelectCamera(::grpc::ClientContext* context, co
   return result;
 }
 
+::grpc::Status CameraService::Stub::CameraZoomWide(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomWideRequest& request, ::mavsdk::rpc::camera::CameraZoomWideResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraZoomWideRequest, ::mavsdk::rpc::camera::CameraZoomWideResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraZoomWide_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraZoomWide(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomWideRequest* request, ::mavsdk::rpc::camera::CameraZoomWideResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraZoomWideRequest, ::mavsdk::rpc::camera::CameraZoomWideResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomWide_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraZoomWide(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomWideRequest* request, ::mavsdk::rpc::camera::CameraZoomWideResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomWide_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomWideResponse>* CameraService::Stub::PrepareAsyncCameraZoomWideRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomWideRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraZoomWideResponse, ::mavsdk::rpc::camera::CameraZoomWideRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraZoomWide_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomWideResponse>* CameraService::Stub::AsyncCameraZoomWideRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomWideRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraZoomWideRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraZoomTele(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomTeleRequest& request, ::mavsdk::rpc::camera::CameraZoomTeleResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraZoomTeleRequest, ::mavsdk::rpc::camera::CameraZoomTeleResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraZoomTele_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraZoomTele(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomTeleRequest* request, ::mavsdk::rpc::camera::CameraZoomTeleResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraZoomTeleRequest, ::mavsdk::rpc::camera::CameraZoomTeleResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomTele_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraZoomTele(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomTeleRequest* request, ::mavsdk::rpc::camera::CameraZoomTeleResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomTele_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomTeleResponse>* CameraService::Stub::PrepareAsyncCameraZoomTeleRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomTeleRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraZoomTeleResponse, ::mavsdk::rpc::camera::CameraZoomTeleRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraZoomTele_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomTeleResponse>* CameraService::Stub::AsyncCameraZoomTeleRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomTeleRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraZoomTeleRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomStopRequest& request, ::mavsdk::rpc::camera::CameraZoomStopResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraZoomStopRequest, ::mavsdk::rpc::camera::CameraZoomStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraZoomStop_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomStopRequest* request, ::mavsdk::rpc::camera::CameraZoomStopResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraZoomStopRequest, ::mavsdk::rpc::camera::CameraZoomStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomStop_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomStopRequest* request, ::mavsdk::rpc::camera::CameraZoomStopResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomStop_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomStopResponse>* CameraService::Stub::PrepareAsyncCameraZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraZoomStopResponse, ::mavsdk::rpc::camera::CameraZoomStopRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraZoomStop_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomStopResponse>* CameraService::Stub::AsyncCameraZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraZoomStopRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomRangeRequest& request, ::mavsdk::rpc::camera::CameraZoomRangeResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraZoomRangeRequest, ::mavsdk::rpc::camera::CameraZoomRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraZoomRange_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomRangeRequest* request, ::mavsdk::rpc::camera::CameraZoomRangeResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraZoomRangeRequest, ::mavsdk::rpc::camera::CameraZoomRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomRange_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomRangeRequest* request, ::mavsdk::rpc::camera::CameraZoomRangeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraZoomRange_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomRangeResponse>* CameraService::Stub::PrepareAsyncCameraZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraZoomRangeResponse, ::mavsdk::rpc::camera::CameraZoomRangeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraZoomRange_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraZoomRangeResponse>* CameraService::Stub::AsyncCameraZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraZoomRangeRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraTrackPoint(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackPointRequest& request, ::mavsdk::rpc::camera::CameraTrackPointResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraTrackPointRequest, ::mavsdk::rpc::camera::CameraTrackPointResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraTrackPoint_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraTrackPoint(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackPointRequest* request, ::mavsdk::rpc::camera::CameraTrackPointResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraTrackPointRequest, ::mavsdk::rpc::camera::CameraTrackPointResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraTrackPoint_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraTrackPoint(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackPointRequest* request, ::mavsdk::rpc::camera::CameraTrackPointResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraTrackPoint_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraTrackPointResponse>* CameraService::Stub::PrepareAsyncCameraTrackPointRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackPointRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraTrackPointResponse, ::mavsdk::rpc::camera::CameraTrackPointRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraTrackPoint_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraTrackPointResponse>* CameraService::Stub::AsyncCameraTrackPointRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackPointRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraTrackPointRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraTrackRectangle(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackRectangleRequest& request, ::mavsdk::rpc::camera::CameraTrackRectangleResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraTrackRectangleRequest, ::mavsdk::rpc::camera::CameraTrackRectangleResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraTrackRectangle_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraTrackRectangle(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackRectangleRequest* request, ::mavsdk::rpc::camera::CameraTrackRectangleResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraTrackRectangleRequest, ::mavsdk::rpc::camera::CameraTrackRectangleResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraTrackRectangle_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraTrackRectangle(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackRectangleRequest* request, ::mavsdk::rpc::camera::CameraTrackRectangleResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraTrackRectangle_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraTrackRectangleResponse>* CameraService::Stub::PrepareAsyncCameraTrackRectangleRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackRectangleRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraTrackRectangleResponse, ::mavsdk::rpc::camera::CameraTrackRectangleRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraTrackRectangle_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraTrackRectangleResponse>* CameraService::Stub::AsyncCameraTrackRectangleRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackRectangleRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraTrackRectangleRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraTrackStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackStopRequest& request, ::mavsdk::rpc::camera::CameraTrackStopResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraTrackStopRequest, ::mavsdk::rpc::camera::CameraTrackStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraTrackStop_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraTrackStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackStopRequest* request, ::mavsdk::rpc::camera::CameraTrackStopResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraTrackStopRequest, ::mavsdk::rpc::camera::CameraTrackStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraTrackStop_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraTrackStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackStopRequest* request, ::mavsdk::rpc::camera::CameraTrackStopResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraTrackStop_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraTrackStopResponse>* CameraService::Stub::PrepareAsyncCameraTrackStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackStopRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraTrackStopResponse, ::mavsdk::rpc::camera::CameraTrackStopRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraTrackStop_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraTrackStopResponse>* CameraService::Stub::AsyncCameraTrackStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraTrackStopRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraTrackStopRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraFocusUp(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusUpRequest& request, ::mavsdk::rpc::camera::CameraFocusUpResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraFocusUpRequest, ::mavsdk::rpc::camera::CameraFocusUpResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraFocusUp_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraFocusUp(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusUpRequest* request, ::mavsdk::rpc::camera::CameraFocusUpResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraFocusUpRequest, ::mavsdk::rpc::camera::CameraFocusUpResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusUp_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraFocusUp(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusUpRequest* request, ::mavsdk::rpc::camera::CameraFocusUpResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusUp_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusUpResponse>* CameraService::Stub::PrepareAsyncCameraFocusUpRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusUpRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraFocusUpResponse, ::mavsdk::rpc::camera::CameraFocusUpRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraFocusUp_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusUpResponse>* CameraService::Stub::AsyncCameraFocusUpRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusUpRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraFocusUpRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraFocusDown(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusDownRequest& request, ::mavsdk::rpc::camera::CameraFocusDownResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraFocusDownRequest, ::mavsdk::rpc::camera::CameraFocusDownResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraFocusDown_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraFocusDown(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusDownRequest* request, ::mavsdk::rpc::camera::CameraFocusDownResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraFocusDownRequest, ::mavsdk::rpc::camera::CameraFocusDownResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusDown_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraFocusDown(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusDownRequest* request, ::mavsdk::rpc::camera::CameraFocusDownResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusDown_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusDownResponse>* CameraService::Stub::PrepareAsyncCameraFocusDownRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusDownRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraFocusDownResponse, ::mavsdk::rpc::camera::CameraFocusDownRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraFocusDown_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusDownResponse>* CameraService::Stub::AsyncCameraFocusDownRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusDownRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraFocusDownRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraFocusStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusStopRequest& request, ::mavsdk::rpc::camera::CameraFocusStopResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraFocusStopRequest, ::mavsdk::rpc::camera::CameraFocusStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraFocusStop_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraFocusStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusStopRequest* request, ::mavsdk::rpc::camera::CameraFocusStopResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraFocusStopRequest, ::mavsdk::rpc::camera::CameraFocusStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusStop_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraFocusStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusStopRequest* request, ::mavsdk::rpc::camera::CameraFocusStopResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusStop_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusStopResponse>* CameraService::Stub::PrepareAsyncCameraFocusStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusStopRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraFocusStopResponse, ::mavsdk::rpc::camera::CameraFocusStopRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraFocusStop_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusStopResponse>* CameraService::Stub::AsyncCameraFocusStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusStopRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraFocusStopRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraService::Stub::CameraFocusRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusRangeRequest& request, ::mavsdk::rpc::camera::CameraFocusRangeResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera::CameraFocusRangeRequest, ::mavsdk::rpc::camera::CameraFocusRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CameraFocusRange_, context, request, response);
+}
+
+void CameraService::Stub::async::CameraFocusRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusRangeRequest* request, ::mavsdk::rpc::camera::CameraFocusRangeResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera::CameraFocusRangeRequest, ::mavsdk::rpc::camera::CameraFocusRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusRange_, context, request, response, std::move(f));
+}
+
+void CameraService::Stub::async::CameraFocusRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusRangeRequest* request, ::mavsdk::rpc::camera::CameraFocusRangeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CameraFocusRange_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusRangeResponse>* CameraService::Stub::PrepareAsyncCameraFocusRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusRangeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera::CameraFocusRangeResponse, ::mavsdk::rpc::camera::CameraFocusRangeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CameraFocusRange_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera::CameraFocusRangeResponse>* CameraService::Stub::AsyncCameraFocusRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera::CameraFocusRangeRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCameraFocusRangeRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 CameraService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraService_method_names[0],
@@ -722,6 +997,116 @@ CameraService::Service::Service() {
              ::mavsdk::rpc::camera::SelectCameraResponse* resp) {
                return service->SelectCamera(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[21],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraZoomWideRequest, ::mavsdk::rpc::camera::CameraZoomWideResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraZoomWideRequest* req,
+             ::mavsdk::rpc::camera::CameraZoomWideResponse* resp) {
+               return service->CameraZoomWide(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[22],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraZoomTeleRequest, ::mavsdk::rpc::camera::CameraZoomTeleResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraZoomTeleRequest* req,
+             ::mavsdk::rpc::camera::CameraZoomTeleResponse* resp) {
+               return service->CameraZoomTele(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[23],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraZoomStopRequest, ::mavsdk::rpc::camera::CameraZoomStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraZoomStopRequest* req,
+             ::mavsdk::rpc::camera::CameraZoomStopResponse* resp) {
+               return service->CameraZoomStop(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[24],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraZoomRangeRequest, ::mavsdk::rpc::camera::CameraZoomRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraZoomRangeRequest* req,
+             ::mavsdk::rpc::camera::CameraZoomRangeResponse* resp) {
+               return service->CameraZoomRange(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[25],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraTrackPointRequest, ::mavsdk::rpc::camera::CameraTrackPointResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraTrackPointRequest* req,
+             ::mavsdk::rpc::camera::CameraTrackPointResponse* resp) {
+               return service->CameraTrackPoint(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[26],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraTrackRectangleRequest, ::mavsdk::rpc::camera::CameraTrackRectangleResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraTrackRectangleRequest* req,
+             ::mavsdk::rpc::camera::CameraTrackRectangleResponse* resp) {
+               return service->CameraTrackRectangle(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[27],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraTrackStopRequest, ::mavsdk::rpc::camera::CameraTrackStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraTrackStopRequest* req,
+             ::mavsdk::rpc::camera::CameraTrackStopResponse* resp) {
+               return service->CameraTrackStop(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[28],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraFocusUpRequest, ::mavsdk::rpc::camera::CameraFocusUpResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraFocusUpRequest* req,
+             ::mavsdk::rpc::camera::CameraFocusUpResponse* resp) {
+               return service->CameraFocusUp(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[29],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraFocusDownRequest, ::mavsdk::rpc::camera::CameraFocusDownResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraFocusDownRequest* req,
+             ::mavsdk::rpc::camera::CameraFocusDownResponse* resp) {
+               return service->CameraFocusDown(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[30],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraFocusStopRequest, ::mavsdk::rpc::camera::CameraFocusStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraFocusStopRequest* req,
+             ::mavsdk::rpc::camera::CameraFocusStopResponse* resp) {
+               return service->CameraFocusStop(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraService_method_names[31],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraService::Service, ::mavsdk::rpc::camera::CameraFocusRangeRequest, ::mavsdk::rpc::camera::CameraFocusRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera::CameraFocusRangeRequest* req,
+             ::mavsdk::rpc::camera::CameraFocusRangeResponse* resp) {
+               return service->CameraFocusRange(ctx, req, resp);
+             }, this)));
 }
 
 CameraService::Service::~Service() {
@@ -868,6 +1253,83 @@ CameraService::Service::~Service() {
 }
 
 ::grpc::Status CameraService::Service::SelectCamera(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::SelectCameraRequest* request, ::mavsdk::rpc::camera::SelectCameraResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraZoomWide(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraZoomWideRequest* request, ::mavsdk::rpc::camera::CameraZoomWideResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraZoomTele(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraZoomTeleRequest* request, ::mavsdk::rpc::camera::CameraZoomTeleResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraZoomStop(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraZoomStopRequest* request, ::mavsdk::rpc::camera::CameraZoomStopResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraZoomRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraZoomRangeRequest* request, ::mavsdk::rpc::camera::CameraZoomRangeResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraTrackPoint(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraTrackPointRequest* request, ::mavsdk::rpc::camera::CameraTrackPointResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraTrackRectangle(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraTrackRectangleRequest* request, ::mavsdk::rpc::camera::CameraTrackRectangleResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraTrackStop(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraTrackStopRequest* request, ::mavsdk::rpc::camera::CameraTrackStopResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraFocusUp(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraFocusUpRequest* request, ::mavsdk::rpc::camera::CameraFocusUpResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraFocusDown(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraFocusDownRequest* request, ::mavsdk::rpc::camera::CameraFocusDownResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraFocusStop(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraFocusStopRequest* request, ::mavsdk::rpc::camera::CameraFocusStopResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraService::Service::CameraFocusRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera::CameraFocusRangeRequest* request, ::mavsdk::rpc::camera::CameraFocusRangeResponse* response) {
   (void) context;
   (void) request;
   (void) response;
