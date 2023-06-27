@@ -50,6 +50,18 @@ public:
         std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>(Camera::PhotosRange)){};
     MOCK_CONST_METHOD1(select_camera, Camera::Result(int32_t)){};
     MOCK_CONST_METHOD0(reset_settings, Camera::Result()){};
+
+    MOCK_CONST_METHOD0(zoom_in_start, Camera::Result()){};
+    MOCK_CONST_METHOD0(zoom_out_start, Camera::Result()){};
+    MOCK_CONST_METHOD0(zoom_stop, Camera::Result()){};
+    MOCK_CONST_METHOD1(zoom_range, Camera::Result(float)){};
+    MOCK_CONST_METHOD3(track_point, Camera::Result(float, float, float)){};
+    MOCK_CONST_METHOD4(track_rectangle, Camera::Result(float, float, float, float)){};
+    MOCK_CONST_METHOD0(track_stop, Camera::Result()){};
+    MOCK_CONST_METHOD0(focus_in_start, Camera::Result()){};
+    MOCK_CONST_METHOD0(focus_out_start, Camera::Result()){};
+    MOCK_CONST_METHOD0(focus_stop, Camera::Result()){};
+    MOCK_CONST_METHOD1(focus_range, Camera::Result(float)){};
 };
 
 } // namespace testing
