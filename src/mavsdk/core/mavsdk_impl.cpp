@@ -538,6 +538,13 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::setup_udp_remo
         if (_systems.empty()) {
             make_system_with_component(0, 0);
         }
+
+        // With a UDP remote, we need to initiate the connection by sending
+        // heartbeats.
+        auto new_configuration = get_configuration();
+        new_configuration.set_always_send_heartbeats(true);
+        set_configuration(new_configuration);
+
         return {ret, handle};
     } else {
         return {ret, Mavsdk::ConnectionHandle{}};
