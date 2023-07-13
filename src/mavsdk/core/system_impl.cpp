@@ -287,7 +287,7 @@ void SystemImpl::system_thread()
         _mission_transfer.do_work();
 
         if (_mavsdk_impl.time.elapsed_since_s(last_ping_time) >= SystemImpl::_ping_interval_s) {
-            if (_connected) {
+            if (_connected && _autopilot != Autopilot::ArduPilot) {
                 _ping.run_once();
             }
             last_ping_time = _mavsdk_impl.time.steady_time();
