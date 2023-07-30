@@ -23,19 +23,21 @@ InfoImpl::~InfoImpl()
 
 void InfoImpl::init()
 {
-    _system_impl->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        [this](const mavlink_message_t& message) { process_autopilot_version(message); },
-        this);
-
-    _system_impl->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_FLIGHT_INFORMATION,
-        [this](const mavlink_message_t& message) { process_flight_information(message); },
-        this);
+    if (_system_impl->autopilot() != SystemImpl::Autopilot::ArduPilot) {
+        _system_impl->register_mavlink_message_handler(
+            MAVLINK_MSG_ID_FLIGHT_INFORMATION,
+            [this](const mavlink_message_t& message) { process_flight_information(message); },
+            this);
+    }
 
     _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE,
         [this](const mavlink_message_t& message) { process_attitude(message); },
+        this);
+
+    _system_impl->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
 }
 
@@ -46,17 +48,16 @@ void InfoImpl::deinit()
 
 void InfoImpl::enable()
 {
-    // We can't rely on System to request the autopilot_version,
-    // so we do it here, anyway.
-    _system_impl->send_autopilot_version_request();
-    _system_impl->send_flight_information_request();
+    // We're going to periodically ask for the flight information
+    if (_system_impl->autopilot() != SystemImpl::Autopilot::ArduPilot) {
+        _system_impl->send_flight_information_request();
+
+        _system_impl->add_call_every(
+            [this]() { request_flight_information(); }, 1.0f, &_flight_info_call_every_cookie);
+    }
 
     // We're going to retry until we have the version.
     _system_impl->add_call_every([this]() { request_version_again(); }, 1.0f, &_call_every_cookie);
-
-    // We're going to periodically ask for the flight information
-    _system_impl->add_call_every(
-        [this]() { request_flight_information(); }, 1.0f, &_flight_info_call_every_cookie);
 }
 
 void InfoImpl::disable()
