@@ -1024,6 +1024,11 @@ MavlinkFtp::ServerResult MavlinkFtp::_work_list(PayloadHeader* payload, bool lis
             memcpy(&payload->data[offset], entry_s.c_str(), len);
             offset += len;
         }
+
+        if (const int close_result = closedir(dfd); close_result != 0) {
+            LogWarn() << "FTP: Failed to close file descriptor (potential resource leak!). "
+                         "Error code: " << close_result;
+        }
     }
 
     payload->size = offset;
