@@ -124,6 +124,7 @@ public:
         std::vector<MissionItem> mission_items{}; /**< @brief Mission items */
         std::vector<MissionItem> geofence_items{}; /**< @brief Geofence items */
         std::vector<MissionItem> rally_items{}; /**< @brief Rally items */
+        std::optional<MissionItem> plannedHomePosition;
     };
 
     /**

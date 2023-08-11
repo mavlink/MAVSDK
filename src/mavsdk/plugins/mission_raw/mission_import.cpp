@@ -24,12 +24,14 @@ MissionImport::parse_json(const std::string& raw_json, Sender::Autopilot autopil
     }
 
     auto maybe_mission_items = import_mission(root, autopilot);
-    if (!maybe_mission_items.has_value()) {
+    if (!maybe_mission_items.first.has_value()) {
         return {MissionRaw::Result::FailedToParseQgcPlan, {}};
     }
 
     MissionRaw::MissionImportData import_data;
-    import_data.mission_items = maybe_mission_items.value();
+    import_data.mission_items = maybe_mission_items.first.value();
+    import_data.plannedHomePosition = maybe_mission_items.second.value();
+
     return {MissionRaw::Result::Success, import_data};
 }
 
@@ -46,14 +48,14 @@ bool MissionImport::check_overall_version(const Json::Value& root)
     return true;
 }
 
-std::optional<std::vector<MissionRaw::MissionItem>>
+std::pair<std::optional<std::vector<MissionRaw::MissionItem>>, std::optional<MissionRaw::MissionItem>>
 MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopilot)
 {
     // We need a mission part.
     const auto mission = root["mission"];
     if (mission.empty()) {
         LogErr() << "No mission found in .plan.";
-        return std::nullopt;
+        return std::make_pair(std::nullopt, std::nullopt);
     }
 
     // Check the mission version.
@@ -62,10 +64,35 @@ MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopil
     if (mission_version.empty() || mission_version.asInt() != supported_mission_version) {
         LogErr() << "mission version for .plan not supported, found version: "
                  << mission_version.asInt() << ", supported: " << supported_mission_version;
-        return std::nullopt;
+        return std::make_pair(std::nullopt, std::nullopt);
     }
 
     std::vector<MissionRaw::MissionItem> mission_items;
+
+    const auto home = mission["plannedHomePosition"];
+    std::optional<MissionRaw::MissionItem> home_item;
+
+    if (!home.empty()) {
+        if (home.isArray() && home.size() != 3) {
+            LogErr() << "Unknown plannedHomePosition format";
+            return std::make_pair(std::nullopt, std::nullopt);
+        }
+
+        home_item = MissionRaw::MissionItem{
+            0,
+            MAV_FRAME_GLOBAL_INT,
+            MAV_CMD_NAV_WAYPOINT,
+            0, // current
+            1, // autocontinue
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            static_cast<int32_t>(std::round(home[0].asDouble() * 1e7)),
+            static_cast<int32_t>(std::round(home[1].asDouble() * 1e7)),
+            home[2].asFloat(),
+            MAV_MISSION_TYPE_MISSION};
+    }
 
     // Go through items
     for (const auto& json_item : mission["items"]) {
@@ -76,7 +103,7 @@ MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopil
             if (maybe_item.has_value()) {
                 mission_items.push_back(maybe_item.value());
             } else {
-                return std::nullopt;
+                return std::make_pair(std::nullopt, home_item);
             }
 
         } else if (!type.isNull() && type.asString() == "ComplexItem") {
@@ -85,12 +112,12 @@ MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopil
                 mission_items.insert(
                     mission_items.end(), maybe_items.value().begin(), maybe_items.value().end());
             } else {
-                return std::nullopt;
+                return std::make_pair(std::nullopt, home_item);
             }
 
         } else {
             LogErr() << "Type " << type.asString() << " not understood.";
-            return std::nullopt;
+            return std::make_pair(std::nullopt, home_item);
         }
     }
 
@@ -106,35 +133,14 @@ MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopil
     }
 
     // Add home position at 0 for ArduPilot
-    if (autopilot == Sender::Autopilot::ArduPilot) {
-        const auto home = mission["plannedHomePosition"];
-        if (!home.empty()) {
-            if (home.isArray() && home.size() != 3) {
-                LogErr() << "Unknown plannedHomePosition format";
-                return std::nullopt;
-            }
-
+    if (autopilot == Sender::Autopilot::ArduPilot && home_item.has_value()) {
             mission_items.insert(
                 mission_items.begin(),
-                MissionRaw::MissionItem{
-                    0,
-                    MAV_FRAME_GLOBAL_INT,
-                    MAV_CMD_NAV_WAYPOINT,
-                    0, // current
-                    1, // autocontinue
-                    0.0f,
-                    0.0f,
-                    0.0f,
-                    0.0f,
-                    static_cast<int32_t>(std::round(home[0].asDouble() * 1e7)),
-                    static_cast<int32_t>(std::round(home[1].asDouble() * 1e7)),
-                    home[2].asFloat(),
-                    MAV_MISSION_TYPE_MISSION});
-        }
+            home_item.value());
     }
 
     // Returning an empty vector is ok here if there were really no mission items.
-    return {mission_items};
+    return std::make_pair(mission_items, home_item);
 }
 
 std::optional<MissionRaw::MissionItem>
