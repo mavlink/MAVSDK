@@ -1030,7 +1030,8 @@ MavlinkFtp::ServerResult MavlinkFtp::_work_list(PayloadHeader* payload, bool lis
 
         if (const int close_result = closedir(dfd); close_result != 0) {
             LogWarn() << "FTP: Failed to close file descriptor (potential resource leak!). "
-                         "Error code: " << close_result;
+                         "Error code: "
+                      << close_result;
         }
     }
 
