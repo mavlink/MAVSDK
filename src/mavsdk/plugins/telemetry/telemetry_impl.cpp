@@ -1221,7 +1221,7 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
                                        static_cast<float>(NAN) :
                                        bat_status.temperature * 1e-2f; // cdegC to degC
     new_battery.voltage_v = 0.0f;
-    for (int i = 0; i < 255; i++) {
+    for (int i = 0; i < 10; i++) {
         if (bat_status.voltages[i] == std::numeric_limits<uint16_t>::max())
             break;
         new_battery.voltage_v += static_cast<float>(bat_status.voltages[i]) * 1e-3f;
