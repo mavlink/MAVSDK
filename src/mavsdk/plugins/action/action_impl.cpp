@@ -521,29 +521,29 @@ void ActionImpl::set_actuator_async(
 
     if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
         command.command = MAV_CMD_DO_SET_SERVO;
-        command.params.maybe_param1 = index;
+        command.params.maybe_param1 = static_cast<float>(index);
         command.params.maybe_param2 = value;
     } else {
         command.command = MAV_CMD_DO_SET_ACTUATOR;
-            switch (index % 6) {
-                case 1:
-                    command.params.maybe_param1 = value;
-                    break;
-                case 2:
-                    command.params.maybe_param2 = value;
-                    break;
-                case 3:
-                    command.params.maybe_param3 = value;
-                    break;
-                case 4:
-                    command.params.maybe_param4 = value;
-                    break;
-                case 5:
-                    command.params.maybe_param5 = value;
-                    break;
-                case 6:
-                    command.params.maybe_param6 = value;
-                    break;
+        switch (index % 6) {
+            case 1:
+                command.params.maybe_param1 = value;
+                break;
+            case 2:
+                command.params.maybe_param2 = value;
+                break;
+            case 3:
+                command.params.maybe_param3 = value;
+                break;
+            case 4:
+                command.params.maybe_param4 = value;
+                break;
+            case 5:
+                command.params.maybe_param5 = value;
+                break;
+            case 6:
+                command.params.maybe_param6 = value;
+                break;
         }
         command.params.maybe_param7 = static_cast<float>(index) / 6.0f;
     }
