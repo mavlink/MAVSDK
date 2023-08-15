@@ -517,31 +517,36 @@ void ActionImpl::set_actuator_async(
     const int index, const float value, const Action::ResultCallback& callback)
 {
     MavlinkCommandSender::CommandLong command{};
-
-    command.command = MAV_CMD_DO_SET_ACTUATOR;
     command.target_component_id = _system_impl->get_autopilot_id();
 
-    switch (index % 6) {
-        case 1:
-            command.params.maybe_param1 = value;
-            break;
-        case 2:
-            command.params.maybe_param2 = value;
-            break;
-        case 3:
-            command.params.maybe_param3 = value;
-            break;
-        case 4:
-            command.params.maybe_param4 = value;
-            break;
-        case 5:
-            command.params.maybe_param5 = value;
-            break;
-        case 6:
-            command.params.maybe_param6 = value;
-            break;
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        command.command = MAV_CMD_DO_SET_SERVO;
+        command.params.maybe_param1 = static_cast<float>(index);
+        command.params.maybe_param2 = value;
+    } else {
+        command.command = MAV_CMD_DO_SET_ACTUATOR;
+        switch (index % 6) {
+            case 1:
+                command.params.maybe_param1 = value;
+                break;
+            case 2:
+                command.params.maybe_param2 = value;
+                break;
+            case 3:
+                command.params.maybe_param3 = value;
+                break;
+            case 4:
+                command.params.maybe_param4 = value;
+                break;
+            case 5:
+                command.params.maybe_param5 = value;
+                break;
+            case 6:
+                command.params.maybe_param6 = value;
+                break;
+        }
+        command.params.maybe_param7 = static_cast<float>(index) / 6.0f;
     }
-    command.params.maybe_param7 = static_cast<float>(index) / 6.0f;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
