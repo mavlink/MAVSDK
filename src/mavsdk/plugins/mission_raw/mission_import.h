@@ -16,7 +16,9 @@ public:
 
 private:
     static bool check_overall_version(const Json::Value& root);
-    static std::pair<std::optional<std::vector<MissionRaw::MissionItem>>, std::optional<MissionRaw::MissionItem>>
+    static std::pair<
+        std::optional<std::vector<MissionRaw::MissionItem>>,
+        std::optional<MissionRaw::MissionItem>>
     import_mission(const Json::Value& root, SystemImpl::Autopilot autopilot);
     static std::optional<MissionRaw::MissionItem>
     import_simple_mission_item(const Json::Value& json_item);

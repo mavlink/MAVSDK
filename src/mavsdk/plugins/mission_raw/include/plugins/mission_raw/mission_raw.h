@@ -124,7 +124,9 @@ public:
         std::vector<MissionItem> mission_items{}; /**< @brief Mission items */
         std::vector<MissionItem> geofence_items{}; /**< @brief Geofence items */
         std::vector<MissionItem> rally_items{}; /**< @brief Rally items */
-        std::optional<MissionItem> plannedHomePosition;
+        bool has_planned_home_position{}; /**< @brief Whether it contains a planned home position
+                                             element or not */
+        MissionItem planned_home_position{}; /**< @brief Planned home position */
     };
 
     /**

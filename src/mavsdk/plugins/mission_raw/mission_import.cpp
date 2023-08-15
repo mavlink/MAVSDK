@@ -30,7 +30,7 @@ MissionImport::parse_json(const std::string& raw_json, Sender::Autopilot autopil
 
     MissionRaw::MissionImportData import_data;
     import_data.mission_items = maybe_mission_items.first.value();
-    import_data.plannedHomePosition = maybe_mission_items.second.value();
+    import_data.planned_home_position = maybe_mission_items.second.value();
 
     return {MissionRaw::Result::Success, import_data};
 }
@@ -48,7 +48,9 @@ bool MissionImport::check_overall_version(const Json::Value& root)
     return true;
 }
 
-std::pair<std::optional<std::vector<MissionRaw::MissionItem>>, std::optional<MissionRaw::MissionItem>>
+std::pair<
+    std::optional<std::vector<MissionRaw::MissionItem>>,
+    std::optional<MissionRaw::MissionItem>>
 MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopilot)
 {
     // We need a mission part.
@@ -134,9 +136,7 @@ MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopil
 
     // Add home position at 0 for ArduPilot
     if (autopilot == Sender::Autopilot::ArduPilot && home_item.has_value()) {
-            mission_items.insert(
-                mission_items.begin(),
-            home_item.value());
+        mission_items.insert(mission_items.begin(), home_item.value());
     }
 
     // Returning an empty vector is ok here if there were really no mission items.
