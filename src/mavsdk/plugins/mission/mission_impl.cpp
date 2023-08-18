@@ -526,18 +526,21 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             float param1 = NAN;
             float param2 = NAN;
             float param3 = NAN;
+            float param4 = NAN;
             switch (item.camera_action) {
                 case CameraAction::TakePhoto:
                     command = MAV_CMD_IMAGE_START_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     param2 = 0.0f; // no duration, take only one picture
                     param3 = 1.0f; // only take one picture
+                    param4 = 0.0f; // no capture sequence
                     break;
                 case CameraAction::StartPhotoInterval:
                     command = MAV_CMD_IMAGE_START_CAPTURE;
                     param1 = 0.0f; // all camera IDs
                     param2 = item.camera_photo_interval_s;
                     param3 = 0.0f; // unlimited photos
+                    param4 = 0.0f; // no capture sequence
                     break;
                 case CameraAction::StopPhotoInterval:
                     command = MAV_CMD_IMAGE_STOP_CAPTURE;
@@ -546,6 +549,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                 case CameraAction::StartVideo:
                     command = MAV_CMD_VIDEO_START_CAPTURE;
                     param1 = 0.0f; // all camera IDs
+                    param2 = 0.0f; // no status frequency messages to send
                     break;
                 case CameraAction::StopVideo:
                     command = MAV_CMD_VIDEO_STOP_CAPTURE;
@@ -580,7 +584,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                 param1,
                 param2,
                 param3,
-                NAN,
+                param4,
                 0,
                 0,
                 NAN,
