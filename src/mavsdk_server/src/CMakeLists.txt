@@ -50,12 +50,13 @@ foreach(plugin ${COMPONENTS_LIST})
     )
 endforeach()
 
-
 set_target_properties(mavsdk_server
     PROPERTIES COMPILE_FLAGS ${warnings}
     VERSION ${MAVSDK_VERSION_STRING}
     SOVERSION ${MAVSDK_SOVERSION_STRING}
     )
+
+target_link_libraries(mavsdk_server PRIVATE ${CMAKE_DL_LIBS})
 
 if(BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
     target_link_libraries(mavsdk_server PRIVATE atomic.a)
@@ -82,6 +83,7 @@ if(NOT IOS AND NOT ANDROID)
     target_link_libraries(mavsdk_server_bin PRIVATE
         mavsdk_server
         mavsdk
+        ${CMAKE_DL_LIBS}
     )
 
     if (BUILD_STATIC_MAVSDK_SERVER)
@@ -89,10 +91,6 @@ if(NOT IOS AND NOT ANDROID)
         set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
         set_target_properties(mavsdk_server_bin PROPERTIES LINK_SEARCH_START_STATIC ON)
         set_target_properties(mavsdk_server_bin PROPERTIES LINK_SEARCH_END_STATIC ON)
-    endif()
-
-    if(NOT BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU"))
-        target_link_libraries(mavsdk_server_bin PRIVATE ${CMAKE_DL_LIBS})
     endif()
 
     # MSVC fails to generate the `mavsdk_server` binary while having
