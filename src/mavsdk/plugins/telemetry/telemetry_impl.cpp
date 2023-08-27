@@ -1229,8 +1229,13 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     }
 
     for (int i = 0; i < 4; ++i) {
-        // A value of 1 means 0 mV.
-        if (bat_status.voltages_ext[i] > 1) {
+        if (bat_status.voltages_ext[i] == std::numeric_limits<uint16_t>::max()) {
+            // Some implementations out there set it to UINT16_MAX to signal invalid.
+            // That's not up to the spec but we can ignore it nevertheless to be backwards
+            // compatible.
+            break;
+        } else if (bat_status.voltages_ext[i] > 1) {
+            // A value of 1 means 0 mV.
             new_battery.voltage_v += static_cast<float>(bat_status.voltages_ext[i]) * 1e-3f;
         }
     }
