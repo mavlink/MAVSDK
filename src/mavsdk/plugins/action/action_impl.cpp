@@ -524,28 +524,31 @@ void ActionImpl::set_actuator_async(
         command.params.maybe_param1 = static_cast<float>(index);
         command.params.maybe_param2 = value;
     } else {
-        command.command = MAV_CMD_DO_SET_ACTUATOR;
-        switch (index % 6) {
-            case 1:
-                command.params.maybe_param1 = value;
-                break;
-            case 2:
-                command.params.maybe_param2 = value;
-                break;
-            case 3:
-                command.params.maybe_param3 = value;
-                break;
-            case 4:
-                command.params.maybe_param4 = value;
-                break;
-            case 5:
-                command.params.maybe_param5 = value;
-                break;
-            case 6:
-                command.params.maybe_param6 = value;
-                break;
+        auto zero_based_index = index - 1;
+        if (zero_based_index >= 0) {
+            command.command = MAV_CMD_DO_SET_ACTUATOR;
+            switch (zero_based_index % 6) {
+                case 0:
+                    command.params.maybe_param1 = value;
+                    break;
+                case 1:
+                    command.params.maybe_param2 = value;
+                    break;
+                case 2:
+                    command.params.maybe_param3 = value;
+                    break;
+                case 3:
+                    command.params.maybe_param4 = value;
+                    break;
+                case 4:
+                    command.params.maybe_param5 = value;
+                    break;
+                case 5:
+                    command.params.maybe_param6 = value;
+                    break;
+            }
+            command.params.maybe_param7 = static_cast<float>(zero_based_index) / 6.0f;
         }
-        command.params.maybe_param7 = static_cast<float>(index) / 6.0f;
     }
 
     _system_impl->send_command_async(
