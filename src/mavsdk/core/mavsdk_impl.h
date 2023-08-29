@@ -141,7 +141,7 @@ private:
 
     Time _time{};
 
-    Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
+    Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::Custom};
 
     struct UserCallback {
         UserCallback() = default;
