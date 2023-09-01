@@ -6,6 +6,8 @@
 
 #include <array>
 #include <cmath>
+#include <coroutine>
+#include <exception>
 #include <functional>
 #include <limits>
 #include <memory>
@@ -131,7 +133,91 @@ public:
      *
      * @return Result of request.
      */
-    Result arm() const;
+    [[nodiscard]] Result arm() const;
+
+
+    /*struct ResultCoro {
+        struct promise_type;
+        using handle_type = std::coroutine_handle<promise_type>;
+
+        struct promise_type {
+            ResultCoro get_return_object() { 
+                return ResultCoro {
+                    handle_type::from_promise(*this)
+                };
+            }
+            std::suspend_never initial_suspend() { return {}; }
+            std::suspend_always final_suspend() noexcept { return {}; }
+            void unhandled_exception() { exception_ = std::current_exception(); }
+            void return_void() {}
+            std::suspend_always yield_value(Result value) {
+                value_ = value;
+                return {};
+            }
+
+            Result value_{};
+            std::exception_ptr exception_;
+        };
+
+        ResultCoro(handle_type h) : h_(h) {}
+        ResultCoro(const ResultCoro &) = delete;
+        ~ResultCoro() { h_.destroy(); }
+        
+        handle_type h_;
+        operator handle_type() const { return h_; }
+    };*/
+
+    struct task
+    {
+        struct promise_type
+        {
+            task get_return_object() { return {}; }
+            std::suspend_never initial_suspend() { return {}; }
+            std::suspend_never final_suspend() noexcept { return {}; }
+            void return_value(Result& result)
+            {
+                _result = result;
+            }
+            void unhandled_exception() {}
+
+            Result _result;
+        };
+    };
+
+    auto arm_coro_await()
+    {
+        struct awaiter : public std::suspend_always
+        {
+            awaiter(Action* plugin)
+            : _plugin(plugin)
+            {}
+
+            bool await_ready() { return true; }
+            void await_suspend(std::coroutine_handle<> handle)
+            { 
+                // use your third party lib call directly here.
+                _plugin->arm_async([handle, this](Result result)
+                { 
+                    _result = result;
+                    // call the handle to resume the coroutine
+                    handle(); 
+                });
+            }
+            void await_resume() {}
+
+            Action* _plugin;
+            Result _result{};
+        };
+        return awaiter{this};
+    }
+
+    task
+    arm_coro()
+    {
+        auto awaiter = arm_coro_await();
+        co_await awaiter;
+        co_return awaiter._result;
+    }
 
     /**
      * @brief Send command to disarm the drone.
