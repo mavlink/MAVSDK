@@ -55,6 +55,7 @@ private:
     std::mutex _mutex{};
     std::vector<WorkItem> _work_items{};
     std::vector<int> _deferred_message_cleanup{};
+    std::map<uint8_t, std::set<uint32_t>> _unsupported_message_ids{};
 };
 
 } // namespace mavsdk

@@ -46,40 +46,33 @@ void InfoImpl::deinit()
 
 void InfoImpl::enable()
 {
-    // We can't rely on System to request the autopilot_version,
-    // so we do it here, anyway.
-    _system_impl->send_autopilot_version_request();
-
     // We're going to retry until we have the version.
-    _system_impl->add_call_every([this]() { request_version_again(); }, 1.0f, &_call_every_cookie);
+    _system_impl->add_call_every(
+        [this]() { request_autopilot_version(); }, 1.0f, &_autopilot_info_call_every_cookie);
 
     // We're going to periodically ask for the flight information
-    if (_system_impl->autopilot() != SystemImpl::Autopilot::ArduPilot) {
-        _system_impl->send_flight_information_request();
-
-        _system_impl->add_call_every(
-            [this]() { request_flight_information(); }, 1.0f, &_flight_info_call_every_cookie);
-    }
+    _system_impl->add_call_every(
+        [this]() { request_flight_information(); }, 1.0f, &_flight_info_call_every_cookie);
 }
 
 void InfoImpl::disable()
 {
-    _system_impl->remove_call_every(_call_every_cookie);
+    _system_impl->remove_call_every(_autopilot_info_call_every_cookie);
     _system_impl->remove_call_every(_flight_info_call_every_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _information_received = false;
+        _autopilot_version_received = false;
         _flight_information_received = false;
     }
 }
 
-void InfoImpl::request_version_again()
+void InfoImpl::request_autopilot_version()
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        if (_information_received) {
-            _system_impl->remove_call_every(_call_every_cookie);
+        if (_autopilot_version_received) {
+            _system_impl->remove_call_every(_autopilot_info_call_every_cookie);
             return;
         }
     }
@@ -89,6 +82,8 @@ void InfoImpl::request_version_again()
 
 void InfoImpl::request_flight_information()
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     // We will request new flight information from the autopilot only if
     // we go from an armed to disarmed state or if we haven't received any
     // information yet
@@ -101,10 +96,10 @@ void InfoImpl::request_flight_information()
 
 void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     _version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
     _version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
@@ -126,20 +121,6 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     _version.os_sw_minor = (autopilot_version.os_sw_version >> (8 * 2)) & 0xFF;
     _version.os_sw_patch = (autopilot_version.os_sw_version >> (8 * 1)) & 0xFF;
 
-    // Debug() << "flight version: "
-    //     << _version.flight_sw_major
-    //     << "."
-    //     << _version.flight_sw_minor
-    //     << "."
-    //     << _version.flight_sw_patch;
-
-    // Debug() << "os version: "
-    //     << _version.os_sw_major
-    //     << "."
-    //     << _version.os_sw_minor
-    //     << "."
-    //     << _version.os_sw_patch;
-
     _version.os_sw_git_hash = swap_and_translate_binary_to_str(
         autopilot_version.os_custom_version, sizeof(autopilot_version.os_custom_version));
 
@@ -154,39 +135,15 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
 
     _identification.legacy_uid = autopilot_version.uid;
 
-    _information_received = true;
-}
-
-Info::Version::FlightSoftwareVersionType
-InfoImpl::get_flight_software_version_type(FIRMWARE_VERSION_TYPE firmwareVersionType)
-{
-    switch (firmwareVersionType) {
-        case FIRMWARE_VERSION_TYPE_DEV:
-            return Info::Version::FlightSoftwareVersionType::Dev;
-
-        case FIRMWARE_VERSION_TYPE_ALPHA:
-            return Info::Version::FlightSoftwareVersionType::Alpha;
-
-        case FIRMWARE_VERSION_TYPE_BETA:
-            return Info::Version::FlightSoftwareVersionType::Beta;
-
-        case FIRMWARE_VERSION_TYPE_RC:
-            return Info::Version::FlightSoftwareVersionType::Rc;
-
-        case FIRMWARE_VERSION_TYPE_OFFICIAL:
-            return Info::Version::FlightSoftwareVersionType::Release;
-
-        default:
-            return Info::Version::FlightSoftwareVersionType::Unknown;
-    }
+    _autopilot_version_received = true;
 }
 
 void InfoImpl::process_flight_information(const mavlink_message_t& message)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     mavlink_flight_information_t flight_information;
     mavlink_msg_flight_information_decode(&message, &flight_information);
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     _flight_info.time_boot_ms = flight_information.time_boot_ms;
     _flight_info.flight_uid = flight_information.flight_uuid;
@@ -194,91 +151,45 @@ void InfoImpl::process_flight_information(const mavlink_message_t& message)
     _flight_information_received = true;
 }
 
-std::string InfoImpl::swap_and_translate_binary_to_str(uint8_t* binary, unsigned binary_len)
-{
-    std::string str(binary_len * 2, '0');
-
-    for (unsigned i = 0; i < binary_len; ++i) {
-        // One hex number occupies 2 chars.
-        // The binary is in little endian, therefore we need to swap the bytes for us to read.
-        snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[binary_len - 1 - i]);
-    }
-
-    return str;
-}
-
-std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_len)
-{
-    std::string str(binary_len * 2 + 1, '0');
-
-    for (unsigned i = 0; i < binary_len; ++i) {
-        // One hex number occupies 2 chars.
-        snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[i]);
-    }
-
-    return str;
-}
-
 std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() const
 {
-    wait_for_information();
-
+    wait_for_autopilot_version();
     std::lock_guard<std::mutex> lock(_mutex);
+
     return std::make_pair<>(
-        (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
+        (_autopilot_version_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
         _identification);
 }
 
 std::pair<Info::Result, Info::Version> InfoImpl::get_version() const
 {
-    wait_for_information();
-
+    wait_for_autopilot_version();
     std::lock_guard<std::mutex> lock(_mutex);
 
     return std::make_pair<>(
-        (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
+        (_autopilot_version_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
         _version);
 }
 
 std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
 {
-    wait_for_information();
+    wait_for_autopilot_version();
     std::lock_guard<std::mutex> lock(_mutex);
 
     return std::make_pair<>(
-        (_information_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
+        (_autopilot_version_received ? Info::Result::Success : Info::Result::InformationNotReceivedYet),
         _product);
 }
 
 std::pair<Info::Result, Info::FlightInfo> InfoImpl::get_flight_information() const
 {
-    wait_for_information();
+    wait_for_flight_information();
     std::lock_guard<std::mutex> lock(_mutex);
 
     return std::make_pair<>(
         (_flight_information_received ? Info::Result::Success :
                                         Info::Result::InformationNotReceivedYet),
         _flight_info);
-}
-
-const std::string InfoImpl::vendor_id_str(uint16_t vendor_id)
-{
-    switch (vendor_id) {
-        case 0x26ac:
-            return "3D Robotics Inc.";
-        default:
-            return "undefined";
-    }
-}
-
-const std::string InfoImpl::product_id_str(uint16_t product_id)
-{
-    switch (product_id) {
-        case 0x0010:
-            return "H520";
-        default:
-            return "undefined";
-    }
 }
 
 void InfoImpl::process_attitude(const mavlink_message_t& message)
@@ -320,15 +231,155 @@ std::pair<Info::Result, double> InfoImpl::get_speed_factor() const
     return std::make_pair<>(Info::Result::Success, speed_factor);
 }
 
-void InfoImpl::wait_for_information() const
+void InfoImpl::wait_for_flight_information() const
 {
     // Wait 1.5 seconds max
     for (unsigned i = 0; i < 150; ++i) {
-        if (_information_received) {
+        if (_flight_information_received) {
             break;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+}
+
+void InfoImpl::wait_for_autopilot_version() const
+{
+    // Wait 1.5 seconds max
+    for (unsigned i = 0; i < 150; ++i) {
+        if (_autopilot_version_received) {
+            break;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+Info::Version::FlightSoftwareVersionType
+InfoImpl::get_flight_software_version_type(FIRMWARE_VERSION_TYPE firmwareVersionType)
+{
+    switch (firmwareVersionType) {
+        case FIRMWARE_VERSION_TYPE_DEV:
+            return Info::Version::FlightSoftwareVersionType::Dev;
+
+        case FIRMWARE_VERSION_TYPE_ALPHA:
+            return Info::Version::FlightSoftwareVersionType::Alpha;
+
+        case FIRMWARE_VERSION_TYPE_BETA:
+            return Info::Version::FlightSoftwareVersionType::Beta;
+
+        case FIRMWARE_VERSION_TYPE_RC:
+            return Info::Version::FlightSoftwareVersionType::Rc;
+
+        case FIRMWARE_VERSION_TYPE_OFFICIAL:
+            return Info::Version::FlightSoftwareVersionType::Release;
+
+        default:
+            return Info::Version::FlightSoftwareVersionType::Unknown;
+    }
+}
+
+const std::string InfoImpl::vendor_id_str(uint16_t vendor_id)
+{
+    switch (vendor_id) {
+        case 0x0483:
+            return "ST Microelectronics";
+        case 0x1209:
+            return "pid.codes";
+        case 0x16D0:
+            return "mcselec";
+        case 0x26AC:
+            return "3D Robotics";
+        case 0x27AC:
+            return "Laser Navigation";
+        case 0x2DAE:
+            return "Hex";
+        case 0x3162:
+            return "Holybro";
+        default:
+            return "Undefined";
+    }
+}
+
+const std::string InfoImpl::product_id_str(uint16_t product_id)
+{
+    switch (product_id) {
+        case 0x0010:
+            return "H520";
+        case 0x004B:
+            return "Durandal";
+        case 0x1001:
+            return "CubeBlack bootloader";
+        case 0x1002:
+            return "CubeYellow bootloader";
+        case 0x1005:
+            return "CubePurple bootloader";
+        case 0x1011:
+            return "CubeBlack";
+        case 0x1012:
+            return "CubeYellow";
+        case 0x1015:
+            return "CubePurple";
+        case 0x1016:
+            return "CubeOrange";
+        case 0x1101:
+            return "CubeBlack+";
+        case 0x1151:
+            return "VRBrain-v51";
+        case 0x1152:
+            return "VRBrain-v52";
+        case 0x1154:
+            return "VRBrain-v54";
+        case 0x1351:
+            return "VRUBrain-v51";
+        case 0x1910:
+            return "VRCore-v10";
+        case 0x5740:
+        case 0x5741:
+        case 0x0E65:
+        default:
+            return "Undefined";
+    }
+}
+
+const std::pair<std::string,std::string>
+InfoImpl::usb_id_str(uint16_t vendor_id, uint16_t product_id) {
+    // https://pid.codes/
+    constexpr std::map<std::pair<uint16_t,uint16_t>,std::string> mapping = {
+        {{0x2DAE,0x1101},{"Hex","CubeBlack+"}},
+        {{0x2DAE,0x1001},{"Hex","CubeBlack bootloader"}},
+        {{0x2DAE,0x1011},{"Hex","CubeBlack"}},
+        {{0x2DAE,0x1016},{"Hex","CubeOrange"}},
+        {{0x2DAE,0x1005},{"Hex","CubePurple bootloader"}},
+        {{0x2DAE,0x1015},{"Hex","CubePurple"}},
+        {{0x2DAE,0x1002},{"Hex","CubeYellow bootloader"}},
+        {{0x2DAE,0x1012},{"Hex","CubeYellow"}},
+    };
+
+    return mapping[{vendor_id,product_id}];
+}
+
+std::string InfoImpl::swap_and_translate_binary_to_str(uint8_t* binary, unsigned binary_len)
+{
+    std::string str(binary_len * 2, '0');
+
+    for (unsigned i = 0; i < binary_len; ++i) {
+        // One hex number occupies 2 chars.
+        // The binary is in little endian, therefore we need to swap the bytes for us to read.
+        snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[binary_len - 1 - i]);
+    }
+
+    return str;
+}
+
+std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_len)
+{
+    std::string str(binary_len * 2 + 1, '0');
+
+    for (unsigned i = 0; i < binary_len; ++i) {
+        // One hex number occupies 2 chars.
+        snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[i]);
+    }
+
+    return str;
 }
 
 } // namespace mavsdk

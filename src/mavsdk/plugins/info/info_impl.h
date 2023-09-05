@@ -31,29 +31,27 @@ public:
     InfoImpl& operator=(const InfoImpl&) = delete;
 
 private:
-    void request_version_again();
+    void request_autopilot_version();
     void request_flight_information();
-    void process_heartbeat(const mavlink_message_t& message);
     void process_autopilot_version(const mavlink_message_t& message);
     void process_flight_information(const mavlink_message_t& message);
     void process_attitude(const mavlink_message_t& message);
 
-    Info::Version::FlightSoftwareVersionType
-        get_flight_software_version_type(FIRMWARE_VERSION_TYPE);
+    void wait_for_autopilot_version() const;
+    void wait_for_flight_information() const;
 
-    void wait_for_information() const;
-
-    mutable std::mutex _mutex{};
+    mutable std::mutex _autopilot_version_mutex{};
+    mutable std::mutex _flight_information_mutex{};
 
     Info::Version _version{};
     Info::Product _product{};
     Info::Identification _identification{};
     Info::FlightInfo _flight_info{};
-    std::atomic<bool> _information_received{false};
+    std::atomic<bool> _autopilot_version_received{false};
     bool _flight_information_received{false};
     bool _was_armed{false};
 
-    void* _call_every_cookie{nullptr};
+    void* _autopilot_info_call_every_cookie{nullptr};
     void* _flight_info_call_every_cookie{nullptr};
 
     struct SpeedFactorMeasurement {
@@ -73,8 +71,13 @@ private:
     SteadyTimePoint _last_time_attitude_arrived{};
     uint32_t _last_time_boot_ms{0};
 
+    static Info::Version::FlightSoftwareVersionType
+        get_flight_software_version_type(FIRMWARE_VERSION_TYPE);
+
     static const std::string vendor_id_str(uint16_t vendor_id);
     static const std::string product_id_str(uint16_t product_id);
+    static const std::pair<std::string,std::string>
+        InfoImpl::usb_id_str(uint16_t vendor_id, uint16_t product_id);
 
     static std::string swap_and_translate_binary_to_str(uint8_t* binary, unsigned binary_len);
     static std::string translate_binary_to_str(uint8_t* binary, unsigned binary_len);
