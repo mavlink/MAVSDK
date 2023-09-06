@@ -3847,7 +3847,7 @@ class MissionImportData final :
     kGeofenceItemsFieldNumber = 2,
     kRallyItemsFieldNumber = 3,
     kPlannedHomePositionFieldNumber = 5,
-    kHasPlannedHomePositionFieldNumber = 4,
+    kHasPlannedHomeFieldNumber = 4,
   };
   // repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
   int mission_items_size() const;
@@ -3921,13 +3921,13 @@ class MissionImportData final :
       ::mavsdk::rpc::mission_raw::MissionItem* planned_home_position);
   ::mavsdk::rpc::mission_raw::MissionItem* unsafe_arena_release_planned_home_position();
 
-  // bool has_planned_home_position = 4;
-  void clear_has_planned_home_position();
-  bool has_planned_home_position() const;
-  void set_has_planned_home_position(bool value);
+  // bool has_planned_home = 4;
+  void clear_has_planned_home();
+  bool has_planned_home() const;
+  void set_has_planned_home(bool value);
   private:
-  bool _internal_has_planned_home_position() const;
-  void _internal_set_has_planned_home_position(bool value);
+  bool _internal_has_planned_home() const;
+  void _internal_set_has_planned_home(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.MissionImportData)
@@ -3941,7 +3941,7 @@ class MissionImportData final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > geofence_items_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > rally_items_;
   ::mavsdk::rpc::mission_raw::MissionItem* planned_home_position_;
-  bool has_planned_home_position_;
+  bool has_planned_home_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
 };
@@ -5835,24 +5835,24 @@ MissionImportData::rally_items() const {
   return rally_items_;
 }
 
-// bool has_planned_home_position = 4;
-inline void MissionImportData::clear_has_planned_home_position() {
-  has_planned_home_position_ = false;
+// bool has_planned_home = 4;
+inline void MissionImportData::clear_has_planned_home() {
+  has_planned_home_ = false;
 }
-inline bool MissionImportData::_internal_has_planned_home_position() const {
-  return has_planned_home_position_;
+inline bool MissionImportData::_internal_has_planned_home() const {
+  return has_planned_home_;
 }
-inline bool MissionImportData::has_planned_home_position() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionImportData.has_planned_home_position)
-  return _internal_has_planned_home_position();
+inline bool MissionImportData::has_planned_home() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionImportData.has_planned_home)
+  return _internal_has_planned_home();
 }
-inline void MissionImportData::_internal_set_has_planned_home_position(bool value) {
+inline void MissionImportData::_internal_set_has_planned_home(bool value) {
   
-  has_planned_home_position_ = value;
+  has_planned_home_ = value;
 }
-inline void MissionImportData::set_has_planned_home_position(bool value) {
-  _internal_set_has_planned_home_position(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.MissionImportData.has_planned_home_position)
+inline void MissionImportData::set_has_planned_home(bool value) {
+  _internal_set_has_planned_home(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.MissionImportData.has_planned_home)
 }
 
 // .mavsdk.rpc.mission_raw.MissionItem planned_home_position = 5;

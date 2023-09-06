@@ -150,7 +150,7 @@ public:
             ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
         }
 
-        rpc_obj->set_has_planned_home_position(mission_import_data.has_planned_home_position);
+        rpc_obj->set_has_planned_home(mission_import_data.has_planned_home);
 
         rpc_obj->set_allocated_planned_home_position(
             translateToRpcMissionItem(mission_import_data.planned_home_position).release());
@@ -178,7 +178,7 @@ public:
                 static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
         }
 
-        obj.has_planned_home_position = mission_import_data.has_planned_home_position();
+        obj.has_planned_home = mission_import_data.has_planned_home();
 
         obj.planned_home_position =
             translateFromRpcMissionItem(mission_import_data.planned_home_position());

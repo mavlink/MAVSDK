@@ -170,8 +170,7 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& missi
 bool operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs)
 {
     return (rhs.mission_items == lhs.mission_items) && (rhs.geofence_items == lhs.geofence_items) &&
-           (rhs.rally_items == lhs.rally_items) &&
-           (rhs.has_planned_home_position == lhs.has_planned_home_position) &&
+           (rhs.rally_items == lhs.rally_items) && (rhs.has_planned_home == lhs.has_planned_home) &&
            (rhs.planned_home_position == lhs.planned_home_position);
 }
 
@@ -201,8 +200,7 @@ operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_impor
         str << *it;
         str << (it + 1 != mission_import_data.rally_items.end() ? ", " : "]\n");
     }
-    str << "    has_planned_home_position: " << mission_import_data.has_planned_home_position
-        << '\n';
+    str << "    has_planned_home: " << mission_import_data.has_planned_home << '\n';
     str << "    planned_home_position: " << mission_import_data.planned_home_position << '\n';
     str << '}';
     return str;
