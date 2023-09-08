@@ -200,6 +200,9 @@ void CameraImpl::manual_enable()
     _parent->add_call_every(
         [this]() { request_camera_information(); }, 10.0, &_camera_information_call_every_cookie);
 
+    _parent->add_call_every(
+        [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
+
     // for backwards compatibility with Yuneec drones
     if (_parent->has_autopilot()) {
         request_flight_information();
@@ -222,6 +225,7 @@ void CameraImpl::manual_disable()
 {
     invalidate_params();
     _parent->remove_call_every(_camera_information_call_every_cookie);
+    // TODO: should this remove_call_every for _status.call_every_cookie?
 
     if (_flight_information_call_every_cookie) {
         _parent->remove_call_every(_flight_information_call_every_cookie);
@@ -582,21 +586,6 @@ void CameraImpl::subscribe_information(const Camera::InformationCallback& callba
 {
     std::lock_guard<std::mutex> lock(_information.mutex);
     _information.subscription_callback = callback;
-
-    // If there was already a subscription, cancel the call
-    if (_status.call_every_cookie) {
-        _parent->remove_call_every(_status.call_every_cookie);
-    }
-
-    if (callback) {
-        if (_status.call_every_cookie == nullptr) {
-            _parent->add_call_every(
-                [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
-        }
-    } else {
-        _parent->remove_call_every(_status.call_every_cookie);
-        _status.call_every_cookie = nullptr;
-    }
 }
 
 Camera::Result CameraImpl::start_video_streaming()
@@ -849,18 +838,7 @@ void CameraImpl::request_status()
 void CameraImpl::subscribe_status(const Camera::StatusCallback callback)
 {
     std::lock_guard<std::mutex> lock(_status.mutex);
-
     _status.subscription_callback = callback;
-
-    if (callback) {
-        if (_status.call_every_cookie == nullptr) {
-            _parent->add_call_every(
-                [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
-        }
-    } else {
-        _parent->remove_call_every(_status.call_every_cookie);
-        _status.call_every_cookie = nullptr;
-    }
 }
 
 Camera::Status CameraImpl::status()
