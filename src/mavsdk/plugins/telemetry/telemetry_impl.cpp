@@ -2407,7 +2407,7 @@ void TelemetryImpl::check_calibration()
         std::lock_guard<std::mutex> lock(_health_mutex);
         if ((_has_received_gyro_calibration && _has_received_accel_calibration &&
              _has_received_mag_calibration) ||
-            _has_received_hitl_param) {
+            _hitl_enabled) {
             _parent->remove_call_every(_calibration_cookie);
             return;
         }
