@@ -450,6 +450,10 @@ void ActionImpl::goto_location_async(
 
             command.command = MAV_CMD_DO_REPOSITION;
             command.target_component_id = _system_impl->get_autopilot_id();
+			// When ArduPilot we need to set frame to Global i.e. positive altitude over mean sea level (MSL)
+			if (_system_impl->autopilot() != SystemImpl::Autopilot::Px4) {
+				command.frame = MAV_FRAME_GLOBAL;
+			}
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
@@ -460,21 +464,25 @@ void ActionImpl::goto_location_async(
                     command_result_callback(result, callback);
                 });
         };
-
-    // Change to Hold mode first
-    if (_system_impl->get_flight_mode() != FlightMode::Hold) {
-        _system_impl->set_flight_mode_async(
-            FlightMode::Hold,
-            [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
-                Action::Result action_result = action_result_from_command_result(result);
-                if (action_result != Action::Result::Success) {
-                    command_result_callback(result, callback);
-                    return;
-                }
-                send_do_reposition();
-            });
-        return;
-    }
+	// If PX4 change to Hold mode first
+	FlightMode gotoFlightMode = FlightMode::Hold;
+	// If ArduPilot change to Offboard mode first
+	if (_system_impl->autopilot() != SystemImpl::Autopilot::Px4) {
+		gotoFlightMode = FlightMode::Offboard;
+	}
+	if (_system_impl->get_flight_mode() != gotoFlightMode) {
+		_system_impl->set_flight_mode_async(
+			gotoFlightMode,
+			[this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
+				Action::Result action_result = action_result_from_command_result(result);
+				if (action_result != Action::Result::Success) {
+					command_result_callback(result, callback);
+					return;
+				}
+				send_do_reposition();
+			});
+		return;
+	}  
 
     send_do_reposition();
 }
