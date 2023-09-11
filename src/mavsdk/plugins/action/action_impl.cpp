@@ -473,7 +473,7 @@ void ActionImpl::goto_location_async(
     }
     if (_system_impl->get_flight_mode() != gotoFlightMode) {
         _system_impl->set_flight_mode_async(
-            gotoFlightMode,
+            goto_flight_mode,
             [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
                 Action::Result action_result = action_result_from_command_result(result);
                 if (action_result != Action::Result::Success) {
