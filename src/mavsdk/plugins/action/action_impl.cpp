@@ -465,11 +465,11 @@ void ActionImpl::goto_location_async(
                     command_result_callback(result, callback);
                 });
         };
-    // If PX4 change to Hold mode first
-    FlightMode gotoFlightMode = FlightMode::Hold;
-    // If ArduPilot change to Offboard mode first
-    if (_system_impl->autopilot() != SystemImpl::Autopilot::Px4) {
-        gotoFlightMode = FlightMode::Offboard;
+    FlightMode goto_flight_mode;
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::Px4) {
+        goto_flight_mode = FlightMode::Hold;
+    } else {
+        goto_flight_mode = FlightMode::Offboard;
     }
     if (_system_impl->get_flight_mode() != gotoFlightMode) {
         _system_impl->set_flight_mode_async(
