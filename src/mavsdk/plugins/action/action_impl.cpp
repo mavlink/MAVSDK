@@ -450,11 +450,7 @@ void ActionImpl::goto_location_async(
 
             command.command = MAV_CMD_DO_REPOSITION;
             command.target_component_id = _system_impl->get_autopilot_id();
-            // When ArduPilot we need to set frame to Global i.e. positive altitude over mean sea
-            // level (MSL)
-            if (_system_impl->autopilot() != SystemImpl::Autopilot::Px4) {
-                command.frame = MAV_FRAME_GLOBAL;
-            }
+            command.frame = MAV_FRAME_GLOBAL_INT;
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
