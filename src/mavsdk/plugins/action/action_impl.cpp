@@ -467,7 +467,7 @@ void ActionImpl::goto_location_async(
     } else {
         goto_flight_mode = FlightMode::Offboard;
     }
-    if (_system_impl->get_flight_mode() != gotoFlightMode) {
+    if (_system_impl->get_flight_mode() != goto_flight_mode) {
         _system_impl->set_flight_mode_async(
             goto_flight_mode,
             [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
