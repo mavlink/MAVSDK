@@ -450,6 +450,7 @@ void ActionImpl::goto_location_async(
 
             command.command = MAV_CMD_DO_REPOSITION;
             command.target_component_id = _system_impl->get_autopilot_id();
+            command.frame = MAV_FRAME_GLOBAL_INT;
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
@@ -460,11 +461,15 @@ void ActionImpl::goto_location_async(
                     command_result_callback(result, callback);
                 });
         };
-
-    // Change to Hold mode first
-    if (_system_impl->get_flight_mode() != FlightMode::Hold) {
+    FlightMode goto_flight_mode;
+    if (_system_impl->autopilot() == SystemImpl::Autopilot::Px4) {
+        goto_flight_mode = FlightMode::Hold;
+    } else {
+        goto_flight_mode = FlightMode::Offboard;
+    }
+    if (_system_impl->get_flight_mode() != goto_flight_mode) {
         _system_impl->set_flight_mode_async(
-            FlightMode::Hold,
+            goto_flight_mode,
             [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
                 Action::Result action_result = action_result_from_command_result(result);
                 if (action_result != Action::Result::Success) {
