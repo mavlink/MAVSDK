@@ -210,6 +210,8 @@ void CameraImpl::manual_enable()
     _system_impl->add_call_every(
         [this]() { request_camera_information(); }, 10.0, &_camera_information_call_every_cookie);
 
+    _system_impl->add_call_every([this]() { request_status(); }, 5.0, &_status.call_every_cookie);
+
     // for backwards compatibility with Yuneec drones
     if (_system_impl->has_autopilot()) {
         request_flight_information();
@@ -232,6 +234,7 @@ void CameraImpl::manual_disable()
 {
     invalidate_params();
     _system_impl->remove_call_every(_camera_information_call_every_cookie);
+    _system_impl->remove_call_every(_status.call_every_cookie);
 
     if (_flight_information_call_every_cookie) {
         _system_impl->remove_call_every(_flight_information_call_every_cookie);
@@ -597,21 +600,6 @@ CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
     std::lock_guard<std::mutex> lock(_information.mutex);
     auto handle = _information.subscription_callbacks.subscribe(callback);
 
-    // If there was already a subscription, cancel the call
-    if (_status.call_every_cookie) {
-        _system_impl->remove_call_every(_status.call_every_cookie);
-    }
-
-    if (callback) {
-        if (_status.call_every_cookie == nullptr) {
-            _system_impl->add_call_every(
-                [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
-        }
-    } else {
-        _system_impl->remove_call_every(_status.call_every_cookie);
-        _status.call_every_cookie = nullptr;
-    }
-
     return handle;
 }
 
@@ -889,18 +877,7 @@ void CameraImpl::request_status()
 Camera::StatusHandle CameraImpl::subscribe_status(const Camera::StatusCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_status.mutex);
-
     auto handle = _status.subscription_callbacks.subscribe(callback);
-
-    if (callback) {
-        if (_status.call_every_cookie == nullptr) {
-            _system_impl->add_call_every(
-                [this]() { request_status(); }, 5.0, &_status.call_every_cookie);
-        }
-    } else {
-        _system_impl->remove_call_every(_status.call_every_cookie);
-        _status.call_every_cookie = nullptr;
-    }
 
     return handle;
 }
