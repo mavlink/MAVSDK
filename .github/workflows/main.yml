@@ -230,40 +230,6 @@ jobs:
       - name: Build package
         run: dpkg-buildpackage -us -uc -b
 
-  rpm-package:
-    name: ${{ matrix.container_name }} (package, non-mavsdk_server)
-    runs-on: ubuntu-20.04
-    container: mavsdk/mavsdk-${{ matrix.container_name }}
-    strategy:
-      matrix:
-        container_name: [fedora-34, fedora-35, fedora-36]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-      - name: git permission workaround
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global --add safe.directory /github/workspace
-      - name: install dependencies
-        run: yum -y install perl-IPC-Cmd perl-Pod-Html
-      - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=OFF  -Bbuild/release -H.
-      - name: build
-        run: cmake --build build/release --target install -- -j2
-      - name: Package
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: tools/create_packages.sh ./install . x86_64 mavsdk-devel
-      - name: Publish artefacts
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: svenstaro/upload-release-action@v1-release
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file_glob: true
-          file: '*.rpm'
-          tag: ${{ github.ref }}
-          overwrite: true
-
   dockcross-linux-arm:
     name: linux-${{ matrix.arch_name }}
     runs-on: ubuntu-20.04
