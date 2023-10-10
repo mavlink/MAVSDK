@@ -133,6 +133,7 @@ private:
     void process_video_stream_status(const mavlink_message_t& message);
     void process_flight_information(const mavlink_message_t& message);
 
+    Camera::Status::StorageStatus storage_status_from_mavlink(const int storage_status) const;
     Camera::Status::StorageType storage_type_from_mavlink(const int storage_type) const;
 
     Camera::EulerAngle to_euler_angle_from_quaternion(Camera::Quaternion quaternion);

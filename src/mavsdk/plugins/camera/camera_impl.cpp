@@ -894,25 +894,7 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
 
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
-        switch (storage_information.status) {
-            case STORAGE_STATUS_EMPTY:
-                _status.data.storage_status = Camera::Status::StorageStatus::NotAvailable;
-                break;
-            case STORAGE_STATUS_UNFORMATTED:
-                _status.data.storage_status = Camera::Status::StorageStatus::Unformatted;
-                break;
-            case STORAGE_STATUS_READY:
-                _status.data.storage_status = Camera::Status::StorageStatus::Formatted;
-                break;
-            case STORAGE_STATUS_NOT_SUPPORTED:
-                _status.data.storage_status = Camera::Status::StorageStatus::NotSupported;
-                break;
-            default:
-                _status.data.storage_status = Camera::Status::StorageStatus::NotSupported;
-                LogErr() << "Unknown storage status received.";
-                break;
-        }
-
+        _status.data.storage_status = storage_status_from_mavlink(storage_information.status);
         _status.data.available_storage_mib = storage_information.available_capacity;
         _status.data.used_storage_mib = storage_information.used_capacity;
         _status.data.total_storage_mib = storage_information.total_capacity;
@@ -922,6 +904,25 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
     }
 
     check_status();
+}
+
+Camera::Status::StorageStatus
+CameraImpl::storage_status_from_mavlink(const int storage_status) const
+{
+    switch (storage_status) {
+        case STORAGE_STATUS_EMPTY:
+            return Camera::Status::StorageStatus::NotAvailable;
+        case STORAGE_STATUS_UNFORMATTED:
+            return Camera::Status::StorageStatus::Unformatted;
+        case STORAGE_STATUS_READY:
+            return Camera::Status::StorageStatus::Formatted;
+            break;
+        case STORAGE_STATUS_NOT_SUPPORTED:
+            return Camera::Status::StorageStatus::NotSupported;
+        default:
+            LogErr() << "Unknown storage status received.";
+            return Camera::Status::StorageStatus::NotSupported;
+    }
 }
 
 Camera::Status::StorageType
