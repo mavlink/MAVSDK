@@ -917,13 +917,35 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
         _status.data.used_storage_mib = storage_information.used_capacity;
         _status.data.total_storage_mib = storage_information.total_capacity;
         _status.data.storage_id = storage_information.storage_id;
-        _status.data.storage_type =
-            static_cast<Camera::Status::StorageType>(storage_information.type);
+        _status.data.storage_type = storage_type_from_mavlink(storage_information.type);
         _status.received_storage_information = true;
     }
 
     check_status();
 }
+
+Camera::Status::StorageType
+CameraImpl::storage_type_from_mavlink(const int storage_type) const
+{
+    switch (storage_type) {
+        default:
+            LogErr() << "Unknown storage_type enum value: " << storage_type;
+        // FALLTHROUGH
+        case STORAGE_TYPE_UNKNOWN:
+            return mavsdk::Camera::Status::StorageType::Unknown;
+        case STORAGE_TYPE_USB_STICK:
+            return mavsdk::Camera::Status::StorageType::UsbStick;
+        case STORAGE_TYPE_SD:
+            return mavsdk::Camera::Status::StorageType::Sd;
+        case STORAGE_TYPE_MICROSD:
+            return mavsdk::Camera::Status::StorageType::Microsd;
+        case STORAGE_TYPE_HD:
+            return mavsdk::Camera::Status::StorageType::Hd;
+        case STORAGE_TYPE_OTHER:
+            return mavsdk::Camera::Status::StorageType::Other;
+    }
+}
+
 
 void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
 {
