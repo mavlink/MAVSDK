@@ -925,8 +925,7 @@ CameraImpl::storage_status_from_mavlink(const int storage_status) const
     }
 }
 
-Camera::Status::StorageType
-CameraImpl::storage_type_from_mavlink(const int storage_type) const
+Camera::Status::StorageType CameraImpl::storage_type_from_mavlink(const int storage_type) const
 {
     switch (storage_type) {
         default:
@@ -946,7 +945,6 @@ CameraImpl::storage_type_from_mavlink(const int storage_type) const
             return mavsdk::Camera::Status::StorageType::Other;
     }
 }
-
 
 void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
 {
