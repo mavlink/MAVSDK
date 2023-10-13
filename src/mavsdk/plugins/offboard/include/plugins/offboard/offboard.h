@@ -122,7 +122,7 @@ public:
      *
      * One group support eight controls.
      *
-     * Up to 16 actuator controls can be set. To ignore an output group, set all it conrols to NaN.
+     * Up to 16 actuator controls can be set. To ignore an output group, set all it controls to NaN.
      * If one or more controls in group is not NaN, then all NaN controls will sent as zero.
      * The first 8 actuator controls internally map to control group 0, the latter 8 actuator
      * controls map to control group 1. Depending on what controls are set (instead of NaN) 1 or 2
