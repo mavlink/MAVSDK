@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "mavlink_mission_transfer.h" // FIXME: remove this dependency
+#include "autopilot.h"
 
 namespace mavsdk {
 
@@ -26,8 +27,8 @@ enum class FlightMode {
     Stabilized,
 };
 
-FlightMode to_flight_mode_from_custom_mode(
-    Sender::Autopilot autopilot, MAV_TYPE mav_type, uint32_t custom_mode);
+FlightMode
+to_flight_mode_from_custom_mode(Autopilot autopilot, MAV_TYPE mav_type, uint32_t custom_mode);
 FlightMode to_flight_mode_from_px4_mode(uint32_t custom_mode);
 FlightMode to_flight_mode_from_ardupilot_rover_mode(uint32_t custom_mode);
 FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode);

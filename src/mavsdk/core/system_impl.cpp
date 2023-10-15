@@ -20,14 +20,13 @@ template class CallbackList<bool>;
 template class CallbackList<System::ComponentType>;
 template class CallbackList<System::ComponentType, uint8_t>;
 
-SystemImpl::SystemImpl(MavsdkImpl& parent) :
-    Sender(),
-    _mavsdk_impl(parent),
+SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
+    _mavsdk_impl(mavsdk_impl),
     _command_sender(*this),
     _timesync(*this),
     _ping(*this),
     _mission_transfer(
-        *this,
+        _mavsdk_impl,
         _mavsdk_impl.mavlink_message_handler,
         _mavsdk_impl.timeout_handler,
         [this]() { return timeout_s(); }),
@@ -1329,10 +1328,11 @@ MavlinkParameterClient* SystemImpl::param_sender(uint8_t component_id, bool exte
 
     _mavlink_parameter_clients.push_back(
         {std::make_unique<MavlinkParameterClient>(
-             *this,
+             _mavsdk_impl,
              _mavsdk_impl.mavlink_message_handler,
              _mavsdk_impl.timeout_handler,
              [this]() { return timeout_s(); },
+             get_system_id(),
              component_id,
              extended),
          component_id,

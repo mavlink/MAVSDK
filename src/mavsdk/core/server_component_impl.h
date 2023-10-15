@@ -33,7 +33,7 @@ public:
         bool send_message(mavlink_message_t& message) override;
         [[nodiscard]] uint8_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
-        [[nodiscard]] uint8_t get_system_id() const override;
+        [[nodiscard]] uint8_t channel() const override;
         [[nodiscard]] Autopilot autopilot() const override;
 
         uint8_t current_target_system_id{0};

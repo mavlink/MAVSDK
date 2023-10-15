@@ -372,15 +372,17 @@ uint8_t ServerComponentImpl::OurSender::get_own_component_id() const
 {
     return _server_component_impl.get_own_component_id();
 }
-uint8_t ServerComponentImpl::OurSender::get_system_id() const
+
+uint8_t ServerComponentImpl::OurSender::channel() const
 {
-    return current_target_system_id;
+    // FIXME
+    return 0;
 }
 
-Sender::Autopilot ServerComponentImpl::OurSender::autopilot() const
+Autopilot ServerComponentImpl::OurSender::autopilot() const
 {
     // FIXME: hard-coded to PX4 for now to avoid the dependency into mavsdk_impl.
-    return Sender::Autopilot::Px4;
+    return Autopilot::Px4;
 }
 
 } // namespace mavsdk

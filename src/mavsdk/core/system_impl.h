@@ -1,5 +1,6 @@
 #pragma once
 
+#include "autopilot.h"
 #include "callback_list.h"
 #include "flight_mode.h"
 #include "mavlink_address.h"
@@ -35,10 +36,10 @@ class PluginImplBase;
 
 // This class is the impl of System. This is to hide the private methods
 // and functionality from the public library API.
-class SystemImpl : public Sender {
+class SystemImpl {
 public:
     explicit SystemImpl(MavsdkImpl& parent);
-    ~SystemImpl() override;
+    ~SystemImpl();
 
     void init(uint8_t system_id, uint8_t comp_id);
 
@@ -75,9 +76,9 @@ public:
         std::function<void(const MavlinkStatustextHandler::Statustext&)>, void* cookie);
     void unregister_statustext_handler(void* cookie);
 
-    bool send_message(mavlink_message_t& message) override;
+    bool send_message(mavlink_message_t& message);
 
-    Autopilot autopilot() const override { return _autopilot; };
+    Autopilot autopilot() const { return _autopilot; };
 
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
 
@@ -119,13 +120,13 @@ public:
     bool has_camera(int camera_id = -1) const;
     bool has_gimbal() const;
 
-    uint8_t get_system_id() const override;
+    uint8_t get_system_id() const;
     std::vector<uint8_t> component_ids() const;
 
     void set_system_id(uint8_t system_id);
 
-    uint8_t get_own_system_id() const override;
-    uint8_t get_own_component_id() const override;
+    uint8_t get_own_system_id() const;
+    uint8_t get_own_component_id() const;
     uint8_t get_own_mav_type() const;
     MAV_TYPE get_vehicle_type() const;
 

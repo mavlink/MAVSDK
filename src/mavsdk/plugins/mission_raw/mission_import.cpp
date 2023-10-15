@@ -7,7 +7,7 @@
 namespace mavsdk {
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
-MissionImport::parse_json(const std::string& raw_json, Sender::Autopilot autopilot)
+MissionImport::parse_json(const std::string& raw_json, Autopilot autopilot)
 {
     Json::CharReaderBuilder builder;
     const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
@@ -60,7 +60,7 @@ bool MissionImport::check_overall_version(const Json::Value& root)
 }
 
 std::optional<std::vector<MissionRaw::MissionItem>>
-MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopilot)
+MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
 {
     // We need a mission part.
     const auto mission = root["mission"];
@@ -119,7 +119,7 @@ MissionImport::import_mission(const Json::Value& root, Sender::Autopilot autopil
     }
 
     // Add home position at 0 for ArduPilot
-    if (autopilot == Sender::Autopilot::ArduPilot) {
+    if (autopilot == Autopilot::ArduPilot) {
         const auto home = mission["plannedHomePosition"];
         if (!home.empty()) {
             if (home.isArray() && home.size() != 3) {

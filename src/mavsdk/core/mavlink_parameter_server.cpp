@@ -471,7 +471,7 @@ void MavlinkParameterServer::do_work()
                         specific.param_index);
                 } else {
                     float param_value;
-                    if (_sender.autopilot() == Sender::Autopilot::ArduPilot) {
+                    if (_sender.autopilot() == Autopilot::ArduPilot) {
                         param_value = work->param_value.get_4_float_bytes_cast();
                     } else {
                         param_value = work->param_value.get_4_float_bytes_bytewise();

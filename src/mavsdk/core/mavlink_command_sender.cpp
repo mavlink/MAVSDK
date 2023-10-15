@@ -472,7 +472,7 @@ float MavlinkCommandSender::maybe_reserved(const std::optional<float>& maybe_par
         return maybe_param.value();
 
     } else {
-        if (_system_impl.autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        if (_system_impl.autopilot() == Autopilot::ArduPilot) {
             return 0.0f;
         } else {
             return NAN;

@@ -149,7 +149,8 @@ void MissionRawServerImpl::init()
             LogDebug() << "Receive Mission Count in Server";
 
             // Decode the count
-            _target_component = message.compid;
+            _target_system_id = message.sysid;
+            _target_component_id = message.compid;
             mavlink_mission_count_t count;
             mavlink_msg_mission_count_decode(&message, &count);
             _mission_count = count.count;
@@ -173,7 +174,8 @@ void MissionRawServerImpl::init()
                     _server_component_impl->mission_transfer().receive_incoming_items_async(
                         MAV_MISSION_TYPE_MISSION,
                         _mission_count,
-                        _target_component,
+                        _target_system_id,
+                        _target_component_id,
                         [this](
                             MavlinkMissionTransfer::Result result,
                             std::vector<MavlinkMissionTransfer::ItemInt> items) {

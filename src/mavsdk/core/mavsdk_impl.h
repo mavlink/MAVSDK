@@ -17,13 +17,14 @@
 #include "mavlink_command_receiver.h"
 #include "safe_queue.h"
 #include "server_component.h"
+#include "sender.h"
 #include "system.h"
 #include "timeout_handler.h"
 #include "callback_list.h"
 
 namespace mavsdk {
 
-class MavsdkImpl {
+class MavsdkImpl : public Sender {
 public:
     /** @brief Default System ID for GCS configuration type. */
     static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
@@ -51,7 +52,6 @@ public:
 
     void forward_message(mavlink_message_t& message, Connection* connection);
     void receive_message(mavlink_message_t& message, Connection* connection);
-    bool send_message(mavlink_message_t& message);
 
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
@@ -76,8 +76,12 @@ public:
     void set_configuration(Mavsdk::Configuration new_configuration);
     Mavsdk::Configuration get_configuration() const;
 
-    uint8_t get_own_system_id() const;
-    uint8_t get_own_component_id() const;
+    bool send_message(mavlink_message_t& message) override;
+    uint8_t get_own_system_id() const override;
+    uint8_t get_own_component_id() const override;
+    uint8_t channel() const override;
+    Autopilot autopilot() const override;
+
     uint8_t get_mav_type() const;
 
     Mavsdk::NewSystemHandle subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback);

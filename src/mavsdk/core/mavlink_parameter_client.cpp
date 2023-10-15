@@ -15,12 +15,14 @@ MavlinkParameterClient::MavlinkParameterClient(
     MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     TimeoutSCallback timeout_s_callback,
-    const uint8_t target_component_id,
+    uint8_t target_system_id,
+    uint8_t target_component_id,
     bool use_extended) :
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
     _timeout_s_callback(std::move(timeout_s_callback)),
+    _target_system_id(target_system_id),
     _target_component_id(target_component_id),
     _use_extended(use_extended)
 {
@@ -113,7 +115,7 @@ void MavlinkParameterClient::set_param_int_async(
 
     // PX4 only uses int32_t, so we can be sure and don't need to check the exact type first
     // by getting the param, or checking the cache.
-    if (_sender.autopilot() == SystemImpl::Autopilot::Px4) {
+    if (_sender.autopilot() == Autopilot::Px4) {
         ParamValue value_to_set;
         value_to_set.set(static_cast<int32_t>(value));
         set_param_async(name, value_to_set, callback, cookie);
@@ -485,11 +487,12 @@ mavlink_message_t MavlinkParameterClient::create_set_param_message(WorkItemSet& 
             LogDebug() << "Sending param_ext_set to:" << (int)_sender.get_own_system_id() << ":"
                        << (int)_sender.get_own_component_id();
         }
-        mavlink_msg_param_ext_set_pack(
+        mavlink_msg_param_ext_set_pack_chan(
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
+            _sender.channel(),
             &message,
-            _sender.get_system_id(),
+            _target_system_id,
             _target_component_id,
             param_id.data(),
             param_value_buf.data(),
@@ -500,15 +503,16 @@ mavlink_message_t MavlinkParameterClient::create_set_param_message(WorkItemSet& 
                        << (int)_sender.get_own_component_id();
         }
 
-        const float value_set = (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
+        const float value_set = (_sender.autopilot() == Autopilot::ArduPilot) ?
                                     work_item.param_value.get_4_float_bytes_cast() :
                                     work_item.param_value.get_4_float_bytes_bytewise();
 
-        mavlink_msg_param_set_pack(
+        mavlink_msg_param_set_pack_chan(
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
+            _sender.channel(),
             &message,
-            _sender.get_system_id(),
+            _target_system_id,
             _target_component_id,
             param_id.data(),
             value_set,
@@ -539,15 +543,15 @@ mavlink_message_t MavlinkParameterClient::create_get_param_message(
     if (_use_extended) {
         if (_parameter_debugging) {
             LogDebug() << "Send param_ext_request_read: " << (int)_sender.get_own_system_id() << ":"
-                       << (int)_sender.get_own_component_id() << " to "
-                       << (int)_sender.get_system_id() << ":" << (int)_target_component_id;
+                       << (int)_sender.get_own_component_id() << " to " << (int)_target_system_id
+                       << ":" << (int)_target_component_id;
         }
 
         mavlink_msg_param_ext_request_read_pack(
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
             &message,
-            _sender.get_system_id(),
+            _target_system_id,
             _target_component_id,
             param_id_buff.data(),
             param_index);
@@ -555,15 +559,15 @@ mavlink_message_t MavlinkParameterClient::create_get_param_message(
     } else {
         if (_parameter_debugging) {
             LogDebug() << "Send param_request_read: " << (int)_sender.get_own_system_id() << ":"
-                       << (int)_sender.get_own_component_id() << " to "
-                       << (int)_sender.get_system_id() << ":" << (int)_target_component_id;
+                       << (int)_sender.get_own_component_id() << " to " << (int)_target_system_id
+                       << ":" << (int)_target_component_id;
         }
 
         mavlink_msg_param_request_read_pack(
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
             &message,
-            _sender.get_system_id(),
+            _target_system_id,
             _target_component_id,
             param_id_buff.data(),
             param_index);
@@ -584,7 +588,7 @@ mavlink_message_t MavlinkParameterClient::create_request_list_message()
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
             &message,
-            _sender.get_system_id(),
+            _target_system_id,
             _target_component_id);
     } else {
         LogDebug() << "Sending param_request_list to:" << (int)_sender.get_own_system_id() << ":"
@@ -593,7 +597,7 @@ mavlink_message_t MavlinkParameterClient::create_request_list_message()
             _sender.get_own_system_id(),
             _sender.get_own_component_id(),
             &message,
-            _sender.get_system_id(),
+            _target_system_id,
             _target_component_id);
     }
 
@@ -613,9 +617,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     ParamValue received_value;
     const bool set_value_success = received_value.set_from_mavlink_param_value(
         param_value,
-        (_sender.autopilot() == SystemImpl::Autopilot::ArduPilot) ?
-            ParamValue::Conversion::Cast :
-            ParamValue::Conversion::Bitwise);
+        (_sender.autopilot() == Autopilot::ArduPilot) ? ParamValue::Conversion::Cast :
+                                                        ParamValue::Conversion::Bitwise);
     if (!set_value_success) {
         LogWarn() << "Got ill-formed param_ext_value message (param_type unknown)";
         return;
