@@ -219,8 +219,6 @@ MavlinkMissionTransfer::UploadWorkItem::UploadWorkItem(
     _progress_callback(progress_callback),
     _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_REQUEST,
         [this](const mavlink_message_t& message) { process_mission_request(message); },
@@ -239,7 +237,6 @@ MavlinkMissionTransfer::UploadWorkItem::UploadWorkItem(
 
 MavlinkMissionTransfer::UploadWorkItem::~UploadWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
@@ -609,8 +606,6 @@ MavlinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
     _progress_callback(progress_callback),
     _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_COUNT,
         [this](const mavlink_message_t& message) { process_mission_count(message); },
@@ -624,8 +619,6 @@ MavlinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
 
 MavlinkMissionTransfer::DownloadWorkItem::~DownloadWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
@@ -864,20 +857,18 @@ MavlinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
 
 MavlinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::start()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_ITEM_INT,
         [this](const mavlink_message_t& message) { process_mission_item_int(message); },
         this);
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     _items.clear();
 
@@ -1050,8 +1041,6 @@ MavlinkMissionTransfer::ClearWorkItem::ClearWorkItem(
     _callback(callback),
     _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_ACK,
         [this](const mavlink_message_t& message) { process_mission_ack(message); },
@@ -1060,8 +1049,6 @@ MavlinkMissionTransfer::ClearWorkItem::ClearWorkItem(
 
 MavlinkMissionTransfer::ClearWorkItem::~ClearWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
@@ -1202,8 +1189,6 @@ MavlinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
     _callback(callback),
     _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_CURRENT,
         [this](const mavlink_message_t& message) { process_mission_current(message); },
@@ -1212,7 +1197,6 @@ MavlinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
 
 MavlinkMissionTransfer::SetCurrentWorkItem::~SetCurrentWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
