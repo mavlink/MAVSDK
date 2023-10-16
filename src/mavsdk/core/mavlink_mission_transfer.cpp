@@ -299,17 +299,19 @@ void MavlinkMissionTransfer::UploadWorkItem::cancel()
 
 void MavlinkMissionTransfer::UploadWorkItem::send_count()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_count_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        _items.size(),
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_count_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _items.size(),
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -325,17 +327,19 @@ void MavlinkMissionTransfer::UploadWorkItem::send_count()
 
 void MavlinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        MAV_MISSION_OPERATION_CANCELLED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                MAV_MISSION_OPERATION_CANCELLED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -371,17 +375,19 @@ void MavlinkMissionTransfer::UploadWorkItem::process_mission_request(
         // We only support int, so we nack this and thus tell the autopilot to use int.
         UNUSED(request_message);
 
-        mavlink_message_t message;
-        mavlink_msg_mission_ack_pack(
-            _sender.get_own_system_id(),
-            _sender.get_own_component_id(),
-            &message,
-            request.target_system,
-            request.target_component,
-            MAV_MISSION_UNSUPPORTED,
-            _type);
-
-        if (!_sender.send_message(message)) {
+        if (!_sender.queue_message([&](uint8_t channel) {
+                mavlink_message_t message;
+                mavlink_msg_mission_ack_pack_chan(
+                    _sender.get_own_system_id(),
+                    _sender.get_own_component_id(),
+                    channel,
+                    &message,
+                    request.target_system,
+                    request.target_component,
+                    MAV_MISSION_UNSUPPORTED,
+                    _type);
+                return message;
+            })) {
             _timeout_handler.remove(_cookie);
             callback_and_reset(Result::ConnectionError);
             return;
@@ -442,39 +448,41 @@ void MavlinkMissionTransfer::UploadWorkItem::send_mission_item()
         return;
     }
 
-    mavlink_message_t message;
-    mavlink_msg_mission_item_int_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        _next_sequence,
-        _items[_next_sequence].frame,
-        _items[_next_sequence].command,
-        _items[_next_sequence].current,
-        _items[_next_sequence].autocontinue,
-        _items[_next_sequence].param1,
-        _items[_next_sequence].param2,
-        _items[_next_sequence].param3,
-        _items[_next_sequence].param4,
-        _items[_next_sequence].x,
-        _items[_next_sequence].y,
-        _items[_next_sequence].z,
-        _type);
-
     if (_debugging) {
         LogDebug() << "Sending mission_item_int seq: " << _next_sequence
                    << ", retry: " << _retries_done;
     }
 
-    ++_next_sequence;
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_item_int_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _next_sequence,
+                _items[_next_sequence].frame,
+                _items[_next_sequence].command,
+                _items[_next_sequence].current,
+                _items[_next_sequence].autocontinue,
+                _items[_next_sequence].param1,
+                _items[_next_sequence].param2,
+                _items[_next_sequence].param3,
+                _items[_next_sequence].param4,
+                _items[_next_sequence].x,
+                _items[_next_sequence].y,
+                _items[_next_sequence].z,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
     }
+
+    ++_next_sequence;
 
     ++_retries_done;
 }
@@ -645,16 +653,18 @@ void MavlinkMissionTransfer::DownloadWorkItem::cancel()
 
 void MavlinkMissionTransfer::DownloadWorkItem::request_list()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_request_list_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -665,17 +675,19 @@ void MavlinkMissionTransfer::DownloadWorkItem::request_list()
 
 void MavlinkMissionTransfer::DownloadWorkItem::request_item()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        _next_sequence,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_request_int_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _next_sequence,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -686,17 +698,19 @@ void MavlinkMissionTransfer::DownloadWorkItem::request_item()
 
 void MavlinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        MAV_MISSION_ACCEPTED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                MAV_MISSION_ACCEPTED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -707,17 +721,19 @@ void MavlinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 
 void MavlinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        MAV_MISSION_OPERATION_CANCELLED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                MAV_MISSION_OPERATION_CANCELLED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -881,17 +897,19 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::cancel()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::request_item()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        _target_component_id,
-        _next_sequence,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_request_int_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                _target_component_id,
+                _next_sequence,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -902,17 +920,19 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::request_item()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        _target_component_id,
-        MAV_MISSION_ACCEPTED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                _target_component_id,
+                MAV_MISSION_ACCEPTED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -923,17 +943,19 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        _target_component_id,
-        MAV_MISSION_OPERATION_CANCELLED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                _target_component_id,
+                MAV_MISSION_OPERATION_CANCELLED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -1064,16 +1086,18 @@ void MavlinkMissionTransfer::ClearWorkItem::cancel()
 
 void MavlinkMissionTransfer::ClearWorkItem::send_clear()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_clear_all_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_clear_all_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -1220,16 +1244,18 @@ void MavlinkMissionTransfer::SetCurrentWorkItem::cancel()
 
 void MavlinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_set_current_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _target_system_id,
-        MAV_COMP_ID_AUTOPILOT1,
-        _current);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_set_current_pack_chan(
+                _sender.get_own_system_id(),
+                _sender.get_own_component_id(),
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _current);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
