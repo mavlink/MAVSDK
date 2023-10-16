@@ -296,11 +296,11 @@ void MavlinkMissionTransfer::UploadWorkItem::cancel()
 
 void MavlinkMissionTransfer::UploadWorkItem::send_count()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_count_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -324,11 +324,11 @@ void MavlinkMissionTransfer::UploadWorkItem::send_count()
 
 void MavlinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_ack_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -372,11 +372,11 @@ void MavlinkMissionTransfer::UploadWorkItem::process_mission_request(
         // We only support int, so we nack this and thus tell the autopilot to use int.
         UNUSED(request_message);
 
-        if (!_sender.queue_message([&](uint8_t channel) {
+        if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
                 mavlink_message_t message;
                 mavlink_msg_mission_ack_pack_chan(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
+                    mavlink_address.system_id,
+                    mavlink_address.component_id,
                     channel,
                     &message,
                     request.target_system,
@@ -450,11 +450,11 @@ void MavlinkMissionTransfer::UploadWorkItem::send_mission_item()
                    << ", retry: " << _retries_done;
     }
 
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_item_int_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -646,11 +646,11 @@ void MavlinkMissionTransfer::DownloadWorkItem::cancel()
 
 void MavlinkMissionTransfer::DownloadWorkItem::request_list()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_request_list_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -668,11 +668,11 @@ void MavlinkMissionTransfer::DownloadWorkItem::request_list()
 
 void MavlinkMissionTransfer::DownloadWorkItem::request_item()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_request_int_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -691,11 +691,11 @@ void MavlinkMissionTransfer::DownloadWorkItem::request_item()
 
 void MavlinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_ack_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -714,11 +714,11 @@ void MavlinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 
 void MavlinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_ack_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -888,11 +888,11 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::cancel()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::request_item()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_request_int_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -911,11 +911,11 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::request_item()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_ack_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -934,11 +934,11 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_ack_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -1073,11 +1073,11 @@ void MavlinkMissionTransfer::ClearWorkItem::cancel()
 
 void MavlinkMissionTransfer::ClearWorkItem::send_clear()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_clear_all_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -1228,11 +1228,11 @@ void MavlinkMissionTransfer::SetCurrentWorkItem::cancel()
 
 void MavlinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
 {
-    if (!_sender.queue_message([&](uint8_t channel) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
             mavlink_msg_mission_set_current_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,

@@ -479,14 +479,15 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
     mavlink_message_t message;
     if (_use_extended) {
         const auto param_value_buf = work_item.param_value.get_128_bytes();
-        if (_parameter_debugging) {
-            LogDebug() << "Sending param_ext_set to:" << (int)_sender.get_own_system_id() << ":"
-                       << (int)_sender.get_own_component_id();
-        }
-        return _sender.queue_message([&](uint8_t channel) {
+        return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            if (_parameter_debugging) {
+                LogDebug() << "Sending param_ext_set to:" << (int)mavlink_address.system_id << ":"
+                           << (int)mavlink_address.component_id;
+            }
+
             mavlink_msg_param_ext_set_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -498,19 +499,18 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
             return message;
         });
     } else {
-        if (_parameter_debugging) {
-            LogDebug() << "Sending param_set to:" << (int)_sender.get_own_system_id() << ":"
-                       << (int)_sender.get_own_component_id();
-        }
-
         const float value_set = (_sender.autopilot() == Autopilot::ArduPilot) ?
                                     work_item.param_value.get_4_float_bytes_cast() :
                                     work_item.param_value.get_4_float_bytes_bytewise();
 
-        return _sender.queue_message([&](uint8_t channel) {
+        return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            if (_parameter_debugging) {
+                LogDebug() << "Sending param_set to:" << (int)mavlink_address.system_id << ":"
+                           << (int)mavlink_address.component_id;
+            }
             mavlink_msg_param_set_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -543,16 +543,15 @@ bool MavlinkParameterClient::send_get_param_message(
     mavlink_message_t message;
 
     if (_use_extended) {
-        if (_parameter_debugging) {
-            LogDebug() << "Send param_ext_request_read: " << (int)_sender.get_own_system_id() << ":"
-                       << (int)_sender.get_own_component_id() << " to " << (int)_target_system_id
-                       << ":" << (int)_target_component_id;
-        }
-
-        return _sender.queue_message([&](uint8_t channel) {
+        return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            if (_parameter_debugging) {
+                LogDebug() << "Send param_ext_request_read: " << (int)mavlink_address.system_id
+                           << ":" << (int)mavlink_address.component_id << " to "
+                           << (int)_target_system_id << ":" << (int)_target_component_id;
+            }
             mavlink_msg_param_ext_request_read_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -563,16 +562,15 @@ bool MavlinkParameterClient::send_get_param_message(
         });
 
     } else {
-        if (_parameter_debugging) {
-            LogDebug() << "Send param_request_read: " << (int)_sender.get_own_system_id() << ":"
-                       << (int)_sender.get_own_component_id() << " to " << (int)_target_system_id
-                       << ":" << (int)_target_component_id;
-        }
-
-        return _sender.queue_message([&](uint8_t channel) {
+        return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            if (_parameter_debugging) {
+                LogDebug() << "Send param_request_read: " << (int)mavlink_address.system_id << ":"
+                           << (int)mavlink_address.component_id << " to " << (int)_target_system_id
+                           << ":" << (int)_target_component_id;
+            }
             mavlink_msg_param_request_read_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -587,15 +585,15 @@ bool MavlinkParameterClient::send_get_param_message(
 bool MavlinkParameterClient::send_request_list_message()
 {
     if (_use_extended) {
-        if (_parameter_debugging) {
-            LogDebug() << "Sending param_ext_request_list to:" << (int)_sender.get_own_system_id()
-                       << ":" << (int)_sender.get_own_component_id();
-        }
-        return _sender.queue_message([&](uint8_t channel) {
+        return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            if (_parameter_debugging) {
+                LogDebug() << "Sending param_ext_request_list to:" << (int)mavlink_address.system_id
+                           << ":" << (int)mavlink_address.component_id;
+            }
             mavlink_message_t message;
             mavlink_msg_param_ext_request_list_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,
@@ -603,16 +601,15 @@ bool MavlinkParameterClient::send_request_list_message()
             return message;
         });
     } else {
-        if (_parameter_debugging) {
-            LogDebug() << "Sending param_request_list to:" << (int)_sender.get_own_system_id()
-                       << ":" << (int)_sender.get_own_component_id();
-        }
-
-        return _sender.queue_message([&](uint8_t channel) {
+        return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            if (_parameter_debugging) {
+                LogDebug() << "Sending param_request_list to:" << (int)mavlink_address.system_id
+                           << ":" << (int)mavlink_address.component_id;
+            }
             mavlink_message_t message;
             mavlink_msg_param_request_list_pack_chan(
-                _sender.get_own_system_id(),
-                _sender.get_own_component_id(),
+                mavlink_address.system_id,
+                mavlink_address.component_id,
                 channel,
                 &message,
                 _target_system_id,

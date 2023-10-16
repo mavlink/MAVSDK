@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavlink_include.h"
+#include "mavlink_address.h"
 #include "mavlink_channels.h"
 #include "mavlink_command_receiver.h"
 #include "mavlink_mission_transfer.h"
@@ -33,7 +34,9 @@ public:
         OurSender(ServerComponentImpl& server_component_impl);
         virtual ~OurSender() = default;
         bool send_message(mavlink_message_t& message) override;
-        bool queue_message(std::function<mavlink_message_t(uint8_t channel)> fun) override;
+        bool queue_message(
+            std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
+            override;
         [[nodiscard]] uint8_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
         [[nodiscard]] Autopilot autopilot() const override;
@@ -102,7 +105,8 @@ public:
     bool send_message(mavlink_message_t& message);
     bool send_command_ack(mavlink_command_ack_t& command_ack);
 
-    bool queue_message(std::function<mavlink_message_t(uint8_t channel)> fun);
+    bool queue_message(
+        std::function<mavlink_message_t(MavlinkAddress mavlink_addres, uint8_t channel)> fun);
 
     void add_call_every(std::function<void()> callback, float interval_s, void** cookie);
     void change_call_every(float interval_s, const void* cookie);

@@ -39,16 +39,17 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_command_ack = handler.callback(cmd);
             if (maybe_command_ack) {
-                _server_component_impl.queue_message([&, this](uint8_t channel) {
-                    mavlink_message_t response_message;
-                    mavlink_msg_command_ack_encode_chan(
-                        _server_component_impl.get_own_system_id(),
-                        _server_component_impl.get_own_component_id(),
-                        channel,
-                        &response_message,
-                        &maybe_command_ack.value());
-                    return response_message;
-                });
+                _server_component_impl.queue_message(
+                    [&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+                        mavlink_message_t response_message;
+                        mavlink_msg_command_ack_encode_chan(
+                            mavlink_address.system_id,
+                            mavlink_address.component_id,
+                            channel,
+                            &response_message,
+                            &maybe_command_ack.value());
+                        return response_message;
+                    });
             }
         }
     }
@@ -65,16 +66,17 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_command_ack = handler.callback(cmd);
             if (maybe_command_ack) {
-                _server_component_impl.queue_message([&, this](uint8_t channel) {
-                    mavlink_message_t response_message;
-                    mavlink_msg_command_ack_encode_chan(
-                        _server_component_impl.get_own_system_id(),
-                        _server_component_impl.get_own_component_id(),
-                        channel,
-                        &response_message,
-                        &maybe_command_ack.value());
-                    return response_message;
-                });
+                _server_component_impl.queue_message(
+                    [&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+                        mavlink_message_t response_message;
+                        mavlink_msg_command_ack_encode_chan(
+                            mavlink_address.system_id,
+                            mavlink_address.component_id,
+                            channel,
+                            &response_message,
+                            &maybe_command_ack.value());
+                        return response_message;
+                    });
             }
         }
     }

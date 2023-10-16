@@ -154,11 +154,11 @@ bool ServerComponentImpl::send_message(mavlink_message_t& message)
 
 bool ServerComponentImpl::send_command_ack(mavlink_command_ack_t& command_ack)
 {
-    return queue_message([&, this](uint8_t channel) {
+    return queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_command_ack_encode_chan(
-            _mavsdk_impl.get_own_system_id(),
-            _mavsdk_impl.get_own_component_id(),
+            mavlink_address.system_id,
+            mavlink_address.component_id,
             channel,
             &message,
             &command_ack);
@@ -166,10 +166,12 @@ bool ServerComponentImpl::send_command_ack(mavlink_command_ack_t& command_ack)
     });
 }
 
-bool ServerComponentImpl::queue_message(std::function<mavlink_message_t(uint8_t channel)> fun)
+bool ServerComponentImpl::queue_message(
+    std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
 {
     std::lock_guard<std::mutex> lock(_mavlink_pack_mutex);
-    mavlink_message_t message = fun(_channel);
+    MavlinkAddress mavlink_address{get_own_system_id(), get_own_component_id()};
+    mavlink_message_t message = fun(mavlink_address, _channel);
     return _mavsdk_impl.send_message(message);
 }
 
@@ -225,18 +227,18 @@ mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
 
 void ServerComponentImpl::send_heartbeat()
 {
-    queue_message([&](uint8_t channel) {
+    queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_heartbeat_pack_chan(
             get_own_system_id(),
-            get_own_component_id(),
+            mavlink_address.component_id,
             channel,
             &message,
             _mavsdk_impl.get_mav_type(),
-            get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
-                                                               MAV_AUTOPILOT_INVALID,
-            get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
-            get_own_component_id() == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
+            mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
+                                                                     MAV_AUTOPILOT_INVALID,
+            mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
+            mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
             get_system_status());
         return message;
     });
@@ -357,11 +359,11 @@ void ServerComponentImpl::send_autopilot_version()
     std::lock_guard<std::mutex> lock(_autopilot_version_mutex);
     const uint8_t custom_values[8] = {0}; // TO-DO: maybe?
 
-    queue_message([&, this](uint8_t channel) {
+    queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_autopilot_version_pack_chan(
-            _mavsdk_impl.get_own_system_id(),
-            get_own_component_id(),
+            mavlink_address.system_id,
+            mavlink_address.component_id,
             channel,
             &message,
             _autopilot_version.capabilities,
@@ -390,7 +392,7 @@ bool ServerComponentImpl::OurSender::send_message(mavlink_message_t& message)
 }
 
 bool ServerComponentImpl::OurSender::queue_message(
-    std::function<mavlink_message_t(uint8_t channel)> fun)
+    std::function<mavlink_message_t(MavlinkAddress, uint8_t)> fun)
 {
     return _server_component_impl.queue_message(fun);
 }

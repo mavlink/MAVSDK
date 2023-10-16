@@ -266,11 +266,11 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
     capture_info.file_url.resize(205);
 
     // TODO: this should be a broadcast message
-    _server_component_impl->queue_message([&](uint8_t channel) {
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
         mavlink_msg_camera_image_captured_pack_chan(
-            _server_component_impl->get_own_system_id(),
-            _server_component_impl->get_own_component_id(),
+            mavlink_address.system_id,
+            mavlink_address.component_id,
             channel,
             &message,
             static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
@@ -374,11 +374,11 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
     }
 
-    _server_component_impl->queue_message([&](uint8_t channel) {
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
         mavlink_msg_camera_information_pack_chan(
-            _server_component_impl->get_own_system_id(),
-            _server_component_impl->get_own_component_id(),
+            mavlink_address.system_id,
+            mavlink_address.component_id,
             channel,
             &message,
             static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
@@ -427,11 +427,11 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_settings_r
     const float zoom_level = 0;
     const float focus_level = 0;
 
-    _server_component_impl->queue_message([&](uint8_t channel) {
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
         mavlink_msg_camera_settings_pack_chan(
-            _server_component_impl->get_own_system_id(),
-            _server_component_impl->get_own_component_id(),
+            mavlink_address.system_id,
+            mavlink_address.component_id,
             channel,
             &message,
             static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
@@ -481,11 +481,11 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_storage_informati
     name.resize(32);
     const uint8_t storage_usage = 0;
 
-    _server_component_impl->queue_message([&](uint8_t channel) {
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
         mavlink_msg_storage_information_pack_chan(
-            _server_component_impl->get_own_system_id(),
-            _server_component_impl->get_own_component_id(),
+            mavlink_address.system_id,
+            mavlink_address.component_id,
             channel,
             &message,
             static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
@@ -560,11 +560,11 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
     const uint32_t recording_time_ms = 0;
     const float available_capacity = 0;
 
-    _server_component_impl->queue_message([&](uint8_t channel) {
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
         mavlink_msg_camera_capture_status_pack_chan(
-            _server_component_impl->get_own_system_id(),
-            _server_component_impl->get_own_component_id(),
+            mavlink_address.system_id,
+            mavlink_address.component_id,
             channel,
             &message,
             static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),

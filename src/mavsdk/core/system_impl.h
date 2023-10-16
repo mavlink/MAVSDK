@@ -342,7 +342,7 @@ private:
     CallbackList<System::ComponentType> _component_discovered_callbacks{};
     CallbackList<System::ComponentType, uint8_t> _component_discovered_id_callbacks{};
 
-    MAVLinkAddress _target_address{};
+    MavlinkAddress _target_address{};
 
     AutopilotTime _autopilot_time{};
 
