@@ -61,6 +61,7 @@ private:
 
     void add_task(std::function<void()> task)
     {
+        std::unique_lock<std::mutex> lock(_work_mutex);
         _work_queue.push(task);
         _wait_for_new_task.notify_one();
     }
