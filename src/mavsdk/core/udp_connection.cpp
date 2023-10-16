@@ -98,12 +98,14 @@ ConnectionResult UdpConnection::stop()
 {
     _should_exit = true;
 
-#ifndef WINDOWS
+#if !defined(WINDOWS)
     // This should interrupt a recv/recvfrom call.
     shutdown(_socket_fd, SHUT_RDWR);
 
+#if defined(APPLE)
     // But on Mac, closing is also needed to stop blocking recv/recvfrom.
     close(_socket_fd);
+#endif
 #else
     shutdown(_socket_fd, SD_BOTH);
 
@@ -116,6 +118,11 @@ ConnectionResult UdpConnection::stop()
         _recv_thread->join();
         _recv_thread.reset();
     }
+
+#if !defined(WINDOWS) & !defined(APPLE)
+    // On Linux we can close later to avoid thread sanitizer from complaining.
+    close(_socket_fd);
+#endif
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.
