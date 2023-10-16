@@ -2,11 +2,13 @@
 
 #include <cstdint>
 #include <mutex>
+#include <sys/types.h>
 #include <utility>
 #include <vector>
 #include <atomic>
 #include <thread>
 
+#include "autopilot.h"
 #include "call_every_handler.h"
 #include "connection.h"
 #include "handle.h"
@@ -17,14 +19,14 @@
 #include "mavlink_command_receiver.h"
 #include "safe_queue.h"
 #include "server_component.h"
-#include "sender.h"
 #include "system.h"
+#include "sender.h"
 #include "timeout_handler.h"
 #include "callback_list.h"
 
 namespace mavsdk {
 
-class MavsdkImpl : public Sender {
+class MavsdkImpl {
 public:
     /** @brief Default System ID for GCS configuration type. */
     static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
@@ -76,11 +78,13 @@ public:
     void set_configuration(Mavsdk::Configuration new_configuration);
     Mavsdk::Configuration get_configuration() const;
 
-    bool send_message(mavlink_message_t& message) override;
-    uint8_t get_own_system_id() const override;
-    uint8_t get_own_component_id() const override;
-    uint8_t channel() const override;
-    Autopilot autopilot() const override;
+    bool send_message(mavlink_message_t& message);
+    uint8_t get_own_system_id() const;
+    uint8_t get_own_component_id() const;
+    uint8_t channel() const;
+    Autopilot autopilot() const;
+
+    Sender& sender();
 
     uint8_t get_mav_type() const;
 
@@ -100,6 +104,7 @@ public:
         Mavsdk::ServerComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
 
+    Time time{};
     TimeoutHandler timeout_handler;
     CallEveryHandler call_every_handler;
 
@@ -111,7 +116,8 @@ public:
     double timeout_s() const { return _timeout_s; };
 
     MavlinkMessageHandler mavlink_message_handler{};
-    Time time{};
+
+    ServerComponentImpl& default_server_component_impl();
 
 private:
     Mavsdk::ConnectionHandle add_connection(const std::shared_ptr<Connection>&);
@@ -142,8 +148,6 @@ private:
     std::shared_ptr<ServerComponent> _default_server_component{nullptr};
 
     CallbackList<> _new_system_callbacks{};
-
-    Time _time{};
 
     Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
 

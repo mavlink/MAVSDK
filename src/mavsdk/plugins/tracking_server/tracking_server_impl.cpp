@@ -220,7 +220,7 @@ TrackingServerImpl::respond_tracking_off_command(TrackingServer::CommandAnswer c
                                                            TrackingServer::Result::ConnectionError;
 }
 
-std::optional<mavlink_message_t>
+std::optional<mavlink_command_ack_t>
 TrackingServerImpl::process_track_point_command(const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
@@ -245,7 +245,7 @@ TrackingServerImpl::process_track_point_command(const MavlinkCommandReceiver::Co
     return std::nullopt;
 }
 
-std::optional<mavlink_message_t> TrackingServerImpl::process_track_rectangle_command(
+std::optional<mavlink_command_ack_t> TrackingServerImpl::process_track_rectangle_command(
     const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
@@ -270,7 +270,7 @@ std::optional<mavlink_message_t> TrackingServerImpl::process_track_rectangle_com
     return std::nullopt;
 }
 
-std::optional<mavlink_message_t>
+std::optional<mavlink_command_ack_t>
 TrackingServerImpl::process_track_off_command(const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {

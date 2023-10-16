@@ -4,7 +4,7 @@
 
 namespace mavsdk {
 
-MavlinkReceiver::MavlinkReceiver(uint8_t channel) : _channel(channel)
+MavlinkReceiver::MavlinkReceiver()
 {
     if (const char* env_p = std::getenv("MAVSDK_DROP_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -28,7 +28,12 @@ bool MavlinkReceiver::parse_message()
 {
     // Note that one datagram can contain multiple mavlink messages.
     for (unsigned i = 0; i < _datagram_len; ++i) {
-        if (mavlink_parse_char(_channel, _datagram[i], &_last_message, &_status) == 1) {
+        if (mavlink_frame_char_buffer(
+                &_mavlink_message_buffer,
+                &_mavlink_status,
+                _datagram[i],
+                &_last_message,
+                &_status) == 1) {
             // Move the pointer to the datagram forward by the amount parsed.
             _datagram += (i + 1);
             // And decrease the length, so we don't overshoot in the next round.

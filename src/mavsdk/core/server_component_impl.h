@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavlink_include.h"
+#include "mavlink_channels.h"
 #include "mavlink_command_receiver.h"
 #include "mavlink_mission_transfer.h"
 #include "mavlink_parameter_server.h"
@@ -8,6 +9,7 @@
 #include "mavsdk_time.h"
 #include "flight_mode.h"
 #include "log.h"
+#include "sender.h"
 
 #include <atomic>
 #include <mutex>
@@ -28,18 +30,17 @@ public:
 
     class OurSender : public Sender {
     public:
-        OurSender(MavsdkImpl& mavsdk_impl, ServerComponentImpl& server_component_impl);
+        OurSender(ServerComponentImpl& server_component_impl);
         virtual ~OurSender() = default;
         bool send_message(mavlink_message_t& message) override;
+        bool queue_message(std::function<mavlink_message_t(uint8_t channel)> fun) override;
         [[nodiscard]] uint8_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
-        [[nodiscard]] uint8_t channel() const override;
         [[nodiscard]] Autopilot autopilot() const override;
 
         uint8_t current_target_system_id{0};
 
     private:
-        MavsdkImpl& _mavsdk_impl;
         ServerComponentImpl& _server_component_impl;
     };
 
@@ -99,15 +100,18 @@ public:
     Time& get_time();
 
     bool send_message(mavlink_message_t& message);
+    bool send_command_ack(mavlink_command_ack_t& command_ack);
+
+    bool queue_message(std::function<mavlink_message_t(uint8_t channel)> fun);
 
     void add_call_every(std::function<void()> callback, float interval_s, void** cookie);
     void change_call_every(float interval_s, const void* cookie);
     void reset_call_every(const void* cookie);
     void remove_call_every(const void* cookie);
 
-    mavlink_message_t
+    mavlink_command_ack_t
     make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);
-    mavlink_message_t
+    mavlink_command_ack_t
     make_command_ack_message(const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result);
 
     void send_heartbeat();
@@ -142,9 +146,14 @@ public:
 
     void do_work();
 
+    Sender& sender();
+
 private:
     MavsdkImpl& _mavsdk_impl;
     uint8_t _own_component_id{MAV_COMP_ID_AUTOPILOT1};
+
+    std::mutex _mavlink_pack_mutex{};
+    uint8_t _channel{0};
 
     std::atomic<MAV_STATE> _system_status{MAV_STATE_UNINIT};
     std::atomic<uint8_t> _base_mode{0};

@@ -8,9 +8,7 @@ namespace mavsdk {
 
 class MavlinkReceiver {
 public:
-    explicit MavlinkReceiver(uint8_t channel);
-
-    [[nodiscard]] uint8_t get_channel() const { return _channel; }
+    MavlinkReceiver();
 
     mavlink_message_t& get_last_message() { return _last_message; }
 
@@ -29,9 +27,11 @@ public:
         uint64_t overall_bytes_total);
 
 private:
-    uint8_t _channel;
-    mavlink_message_t _last_message = {};
-    mavlink_status_t _status = {};
+    mavlink_message_t _last_message{};
+    mavlink_status_t _status{};
+
+    mavlink_message_t _mavlink_message_buffer{};
+    mavlink_status_t _mavlink_status{};
     char* _datagram = nullptr;
     unsigned _datagram_len = 0;
 

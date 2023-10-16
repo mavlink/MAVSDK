@@ -2,6 +2,7 @@
 #include "mavsdk_impl.h"
 #include "mavlink_include.h"
 #include "system_impl.h"
+#include "server_component_impl.h"
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
 #include "ardupilot_custom_mode.h"
@@ -26,7 +27,7 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
     _timesync(*this),
     _ping(*this),
     _mission_transfer(
-        _mavsdk_impl,
+        _mavsdk_impl.default_server_component_impl().sender(),
         _mavsdk_impl.mavlink_message_handler,
         _mavsdk_impl.timeout_handler,
         [this]() { return timeout_s(); }),
@@ -1328,7 +1329,7 @@ MavlinkParameterClient* SystemImpl::param_sender(uint8_t component_id, bool exte
 
     _mavlink_parameter_clients.push_back(
         {std::make_unique<MavlinkParameterClient>(
-             _mavsdk_impl,
+             _mavsdk_impl.default_server_component_impl().sender(),
              _mavsdk_impl.mavlink_message_handler,
              _mavsdk_impl.timeout_handler,
              [this]() { return timeout_s(); },

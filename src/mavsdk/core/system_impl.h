@@ -7,6 +7,7 @@
 #include "mavlink_include.h"
 #include "mavlink_parameter_client.h"
 #include "mavlink_command_sender.h"
+#include "mavlink_command_receiver.h"
 #include "mavlink_ftp.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"

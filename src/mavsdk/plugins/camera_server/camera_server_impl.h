@@ -57,43 +57,43 @@ private:
     void start_image_capture_interval(float interval, int32_t count, int32_t index);
     void stop_image_capture_interval();
 
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_camera_information_request(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_camera_settings_request(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_storage_information_request(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_storage_format(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_camera_capture_status_request(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_reset_camera_settings(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_set_camera_mode(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_set_camera_zoom(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_set_camera_focus(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_set_storage_usage(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_image_start_capture(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_image_stop_capture(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_camera_image_capture_request(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_video_start_capture(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_video_stop_capture(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_video_start_streaming(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_video_stop_streaming(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_video_stream_information_request(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_video_stream_status_request(const MavlinkCommandReceiver::CommandLong& command);
 };
 

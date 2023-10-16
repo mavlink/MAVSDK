@@ -12,7 +12,6 @@ namespace mavsdk {
 
 class MavsdkImpl;
 class ServerComponentImpl;
-class MavlinkCommandReceiver;
 
 class MavlinkRequestMessageHandler {
 public:
@@ -32,9 +31,9 @@ public:
     void unregister_all_handlers(const void* cookie);
 
 private:
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     handle_command_long(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     handle_command_int(const MavlinkCommandReceiver::CommandInt& command);
 
     struct Entry {

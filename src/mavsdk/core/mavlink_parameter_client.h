@@ -185,11 +185,11 @@ private:
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
 
-    mavlink_message_t create_set_param_message(WorkItemSet& work_item);
-    mavlink_message_t create_get_param_message(WorkItemGet& work_item);
-    mavlink_message_t create_get_param_message(
+    bool send_set_param_message(WorkItemSet& work_item);
+    bool send_get_param_message(WorkItemGet& work_item);
+    bool send_get_param_message(
         const std::array<char, PARAM_ID_LEN>& param_id_buff, int16_t param_index);
-    mavlink_message_t create_request_list_message();
+    bool send_request_list_message();
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
