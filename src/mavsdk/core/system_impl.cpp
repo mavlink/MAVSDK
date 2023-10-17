@@ -476,6 +476,12 @@ bool SystemImpl::send_message(mavlink_message_t& message)
     return _mavsdk_impl.send_message(message);
 }
 
+bool SystemImpl::queue_message(
+    std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
+{
+    return _mavsdk_impl.default_server_component_impl().queue_message(fun);
+}
+
 void SystemImpl::send_autopilot_version_request()
 {
     auto prom = std::promise<MavlinkCommandSender::Result>();

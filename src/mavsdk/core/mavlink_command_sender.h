@@ -151,7 +151,7 @@ private:
 
     void call_callback(const CommandResultCallback& callback, Result result, float progress);
 
-    mavlink_message_t create_mavlink_message(const Command& command);
+    bool send_mavlink_message(const Command& command);
 
     float maybe_reserved(const std::optional<float>& maybe_param) const;
 

@@ -132,6 +132,7 @@ install(FILES
     include/mavsdk/server_plugin_base.h
     include/mavsdk/geometry.h
     include/mavsdk/server_component.h
+    include/mavsdk/mavlink_address.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )

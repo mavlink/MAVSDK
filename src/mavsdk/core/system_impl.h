@@ -78,6 +78,8 @@ public:
     void unregister_statustext_handler(void* cookie);
 
     bool send_message(mavlink_message_t& message);
+    bool queue_message(
+        std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun);
 
     Autopilot autopilot() const { return _autopilot; };
 
