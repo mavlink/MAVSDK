@@ -200,16 +200,19 @@ void MavlinkFtpServer::_send_mavlink_ftp_message(const PayloadHeader& payload)
         abort();
     }
 
-    mavlink_message_t message;
-    mavlink_msg_file_transfer_protocol_pack(
-        _server_component_impl.get_own_system_id(),
-        _server_component_impl.get_own_component_id(),
-        &message,
-        _network_id,
-        _target_system_id,
-        _target_component_id,
-        reinterpret_cast<const uint8_t*>(&payload));
-    _server_component_impl.send_message(message);
+    _server_component_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_file_transfer_protocol_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _network_id,
+            _target_system_id,
+            _target_component_id,
+            reinterpret_cast<const uint8_t*>(&payload));
+        return message;
+    });
 }
 
 std::string MavlinkFtpServer::_data_as_string(const PayloadHeader& payload, size_t entry)

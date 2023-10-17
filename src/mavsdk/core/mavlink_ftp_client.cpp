@@ -1120,16 +1120,19 @@ void MavlinkFtpClient::are_files_identical_async(
 
 void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload)
 {
-    mavlink_message_t message;
-    mavlink_msg_file_transfer_protocol_pack(
-        _system_impl.get_own_system_id(),
-        _system_impl.get_own_component_id(),
-        &message,
-        _network_id,
-        _system_impl.get_system_id(),
-        get_target_component_id(),
-        reinterpret_cast<const uint8_t*>(&payload));
-    _system_impl.send_message(message);
+    _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_file_transfer_protocol_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _network_id,
+            _system_impl.get_system_id(),
+            get_target_component_id(),
+            reinterpret_cast<const uint8_t*>(&payload));
+        return message;
+    });
 }
 
 void MavlinkFtpClient::start_timer()
