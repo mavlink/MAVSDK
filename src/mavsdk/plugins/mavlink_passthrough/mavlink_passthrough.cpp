@@ -20,6 +20,12 @@ MavlinkPassthrough::Result MavlinkPassthrough::send_message(mavlink_message_t& m
     return _impl->send_message(message);
 }
 
+MavlinkPassthrough::Result MavlinkPassthrough::queue_message(
+    std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
+{
+    return _impl->queue_message(fun);
+}
+
 MavlinkPassthrough::Result MavlinkPassthrough::send_command_int(const CommandInt& command)
 {
     return _impl->send_command_int(command);

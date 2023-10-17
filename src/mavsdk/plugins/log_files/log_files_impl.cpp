@@ -1,4 +1,5 @@
 #include "log_files_impl.h"
+#include "mavlink_address.h"
 #include "mavsdk_impl.h"
 #include "filesystem_include.h"
 #include "unused.h"
@@ -61,14 +62,17 @@ void LogFilesImpl::disable() {}
 
 void LogFilesImpl::request_end()
 {
-    mavlink_message_t msg;
-    mavlink_msg_log_request_end_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &msg,
-        _system_impl->get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1);
-    _system_impl->send_message(msg);
+    _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_log_request_end_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _system_impl->get_system_id(),
+            MAV_COMP_ID_AUTOPILOT1);
+        return message;
+    });
 }
 
 std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entries()
@@ -111,17 +115,19 @@ void LogFilesImpl::request_list_entry(int entry_id)
         index_max = entry_id;
     }
 
-    mavlink_message_t msg;
-    mavlink_msg_log_request_list_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &msg,
-        _system_impl->get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        index_min,
-        index_max);
-
-    _system_impl->send_message(msg);
+    _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_log_request_list_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _system_impl->get_system_id(),
+            MAV_COMP_ID_AUTOPILOT1,
+            index_min,
+            index_max);
+        return message;
+    });
 }
 
 void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
@@ -316,14 +322,17 @@ void LogFilesImpl::download_log_file_async(
 
 LogFiles::Result LogFilesImpl::erase_all_log_files()
 {
-    mavlink_message_t msg;
-    mavlink_msg_log_erase_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &msg,
-        _system_impl->get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1);
-    _system_impl->send_message(msg);
+    _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_log_erase_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _system_impl->get_system_id(),
+            MAV_COMP_ID_AUTOPILOT1);
+        return message;
+    });
 
     // TODO: find a good way to know about the success or failure of the operation
     return LogFiles::Result::Success;
@@ -458,17 +467,20 @@ void LogFilesImpl::check_part()
 void LogFilesImpl::request_log_data(unsigned id, unsigned start, unsigned count)
 {
     // LogDebug() << "requesting: " << start << ".." << start+count << " (" << id << ")";
-    mavlink_message_t msg;
-    mavlink_msg_log_request_data_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &msg,
-        _system_impl->get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        id,
-        start,
-        count);
-    _system_impl->send_message(msg);
+    _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_log_request_data_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _system_impl->get_system_id(),
+            MAV_COMP_ID_AUTOPILOT1,
+            id,
+            start,
+            count);
+        return message;
+    });
 }
 
 void LogFilesImpl::data_timeout()

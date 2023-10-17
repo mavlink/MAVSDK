@@ -1,5 +1,6 @@
 #include <cmath>
 #include <utility>
+#include "mavlink_address.h"
 #include "mavsdk_math.h"
 #include "offboard_impl.h"
 #include "mavsdk_impl.h"
@@ -424,29 +425,33 @@ Offboard::Result OffboardImpl::send_position_ned()
         return _position_ned_yaw;
     }();
 
-    mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        MAV_FRAME_LOCAL_NED,
-        IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
-        position_ned_yaw.north_m,
-        position_ned_yaw.east_m,
-        position_ned_yaw.down_m,
-        0.0f, // vx
-        0.0f, // vy
-        0.0f, // vz
-        0.0f, // afx
-        0.0f, // afy
-        0.0f, // afz
-        to_rad_from_deg(position_ned_yaw.yaw_deg), // yaw
-        0.0f); // yaw_rate
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_position_target_local_ned_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            MAV_FRAME_LOCAL_NED,
+            IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+            position_ned_yaw.north_m,
+            position_ned_yaw.east_m,
+            position_ned_yaw.down_m,
+            0.0f, // vx
+            0.0f, // vy
+            0.0f, // vz
+            0.0f, // afx
+            0.0f, // afy
+            0.0f, // afz
+            to_rad_from_deg(position_ned_yaw.yaw_deg), // yaw
+            0.0f); // yaw_rate
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_position_global()
@@ -479,30 +484,33 @@ Offboard::Result OffboardImpl::send_position_global()
             return Offboard::Result::CommandDenied;
             break;
     }
-
-    mavlink_message_t message;
-    mavlink_msg_set_position_target_global_int_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        frame,
-        IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
-        (int32_t)(position_global_yaw.lat_deg * 1.0e7),
-        (int32_t)(position_global_yaw.lon_deg * 1.0e7),
-        position_global_yaw.alt_m,
-        0.0f, // vx
-        0.0f, // vy
-        0.0f, // vz
-        0.0f, // afx
-        0.0f, // afy
-        0.0f, // afz
-        to_rad_from_deg(position_global_yaw.yaw_deg), // yaw
-        0.0f); // yaw_rate
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_position_target_global_int_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            frame,
+            IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+            (int32_t)(position_global_yaw.lat_deg * 1.0e7),
+            (int32_t)(position_global_yaw.lon_deg * 1.0e7),
+            position_global_yaw.alt_m,
+            0.0f, // vx
+            0.0f, // vy
+            0.0f, // vz
+            0.0f, // afx
+            0.0f, // afy
+            0.0f, // afz
+            to_rad_from_deg(position_global_yaw.yaw_deg), // yaw
+            0.0f); // yaw_rate
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_velocity_ned()
@@ -520,29 +528,33 @@ Offboard::Result OffboardImpl::send_velocity_ned()
         return _velocity_ned_yaw;
     }();
 
-    mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        MAV_FRAME_LOCAL_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
-        0.0f, // x,
-        0.0f, // y,
-        0.0f, // z,
-        velocity_ned_yaw.north_m_s,
-        velocity_ned_yaw.east_m_s,
-        velocity_ned_yaw.down_m_s,
-        0.0f, // afx
-        0.0f, // afy
-        0.0f, // afz
-        to_rad_from_deg(velocity_ned_yaw.yaw_deg), // yaw
-        0.0f); // yaw_rate
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_position_target_local_ned_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            MAV_FRAME_LOCAL_NED,
+            IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+            0.0f, // x,
+            0.0f, // y,
+            0.0f, // z,
+            velocity_ned_yaw.north_m_s,
+            velocity_ned_yaw.east_m_s,
+            velocity_ned_yaw.down_m_s,
+            0.0f, // afx
+            0.0f, // afy
+            0.0f, // afz
+            to_rad_from_deg(velocity_ned_yaw.yaw_deg), // yaw
+            0.0f); // yaw_rate
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_position_velocity_ned()
@@ -557,29 +569,33 @@ Offboard::Result OffboardImpl::send_position_velocity_ned()
         return std::make_pair<>(_position_ned_yaw, _velocity_ned_yaw);
     }();
 
-    mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        MAV_FRAME_LOCAL_NED,
-        IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
-        position_and_velocity.first.north_m,
-        position_and_velocity.first.east_m,
-        position_and_velocity.first.down_m,
-        position_and_velocity.second.north_m_s,
-        position_and_velocity.second.east_m_s,
-        position_and_velocity.second.down_m_s,
-        0.0f, // afx
-        0.0f, // afy
-        0.0f, // afz
-        to_rad_from_deg(position_and_velocity.first.yaw_deg), // yaw
-        0.0f); // yaw_rate
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_position_target_local_ned_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            MAV_FRAME_LOCAL_NED,
+            IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+            position_and_velocity.first.north_m,
+            position_and_velocity.first.east_m,
+            position_and_velocity.first.down_m,
+            position_and_velocity.second.north_m_s,
+            position_and_velocity.second.east_m_s,
+            position_and_velocity.second.down_m_s,
+            0.0f, // afx
+            0.0f, // afy
+            0.0f, // afz
+            to_rad_from_deg(position_and_velocity.first.yaw_deg), // yaw
+            0.0f); // yaw_rate
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_position_velocity_acceleration_ned()
@@ -587,30 +603,33 @@ Offboard::Result OffboardImpl::send_position_velocity_acceleration_ned()
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
     std::lock_guard<std::mutex> lock(_mutex);
-
-    mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        MAV_FRAME_LOCAL_NED,
-        IGNORE_YAW_RATE,
-        _position_ned_yaw.north_m,
-        _position_ned_yaw.east_m,
-        _position_ned_yaw.down_m,
-        _velocity_ned_yaw.north_m_s,
-        _velocity_ned_yaw.east_m_s,
-        _velocity_ned_yaw.down_m_s,
-        _acceleration_ned.north_m_s2,
-        _acceleration_ned.east_m_s2,
-        _acceleration_ned.down_m_s2,
-        to_rad_from_deg(_position_ned_yaw.yaw_deg), // yaw
-        0.0f); // yaw_rate
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_position_target_local_ned_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            MAV_FRAME_LOCAL_NED,
+            IGNORE_YAW_RATE,
+            _position_ned_yaw.north_m,
+            _position_ned_yaw.east_m,
+            _position_ned_yaw.down_m,
+            _velocity_ned_yaw.north_m_s,
+            _velocity_ned_yaw.east_m_s,
+            _velocity_ned_yaw.down_m_s,
+            _acceleration_ned.north_m_s2,
+            _acceleration_ned.east_m_s2,
+            _acceleration_ned.down_m_s2,
+            to_rad_from_deg(_position_ned_yaw.yaw_deg), // yaw
+            0.0f); // yaw_rate
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_acceleration_ned()
@@ -629,30 +648,34 @@ Offboard::Result OffboardImpl::send_acceleration_ned()
         return _acceleration_ned;
     }();
 
-    mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        MAV_FRAME_LOCAL_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_YAW |
-            IGNORE_YAW_RATE,
-        0.0f, // x,
-        0.0f, // y,
-        0.0f, // z,
-        0.0f, // vfx
-        0.0f, // vfy
-        0.0f, // vfz
-        acceleration_ned.north_m_s2,
-        acceleration_ned.east_m_s2,
-        acceleration_ned.down_m_s2,
-        0.0f, // yaw
-        0.0f); // yaw_rate
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_position_target_local_ned_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            MAV_FRAME_LOCAL_NED,
+            IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_YAW |
+                IGNORE_YAW_RATE,
+            0.0f, // x,
+            0.0f, // y,
+            0.0f, // z,
+            0.0f, // vfx
+            0.0f, // vfy
+            0.0f, // vfz
+            acceleration_ned.north_m_s2,
+            acceleration_ned.east_m_s2,
+            acceleration_ned.down_m_s2,
+            0.0f, // yaw
+            0.0f); // yaw_rate
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_velocity_body()
@@ -670,29 +693,33 @@ Offboard::Result OffboardImpl::send_velocity_body()
         return _velocity_body_yawspeed;
     }();
 
-    mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        MAV_FRAME_BODY_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW,
-        0.0f, // x
-        0.0f, // y
-        0.0f, // z
-        velocity_body_yawspeed.forward_m_s,
-        velocity_body_yawspeed.right_m_s,
-        velocity_body_yawspeed.down_m_s,
-        0.0f, // afx
-        0.0f, // afy
-        0.0f, // afz
-        0.0f, // yaw
-        to_rad_from_deg(velocity_body_yawspeed.yawspeed_deg_s));
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_position_target_local_ned_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            MAV_FRAME_BODY_NED,
+            IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW,
+            0.0f, // x
+            0.0f, // y
+            0.0f, // z
+            velocity_body_yawspeed.forward_m_s,
+            velocity_body_yawspeed.right_m_s,
+            velocity_body_yawspeed.down_m_s,
+            0.0f, // afx
+            0.0f, // afy
+            0.0f, // afz
+            0.0f, // yaw
+            to_rad_from_deg(velocity_body_yawspeed.yawspeed_deg_s));
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_attitude()
@@ -727,23 +754,27 @@ Offboard::Result OffboardImpl::send_attitude()
 
     const float thrust_body[3] = {0.0f, 0.0f, 0.0f};
 
-    mavlink_message_t message;
-    mavlink_msg_set_attitude_target_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        IGNORE_BODY_ROLL_RATE | IGNORE_BODY_PITCH_RATE | IGNORE_BODY_YAW_RATE,
-        q,
-        0,
-        0,
-        0,
-        thrust,
-        thrust_body);
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_attitude_target_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            IGNORE_BODY_ROLL_RATE | IGNORE_BODY_PITCH_RATE | IGNORE_BODY_YAW_RATE,
+            q,
+            0,
+            0,
+            0,
+            thrust,
+            thrust_body);
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_attitude_rate()
@@ -757,40 +788,48 @@ Offboard::Result OffboardImpl::send_attitude_rate()
 
     const float thrust_body[3] = {0.0f, 0.0f, 0.0f};
 
-    mavlink_message_t message;
-    mavlink_msg_set_attitude_target_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        IGNORE_ATTITUDE,
-        0,
-        to_rad_from_deg(attitude_rate.roll_deg_s),
-        to_rad_from_deg(attitude_rate.pitch_deg_s),
-        to_rad_from_deg(attitude_rate.yaw_deg_s),
-        _attitude_rate.thrust_value,
-        thrust_body);
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_attitude_target_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            IGNORE_ATTITUDE,
+            0,
+            to_rad_from_deg(attitude_rate.roll_deg_s),
+            to_rad_from_deg(attitude_rate.pitch_deg_s),
+            to_rad_from_deg(attitude_rate.yaw_deg_s),
+            _attitude_rate.thrust_value,
+            thrust_body);
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result
 OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group_number)
 {
-    mavlink_message_t message;
-    mavlink_msg_set_actuator_control_target_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
-        group_number,
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        controls);
-    return _system_impl->send_message(message) ? Offboard::Result::Success :
-                                                 Offboard::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_actuator_control_target_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_system_impl->get_time().elapsed_ms()),
+            group_number,
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id(),
+            controls);
+        return message;
+    }) ?
+               Offboard::Result::Success :
+               Offboard::Result::ConnectionError;
 }
 
 Offboard::Result OffboardImpl::send_actuator_control()

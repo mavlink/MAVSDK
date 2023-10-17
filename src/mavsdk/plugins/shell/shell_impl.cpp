@@ -1,4 +1,5 @@
 #include "shell_impl.h"
+#include "mavlink_address.h"
 #include "system.h"
 #include "callback_list.tpp"
 
@@ -73,20 +74,23 @@ bool ShellImpl::send_command_message(std::string command)
     mavlink_message_t message;
 
     while (command.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
-        mavlink_msg_serial_control_pack(
-            _system_impl->get_own_system_id(),
-            _system_impl->get_own_component_id(),
-            &message,
-            static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
-            0,
-            timeout_ms,
-            0,
-            static_cast<uint8_t>(MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN),
-            reinterpret_cast<const uint8_t*>(command.c_str()),
-            _system_impl->get_system_id(),
-            _system_impl->get_autopilot_id());
-        command.erase(0, MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN);
-        if (!_system_impl->send_message(message)) {
+        if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+                mavlink_msg_serial_control_pack_chan(
+                    mavlink_address.system_id,
+                    mavlink_address.component_id,
+                    channel,
+                    &message,
+                    static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
+                    0,
+                    timeout_ms,
+                    0,
+                    static_cast<uint8_t>(MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN),
+                    reinterpret_cast<const uint8_t*>(command.c_str()),
+                    _system_impl->get_system_id(),
+                    _system_impl->get_autopilot_id());
+                command.erase(0, MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN);
+                return message;
+            })) {
             return false;
         }
     }
@@ -103,20 +107,22 @@ bool ShellImpl::send_command_message(std::string command)
     uint8_t data[MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN]{};
     memcpy(data, command.c_str(), command.length());
 
-    mavlink_msg_serial_control_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
-        flags,
-        timeout_ms,
-        0,
-        static_cast<uint8_t>(command.length()),
-        data,
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id());
-
-    return _system_impl->send_message(message);
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_msg_serial_control_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
+            flags,
+            timeout_ms,
+            0,
+            static_cast<uint8_t>(command.length()),
+            data,
+            _system_impl->get_system_id(),
+            _system_impl->get_autopilot_id());
+        return message;
+    });
 }
 
 void ShellImpl::process_shell_message(const mavlink_message_t& message)

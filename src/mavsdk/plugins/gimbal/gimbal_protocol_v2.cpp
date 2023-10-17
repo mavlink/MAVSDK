@@ -1,5 +1,6 @@
 #include "gimbal_protocol_v2.h"
 #include "gimbal_impl.h"
+#include "mavlink_address.h"
 #include "mavsdk_math.h"
 #include <functional>
 #include <cmath>
@@ -64,21 +65,25 @@ Gimbal::Result GimbalProtocolV2::set_pitch_and_yaw(float pitch_deg, float yaw_de
         GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK |
         ((_gimbal_mode == Gimbal::GimbalMode::YawLock) ? GIMBAL_MANAGER_FLAGS_YAW_LOCK : 0);
 
-    mavlink_message_t message;
-    mavlink_msg_gimbal_manager_set_attitude_pack(
-        _system_impl.get_own_system_id(),
-        _system_impl.get_own_component_id(),
-        &message,
-        _gimbal_manager_sysid,
-        _gimbal_manager_compid,
-        flags,
-        _gimbal_device_id,
-        quaternion,
-        NAN,
-        NAN,
-        NAN);
-
-    return _system_impl.send_message(message) ? Gimbal::Result::Success : Gimbal::Result::Error;
+    return _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_gimbal_manager_set_attitude_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _gimbal_manager_sysid,
+            _gimbal_manager_compid,
+            flags,
+            _gimbal_device_id,
+            quaternion,
+            NAN,
+            NAN,
+            NAN);
+        return message;
+    }) ?
+               Gimbal::Result::Success :
+               Gimbal::Result::Error;
 }
 
 void GimbalProtocolV2::set_pitch_and_yaw_async(
@@ -101,21 +106,25 @@ GimbalProtocolV2::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_
 
     const float quaternion[4] = {NAN, NAN, NAN, NAN};
 
-    mavlink_message_t message;
-    mavlink_msg_gimbal_manager_set_attitude_pack(
-        _system_impl.get_own_system_id(),
-        _system_impl.get_own_component_id(),
-        &message,
-        _gimbal_manager_sysid,
-        _gimbal_manager_compid,
-        flags,
-        _gimbal_device_id,
-        quaternion,
-        0.0f,
-        to_rad_from_deg(pitch_rate_deg_s),
-        to_rad_from_deg(yaw_rate_deg_s));
-
-    return _system_impl.send_message(message) ? Gimbal::Result::Success : Gimbal::Result::Error;
+    return _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_gimbal_manager_set_attitude_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _gimbal_manager_sysid,
+            _gimbal_manager_compid,
+            flags,
+            _gimbal_device_id,
+            quaternion,
+            0.0f,
+            to_rad_from_deg(pitch_rate_deg_s),
+            to_rad_from_deg(yaw_rate_deg_s));
+        return message;
+    }) ?
+               Gimbal::Result::Success :
+               Gimbal::Result::Error;
 }
 
 void GimbalProtocolV2::set_pitch_rate_and_yaw_rate_async(

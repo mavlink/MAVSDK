@@ -1,4 +1,5 @@
 #include "manual_control_impl.h"
+#include "mavlink_address.h"
 #include <future>
 
 namespace mavsdk {
@@ -105,23 +106,27 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
     const int16_t pitch_only_axis = 0;
     const int16_t roll_only_axis = 0;
 
-    mavlink_message_t message;
-    mavlink_msg_manual_control_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        _system_impl->get_system_id(),
-        static_cast<int16_t>(x * 1000),
-        static_cast<int16_t>(y * 1000),
-        static_cast<int16_t>(z * 1000),
-        static_cast<int16_t>(r * 1000),
-        buttons,
-        buttons2,
-        enabled_extensions,
-        pitch_only_axis,
-        roll_only_axis);
-    return _system_impl->send_message(message) ? ManualControl::Result::Success :
-                                                 ManualControl::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_manual_control_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _system_impl->get_system_id(),
+            static_cast<int16_t>(x * 1000),
+            static_cast<int16_t>(y * 1000),
+            static_cast<int16_t>(z * 1000),
+            static_cast<int16_t>(r * 1000),
+            buttons,
+            buttons2,
+            enabled_extensions,
+            pitch_only_axis,
+            roll_only_axis);
+        return message;
+    }) ?
+               ManualControl::Result::Success :
+               ManualControl::Result::ConnectionError;
 }
 
 ManualControl::Result

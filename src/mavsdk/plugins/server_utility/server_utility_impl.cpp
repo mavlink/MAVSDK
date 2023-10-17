@@ -85,17 +85,19 @@ ServerUtilityImpl::send_status_text(ServerUtility::StatusTextType type, std::str
         const unsigned copy_len = std::min(chunk_size, static_cast<unsigned>(strlen(pos)));
         memcpy(tmp_buf, pos, copy_len);
 
-        mavlink_message_t message;
-        mavlink_msg_statustext_pack(
-            _system_impl->get_own_system_id(),
-            _system_impl->get_own_component_id(),
-            &message,
-            maybe_mav_severity.value(),
-            tmp_buf,
-            id,
-            chunk_seq);
-
-        if (!_system_impl->send_message(message)) {
+        if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+                mavlink_message_t message;
+                mavlink_msg_statustext_pack_chan(
+                    mavlink_address.system_id,
+                    mavlink_address.component_id,
+                    channel,
+                    &message,
+                    maybe_mav_severity.value(),
+                    tmp_buf,
+                    id,
+                    chunk_seq);
+                return message;
+            })) {
             return ServerUtility::Result::ConnectionError;
         }
     }

@@ -1,4 +1,5 @@
 #include "mocap_impl.h"
+#include "mavlink_address.h"
 #include "system.h"
 #include "px4_custom_mode.h"
 #include <array>
@@ -90,23 +91,26 @@ Mocap::Result MocapImpl::send_vision_position_estimate(
         return Mocap::Result::InvalidRequestData;
     }
 
-    mavlink_message_t message;
-    mavlink_msg_vision_position_estimate_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        autopilot_time_usec,
-        vision_position_estimate.position_body.x_m,
-        vision_position_estimate.position_body.y_m,
-        vision_position_estimate.position_body.z_m,
-        vision_position_estimate.angle_body.roll_rad,
-        vision_position_estimate.angle_body.pitch_rad,
-        vision_position_estimate.angle_body.yaw_rad,
-        covariance.data(),
-        0); // FIXME: reset_counter not set
-
-    return _system_impl->send_message(message) ? Mocap::Result::Success :
-                                                 Mocap::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_vision_position_estimate_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            autopilot_time_usec,
+            vision_position_estimate.position_body.x_m,
+            vision_position_estimate.position_body.y_m,
+            vision_position_estimate.position_body.z_m,
+            vision_position_estimate.angle_body.roll_rad,
+            vision_position_estimate.angle_body.pitch_rad,
+            vision_position_estimate.angle_body.yaw_rad,
+            covariance.data(),
+            0); // FIXME: reset_counter not set
+        return message;
+    }) ?
+               Mocap::Result::Success :
+               Mocap::Result::ConnectionError;
 }
 
 Mocap::Result
@@ -149,19 +153,22 @@ MocapImpl::send_attitude_position_mocap(const Mocap::AttitudePositionMocap& atti
         return Mocap::Result::InvalidRequestData;
     }
 
-    mavlink_msg_att_pos_mocap_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        autopilot_time_usec,
-        q.data(),
-        attitude_position_mocap.position_body.x_m,
-        attitude_position_mocap.position_body.y_m,
-        attitude_position_mocap.position_body.z_m,
-        covariance.data());
-
-    return _system_impl->send_message(message) ? Mocap::Result::Success :
-                                                 Mocap::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_msg_att_pos_mocap_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            autopilot_time_usec,
+            q.data(),
+            attitude_position_mocap.position_body.x_m,
+            attitude_position_mocap.position_body.y_m,
+            attitude_position_mocap.position_body.z_m,
+            covariance.data());
+        return message;
+    }) ?
+               Mocap::Result::Success :
+               Mocap::Result::ConnectionError;
 }
 
 Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
@@ -176,8 +183,6 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
                     .time_in(SystemTimePoint(std::chrono::microseconds(odometry.time_usec)))
                     .time_since_epoch())
                 .count();
-
-    mavlink_message_t message;
 
     std::array<float, 4> q{};
     q[0] = odometry.q.w;
@@ -216,31 +221,35 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
         return Mocap::Result::InvalidRequestData;
     }
 
-    mavlink_msg_odometry_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        autopilot_time_usec,
-        static_cast<uint8_t>(odometry.frame_id),
-        static_cast<uint8_t>(MAV_FRAME_BODY_FRD),
-        odometry.position_body.x_m,
-        odometry.position_body.y_m,
-        odometry.position_body.z_m,
-        q.data(),
-        odometry.speed_body.x_m_s,
-        odometry.speed_body.y_m_s,
-        odometry.speed_body.z_m_s,
-        odometry.angular_velocity_body.roll_rad_s,
-        odometry.angular_velocity_body.pitch_rad_s,
-        odometry.angular_velocity_body.yaw_rad_s,
-        pose_covariance.data(),
-        velocity_covariance.data(),
-        0,
-        MAV_ESTIMATOR_TYPE_MOCAP,
-        0);
-
-    return _system_impl->send_message(message) ? Mocap::Result::Success :
-                                                 Mocap::Result::ConnectionError;
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_odometry_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            autopilot_time_usec,
+            static_cast<uint8_t>(odometry.frame_id),
+            static_cast<uint8_t>(MAV_FRAME_BODY_FRD),
+            odometry.position_body.x_m,
+            odometry.position_body.y_m,
+            odometry.position_body.z_m,
+            q.data(),
+            odometry.speed_body.x_m_s,
+            odometry.speed_body.y_m_s,
+            odometry.speed_body.z_m_s,
+            odometry.angular_velocity_body.roll_rad_s,
+            odometry.angular_velocity_body.pitch_rad_s,
+            odometry.angular_velocity_body.yaw_rad_s,
+            pose_covariance.data(),
+            velocity_covariance.data(),
+            0,
+            MAV_ESTIMATOR_TYPE_MOCAP,
+            0);
+        return message;
+    }) ?
+               Mocap::Result::Success :
+               Mocap::Result::ConnectionError;
 }
 
 } // namespace mavsdk

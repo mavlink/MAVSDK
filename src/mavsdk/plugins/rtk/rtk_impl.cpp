@@ -50,16 +50,18 @@ Rtk::Result RtkImpl::send_rtcm_data(Rtk::RtcmData rtcm_data)
         const uint8_t flags =
             (num_packets_required > 1 ? 0x1 : 0x0) | ((i & 0x3) << 1) | ((_sequence & 0x1F) << 3);
 
-        mavlink_message_t message;
-        mavlink_msg_gps_rtcm_data_pack(
-            _system_impl->get_own_system_id(),
-            _system_impl->get_own_component_id(),
-            &message,
-            flags,
-            static_cast<uint8_t>(std::min(field_len, bytes_to_send)),
-            reinterpret_cast<const uint8_t*>(rtcm_data.data.c_str() + (i * field_len)));
-
-        if (!_system_impl->send_message(message)) {
+        if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+                mavlink_message_t message;
+                mavlink_msg_gps_rtcm_data_pack_chan(
+                    mavlink_address.system_id,
+                    mavlink_address.component_id,
+                    channel,
+                    &message,
+                    flags,
+                    static_cast<uint8_t>(std::min(field_len, bytes_to_send)),
+                    reinterpret_cast<const uint8_t*>(rtcm_data.data.c_str() + (i * field_len)));
+                return message;
+            })) {
             ++_sequence;
             return Rtk::Result::ConnectionError;
         }

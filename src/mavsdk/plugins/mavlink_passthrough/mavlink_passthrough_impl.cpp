@@ -1,5 +1,6 @@
 #include <functional>
 #include "mavlink_passthrough_impl.h"
+#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "system.h"
 #include "callback_list.tpp"
 
@@ -41,6 +42,13 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_
         return MavlinkPassthrough::Result::ConnectionError;
     }
     return MavlinkPassthrough::Result::Success;
+}
+
+MavlinkPassthrough::Result MavlinkPassthroughImpl::queue_message(
+    std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
+{
+    return _system_impl->queue_message(fun) ? MavlinkPassthrough::Result::Success :
+                                              MavlinkPassthrough::Result::ConnectionError;
 }
 
 MavlinkPassthrough::Result
