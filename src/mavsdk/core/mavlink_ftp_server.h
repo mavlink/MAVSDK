@@ -105,31 +105,11 @@ private:
         sizeof(PayloadHeader) == sizeof(mavlink_file_transfer_protocol_t::payload),
         "PayloadHeader size is incorrect.");
 
-    std::mutex _session_info_mutex{};
-    struct SessionInfo {
-        uint32_t file_size{0};
-        uint32_t burst_offset{0};
-        uint32_t burst_end{0};
-        std::ifstream ifstream;
-        std::ofstream ofstream;
-    } _session_info{};
-
-    struct OfstreamWithPath {
-        std::ofstream stream;
-        std::string path;
-    };
-
-    uint8_t _network_id = 0;
-    uint8_t _target_system_id = 0;
-    uint8_t _target_component_id = 0;
-
     ServerResult _calc_local_file_crc32(const std::string& path, uint32_t& csum);
 
     void _send_mavlink_ftp_message(const PayloadHeader& payload);
 
     void _reset();
-
-    std::string _root_dir{};
 
     void process_mavlink_ftp_message(const mavlink_message_t& msg);
 
@@ -156,6 +136,20 @@ private:
     void _send_burst_packet();
     void _make_burst_packet(PayloadHeader& packet);
     void* _burst_call_every_cookie{nullptr};
+
+    std::mutex _mutex{};
+    struct SessionInfo {
+        uint32_t file_size{0};
+        uint32_t burst_offset{0};
+        uint32_t burst_end{0};
+        std::ifstream ifstream;
+        std::ofstream ofstream;
+    } _session_info{};
+
+    uint8_t _network_id = 0;
+    uint8_t _target_system_id = 0;
+    uint8_t _target_component_id = 0;
+    std::string _root_dir{};
 
     std::mutex _tmp_files_mutex{};
     std::unordered_map<std::string, std::string> _tmp_files{};

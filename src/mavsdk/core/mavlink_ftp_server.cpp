@@ -190,7 +190,7 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
 MavlinkFtpServer::~MavlinkFtpServer()
 {
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     _reset();
 }
 
@@ -234,6 +234,8 @@ std::string MavlinkFtpServer::_data_as_string(const PayloadHeader& payload, size
 std::variant<std::string, MavlinkFtpServer::ServerResult>
 MavlinkFtpServer::_path_from_payload(const PayloadHeader& payload, size_t entry)
 {
+    // Requires lock
+
     auto data = _data_as_string(payload, entry);
     return _path_from_string(data);
 }
@@ -241,6 +243,8 @@ MavlinkFtpServer::_path_from_payload(const PayloadHeader& payload, size_t entry)
 std::variant<std::string, MavlinkFtpServer::ServerResult>
 MavlinkFtpServer::_path_from_string(const std::string& payload_path)
 {
+    // Requires lock
+
     // No permission whatsoever if the root dir is not set.
     if (_root_dir.empty()) {
         return ServerResult::ERR_FAIL;
@@ -261,6 +265,8 @@ MavlinkFtpServer::_path_from_string(const std::string& payload_path)
 
 void MavlinkFtpServer::set_root_directory(const std::string& root_dir)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     std::error_code ignored;
     _root_dir = fs::canonical(fs::path(root_dir), ignored).string();
 }
@@ -270,6 +276,8 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
     auto response = PayloadHeader{};
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     auto maybe_path = _path_from_payload(payload);
     if (std::holds_alternative<ServerResult>(maybe_path)) {
@@ -387,7 +395,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
 
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if (_session_info.ifstream.is_open()) {
         _reset();
     }
@@ -477,7 +485,8 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
 
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (_session_info.ofstream.is_open()) {
         _reset();
     }
@@ -576,7 +585,7 @@ void MavlinkFtpServer::_work_create_file(const PayloadHeader& payload)
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
 
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if (_session_info.ofstream.is_open()) {
         _reset();
     }
@@ -653,7 +662,7 @@ void MavlinkFtpServer::_work_read(const PayloadHeader& payload)
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
 
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if (payload.session != 0 || !_session_info.ifstream.is_open()) {
         _reset();
     }
@@ -704,7 +713,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     auto response = PayloadHeader{};
     response.req_opcode = payload.opcode;
 
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if (payload.session != 0 || !_session_info.ifstream.is_open()) {
         _reset();
     }
@@ -762,7 +771,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
 
 void MavlinkFtpServer::_send_burst_packet()
 {
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if (!_session_info.ifstream.is_open()) {
         _reset();
     }
@@ -824,7 +833,7 @@ void MavlinkFtpServer::_work_write(const PayloadHeader& payload)
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
 
-    std::lock_guard<std::mutex> lock(_session_info_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if (payload.session != 0 && !_session_info.ofstream.is_open()) {
         _reset();
     }
@@ -859,7 +868,7 @@ void MavlinkFtpServer::_work_write(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_terminate(const PayloadHeader& payload)
 {
     {
-        std::lock_guard<std::mutex> lock(_session_info_mutex);
+        std::lock_guard<std::mutex> lock(_mutex);
         _reset();
     }
 
@@ -891,7 +900,7 @@ void MavlinkFtpServer::_reset()
 void MavlinkFtpServer::_work_reset(const PayloadHeader& payload)
 {
     {
-        std::lock_guard<std::mutex> lock(_session_info_mutex);
+        std::lock_guard<std::mutex> lock(_mutex);
         _reset();
     }
 
@@ -908,6 +917,8 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
     auto response = PayloadHeader{};
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     auto maybe_path = _path_from_payload(payload);
     if (std::holds_alternative<ServerResult>(maybe_path)) {
@@ -945,6 +956,8 @@ void MavlinkFtpServer::_work_create_directory(const PayloadHeader& payload)
     auto response = PayloadHeader{};
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     auto maybe_path = _path_from_payload(payload);
     if (std::holds_alternative<ServerResult>(maybe_path)) {
@@ -984,6 +997,8 @@ void MavlinkFtpServer::_work_remove_file(const PayloadHeader& payload)
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
 
+    std::lock_guard<std::mutex> lock(_mutex);
+
     auto maybe_path = _path_from_payload(payload);
     if (std::holds_alternative<ServerResult>(maybe_path)) {
         response.opcode = Opcode::RSP_NAK;
@@ -1019,6 +1034,8 @@ void MavlinkFtpServer::_work_rename(const PayloadHeader& payload)
     auto response = PayloadHeader{};
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     auto maybe_old_name = _path_from_payload(payload, 0);
 
@@ -1112,6 +1129,8 @@ void MavlinkFtpServer::_work_calc_file_CRC32(const PayloadHeader& payload)
     auto response = PayloadHeader{};
     response.seq_number = _seq++;
     response.req_opcode = payload.opcode;
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     auto maybe_path = _path_from_payload(payload);
     if (std::holds_alternative<ServerResult>(maybe_path)) {

@@ -271,11 +271,6 @@ private:
         unsigned stream_chunk_transmitted{0};
     };
 
-    struct OfstreamWithPath {
-        std::ofstream stream;
-        std::string path;
-    };
-
     bool download_start(Work& work, DownloadItem& item);
     bool download_continue(Work& work, DownloadItem& item, PayloadHeader* payload);
 
