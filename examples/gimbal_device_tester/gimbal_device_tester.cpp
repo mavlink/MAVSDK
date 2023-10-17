@@ -186,25 +186,28 @@ private:
             ESTIMATOR_POS_HORIZ_REL | ESTIMATOR_POS_HORIZ_ABS | ESTIMATOR_POS_VERT_ABS |
             ESTIMATOR_POS_VERT_AGL | ESTIMATOR_PRED_POS_HORIZ_REL | ESTIMATOR_PRED_POS_HORIZ_ABS;
 
-        mavlink_message_t message;
-        mavlink_msg_autopilot_state_for_gimbal_device_pack(
-            _mavlink_passthrough.get_our_sysid(),
-            _mavlink_passthrough.get_our_compid(),
-            &message,
-            0, // broadcast
-            0, // broadcast
-            0, // FIXME: time us
-            q,
-            0, // q estimated delay
-            0.0f, // vx
-            0.0f, // vy
-            0.0f, // vz
-            0, // estimated delay
-            0.0f, // feed forward angular velocity z
-            estimator_status,
-            MAV_LANDED_STATE_IN_AIR,
-            NAN); // angular velocity z
-        _mavlink_passthrough.send_message(message);
+        _mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_autopilot_state_for_gimbal_device_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                0, // broadcast
+                0, // broadcast
+                0, // FIXME: time us
+                q,
+                0, // q estimated delay
+                0.0f, // vx
+                0.0f, // vy
+                0.0f, // vz
+                0, // estimated delay
+                0.0f, // feed forward angular velocity z
+                estimator_status,
+                MAV_LANDED_STATE_IN_AIR,
+                NAN); // angular velocity z
+            return message;
+        });
     }
 
     void send_gimbal_device_set_attitude()
@@ -225,20 +228,22 @@ private:
             flags |= GIMBAL_DEVICE_FLAGS_YAW_LOCK;
         }
 
-        mavlink_message_t message;
-        mavlink_msg_gimbal_device_set_attitude_pack(
-            _mavlink_passthrough.get_our_sysid(),
-            _mavlink_passthrough.get_our_compid(),
-            &message,
-            0, // broadcast
-            0, // broadcast
-            flags,
-            q,
-            radians(attitude_setpoint.roll_rate_deg),
-            radians(attitude_setpoint.pitch_rate_deg),
-            radians(attitude_setpoint.yaw_rate_deg));
-
-        _mavlink_passthrough.send_message(message);
+        _mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_gimbal_device_set_attitude_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                0, // broadcast
+                0, // broadcast
+                flags,
+                q,
+                radians(attitude_setpoint.roll_rate_deg),
+                radians(attitude_setpoint.pitch_rate_deg),
+                radians(attitude_setpoint.yaw_rate_deg));
+            return message;
+        });
     }
 
     MavlinkPassthrough& _mavlink_passthrough;

@@ -86,25 +86,27 @@ void send_battery_status(MavlinkPassthrough& mavlink_passthrough)
 
     const uint16_t voltages_ext[4]{0, 0, 0, 0};
 
-    mavlink_message_t message;
-    mavlink_msg_battery_status_pack(
-        mavlink_passthrough.get_our_sysid(),
-        mavlink_passthrough.get_our_compid(),
-        &message,
-        0, // id
-        MAV_BATTERY_FUNCTION_ALL, // battery_function
-        MAV_BATTERY_TYPE_LION, // type
-        2500, // 100*temperature C
-        &voltages[0],
-        4000, // 100*current_battery A
-        1000, // current_consumed, mAh
-        -1, // energy consumed hJ
-        80, // battery_remaining %
-        3600, // time_remaining
-        MAV_BATTERY_CHARGE_STATE_OK,
-        voltages_ext,
-        MAV_BATTERY_MODE_UNKNOWN, // mode
-        0); // fault_bitmask
-
-    mavlink_passthrough.send_message(message);
+    mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_battery_status_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            0, // id
+            MAV_BATTERY_FUNCTION_ALL, // battery_function
+            MAV_BATTERY_TYPE_LION, // type
+            2500, // 100*temperature C
+            &voltages[0],
+            4000, // 100*current_battery A
+            1000, // current_consumed, mAh
+            -1, // energy consumed hJ
+            80, // battery_remaining %
+            3600, // time_remaining
+            MAV_BATTERY_CHARGE_STATE_OK,
+            voltages_ext,
+            MAV_BATTERY_MODE_UNKNOWN, // mode
+            0); // fault_bitmask
+        return message;
+    });
 }
