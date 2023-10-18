@@ -404,7 +404,7 @@ public:
                 attitude_setpoint.mode = mode;
             });
 
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::this_thread::sleep_for(std::chrono::seconds(5));
 
         const float margin_deg = 5.0f;
 
