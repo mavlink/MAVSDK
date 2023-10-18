@@ -24,7 +24,7 @@ chmod +x ${BUILD_DIR}/mavsdk_server.xcframework/ios-x86_64-simulator/mavsdk_serv
 chmod +x ${BUILD_DIR}/mavsdk_server.xcframework/macos-x86_64/mavsdk_server.framework/mavsdk_server
 
 cd ${BUILD_DIR}
-zip -9 -r mavsdk_server.xcframework.zip mavsdk_server.xcframework
+zip -9 -y -r mavsdk_server.xcframework.zip mavsdk_server.xcframework
 
 shasum -a 256 mavsdk_server.xcframework.zip | awk '{ print $1 }' > mavsdk_server.xcframework.zip.sha256
 
