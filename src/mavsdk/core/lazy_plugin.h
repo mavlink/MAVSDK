@@ -18,7 +18,7 @@ public:
             if (_mavsdk.systems().empty()) {
                 return nullptr;
             }
-            _plugin = std::make_unique<Plugin>(_mavsdk.systems()[0]);
+            _plugin = std::make_unique<Plugin>(_mavsdk.first_autopilot(0).value());
         }
         return _plugin.get();
     }
