@@ -54,6 +54,7 @@ TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
     EXPECT_CALL(mavsdk, systems()).WillOnce(testing::Return(systems));
 
     EXPECT_CALL(*system, is_connected()).WillOnce(testing::Return(true));
+    EXPECT_CALL(*system, has_autopilot()).WillOnce(testing::Return(true));
 
     auto async_future = std::async(std::launch::async, [&initiator, &mavsdk]() {
         initiator.start(mavsdk, ARBITRARY_CONNECTION_URL);
@@ -80,6 +81,7 @@ TEST(ConnectionInitiator, connectionDetectedIfDiscoverCallbackCalledBeforeWait)
     EXPECT_CALL(mavsdk, systems()).WillOnce(testing::Return(systems));
 
     EXPECT_CALL(*system, is_connected()).WillOnce(testing::Return(true));
+    EXPECT_CALL(*system, has_autopilot()).WillOnce(testing::Return(true));
 
     initiator.start(mavsdk, ARBITRARY_CONNECTION_URL);
     change_callback();
@@ -99,6 +101,7 @@ TEST(ConnectionInitiator, doesNotCrashIfDiscoverCallbackCalledMoreThanOnce)
     EXPECT_CALL(mavsdk, systems()).WillRepeatedly(testing::Return(systems));
 
     EXPECT_CALL(*system, is_connected()).WillRepeatedly(testing::Return(true));
+    EXPECT_CALL(*system, has_autopilot()).WillOnce(testing::Return(true));
 
     initiator.start(mavsdk, ARBITRARY_CONNECTION_URL);
     change_callback();
