@@ -1,4 +1,5 @@
 #include "log.h"
+#include "mavlink_address.h"
 #include "ping.h"
 #include "system_impl.h"
 
@@ -19,18 +20,19 @@ Ping::~Ping()
 
 void Ping::run_once()
 {
-    mavlink_message_t message;
-
-    mavlink_msg_ping_pack(
-        _system_impl.get_own_system_id(),
-        _system_impl.get_own_component_id(),
-        &message,
-        _system_impl.get_time().elapsed_us(),
-        _ping_sequence,
-        0,
-        0); // to all
-
-    _system_impl.send_message(message);
+    _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_ping_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _system_impl.get_time().elapsed_us(),
+            _ping_sequence,
+            0,
+            0); // to all
+        return message;
+    });
 }
 
 void Ping::process_ping(const mavlink_message_t& message)
@@ -40,17 +42,20 @@ void Ping::process_ping(const mavlink_message_t& message)
 
     if (ping.target_system == 0 && ping.target_component == 0) {
         // Response to ping request.
-        mavlink_message_t response_message;
-        mavlink_msg_ping_pack(
-            _system_impl.get_own_system_id(),
-            _system_impl.get_own_component_id(),
-            &response_message,
-            ping.time_usec,
-            ping.seq,
-            message.sysid,
-            message.compid);
 
-        _system_impl.send_message(response_message);
+        _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t response_message;
+            mavlink_msg_ping_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &response_message,
+                ping.time_usec,
+                ping.seq,
+                message.sysid,
+                message.compid);
+            return response_message;
+        });
 
     } else {
         // Answer from ping request.

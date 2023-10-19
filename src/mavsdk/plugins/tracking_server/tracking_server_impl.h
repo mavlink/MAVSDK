@@ -45,11 +45,11 @@ public:
     respond_tracking_off_command(TrackingServer::CommandAnswer command_answer);
 
 private:
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_track_point_command(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_track_rectangle_command(const MavlinkCommandReceiver::CommandLong& command);
-    std::optional<mavlink_message_t>
+    std::optional<mavlink_command_ack_t>
     process_track_off_command(const MavlinkCommandReceiver::CommandLong& command);
 
     bool is_command_sender_ok(const MavlinkCommandReceiver::CommandLong& command);

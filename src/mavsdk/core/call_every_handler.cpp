@@ -8,6 +8,8 @@ CallEveryHandler::CallEveryHandler(Time& time) : _time(time) {}
 
 void CallEveryHandler::add(std::function<void()> callback, double interval_s, void** cookie)
 {
+    std::lock_guard<std::mutex> lock(_entries_mutex);
+
     auto new_entry = std::make_shared<Entry>();
     new_entry->callback = std::move(callback);
     auto before = _time.steady_time();
@@ -19,10 +21,7 @@ void CallEveryHandler::add(std::function<void()> callback, double interval_s, vo
 
     void* new_cookie = static_cast<void*>(new_entry.get());
 
-    {
-        std::lock_guard<std::mutex> lock(_entries_mutex);
-        _entries.insert(std::pair<void*, std::shared_ptr<Entry>>(new_cookie, new_entry));
-    }
+    _entries.insert(std::pair<void*, std::shared_ptr<Entry>>(new_cookie, new_entry));
 
     if (cookie != nullptr) {
         *cookie = new_cookie;

@@ -1,5 +1,6 @@
 #include "mission_raw_server_impl.h"
 #include "callback_list.tpp"
+#include "mavlink_address.h"
 
 namespace mavsdk {
 
@@ -149,7 +150,8 @@ void MissionRawServerImpl::init()
             LogDebug() << "Receive Mission Count in Server";
 
             // Decode the count
-            _target_component = message.compid;
+            _target_system_id = message.sysid;
+            _target_component_id = message.compid;
             mavlink_mission_count_t count;
             mavlink_msg_mission_count_decode(&message, &count);
             _mission_count = count.count;
@@ -173,7 +175,8 @@ void MissionRawServerImpl::init()
                     _server_component_impl->mission_transfer().receive_incoming_items_async(
                         MAV_MISSION_TYPE_MISSION,
                         _mission_count,
-                        _target_component,
+                        _target_system_id,
+                        _target_component_id,
                         [this](
                             MavlinkMissionTransfer::Result result,
                             std::vector<MavlinkMissionTransfer::ItemInt> items) {
@@ -202,28 +205,36 @@ void MissionRawServerImpl::init()
 
             if (_current_mission.size() == 0) {
                 const char text[50] = "No Mission Loaded";
-                mavlink_message_t status_message;
-                mavlink_msg_statustext_pack(
-                    _server_component_impl->get_own_system_id(),
-                    _server_component_impl->get_own_component_id(),
-                    &status_message,
-                    MAV_SEVERITY_ERROR,
-                    text,
-                    0,
-                    0);
-                _server_component_impl->send_message(status_message);
+                _server_component_impl->queue_message(
+                    [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                        mavlink_message_t response_message;
+                        mavlink_msg_statustext_pack_chan(
+                            mavlink_address.system_id,
+                            mavlink_address.component_id,
+                            channel,
+                            &response_message,
+                            MAV_SEVERITY_ERROR,
+                            text,
+                            0,
+                            0);
+                        return response_message;
+                    });
             } else if (_current_mission.size() <= set_current.seq) {
                 const char text[50] = "Unknown Mission seq id";
-                mavlink_message_t status_message;
-                mavlink_msg_statustext_pack(
-                    _server_component_impl->get_own_system_id(),
-                    _server_component_impl->get_own_component_id(),
-                    &status_message,
-                    MAV_SEVERITY_ERROR,
-                    text,
-                    0,
-                    0);
-                _server_component_impl->send_message(status_message);
+                _server_component_impl->queue_message(
+                    [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                        mavlink_message_t response_message;
+                        mavlink_msg_statustext_pack_chan(
+                            mavlink_address.system_id,
+                            mavlink_address.component_id,
+                            channel,
+                            &response_message,
+                            MAV_SEVERITY_ERROR,
+                            text,
+                            0,
+                            0);
+                        return response_message;
+                    });
             } else {
                 set_current_seq(set_current.seq);
             }
@@ -246,16 +257,20 @@ void MissionRawServerImpl::init()
             }
 
             // Send the MISSION_ACK
-            mavlink_message_t ack_message;
-            mavlink_msg_mission_ack_pack(
-                _server_component_impl->get_own_system_id(),
-                _server_component_impl->get_own_component_id(),
-                &ack_message,
-                message.sysid,
-                message.compid,
-                MAV_MISSION_RESULT::MAV_MISSION_ACCEPTED,
-                clear_all.mission_type);
-            _server_component_impl->send_message(ack_message);
+            _server_component_impl->queue_message(
+                [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                    mavlink_message_t response_message;
+                    mavlink_msg_mission_ack_pack_chan(
+                        mavlink_address.system_id,
+                        mavlink_address.component_id,
+                        channel,
+                        &response_message,
+                        message.sysid,
+                        message.compid,
+                        MAV_MISSION_RESULT::MAV_MISSION_ACCEPTED,
+                        clear_all.mission_type);
+                    return response_message;
+                });
         },
         this);
 }
@@ -327,13 +342,16 @@ void MissionRawServerImpl::set_current_item_complete()
         return;
     }
 
-    mavlink_message_t mission_reached;
-    mavlink_msg_mission_item_reached_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &mission_reached,
-        static_cast<uint16_t>(_current_seq));
-    _server_component_impl->send_message(mission_reached);
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_mission_item_reached_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint16_t>(_current_seq));
+        return message;
+    });
 
     if (_current_seq + 1 == _current_mission.size()) {
         _mission_completed = true;
@@ -359,16 +377,19 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
         _server_component_impl->call_user_callback(func);
     });
 
-    mavlink_message_t mission_current;
-    mavlink_msg_mission_current_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &mission_current,
-        static_cast<uint16_t>(_current_seq),
-        0,
-        0,
-        0);
-    _server_component_impl->send_message(mission_current);
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_mission_current_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint16_t>(_current_seq),
+            0,
+            0,
+            0);
+        return message;
+    });
 }
 
 } // namespace mavsdk

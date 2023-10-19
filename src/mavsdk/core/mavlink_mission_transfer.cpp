@@ -25,6 +25,7 @@ MavlinkMissionTransfer::MavlinkMissionTransfer(
 
 std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::upload_items_async(
     uint8_t type,
+    uint8_t target_system_id,
     const std::vector<ItemInt>& items,
     const ResultCallback& callback,
     const ProgressCallback& progress_callback)
@@ -46,7 +47,8 @@ std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::upload_i
         _timeout_s_callback(),
         callback,
         progress_callback,
-        _debugging);
+        _debugging,
+        target_system_id);
 
     _work_queue.push_back(ptr);
 
@@ -54,7 +56,10 @@ std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::upload_i
 }
 
 std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::download_items_async(
-    uint8_t type, ResultAndItemsCallback callback, ProgressCallback progress_callback)
+    uint8_t type,
+    uint8_t target_system_id,
+    ResultAndItemsCallback callback,
+    ProgressCallback progress_callback)
 {
     if (!_int_messages_supported) {
         if (callback) {
@@ -72,7 +77,8 @@ std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::download
         _timeout_s_callback(),
         callback,
         progress_callback,
-        _debugging);
+        _debugging,
+        target_system_id);
 
     _work_queue.push_back(ptr);
 
@@ -81,7 +87,11 @@ std::weak_ptr<MavlinkMissionTransfer::WorkItem> MavlinkMissionTransfer::download
 
 std::weak_ptr<MavlinkMissionTransfer::WorkItem>
 MavlinkMissionTransfer::receive_incoming_items_async(
-    uint8_t type, uint32_t mission_count, uint8_t target_component, ResultAndItemsCallback callback)
+    uint8_t type,
+    uint32_t mission_count,
+    uint8_t target_system,
+    uint8_t target_component,
+    ResultAndItemsCallback callback)
 {
     if (!_int_messages_supported) {
         if (callback) {
@@ -99,6 +109,7 @@ MavlinkMissionTransfer::receive_incoming_items_async(
         _timeout_s_callback(),
         callback,
         mission_count,
+        target_system,
         target_component,
         _debugging);
 
@@ -107,7 +118,8 @@ MavlinkMissionTransfer::receive_incoming_items_async(
     return std::weak_ptr<WorkItem>(ptr);
 }
 
-void MavlinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback callback)
+void MavlinkMissionTransfer::clear_items_async(
+    uint8_t type, uint8_t target_system_id, ResultCallback callback)
 {
     auto ptr = std::make_shared<ClearWorkItem>(
         _sender,
@@ -116,12 +128,14 @@ void MavlinkMissionTransfer::clear_items_async(uint8_t type, ResultCallback call
         type,
         _timeout_s_callback(),
         callback,
-        _debugging);
+        _debugging,
+        target_system_id);
 
     _work_queue.push_back(ptr);
 }
 
-void MavlinkMissionTransfer::set_current_item_async(int current, ResultCallback callback)
+void MavlinkMissionTransfer::set_current_item_async(
+    int current, uint8_t target_system_id, ResultCallback callback)
 {
     auto ptr = std::make_shared<SetCurrentWorkItem>(
         _sender,
@@ -130,7 +144,8 @@ void MavlinkMissionTransfer::set_current_item_async(int current, ResultCallback 
         current,
         _timeout_s_callback(),
         callback,
-        _debugging);
+        _debugging,
+        target_system_id);
 
     _work_queue.push_back(ptr);
 }
@@ -196,14 +211,14 @@ MavlinkMissionTransfer::UploadWorkItem::UploadWorkItem(
     double timeout_s,
     ResultCallback callback,
     ProgressCallback progress_callback,
-    bool debugging) :
+    bool debugging,
+    uint8_t target_system_id) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _items(items),
     _callback(callback),
-    _progress_callback(progress_callback)
+    _progress_callback(progress_callback),
+    _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_REQUEST,
         [this](const mavlink_message_t& message) { process_mission_request(message); },
@@ -222,7 +237,6 @@ MavlinkMissionTransfer::UploadWorkItem::UploadWorkItem(
 
 MavlinkMissionTransfer::UploadWorkItem::~UploadWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
@@ -282,17 +296,19 @@ void MavlinkMissionTransfer::UploadWorkItem::cancel()
 
 void MavlinkMissionTransfer::UploadWorkItem::send_count()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_count_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        _items.size(),
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_count_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _items.size(),
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -308,17 +324,19 @@ void MavlinkMissionTransfer::UploadWorkItem::send_count()
 
 void MavlinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        MAV_MISSION_OPERATION_CANCELLED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                MAV_MISSION_OPERATION_CANCELLED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -330,10 +348,11 @@ void MavlinkMissionTransfer::UploadWorkItem::send_cancel_and_finish()
 void MavlinkMissionTransfer::UploadWorkItem::process_mission_request(
     const mavlink_message_t& request_message)
 {
-    if (_sender.autopilot() == Sender::Autopilot::ArduPilot) {
+    mavlink_mission_request_t request;
+    mavlink_msg_mission_request_decode(&request_message, &request);
+
+    if (_sender.autopilot() == Autopilot::ArduPilot) {
         // ArduCopter 3.6 sends MISSION_REQUEST (not _INT) but actually accepts ITEM_INT in reply
-        mavlink_mission_request_t request;
-        mavlink_msg_mission_request_decode(&request_message, &request);
 
         // FIXME: this will mess with the sequence number.
         mavlink_message_t request_int_message;
@@ -353,17 +372,19 @@ void MavlinkMissionTransfer::UploadWorkItem::process_mission_request(
         // We only support int, so we nack this and thus tell the autopilot to use int.
         UNUSED(request_message);
 
-        mavlink_message_t message;
-        mavlink_msg_mission_ack_pack(
-            _sender.get_own_system_id(),
-            _sender.get_own_component_id(),
-            &message,
-            _sender.get_system_id(),
-            MAV_COMP_ID_AUTOPILOT1,
-            MAV_MISSION_UNSUPPORTED,
-            _type);
-
-        if (!_sender.send_message(message)) {
+        if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+                mavlink_message_t message;
+                mavlink_msg_mission_ack_pack_chan(
+                    mavlink_address.system_id,
+                    mavlink_address.component_id,
+                    channel,
+                    &message,
+                    request.target_system,
+                    request.target_component,
+                    MAV_MISSION_UNSUPPORTED,
+                    _type);
+                return message;
+            })) {
             _timeout_handler.remove(_cookie);
             callback_and_reset(Result::ConnectionError);
             return;
@@ -424,39 +445,41 @@ void MavlinkMissionTransfer::UploadWorkItem::send_mission_item()
         return;
     }
 
-    mavlink_message_t message;
-    mavlink_msg_mission_item_int_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        _next_sequence,
-        _items[_next_sequence].frame,
-        _items[_next_sequence].command,
-        _items[_next_sequence].current,
-        _items[_next_sequence].autocontinue,
-        _items[_next_sequence].param1,
-        _items[_next_sequence].param2,
-        _items[_next_sequence].param3,
-        _items[_next_sequence].param4,
-        _items[_next_sequence].x,
-        _items[_next_sequence].y,
-        _items[_next_sequence].z,
-        _type);
-
     if (_debugging) {
         LogDebug() << "Sending mission_item_int seq: " << _next_sequence
                    << ", retry: " << _retries_done;
     }
 
-    ++_next_sequence;
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_item_int_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _next_sequence,
+                _items[_next_sequence].frame,
+                _items[_next_sequence].command,
+                _items[_next_sequence].current,
+                _items[_next_sequence].autocontinue,
+                _items[_next_sequence].param1,
+                _items[_next_sequence].param2,
+                _items[_next_sequence].param3,
+                _items[_next_sequence].param4,
+                _items[_next_sequence].x,
+                _items[_next_sequence].y,
+                _items[_next_sequence].z,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
     }
+
+    ++_next_sequence;
 
     ++_retries_done;
 }
@@ -576,13 +599,13 @@ MavlinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
     double timeout_s,
     ResultAndItemsCallback callback,
     ProgressCallback progress_callback,
-    bool debugging) :
+    bool debugging,
+    uint8_t target_system_id) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _callback(callback),
-    _progress_callback(progress_callback)
+    _progress_callback(progress_callback),
+    _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_COUNT,
         [this](const mavlink_message_t& message) { process_mission_count(message); },
@@ -596,8 +619,6 @@ MavlinkMissionTransfer::DownloadWorkItem::DownloadWorkItem(
 
 MavlinkMissionTransfer::DownloadWorkItem::~DownloadWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
@@ -625,16 +646,18 @@ void MavlinkMissionTransfer::DownloadWorkItem::cancel()
 
 void MavlinkMissionTransfer::DownloadWorkItem::request_list()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_request_list_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -645,17 +668,19 @@ void MavlinkMissionTransfer::DownloadWorkItem::request_list()
 
 void MavlinkMissionTransfer::DownloadWorkItem::request_item()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        _next_sequence,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_request_int_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _next_sequence,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -666,17 +691,19 @@ void MavlinkMissionTransfer::DownloadWorkItem::request_item()
 
 void MavlinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        MAV_MISSION_ACCEPTED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                MAV_MISSION_ACCEPTED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -687,17 +714,19 @@ void MavlinkMissionTransfer::DownloadWorkItem::send_ack_and_finish()
 
 void MavlinkMissionTransfer::DownloadWorkItem::send_cancel_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        MAV_MISSION_OPERATION_CANCELLED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                MAV_MISSION_OPERATION_CANCELLED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -816,30 +845,30 @@ MavlinkMissionTransfer::ReceiveIncomingMission::ReceiveIncomingMission(
     double timeout_s,
     ResultAndItemsCallback callback,
     uint32_t mission_count,
-    uint8_t target_component,
+    uint8_t target_system_id,
+    uint8_t target_component_id,
     bool debugging) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _callback(callback),
     _mission_count(mission_count),
-    _target_component(target_component)
+    _target_system_id(target_system_id),
+    _target_component_id(target_component_id)
 {}
 
 MavlinkMissionTransfer::ReceiveIncomingMission::~ReceiveIncomingMission()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::start()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_ITEM_INT,
         [this](const mavlink_message_t& message) { process_mission_item_int(message); },
         this);
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     _items.clear();
 
@@ -859,17 +888,19 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::cancel()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::request_item()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        _target_component,
-        _next_sequence,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_request_int_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                _target_component_id,
+                _next_sequence,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -880,17 +911,19 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::request_item()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        _target_component,
-        MAV_MISSION_ACCEPTED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                _target_component_id,
+                MAV_MISSION_ACCEPTED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -901,17 +934,19 @@ void MavlinkMissionTransfer::ReceiveIncomingMission::send_ack_and_finish()
 
 void MavlinkMissionTransfer::ReceiveIncomingMission::send_cancel_and_finish()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        _target_component,
-        MAV_MISSION_OPERATION_CANCELLED,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_ack_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                _target_component_id,
+                MAV_MISSION_OPERATION_CANCELLED,
+                _type);
+            return message;
+        })) {
         callback_and_reset(Result::ConnectionError);
         return;
     }
@@ -1000,12 +1035,12 @@ MavlinkMissionTransfer::ClearWorkItem::ClearWorkItem(
     uint8_t type,
     double timeout_s,
     ResultCallback callback,
-    bool debugging) :
+    bool debugging,
+    uint8_t target_system_id) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
-    _callback(callback)
+    _callback(callback),
+    _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_ACK,
         [this](const mavlink_message_t& message) { process_mission_ack(message); },
@@ -1014,8 +1049,6 @@ MavlinkMissionTransfer::ClearWorkItem::ClearWorkItem(
 
 MavlinkMissionTransfer::ClearWorkItem::~ClearWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
@@ -1040,16 +1073,18 @@ void MavlinkMissionTransfer::ClearWorkItem::cancel()
 
 void MavlinkMissionTransfer::ClearWorkItem::send_clear()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_clear_all_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        _type);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_clear_all_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _type);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;
@@ -1146,14 +1181,14 @@ MavlinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
     int current,
     double timeout_s,
     ResultCallback callback,
-    bool debugging) :
+    bool debugging,
+    uint8_t target_system_id) :
     WorkItem(
         sender, message_handler, timeout_handler, MAV_MISSION_TYPE_MISSION, timeout_s, debugging),
     _current(current),
-    _callback(callback)
+    _callback(callback),
+    _target_system_id(target_system_id)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_CURRENT,
         [this](const mavlink_message_t& message) { process_mission_current(message); },
@@ -1162,7 +1197,6 @@ MavlinkMissionTransfer::SetCurrentWorkItem::SetCurrentWorkItem(
 
 MavlinkMissionTransfer::SetCurrentWorkItem::~SetCurrentWorkItem()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
     _message_handler.unregister_all(this);
     _timeout_handler.remove(_cookie);
 }
@@ -1194,16 +1228,18 @@ void MavlinkMissionTransfer::SetCurrentWorkItem::cancel()
 
 void MavlinkMissionTransfer::SetCurrentWorkItem::send_current_mission_item()
 {
-    mavlink_message_t message;
-    mavlink_msg_mission_set_current_pack(
-        _sender.get_own_system_id(),
-        _sender.get_own_component_id(),
-        &message,
-        _sender.get_system_id(),
-        MAV_COMP_ID_AUTOPILOT1,
-        _current);
-
-    if (!_sender.send_message(message)) {
+    if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_mission_set_current_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _target_system_id,
+                MAV_COMP_ID_AUTOPILOT1,
+                _current);
+            return message;
+        })) {
         _timeout_handler.remove(_cookie);
         callback_and_reset(Result::ConnectionError);
         return;

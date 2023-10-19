@@ -148,7 +148,10 @@ void MissionRawImpl::upload_mission_items_async(
     const auto int_items = convert_to_int_items(mission_raw);
 
     _last_upload = _system_impl->mission_transfer().upload_items_async(
-        type, int_items, [this, callback, int_items](MavlinkMissionTransfer::Result result) {
+        type,
+        _system_impl->get_system_id(),
+        int_items,
+        [this, callback, int_items](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(int_items);
             _system_impl->call_user_callback([callback, converted_result, converted_items]() {
@@ -236,6 +239,7 @@ void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCal
 
     _last_download = _system_impl->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
         [this, callback](
             MavlinkMissionTransfer::Result result,
             std::vector<MavlinkMissionTransfer::ItemInt> items) {
@@ -419,12 +423,14 @@ void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callb
     reset_mission_progress();
 
     // For ArduPilot to clear a mission we need to upload an empty mission.
-    if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_system_impl->autopilot() == Autopilot::ArduPilot) {
         std::vector<MissionRaw::MissionItem> mission_items{empty_item};
         upload_mission_async(mission_items, callback);
     } else {
         _system_impl->mission_transfer().clear_items_async(
-            MAV_MISSION_TYPE_MISSION, [this, callback](MavlinkMissionTransfer::Result result) {
+            MAV_MISSION_TYPE_MISSION,
+            _system_impl->get_system_id(),
+            [this, callback](MavlinkMissionTransfer::Result result) {
                 auto converted_result = convert_result(result);
                 _system_impl->call_user_callback([callback, converted_result]() {
                     if (callback) {
@@ -458,7 +464,9 @@ void MissionRawImpl::set_current_mission_item_async(
     }
 
     _system_impl->mission_transfer().set_current_item_async(
-        index, [this, callback](MavlinkMissionTransfer::Result result) {
+        index,
+        _system_impl->get_system_id(),
+        [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {

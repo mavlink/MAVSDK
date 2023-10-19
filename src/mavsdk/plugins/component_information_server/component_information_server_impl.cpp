@@ -1,4 +1,5 @@
 #include "component_information_server_impl.h"
+#include "mavlink_address.h"
 #include "mavlink_request_message_handler.h"
 #include "callback_list.tpp"
 
@@ -105,18 +106,20 @@ std::optional<MAV_RESULT> ComponentInformationServerImpl::process_component_info
 {
     const char general_metadata_uri[100] = "mftp://general.json";
     const char peripherals_metadata_uri[100] = "";
-
-    mavlink_message_t message;
-    mavlink_msg_component_information_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &message,
-        _server_component_impl->get_time().elapsed_ms(),
-        0,
-        general_metadata_uri,
-        0,
-        peripherals_metadata_uri);
-    _server_component_impl->send_message(message);
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_component_information_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _server_component_impl->get_time().elapsed_ms(),
+            0,
+            general_metadata_uri,
+            0,
+            peripherals_metadata_uri);
+        return message;
+    });
 
     // FIXME: REMOVE again
     update_json_files_with_lock();

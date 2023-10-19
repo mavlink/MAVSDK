@@ -1,5 +1,6 @@
 #include "tracking_server_impl.h"
 #include "callback_list.tpp"
+#include "mavlink_address.h"
 #include <mutex>
 
 namespace mavsdk {
@@ -55,63 +56,72 @@ void TrackingServerImpl::deinit()
 
 void TrackingServerImpl::set_tracking_point_status(TrackingServer::TrackPoint tracked_point)
 {
-    mavlink_message_t message;
-    mavlink_msg_camera_tracking_image_status_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &message,
-        CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
-        CAMERA_TRACKING_MODE_POINT,
-        CAMERA_TRACKING_TARGET_DATA_IN_STATUS,
-        tracked_point.point_x,
-        tracked_point.point_y,
-        tracked_point.radius,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f);
-    _server_component_impl->send_message(message);
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_camera_tracking_image_status_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
+            CAMERA_TRACKING_MODE_POINT,
+            CAMERA_TRACKING_TARGET_DATA_IN_STATUS,
+            tracked_point.point_x,
+            tracked_point.point_y,
+            tracked_point.radius,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f);
+        return message;
+    });
 }
 
 void TrackingServerImpl::set_tracking_rectangle_status(
     TrackingServer::TrackRectangle tracked_rectangle)
 {
-    mavlink_message_t message;
-    mavlink_msg_camera_tracking_image_status_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &message,
-        CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
-        CAMERA_TRACKING_MODE_RECTANGLE,
-        CAMERA_TRACKING_TARGET_DATA_IN_STATUS,
-        0.0f,
-        0.0f,
-        0.0f,
-        tracked_rectangle.top_left_corner_x,
-        tracked_rectangle.top_left_corner_y,
-        tracked_rectangle.bottom_right_corner_x,
-        tracked_rectangle.bottom_right_corner_y);
-    _server_component_impl->send_message(message);
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_camera_tracking_image_status_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
+            CAMERA_TRACKING_MODE_RECTANGLE,
+            CAMERA_TRACKING_TARGET_DATA_IN_STATUS,
+            0.0f,
+            0.0f,
+            0.0f,
+            tracked_rectangle.top_left_corner_x,
+            tracked_rectangle.top_left_corner_y,
+            tracked_rectangle.bottom_right_corner_x,
+            tracked_rectangle.bottom_right_corner_y);
+        return message;
+    });
 }
 
 void TrackingServerImpl::set_tracking_off_status()
 {
-    mavlink_message_t message;
-    mavlink_msg_camera_tracking_image_status_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &message,
-        CAMERA_TRACKING_STATUS_FLAGS_IDLE,
-        CAMERA_TRACKING_MODE_NONE,
-        CAMERA_TRACKING_TARGET_DATA_NONE,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f);
-    _server_component_impl->send_message(message);
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_camera_tracking_image_status_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            CAMERA_TRACKING_STATUS_FLAGS_IDLE,
+            CAMERA_TRACKING_MODE_NONE,
+            CAMERA_TRACKING_TARGET_DATA_NONE,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f);
+        return message;
+    });
 }
 
 TrackingServer::TrackingPointCommandHandle TrackingServerImpl::subscribe_tracking_point_command(
@@ -162,20 +172,24 @@ TrackingServerImpl::respond_tracking_point_command(TrackingServer::CommandAnswer
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    mavlink_message_t message;
-    mavlink_msg_command_ack_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &message,
-        MAV_CMD_CAMERA_TRACK_POINT,
-        mav_result_from_command_answer(command_answer),
-        0,
-        0,
-        _tracking_point_command_sysid,
-        _tracking_point_command_compid);
-
-    return _server_component_impl->send_message(message) ? TrackingServer::Result::Success :
-                                                           TrackingServer::Result::ConnectionError;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_command_ack_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       MAV_CMD_CAMERA_TRACK_POINT,
+                       mav_result_from_command_answer(command_answer),
+                       0,
+                       0,
+                       _tracking_point_command_sysid,
+                       _tracking_point_command_compid);
+                   return message;
+               }) ?
+               TrackingServer::Result::Success :
+               TrackingServer::Result::ConnectionError;
 }
 
 TrackingServer::Result
@@ -183,20 +197,24 @@ TrackingServerImpl::respond_tracking_rectangle_command(TrackingServer::CommandAn
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    mavlink_message_t message;
-    mavlink_msg_command_ack_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &message,
-        MAV_CMD_CAMERA_TRACK_RECTANGLE,
-        mav_result_from_command_answer(command_answer),
-        0,
-        0,
-        _tracking_rectangle_command_sysid,
-        _tracking_rectangle_command_compid);
-
-    return _server_component_impl->send_message(message) ? TrackingServer::Result::Success :
-                                                           TrackingServer::Result::ConnectionError;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_command_ack_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       MAV_CMD_CAMERA_TRACK_RECTANGLE,
+                       mav_result_from_command_answer(command_answer),
+                       0,
+                       0,
+                       _tracking_rectangle_command_sysid,
+                       _tracking_rectangle_command_compid);
+                   return message;
+               }) ?
+               TrackingServer::Result::Success :
+               TrackingServer::Result::ConnectionError;
 }
 
 TrackingServer::Result
@@ -204,23 +222,27 @@ TrackingServerImpl::respond_tracking_off_command(TrackingServer::CommandAnswer c
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    mavlink_message_t message;
-    mavlink_msg_command_ack_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &message,
-        MAV_CMD_CAMERA_STOP_TRACKING,
-        mav_result_from_command_answer(command_answer),
-        0,
-        0,
-        _tracking_off_command_sysid,
-        _tracking_off_command_compid);
-
-    return _server_component_impl->send_message(message) ? TrackingServer::Result::Success :
-                                                           TrackingServer::Result::ConnectionError;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_command_ack_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       MAV_CMD_CAMERA_STOP_TRACKING,
+                       mav_result_from_command_answer(command_answer),
+                       0,
+                       0,
+                       _tracking_off_command_sysid,
+                       _tracking_off_command_compid);
+                   return message;
+               }) ?
+               TrackingServer::Result::Success :
+               TrackingServer::Result::ConnectionError;
 }
 
-std::optional<mavlink_message_t>
+std::optional<mavlink_command_ack_t>
 TrackingServerImpl::process_track_point_command(const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
@@ -245,7 +267,7 @@ TrackingServerImpl::process_track_point_command(const MavlinkCommandReceiver::Co
     return std::nullopt;
 }
 
-std::optional<mavlink_message_t> TrackingServerImpl::process_track_rectangle_command(
+std::optional<mavlink_command_ack_t> TrackingServerImpl::process_track_rectangle_command(
     const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
@@ -270,7 +292,7 @@ std::optional<mavlink_message_t> TrackingServerImpl::process_track_rectangle_com
     return std::nullopt;
 }
 
-std::optional<mavlink_message_t>
+std::optional<mavlink_command_ack_t>
 TrackingServerImpl::process_track_off_command(const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {

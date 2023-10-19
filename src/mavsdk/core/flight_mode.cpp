@@ -1,4 +1,5 @@
 
+#include "autopilot.h"
 #include "flight_mode.h"
 #include "mavlink_include.h"
 #include "ardupilot_custom_mode.h"
@@ -7,10 +8,10 @@
 
 namespace mavsdk {
 
-FlightMode to_flight_mode_from_custom_mode(
-    Sender::Autopilot autopilot, MAV_TYPE mav_type, uint32_t custom_mode)
+FlightMode
+to_flight_mode_from_custom_mode(Autopilot autopilot, MAV_TYPE mav_type, uint32_t custom_mode)
 {
-    if (autopilot == Sender::Autopilot::ArduPilot) {
+    if (autopilot == Autopilot::ArduPilot) {
         switch (mav_type) {
             case MAV_TYPE::MAV_TYPE_SURFACE_BOAT:
             case MAV_TYPE::MAV_TYPE_GROUND_ROVER:

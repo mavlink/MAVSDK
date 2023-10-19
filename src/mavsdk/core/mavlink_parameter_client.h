@@ -34,6 +34,7 @@ public:
         MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler,
         TimeoutSCallback timeout_s_callback,
+        uint8_t target_system_id,
         uint8_t target_component_id = MAV_COMP_ID_AUTOPILOT1,
         bool use_extended_protocol = false);
     ~MavlinkParameterClient();
@@ -184,16 +185,17 @@ private:
     void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
 
-    mavlink_message_t create_set_param_message(WorkItemSet& work_item);
-    mavlink_message_t create_get_param_message(WorkItemGet& work_item);
-    mavlink_message_t create_get_param_message(
+    bool send_set_param_message(WorkItemSet& work_item);
+    bool send_get_param_message(WorkItemGet& work_item);
+    bool send_get_param_message(
         const std::array<char, PARAM_ID_LEN>& param_id_buff, int16_t param_index);
-    mavlink_message_t create_request_list_message();
+    bool send_request_list_message();
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
+    uint8_t _target_system_id = 0;
     uint8_t _target_component_id = MAV_COMP_ID_AUTOPILOT1;
     bool _use_extended = false;
 

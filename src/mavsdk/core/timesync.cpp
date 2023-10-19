@@ -1,5 +1,6 @@
 #include "timesync.h"
 #include "log.h"
+#include "mavlink_address.h"
 #include "system_impl.h"
 
 // Partially based on: https://github.com/mavlink/mavros/blob/master/mavros/src/plugins/sys_time.cpp
@@ -63,17 +64,19 @@ void Timesync::process_timesync(const mavlink_message_t& message)
 
 void Timesync::send_timesync(uint64_t tc1, uint64_t ts1)
 {
-    mavlink_message_t message;
-
-    mavlink_msg_timesync_pack(
-        _system_impl.get_own_system_id(),
-        _system_impl.get_own_component_id(),
-        &message,
-        static_cast<int64_t>(tc1),
-        static_cast<int64_t>(ts1),
-        0,
-        0);
-    _system_impl.send_message(message);
+    _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_timesync_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<int64_t>(tc1),
+            static_cast<int64_t>(ts1),
+            0,
+            0);
+        return message;
+    });
 }
 
 void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_local_time_ns)

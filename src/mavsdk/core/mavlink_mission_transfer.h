@@ -109,7 +109,8 @@ public:
             double timeout_s,
             ResultCallback callback,
             ProgressCallback progress_callback,
-            bool debugging);
+            bool debugging,
+            uint8_t target_system_id);
 
         ~UploadWorkItem() override;
         void start() override;
@@ -144,6 +145,8 @@ public:
         std::size_t _next_sequence{0};
         void* _cookie{nullptr};
         unsigned _retries_done{0};
+
+        uint8_t _target_system_id;
     };
 
     class ReceiveIncomingMission : public WorkItem {
@@ -156,7 +159,8 @@ public:
             double timeout_s,
             ResultAndItemsCallback callback,
             uint32_t mission_count,
-            uint8_t target_component,
+            uint8_t target_system_id,
+            uint8_t target_component_id,
             bool debugging);
         ~ReceiveIncomingMission() override;
 
@@ -189,7 +193,8 @@ public:
         std::size_t _expected_count{0};
         unsigned _retries_done{0};
         uint32_t _mission_count{0};
-        uint8_t _target_component{0};
+        uint8_t _target_system_id{0};
+        uint8_t _target_component_id{0};
     };
 
     class DownloadWorkItem : public WorkItem {
@@ -202,7 +207,8 @@ public:
             double timeout_s,
             ResultAndItemsCallback callback,
             ProgressCallback progress_callback,
-            bool debugging);
+            bool debugging,
+            uint8_t target_system_id);
 
         ~DownloadWorkItem() override;
         void start() override;
@@ -237,6 +243,7 @@ public:
         std::size_t _next_sequence{0};
         std::size_t _expected_count{0};
         unsigned _retries_done{0};
+        uint8_t _target_system_id;
     };
 
     class ClearWorkItem : public WorkItem {
@@ -248,7 +255,8 @@ public:
             uint8_t type,
             double timeout_s,
             ResultCallback callback,
-            bool debugging);
+            bool debugging,
+            uint8_t target_system_id);
 
         ~ClearWorkItem() override;
         void start() override;
@@ -268,6 +276,7 @@ public:
         ResultCallback _callback{nullptr};
         void* _cookie{nullptr};
         unsigned _retries_done{0};
+        uint8_t _target_system_id;
     };
 
     class SetCurrentWorkItem : public WorkItem {
@@ -279,7 +288,8 @@ public:
             int current,
             double timeout_s,
             ResultCallback callback,
-            bool debugging);
+            bool debugging,
+            uint8_t target_system_id);
 
         ~SetCurrentWorkItem() override;
         void start() override;
@@ -301,6 +311,7 @@ public:
         ResultCallback _callback{nullptr};
         void* _cookie{nullptr};
         unsigned _retries_done{0};
+        uint8_t _target_system_id;
     };
 
     static constexpr unsigned retries = 5;
@@ -315,12 +326,14 @@ public:
 
     std::weak_ptr<WorkItem> upload_items_async(
         uint8_t type,
+        uint8_t target_system_id,
         const std::vector<ItemInt>& items,
         const ResultCallback& callback,
         const ProgressCallback& progress_callback = nullptr);
 
     std::weak_ptr<WorkItem> download_items_async(
         uint8_t type,
+        uint8_t target_system_id,
         ResultAndItemsCallback callback,
         ProgressCallback progress_callback = nullptr);
 
@@ -328,12 +341,13 @@ public:
     std::weak_ptr<WorkItem> receive_incoming_items_async(
         uint8_t type,
         uint32_t mission_count,
+        uint8_t target_system,
         uint8_t target_component,
         ResultAndItemsCallback callback);
 
-    void clear_items_async(uint8_t type, ResultCallback callback);
+    void clear_items_async(uint8_t type, uint8_t target_system_id, ResultCallback callback);
 
-    void set_current_item_async(int current, ResultCallback callback);
+    void set_current_item_async(int current, uint8_t target_system_id, ResultCallback callback);
 
     void do_work();
     bool is_idle();

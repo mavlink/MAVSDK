@@ -112,7 +112,7 @@ TEST(MissionRaw, ImportSamplePlanSuccessfully)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
 
     EXPECT_EQ(reference_items, result_pair.second.mission_items);
@@ -127,7 +127,7 @@ TEST(MissionRaw, ImportSamplePlanWithWrongOverallVersion)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -143,7 +143,7 @@ TEST(MissionRaw, ImportSamplePlanWithWrongMissionVersion)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -159,7 +159,7 @@ TEST(MissionRaw, ImportSamplePlanWithoutMission)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -346,7 +346,7 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionSurvey)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::Success);
     EXPECT_EQ(reference_items, result_pair.second.mission_items);
 
@@ -363,7 +363,7 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionSurveyWrongVersion)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -379,7 +379,7 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionStructuredScan)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -395,7 +395,7 @@ TEST(MissionRaw, ImportSamplePlanWithComplexMissionSurveyMissingItems)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::Px4);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
     EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseQgcPlan);
     EXPECT_EQ(result_pair.second.mission_items.size(), 0);
     EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
@@ -433,7 +433,7 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
     buf << file.rdbuf();
     file.close();
 
-    const auto result_pair = MissionImport::parse_json(buf.str(), Sender::Autopilot::ArduPilot);
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::ArduPilot);
     ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
 
     EXPECT_EQ(reference_items, result_pair.second.mission_items);

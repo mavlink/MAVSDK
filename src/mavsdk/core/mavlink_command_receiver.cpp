@@ -1,20 +1,22 @@
 #include "mavlink_command_receiver.h"
 #include "mavsdk_impl.h"
 #include "log.h"
+#include "server_component_impl.h"
 #include <cmath>
 #include <future>
 #include <memory>
 
 namespace mavsdk {
 
-MavlinkCommandReceiver::MavlinkCommandReceiver(MavsdkImpl& mavsdk_impl) : _mavsdk_impl(mavsdk_impl)
+MavlinkCommandReceiver::MavlinkCommandReceiver(ServerComponentImpl& server_component_impl) :
+    _server_component_impl(server_component_impl)
 {
-    _mavsdk_impl.mavlink_message_handler.register_one(
+    _server_component_impl.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_LONG,
         [this](const mavlink_message_t& message) { receive_command_long(message); },
         this);
 
-    _mavsdk_impl.mavlink_message_handler.register_one(
+    _server_component_impl.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_INT,
         [this](const mavlink_message_t& message) { receive_command_int(message); },
         this);
@@ -22,9 +24,8 @@ MavlinkCommandReceiver::MavlinkCommandReceiver(MavsdkImpl& mavsdk_impl) : _mavsd
 
 MavlinkCommandReceiver::~MavlinkCommandReceiver()
 {
-    unregister_all_mavlink_command_handlers(this);
-
-    _mavsdk_impl.mavlink_message_handler.unregister_all(this);
+    _server_component_impl.unregister_all_mavlink_command_handlers(this);
+    _server_component_impl.unregister_all_mavlink_message_handlers(this);
 }
 
 void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& message)
@@ -36,9 +37,19 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
     for (auto& handler : _mavlink_command_int_handler_table) {
         if (handler.cmd_id == cmd.command) {
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
-            auto maybe_message = handler.callback(cmd);
-            if (maybe_message) {
-                _mavsdk_impl.send_message(maybe_message.value());
+            auto maybe_command_ack = handler.callback(cmd);
+            if (maybe_command_ack) {
+                _server_component_impl.queue_message(
+                    [&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+                        mavlink_message_t response_message;
+                        mavlink_msg_command_ack_encode_chan(
+                            mavlink_address.system_id,
+                            mavlink_address.component_id,
+                            channel,
+                            &response_message,
+                            &maybe_command_ack.value());
+                        return response_message;
+                    });
             }
         }
     }
@@ -53,9 +64,19 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
     for (auto& handler : _mavlink_command_long_handler_table) {
         if (handler.cmd_id == cmd.command) {
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
-            auto maybe_message = handler.callback(cmd);
-            if (maybe_message) {
-                _mavsdk_impl.send_message(maybe_message.value());
+            auto maybe_command_ack = handler.callback(cmd);
+            if (maybe_command_ack) {
+                _server_component_impl.queue_message(
+                    [&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+                        mavlink_message_t response_message;
+                        mavlink_msg_command_ack_encode_chan(
+                            mavlink_address.system_id,
+                            mavlink_address.component_id,
+                            channel,
+                            &response_message,
+                            &maybe_command_ack.value());
+                        return response_message;
+                    });
             }
         }
     }

@@ -4,6 +4,8 @@
 
 namespace mavsdk {
 
+// TODO: fix message cache
+
 TelemetryServerImpl::TelemetryServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)
 {
@@ -43,16 +45,16 @@ void TelemetryServerImpl::init()
             if (found == _interval_requests.end() && command.params.param2 != -1) {
                 // If not found interval already, add a new one
                 _interval_requests.push_back({msgid, interval_ms, nullptr});
-                _server_component_impl->add_call_every(
-                    [this, msgid]() {
-                        std::lock_guard<std::mutex> lock_interval(_interval_mutex);
-                        if (_msg_cache.find(msgid) != _msg_cache.end()) {
-                            // Publish if callback exists :)
-                            _server_component_impl->send_message(_msg_cache.at(msgid));
-                        }
-                    },
-                    static_cast<double>(interval_ms) * 1E-3,
-                    &_interval_requests.back().cookie);
+                //_server_component_impl->add_call_every(
+                //    [this, msgid]() {
+                //        std::lock_guard<std::mutex> lock_interval(_interval_mutex);
+                //        if (_msg_cache.find(msgid) != _msg_cache.end()) {
+                //            // Publish if callback exists :)
+                //            _server_component_impl->send_message(_msg_cache.at(msgid));
+                //        }
+                //    },
+                //    static_cast<double>(interval_ms) * 1E-3,
+                //    &_interval_requests.back().cookie);
             } else {
                 if (command.params.param2 == -1) {
                     // Deregister with -1 interval
@@ -79,153 +81,170 @@ TelemetryServer::Result TelemetryServerImpl::publish_position(
     TelemetryServer::VelocityNed velocity_ned,
     TelemetryServer::Heading heading)
 {
-    mavlink_message_t msg;
-    mavlink_msg_global_position_int_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        get_boot_time_ms(),
-        static_cast<int32_t>(position.latitude_deg * 1E7),
-        static_cast<int32_t>(position.longitude_deg * 1E7),
-        static_cast<int32_t>(static_cast<double>(position.absolute_altitude_m) * 1E3),
-        static_cast<int32_t>(static_cast<double>(position.relative_altitude_m) * 1E3),
-        static_cast<int16_t>(static_cast<double>(velocity_ned.north_m_s) * 1E2),
-        static_cast<int16_t>(static_cast<double>(velocity_ned.east_m_s) * 1E2),
-        static_cast<int16_t>(static_cast<double>(velocity_ned.down_m_s) * 1E2),
-        static_cast<uint16_t>(static_cast<double>(heading.heading_deg) * 1E2));
+    // add_msg_cache(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, msg);
 
-    add_msg_cache(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, msg);
-
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message([&](MavlinkAddress mavlink_address,
+                                                     uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_global_position_int_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            get_boot_time_ms(),
+            static_cast<int32_t>(position.latitude_deg * 1E7),
+            static_cast<int32_t>(position.longitude_deg * 1E7),
+            static_cast<int32_t>(static_cast<double>(position.absolute_altitude_m) * 1E3),
+            static_cast<int32_t>(static_cast<double>(position.relative_altitude_m) * 1E3),
+            static_cast<int16_t>(static_cast<double>(velocity_ned.north_m_s) * 1E2),
+            static_cast<int16_t>(static_cast<double>(velocity_ned.east_m_s) * 1E2),
+            static_cast<int16_t>(static_cast<double>(velocity_ned.down_m_s) * 1E2),
+            static_cast<uint16_t>(static_cast<double>(heading.heading_deg) * 1E2));
+        return message;
+    }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_home(TelemetryServer::Position home)
 {
-    mavlink_message_t msg;
     const float q[4] = {};
-    mavlink_msg_home_position_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        static_cast<int32_t>(home.latitude_deg * 1E7),
-        static_cast<int32_t>(home.longitude_deg * 1E7),
-        static_cast<int32_t>(static_cast<double>(home.absolute_altitude_m) * 1E-3),
-        0, // Local X
-        0, // Local Y
-        0, // Local Z
-        q, // surface normal transform
-        NAN, // approach x
-        NAN, // approach y
-        NAN, // approach z
-        get_boot_time_ms() // TO-DO: System boot
-    );
 
-    add_msg_cache(MAVLINK_MSG_ID_HOME_POSITION, msg);
+    // add_msg_cache(MAVLINK_MSG_ID_HOME_POSITION, msg);
 
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_home_position_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       static_cast<int32_t>(home.latitude_deg * 1E7),
+                       static_cast<int32_t>(home.longitude_deg * 1E7),
+                       static_cast<int32_t>(static_cast<double>(home.absolute_altitude_m) * 1E-3),
+                       0, // Local X
+                       0, // Local Y
+                       0, // Local Z
+                       q, // surface normal transform
+                       NAN, // approach x
+                       NAN, // approach y
+                       NAN, // approach z
+                       get_boot_time_ms() // TO-DO: System boot
+                   );
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_raw_gps(
     TelemetryServer::RawGps raw_gps, TelemetryServer::GpsInfo gps_info)
 {
-    mavlink_message_t msg;
-    mavlink_msg_gps_raw_int_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        raw_gps.timestamp_us,
-        static_cast<uint8_t>(gps_info.fix_type),
-        static_cast<int32_t>(raw_gps.latitude_deg * 1E7),
-        static_cast<int32_t>(raw_gps.longitude_deg * 1E7),
-        static_cast<int32_t>(static_cast<double>(raw_gps.absolute_altitude_m) * 1E3),
-        static_cast<uint16_t>(static_cast<double>(raw_gps.hdop) * 1E2),
-        static_cast<uint16_t>(static_cast<double>(raw_gps.vdop) * 1E2),
-        static_cast<uint16_t>(static_cast<double>(raw_gps.velocity_m_s) * 1E2),
-        static_cast<uint16_t>(static_cast<double>(raw_gps.cog_deg) * 1E2),
-        static_cast<uint8_t>(gps_info.num_satellites),
-        static_cast<int32_t>(static_cast<double>(raw_gps.altitude_ellipsoid_m) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.horizontal_uncertainty_m) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.vertical_uncertainty_m) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s) * 1E3),
-        static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5),
-        static_cast<uint16_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
+    // add_msg_cache(MAVLINK_MSG_ID_GPS_RAW_INT, msg);
 
-    add_msg_cache(MAVLINK_MSG_ID_GPS_RAW_INT, msg);
-
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message([&](MavlinkAddress mavlink_address,
+                                                     uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_gps_raw_int_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            raw_gps.timestamp_us,
+            static_cast<uint8_t>(gps_info.fix_type),
+            static_cast<int32_t>(raw_gps.latitude_deg * 1E7),
+            static_cast<int32_t>(raw_gps.longitude_deg * 1E7),
+            static_cast<int32_t>(static_cast<double>(raw_gps.absolute_altitude_m) * 1E3),
+            static_cast<uint16_t>(static_cast<double>(raw_gps.hdop) * 1E2),
+            static_cast<uint16_t>(static_cast<double>(raw_gps.vdop) * 1E2),
+            static_cast<uint16_t>(static_cast<double>(raw_gps.velocity_m_s) * 1E2),
+            static_cast<uint16_t>(static_cast<double>(raw_gps.cog_deg) * 1E2),
+            static_cast<uint8_t>(gps_info.num_satellites),
+            static_cast<int32_t>(static_cast<double>(raw_gps.altitude_ellipsoid_m) * 1E3),
+            static_cast<uint32_t>(static_cast<double>(raw_gps.horizontal_uncertainty_m) * 1E3),
+            static_cast<uint32_t>(static_cast<double>(raw_gps.vertical_uncertainty_m) * 1E3),
+            static_cast<uint32_t>(static_cast<double>(raw_gps.velocity_uncertainty_m_s) * 1E3),
+            static_cast<uint32_t>(static_cast<double>(raw_gps.heading_uncertainty_deg) * 1E5),
+            static_cast<uint16_t>(static_cast<double>(raw_gps.yaw_deg) * 1E2));
+        return message;
+    }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_battery(TelemetryServer::Battery battery)
 {
-    mavlink_message_t msg;
-
     uint16_t voltages[10] = {0};
     uint16_t voltages_ext[4] = {0};
     voltages[0] = static_cast<uint16_t>(static_cast<double>(battery.voltage_v) * 1E3);
 
-    mavlink_msg_battery_status_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        0,
-        MAV_BATTERY_FUNCTION_ALL,
-        MAV_BATTERY_TYPE_LIPO,
-        INT16_MAX,
-        voltages,
-        -1, // TODO publish all battery data
-        -1,
-        -1,
-        static_cast<uint16_t>(static_cast<double>(battery.remaining_percent) * 1E2),
-        0,
-        MAV_BATTERY_CHARGE_STATE_UNDEFINED,
-        voltages_ext,
-        MAV_BATTERY_MODE_UNKNOWN,
-        0);
+    // add_msg_cache(MAVLINK_MSG_ID_BATTERY_STATUS, msg);
 
-    add_msg_cache(MAVLINK_MSG_ID_BATTERY_STATUS, msg);
-
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_battery_status_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       0,
+                       MAV_BATTERY_FUNCTION_ALL,
+                       MAV_BATTERY_TYPE_LIPO,
+                       INT16_MAX,
+                       voltages,
+                       -1, // TODO publish all battery data
+                       -1,
+                       -1,
+                       static_cast<uint16_t>(static_cast<double>(battery.remaining_percent) * 1E2),
+                       0,
+                       MAV_BATTERY_CHARGE_STATE_UNDEFINED,
+                       voltages_ext,
+                       MAV_BATTERY_MODE_UNKNOWN,
+                       0);
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result
 TelemetryServerImpl::publish_distance_sensor(TelemetryServer::DistanceSensor distance_sensor)
 {
-    mavlink_message_t msg;
-
     std::array<float, 4> q{0}; // Invalid Quaternion per mavlink spec
 
-    mavlink_msg_distance_sensor_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        0,
-        static_cast<uint16_t>(static_cast<double>(distance_sensor.minimum_distance_m) * 1e2),
-        static_cast<uint16_t>(static_cast<double>(distance_sensor.maximum_distance_m) * 1e2),
-        static_cast<uint16_t>(static_cast<double>(distance_sensor.current_distance_m) * 1e2),
-        MAV_DISTANCE_SENSOR_UNKNOWN,
-        0,
-        MAV_SENSOR_ROTATION_NONE,
-        255,
-        0,
-        0,
-        q.data(),
-        0);
+    // add_msg_cache(MAVLINK_MSG_ID_DISTANCE_SENSOR, msg);
 
-    add_msg_cache(MAVLINK_MSG_ID_DISTANCE_SENSOR, msg);
-
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message([&](MavlinkAddress mavlink_address,
+                                                     uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_distance_sensor_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            0,
+            static_cast<uint16_t>(static_cast<double>(distance_sensor.minimum_distance_m) * 1e2),
+            static_cast<uint16_t>(static_cast<double>(distance_sensor.maximum_distance_m) * 1e2),
+            static_cast<uint16_t>(static_cast<double>(distance_sensor.current_distance_m) * 1e2),
+            MAV_DISTANCE_SENSOR_UNKNOWN,
+            0,
+            MAV_SENSOR_ROTATION_NONE,
+            255,
+            0,
+            0,
+            q.data(),
+            0);
+        return message;
+    }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result
 TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text)
 {
-    mavlink_message_t msg;
-
     int type = MAV_SEVERITY_INFO;
     switch (status_text.type) {
         case TelemetryServer::StatusTextType::Emergency:
@@ -261,17 +280,22 @@ TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text
     // Prevent memcpy in mavlink function to read outside of allocated data.
     status_text.text.resize(sizeof(mavlink_statustext_t::text));
 
-    mavlink_msg_statustext_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        type,
-        status_text.text.data(),
-        0,
-        0);
-
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_statustext_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       type,
+                       status_text.text.data(),
+                       0,
+                       0);
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_odometry(TelemetryServer::Odometry odometry)
@@ -285,23 +309,27 @@ TelemetryServer::Result TelemetryServerImpl::publish_odometry(TelemetryServer::O
 TelemetryServer::Result TelemetryServerImpl::publish_position_velocity_ned(
     TelemetryServer::PositionVelocityNed position_velocity_ned)
 {
-    mavlink_message_t msg;
-    mavlink_msg_local_position_ned_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        get_boot_time_ms(),
-        position_velocity_ned.position.north_m,
-        position_velocity_ned.position.east_m,
-        position_velocity_ned.position.down_m,
-        position_velocity_ned.velocity.north_m_s,
-        position_velocity_ned.velocity.east_m_s,
-        position_velocity_ned.velocity.down_m_s);
+    // add_msg_cache(MAVLINK_MSG_ID_LOCAL_POSITION_NED, msg);
 
-    add_msg_cache(MAVLINK_MSG_ID_LOCAL_POSITION_NED, msg);
-
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_local_position_ned_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       get_boot_time_ms(),
+                       position_velocity_ned.position.north_m,
+                       position_velocity_ned.position.east_m,
+                       position_velocity_ned.position.down_m,
+                       position_velocity_ned.velocity.north_m_s,
+                       position_velocity_ned.velocity.east_m_s,
+                       position_velocity_ned.velocity.down_m_s);
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result
@@ -370,32 +398,37 @@ TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
     if (gps_status) {
         sensors |= MAV_SYS_STATUS_SENSOR_GPS;
     }
-    mavlink_message_t msg;
-    mavlink_msg_sys_status_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        sensors,
-        sensors,
-        sensors,
-        0,
-        static_cast<uint16_t>(static_cast<double>(battery.voltage_v) * 1E3),
-        -1,
-        static_cast<uint16_t>(static_cast<double>(battery.remaining_percent) * 1E2),
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0);
 
-    add_msg_cache(MAVLINK_MSG_ID_SYS_STATUS, msg);
+    // add_msg_cache(MAVLINK_MSG_ID_SYS_STATUS, msg);
 
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_sys_status_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       sensors,
+                       sensors,
+                       sensors,
+                       0,
+                       static_cast<uint16_t>(static_cast<double>(battery.voltage_v) * 1E3),
+                       -1,
+                       static_cast<uint16_t>(static_cast<double>(battery.remaining_percent) * 1E2),
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0,
+                       0);
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 uint8_t to_mav_vtol_state(TelemetryServer::VtolState vtol_state)
@@ -435,18 +468,22 @@ uint8_t to_mav_landed_state(TelemetryServer::LandedState landed_state)
 TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
     TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state)
 {
-    mavlink_message_t msg;
-    mavlink_msg_extended_sys_state_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        to_mav_vtol_state(vtol_state),
-        to_mav_landed_state(landed_state));
+    // add_msg_cache(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, msg);
 
-    add_msg_cache(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, msg);
-
-    return _server_component_impl->send_message(msg) ? TelemetryServer::Result::Success :
-                                                       TelemetryServer::Result::Unsupported;
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_extended_sys_state_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       to_mav_vtol_state(vtol_state),
+                       to_mav_landed_state(landed_state));
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 void TelemetryServerImpl::add_msg_cache(uint64_t id, mavlink_message_t& msg)

@@ -9,6 +9,8 @@
 #include "mavlink_include.h"
 #include "plugin_base.h"
 #include "handle.h"
+#include "deprecated.h"
+#include "mavlink_address.h"
 
 namespace mavsdk {
 
@@ -84,11 +86,31 @@ public:
     friend std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& result);
 
     /**
-     * @brief Send message.
+     * @brief Send message (deprecated).
+     *
+     * @note This interface is deprecated. Instead the method queue_message() should be used.
      *
      * @return result of the request.
      */
-    Result send_message(mavlink_message_t& message);
+    DEPRECATED Result send_message(mavlink_message_t& message);
+
+    /**
+     * @brief Send message by queueing it.
+     *
+     * @note This interface replaces the previous send_message method.
+     *
+     * The interface changed in order to prevent accessing the internal MAVLink status from
+     * different threads and to make sure the seq numbers are not unique to Mavsdk instances
+     * and server components.
+     *
+     * @param fun Function which is (immediately) executed to send a message. It is passed the
+     *            mavlink_address and channel, both data required to send a message using
+     *            mavlink_message_xx_pack_chan().
+     *
+     * @return result of request
+     */
+    Result queue_message(
+        std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun);
 
     /**
      * @brief Type for MAVLink command_long.

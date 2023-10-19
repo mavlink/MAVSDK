@@ -2710,7 +2710,7 @@ void TelemetryImpl::check_calibration()
         }
     }
     if (_system_impl->has_autopilot()) {
-        if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+        if (_system_impl->autopilot() == Autopilot::ArduPilot) {
             // We need to ask for the home position from ArduPilot
             request_home_position_async();
 
@@ -2813,7 +2813,7 @@ void TelemetryImpl::check_calibration()
 
 void TelemetryImpl::process_parameter_update(const std::string& name)
 {
-    if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+    if (_system_impl->autopilot() == Autopilot::ArduPilot) {
         if (name.compare("INS_GYROFFS_X") == 0) {
             _system_impl->get_param_float_async(
                 std::string("INS_GYROFFS_X"),

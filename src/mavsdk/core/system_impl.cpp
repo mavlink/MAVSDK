@@ -2,6 +2,7 @@
 #include "mavsdk_impl.h"
 #include "mavlink_include.h"
 #include "system_impl.h"
+#include "server_component_impl.h"
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
 #include "ardupilot_custom_mode.h"
@@ -20,14 +21,13 @@ template class CallbackList<bool>;
 template class CallbackList<System::ComponentType>;
 template class CallbackList<System::ComponentType, uint8_t>;
 
-SystemImpl::SystemImpl(MavsdkImpl& parent) :
-    Sender(),
-    _mavsdk_impl(parent),
+SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
+    _mavsdk_impl(mavsdk_impl),
     _command_sender(*this),
     _timesync(*this),
     _ping(*this),
     _mission_transfer(
-        *this,
+        _mavsdk_impl.default_server_component_impl().sender(),
         _mavsdk_impl.mavlink_message_handler,
         _mavsdk_impl.timeout_handler,
         [this]() { return timeout_s(); }),
@@ -474,6 +474,12 @@ bool SystemImpl::has_gimbal() const
 bool SystemImpl::send_message(mavlink_message_t& message)
 {
     return _mavsdk_impl.send_message(message);
+}
+
+bool SystemImpl::queue_message(
+    std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
+{
+    return _mavsdk_impl.default_server_component_impl().queue_message(fun);
 }
 
 void SystemImpl::send_autopilot_version_request()
@@ -1329,10 +1335,11 @@ MavlinkParameterClient* SystemImpl::param_sender(uint8_t component_id, bool exte
 
     _mavlink_parameter_clients.push_back(
         {std::make_unique<MavlinkParameterClient>(
-             *this,
+             _mavsdk_impl.default_server_component_impl().sender(),
              _mavsdk_impl.mavlink_message_handler,
              _mavsdk_impl.timeout_handler,
              [this]() { return timeout_s(); },
+             get_system_id(),
              component_id,
              extended),
          component_id,

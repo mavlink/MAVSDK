@@ -31,23 +31,26 @@ TEST_F(SitlTest, PX4MavlinkPassthrough)
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
 
     {
-        mavlink_message_t message;
-        mavlink_msg_command_long_pack(
-            mavlink_passthrough->get_our_sysid(),
-            mavlink_passthrough->get_our_compid(),
-            &message,
-            mavlink_passthrough->get_target_sysid(),
-            mavlink_passthrough->get_target_compid(),
-            MAV_CMD_SET_MESSAGE_INTERVAL,
-            0, // first transmission
-            float(MAVLINK_MSG_ID_HIGHRES_IMU),
-            2000.0f, // 50 Hz
-            NAN,
-            NAN,
-            NAN,
-            NAN,
-            NAN);
-        mavlink_passthrough->send_message(message);
+        mavlink_passthrough->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_command_long_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                mavlink_passthrough->get_target_sysid(),
+                mavlink_passthrough->get_target_compid(),
+                MAV_CMD_SET_MESSAGE_INTERVAL,
+                0, // first transmission
+                float(MAVLINK_MSG_ID_HIGHRES_IMU),
+                2000.0f, // 50 Hz
+                NAN,
+                NAN,
+                NAN,
+                NAN,
+                NAN);
+            return message;
+        });
     }
 
     {

@@ -1,6 +1,8 @@
 #include "log.h"
 #include "unused.h"
 
+#include <mutex>
+
 #if defined(WINDOWS)
 #include "windows_include.h"
 #define WIN_COLOR_RED 4
@@ -20,15 +22,18 @@
 
 namespace mavsdk {
 
+static std::mutex callback_mutex_{};
 static log::Callback callback_{nullptr};
 
 log::Callback& log::get_callback()
 {
+    std::lock_guard<std::mutex> lock(callback_mutex_);
     return callback_;
 }
 
 void log::subscribe(const log::Callback& callback)
 {
+    std::lock_guard<std::mutex> lock(callback_mutex_);
     callback_ = callback;
 }
 

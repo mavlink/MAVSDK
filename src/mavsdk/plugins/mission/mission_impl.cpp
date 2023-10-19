@@ -158,6 +158,7 @@ void MissionImpl::upload_mission_async(
 
         _mission_data.last_upload = _system_impl->mission_transfer().upload_items_async(
             MAV_MISSION_TYPE_MISSION,
+            _system_impl->get_system_id(),
             int_items,
             [this, callback](MavlinkMissionTransfer::Result result) {
                 auto converted_result = convert_result(result);
@@ -190,6 +191,7 @@ void MissionImpl::upload_mission_with_progress_async(
 
         _mission_data.last_upload = _system_impl->mission_transfer().upload_items_async(
             MAV_MISSION_TYPE_MISSION,
+            _system_impl->get_system_id(),
             int_items,
             [this, callback](MavlinkMissionTransfer::Result result) {
                 auto converted_result = convert_result(result);
@@ -247,6 +249,7 @@ void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback&
 
     _mission_data.last_download = _system_impl->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
         [this, callback](
             MavlinkMissionTransfer::Result result,
             std::vector<MavlinkMissionTransfer::ItemInt> items) {
@@ -274,6 +277,7 @@ void MissionImpl::download_mission_with_progress_async(
 
     _mission_data.last_download = _system_impl->mission_transfer().download_items_async(
         MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
         [this, callback](
             MavlinkMissionTransfer::Result result,
             const std::vector<MavlinkMissionTransfer::ItemInt>& items) {
@@ -962,7 +966,9 @@ void MissionImpl::clear_mission_async(const Mission::ResultCallback& callback)
     reset_mission_progress();
 
     _system_impl->mission_transfer().clear_items_async(
-        MAV_MISSION_TYPE_MISSION, [this, callback](MavlinkMissionTransfer::Result result) {
+        MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
+        [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {
@@ -1014,7 +1020,9 @@ void MissionImpl::set_current_mission_item_async(
     }
 
     _system_impl->mission_transfer().set_current_item_async(
-        mavlink_index, [this, callback](MavlinkMissionTransfer::Result result) {
+        mavlink_index,
+        _system_impl->get_system_id(),
+        [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {

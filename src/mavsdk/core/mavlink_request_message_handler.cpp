@@ -69,7 +69,7 @@ void MavlinkRequestMessageHandler::unregister_all_handlers(const void* cookie)
         _table.end());
 }
 
-std::optional<mavlink_message_t> MavlinkRequestMessageHandler::handle_command_long(
+std::optional<mavlink_command_ack_t> MavlinkRequestMessageHandler::handle_command_long(
     const MavlinkCommandReceiver::CommandLong& command)
 {
     std::lock_guard<std::mutex> lock(_table_mutex);
@@ -100,7 +100,7 @@ std::optional<mavlink_message_t> MavlinkRequestMessageHandler::handle_command_lo
     return {};
 }
 
-std::optional<mavlink_message_t>
+std::optional<mavlink_command_ack_t>
 MavlinkRequestMessageHandler::handle_command_int(const MavlinkCommandReceiver::CommandInt& command)
 {
     std::lock_guard<std::mutex> lock(_table_mutex);

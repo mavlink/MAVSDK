@@ -1,5 +1,6 @@
 #include "tune_impl.h"
 #include "log.h"
+#include "mavlink_address.h"
 
 namespace mavsdk {
 
@@ -137,17 +138,19 @@ void TuneImpl::play_tune_async(
         return;
     }
 
-    mavlink_message_t message;
-    mavlink_msg_play_tune_v2_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &message,
-        _system_impl->get_system_id(),
-        _system_impl->get_autopilot_id(),
-        TUNE_FORMAT_QBASIC1_1,
-        tune_str.c_str());
-
-    if (!_system_impl->send_message(message)) {
+    if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_play_tune_v2_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _system_impl->get_system_id(),
+                _system_impl->get_autopilot_id(),
+                TUNE_FORMAT_QBASIC1_1,
+                tune_str.c_str());
+            return message;
+        })) {
         report_tune_result(callback, Tune::Result::Error);
         return;
     }

@@ -45,10 +45,11 @@ void GeofenceImpl::upload_geofence_async(
     const auto items = assemble_items(geofence_data);
 
     _system_impl->mission_transfer().upload_items_async(
-        MAV_MISSION_TYPE_FENCE, items, [this, callback](MavlinkMissionTransfer::Result result) {
+        MAV_MISSION_TYPE_FENCE, 1, items, [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
-            _system_impl->call_user_callback(
-                [callback, converted_result]() { callback(converted_result); });
+            _system_impl->get_system_id(),
+                _system_impl->call_user_callback(
+                    [callback, converted_result]() { callback(converted_result); });
         });
 }
 
@@ -64,7 +65,9 @@ Geofence::Result GeofenceImpl::clear_geofence()
 void GeofenceImpl::clear_geofence_async(const Geofence::ResultCallback& callback)
 {
     _system_impl->mission_transfer().clear_items_async(
-        MAV_MISSION_TYPE_FENCE, [this, callback](MavlinkMissionTransfer::Result result) {
+        MAV_MISSION_TYPE_FENCE,
+        _system_impl->get_system_id(),
+        [this, callback](MavlinkMissionTransfer::Result result) {
             auto converted_result = convert_result(result);
             _system_impl->call_user_callback([callback, converted_result]() {
                 if (callback) {

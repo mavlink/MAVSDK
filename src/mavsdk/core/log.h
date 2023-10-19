@@ -1,5 +1,6 @@
 #pragma once
 
+#include <mutex>
 #include <sstream>
 #include "log_callback.h"
 
@@ -27,6 +28,8 @@
 
 namespace mavsdk {
 
+static std::mutex log_mutex_{};
+
 enum class Color { Red, Green, Yellow, Blue, Gray, Reset };
 
 void set_color(Color color);
@@ -34,6 +37,7 @@ void set_color(Color color);
 class LogDetailed {
 public:
     LogDetailed(const char* filename, int filenumber) :
+        _lock_guard(log_mutex_),
         _s(),
         _caller_filename(filename),
         _caller_filenumber(filenumber)
@@ -45,7 +49,13 @@ public:
         return *this;
     }
 
-    virtual ~LogDetailed()
+    virtual
+#if defined(__has_feature)
+#if __has_feature(thread_sanitizer)
+        __attribute__((no_sanitize("thread")))
+#endif
+#endif
+        ~LogDetailed()
     {
         if (log::get_callback() &&
             log::get_callback()(_log_level, _s.str(), _caller_filename, _caller_filenumber)) {
@@ -127,6 +137,8 @@ protected:
     log::Level _log_level = log::Level::Debug;
 
 private:
+    std::lock_guard<std::mutex> _lock_guard;
+
     std::stringstream _s;
     const char* _caller_filename;
     int _caller_filenumber;

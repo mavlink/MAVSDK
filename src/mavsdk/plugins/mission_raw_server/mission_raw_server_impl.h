@@ -42,7 +42,8 @@ private:
     CallbackList<MissionRawServer::MissionItem> _current_item_changed_callbacks{};
     CallbackList<uint32_t> _clear_all_callbacks{};
     std::thread _thread_mission;
-    std::atomic<int> _target_component;
+    std::atomic<int> _target_system_id;
+    std::atomic<int> _target_component_id;
     std::atomic<int> _mission_count;
     std::atomic<bool> _mission_completed;
 
@@ -60,6 +61,7 @@ private:
 
     void add_task(std::function<void()> task)
     {
+        std::unique_lock<std::mutex> lock(_work_mutex);
         _work_queue.push(task);
         _wait_for_new_task.notify_one();
     }

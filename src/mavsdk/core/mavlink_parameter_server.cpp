@@ -1,4 +1,5 @@
 #include "mavlink_parameter_server.h"
+#include "mavlink_address.h"
 #include "mavlink_parameter_helper.h"
 #include "plugin_base.h"
 #include <cassert>
@@ -453,57 +454,74 @@ void MavlinkParameterServer::do_work()
     }
     const auto param_id_message_buffer = param_id_to_message_buffer(work->param_id);
 
-    mavlink_message_t mavlink_message;
-
     std::visit(
         overloaded{
             [&](const WorkItemValue& specific) {
                 if (specific.extended) {
                     const auto buf = work->param_value.get_128_bytes();
-                    mavlink_msg_param_ext_value_pack(
-                        _sender.get_own_system_id(),
-                        _sender.get_own_component_id(),
-                        &mavlink_message,
-                        param_id_message_buffer.data(),
-                        buf.data(),
-                        work->param_value.get_mav_param_ext_type(),
-                        specific.param_count,
-                        specific.param_index);
+                    if (!_sender.queue_message(
+                            [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                                mavlink_message_t message;
+                                mavlink_msg_param_ext_value_pack_chan(
+                                    mavlink_address.system_id,
+                                    mavlink_address.component_id,
+                                    channel,
+                                    &message,
+                                    param_id_message_buffer.data(),
+                                    buf.data(),
+                                    work->param_value.get_mav_param_ext_type(),
+                                    specific.param_count,
+                                    specific.param_index);
+                                return message;
+                            })) {
+                        LogErr() << "Error: Send message failed";
+                        work_queue_guard.pop_front();
+                        return;
+                    }
                 } else {
                     float param_value;
-                    if (_sender.autopilot() == Sender::Autopilot::ArduPilot) {
+                    if (_sender.autopilot() == Autopilot::ArduPilot) {
                         param_value = work->param_value.get_4_float_bytes_cast();
                     } else {
                         param_value = work->param_value.get_4_float_bytes_bytewise();
                     }
-                    mavlink_msg_param_value_pack(
-                        _sender.get_own_system_id(),
-                        _sender.get_own_component_id(),
-                        &mavlink_message,
-                        param_id_message_buffer.data(),
-                        param_value,
-                        work->param_value.get_mav_param_type(),
-                        specific.param_count,
-                        specific.param_index);
-                }
-                if (!_sender.send_message(mavlink_message)) {
-                    LogErr() << "Error: Send message failed";
-                    work_queue_guard.pop_front();
-                    return;
+                    if (!_sender.queue_message(
+                            [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                                mavlink_message_t message;
+                                mavlink_msg_param_value_pack_chan(
+                                    mavlink_address.system_id,
+                                    mavlink_address.component_id,
+                                    channel,
+                                    &message,
+                                    param_id_message_buffer.data(),
+                                    param_value,
+                                    work->param_value.get_mav_param_type(),
+                                    specific.param_count,
+                                    specific.param_index);
+                                return message;
+                            })) {
+                        LogErr() << "Error: Send message failed";
+                        work_queue_guard.pop_front();
+                        return;
+                    }
                 }
                 work_queue_guard.pop_front();
             },
             [&](const WorkItemAck& specific) {
                 auto buf = work->param_value.get_128_bytes();
-                mavlink_msg_param_ext_ack_pack(
-                    _sender.get_own_system_id(),
-                    _sender.get_own_component_id(),
-                    &mavlink_message,
-                    param_id_message_buffer.data(),
-                    buf.data(),
-                    work->param_value.get_mav_param_ext_type(),
-                    specific.param_ack);
-                if (!_sender.send_message(mavlink_message)) {
+                if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+                        mavlink_message_t message;
+                        mavlink_msg_param_ext_ack_pack_chan(
+                            mavlink_address.system_id,
+                            mavlink_address.component_id,
+                            channel,
+                            &message,
+                            param_id_message_buffer.data(),
+                            buf.data(),
+                            work->param_value.get_mav_param_ext_type(),
+                            specific.param_ack);
+                        return message;
+                    })) {
                     LogErr() << "Error: Send message failed";
                     work_queue_guard.pop_front();
                     return;

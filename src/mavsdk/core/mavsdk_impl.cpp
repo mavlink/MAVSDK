@@ -12,13 +12,14 @@
 #include "cli_arg.h"
 #include "version.h"
 #include "server_component_impl.h"
+#include "mavlink_channels.h"
 #include "callback_list.tpp"
 
 namespace mavsdk {
 
 template class CallbackList<>;
 
-MavsdkImpl::MavsdkImpl() : timeout_handler(_time), call_every_handler(_time)
+MavsdkImpl::MavsdkImpl() : timeout_handler(time), call_every_handler(time)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
 
@@ -661,6 +662,18 @@ uint8_t MavsdkImpl::get_own_component_id() const
     return _configuration.get_component_id();
 }
 
+uint8_t MavsdkImpl::channel() const
+{
+    // TODO
+    return 0;
+}
+
+Autopilot MavsdkImpl::autopilot() const
+{
+    // TODO
+    return Autopilot::Px4;
+}
+
 // FIXME: this should be per component
 uint8_t MavsdkImpl::get_mav_type() const
 {
@@ -829,9 +842,7 @@ void MavsdkImpl::start_sending_heartbeats()
 {
     // Before sending out first heartbeats we need to make sure we have a
     // default server component.
-    if (_default_server_component == nullptr) {
-        _default_server_component = server_component_by_id(_configuration.get_component_id());
-    }
+    default_server_component_impl();
 
     if (_heartbeat_send_cookie == nullptr) {
         call_every_handler.add(
@@ -845,6 +856,14 @@ void MavsdkImpl::stop_sending_heartbeats()
         call_every_handler.remove(_heartbeat_send_cookie);
         _heartbeat_send_cookie = nullptr;
     }
+}
+
+ServerComponentImpl& MavsdkImpl::default_server_component_impl()
+{
+    if (_default_server_component == nullptr) {
+        _default_server_component = server_component_by_id(_configuration.get_component_id());
+    }
+    return *_default_server_component->_impl;
 }
 
 void MavsdkImpl::send_heartbeat()
@@ -904,6 +923,11 @@ uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
     }
 
     return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+}
+
+Sender& MavsdkImpl::sender()
+{
+    return default_server_component_impl().sender();
 }
 
 } // namespace mavsdk

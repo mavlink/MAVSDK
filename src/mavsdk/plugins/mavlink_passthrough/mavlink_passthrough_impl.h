@@ -22,6 +22,9 @@ public:
     void disable() override;
 
     MavlinkPassthrough::Result send_message(mavlink_message_t& message);
+    MavlinkPassthrough::Result queue_message(
+        std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun);
+
     MavlinkPassthrough::Result send_command_long(const MavlinkPassthrough::CommandLong& command);
     MavlinkPassthrough::Result send_command_int(const MavlinkPassthrough::CommandInt& command);
     mavlink_message_t make_command_ack_message(

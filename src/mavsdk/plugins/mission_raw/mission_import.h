@@ -2,6 +2,7 @@
 
 #include "plugins/mission_raw/mission_raw.h"
 #include "sender.h"
+#include "autopilot.h"
 #include <optional>
 #include <string>
 #include <utility>
@@ -12,7 +13,7 @@ namespace mavsdk {
 class MissionImport {
 public:
     static std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
-    parse_json(const std::string& raw_json, Sender::Autopilot autopilot);
+    parse_json(const std::string& raw_json, Autopilot autopilot);
 
 private:
     static bool check_overall_version(const Json::Value& root);
@@ -21,7 +22,7 @@ private:
     static std::optional<std::vector<MissionRaw::MissionItem>>
     import_rally_points(const Json::Value& root);
     static std::optional<std::vector<MissionRaw::MissionItem>>
-    import_mission(const Json::Value& root, Sender::Autopilot autopilot);
+    import_mission(const Json::Value& root, Autopilot autopilot);
     static std::optional<MissionRaw::MissionItem>
     import_simple_mission_item(const Json::Value& json_item);
     static std::optional<std::vector<MissionRaw::MissionItem>>

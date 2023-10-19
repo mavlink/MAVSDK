@@ -336,24 +336,26 @@ void FollowMeImpl::send_target_location()
     const float rates_unknown[] = {NAN, NAN, NAN};
     uint64_t custom_state = 0;
 
-    mavlink_message_t msg{};
-    mavlink_msg_follow_target_pack(
-        _system_impl->get_own_system_id(),
-        _system_impl->get_own_component_id(),
-        &msg,
-        elapsed_msec,
-        _estimation_capabilities,
-        lat_int,
-        lon_int,
-        alt,
-        vel,
-        accel_unknown,
-        attitude_q_unknown,
-        rates_unknown,
-        pos_std_dev,
-        custom_state);
-
-    if (!_system_impl->send_message(msg)) {
+    if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message{};
+            mavlink_msg_follow_target_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                elapsed_msec,
+                _estimation_capabilities,
+                lat_int,
+                lon_int,
+                alt,
+                vel,
+                accel_unknown,
+                attitude_q_unknown,
+                rates_unknown,
+                pos_std_dev,
+                custom_state);
+            return message;
+        })) {
         LogErr() << debug_str << "send_target_location() failed..";
     } else {
         _last_location = _target_location;

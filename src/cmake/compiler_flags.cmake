@@ -94,6 +94,11 @@ if(LSAN)
     set(CMAKE_CXX_FLAGS "-fsanitize=leak ${CMAKE_C_FLAGS}")
 endif()
 
+if(TSAN)
+    set(CMAKE_C_FLAGS "-fsanitize=thread -fsanitize-ignorelist=${PROJECT_SOURCE_DIR}/../tools/fsanitize-ignorelist.txt ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-fsanitize=thread -fsanitize-ignorelist=${PROJECT_SOURCE_DIR}/../tools/fsanitize-ignorelist.txt ${CMAKE_CXX_FLAGS}")
+endif()
+
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
 set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_COVERAGE} --coverage")
 set(CMAKE_LINKER_FLAGS_COVERAGE "${CMAKE_LINKER_FLAGS_COVERAGE} --coverage")

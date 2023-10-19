@@ -84,17 +84,20 @@ static void prepare_autopilot(MavlinkPassthrough& mavlink_passthrough)
             const auto cmd_id = cmd_read.command;
             auto mav_result = MAV_RESULT_ACCEPTED;
 
-            mavlink_message_t message;
-            mavlink_msg_command_ack_pack(
-                mavlink_passthrough.get_our_sysid(),
-                mavlink_passthrough.get_our_compid(),
-                &message,
-                cmd_id,
-                mav_result,
-                255,
-                -1,
-                mavlink_passthrough.get_target_sysid(),
-                mavlink_passthrough.get_target_compid());
-            mavlink_passthrough.send_message(message);
+            mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+                mavlink_message_t message;
+                mavlink_msg_command_ack_pack_chan(
+                    mavlink_address.system_id,
+                    mavlink_address.component_id,
+                    channel,
+                    &message,
+                    cmd_id,
+                    mav_result,
+                    255,
+                    -1,
+                    mavlink_passthrough.get_target_sysid(),
+                    mavlink_passthrough.get_target_compid());
+                return message;
+            });
         });
 }

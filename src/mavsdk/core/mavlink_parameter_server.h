@@ -22,7 +22,7 @@ class MavlinkParameterServer : public MavlinkParameterSubscription {
 public:
     MavlinkParameterServer() = delete;
     explicit MavlinkParameterServer(
-        Sender& parent,
+        Sender& sender,
         MavlinkMessageHandler& message_handler,
         // By providing all the parameters on construction you can populate the
         // parameter set before the server starts reacting to clients.
