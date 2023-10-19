@@ -10,7 +10,7 @@
 #include "mavlink_command_receiver.h"
 #include "mavlink_ftp_client.h"
 #include "mavlink_message_handler.h"
-#include "mavlink_mission_transfer.h"
+#include "mavlink_mission_transfer_client.h"
 #include "mavlink_request_message_handler.h"
 #include "mavlink_statustext_handler.h"
 #include "request_message.h"
@@ -283,7 +283,7 @@ public:
         const MavlinkCommandSender::CommandResultCallback& callback);
     void send_flight_information_request();
 
-    MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; };
+    MavlinkMissionTransferClient& mission_transfer_client() { return _mission_transfer_client; };
 
     MavlinkFtpClient& mavlink_ftp_client() { return _mavlink_ftp_client; };
 
@@ -392,7 +392,7 @@ private:
     Timesync _timesync;
     Ping _ping;
 
-    MavlinkMissionTransfer _mission_transfer;
+    MavlinkMissionTransferClient _mission_transfer_client;
     RequestMessage _request_message;
     MavlinkFtpClient _mavlink_ftp_client;
 

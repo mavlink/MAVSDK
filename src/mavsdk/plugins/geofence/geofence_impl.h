@@ -37,10 +37,10 @@ public:
     const GeofenceImpl& operator=(const GeofenceImpl&) = delete;
 
 private:
-    std::vector<MavlinkMissionTransfer::ItemInt>
+    std::vector<MavlinkMissionTransferClient::ItemInt>
     assemble_items(const Geofence::GeofenceData& geofence_data);
 
-    static Geofence::Result convert_result(MavlinkMissionTransfer::Result result);
+    static Geofence::Result convert_result(MavlinkMissionTransferClient::Result result);
 };
 
 } // namespace mavsdk

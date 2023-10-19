@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "mavlink_mission_transfer.h" // FIXME: remove this dependency
+#include "mavlink_include.h"
 #include "autopilot.h"
 
 namespace mavsdk {

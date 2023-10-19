@@ -16,7 +16,7 @@
 
 namespace mavsdk {
 
-class MavlinkMissionTransfer {
+class MavlinkMissionTransferClient {
 public:
     enum class Result {
         Success,
@@ -149,54 +149,6 @@ public:
         uint8_t _target_system_id;
     };
 
-    class ReceiveIncomingMission : public WorkItem {
-    public:
-        explicit ReceiveIncomingMission(
-            Sender& sender,
-            MavlinkMessageHandler& message_handler,
-            TimeoutHandler& timeout_handler,
-            uint8_t type,
-            double timeout_s,
-            ResultAndItemsCallback callback,
-            uint32_t mission_count,
-            uint8_t target_system_id,
-            uint8_t target_component_id,
-            bool debugging);
-        ~ReceiveIncomingMission() override;
-
-        void start() override;
-        void cancel() override;
-
-        ReceiveIncomingMission(const ReceiveIncomingMission&) = delete;
-        ReceiveIncomingMission(ReceiveIncomingMission&&) = delete;
-        ReceiveIncomingMission& operator=(const ReceiveIncomingMission&) = delete;
-        ReceiveIncomingMission& operator=(ReceiveIncomingMission&&) = delete;
-
-    private:
-        void request_item();
-        void send_ack_and_finish();
-        void send_cancel_and_finish();
-        void process_mission_count();
-        void process_mission_item_int(const mavlink_message_t& message);
-        void process_timeout();
-        void callback_and_reset(Result result);
-
-        enum class Step {
-            RequestList,
-            RequestItem,
-        } _step{Step::RequestList};
-
-        std::vector<ItemInt> _items{};
-        ResultAndItemsCallback _callback{nullptr};
-        void* _cookie{nullptr};
-        std::size_t _next_sequence{0};
-        std::size_t _expected_count{0};
-        unsigned _retries_done{0};
-        uint32_t _mission_count{0};
-        uint8_t _target_system_id{0};
-        uint8_t _target_component_id{0};
-    };
-
     class DownloadWorkItem : public WorkItem {
     public:
         explicit DownloadWorkItem(
@@ -316,13 +268,13 @@ public:
 
     static constexpr unsigned retries = 5;
 
-    explicit MavlinkMissionTransfer(
+    explicit MavlinkMissionTransferClient(
         Sender& sender,
         MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler,
         TimeoutSCallback get_timeout_s_callback);
 
-    ~MavlinkMissionTransfer() = default;
+    ~MavlinkMissionTransferClient() = default;
 
     std::weak_ptr<WorkItem> upload_items_async(
         uint8_t type,
@@ -337,14 +289,6 @@ public:
         ResultAndItemsCallback callback,
         ProgressCallback progress_callback = nullptr);
 
-    // Server-side
-    std::weak_ptr<WorkItem> receive_incoming_items_async(
-        uint8_t type,
-        uint32_t mission_count,
-        uint8_t target_system,
-        uint8_t target_component,
-        ResultAndItemsCallback callback);
-
     void clear_items_async(uint8_t type, uint8_t target_system_id, ResultCallback callback);
 
     void set_current_item_async(int current, uint8_t target_system_id, ResultCallback callback);
@@ -355,8 +299,8 @@ public:
     void set_int_messages_supported(bool supported);
 
     // Non-copyable
-    MavlinkMissionTransfer(const MavlinkMissionTransfer&) = delete;
-    const MavlinkMissionTransfer& operator=(const MavlinkMissionTransfer&) = delete;
+    MavlinkMissionTransferClient(const MavlinkMissionTransferClient&) = delete;
+    const MavlinkMissionTransferClient& operator=(const MavlinkMissionTransferClient&) = delete;
 
 private:
     Sender& _sender;

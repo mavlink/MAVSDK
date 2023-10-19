@@ -37,34 +37,25 @@ public:
     uint32_t clear_all() const;
 
 private:
+    void process_mission_count(const mavlink_message_t& message);
+    void process_mission_set_current(const mavlink_message_t& message);
+    void process_mission_clear(const mavlink_message_t message);
+
     CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
         _incoming_mission_callbacks{};
     CallbackList<MissionRawServer::MissionItem> _current_item_changed_callbacks{};
     CallbackList<uint32_t> _clear_all_callbacks{};
-    std::thread _thread_mission;
     std::atomic<int> _target_system_id;
     std::atomic<int> _target_component_id;
     std::atomic<int> _mission_count;
     std::atomic<bool> _mission_completed;
 
-    std::queue<std::function<void()>> _work_queue;
-    std::condition_variable _wait_for_new_task;
-    std::mutex _work_mutex;
-    std::atomic<bool> _stop_work_thread = false;
-
-    std::vector<MavlinkMissionTransfer::ItemInt> _current_mission;
+    std::vector<MavlinkMissionTransferServer::ItemInt> _current_mission;
     std::size_t _current_seq;
 
-    std::weak_ptr<MavlinkMissionTransfer::WorkItem> _last_download{};
+    std::weak_ptr<MavlinkMissionTransferServer::WorkItem> _last_download{};
 
     void set_current_seq(std::size_t seq);
-
-    void add_task(std::function<void()> task)
-    {
-        std::unique_lock<std::mutex> lock(_work_mutex);
-        _work_queue.push(task);
-        _wait_for_new_task.notify_one();
-    }
 };
 
 } // namespace mavsdk

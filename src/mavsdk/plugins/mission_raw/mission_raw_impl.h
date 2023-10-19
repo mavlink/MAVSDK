@@ -92,17 +92,17 @@ private:
         MissionRaw::ResultCallback callback, MavlinkCommandSender::Result result);
     static MissionRaw::Result command_result_to_mission_result(MavlinkCommandSender::Result result);
 
-    std::vector<MavlinkMissionTransfer::ItemInt>
+    std::vector<MavlinkMissionTransferClient::ItemInt>
     convert_to_int_items(const std::vector<MissionRaw::MissionItem>& mission_raw);
 
-    MavlinkMissionTransfer::ItemInt
+    MavlinkMissionTransferClient::ItemInt
     convert_mission_raw(const MissionRaw::MissionItem transfer_mission_raw);
 
-    static MissionRaw::Result convert_result(MavlinkMissionTransfer::Result result);
+    static MissionRaw::Result convert_result(MavlinkMissionTransferClient::Result result);
     MissionRaw::MissionItem static convert_item(
-        const MavlinkMissionTransfer::ItemInt& transfer_item);
+        const MavlinkMissionTransferClient::ItemInt& transfer_item);
     std::vector<MissionRaw::MissionItem>
-    convert_items(const std::vector<MavlinkMissionTransfer::ItemInt>& transfer_items);
+    convert_items(const std::vector<MavlinkMissionTransferClient::ItemInt>& transfer_items);
 
     MissionRaw::Result
     upload_mission_items(std::vector<MissionRaw::MissionItem> mission_items, uint8_t type);
@@ -111,9 +111,8 @@ private:
         uint8_t type,
         const MissionRaw::ResultCallback& callback);
 
-    // TODO: check if these need a mutex as well.
-    std::weak_ptr<MavlinkMissionTransfer::WorkItem> _last_upload{};
-    std::weak_ptr<MavlinkMissionTransfer::WorkItem> _last_download{};
+    std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_upload{};
+    std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_download{};
 
     struct {
         std::mutex mutex{};

@@ -1,7 +1,6 @@
 #include <gmock/gmock.h>
 #include <cstdint>
 #include <functional>
-#include "mavlink_mission_transfer.h"
 #include "mavlink_address.h"
 
 namespace mavsdk {
