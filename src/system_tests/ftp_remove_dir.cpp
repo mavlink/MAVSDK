@@ -62,6 +62,9 @@ TEST(SystemTest, FtpRemoveDir)
 
 TEST(SystemTest, FtpRemoveDirNotEmpty)
 {
+    ASSERT_TRUE(reset_directories(temp_dir_provided / temp_dir));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_dir / temp_file, 100));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -84,9 +87,6 @@ TEST(SystemTest, FtpRemoveDirNotEmpty)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(reset_directories(temp_dir_provided / temp_dir));
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_dir / temp_file, 100));
 
     auto ftp = Ftp{system};
 

@@ -22,6 +22,22 @@ static const std::string temp_file = "file";
 
 TEST(SystemTest, FtpListDir)
 {
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+
+    std::vector<std::string> truth_list;
+
+    for (unsigned i = 0; i < 100; ++i) {
+        auto foldername = std::string(temp_dir + std::to_string(i));
+        auto filename = std::string(temp_file + std::to_string(i));
+        ASSERT_TRUE(reset_directories(temp_dir_provided / fs::path(foldername)));
+        ASSERT_TRUE(create_temp_file(temp_dir_provided / fs::path(filename), i));
+
+        truth_list.push_back(std::string("D") + foldername);
+        truth_list.push_back(std::string("F") + filename + std::string("\t") + std::to_string(i));
+    }
+
+    std::sort(truth_list.begin(), truth_list.end());
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -44,23 +60,6 @@ TEST(SystemTest, FtpListDir)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(reset_directories(temp_dir_provided));
-
-    std::vector<std::string> truth_list;
-
-    for (unsigned i = 0; i < 100; ++i) {
-        auto foldername = std::string(temp_dir + std::to_string(i));
-        auto filename = std::string(temp_file + std::to_string(i));
-        ASSERT_TRUE(reset_directories(temp_dir_provided / fs::path(foldername)));
-        ASSERT_TRUE(create_temp_file(temp_dir_provided / fs::path(filename), i));
-
-        truth_list.push_back(std::string("D") + foldername);
-        truth_list.push_back(std::string("F") + filename + std::string("\t") + std::to_string(i));
-    }
-
-    std::sort(truth_list.begin(), truth_list.end());
-
     auto ftp = Ftp{system};
 
     // First we try to list a folder without the root directory set.

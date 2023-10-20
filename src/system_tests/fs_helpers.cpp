@@ -4,24 +4,25 @@
 #include <iterator>
 #include <filesystem>
 #include <fstream>
-#include <vector>
 #include <cstring>
 
 bool create_temp_file(const fs::path& path, size_t len, uint8_t start)
 {
-    std::vector<uint8_t> data;
-    data.reserve(len);
-
-    for (size_t i = 0; i < len; ++i) {
-        data.push_back(static_cast<uint8_t>((i + start) % 256));
-    }
-
     const auto parent_path = path.parent_path();
     create_directories(parent_path);
 
-    std::ofstream tempfile;
-    tempfile.open(path, std::ios::out | std::ios::binary);
-    tempfile.write((const char*)data.data(), data.size());
+    std::ofstream tempfile{};
+    tempfile.open(path, std::ios::out | std::ios::binary | std::ios::trunc);
+    if (tempfile.fail()) {
+        std::cout << "Failed to open temp file.";
+        return false;
+    }
+
+    for (size_t i = 0; i < len; ++i) {
+        const char c = (i + start) % 256;
+        tempfile.write(&c, 1);
+    }
+
     tempfile.close();
 
     return true;

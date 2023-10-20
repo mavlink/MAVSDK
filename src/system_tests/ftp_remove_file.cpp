@@ -21,6 +21,8 @@ static const fs::path temp_file = "data.bin";
 
 TEST(SystemTest, FtpRemoveFile)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -43,8 +45,6 @@ TEST(SystemTest, FtpRemoveFile)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
 
     auto ftp = Ftp{system};
 

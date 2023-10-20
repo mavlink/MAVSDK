@@ -22,6 +22,9 @@ static const fs::path temp_file = "data.bin";
 
 TEST(SystemTest, FtpDownloadBurstFile)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -44,9 +47,6 @@ TEST(SystemTest, FtpDownloadBurstFile)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
-    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     auto ftp = Ftp{system};
 
@@ -96,6 +96,9 @@ TEST(SystemTest, FtpDownloadBurstFile)
 
 TEST(SystemTest, FtpDownloadBurstBigFile)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50000));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -120,9 +123,6 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50000));
-    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     auto ftp = Ftp{system};
 
@@ -151,6 +151,9 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
 
 TEST(SystemTest, FtpDownloadBurstBigFileLossy)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 10000));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -181,9 +184,6 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 10000));
-    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     auto ftp = Ftp{system};
 
@@ -217,6 +217,9 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
 
 TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -248,9 +251,6 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));
-    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     auto ftp = Ftp{system};
 
@@ -306,6 +306,9 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 
 TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -328,9 +331,6 @@ TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
-    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     auto ftp = Ftp{system};
 

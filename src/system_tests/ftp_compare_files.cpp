@@ -23,6 +23,11 @@ static const fs::path temp_file_different = "rhubarb.bin";
 
 TEST(SystemTest, FtpCompareFiles)
 {
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file_same, 1000));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file_different, 1000, 42));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -45,11 +50,6 @@ TEST(SystemTest, FtpCompareFiles)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(reset_directories(temp_dir_provided));
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file_same, 1000));
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file_different, 1000, 42));
 
     auto ftp = Ftp{system};
 

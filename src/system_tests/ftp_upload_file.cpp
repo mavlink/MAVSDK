@@ -26,6 +26,9 @@ static const fs::path temp_file = "data.bin";
 
 TEST(SystemTest, FtpUploadFile)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -48,9 +51,6 @@ TEST(SystemTest, FtpUploadFile)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
-    ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     auto ftp = Ftp{system};
 
@@ -98,6 +98,9 @@ TEST(SystemTest, FtpUploadFile)
 
 TEST(SystemTest, FtpUploadBigFile)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -120,9 +123,6 @@ TEST(SystemTest, FtpUploadBigFile)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
-    ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     auto ftp = Ftp{system};
 
@@ -154,6 +154,9 @@ TEST(SystemTest, FtpUploadBigFile)
 
 TEST(SystemTest, FtpUploadBigFileLossy)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -182,9 +185,6 @@ TEST(SystemTest, FtpUploadBigFileLossy)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
-    ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     auto ftp = Ftp{system};
 
@@ -219,6 +219,9 @@ TEST(SystemTest, FtpUploadBigFileLossy)
 
 TEST(SystemTest, FtpUploadStopAndTryAgain)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 1000));
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
         Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
@@ -250,9 +253,6 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 1000));
-    ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     auto ftp = Ftp{system};
 
@@ -306,6 +306,9 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
 
 TEST(SystemTest, FtpUploadFileOutsideOfRoot)
 {
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+
     // A test trying to push something into the parent (../) directory which
     // shouldn't be allowed!
 
@@ -331,9 +334,6 @@ TEST(SystemTest, FtpUploadFileOutsideOfRoot)
     auto system = maybe_system.value();
 
     ASSERT_TRUE(system->has_autopilot());
-
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
-    ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     auto ftp = Ftp{system};
 
