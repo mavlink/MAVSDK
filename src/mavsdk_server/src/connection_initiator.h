@@ -57,13 +57,14 @@ private:
 
         mavsdk.subscribe_on_new_system([this, &mavsdk]() {
             std::lock_guard<std::mutex> guard(_mutex);
-            const auto system = mavsdk.systems().at(0);
+            for (auto system : mavsdk.systems()) {
+                if (!_is_discovery_finished && system->has_autopilot() && system->is_connected()) {
+                    LogInfo() << "System discovered";
 
-            if (!_is_discovery_finished && system->is_connected()) {
-                LogInfo() << "System discovered";
-
-                _is_discovery_finished = true;
-                _discovery_promise->set_value(true);
+                    _is_discovery_finished = true;
+                    _discovery_promise->set_value(true);
+                    break;
+                }
             }
         });
 
