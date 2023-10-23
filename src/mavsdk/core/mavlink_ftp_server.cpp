@@ -190,6 +190,8 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
 MavlinkFtpServer::~MavlinkFtpServer()
 {
+    _server_component_impl.unregister_all_mavlink_message_handlers(this);
+
     std::lock_guard<std::mutex> lock(_mutex);
     _reset();
 }

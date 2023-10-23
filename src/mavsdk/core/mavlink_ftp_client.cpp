@@ -26,7 +26,10 @@ MavlinkFtpClient::MavlinkFtpClient(SystemImpl& system_impl) : _system_impl(syste
         this);
 }
 
-MavlinkFtpClient::~MavlinkFtpClient() {}
+MavlinkFtpClient::~MavlinkFtpClient()
+{
+    _system_impl.unregister_all_mavlink_message_handlers(this);
+}
 
 void MavlinkFtpClient::do_work()
 {
