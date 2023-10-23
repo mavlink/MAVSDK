@@ -11,7 +11,8 @@ MavlinkParameterCache::add_new_param(const std::string& param_id, ParamValue val
         return AddNewParamResult::AlreadyExists;
     }
 
-    if (_all_params.size() + 1 > std::numeric_limits<int16_t>::max()) {
+    if (static_cast<size_t>(_all_params.size() + 1) >
+        static_cast<size_t>(std::numeric_limits<int16_t>::max())) {
         return AddNewParamResult::TooManyParams;
     }
 
