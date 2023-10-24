@@ -31,6 +31,8 @@ MissionImport::parse_json(const std::string& raw_json, Sender::Autopilot autopil
     MissionRaw::MissionImportData import_data;
     import_data.mission_items = maybe_mission_items.first.value();
     import_data.planned_home_position = maybe_mission_items.second.value();
+    import_data.has_planned_home = maybe_mission_items.second.has_value();
+
 
     return {MissionRaw::Result::Success, import_data};
 }

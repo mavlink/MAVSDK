@@ -55,15 +55,37 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto system = mavsdk.first_autopilot(3.0);
-    if (!system) {
-        std::cerr << "Timed out waiting for system\n";
+    std::cout << "Waiting to discover system...\n";
+    auto prom = std::promise<std::shared_ptr<System>>{};
+    auto fut = prom.get_future();
+
+    // We wait for new systems to be discovered, once we find one that has an
+    // autopilot, we decide to use it.
+    mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
+      auto system = mavsdk.systems().back();
+
+      if (system->has_autopilot()) {
+          std::cout << "Discovered autopilot\n";
+
+          // Unsubscribe again as we only want to find one system.
+          mavsdk.subscribe_on_new_system(nullptr);
+          prom.set_value(system);
+      }
+    });
+
+    // We usually receive heartbeats at 1Hz, therefore we should find a
+    // system after around 3 seconds max, surely.
+    if (fut.wait_for(std::chrono::seconds(3)) == std::future_status::timeout) {
+        std::cerr << "No autopilot found, exiting.\n";
         return 1;
     }
 
-    auto action = Action{system.value()};
-    auto mission_raw = MissionRaw{system.value()};
-    auto telemetry = Telemetry{system.value()};
+    // Get discovered system now.
+    auto system = fut.get();
+
+    auto action = Action{system};
+    auto mission_raw = MissionRaw{system};
+    auto telemetry = Telemetry{system};
 
     while (!telemetry.health_all_ok()) {
         std::cout << "Waiting for system to be ready\n";
@@ -88,13 +110,11 @@ int main(int argc, char** argv)
               << " mission items in the given QGC plan.\n";
 
 
-    const auto position = telemetry->position();
-    REQUIRE(std::isfinite(position.latitude_deg));
-    REQUIRE(std::isfinite(position.longitude_deg));
+    const auto position = telemetry.position();
 
     double offset_x, offset_y = 0.0;
 
-    if (import_res.second.has_planned_home_position) {
+    if (import_res.second.has_planned_home) {
         std::cout << "Found planned home position, moving mission to vehicle position.\n";
         offset_x = import_res.second.planned_home_position.x -
                         static_cast<int32_t>(1e7 * position.latitude_deg);
@@ -103,11 +123,16 @@ int main(int argc, char** argv)
 
     } else {
         std::cout << "No planned home position, move mission to first waypoint.\n";
-        offset_x = import_res.second.mission_items[0].x -
-                        static_cast<int32_t>(1e7 * position.latitude_deg);
-        offset_y = import_res.second.mission_items[0].y -
-                        static_cast<int32_t>(1e7 * position.longitude_deg);
+
+        for (auto &item : import_res.second.mission_items) {
+            if (item.frame == 3) { // MAV_FRAME_GLOBAL_RELATIVE_ALT
+                offset_x = item.x - static_cast<int32_t>(1e7 * position.latitude_deg);
+                offset_y = item.y - static_cast<int32_t>(1e7 * position.longitude_deg);
+                break;
+            }
+        }
     }
+
     for (auto &item : import_res.second.mission_items) {
         if (item.frame == 3) { // MAV_FRAME_GLOBAL_RELATIVE_ALT
             item.x -= offset_x;
