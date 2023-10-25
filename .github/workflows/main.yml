@@ -575,15 +575,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: mavsdk_server_ios.framework
           path: ./build/ios/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: mavsdk_server_ios_simulator.framework
           path: ./build/ios_simulator/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: mavsdk_server_macos.framework
           path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
