@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/third_party/install
@@ -75,7 +75,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -111,7 +111,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ~/.hunter
@@ -143,7 +143,7 @@ jobs:
              cd proto/pb_plugins
              pip3 install --user -r requirements.txt
              pip3 install --user -e .
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/default/third_party/install
@@ -287,7 +287,7 @@ jobs:
         run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/linux-${{ matrix.arch_name }}/third_party/install
@@ -319,7 +319,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/manylinux2010-x64/third_party/install
@@ -357,7 +357,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -405,7 +405,7 @@ jobs:
         run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/${{ matrix.arch_name }}/third_party/install
@@ -451,7 +451,7 @@ jobs:
         run: tools/generate_mavlink_headers.sh
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }} > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -490,7 +490,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/macos/third_party/install
@@ -544,7 +544,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -620,7 +620,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: cache
         with:
           path: ./build/release/third_party/install
