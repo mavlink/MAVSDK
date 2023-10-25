@@ -164,7 +164,6 @@ void TelemetryImpl::deinit()
 {
     _parent->remove_call_every(_calibration_cookie);
     _parent->unregister_statustext_handler(this);
-    _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
     _parent->unregister_timeout_handler(_unix_epoch_timeout_cookie);
     _parent->unregister_param_changed_handler(this);
     _parent->unregister_all_mavlink_message_handlers(this);
@@ -183,9 +182,6 @@ void TelemetryImpl::deinit()
 
 void TelemetryImpl::enable()
 {
-    _parent->register_timeout_handler(
-        [this]() { receive_gps_raw_timeout(); }, 2.0, &_gps_raw_timeout_cookie);
-
     _parent->register_timeout_handler(
         [this]() { receive_unix_epoch_timeout(); }, 2.0, &_unix_epoch_timeout_cookie);
 
@@ -998,8 +994,6 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
             _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
-
-    _parent->refresh_timeout_handler(_gps_raw_timeout_cookie);
 }
 
 void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)

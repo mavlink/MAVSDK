@@ -383,7 +383,6 @@ private:
     double _position_rate_hz{-1.0};
 
     void* _rc_channels_timeout_cookie{nullptr};
-    void* _gps_raw_timeout_cookie{nullptr};
     void* _unix_epoch_timeout_cookie{nullptr};
 
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
