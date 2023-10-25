@@ -18,7 +18,7 @@ jobs:
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v2
@@ -54,7 +54,7 @@ jobs:
     name: ubuntu-20.04 (non-mavsdk_server, non-superbuild)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install
@@ -72,7 +72,7 @@ jobs:
     name: ubuntu-20.04 (mavsdk_server, superbuild)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v2
@@ -108,7 +108,7 @@ jobs:
     name: ubuntu-20.04 (mavsdk, hunter)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v2
@@ -131,7 +131,7 @@ jobs:
     name: ubuntu-20.04 (proto check)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install clang-format
@@ -164,7 +164,7 @@ jobs:
     name: ubuntu-20.04 (check style and docs)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install dependencies
@@ -184,7 +184,7 @@ jobs:
       matrix:
         container_name: [ubuntu-18.04, ubuntu-20.04]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: git permission workaround
@@ -222,7 +222,7 @@ jobs:
     name: Ubuntu/Debian packaging (Ubuntu 20.04)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -245,7 +245,7 @@ jobs:
       matrix:
         container_name: [fedora-34, fedora-35]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: git permission workaround
@@ -278,7 +278,7 @@ jobs:
       matrix:
         arch_name: [armv6, armv7, arm64]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install pymavlink dependencies
@@ -316,7 +316,7 @@ jobs:
     name: manylinux2010-x64
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v2
@@ -354,7 +354,7 @@ jobs:
     steps:
       - name: install tools
         run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-future
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v2
@@ -396,7 +396,7 @@ jobs:
       matrix:
         arch_name: [linux-armv6-musl, linux-armv7l-musl, linux-arm64-musl]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install pymavlink dependencies
@@ -442,7 +442,7 @@ jobs:
           - name: android-x86_64
             arch: x86_64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install pymavlink dependencies
@@ -486,7 +486,7 @@ jobs:
           - name: macOS-framework
             build-framework: ON
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -540,7 +540,7 @@ jobs:
             platform: SIMULATOR64
             sdk: iphonesimulator
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -572,7 +572,7 @@ jobs:
     needs: [macOS, iOS]
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/download-artifact@v2
@@ -617,7 +617,7 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v2
