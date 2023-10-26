@@ -79,7 +79,11 @@ void FtpImpl::list_directory_async(const std::string& path, Ftp::ListDirectoryCa
 {
     _system_impl->mavlink_ftp_client().list_directory_async(
         path, [callback, this](MavlinkFtpClient::ClientResult result, auto&& dirs) {
-            callback(result_from_mavlink_ftp_result(result), dirs);
+            if (callback) {
+                _system_impl->call_user_callback([temp_callback = callback, result, dirs, this]() {
+                    temp_callback(result_from_mavlink_ftp_result(result), dirs);
+                });
+            }
         });
 }
 
