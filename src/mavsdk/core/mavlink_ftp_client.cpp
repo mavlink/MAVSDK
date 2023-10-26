@@ -985,20 +985,6 @@ void MavlinkFtpClient::upload_async(
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
 
-std::pair<MavlinkFtpClient::ClientResult, std::vector<std::string>>
-MavlinkFtpClient::list_directory(const std::string& path)
-{
-    std::promise<std::pair<ClientResult, std::vector<std::string>>> prom;
-    auto fut = prom.get_future();
-
-    list_directory_async(
-        path, [&prom](const ClientResult result, const std::vector<std::string> dirs) {
-            prom.set_value(std::make_pair(result, dirs));
-        });
-
-    return fut.get();
-}
-
 void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirectoryCallback callback)
 {
     auto item = ListDirItem{};
@@ -1007,16 +993,6 @@ void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirecto
     auto new_work = Work{std::move(item)};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
-}
-
-MavlinkFtpClient::ClientResult MavlinkFtpClient::create_directory(const std::string& path)
-{
-    std::promise<ClientResult> prom;
-    auto fut = prom.get_future();
-
-    create_directory_async(path, [&prom](const ClientResult result) { prom.set_value(result); });
-
-    return fut.get();
 }
 
 void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCallback callback)
@@ -1029,16 +1005,6 @@ void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCal
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
 
-MavlinkFtpClient::ClientResult MavlinkFtpClient::remove_directory(const std::string& path)
-{
-    std::promise<ClientResult> prom;
-    auto fut = prom.get_future();
-
-    remove_directory_async(path, [&prom](const ClientResult result) { prom.set_value(result); });
-
-    return fut.get();
-}
-
 void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCallback callback)
 {
     auto item = RemoveDirItem{};
@@ -1047,16 +1013,6 @@ void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCal
     auto new_work = Work{std::move(item)};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
-}
-
-MavlinkFtpClient::ClientResult MavlinkFtpClient::remove_file(const std::string& path)
-{
-    std::promise<ClientResult> prom;
-    auto fut = prom.get_future();
-
-    remove_file_async(path, [&prom](const ClientResult result) { prom.set_value(result); });
-
-    return fut.get();
 }
 
 void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback callback)
@@ -1069,18 +1025,6 @@ void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
 
-MavlinkFtpClient::ClientResult
-MavlinkFtpClient::rename(const std::string& from_path, const std::string& to_path)
-{
-    std::promise<ClientResult> prom;
-    auto fut = prom.get_future();
-
-    rename_async(
-        from_path, to_path, [&prom](const ClientResult result) { prom.set_value(result); });
-
-    return fut.get();
-}
-
 void MavlinkFtpClient::rename_async(
     const std::string& from_path, const std::string& to_path, ResultCallback callback)
 {
@@ -1091,20 +1035,6 @@ void MavlinkFtpClient::rename_async(
     auto new_work = Work{std::move(item)};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
-}
-
-std::pair<MavlinkFtpClient::ClientResult, bool>
-MavlinkFtpClient::are_files_identical(const std::string& local_path, const std::string& remote_path)
-{
-    std::promise<std::pair<ClientResult, bool>> prom;
-    auto fut = prom.get_future();
-
-    are_files_identical_async(
-        local_path, remote_path, [&prom](const ClientResult result, const bool are_identical) {
-            prom.set_value(std::make_pair(result, are_identical));
-        });
-
-    return fut.get();
 }
 
 void MavlinkFtpClient::are_files_identical_async(

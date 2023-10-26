@@ -65,14 +65,6 @@ public:
 
     void do_work();
 
-    std::pair<ClientResult, std::vector<std::string>> list_directory(const std::string& path);
-    ClientResult create_directory(const std::string& path);
-    ClientResult remove_directory(const std::string& path);
-    ClientResult remove_file(const std::string& path);
-    ClientResult rename(const std::string& from_path, const std::string& to_path);
-    std::pair<ClientResult, bool>
-    are_files_identical(const std::string& local_path, const std::string& remote_path);
-
     void reset_async(ResultCallback callback);
     void download_async(
         const std::string& remote_file_path,
