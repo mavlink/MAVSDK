@@ -89,7 +89,7 @@ void FtpImpl::list_directory_async(const std::string& path, Ftp::ListDirectoryCa
 
 Ftp::Result FtpImpl::create_directory(const std::string& path)
 {
-    std::promise<Ftp::Result> prom;
+    std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
     create_directory_async(path, [&](Ftp::Result result) { prom.set_value(result); });
@@ -106,7 +106,7 @@ void FtpImpl::create_directory_async(const std::string& path, Ftp::ResultCallbac
 
 Ftp::Result FtpImpl::remove_directory(const std::string& path)
 {
-    std::promise<Ftp::Result> prom;
+    std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
     remove_directory_async(path, [&](Ftp::Result result) { prom.set_value(result); });
@@ -142,7 +142,7 @@ void FtpImpl::remove_file_async(const std::string& path, Ftp::ResultCallback cal
 
 Ftp::Result FtpImpl::rename(const std::string& from_path, const std::string& to_path)
 {
-    std::promise<Ftp::Result> prom;
+    std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
     rename_async(from_path, to_path, [&](Ftp::Result result) { prom.set_value(result); });
@@ -162,7 +162,7 @@ void FtpImpl::rename_async(
 std::pair<Ftp::Result, bool>
 FtpImpl::are_files_identical(const std::string& local_path, const std::string& remote_path)
 {
-    std::promise<std::pair<Ftp::Result, bool>> prom;
+    std::promise<std::pair<Ftp::Result, bool>> prom{};
     auto fut = prom.get_future();
 
     are_files_identical_async(local_path, remote_path, [&](Ftp::Result result, bool identical) {
